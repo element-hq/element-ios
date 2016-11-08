@@ -24,14 +24,14 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="VOX-4l-z7I">
-                        <rect key="frame" x="38" y="24" width="28" height="28"/>
+                        <rect key="frame" x="41" y="24" width="28" height="28"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="28" id="6zN-yv-ik3"/>
                             <constraint firstAttribute="width" constant="28" id="Cah-ju-IxJ"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="q9c-0p-QyP">
-                        <rect key="frame" x="61" y="10" width="454" height="18"/>
+                        <rect key="frame" x="67" y="10" width="448" height="18"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" placeholder="YES" id="5ZO-W1-tS2"/>
@@ -41,7 +41,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="5IE-JS-uf3" userLabel="Attachment View" customClass="MXKImageView">
-                        <rect key="frame" x="61" y="31" width="192" height="33"/>
+                        <rect key="frame" x="67" y="31" width="192" height="33"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="192" id="9zO-jU-qTb"/>
@@ -49,14 +49,14 @@
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K9X-gn-noF" userLabel="File Type Image View">
-                        <rect key="frame" x="61" y="31" width="32" height="32"/>
+                        <rect key="frame" x="67" y="31" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="32" id="OE8-oh-B7Q"/>
                             <constraint firstAttribute="height" constant="32" id="jJB-zj-fbT"/>
                         </constraints>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cot-3X-2cU" userLabel="Play Icon Image View">
-                        <rect key="frame" x="141" y="32" width="32" height="32"/>
+                        <rect key="frame" x="147" y="32" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="8io-Wk-GzF"/>
                             <constraint firstAttribute="width" constant="32" id="aeJ-j3-rfX"/>
@@ -103,17 +103,17 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r5X-QJ-laa">
-                        <rect key="frame" x="51" y="4" width="464" height="30"/>
+                        <rect key="frame" x="57" y="4" width="458" height="30"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="VOX-4l-z7I" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="38" id="0Pb-OA-L8N"/>
+                    <constraint firstItem="VOX-4l-z7I" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="41" id="0Pb-OA-L8N"/>
                     <constraint firstAttribute="bottomMargin" secondItem="UyS-dv-e6D" secondAttribute="bottom" constant="-8" id="0Px-B9-vGZ"/>
                     <constraint firstItem="UyS-dv-e6D" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="27k-iO-CWT"/>
                     <constraint firstItem="hgp-Z5-rAj" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="10" id="2Ih-ga-N9s"/>
-                    <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="18" id="6mM-Ag-m0K"/>
+                    <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="24" id="6mM-Ag-m0K"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="31" id="96U-67-5TP"/>
                     <constraint firstAttribute="trailing" secondItem="q9c-0p-QyP" secondAttribute="trailing" constant="85" id="Bkh-h2-JOQ"/>
                     <constraint firstItem="UyS-dv-e6D" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="Fs4-RT-yIy"/>
@@ -123,7 +123,7 @@
                     <constraint firstAttribute="bottom" secondItem="5IE-JS-uf3" secondAttribute="bottom" constant="10" id="SHN-tC-zsJ"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="TPw-iE-nii"/>
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="10" id="XSL-TG-m62"/>
-                    <constraint firstItem="q9c-0p-QyP" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="18" id="YWK-C2-15w"/>
+                    <constraint firstItem="q9c-0p-QyP" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="24" id="YWK-C2-15w"/>
                     <constraint firstItem="r5X-QJ-laa" firstAttribute="leading" secondItem="q9c-0p-QyP" secondAttribute="leading" constant="-10" id="cMm-XJ-x3Z"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="hQV-lO-7aQ"/>
                     <constraint firstItem="VOX-4l-z7I" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="24" id="hiY-cQ-Oej"/>

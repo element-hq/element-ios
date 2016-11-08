@@ -16,14 +16,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="3Qg-9g-nu0">
-                        <rect key="frame" x="38" y="-4" width="28" height="28"/>
+                        <rect key="frame" x="41" y="-4" width="28" height="28"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="28" id="SMz-HQ-1V0"/>
                             <constraint firstAttribute="height" constant="28" id="WZs-HR-9aL"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="5IE-JS-uf3" userLabel="Attachment View" customClass="MXKImageView">
-                        <rect key="frame" x="61" y="3" width="192" height="33"/>
+                        <rect key="frame" x="67" y="3" width="192" height="33"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="192" id="9zO-jU-qTb"/>
@@ -31,14 +31,14 @@
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K9X-gn-noF" userLabel="File Type Image View">
-                        <rect key="frame" x="61" y="3" width="32" height="32"/>
+                        <rect key="frame" x="67" y="3" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="32" id="OE8-oh-B7Q"/>
                             <constraint firstAttribute="height" constant="32" id="jJB-zj-fbT"/>
                         </constraints>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cot-3X-2cU" userLabel="Play Icon Image View">
-                        <rect key="frame" x="141" y="4" width="32" height="32"/>
+                        <rect key="frame" x="147" y="4" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="8io-Wk-GzF"/>
                             <constraint firstAttribute="width" constant="32" id="aeJ-j3-rfX"/>
@@ -87,7 +87,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="3Qg-9g-nu0" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="38" id="3GH-my-PS4"/>
+                    <constraint firstItem="3Qg-9g-nu0" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="41" id="3GH-my-PS4"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="96U-67-5TP"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="Cot-3X-2cU" secondAttribute="centerY" id="H5t-l6-fL1"/>
                     <constraint firstItem="WiZ-KM-lSH" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="ICD-ch-XIt"/>
@@ -96,7 +96,7 @@
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="TPw-iE-nii"/>
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="XSL-TG-m62"/>
                     <constraint firstItem="3Qg-9g-nu0" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="-4" id="b4f-Qk-ouG"/>
-                    <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="61" id="bSL-lG-ued"/>
+                    <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="67" id="bSL-lG-ued"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="hQV-lO-7aQ"/>
                     <constraint firstAttribute="bottomMargin" secondItem="WiZ-KM-lSH" secondAttribute="bottom" constant="-8" id="ofs-BR-F97"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="K9X-gn-noF" secondAttribute="leading" id="p93-5h-lvW"/>

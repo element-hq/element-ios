@@ -24,14 +24,14 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPe-gA-ZEp">
-                        <rect key="frame" x="38" y="3" width="28" height="57"/>
+                        <rect key="frame" x="41" y="3" width="28" height="57"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="28" id="oYT-bS-zar"/>
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="HTH-5n-MSU">
-                        <rect key="frame" x="56" y="3" width="102" height="57"/>
+                        <rect key="frame" x="62" y="3" width="102" height="57"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="102" id="OX6-NK-oti"/>
@@ -60,7 +60,7 @@
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="4Ac-p5-610"/>
                     <constraint firstAttribute="bottom" secondItem="CPe-gA-ZEp" secondAttribute="bottom" id="5JP-p5-d0R"/>
                     <constraint firstAttribute="bottomMargin" secondItem="stw-MD-khQ" secondAttribute="bottom" constant="-8" id="8Lj-ay-d6E"/>
-                    <constraint firstItem="CPe-gA-ZEp" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="38" id="CJF-CD-ZXk"/>
+                    <constraint firstItem="CPe-gA-ZEp" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="41" id="CJF-CD-ZXk"/>
                     <constraint firstItem="stw-MD-khQ" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="JXb-n4-O4S"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="15" id="Shz-6S-kGd"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="f24-Fr-D4j"/>
@@ -70,7 +70,7 @@
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="pWt-Mb-kAX"/>
                     <constraint firstAttribute="trailingMargin" secondItem="stw-MD-khQ" secondAttribute="trailing" constant="-8" id="qO5-ZZ-mHI"/>
                     <constraint firstItem="hgp-Z5-rAj" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="13" id="tuw-aU-ncu"/>
-                    <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="56" id="uig-Xh-7m6"/>
+                    <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="62" id="uig-Xh-7m6"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
