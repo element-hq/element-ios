@@ -49,9 +49,9 @@
 @property (nonatomic) BOOL supportCallOption;
 
 /**
- Tell whether the room data is encrypted. NO by default.
+ Tell whether the filled data will be sent encrypted. NO by default.
  */
-@property (nonatomic) BOOL isEncrypted;
+@property (nonatomic) BOOL isEncryptionEnabled;
 
 /**
  Tell whether a call is active.
