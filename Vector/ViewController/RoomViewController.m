@@ -958,9 +958,7 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption =
-        self.roomDataSource.mxSession.callManager
-        && self.roomDataSource.room.state.joinedMembers.count >= 2;
+        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.state.joinedMembers.count >= 2;
 
         // Set user picture in input toolbar
         MXKImageView *userPictureView = roomInputToolbarView.pictureView;
@@ -993,8 +991,15 @@
             roomInputToolbarView.supportCallOption &= ([[AppDelegate theDelegate] callStatusBarWindow] == nil);
         }
         
-        // Encrypted?
-        roomInputToolbarView.isEncrypted = self.roomDataSource.room.state.isEncrypted;
+        // Check whether the encryption is enabled in the room
+        if (self.roomDataSource.room.state.isEncrypted)
+        {
+            // Encrypt the user's messages as soon as the user supports the encryption?
+            roomInputToolbarView.isEncryptionEnabled = (self.mainSession.crypto != nil);
+            
+            // Call option is not supported in encrypted room yet - Hide the call button
+            roomInputToolbarView.supportCallOption = NO;
+        }
     }
 }
 

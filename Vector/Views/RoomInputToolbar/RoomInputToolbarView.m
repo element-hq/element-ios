@@ -104,9 +104,9 @@
     }
 }
 
-- (void)setIsEncrypted:(BOOL)isEncrypted
+- (void)setIsEncryptionEnabled:(BOOL)isEncryptionEnabled
 {
-    if (isEncrypted)
+    if (isEncryptionEnabled)
     {
         self.encryptedRoomIcon.hidden = NO;
         self.messageComposerContainerLeadingConstraint.constant = ROOM_INPUT_TOOLBAR_VIEW_ENCRYPTED_MESSAGE_COMPOSER_CONTAINER_LEADING;
@@ -117,7 +117,7 @@
         self.messageComposerContainerLeadingConstraint.constant = ROOM_INPUT_TOOLBAR_VIEW_DEFAULT_MESSAGE_COMPOSER_CONTAINER_LEADING;
     }
     
-    _isEncrypted = isEncrypted;
+    _isEncryptionEnabled = isEncryptionEnabled;
 }
 
 - (void)setActiveCall:(BOOL)activeCall
@@ -151,9 +151,9 @@
     
     [super growingTextViewDidChange:hpGrowingTextView];
     
-    if (self.isEncrypted)
+    if (self.isEncryptionEnabled)
     {
-        // Disable attachments and call options
+        // Disable the attachments and the call options which are not supported yet.
         self.rightInputToolbarButton.hidden = NO;
         self.attachMediaButton.hidden = YES;
         self.voiceCallButton.hidden = YES;
