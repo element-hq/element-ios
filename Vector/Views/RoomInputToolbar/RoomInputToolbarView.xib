@@ -30,7 +30,7 @@
                                 <constraint firstAttribute="height" constant="30" id="wMB-Ec-D9s"/>
                             </constraints>
                         </view>
-                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="fRI-9x-jgw">
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_unencrypted.png" translatesAutoresizingMaskIntoConstraints="NO" id="fRI-9x-jgw">
                             <rect key="frame" x="41" y="7" width="28" height="28"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="28" id="JHs-nc-tML"/>
@@ -38,10 +38,10 @@
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
-                            <rect key="frame" x="51" y="4" width="454" height="38"/>
+                            <rect key="frame" x="62" y="4" width="443" height="38"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="HPGrowingTextView">
-                                    <rect key="frame" x="0.0" y="0.0" width="454" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="443" height="38"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
@@ -111,7 +111,7 @@
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="1FO-iu-urG"/>
                         <constraint firstItem="G8Z-CM-tGs" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" id="8cV-eb-Kog"/>
                         <constraint firstItem="3ln-yI-ef9" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="10" id="BwP-sF-qE1"/>
-                        <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="51" id="ErD-eB-stF"/>
+                        <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="62" id="ErD-eB-stF"/>
                         <constraint firstItem="Owf-M8-qJi" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" id="GKh-R5-jqV"/>
                         <constraint firstItem="fRI-9x-jgw" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="41" id="GvU-rY-bWW"/>
                         <constraint firstItem="dd4-pE-Es1" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="13" id="Jem-U2-oEq"/>
@@ -166,7 +166,7 @@
     </objects>
     <resources>
         <image name="call_hangup_icon.png" width="26" height="27"/>
-        <image name="e2e_verified.png" width="10" height="12"/>
+        <image name="e2e_unencrypted.png" width="14" height="12"/>
         <image name="upload_icon.png" width="21" height="26"/>
         <image name="voice_call_icon.png" width="24" height="27"/>
     </resources>

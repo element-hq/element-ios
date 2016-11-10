@@ -24,9 +24,6 @@
 
 #import <Photos/Photos.h>
 
-#define ROOM_INPUT_TOOLBAR_VIEW_DEFAULT_MESSAGE_COMPOSER_CONTAINER_LEADING 51
-#define ROOM_INPUT_TOOLBAR_VIEW_ENCRYPTED_MESSAGE_COMPOSER_CONTAINER_LEADING 62
-
 @interface RoomInputToolbarView()
 {
     MediaPickerViewController *mediaPicker;
@@ -108,13 +105,11 @@
 {
     if (isEncryptionEnabled)
     {
-        self.encryptedRoomIcon.hidden = NO;
-        self.messageComposerContainerLeadingConstraint.constant = ROOM_INPUT_TOOLBAR_VIEW_ENCRYPTED_MESSAGE_COMPOSER_CONTAINER_LEADING;
+        self.encryptedRoomIcon.image = [UIImage imageNamed:@"e2e_verified"];
     }
     else
     {
-        self.encryptedRoomIcon.hidden = YES;
-        self.messageComposerContainerLeadingConstraint.constant = ROOM_INPUT_TOOLBAR_VIEW_DEFAULT_MESSAGE_COMPOSER_CONTAINER_LEADING;
+        self.encryptedRoomIcon.image = [UIImage imageNamed:@"e2e_unencrypted"];
     }
     
     _isEncryptionEnabled = isEncryptionEnabled;
