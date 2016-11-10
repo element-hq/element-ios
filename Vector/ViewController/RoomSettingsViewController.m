@@ -2648,7 +2648,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             RoomMemberDetailsViewController *roomMemberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
             [roomMemberDetailsViewController displayRoomMember:bannedMembers[indexPath.row] withMatrixRoom:mxRoom];
             roomMemberDetailsViewController.delegate = self;
-            roomMemberDetailsViewController.enableVoipCall = YES;
+            roomMemberDetailsViewController.enableVoipCall = NO;
 
             [self.parentViewController.navigationController pushViewController:roomMemberDetailsViewController animated:NO];
         }

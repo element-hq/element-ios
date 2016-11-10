@@ -2109,7 +2109,7 @@
             // Set delegate to handle action on member (start chat, memtion)
             memberViewController.delegate = self;
             memberViewController.enableMention = YES;
-            memberViewController.enableVoipCall = YES;
+            memberViewController.enableVoipCall = NO;
 
             [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
 
@@ -2121,7 +2121,7 @@
         if (selectedContact)
         {
             ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
-            contactDetailsViewController.enableVoipCall = YES;
+            contactDetailsViewController.enableVoipCall = NO;
             contactDetailsViewController.contact = selectedContact;
 
             selectedContact = nil;

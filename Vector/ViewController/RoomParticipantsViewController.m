@@ -1177,7 +1177,7 @@
             // Set delegate to handle action on member (start chat, mention)
             memberDetailsViewController.delegate = self;
             memberDetailsViewController.enableMention = _enableMention;
-            memberDetailsViewController.enableVoipCall = YES;
+            memberDetailsViewController.enableVoipCall = NO;
             
             [memberDetailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
             
