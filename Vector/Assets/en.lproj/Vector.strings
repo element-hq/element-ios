@@ -42,6 +42,7 @@
 "video" = "Video";
 "active_call" = "Active Call";
 "active_call_details" = "Active Call (%@)";
+"later" = "Later";
 
 // Authentication
 "auth_login" = "Log in";
@@ -250,6 +251,7 @@
 "settings_contacts_discover_matrix_users_with_local_emails" = "Use emails to discover users";
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
+"settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
 
 "settings_version" = "Version %@";
 "settings_copyright" = "Copyright";

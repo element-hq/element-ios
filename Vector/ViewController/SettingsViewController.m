@@ -1402,36 +1402,89 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     if (sender && [sender isKindOfClass:UISwitch.class])
     {
         UISwitch *switchButton = (UISwitch*)sender;
-
-        [self startActivityIndicator];
-
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-		[session enableCrypto:switchButton.isOn success:^{
-
-            // Reload all data source of encrypted rooms
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:session];
-
-            for (MXRoom *room in session.rooms)
-            {
-                if (room.state.isEncrypted)
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        if (switchButton.isOn && !account.mxCredentials.deviceId.length)
+        {
+            // Prompt the user to log in again when no device id is available.
+            __weak typeof(self) weakSelf = self;
+            
+            // Prompt user
+            NSString *msg = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption_prompt_message", @"Vector", nil);
+            
+            [currentAlert dismiss:NO];
+            currentAlert = [[MXKAlert alloc] initWithTitle:nil message:msg style:MXKAlertStyleAlert];
+            
+            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"later"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                if (weakSelf)
                 {
-                    MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO];
-                    [roomDataSource reload];
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
                 }
-            }
-
-            // Once crypto is enabled, it is enabled
-            switchButton.enabled = NO;
-
-            [self stopActivityIndicator];
-
-        } failure:^(NSError *error) {
-
-            [self stopActivityIndicator];
-
-            // Come back to previous state button
-            [switchButton setOn:!switchButton.isOn animated:YES];
-        }];
+                
+                // Reset toggle button
+                [switchButton setOn:NO animated:YES];
+                
+            }];
+            
+            [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+                    
+                    // Turn on encryption on new sessions after signing off
+                    [MXSDKOptions sharedInstance].enableCryptoWhenStartingMXSession = YES;
+                    
+                    switchButton.enabled = NO;
+                    [strongSelf startActivityIndicator];
+                    
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                        
+                        [[MXKAccountManager sharedManager] logout];
+                        
+                    });
+                }
+                
+            }];
+            
+            
+            [currentAlert showInViewController:self];
+        }
+        else
+        {
+            [self startActivityIndicator];
+            
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            [session enableCrypto:switchButton.isOn success:^{
+                
+                // Reload all data source of encrypted rooms
+                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:session];
+                
+                for (MXRoom *room in session.rooms)
+                {
+                    if (room.state.isEncrypted)
+                    {
+                        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO];
+                        [roomDataSource reload];
+                    }
+                }
+                
+                // Once crypto is enabled, it is enabled
+                switchButton.enabled = NO;
+                
+                [self stopActivityIndicator];
+                
+            } failure:^(NSError *error) {
+                
+                [self stopActivityIndicator];
+                
+                // Come back to previous state button
+                [switchButton setOn:!switchButton.isOn animated:YES];
+            }];
+        }
     }
 }
 
