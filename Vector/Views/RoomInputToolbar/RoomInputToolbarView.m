@@ -146,9 +146,8 @@
     
     [super growingTextViewDidChange:hpGrowingTextView];
     
-    if (self.isEncryptionEnabled)
+    if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
     {
-        // Disable the attachments and the call options which are not supported yet.
         self.rightInputToolbarButton.hidden = NO;
         self.attachMediaButton.hidden = YES;
         self.voiceCallButton.hidden = YES;
@@ -156,26 +155,14 @@
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
     }
-    else
+    else if (!self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.isHidden)
     {
-        if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
-        {
-            self.rightInputToolbarButton.hidden = NO;
-            self.attachMediaButton.hidden = YES;
-            self.voiceCallButton.hidden = YES;
-            self.hangupCallButton.hidden = YES;
-            
-            self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
-        }
-        else if (!self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.isHidden)
-        {
-            self.rightInputToolbarButton.hidden = YES;
-            self.attachMediaButton.hidden = NO;
-            self.voiceCallButton.hidden = _activeCall;
-            self.hangupCallButton.hidden = !_activeCall;
-            
-            self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
-        }
+        self.rightInputToolbarButton.hidden = YES;
+        self.attachMediaButton.hidden = NO;
+        self.voiceCallButton.hidden = !self.isEncryptionEnabled && _activeCall;
+        self.hangupCallButton.hidden = !self.isEncryptionEnabled && !_activeCall;
+        
+        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
     }
 }
 
