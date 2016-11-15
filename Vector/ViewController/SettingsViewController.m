@@ -1404,6 +1404,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         UISwitch *switchButton = (UISwitch*)sender;
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         
+        // Turn off by default the flag which is used to enable automatically the encryption on new sessions.
+        [MXSDKOptions sharedInstance].enableCryptoWhenStartingMXSession = NO;
+        
         if (switchButton.isOn && !account.mxCredentials.deviceId.length)
         {
             // Prompt the user to log in again when no device id is available.

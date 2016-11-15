@@ -42,7 +42,7 @@
         // Set the right device info icon in front of each event
 
         // Ensure that older subviews are removed
-        // They should be (they are removed when the is not anymore used).
+        // They should be (they are removed when the cell is not anymore used).
         // But, it seems that is not always true.
         NSArray* views = [self.encryptionStatusContainerView subviews];
         for(UIView* view in views)
