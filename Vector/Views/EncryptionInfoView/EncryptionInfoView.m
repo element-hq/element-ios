@@ -313,13 +313,9 @@ static NSAttributedString *verticalWhitespace = nil;
 
 + (NSAttributedString *)verticalWhitespace
 {
-    @synchronized(self)
+    if (verticalWhitespace == nil)
     {
-        if (verticalWhitespace == nil)
-        {
-            verticalWhitespace = [[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSForegroundColorAttributeName : [UIColor blackColor],
-                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:4]}];
-        }
+        verticalWhitespace = [[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}];
     }
     return verticalWhitespace;
 }
