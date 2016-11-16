@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import"RoomEncryptedDataBubbleCell.h"
+#import "RoomEncryptedDataBubbleCell.h"
 
 NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncryptedDataBubbleCellTapOnEncryptionIcon";
 
@@ -47,20 +47,23 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         MXRoom *room = [session roomWithRoomId:event.roomId];
         MXDeviceInfo *deviceInfo = [room eventDeviceInfo:event];
         
-        switch (deviceInfo.verified)
+        if (deviceInfo)
         {
-            case MXDeviceUnverified:
+            switch (deviceInfo.verified)
             {
-                encryptionIcon = @"e2e_warning";
-                break;
+                case MXDeviceUnverified:
+                {
+                    encryptionIcon = @"e2e_warning";
+                    break;
+                }
+                case MXDeviceVerified:
+                {
+                    encryptionIcon = @"e2e_verified";
+                    break;
+                }
+                default:
+                    break;
             }
-            case MXDeviceVerified:
-            {
-                encryptionIcon = @"e2e_verified";
-                break;
-            }
-            default:
-                break;
         }
     }
     

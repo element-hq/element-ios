@@ -50,6 +50,8 @@
 		F003AA801C690628008B430C /* RoomAvatarTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F003AA7E1C690628008B430C /* RoomAvatarTitleView.m */; };
 		F003AA811C690628008B430C /* RoomAvatarTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F003AA7F1C690628008B430C /* RoomAvatarTitleView.xib */; };
 		F008D6FC1D0180FB0049444D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F008D6FB1D0180FB0049444D /* GoogleService-Info.plist */; };
+		F00ACC601DDB11CE0093F646 /* EncryptionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F00ACC5E1DDB11CE0093F646 /* EncryptionInfoView.m */; };
+		F00ACC611DDB11CE0093F646 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F00ACC5F1DDB11CE0093F646 /* EncryptionInfoView.xib */; };
 		F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F00C47841BFF77C800DBABC9 /* RecentTableViewCell.m */; };
 		F00C47871BFF77C800DBABC9 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F00C47851BFF77C800DBABC9 /* RecentTableViewCell.xib */; };
 		F00C478B1BFF854400DBABC9 /* RecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F00C478A1BFF854400DBABC9 /* RecentsDataSource.m */; };
@@ -469,6 +471,9 @@
 		F003AA7E1C690628008B430C /* RoomAvatarTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomAvatarTitleView.m; path = RoomTitle/RoomAvatarTitleView.m; sourceTree = "<group>"; };
 		F003AA7F1C690628008B430C /* RoomAvatarTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomAvatarTitleView.xib; path = RoomTitle/RoomAvatarTitleView.xib; sourceTree = "<group>"; };
 		F008D6FB1D0180FB0049444D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F00ACC5D1DDB11CE0093F646 /* EncryptionInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionInfoView.h; sourceTree = "<group>"; };
+		F00ACC5E1DDB11CE0093F646 /* EncryptionInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionInfoView.m; sourceTree = "<group>"; };
+		F00ACC5F1DDB11CE0093F646 /* EncryptionInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EncryptionInfoView.xib; sourceTree = "<group>"; };
 		F00C47831BFF77C800DBABC9 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
 		F00C47841BFF77C800DBABC9 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
 		F00C47851BFF77C800DBABC9 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
@@ -988,6 +993,7 @@
 		F001D7521B8207C000A162C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F00ACC5C1DDB11CE0093F646 /* EncryptionInfoView */,
 				F083C4591D9E9C2400E5246C /* Search */,
 				F0CC4DBC1C4E26FA003BBE45 /* MediaAlbum */,
 				71F7F5191C23079100E7ED8F /* Contact */,
@@ -1067,6 +1073,16 @@
 				F001D75D1B8207C000A162C3 /* RoomInputToolbarView.xib */,
 			);
 			path = RoomInputToolbar;
+			sourceTree = "<group>";
+		};
+		F00ACC5C1DDB11CE0093F646 /* EncryptionInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				F00ACC5D1DDB11CE0093F646 /* EncryptionInfoView.h */,
+				F00ACC5E1DDB11CE0093F646 /* EncryptionInfoView.m */,
+				F00ACC5F1DDB11CE0093F646 /* EncryptionInfoView.xib */,
+			);
+			path = EncryptionInfoView;
 			sourceTree = "<group>";
 		};
 		F00C47821BFF77C800DBABC9 /* RoomList */ = {
@@ -1815,6 +1831,7 @@
 				F08714D91DC384810075F633 /* start_chat@2x.png in Resources */,
 				F09EAFB01DD2109B009C7EFB /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				322574E51D86E0C1009181D3 /* InfoPlist.strings in Resources */,
+				F00ACC611DDB11CE0093F646 /* EncryptionInfoView.xib in Resources */,
 				F083C4931D9EAFC500E5246C /* file_photo_icon.png in Resources */,
 				F03BF6C51D8BF5B1002EF6A7 /* selection_tick.png in Resources */,
 				F03BF64A1D8BF5B1002EF6A7 /* admin_icon@2x.png in Resources */,
@@ -2169,6 +2186,7 @@
 				F094AA301B78E42600B1FBBF /* AuthenticationViewController.m in Sources */,
 				F0FE6F7A1D63752A0004E747 /* CallViewController.m in Sources */,
 				F09EAFAB1DD2109B009C7EFB /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
+				F00ACC601DDB11CE0093F646 /* EncryptionInfoView.m in Sources */,
 				F0C34CB81C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m in Sources */,
 				F083C49B1D9EB13500E5246C /* HomeFilesSearchViewController.m in Sources */,
 			);
