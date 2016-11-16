@@ -34,20 +34,6 @@
 
         roomId = event.roomId;
         
-        // Check attachment if any
-        if ([searchDataSource.eventFormatter isSupportedAttachment:event])
-        {
-            // Note: event.eventType is equal here to MXEventTypeRoomMessage
-            attachment = [[MXKAttachment alloc] initWithEvent:event andMatrixSession:searchDataSource.mxSession];
-            if (attachment && attachment.type == MXKAttachmentTypeImage && attachment.thumbnailURL == nil)
-            {
-                // Suppose contentURL is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-                attachment.thumbnailURL = [searchDataSource.mxSession.matrixRestClient urlOfContentThumbnail:attachment.contentURL
-                                                                                             toFitViewSize:CGSizeMake(73, 73)
-                                                                                                withMethod:MXThumbnailingMethodCrop];
-            }
-        }
-        
         // Title is here the file name stored in event body
         title = [event.content[@"body"] isKindOfClass:[NSString class]] ? event.content[@"body"] : nil;
         
