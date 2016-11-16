@@ -47,8 +47,11 @@ static NSAttributedString *verticalWhitespace = nil;
     [super awakeFromNib];
     
     // Localize string
-    [_okButton setTitle:[NSBundle mxk_localizedStringForKey:@"ok"] forState:UIControlStateNormal];
-    [_okButton setTitle:[NSBundle mxk_localizedStringForKey:@"ok"] forState:UIControlStateHighlighted];
+    [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"ok"] forState:UIControlStateNormal];
+    [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"ok"] forState:UIControlStateHighlighted];
+    
+    [_confirmVerifyButton setTitle:NSLocalizedStringFromTable(@"room_event_encryption_verify_ok", @"Vector", nil) forState:UIControlStateNormal];
+    [_confirmVerifyButton setTitle:NSLocalizedStringFromTable(@"room_event_encryption_verify_ok", @"Vector", nil) forState:UIControlStateHighlighted];
 }
 
 - (instancetype)initWithEvent:(MXEvent*)event andMatrixSession:(MXSession*)session
@@ -324,11 +327,16 @@ static NSAttributedString *verticalWhitespace = nil;
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    if (sender == _okButton)
+    if (sender == _cancelButton)
     {
         [self removeFromSuperview];
     }
-    else
+    else if (sender == _confirmVerifyButton && deviceInfo)
+    {
+        [mxSession.crypto setDeviceVerification:MXDeviceVerified forDevice:deviceInfo.deviceId ofUser:deviceInfo.userId];
+        [self removeFromSuperview];
+    }
+    else if (deviceInfo)
     {
         MXDeviceVerification verificationStatus;
         
@@ -347,8 +355,33 @@ static NSAttributedString *verticalWhitespace = nil;
             return;
         }
         
-        [mxSession.crypto setDeviceVerification:verificationStatus forDevice:deviceInfo.deviceId ofUser:deviceInfo.userId];
-        [self removeFromSuperview];
+        if (verificationStatus == MXDeviceVerified)
+        {
+            // Prompt user
+            NSMutableAttributedString *textViewAttributedString = [[NSMutableAttributedString alloc]
+                                                                   initWithString:NSLocalizedStringFromTable(@"room_event_encryption_verify_title", @"Vector", nil)
+                                                                   attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
+                                                                                NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}];
+            
+            NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_event_encryption_verify_message", @"Vector", nil), deviceInfo.displayName, deviceInfo.deviceId, deviceInfo.fingerprint];
+            
+            [textViewAttributedString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                             initWithString:message
+                                                             attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
+                                                                          NSFontAttributeName: [UIFont systemFontOfSize:14]}]];
+            
+            self.textView.attributedText = textViewAttributedString;
+            
+            [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateNormal];
+            [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateHighlighted];
+            _verifyButton.hidden = _blockButton.hidden = YES;
+            _confirmVerifyButton.hidden = NO;
+        }
+        else
+        {
+            [mxSession.crypto setDeviceVerification:verificationStatus forDevice:deviceInfo.deviceId ofUser:deviceInfo.userId];
+            [self removeFromSuperview];
+        }
     }
 }
 

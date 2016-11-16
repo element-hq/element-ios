@@ -58,6 +58,15 @@
                         <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="j21-e2-e3C"/>
                     </connections>
                 </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4h-aG-8UN">
+                    <rect key="frame" x="506" y="560" width="40" height="30"/>
+                    <state key="normal" title="Verify">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="nKr-w7-ECp"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -67,9 +76,11 @@
                 <constraint firstItem="4nG-AI-PEC" firstAttribute="top" secondItem="8VI-1E-fge" secondAttribute="top" constant="10" id="AsZ-Vi-ffo"/>
                 <constraint firstAttribute="bottom" secondItem="qkC-t0-Qd0" secondAttribute="bottom" constant="10" id="DyR-rX-nt0"/>
                 <constraint firstAttribute="bottom" secondItem="Ump-1C-SzI" secondAttribute="bottom" constant="10" id="Nfo-nh-gvW"/>
+                <constraint firstAttribute="bottom" secondItem="L4h-aG-8UN" secondAttribute="bottom" constant="10" id="Owt-zM-W2X"/>
                 <constraint firstAttribute="centerX" secondItem="Ump-1C-SzI" secondAttribute="centerX" multiplier="4" id="YMC-ob-tqT"/>
                 <constraint firstAttribute="bottom" secondItem="IdO-jn-iTV" secondAttribute="bottom" constant="10" id="YcV-iN-9WU"/>
                 <constraint firstAttribute="trailing" secondItem="4nG-AI-PEC" secondAttribute="trailing" constant="10" id="aQF-F6-6lU"/>
+                <constraint firstAttribute="centerX" secondItem="L4h-aG-8UN" secondAttribute="centerX" multiplier="0.57" id="g1v-Mg-fQ6"/>
                 <constraint firstAttribute="centerX" secondItem="IdO-jn-iTV" secondAttribute="centerX" multiplier="0.57" id="gAm-ph-zPW"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -78,7 +89,8 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="blockButton" destination="IdO-jn-iTV" id="HI0-ZU-esJ"/>
-                <outlet property="okButton" destination="Ump-1C-SzI" id="nXR-dU-t3K"/>
+                <outlet property="cancelButton" destination="Ump-1C-SzI" id="U8M-nT-JiK"/>
+                <outlet property="confirmVerifyButton" destination="L4h-aG-8UN" id="GX6-dB-JG6"/>
                 <outlet property="textView" destination="3Vk-Jx-L6Y" id="uOw-Bq-neN"/>
                 <outlet property="verifyButton" destination="qkC-t0-Qd0" id="6LD-04-WgO"/>
             </connections>

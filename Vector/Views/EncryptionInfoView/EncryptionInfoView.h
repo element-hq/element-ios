@@ -19,9 +19,10 @@
 @interface EncryptionInfoView : UIView
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
-@property (weak, nonatomic) IBOutlet UIButton *okButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *verifyButton;
 @property (weak, nonatomic) IBOutlet UIButton *blockButton;
+@property (weak, nonatomic) IBOutlet UIButton *confirmVerifyButton;
 
 - (instancetype)initWithEvent:(MXEvent*)event andMatrixSession:(MXSession*)session;
 
