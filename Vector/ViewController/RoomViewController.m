@@ -90,6 +90,9 @@
 
 #import "GBDeviceInfo_iOS.h"
 
+#import "RoomEncryptedDataBubbleCell.h"
+#import "EncryptionInfoView.h"
+
 @interface RoomViewController ()
 {
     // The expanded header
@@ -131,6 +134,9 @@
     UILabel *missedDiscussionsBadgeLabel;
     UIView  *missedDiscussionsBadgeLabelBgView;
     UIView  *missedDiscussionsBarButtonCustomView;
+    
+    // Potential encryption details view.
+    EncryptionInfoView *encryptionInfoView;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
@@ -488,6 +494,38 @@
     contentInset.bottom = self.bottomLayoutGuide.length;
     self.bubblesTableView.contentInset = contentInset;
     
+    // Check here whether a subview has been added or removed
+    if (encryptionInfoView)
+    {
+        if (encryptionInfoView.superview)
+        {
+            // Hide the potential expanded header when a subview is added.
+            self.showExpandedHeader = NO;
+        }
+        else
+        {
+            // Reset
+            encryptionInfoView = nil;
+            
+            // Reload the full table to take into account a potential change on a device status.
+            [self.bubblesTableView reloadData];
+        }
+    }
+    
+    if (eventDetailsView)
+    {
+        if (eventDetailsView.superview)
+        {
+            // Hide the potential expanded header when a subview is added.
+            self.showExpandedHeader = NO;
+        }
+        else
+        {
+            // Reset
+            eventDetailsView = nil;
+        }
+    }
+    
     // Check whether the expanded header is visible
     if (self.expandedHeaderContainer.isHidden == NO)
     {
@@ -815,6 +853,17 @@
     }
 }
 
+- (void)dismissTemporarySubViews
+{
+    [super dismissTemporarySubViews];
+    
+    if (encryptionInfoView)
+    {
+        [encryptionInfoView removeFromSuperview];
+        encryptionInfoView = nil;
+    }
+}
+
 - (void)destroy
 {
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -1033,7 +1082,9 @@
         // - if the room data source does not manage a live timeline.
         // - if the user's membership is not 'join'.
         // - if the view controller is not embedded inside a split view controller yet.
-        if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.state.membership != MXMembershipJoin) || !self.splitViewController))
+        // - if the encryption view is displayed
+        // - if the event details view is displayed
+        if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.state.membership != MXMembershipJoin) || !self.splitViewController || encryptionInfoView.superview || eventDetailsView.superview))
         {
             NSLog(@"[Vector RoomVC] Show expanded header ignored");
             return;
@@ -1503,6 +1554,16 @@
             // Shortcut: when clicking on an unsent media, show the action sheet to resend it
             [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event}];
         }
+        else if ([actionIdentifier isEqualToString:kRoomEncryptedDataBubbleCellTapOnEncryptionIcon])
+        {
+            // Retrieve the tapped event
+            MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            
+            if (tappedEvent)
+            {
+                [self showEncryptionInformation:tappedEvent];
+            }
+        }
         else
         {
             // Keep default implementation for other actions
@@ -1912,6 +1973,19 @@
                 [reasonAlert showInViewController:strongSelf];
             }];
         }
+        
+        if (level == 1 && self.roomDataSource.room.state.isEncrypted)
+        {
+            [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_encryption", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf cancelEventSelection];
+                
+                // Display encryption details
+                [strongSelf showEncryptionInformation:selectedEvent];
+            }];
+        }
+
 
         if (level == 0)
         {
@@ -2994,6 +3068,59 @@
     
     // Refresh activities view
     [self refreshActivitiesViewDisplay];
+}
+
+# pragma mark - Encryption Information view
+
+- (void)showEncryptionInformation:(MXEvent *)event
+{
+    [self dismissKeyboard];
+    
+    // Remove potential existing subviews
+    [self dismissTemporarySubViews];
+    
+    encryptionInfoView = [[EncryptionInfoView alloc] initWithEvent:event andMatrixSession:self.roomDataSource.mxSession];
+    
+    // Add shadow on event details view
+    encryptionInfoView.layer.cornerRadius = 5;
+    encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
+    encryptionInfoView.layer.shadowOpacity = 0.5f;
+    
+    // Add the view and define edge constraints
+    [self.view addSubview:encryptionInfoView];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.topLayoutGuide
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:10.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.bottomLayoutGuide
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:-10.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
+                                                          attribute:NSLayoutAttributeLeading
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:encryptionInfoView
+                                                          attribute:NSLayoutAttributeLeading
+                                                         multiplier:1.0f
+                                                           constant:-10.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
+                                                          attribute:NSLayoutAttributeTrailing
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:encryptionInfoView
+                                                          attribute:NSLayoutAttributeTrailing
+                                                         multiplier:1.0f
+                                                           constant:10.0f]];
+    [self.view setNeedsUpdateConstraints];
 }
 
 @end

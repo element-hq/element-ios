@@ -189,6 +189,32 @@
 "room_event_action_delete" = "Delete";
 "room_event_action_cancel_upload" = "Cancel Upload";
 "room_event_action_cancel_download" = "Cancel Download";
+"room_event_action_view_encryption" = "Device Information";
+
+// Encryption information
+"room_event_encryption_info_title" = "End-to-end encryption information\n\n";
+"room_event_encryption_info_event" = "Event information\n";
+"room_event_encryption_info_event_user_id" = "User ID\n";
+"room_event_encryption_info_event_identity_key" = "Curve25519 identity key\n";
+"room_event_encryption_info_event_fingerprint_key" = "Claimed Ed25519 fingerprint key\n";
+"room_event_encryption_info_event_algorithm" = "Algorithm\n";
+"room_event_encryption_info_event_session_id" = "Session ID\n";
+"room_event_encryption_info_event_decryption_error" = "Decryption error\n";
+"room_event_encryption_info_event_unencrypted" = "unencrypted";
+"room_event_encryption_info_event_none" = "none";
+"room_event_encryption_info_device" = "\nSender device information\n";
+"room_event_encryption_info_device_unknown" = "unknown device\n";
+"room_event_encryption_info_device_name" = "Name\n";
+"room_event_encryption_info_device_id" = "Device ID\n";
+"room_event_encryption_info_device_verification" = "Verification\n";
+"room_event_encryption_info_device_fingerprint" = "Ed25519 fingerprint\n";
+"room_event_encryption_info_device_verified" = "Verified";
+"room_event_encryption_info_device_not_verified" = "NOT verified";
+"room_event_encryption_info_device_blocked" = "Blocked";
+"room_event_encryption_info_verify" = "Verify";
+"room_event_encryption_info_unverify" = "Unverify";
+"room_event_encryption_info_block" = "Block";
+"room_event_encryption_info_unblock" = "Unblock";
 
 // Room Title
 "room_title_new_room" = "New room";
