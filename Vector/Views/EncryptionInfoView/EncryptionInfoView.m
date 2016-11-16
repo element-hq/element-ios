@@ -195,8 +195,8 @@ static NSAttributedString *verticalWhitespace = nil;
                 NSMutableAttributedString *verification;
                 NSString *fingerprint = deviceInfo.fingerprint;
                 
-                _verifyButton.hidden = NO;
-                _blockButton.hidden = NO;
+                // Display here the Verify and Block buttons except if the device is the current one.
+                _verifyButton.hidden = _blockButton.hidden = [deviceInfo.deviceId isEqualToString:mxSession.matrixRestClient.credentials.deviceId];
                 
                 switch (deviceInfo.verified)
                 {
