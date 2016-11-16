@@ -100,6 +100,28 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         
         // Available on iOS 8 and later
         [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
+        
+        // Check whether a vertical whitespace was applied to display correctly the timestamp.
+        if (componentIndex || bubbleData.shouldHideSenderInformation || bubbleData.shouldHideSenderName)
+        {
+            // Adjust the position of the potential encryption icon in this case.
+            if (self.encryptionStatusContainerView)
+            {
+                NSArray* subviews = self.encryptionStatusContainerView.subviews;
+                for (UIView *view in subviews)
+                {
+                    // Note: The encryption icon has been tagged with the component index.
+                    if (view.tag == componentIndex)
+                    {
+                        CGRect frame = view.frame;
+                        frame.origin.y += 15;
+                        view.frame = frame;
+                        
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
 

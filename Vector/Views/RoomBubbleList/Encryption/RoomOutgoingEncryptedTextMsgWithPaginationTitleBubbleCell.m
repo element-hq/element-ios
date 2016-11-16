@@ -71,7 +71,6 @@
 - (void)didEndDisplay
 {
     NSArray* subviews = self.encryptionStatusContainerView.subviews;
-    
     for (UIView *view in subviews)
     {
         [view removeFromSuperview];

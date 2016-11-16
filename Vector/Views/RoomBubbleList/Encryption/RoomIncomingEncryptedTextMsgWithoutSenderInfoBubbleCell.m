@@ -40,32 +40,19 @@
     if (bubbleData)
     {
         // Set the right device info icon in front of each event
-        
-        // Ensure that older subviews are removed
-        // They should be (they are removed when the cell is not anymore used).
-        // But, it seems that is not always true.
-        NSArray* views = [self.encryptionStatusContainerView subviews];
-        for(UIView* view in views)
-        {
-            [view removeFromSuperview];
-        }
-        
-        for (MXKRoomBubbleComponent *component in bubbleData.bubbleComponents)
-        {
-            UIImage *icon = [RoomEncryptedDataBubbleCell encryptionIconForEvent:component.event andSession:bubbleData.mxSession];
-            UIImageView *encryptStatusImageView = [[UIImageView alloc] initWithImage:icon];
-            
-            CGRect frame = encryptStatusImageView.frame;
-            frame.origin.y = component.position.y + 3;
-            encryptStatusImageView.frame = frame;
-            
-            CGPoint center = encryptStatusImageView.center;
-            center.x = self.encryptionStatusContainerView.frame.size.width / 2;
-            encryptStatusImageView.center = center;
-            
-            [self.encryptionStatusContainerView addSubview:encryptStatusImageView];
-        }
+        [RoomEncryptedDataBubbleCell addEncryptionStatusFromBubbleData:bubbleData inContainerView:self.encryptionStatusContainerView];
     }
+}
+
+- (void)didEndDisplay
+{
+    NSArray* subviews = self.encryptionStatusContainerView.subviews;
+    for (UIView *view in subviews)
+    {
+        [view removeFromSuperview];
+    }
+    
+    [super didEndDisplay];
 }
 
 #pragma mark - User actions
