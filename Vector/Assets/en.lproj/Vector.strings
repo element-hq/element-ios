@@ -215,6 +215,9 @@
 "room_event_encryption_info_unverify" = "Unverify";
 "room_event_encryption_info_block" = "Block";
 "room_event_encryption_info_unblock" = "Unblock";
+"room_event_encryption_verify_title" = "Verify device\n\n";
+"room_event_encryption_verify_message" = "To verify that this device can be trusted, please contact its owner using\nsome other means (e.g. in person or a phone call) and ask them\nwhether the key they see in their User Settings for this device matches\nthe key below:\n\n\tDevice name: %@\n\tDevice ID: %@\n\tDevice key: %@\n\nIf it matches, press the verify button below. If it doesnt, then someone\nelse is intercepting this device and you probably want to press the block\nbutton instead.\n\nIn future this verification process will be more sophisticated.";
+"room_event_encryption_verify_ok" = "Verify";
 
 // Room Title
 "room_title_new_room" = "New room";
