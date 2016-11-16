@@ -26,16 +26,17 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
     
     if (!event.isEncrypted)
     {
-        // Patch: Display the verified icon on outgoing messages in the encrypted rooms (until #773 is fixed)
-        MXRoom *room = [session roomWithRoomId:event.roomId];
-        if (room.state.isEncrypted && session.crypto && [event.sender isEqualToString:session.myUser.userId])
+        encryptionIcon = @"e2e_unencrypted";
+        
+        if ([event.eventId hasPrefix:kMXRoomLocalEventIdPrefix])
         {
-            // The outgoing message are encrypted by default
-            encryptionIcon = @"e2e_verified";
-        }
-        else
-        {
-            encryptionIcon = @"e2e_unencrypted";
+            // Patch: Display the verified icon by default on pending outgoing messages in the encrypted rooms when the encryption is enabled
+            MXRoom *room = [session roomWithRoomId:event.roomId];
+            if (room.state.isEncrypted && session.crypto)
+            {
+                // The outgoing message are encrypted by default
+                encryptionIcon = @"e2e_verified";
+            }
         }
     }
     else if (event.decryptionError)
