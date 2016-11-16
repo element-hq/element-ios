@@ -1045,9 +1045,6 @@
         {
             // Encrypt the user's messages as soon as the user supports the encryption?
             roomInputToolbarView.isEncryptionEnabled = (self.mainSession.crypto != nil);
-            
-            // Call option is not supported in encrypted room yet - Hide the call button
-            roomInputToolbarView.supportCallOption = NO;
         }
     }
 }
@@ -2221,8 +2218,24 @@
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
+    // Conference call is not supported in encrypted rooms
+    if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.joinedMembers.count > 2)
+    {
+        [currentAlert dismiss:NO];
+
+        __weak __typeof(self) weakSelf = self;
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_conference_call_in_encrypted_rooms"]  message:nil style:MXKAlertStyleAlert];
+
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+        }];
+
+        [currentAlert showInViewController:self];
+    }
     // In case of conference call, check that the user has enough power level
-    if (self.roomDataSource.room.state.joinedMembers.count > 2 &&
+    else if (self.roomDataSource.room.state.joinedMembers.count > 2 &&
         ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room])
     {
         [currentAlert dismiss:NO];

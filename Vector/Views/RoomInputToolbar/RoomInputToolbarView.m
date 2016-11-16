@@ -159,8 +159,8 @@
     {
         self.rightInputToolbarButton.hidden = YES;
         self.attachMediaButton.hidden = NO;
-        self.voiceCallButton.hidden = !self.isEncryptionEnabled && _activeCall;
-        self.hangupCallButton.hidden = !self.isEncryptionEnabled && !_activeCall;
+        self.voiceCallButton.hidden = _activeCall;
+        self.hangupCallButton.hidden = !_activeCall;
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
     }
