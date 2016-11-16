@@ -311,6 +311,9 @@
         
         // Do not go to search mode when first opening the home
         [self hideSearch:NO];
+
+        // Do the one time check on device id
+        [self checkDeviceId];
     }
 }
 
@@ -666,6 +669,63 @@
     self.navigationController.navigationBar.hidden = hidden;
     
     createNewRoomImageView.hidden = (hidden ? YES : !self.searchBarHidden);
+}
+
+/**
+ Check the existence of device id.
+ */
+- (void)checkDeviceId
+{
+    // In case of the app update for the e2e encryption, the app starts with
+    // no device id provided by the homeserver.
+    // Ask the user to login again in order to enable e2e. Ask it once
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"deviceIdAtStartupChecked"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deviceIdAtStartupChecked"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        // Check if there is a device id
+        if (!self.mainSession.matrixRestClient.credentials.deviceId)
+        {
+            NSLog(@"WARNING: The user has no device. Prompt for login again");
+
+            NSString *msg = NSLocalizedStringFromTable(@"e2e_enabling_on_app_update", @"Vector", nil);
+
+            __weak typeof(self) weakSelf = self;
+            [currentAlert dismiss:NO];
+            currentAlert = [[MXKAlert alloc] initWithTitle:nil message:msg style:MXKAlertStyleAlert];
+
+            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"later"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+                }
+
+            }];
+
+            [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+
+                    [strongSelf startActivityIndicator];
+
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+
+                        [[MXKAccountManager sharedManager] logout];
+
+                    });
+                }
+
+            }];
+
+            [currentAlert showInViewController:self];
+        }
+    }
 }
 
 #pragma mark - Navigation

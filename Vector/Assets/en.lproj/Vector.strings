@@ -393,3 +393,6 @@
 // Crash report
 "google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
 
+// Crypto
+"e2e_enabling_on_app_update" = "Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
+
