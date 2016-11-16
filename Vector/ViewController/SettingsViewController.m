@@ -1461,7 +1461,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 // This means that the user will need to log in again if he wants to re-enable e2e.
                 if (!switchButton.isOn)
                 {
-                    //[account resetDeviceId];
+                    [account resetDeviceId];
                 }
                 
                 // Reload all data source of encrypted rooms
