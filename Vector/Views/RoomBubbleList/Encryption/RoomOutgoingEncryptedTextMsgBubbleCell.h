@@ -21,6 +21,4 @@
  */
 @interface RoomOutgoingEncryptedTextMsgBubbleCell : RoomOutgoingTextMsgBubbleCell
 
-@property (weak, nonatomic) IBOutlet UIView *encryptionStatusContainerView;
-
 @end

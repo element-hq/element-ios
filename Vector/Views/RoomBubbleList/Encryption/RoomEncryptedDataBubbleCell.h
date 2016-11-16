@@ -36,6 +36,14 @@ extern NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon;
  */
 + (UIImage*)encryptionIconForEvent:(MXEvent*)event andSession:(MXSession*)session;
 
+/**
+ Set the encryption status icon in front of each bubble component.
+ 
+ @param bubbleData the bubble cell data
+ @param containerView the container view in which the icons will be added.
+ */
++ (void)addEncryptionStatusFromBubbleData:(MXKRoomBubbleCellData *)bubbleData inContainerView:(UIView *)containerView;
+
 @end
 
 
