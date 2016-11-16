@@ -1262,6 +1262,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)initMatrixSessions
 {
+    // Enable e2e encryption for newly created MXSession
+    [MXSDKOptions sharedInstance].enableCryptoWhenStartingMXSession = YES;
+
     // Disable identicon use
     [MXSDKOptions sharedInstance].disableIdenticonUseForUserAvatar = YES;
     
