@@ -1404,9 +1404,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         UISwitch *switchButton = (UISwitch*)sender;
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         
-        // Turn off by default the flag which is used to enable automatically the encryption on new sessions.
-        [MXSDKOptions sharedInstance].enableCryptoWhenStartingMXSession = NO;
-        
         if (switchButton.isOn && !account.mxCredentials.deviceId.length)
         {
             // Prompt the user to log in again when no device id is available.
@@ -1438,9 +1435,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     strongSelf->currentAlert = nil;
                     
-                    // Turn on encryption on new sessions after signing off
-                    [MXSDKOptions sharedInstance].enableCryptoWhenStartingMXSession = YES;
-                    
                     switchButton.enabled = NO;
                     [strongSelf startActivityIndicator];
                     
@@ -1462,6 +1456,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
             [session enableCrypto:switchButton.isOn success:^{
+
+                // When disabling crypto, reset the current device id as it cannot be reused.
+                // This means that the user will need to log in again if he wants to re-enable e2e.
+                if (!switchButton.isOn)
+                {
+                    [account resetDeviceId];
+                }
                 
                 // Reload all data source of encrypted rooms
                 MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:session];
