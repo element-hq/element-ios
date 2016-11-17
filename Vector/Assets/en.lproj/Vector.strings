@@ -189,7 +189,7 @@
 "room_event_action_delete" = "Delete";
 "room_event_action_cancel_upload" = "Cancel Upload";
 "room_event_action_cancel_download" = "Cancel Download";
-"room_event_action_view_encryption" = "Device Information";
+"room_event_action_view_encryption" = "Encryption Information";
 
 // Encryption information
 "room_event_encryption_info_title" = "End-to-end encryption information\n\n";
