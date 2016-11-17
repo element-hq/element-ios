@@ -1,3 +1,21 @@
+Changes in 0.3.0 (2016-11-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.0).
+ * Add end-to-end encryption UI/UX #723.
+ * Update the services supported by Riot by adding the voip service #648.
+ * Add Files tab in global search screen #652.
+ * Add Files index in room settings screen #652.
+ * Showing DMs in the UI (as little green men) #715.
+ * Add ability to tag/untag direct rooms in Messages screen #715.
+ * Reuse the existing direct room when hitting 'start chat' from Messages screen #715.
+ * List all the current direct rooms with a user in the Member/Contact details #715.
+ 
+Bug fixes:
+ * Search messages tab: background picture covering up the tabs when device is turned horizontaly #654.
+ * Changing notif setting from swipe menu should change the room apparence in the list #525
+
 Changes in 0.2.3 (2016-09-30)
 ===============================================
 
