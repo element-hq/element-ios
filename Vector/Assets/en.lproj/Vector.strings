@@ -283,6 +283,7 @@
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
 
 "settings_version" = "Version %@";
+"settings_olm_version" = "Olm Version %@";
 "settings_copyright" = "Copyright";
 "settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Terms & conditions";

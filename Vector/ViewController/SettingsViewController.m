@@ -56,14 +56,15 @@ enum {
 #define CONTACTS_SETTINGS_COUNT                         1
 
 #define OTHER_VERSION_INDEX          0
-#define OTHER_COPYRIGHT_INDEX        1
-#define OTHER_TERM_CONDITIONS_INDEX  2
-#define OTHER_PRIVACY_INDEX          3
-#define OTHER_THIRD_PARTY_INDEX      4
-#define OTHER_CRASH_REPORT_INDEX     5
-#define OTHER_MARK_ALL_AS_READ_INDEX 6
-#define OTHER_CLEAR_CACHE_INDEX      7
-#define OTHER_COUNT                  8
+#define OTHER_OLM_VERSION_INDEX      1
+#define OTHER_COPYRIGHT_INDEX        2
+#define OTHER_TERM_CONDITIONS_INDEX  3
+#define OTHER_PRIVACY_INDEX          4
+#define OTHER_THIRD_PARTY_INDEX      5
+#define OTHER_CRASH_REPORT_INDEX     6
+#define OTHER_MARK_ALL_AS_READ_INDEX 7
+#define OTHER_CLEAR_CACHE_INDEX      8
+#define OTHER_COUNT                  9
 
 #define LABS_CRYPTO_INDEX            0
 #define LABS_COUNT                   1
@@ -939,6 +940,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSString* build = [AppDelegate theDelegate].build;
             
             versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
+            versionCell.textLabel.textColor = kVectorTextColorBlack;
+            
+            cell = versionCell;
+        }
+        else if (row == OTHER_OLM_VERSION_INDEX)
+        {
+            MXKTableViewCell *versionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!versionCell)
+            {
+                versionCell = [[MXKTableViewCell alloc] init];
+                versionCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
+            
+            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), OLMKitVersionString()];
             versionCell.textLabel.textColor = kVectorTextColorBlack;
             
             cell = versionCell;
