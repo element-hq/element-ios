@@ -340,7 +340,7 @@
 "room_details_advanced_e2e_encryption_enabled"="Encryption is enabled in this room";
 "room_details_advanced_e2e_encryption_disabled"="Encryption is not enabled in this room.";
 "room_details_advanced_e2e_encryption_prompt_title"="Warning!";
-"room_details_advanced_e2e_encryption_prompt_message"="End-to-end encryption is experimental and may not be reliable.\n\nYou should not yet trust it to secure data. File transfers are not yet encrypted.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nOnce encryption is enabled for a room it cannot be turned off again (for now).\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
+"room_details_advanced_e2e_encryption_prompt_message"="End-to-end encryption is experimental and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nOnce encryption is enabled for a room it cannot be turned off again (for now).\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
