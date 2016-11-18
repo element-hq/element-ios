@@ -1,3 +1,21 @@
+Changes in 0.3.2 (2016-11-18)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.1).
+ 
+Bug fixes:
+ * Make share/save/copy work for e2e attachments.
+ * Wrong thumbnail shown whilst uploading e2e image  (https://github.com/vector-im/vector-ios#795).
+ * [Register flow] Register with a mail address fails (https://github.com/vector-im/vector-ios#799).
+
+Changes in 0.3.1 (2016-11-17)
+===============================================
+
+Bug fixes:
+ * Fix padlock icons on text messages.
+ * Fix a random crash when uploading an e2e attachment.
+
 Changes in 0.3.0 (2016-11-17)
 ===============================================
 
