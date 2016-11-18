@@ -91,7 +91,7 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
     NSArray *bubbleComponents = bubbleData.bubbleComponents;
     MXKRoomBubbleComponent *component;
     
-    for (NSUInteger componentIndex; componentIndex < bubbleComponents.count; componentIndex++)
+    for (NSUInteger componentIndex = 0; componentIndex < bubbleComponents.count; componentIndex++)
     {
         component  = bubbleComponents[componentIndex];
     
