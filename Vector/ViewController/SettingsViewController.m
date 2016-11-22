@@ -39,6 +39,7 @@ enum {
     SETTINGS_SECTION_CONTACTS_INDEX,
 #endif
     SETTINGS_SECTION_LABS_INDEX,
+    SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
     SETTINGS_SECTION_COUNT
 };
 
@@ -153,11 +154,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
+    self.navigationItem.title = NSLocalizedStringFromTable(@"settings_title", @"Vector", nil);
+    
     self.tableView.backgroundColor = kVectorColorLightGrey;
     
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+    
+    // Enable self sizing cells
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 50;
     
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -294,6 +301,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Refresh linked emails in parallel
     [self loadLinkedEmails];
     
+    // Refresh the current device information in parallel
+    [self loadCurrentDeviceInformation];
+    
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -344,6 +354,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 }
 
 #pragma mark - Internal methods
+
+- (void)dismissKeyboard
+{
+    [currentPasswordTextField resignFirstResponder];
+    [newPasswordTextField1 resignFirstResponder];
+    [newPasswordTextField2 resignFirstResponder];
+    [newEmailTextField resignFirstResponder];
+}
 
 - (void)reset
 {
@@ -522,6 +540,61 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }];
 }
 
+- (void)loadCurrentDeviceInformation
+{
+    // Refresh the current device information
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    [account loadDeviceInformation:^{
+        
+        // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        
+        // Display the data that has been loaded last time
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
+        
+    }];
+}
+
+- (NSAttributedString*)cryptographyInformation
+{
+    // TODO Handle multi accounts
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    
+    // Crypto information
+    NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
+                                                          initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
+                                                          attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
+                                                                       NSFontAttributeName: [UIFont systemFontOfSize:17]}];
+    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                     initWithString:account.device.displayName.length ? account.device.displayName : @""
+                                                     attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
+                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
+    
+    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                     initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
+                                                     attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
+                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
+    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                     initWithString:account.device.deviceId
+                                                     attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
+                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
+    
+    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                     initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
+                                                     attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
+                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
+    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                     initWithString:account.mxSession.crypto.olmDevice.deviceEd25519Key
+                                                     attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
+                                                                  NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
+    
+    return cryptoInformationString;
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -600,6 +673,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
         count = LABS_COUNT;
+    }
+    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
+    {
+        // Check whether this section is visible.
+        if (self.mainSession.crypto)
+        {
+            count = 1;
+        }
     }
     return count;
 }
@@ -1087,6 +1168,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = labelAndSwitchCell;
         }
     }
+    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
+    {
+        MXKTableViewCell *cryptoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!cryptoCell)
+        {
+            cryptoCell = [[MXKTableViewCell alloc] init];
+        }
+        
+        cryptoCell.textLabel.attributedText = [self cryptographyInformation];
+        cryptoCell.textLabel.numberOfLines = 0;
+        
+        cell = cryptoCell;
+    }
 
     return cell;
 }
@@ -1103,6 +1197,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
+        // Check whether this section is visible
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
             MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
@@ -1111,9 +1206,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
             }
         }
-
-        // Hide this section
-        return nil;
     }
     else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
     {
@@ -1130,6 +1222,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
+    {
+        // Check whether this section is visible
+        if (self.mainSession.crypto)
+        {
+            return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
+        }
     }
     
     return nil;
@@ -1166,6 +1266,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [label sizeToFit];
         return label.frame.size.height + 16;
     }
+    else if (indexPath.section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
+    {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
+        label.numberOfLines = 0;
+        label.attributedText = [self cryptographyInformation];
+        [label sizeToFit];
+        
+        return label.frame.size.height + 16;
+    }
     
     return 50;
 }
@@ -1185,7 +1294,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
     }
     
-    return [super tableView:tableView heightForHeaderInSection:section];
+    return 24;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -1203,7 +1312,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
     }
 
-    return [super tableView:tableView heightForFooterInSection:section];
+    return 24;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1495,6 +1604,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 switchButton.enabled = NO;
                 
                 [self stopActivityIndicator];
+                
+                // Refresh table view to add cryptography information.
+                [self.tableView reloadData];
                 
             } failure:^(NSError *error) {
                 
