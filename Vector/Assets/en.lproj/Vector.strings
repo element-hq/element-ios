@@ -235,6 +235,7 @@
 "room_preview_try_join_an_unknown_room_default" = "a room";
 
 // Settings
+"settings_title" = "Settings";
 "account_logout_all" = "Logout all accounts";
 
 "settings_config_no_build_info" = "(no build info)";
@@ -251,6 +252,8 @@
 "settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 "settings_labs" = "LABS";
+"settings_devices" = "DEVICES";
+"settings_cryptography" = "CRYPTOGRAPHY";
 
 "settings_sign_out" = "Sign Out";
 "settings_profile_picture" = "Profile Picture";
@@ -300,6 +303,10 @@
 "settings_confirm_password" = "confirm password";
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
+
+"settings_crypto_device_name" = "Device name: ";
+"settings_crypto_device_id" = "\nDevice ID: ";
+"settings_crypto_device_key" = "\nDevice key: ";
 
 // Room Details
 "room_details_title" = "Room Details";
