@@ -550,13 +550,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
         [self.tableView reloadData];
         
-    } failure:^(NSError *error) {
-        
-        // Display the data that has been loaded last time
-        // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self.tableView reloadData];
-        
-    }];
+    } failure:nil];
 }
 
 - (NSAttributedString*)cryptographyInformation
@@ -570,7 +564,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                           attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
                                                                        NSFontAttributeName: [UIFont systemFontOfSize:17]}];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:account.device.displayName.length ? account.device.displayName : @""
+                                                     initWithString:account.device.displayName ? account.device.displayName : @""
                                                      attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
@@ -579,7 +573,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                      attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:account.device.deviceId
+                                                     initWithString:account.device.deviceId ? account.device.deviceId : @""
                                                      attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
@@ -587,8 +581,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
                                                      attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
+    NSString *fingerprint = account.mxSession.crypto.olmDevice.deviceEd25519Key;
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:account.mxSession.crypto.olmDevice.deviceEd25519Key
+                                                     initWithString:fingerprint ? fingerprint : @""
                                                      attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
                                                                   NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
     
