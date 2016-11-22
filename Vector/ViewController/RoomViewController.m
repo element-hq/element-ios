@@ -1828,29 +1828,34 @@
 
         if (level == 0)
         {
-            [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_redact", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                [strongSelf cancelEventSelection];
-
-                [strongSelf startActivityIndicator];
-
-                [strongSelf.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
+            // Do not allow to redact the event that enabled encryption (m.room.encryption)
+            // because it breaks everything
+            if (selectedEvent.eventType != MXEventTypeRoomEncryption)
+            {
+                [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_redact", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    [strongSelf stopActivityIndicator];
+                    [strongSelf cancelEventSelection];
 
-                } failure:^(NSError *error) {
+                    [strongSelf startActivityIndicator];
 
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    [strongSelf stopActivityIndicator];
+                    [strongSelf.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
 
-                    NSLog(@"[Vector RoomVC] Redact event (%@) failed", selectedEvent.eventId);
-                    //Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                    
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf stopActivityIndicator];
+
+                    } failure:^(NSError *error) {
+
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf stopActivityIndicator];
+
+                        NSLog(@"[Vector RoomVC] Redact event (%@) failed", selectedEvent.eventId);
+                        //Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        
+                    }];
                 }];
-            }];
+            }
         }
 
         if (level == 1)
