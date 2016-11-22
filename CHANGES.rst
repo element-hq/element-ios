@@ -1,3 +1,13 @@
+Changes in 0.3.3 (2016-11-22)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.2).
+ * Settings: Add cryptography information.
+ 
+Bug fixes:
+ * Crypto: Do not allow to redact the event that enabled encryption in a room.
+
 Changes in 0.3.2 (2016-11-18)
 ===============================================
 
