@@ -1,3 +1,16 @@
+Changes in 0.3.4 (2016-11-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.3).
+ * Settings: User Settings: List user's devices and add the ability to rename or delete them.
+ 
+Bug fixes:
+ * User settings: The toggle buttons are disabled by mistake.
+ * Typing indicator should stop when the user sends his message (https://github.com/vector-im/vector-ios#809).
+ * Crypto: Do not allow to redact the event that enabled encryption in a room.
+ * Crypto: Made attachments work better cross platform.
+
 Changes in 0.3.3 (2016-11-22)
 ===============================================
 
