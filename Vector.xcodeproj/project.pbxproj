@@ -274,6 +274,8 @@
 		F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA231B78E42600B1FBBF /* RecentsViewController.m */; };
 		F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA271B78E42600B1FBBF /* RoomViewController.m */; };
 		F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA291B78E42600B1FBBF /* SettingsViewController.m */; };
+		F09617B71DE49BAD00093E9D /* DeviceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09617B51DE49BAD00093E9D /* DeviceView.m */; };
+		F09617B81DE49BAD00093E9D /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F09617B61DE49BAD00093E9D /* DeviceView.xib */; };
 		F0989F4E1CD7769000FA6EAC /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */; };
 		F0989F4F1CD7769000FA6EAC /* ForgotPasswordInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */; };
 		F09E24ED1C6DE24900D39503 /* RoomMemberTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09E24EB1C6DE24900D39503 /* RoomMemberTitleView.m */; };
@@ -725,6 +727,9 @@
 		F094AA271B78E42600B1FBBF /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		F094AA281B78E42600B1FBBF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		F094AA291B78E42600B1FBBF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		F09617B41DE49BAD00093E9D /* DeviceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceView.h; sourceTree = "<group>"; };
+		F09617B51DE49BAD00093E9D /* DeviceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceView.m; sourceTree = "<group>"; };
+		F09617B61DE49BAD00093E9D /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
 		F0989F4B1CD7769000FA6EAC /* ForgotPasswordInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordInputsView.h; sourceTree = "<group>"; };
 		F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordInputsView.m; sourceTree = "<group>"; };
 		F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordInputsView.xib; sourceTree = "<group>"; };
@@ -993,6 +998,7 @@
 		F001D7521B8207C000A162C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F09617B31DE49BAD00093E9D /* DeviceView */,
 				F00ACC5C1DDB11CE0093F646 /* EncryptionInfoView */,
 				F083C4591D9E9C2400E5246C /* Search */,
 				F0CC4DBC1C4E26FA003BBE45 /* MediaAlbum */,
@@ -1563,6 +1569,16 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		F09617B31DE49BAD00093E9D /* DeviceView */ = {
+			isa = PBXGroup;
+			children = (
+				F09617B41DE49BAD00093E9D /* DeviceView.h */,
+				F09617B51DE49BAD00093E9D /* DeviceView.m */,
+				F09617B61DE49BAD00093E9D /* DeviceView.xib */,
+			);
+			path = DeviceView;
+			sourceTree = "<group>";
+		};
 		F09E24E91C6DE24900D39503 /* RoomMember */ = {
 			isa = PBXGroup;
 			children = (
@@ -1954,6 +1970,7 @@
 				F03BF6AC1D8BF5B1002EF6A7 /* placeholder@3x.png in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F03BF6A51D8BF5B1002EF6A7 /* notifications@2x.png in Resources */,
+				F09617B81DE49BAD00093E9D /* DeviceView.xib in Resources */,
 				F083C4951D9EAFC500E5246C /* file_photo_icon@3x.png in Resources */,
 				F083C4901D9EAFC500E5246C /* file_music_icon.png in Resources */,
 				F03BF6C11D8BF5B1002EF6A7 /* search_bg@3x.png in Resources */,
@@ -2150,6 +2167,7 @@
 				F09EAFA11DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				F09EAF9F1DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F0AC734A1DA2A6130011DAEE /* RoomFilesSearchViewController.m in Sources */,
+				F09617B71DE49BAD00093E9D /* DeviceView.m in Sources */,
 				F083C4581D9E982900E5246C /* FilesSearchCellData.m in Sources */,
 				F083C45D1D9E9C2400E5246C /* FilesSearchTableViewCell.m in Sources */,
 				F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */,
