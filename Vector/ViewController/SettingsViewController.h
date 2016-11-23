@@ -16,9 +16,11 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "DeviceView.h"
+
 #import "MediaPickerViewController.h"
 
-@interface SettingsViewController : MXKViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface SettingsViewController : MXKViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, DeviceViewDelegate>
 
 @property (nonatomic) IBOutlet UITableView *tableView;
 

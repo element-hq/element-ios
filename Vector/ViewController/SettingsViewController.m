@@ -39,6 +39,7 @@ enum {
     SETTINGS_SECTION_CONTACTS_INDEX,
 #endif
     SETTINGS_SECTION_LABS_INDEX,
+    SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
     SETTINGS_SECTION_COUNT
 };
@@ -121,6 +122,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     NSInteger userSettingsPhoneNumberIndex;
     NSInteger userSettingsNightModeSepIndex;
     NSInteger userSettingsNightModeIndex;
+    
+    // Devices
+    NSMutableArray<MXDevice *> *devicesArray;
+    DeviceView *deviceView;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
@@ -304,6 +309,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Refresh the current device information in parallel
     [self loadCurrentDeviceInformation];
     
+    // Refresh devices in parallel
+    [self loadDevices];
+    
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -387,6 +395,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     onReadyToDestroyHandler = nil;
+    
+    if (deviceView)
+    {
+        [deviceView removeFromSuperview];
+        deviceView = nil;
+    }
 }
 
 -(void)setNewEmailEditingEnabled:(BOOL)newEmailEditingEnabled
@@ -590,6 +604,108 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return cryptoInformationString;
 }
 
+- (void)loadDevices
+{
+    // Refresh the account devices list
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    [account.mxRestClient devices:^(NSArray<MXDevice *> *devices) {
+        
+        if (devices)
+        {
+            devicesArray = [NSMutableArray arrayWithArray:devices];
+            
+            // Sort devices according to the last seen date.
+            NSComparator comparator = ^NSComparisonResult(MXDevice *deviceA, MXDevice *deviceB) {
+                
+                if (deviceA.lastSeenTs > deviceB.lastSeenTs)
+                {
+                    return NSOrderedAscending;
+                }
+                if (deviceA.lastSeenTs < deviceB.lastSeenTs)
+                {
+                    return NSOrderedDescending;
+                }
+                
+                return NSOrderedSame;
+            };
+            
+            // Sort devices list
+            [devicesArray sortUsingComparator:comparator];
+        }
+        else
+        {
+            devicesArray = nil;
+
+        }
+        
+        // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        
+        // Display the data that has been loaded last time
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
+        
+    }];
+}
+
+- (void)showDeviceDetails:(MXDevice *)device
+{
+    [self dismissKeyboard];
+    
+    deviceView = [[DeviceView alloc] initWithDevice:device andMatrixSession:self.mainSession];
+    deviceView.delegate = self;
+    
+    // Add the view and define edge constraints
+    [self.view addSubview:deviceView];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:deviceView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.topLayoutGuide
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:deviceView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.bottomLayoutGuide
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
+                                                          attribute:NSLayoutAttributeLeading
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:deviceView
+                                                          attribute:NSLayoutAttributeLeading
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
+                                                          attribute:NSLayoutAttributeTrailing
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:deviceView
+                                                          attribute:NSLayoutAttributeTrailing
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view setNeedsUpdateConstraints];
+}
+
+- (void)deviceView:(DeviceView*)deviceView presentMXKAlert:(MXKAlert*)alert
+{
+    [self dismissKeyboard];
+    [alert showInViewController:self];
+}
+
+- (void)deviceViewDidUpdate:(DeviceView*)deviceView
+{
+    [self loadDevices];
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -668,6 +784,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
         count = LABS_COUNT;
+    }
+    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
+    {
+        count = devicesArray.count;
     }
     else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
     {
@@ -958,8 +1078,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         if (!privacyPolicyCell)
         {
             privacyPolicyCell = [[MXKTableViewCell alloc] init];
-            privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
         }
+        privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
 
         NSString *ignoredUserId;
         if (indexPath.row < session.ignoredUsers.count)
@@ -992,8 +1112,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         if (!configCell)
         {
             configCell = [[MXKTableViewCell alloc] init];
-            configCell.textLabel.font = [UIFont systemFontOfSize:17];
         }
+        configCell.textLabel.font = [UIFont systemFontOfSize:17];
         
         NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@", [NSBundle mxk_localizedStringForKey:@"settings_config_user_id"], [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
         
@@ -1011,8 +1131,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!versionCell)
             {
                 versionCell = [[MXKTableViewCell alloc] init];
-                versionCell.textLabel.font = [UIFont systemFontOfSize:17];
             }
+            versionCell.textLabel.font = [UIFont systemFontOfSize:17];
             
             NSString* appVersion = [AppDelegate theDelegate].appVersion;
             NSString* build = [AppDelegate theDelegate].build;
@@ -1028,8 +1148,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!versionCell)
             {
                 versionCell = [[MXKTableViewCell alloc] init];
-                versionCell.textLabel.font = [UIFont systemFontOfSize:17];
             }
+            versionCell.textLabel.font = [UIFont systemFontOfSize:17];
             
             versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), OLMKitVersionString()];
             versionCell.textLabel.textColor = kVectorTextColorBlack;
@@ -1042,8 +1162,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!termAndConditionCell)
             {
                 termAndConditionCell = [[MXKTableViewCell alloc] init];
-                termAndConditionCell.textLabel.font = [UIFont systemFontOfSize:17];
             }
+            termAndConditionCell.textLabel.font = [UIFont systemFontOfSize:17];
 
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             termAndConditionCell.textLabel.textColor = kVectorTextColorBlack;
@@ -1056,8 +1176,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!copyrightCell)
             {
                 copyrightCell = [[MXKTableViewCell alloc] init];
-                copyrightCell.textLabel.font = [UIFont systemFontOfSize:17];
             }
+            copyrightCell.textLabel.font = [UIFont systemFontOfSize:17];
 
             copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
             copyrightCell.textLabel.textColor = kVectorTextColorBlack;
@@ -1070,8 +1190,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!privacyPolicyCell)
             {
                 privacyPolicyCell = [[MXKTableViewCell alloc] init];
-                privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
             }
+            privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
             
             privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
             privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
@@ -1084,8 +1204,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!thirdPartyCell)
             {
                 thirdPartyCell = [[MXKTableViewCell alloc] init];
-                thirdPartyCell.textLabel.font = [UIFont systemFontOfSize:17];
             }
+            thirdPartyCell.textLabel.font = [UIFont systemFontOfSize:17];
             
             thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
             thirdPartyCell.textLabel.textColor = kVectorTextColorBlack;
@@ -1166,6 +1286,34 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = labelAndSwitchCell;
         }
     }
+    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
+    {
+        MXKTableViewCell *deviceCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!deviceCell)
+        {
+            deviceCell = [[MXKTableViewCell alloc] init];
+        }
+        
+        if (row < devicesArray.count)
+        {
+            NSString *name = devicesArray[row].displayName;
+            NSString *deviceId = devicesArray[row].deviceId;
+            deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ [%@]", name, deviceId] : [NSString stringWithFormat:@"[%@]", deviceId]);
+            deviceCell.textLabel.numberOfLines = 0;
+            
+            if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
+            {
+                deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+            }
+            else
+            {
+                deviceCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
+        }
+        deviceCell.textLabel.textColor = kVectorTextColorBlack;
+        
+        cell = deviceCell;
+    }
     else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
     {
         MXKTableViewCell *cryptoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
@@ -1220,6 +1368,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_devices", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
     {
@@ -1375,8 +1527,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 [currentAlert showInViewController:self];
             }
         }
-        else
-        if (section == SETTINGS_SECTION_OTHER_INDEX)
+        else if (section == SETTINGS_SECTION_OTHER_INDEX)
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
@@ -1415,6 +1566,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 // Enable the new email text field
                 self.newEmailEditingEnabled = YES;
+            }
+        }
+        else if (section == SETTINGS_SECTION_DEVICES_INDEX)
+        {
+            if (row < devicesArray.count)
+            {
+                [self showDeviceDetails:devicesArray[row]];
             }
         }
         

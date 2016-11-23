@@ -43,6 +43,7 @@
 "active_call" = "Active Call";
 "active_call_details" = "Active Call (%@)";
 "later" = "Later";
+"rename" = "Rename";
 
 // Authentication
 "auth_login" = "Log in";
@@ -307,6 +308,16 @@
 "settings_crypto_device_name" = "Device name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
 "settings_crypto_device_key" = "\nDevice key: ";
+
+// Devices
+"device_details_title" = "Device information\n";
+"device_details_name" = "Name\n";
+"device_details_identifier" = "Device ID\n";
+"device_details_last_seen" = "Last seen\n";
+"device_details_last_seen_format" = "%@ @ %@\n";
+"device_details_rename_prompt_message" = "Device name:";
+"device_details_delete_prompt_title" = "Authentication";
+"device_details_delete_prompt_message" = "This operation requires additional authentication.\nTo continue, please enter your password.";
 
 // Room Details
 "room_details_title" = "Room Details";
