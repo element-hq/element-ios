@@ -927,14 +927,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         if (row == NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX)
         {
-            MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
-            enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            enableAllCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
-            [enableAllCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [enableAllCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
-            cell = enableAllCell;
+            cell = labelAndSwitchCell;
         }
         else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
         {
@@ -974,14 +975,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         if (row == CONTACTS_SETTINGS_ENABLE_LOCAL_CONTACTS_SYNC)
         {
-            MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
-            enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users_with_local_emails", @"Vector", nil);
-             enableAllCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
-            [enableAllCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [enableAllCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users_with_local_emails", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
 
-            cell = enableAllCell;
+            cell = labelAndSwitchCell;
         }
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
@@ -1096,6 +1098,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
             sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
+            sendCrashReportCell.mxkSwitch.enabled = YES;
             [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
             
