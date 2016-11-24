@@ -39,8 +39,8 @@ enum {
     SETTINGS_SECTION_CONTACTS_INDEX,
 #endif
     SETTINGS_SECTION_LABS_INDEX,
-    SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
+    SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_COUNT
 };
 
@@ -1298,7 +1298,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             NSString *name = devicesArray[row].displayName;
             NSString *deviceId = devicesArray[row].deviceId;
-            deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ [%@]", name, deviceId] : [NSString stringWithFormat:@"[%@]", deviceId]);
+            deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
             deviceCell.textLabel.numberOfLines = 0;
             
             if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
@@ -1371,7 +1371,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
-        return NSLocalizedStringFromTable(@"settings_devices", @"Vector", nil);
+        // Check whether this section is visible
+        if (devicesArray.count > 0)
+        {
+            return NSLocalizedStringFromTable(@"settings_devices", @"Vector", nil);
+        }
     }
     else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
     {
