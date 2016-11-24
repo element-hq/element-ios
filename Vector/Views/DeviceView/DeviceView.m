@@ -38,6 +38,11 @@ static NSAttributedString *verticalWhitespace = nil;
      The current alert
      */
     MXKAlert *currentAlert;
+    
+    /**
+     Current request in progress.
+     */
+    MXHTTPOperation *mxCurrentOperation;
 }
 @end
 
@@ -76,6 +81,12 @@ static NSAttributedString *verticalWhitespace = nil;
     {
         [currentAlert dismiss:NO];
         currentAlert = nil;
+    }
+    
+    if (mxCurrentOperation)
+    {
+        [mxCurrentOperation cancel];
+        mxCurrentOperation = nil;
     }
     
     [super removeFromSuperview];
@@ -247,12 +258,13 @@ static NSAttributedString *verticalWhitespace = nil;
             
             [strongSelf.activityIndicator startAnimating];
             
-            [strongSelf->mxSession.matrixRestClient setDeviceName:textField.text forDeviceId:strongSelf->mxDevice.deviceId success:^{
+            strongSelf->mxCurrentOperation = [strongSelf->mxSession.matrixRestClient setDeviceName:textField.text forDeviceId:strongSelf->mxDevice.deviceId success:^{
                 
                 if (weakSelf)
                 {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
+                    strongSelf->mxCurrentOperation = nil;
                     [strongSelf.activityIndicator stopAnimating];
                     
                     if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(deviceViewDidUpdate:)])
@@ -271,6 +283,8 @@ static NSAttributedString *verticalWhitespace = nil;
                 if (weakSelf)
                 {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    strongSelf->mxCurrentOperation = nil;
                     
                     NSLog(@"[DeviceView] Rename device (%@) failed", strongSelf->mxDevice.deviceId);
                     
@@ -297,8 +311,10 @@ static NSAttributedString *verticalWhitespace = nil;
     // Get an authentication session to prepare device deletion
     [self.activityIndicator startAnimating];
     
-    [mxSession.matrixRestClient getSessionToDeleteDeviceByDeviceId:mxDevice.deviceId success:^(MXAuthenticationSession *authSession) {
+    mxCurrentOperation = [mxSession.matrixRestClient getSessionToDeleteDeviceByDeviceId:mxDevice.deviceId success:^(MXAuthenticationSession *authSession) {
         
+        mxCurrentOperation = nil;
+
         // Check whether the password based type is supported
         BOOL isPasswordBasedTypeSupported = NO;
         for (MXLoginFlow *loginFlow in authSession.flows)
@@ -361,12 +377,13 @@ static NSAttributedString *verticalWhitespace = nil;
 
                     }
                     
-                    [strongSelf->mxSession.matrixRestClient deleteDeviceByDeviceId:strongSelf->mxDevice.deviceId authParams:authParams success:^{
+                    strongSelf->mxCurrentOperation = [strongSelf->mxSession.matrixRestClient deleteDeviceByDeviceId:strongSelf->mxDevice.deviceId authParams:authParams success:^{
                         
                         if (weakSelf)
                         {
                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                             
+                            strongSelf->mxCurrentOperation = nil;
                             [strongSelf.activityIndicator stopAnimating];
                             
                             if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(deviceViewDidUpdate:)])
@@ -385,6 +402,8 @@ static NSAttributedString *verticalWhitespace = nil;
                         if (weakSelf)
                         {
                             __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            
+                            strongSelf->mxCurrentOperation = nil;
                             
                             NSLog(@"[DeviceView] Delete device (%@) failed", strongSelf->mxDevice.deviceId);
                             
@@ -405,6 +424,8 @@ static NSAttributedString *verticalWhitespace = nil;
         }
         
     } failure:^(NSError *error) {
+        
+        mxCurrentOperation = nil;
         
         NSLog(@"[DeviceView] Delete device (%@) failed, unable to get auth session", mxDevice.deviceId);
         [self.activityIndicator stopAnimating];
