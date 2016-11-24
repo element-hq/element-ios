@@ -1614,15 +1614,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                                                         if (weakSelf)
                                                                                                         {
                                                                                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                                                                                            
-                                                                                                            strongSelf.incomingCallNotification = nil;
 
+                                                                                                            // Reject the call.
+                                                                                                            // Note: Do not reset the incoming call notification before this operation, because it is used to release properly the dismissed call view controller.
                                                                                                             if (strongSelf->currentCallViewController)
                                                                                                             {
                                                                                                                 [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.rejectCallButton];
 
                                                                                                                 currentCallViewController = nil;
                                                                                                             }
+                                                                                                            
+                                                                                                            strongSelf.incomingCallNotification = nil;
                                                                                                             
                                                                                                             mxCall.delegate = nil;
                                                                                                         }
@@ -1642,7 +1644,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                               {
                                                                   [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.answerCallButton];
 
-                                                                  [strongSelf presentCallViewController];
+                                                                  [strongSelf presentCallViewController:nil];
                                                               }
                                                               
                                                           }
@@ -1652,7 +1654,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
             else
             {
-                [self presentCallViewController];
+                [self presentCallViewController:nil];
             }
         }
         
@@ -1911,7 +1913,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)dismissCallViewController:(MXKCallViewController *)callViewController completion:(void (^)())completion
 {
-    if (callViewController == currentCallViewController)
+    if (currentCallViewController && callViewController == currentCallViewController)
     {
         if (_incomingCallNotification)
         {
@@ -1930,7 +1932,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 completion();
             }
         }
-        else if (callViewController.isPresented)
+        else if (callViewController.isBeingPresented)
+        {
+            // Here the presentation of the call view controller is in progress
+            // Postpone the dismiss
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self dismissCallViewController:callViewController completion:completion];
+            });
+        }
+        // Check whether the call view controller is actually presented
+        else if (callViewController.presentingViewController)
         {
             BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
             NSLog(@"Call view controller is dismissed (%d)", callIsEnded);
@@ -1942,7 +1953,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
             
             [callViewController dismissViewControllerAnimated:YES completion:^{
-                callViewController.isPresented = NO;
                 
                 if (!callIsEnded)
                 {
@@ -1954,6 +1964,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 {
                     completion();
                 }
+                
             }];
             
             if (callIsEnded)
@@ -1968,11 +1979,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         else
         {
-            // Here the presentation of the call view controller is in progress
-            // Postpone the dismiss
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self dismissCallViewController:callViewController completion:completion];
-            });
+            // Here the call view controller was not presented.
+            NSLog(@"Call view controller was not presented");
+            
+            // Workaround to manage the "back to call" banner: present temporarily the call screen.
+            // This will correctly manage the navigation bar layout.
+            [self presentCallViewController:^{
+                
+                [self dismissCallViewController:currentCallViewController completion:completion];
+                
+            }];
         }
     }
 }
@@ -2060,6 +2076,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)presentCallViewController
 {
+    [self presentCallViewController:nil];
+}
+
+- (void)presentCallViewController:(void (^)())completion
+{
     [self removeCallStatusBar];
 
     if (currentCallViewController)
@@ -2068,10 +2089,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             [self.window.rootViewController.presentedViewController presentViewController:currentCallViewController animated:YES completion:^{
                 
-                currentCallViewController.isPresented = YES;
-                
                 // Hide system status bar
                 [UIApplication sharedApplication].statusBarHidden = YES;
+                
+                if (completion)
+                {
+                    completion ();
+                }
                 
             }];
         }
@@ -2079,10 +2103,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
                 
-                currentCallViewController.isPresented = YES;
-                
                 // Hide system status bar
                 [UIApplication sharedApplication].statusBarHidden = YES;
+                
+                if (completion)
+                {
+                    completion ();
+                }
                 
             }];
         }

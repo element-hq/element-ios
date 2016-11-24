@@ -2745,13 +2745,6 @@
         MXCall *call = notif.object;
         if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
         {
-            if (call.state == MXCallStateEnded)
-            {
-                // Workaround to manage the "back to call" banner: go back temporary the call screen.
-                // It will correctly manage the hide of this banner
-                [[AppDelegate theDelegate] presentCallViewController];
-            }
-
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
         }
