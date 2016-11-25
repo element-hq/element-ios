@@ -16,6 +16,8 @@
 
 #import "RoomPreviewData.h"
 
+#import "MXRoom+Vector.h"
+
 @implementation RoomPreviewData
 
 - (instancetype)initWithRoomId:(NSString *)roomId andSession:(MXSession *)mxSession
@@ -78,7 +80,7 @@
         _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
         [_roomDataSource finalizeInitialization];
 
-        _roomName = peekingRoom.state.displayname;
+        _roomName = peekingRoom.vectorDisplayname;
         _roomAvatarUrl = peekingRoom.state.avatar;
         
         _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.state.topic];;
