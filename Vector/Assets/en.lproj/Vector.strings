@@ -192,34 +192,6 @@
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
 
-// Encryption information
-"room_event_encryption_info_title" = "End-to-end encryption information\n\n";
-"room_event_encryption_info_event" = "Event information\n";
-"room_event_encryption_info_event_user_id" = "User ID\n";
-"room_event_encryption_info_event_identity_key" = "Curve25519 identity key\n";
-"room_event_encryption_info_event_fingerprint_key" = "Claimed Ed25519 fingerprint key\n";
-"room_event_encryption_info_event_algorithm" = "Algorithm\n";
-"room_event_encryption_info_event_session_id" = "Session ID\n";
-"room_event_encryption_info_event_decryption_error" = "Decryption error\n";
-"room_event_encryption_info_event_unencrypted" = "unencrypted";
-"room_event_encryption_info_event_none" = "none";
-"room_event_encryption_info_device" = "\nSender device information\n";
-"room_event_encryption_info_device_unknown" = "unknown device\n";
-"room_event_encryption_info_device_name" = "Name\n";
-"room_event_encryption_info_device_id" = "Device ID\n";
-"room_event_encryption_info_device_verification" = "Verification\n";
-"room_event_encryption_info_device_fingerprint" = "Ed25519 fingerprint\n";
-"room_event_encryption_info_device_verified" = "Verified";
-"room_event_encryption_info_device_not_verified" = "NOT verified";
-"room_event_encryption_info_device_blocked" = "Blocked";
-"room_event_encryption_info_verify" = "Verify";
-"room_event_encryption_info_unverify" = "Unverify";
-"room_event_encryption_info_block" = "Block";
-"room_event_encryption_info_unblock" = "Unblock";
-"room_event_encryption_verify_title" = "Verify device\n\n";
-"room_event_encryption_verify_message" = "To verify that this device can be trusted, please contact its owner using\nsome other means (e.g. in person or a phone call) and ask them\nwhether the key they see in their User Settings for this device matches\nthe key below:\n\n\tDevice name: %@\n\tDevice ID: %@\n\tDevice key: %@\n\nIf it matches, press the verify button below. If it doesnt, then someone\nelse is intercepting this device and you probably want to press the block\nbutton instead.\n\nIn future this verification process will be more sophisticated.";
-"room_event_encryption_verify_ok" = "Verify";
-
 // Room Title
 "room_title_new_room" = "New room";
 "room_title_multiple_active_members" = "%d/%d active members";
@@ -308,16 +280,6 @@
 "settings_crypto_device_name" = "Device name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
 "settings_crypto_device_key" = "\nDevice key: ";
-
-// Devices
-"device_details_title" = "Device information\n";
-"device_details_name" = "Name\n";
-"device_details_identifier" = "Device ID\n";
-"device_details_last_seen" = "Last seen\n";
-"device_details_last_seen_format" = "%@ @ %@\n";
-"device_details_rename_prompt_message" = "Device name:";
-"device_details_delete_prompt_title" = "Authentication";
-"device_details_delete_prompt_message" = "This operation requires additional authentication.\nTo continue, please enter your password.";
 
 // Room Details
 "room_details_title" = "Room Details";
