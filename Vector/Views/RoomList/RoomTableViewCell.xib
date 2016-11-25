@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -33,11 +33,22 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="direct_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="z0D-Vp-W1P">
+                        <rect key="frame" x="50" y="18" width="11" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="13" id="3UP-dK-nZW"/>
+                            <constraint firstAttribute="width" constant="11" id="jeb-V2-1z0"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="11" id="pU0-Ng-xIu"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="pXo-bd-QsE"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="z0D-Vp-W1P" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="18" id="0uz-6q-Qqk"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="FfX-ul-Kr4" secondAttribute="trailing" constant="14" id="A6H-TC-2Pg"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="centerY" secondItem="aXz-IR-jj5" secondAttribute="centerY" id="O6E-Di-2d4"/>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="15" id="U1F-vo-7f6"/>
+                    <constraint firstItem="z0D-Vp-W1P" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="50" id="g5c-qa-Nql"/>
                     <constraint firstItem="FfX-ul-Kr4" firstAttribute="centerY" secondItem="aXz-IR-jj5" secondAttribute="centerY" id="gUw-GV-DPX"/>
                     <constraint firstItem="FfX-ul-Kr4" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leadingMargin" constant="6" id="qey-6T-URF"/>
                 </constraints>
@@ -45,8 +56,12 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="avatarImageView" destination="FfX-ul-Kr4" id="NOo-Lj-BBY"/>
+                <outlet property="directRoomIcon" destination="z0D-Vp-W1P" id="DBb-xx-jRY"/>
                 <outlet property="titleLabel" destination="Lg1-xQ-AGn" id="uqU-hH-KT0"/>
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="direct_icon.png" width="11" height="13"/>
+    </resources>
 </document>
