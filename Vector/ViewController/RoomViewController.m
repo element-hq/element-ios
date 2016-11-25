@@ -716,7 +716,7 @@
             previewHeader.mxRoom = self.roomDataSource.room;
             
             // Force the layout of subviews (some constraints may have been updated)
-            [self.view layoutIfNeeded];
+            [self forceLayoutRefresh];
         }
     }
     else
@@ -735,7 +735,7 @@
                 expandedHeader.mxRoom = self.roomDataSource.room;
                 
                 // Force the layout of subviews (some constraints may have been updated)
-                [self.view layoutIfNeeded];
+                [self forceLayoutRefresh];
             }
             
             // Restore tool bar view and room activities view if none
@@ -934,6 +934,15 @@
 
 #pragma mark - Internals
 
+- (void)forceLayoutRefresh
+{
+    // Sanity check: check whether the table view data source is set.
+    if (self.bubblesTableView.dataSource)
+    {
+        [self.view layoutIfNeeded];
+    }
+}
+
 - (BOOL)isRoomPreview
 {
     // Check first whether some preview data are defined.
@@ -981,7 +990,7 @@
                 expandedHeader.mxRoom = self.roomDataSource.room;
                 
                 // Force the layout of subviews (some constraints may have been updated)
-                [self.view layoutIfNeeded];
+                [self forceLayoutRefresh];
             }
         }
         else
@@ -1144,7 +1153,7 @@
                              }
                              
                              // Force to render the view
-                             [self.view layoutIfNeeded];
+                             [self forceLayoutRefresh];
                              
                          }
                          completion:^(BOOL finished){
@@ -1246,7 +1255,7 @@
                                  self.bubblesTableViewTopConstraint.constant = 0;
                                  
                                  // Force to render the view
-                                 [self.view layoutIfNeeded];
+                                 [self forceLayoutRefresh];
                                  
                              }
                              completion:^(BOOL finished){
@@ -1342,7 +1351,7 @@
                              }
                              
                              // Force to render the view
-                             [self.view layoutIfNeeded];
+                             [self forceLayoutRefresh];
                              
                          }
                          completion:^(BOOL finished){
