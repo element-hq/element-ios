@@ -51,7 +51,6 @@
 		F003AA811C690628008B430C /* RoomAvatarTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F003AA7F1C690628008B430C /* RoomAvatarTitleView.xib */; };
 		F008D6FC1D0180FB0049444D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F008D6FB1D0180FB0049444D /* GoogleService-Info.plist */; };
 		F00ACC601DDB11CE0093F646 /* EncryptionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F00ACC5E1DDB11CE0093F646 /* EncryptionInfoView.m */; };
-		F00ACC611DDB11CE0093F646 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F00ACC5F1DDB11CE0093F646 /* EncryptionInfoView.xib */; };
 		F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F00C47841BFF77C800DBABC9 /* RecentTableViewCell.m */; };
 		F00C47871BFF77C800DBABC9 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F00C47851BFF77C800DBABC9 /* RecentTableViewCell.xib */; };
 		F00C478B1BFF854400DBABC9 /* RecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F00C478A1BFF854400DBABC9 /* RecentsDataSource.m */; };
@@ -275,7 +274,6 @@
 		F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA271B78E42600B1FBBF /* RoomViewController.m */; };
 		F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA291B78E42600B1FBBF /* SettingsViewController.m */; };
 		F09617B71DE49BAD00093E9D /* DeviceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09617B51DE49BAD00093E9D /* DeviceView.m */; };
-		F09617B81DE49BAD00093E9D /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F09617B61DE49BAD00093E9D /* DeviceView.xib */; };
 		F0989F4E1CD7769000FA6EAC /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */; };
 		F0989F4F1CD7769000FA6EAC /* ForgotPasswordInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */; };
 		F09E24ED1C6DE24900D39503 /* RoomMemberTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09E24EB1C6DE24900D39503 /* RoomMemberTitleView.m */; };
@@ -475,7 +473,6 @@
 		F008D6FB1D0180FB0049444D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F00ACC5D1DDB11CE0093F646 /* EncryptionInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionInfoView.h; sourceTree = "<group>"; };
 		F00ACC5E1DDB11CE0093F646 /* EncryptionInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionInfoView.m; sourceTree = "<group>"; };
-		F00ACC5F1DDB11CE0093F646 /* EncryptionInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EncryptionInfoView.xib; sourceTree = "<group>"; };
 		F00C47831BFF77C800DBABC9 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
 		F00C47841BFF77C800DBABC9 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
 		F00C47851BFF77C800DBABC9 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
@@ -729,7 +726,6 @@
 		F094AA291B78E42600B1FBBF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		F09617B41DE49BAD00093E9D /* DeviceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceView.h; sourceTree = "<group>"; };
 		F09617B51DE49BAD00093E9D /* DeviceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceView.m; sourceTree = "<group>"; };
-		F09617B61DE49BAD00093E9D /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
 		F0989F4B1CD7769000FA6EAC /* ForgotPasswordInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordInputsView.h; sourceTree = "<group>"; };
 		F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordInputsView.m; sourceTree = "<group>"; };
 		F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordInputsView.xib; sourceTree = "<group>"; };
@@ -1086,7 +1082,6 @@
 			children = (
 				F00ACC5D1DDB11CE0093F646 /* EncryptionInfoView.h */,
 				F00ACC5E1DDB11CE0093F646 /* EncryptionInfoView.m */,
-				F00ACC5F1DDB11CE0093F646 /* EncryptionInfoView.xib */,
 			);
 			path = EncryptionInfoView;
 			sourceTree = "<group>";
@@ -1574,7 +1569,6 @@
 			children = (
 				F09617B41DE49BAD00093E9D /* DeviceView.h */,
 				F09617B51DE49BAD00093E9D /* DeviceView.m */,
-				F09617B61DE49BAD00093E9D /* DeviceView.xib */,
 			);
 			path = DeviceView;
 			sourceTree = "<group>";
@@ -1847,7 +1841,6 @@
 				F08714D91DC384810075F633 /* start_chat@2x.png in Resources */,
 				F09EAFB01DD2109B009C7EFB /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				322574E51D86E0C1009181D3 /* InfoPlist.strings in Resources */,
-				F00ACC611DDB11CE0093F646 /* EncryptionInfoView.xib in Resources */,
 				F083C4931D9EAFC500E5246C /* file_photo_icon.png in Resources */,
 				F03BF6C51D8BF5B1002EF6A7 /* selection_tick.png in Resources */,
 				F03BF64A1D8BF5B1002EF6A7 /* admin_icon@2x.png in Resources */,
@@ -1970,7 +1963,6 @@
 				F03BF6AC1D8BF5B1002EF6A7 /* placeholder@3x.png in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F03BF6A51D8BF5B1002EF6A7 /* notifications@2x.png in Resources */,
-				F09617B81DE49BAD00093E9D /* DeviceView.xib in Resources */,
 				F083C4951D9EAFC500E5246C /* file_photo_icon@3x.png in Resources */,
 				F083C4901D9EAFC500E5246C /* file_music_icon.png in Resources */,
 				F03BF6C11D8BF5B1002EF6A7 /* search_bg@3x.png in Resources */,

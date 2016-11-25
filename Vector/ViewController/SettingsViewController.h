@@ -20,7 +20,7 @@
 
 #import "MediaPickerViewController.h"
 
-@interface SettingsViewController : MXKViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, DeviceViewDelegate>
+@interface SettingsViewController : MXKViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, MXKDeviceViewDelegate>
 
 @property (nonatomic) IBOutlet UITableView *tableView;
 

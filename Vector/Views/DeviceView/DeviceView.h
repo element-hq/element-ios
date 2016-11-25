@@ -16,47 +16,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@class DeviceView;
-@protocol DeviceViewDelegate <NSObject>
 
-/**
- Tells the delegate that a MXKAlert must be presented.
- 
- @param deviceView the device view.
- @param alert the alert to present.
- */
-- (void)deviceView:(DeviceView*)deviceView presentMXKAlert:(MXKAlert*)alert;
-
-@optional
-
-/**
- Tells the delegate that the device was updated (renamed, removed...).
- 
- @param deviceView the device view.
- */
-- (void)deviceViewDidUpdate:(DeviceView*)deviceView;
-
-@end
-
-@interface DeviceView : UIView <UIGestureRecognizerDelegate>
-
-@property (weak, nonatomic) IBOutlet UIView *bgView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet UITextView *textView;
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UIButton *renameButton;
-@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-/**
- Initialize a device view to display the information of a user's device.
- */
-- (instancetype)initWithDevice:(MXDevice*)device andMatrixSession:(MXSession*)session;
-
-/**
- The delegate.
- */
-@property (nonatomic) id<DeviceViewDelegate> delegate;
+@interface DeviceView : MXKDeviceView
 
 @end
 
