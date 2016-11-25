@@ -858,7 +858,7 @@
         
         NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
         
-        NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.state.displayname, oldRoomTag, dstRoomTag, tagOrder);
+        NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.vectorDisplayname, oldRoomTag, dstRoomTag, tagOrder);
         
         [room replaceTag:oldRoomTag
                    byTag:dstRoomTag
