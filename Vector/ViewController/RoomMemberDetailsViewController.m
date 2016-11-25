@@ -655,9 +655,12 @@
             {
                 [roomCell render:room];
             }
+            roomCell.directRoomIcon.hidden = NO;
         }
         else
         {
+            roomCell.directRoomIcon.hidden = YES;
+            
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
             roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
             roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
