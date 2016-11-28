@@ -475,19 +475,31 @@
     
     if (section == favoritesSection)
     {
-        cellData = [favoriteCellDataArray objectAtIndex:row];
+        if (row < favoriteCellDataArray.count)
+        {
+            cellData = [favoriteCellDataArray objectAtIndex:row];
+        }
     }
     else if (section== conversationSection)
     {
-        cellData = [conversationCellDataArray objectAtIndex:row];
+        if (row < conversationCellDataArray.count)
+        {
+            cellData = [conversationCellDataArray objectAtIndex:row];
+        }
     }
     else if (section == lowPrioritySection)
     {
-        cellData = [lowPriorityCellDataArray objectAtIndex:row];
+        if (row < lowPriorityCellDataArray.count)
+        {
+            cellData = [lowPriorityCellDataArray objectAtIndex:row];
+        }
     }
     else if (section == invitesSection)
     {
-        cellData = [invitesCellDataArray objectAtIndex:row];
+        if (row < invitesCellDataArray.count)
+        {
+            cellData = [invitesCellDataArray objectAtIndex:row];
+        }
     }
     
     return cellData;
