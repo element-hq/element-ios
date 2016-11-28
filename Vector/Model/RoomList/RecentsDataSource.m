@@ -809,6 +809,25 @@
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Invited rooms are not editable.
+    MXRoom* room = [self getRoomAtIndexPath:indexPath];
+    if (room)
+    {
+        NSArray* invitedRooms = room.mxSession.invitedRooms;
+        
+        // Display no action for the invited room
+        if (invitedRooms && ([invitedRooms indexOfObject:room] != NSNotFound))
+        {
+            return NO;
+        }
+    }
+    
+    
+    return YES;
+}
+
 #pragma mark - drag and drop managemenent
 
 - (BOOL)isDraggableCellAt:(NSIndexPath*)path
