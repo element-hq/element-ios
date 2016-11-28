@@ -19,7 +19,7 @@
 #import "VectorDesignValues.h"
 #import "MXRoom+Vector.h"
 
-#define DEVICE_TABLEVIEW_ROW_CELL_HEIGHT_WITHOUT_LABEL_HEIGHT 53
+#define DEVICE_TABLEVIEW_ROW_CELL_HEIGHT_WITHOUT_LABEL_HEIGHT 59
 
 @implementation DeviceTableViewCell
 
@@ -30,12 +30,21 @@
     [super awakeFromNib];
     
     self.deviceName.textColor = kVectorTextColorBlack;
+    
+    [self.verifyButton.layer setCornerRadius:5];
+    self.verifyButton.clipsToBounds = YES;
+    self.verifyButton.backgroundColor = kVectorColorGreen;
+    
+    [self.blockButton.layer setCornerRadius:5];
+    self.blockButton.clipsToBounds = YES;
+    self.blockButton.backgroundColor = kVectorColorGreen;
 }
 
 - (void)render:(MXDeviceInfo *)deviceInfo
 {
     _deviceInfo = deviceInfo;
     
+    self.deviceName.numberOfLines = 0;
     self.deviceName.text = (deviceInfo.displayName.length ? [NSString stringWithFormat:@"%@ (%@)", deviceInfo.displayName, deviceInfo.deviceId] : [NSString stringWithFormat:@"(%@)", deviceInfo.deviceId]);
     
     switch (deviceInfo.verified)
