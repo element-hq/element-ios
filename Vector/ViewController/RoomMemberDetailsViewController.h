@@ -16,7 +16,9 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController <UIGestureRecognizerDelegate>
+#import "DeviceTableViewCell.h"
+
+@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *roomMemberAvatarHeaderBackground;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomMemberAvatarHeaderBackgroundHeightConstraint;

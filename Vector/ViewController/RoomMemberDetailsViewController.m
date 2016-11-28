@@ -30,6 +30,8 @@
 #import "TableViewCellWithButton.h"
 #import "RoomTableViewCell.h"
 
+#import "EncryptionInfoView.h"
+
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
@@ -55,6 +57,13 @@
      */
     NSMutableArray<NSString*> *directChatsArray;
     NSInteger directChatsIndex;
+    
+    /**
+     Devices
+     */
+    NSArray<MXDeviceInfo *> *devicesArray;
+    NSInteger devicesIndex;
+    EncryptionInfoView *encryptionInfoView;
     
     /**
      Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
@@ -165,6 +174,7 @@
     // Register collection view cell class
     [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
     [self.tableView registerClass:RoomTableViewCell.class forCellReuseIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
+    [self.tableView registerClass:DeviceTableViewCell.class forCellReuseIdentifier:[DeviceTableViewCell defaultReuseIdentifier]];
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -229,6 +239,7 @@
     adminActionsArray = nil;
     otherActionsArray = nil;
     directChatsArray = nil;
+    devicesArray = nil;
     
     if (UIApplicationWillChangeStatusBarOrientationNotificationObserver)
     {
@@ -242,6 +253,21 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
+    
+    // Check here whether a subview has been added or removed
+    if (encryptionInfoView)
+    {
+        if (!encryptionInfoView.superview)
+        {
+            // Reset
+            encryptionInfoView = nil;
+            
+            // Reload the full table to take into account a potential change on a device status.
+            [self updateMemberInfo];
+        }
+    }
+    
     if (memberTitleView)
     {
         // Adjust the header height by taking into account the actual position of the member avatar in title view
@@ -275,8 +301,6 @@
 
 - (void)updateMemberInfo
 {
-    [super updateMemberInfo];
-    
     if (self.mxRoomMember)
     {
         self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
@@ -308,7 +332,25 @@
         }
         
         self.roomMemberStatusLabel.text = presenceText;
+        
+        // Retrieve the existing direct chats
+        [directChatsArray removeAllObjects];
+        NSArray *directRoomIds = self.mainSession.directRooms[self.mxRoomMember.userId];
+        // Check whether the room is still existing
+        for (NSString* directRoomId in directRoomIds)
+        {
+            if ([self.mainSession roomWithRoomId:directRoomId])
+            {
+                [directChatsArray addObject:directRoomId];
+            }
+        }
+        
+        // Retrieve member's devices
+        devicesArray = [self.mxRoom.mxSession.crypto storedDevicesForUser:self.mxRoomMember.userId];
     }
+    
+    // Complete data update and reload table view
+    [super updateMemberInfo];
 }
 
 #pragma mark - Hide/Show navigation bar border
@@ -352,7 +394,6 @@
     
     [adminActionsArray removeAllObjects];
     [otherActionsArray removeAllObjects];
-    [directChatsArray removeAllObjects];
     
     // Consider the case of the user himself
     if ([self.mxRoomMember.userId isEqualToString:self.mainSession.myUser.userId])
@@ -487,19 +528,7 @@
         }
     }
     
-    // Retrieve the existing direct chats
-    NSArray *directRoomIds = self.mainSession.directRooms[self.mxRoomMember.userId];
-    
-    // Check whether the room is still existing
-    for (NSString* directRoomId in directRoomIds)
-    {
-        if ([self.mainSession roomWithRoomId:directRoomId])
-        {
-            [directChatsArray addObject:directRoomId];
-        }
-    }
-    
-    adminToolsIndex = otherActionsIndex = directChatsIndex = -1;
+    adminToolsIndex = otherActionsIndex = directChatsIndex = devicesIndex = -1;
     
     if (otherActionsArray.count)
     {
@@ -509,7 +538,13 @@
     {
         adminToolsIndex = sectionCount++;
     }
+    
     directChatsIndex = sectionCount++;
+    
+    if (devicesArray.count)
+    {
+        devicesIndex = sectionCount++;
+    }
     
     return sectionCount;
 }
@@ -528,6 +563,10 @@
     {
         return (directChatsArray.count + 1);
     }
+    else if (section == devicesIndex)
+    {
+        return (devicesArray.count);
+    }
     
     return 0;
 }
@@ -541,6 +580,10 @@
     else if (section == directChatsIndex)
     {
         return NSLocalizedStringFromTable(@"room_participants_action_section_direct_chats", @"Vector", nil);
+    }
+    else if (section == devicesIndex)
+    {
+        return NSLocalizedStringFromTable(@"room_participants_action_section_devices", @"Vector", nil);
     }
     
     return nil;
@@ -668,6 +711,22 @@
         
         cell = roomCell;
     }
+    else if (indexPath.section == devicesIndex)
+    {
+        DeviceTableViewCell *deviceCell = [tableView dequeueReusableCellWithIdentifier:[DeviceTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+        deviceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        if (indexPath.row < devicesArray.count)
+        {
+            MXDeviceInfo *deviceInfo = devicesArray[indexPath.row];
+            [deviceCell render:deviceInfo];
+            deviceCell.delegate = self;
+            
+            // Display here the Verify and Block buttons except if the device is the current one.
+            deviceCell.verifyButton.hidden = deviceCell.blockButton.hidden = [deviceInfo.deviceId isEqualToString:self.mxRoom.mxSession.matrixRestClient.credentials.deviceId];
+        }
+        cell = deviceCell;
+    }
     else
     {
         // Create a fake cell to prevent app from crashing
@@ -684,6 +743,10 @@
     if (indexPath.section == directChatsIndex)
     {
         return [RoomTableViewCell cellHeight];
+    }
+    else if (indexPath.section == devicesIndex)
+    {
+        return [DeviceTableViewCell cellHeight];
     }
     
     return TABLEVIEW_ROW_CELL_HEIGHT;
@@ -727,6 +790,8 @@
             [self onActionButtonPressed:cell.mxkButton];
         }
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Action
@@ -810,6 +875,64 @@
                              previewImage:self.memberThumbnail.image];
 
         [avatarFullScreenView showFullScreen];
+    }
+}
+
+#pragma mark - 
+
+- (void)deviceTableViewCell:(DeviceTableViewCell*)deviceTableViewCell updateDeviceVerification:(MXDeviceVerification)verificationStatus
+{
+    if (verificationStatus == MXDeviceVerified)
+    {
+        // Prompt the user before marking as verified the device.
+        encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceTableViewCell.deviceInfo andMatrixSession:self.mxRoom.mxSession];
+        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
+        
+        // Add shadow on added view
+        encryptionInfoView.layer.cornerRadius = 5;
+        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
+        encryptionInfoView.layer.shadowOpacity = 0.5f;
+        
+        // Add the view and define edge constraints
+        [self.view addSubview:encryptionInfoView];
+        
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+                                                              attribute:NSLayoutAttributeTop
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.tableView
+                                                              attribute:NSLayoutAttributeTop
+                                                             multiplier:1.0f
+                                                               constant:10.0f]];
+        
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.tableView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0f
+                                                               constant:-10.0f]];
+        
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
+                                                              attribute:NSLayoutAttributeLeading
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:encryptionInfoView
+                                                              attribute:NSLayoutAttributeLeading
+                                                             multiplier:1.0f
+                                                               constant:-10.0f]];
+        
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
+                                                              attribute:NSLayoutAttributeTrailing
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:encryptionInfoView
+                                                              attribute:NSLayoutAttributeTrailing
+                                                             multiplier:1.0f
+                                                               constant:10.0f]];
+        [self.view setNeedsUpdateConstraints];
+    }
+    else
+    {
+        [self.mxRoom.mxSession.crypto setDeviceVerification:verificationStatus forDevice:deviceTableViewCell.deviceInfo.deviceId ofUser:self.mxRoomMember.userId];
+        [self updateMemberInfo];
     }
 }
 
