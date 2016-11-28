@@ -19,6 +19,8 @@
 #import "VectorDesignValues.h"
 #import "MXRoom+Vector.h"
 
+#define DEVICE_TABLEVIEW_ROW_CELL_HEIGHT_WITHOUT_LABEL_HEIGHT 53
+
 @implementation DeviceTableViewCell
 
 #pragma mark - Class methods
@@ -75,9 +77,14 @@
     }
 }
 
-+ (CGFloat)cellHeight
++ (CGFloat)cellHeightWithDeviceInfo:(MXDeviceInfo*)deviceInfo andCellWidth:(CGFloat)width
 {
-    return 94;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 50)];
+    label.numberOfLines = 0;
+    label.text = (deviceInfo.displayName.length ? [NSString stringWithFormat:@"%@ (%@)", deviceInfo.displayName, deviceInfo.deviceId] : [NSString stringWithFormat:@"(%@)", deviceInfo.deviceId]);
+    [label sizeToFit];
+    
+    return label.frame.size.height + DEVICE_TABLEVIEW_ROW_CELL_HEIGHT_WITHOUT_LABEL_HEIGHT;
 }
 
 #pragma mark - Actions

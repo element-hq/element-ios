@@ -746,7 +746,10 @@
     }
     else if (indexPath.section == devicesIndex)
     {
-        return [DeviceTableViewCell cellHeight];
+        if (indexPath.row < devicesArray.count)
+        {
+            return [DeviceTableViewCell cellHeightWithDeviceInfo:devicesArray[indexPath.row] andCellWidth:self.tableView.frame.size.width];
+        }
     }
     
     return TABLEVIEW_ROW_CELL_HEIGHT;

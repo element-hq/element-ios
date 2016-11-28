@@ -56,10 +56,12 @@
 - (void)render:(MXDeviceInfo *)deviceInfo;
 
 /**
- Get the cell height.
+ Get the cell height for a given device information.
 
+ @param deviceInfo the device information.
+ @param width the extimated cell width.
  @return the cell height.
  */
-+ (CGFloat)cellHeight;
++ (CGFloat)cellHeightWithDeviceInfo:(MXDeviceInfo*)deviceInfo andCellWidth:(CGFloat)width;
 
 @end
