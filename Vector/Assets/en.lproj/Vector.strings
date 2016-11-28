@@ -145,6 +145,7 @@
 
 "room_participants_action_section_admin_tools" = "Admin tools";
 "room_participants_action_section_direct_chats" = "Direct chats";
+"room_participants_action_section_devices" = "Devices";
 "room_participants_action_section_other" = "Other";
 
 "room_participants_action_invite" = "Invite";

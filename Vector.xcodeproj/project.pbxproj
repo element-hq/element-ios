@@ -273,7 +273,9 @@
 		F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA231B78E42600B1FBBF /* RecentsViewController.m */; };
 		F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA271B78E42600B1FBBF /* RoomViewController.m */; };
 		F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA291B78E42600B1FBBF /* SettingsViewController.m */; };
-		F09617B71DE49BAD00093E9D /* DeviceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09617B51DE49BAD00093E9D /* DeviceView.m */; };
+		F09617CB1DEC23F100093E9D /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F09617C71DEC23F100093E9D /* DeviceTableViewCell.m */; };
+		F09617CC1DEC23F100093E9D /* DeviceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F09617C81DEC23F100093E9D /* DeviceTableViewCell.xib */; };
+		F09617CD1DEC23F100093E9D /* DeviceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09617CA1DEC23F100093E9D /* DeviceView.m */; };
 		F0989F4E1CD7769000FA6EAC /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */; };
 		F0989F4F1CD7769000FA6EAC /* ForgotPasswordInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */; };
 		F09E24ED1C6DE24900D39503 /* RoomMemberTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09E24EB1C6DE24900D39503 /* RoomMemberTitleView.m */; };
@@ -724,8 +726,11 @@
 		F094AA271B78E42600B1FBBF /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		F094AA281B78E42600B1FBBF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		F094AA291B78E42600B1FBBF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		F09617B41DE49BAD00093E9D /* DeviceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceView.h; sourceTree = "<group>"; };
-		F09617B51DE49BAD00093E9D /* DeviceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceView.m; sourceTree = "<group>"; };
+		F09617C61DEC23F100093E9D /* DeviceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTableViewCell.h; sourceTree = "<group>"; };
+		F09617C71DEC23F100093E9D /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
+		F09617C81DEC23F100093E9D /* DeviceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceTableViewCell.xib; sourceTree = "<group>"; };
+		F09617C91DEC23F100093E9D /* DeviceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceView.h; sourceTree = "<group>"; };
+		F09617CA1DEC23F100093E9D /* DeviceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceView.m; sourceTree = "<group>"; };
 		F0989F4B1CD7769000FA6EAC /* ForgotPasswordInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordInputsView.h; sourceTree = "<group>"; };
 		F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordInputsView.m; sourceTree = "<group>"; };
 		F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordInputsView.xib; sourceTree = "<group>"; };
@@ -994,7 +999,7 @@
 		F001D7521B8207C000A162C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F09617B31DE49BAD00093E9D /* DeviceView */,
+				F09617C51DEC23F100093E9D /* Device */,
 				F00ACC5C1DDB11CE0093F646 /* EncryptionInfoView */,
 				F083C4591D9E9C2400E5246C /* Search */,
 				F0CC4DBC1C4E26FA003BBE45 /* MediaAlbum */,
@@ -1564,13 +1569,16 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		F09617B31DE49BAD00093E9D /* DeviceView */ = {
+		F09617C51DEC23F100093E9D /* Device */ = {
 			isa = PBXGroup;
 			children = (
-				F09617B41DE49BAD00093E9D /* DeviceView.h */,
-				F09617B51DE49BAD00093E9D /* DeviceView.m */,
+				F09617C61DEC23F100093E9D /* DeviceTableViewCell.h */,
+				F09617C71DEC23F100093E9D /* DeviceTableViewCell.m */,
+				F09617C81DEC23F100093E9D /* DeviceTableViewCell.xib */,
+				F09617C91DEC23F100093E9D /* DeviceView.h */,
+				F09617CA1DEC23F100093E9D /* DeviceView.m */,
 			);
-			path = DeviceView;
+			path = Device;
 			sourceTree = "<group>";
 		};
 		F09E24E91C6DE24900D39503 /* RoomMember */ = {
@@ -1905,6 +1913,7 @@
 				F03BF65A1D8BF5B1002EF6A7 /* call_chat_icon@3x.png in Resources */,
 				F0C11E921D7DC629006697A7 /* StartChatViewController.xib in Resources */,
 				F03BF69D1D8BF5B1002EF6A7 /* main_alias_icon@3x.png in Resources */,
+				F09617CC1DEC23F100093E9D /* DeviceTableViewCell.xib in Resources */,
 				F083C4921D9EAFC500E5246C /* file_music_icon@3x.png in Resources */,
 				F03BF6AD1D8BF5B1002EF6A7 /* plus_icon.png in Resources */,
 				F03BF6D81D8BF5B1002EF6A7 /* video_icon@2x.png in Resources */,
@@ -2159,7 +2168,6 @@
 				F09EAFA11DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				F09EAF9F1DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F0AC734A1DA2A6130011DAEE /* RoomFilesSearchViewController.m in Sources */,
-				F09617B71DE49BAD00093E9D /* DeviceView.m in Sources */,
 				F083C4581D9E982900E5246C /* FilesSearchCellData.m in Sources */,
 				F083C45D1D9E9C2400E5246C /* FilesSearchTableViewCell.m in Sources */,
 				F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */,
@@ -2179,7 +2187,9 @@
 				F0989F4E1CD7769000FA6EAC /* ForgotPasswordInputsView.m in Sources */,
 				F083C4671D9E9F8800E5246C /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
 				716FDC8A1C186A3A001034CB /* InviteRecentTableViewCell.m in Sources */,
+				F09617CB1DEC23F100093E9D /* DeviceTableViewCell.m in Sources */,
 				F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				F09617CD1DEC23F100093E9D /* DeviceView.m in Sources */,
 				F0D2D9851C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				71046D5E1C0C639300DCA984 /* RoomTitleView.m in Sources */,
 				F07ECA4D1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m in Sources */,

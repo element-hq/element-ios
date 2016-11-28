@@ -3101,7 +3101,7 @@
     
     encryptionInfoView = [[EncryptionInfoView alloc] initWithEvent:event andMatrixSession:self.roomDataSource.mxSession];
     
-    // Add shadow on event details view
+    // Add shadow on added view
     encryptionInfoView.layer.cornerRadius = 5;
     encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
     encryptionInfoView.layer.shadowOpacity = 0.5f;
