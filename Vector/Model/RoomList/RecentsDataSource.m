@@ -462,14 +462,14 @@
 - (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)theIndexPath
 {
     id<MXKRecentCellDataStoring> cellData = nil;
-    NSInteger row = theIndexPath.row;
+    NSUInteger row = theIndexPath.row;
     NSInteger section = theIndexPath.section;
     
     if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == section))
     {
-        if (theIndexPath.row > self.droppingCellIndexPath.row)
+        if (row > self.droppingCellIndexPath.row)
         {
-            row = theIndexPath.row - 1;
+            row --;
         }
     }
     
