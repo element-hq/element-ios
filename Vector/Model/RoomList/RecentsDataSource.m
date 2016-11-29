@@ -462,32 +462,44 @@
 - (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)theIndexPath
 {
     id<MXKRecentCellDataStoring> cellData = nil;
-    NSInteger row = theIndexPath.row;
+    NSUInteger row = theIndexPath.row;
     NSInteger section = theIndexPath.section;
     
     if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == section))
     {
-        if (theIndexPath.row > self.droppingCellIndexPath.row)
+        if (row > self.droppingCellIndexPath.row)
         {
-            row = theIndexPath.row - 1;
+            row --;
         }
     }
     
     if (section == favoritesSection)
     {
-        cellData = [favoriteCellDataArray objectAtIndex:row];
+        if (row < favoriteCellDataArray.count)
+        {
+            cellData = [favoriteCellDataArray objectAtIndex:row];
+        }
     }
     else if (section== conversationSection)
     {
-        cellData = [conversationCellDataArray objectAtIndex:row];
+        if (row < conversationCellDataArray.count)
+        {
+            cellData = [conversationCellDataArray objectAtIndex:row];
+        }
     }
     else if (section == lowPrioritySection)
     {
-        cellData = [lowPriorityCellDataArray objectAtIndex:row];
+        if (row < lowPriorityCellDataArray.count)
+        {
+            cellData = [lowPriorityCellDataArray objectAtIndex:row];
+        }
     }
     else if (section == invitesSection)
     {
-        cellData = [invitesCellDataArray objectAtIndex:row];
+        if (row < invitesCellDataArray.count)
+        {
+            cellData = [invitesCellDataArray objectAtIndex:row];
+        }
     }
     
     return cellData;
