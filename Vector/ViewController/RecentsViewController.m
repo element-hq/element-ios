@@ -806,16 +806,13 @@
                 cellSnapshot.alpha = 0.5f;
                 [self.recentsTableView addSubview:cellSnapshot];
                 
-                cell = [[UITableViewCell alloc] init];
-                cell.frame = CGRectMake(0, 0, 100, 80);
-                cell.backgroundColor = [UIColor redColor];
+                // Store the selected room and the original index path of its cell.
+                movingCellPath = indexPath;
+                movingRoom = [recentsDataSource getRoomAtIndexPath:movingCellPath];
                 
                 lastPotentialCellPath = indexPath;
                 recentsDataSource.droppingCellIndexPath = indexPath;
-                
-                movingCellPath = indexPath;
-                recentsDataSource.hiddenCellIndexPath = movingCellPath;
-                movingRoom = [recentsDataSource getRoomAtIndexPath:movingCellPath];
+                recentsDataSource.hiddenCellIndexPath = indexPath;
             }
             break;
         }
