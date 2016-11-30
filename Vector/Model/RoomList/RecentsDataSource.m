@@ -384,10 +384,8 @@
     return sectionHeader;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)theIndexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSIndexPath* indexPath = theIndexPath;
-    
     if (indexPath.section == searchedRoomIdOrAliasSection)
     {
         RoomIdOrAliasTableViewCell *roomIdOrAliasCell = [tableView dequeueReusableCellWithIdentifier:RoomIdOrAliasTableViewCell.defaultReuseIdentifier];
@@ -415,90 +413,79 @@
         return directoryCell;
     }
 
-    if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == indexPath.section))
+    if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
-        if ([theIndexPath isEqual:self.droppingCellIndexPath])
+        static NSString* cellIdentifier = @"VectorRecentsMovingCell";
+        
+        UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"VectorRecentsMovingCell"];
+        
+        // add an imageview of the cell.
+        // The image is a shot of the genuine cell.
+        // Thus, this cell has the same look as the genuine cell without computing it.
+        UIImageView* imageView = [cell viewWithTag:[cellIdentifier hash]];
+        
+        if (!imageView || (imageView != self.droppingCellBackGroundView))
         {
-            static NSString* cellIdentifier = @"VectorRecentsMovingCell";
-            
-            UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"VectorRecentsMovingCell"];
-            
-            // add an imageview of the cell.
-            // The image is a shot of the genuine cell.
-            // Thus, this cell has the same look as the genuine cell without computing it.
-            UIImageView* imageView = [cell viewWithTag:[cellIdentifier hash]];
-            
-            if (!imageView || (imageView != self.droppingCellBackGroundView))
+            if (imageView)
             {
-                if (imageView)
-                {
-                    [imageView removeFromSuperview];
-                }
-                self.droppingCellBackGroundView.tag = [cellIdentifier hash];
-                [cell.contentView addSubview:self.droppingCellBackGroundView];
+                [imageView removeFromSuperview];
             }
-            
-            self.droppingCellBackGroundView.frame = self.droppingCellBackGroundView.frame;
-            cell.contentView.backgroundColor = [UIColor clearColor];
-            cell.backgroundColor = [UIColor clearColor];
-            
-            return cell;
+            self.droppingCellBackGroundView.tag = [cellIdentifier hash];
+            [cell.contentView addSubview:self.droppingCellBackGroundView];
         }
         
-        if (theIndexPath.row > self.droppingCellIndexPath.row)
-        {
-            indexPath = [NSIndexPath indexPathForRow:theIndexPath.row-1 inSection:theIndexPath.section];
-        }
-    }
-    
-    if (self.hiddenCellIndexPath && [theIndexPath isEqual:self.hiddenCellIndexPath])
-    {
-        indexPath = [NSIndexPath indexPathForRow:theIndexPath.row-1 inSection:theIndexPath.section];
+        self.droppingCellBackGroundView.frame = self.droppingCellBackGroundView.frame;
+        cell.contentView.backgroundColor = [UIColor clearColor];
+        cell.backgroundColor = [UIColor clearColor];
+        
+        return cell;
     }
     
     return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
-- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)theIndexPath
+- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath
 {
     id<MXKRecentCellDataStoring> cellData = nil;
-    NSUInteger row = theIndexPath.row;
-    NSInteger section = theIndexPath.section;
+    NSUInteger cellDataIndex = indexPath.row;
+    NSInteger tableSection = indexPath.section;
     
-    if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == section))
+    // Compute the actual cell data index by taking into account the current droppingCellIndexPath and hiddenCellIndexPath (if any).
+    if ([self isMovingCellSection:tableSection] && (cellDataIndex > self.droppingCellIndexPath.row))
     {
-        if (row > self.droppingCellIndexPath.row)
-        {
-            row --;
-        }
+        cellDataIndex --;
+    }
+    if ([self isHiddenCellSection:tableSection] && (cellDataIndex >= self.hiddenCellIndexPath.row))
+    {
+        cellDataIndex ++;
     }
     
-    if (section == favoritesSection)
+    if (tableSection == favoritesSection)
     {
-        if (row < favoriteCellDataArray.count)
+        if (cellDataIndex < favoriteCellDataArray.count)
         {
-            cellData = [favoriteCellDataArray objectAtIndex:row];
+            cellData = [favoriteCellDataArray objectAtIndex:cellDataIndex];
         }
     }
-    else if (section== conversationSection)
+    else if (tableSection== conversationSection)
     {
-        if (row < conversationCellDataArray.count)
+        if (cellDataIndex < conversationCellDataArray.count)
         {
-            cellData = [conversationCellDataArray objectAtIndex:row];
+            cellData = [conversationCellDataArray objectAtIndex:cellDataIndex];
         }
     }
-    else if (section == lowPrioritySection)
+    else if (tableSection == lowPrioritySection)
     {
-        if (row < lowPriorityCellDataArray.count)
+        if (cellDataIndex < lowPriorityCellDataArray.count)
         {
-            cellData = [lowPriorityCellDataArray objectAtIndex:row];
+            cellData = [lowPriorityCellDataArray objectAtIndex:cellDataIndex];
         }
     }
-    else if (section == invitesSection)
+    else if (tableSection == invitesSection)
     {
-        if (row < invitesCellDataArray.count)
+        if (cellDataIndex < invitesCellDataArray.count)
         {
-            cellData = [invitesCellDataArray objectAtIndex:row];
+            cellData = [invitesCellDataArray objectAtIndex:cellDataIndex];
         }
     }
     
@@ -835,7 +822,6 @@
             return NO;
         }
     }
-    
     
     return YES;
 }
