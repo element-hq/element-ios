@@ -43,7 +43,7 @@
             NSInteger size = [attachment.contentInfo[@"size"] integerValue];
             if (size)
             {
-                title = [NSString stringWithFormat:@"%@ (%@)", title, [MXKTools fileSizeToString:size round:YES]];
+                title = [NSString stringWithFormat:@"%@ (%@)", title, [MXTools fileSizeToString:size round:YES]];
             }
         }
         
