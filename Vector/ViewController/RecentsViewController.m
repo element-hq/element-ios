@@ -553,7 +553,7 @@
             
             // cancel pending uploads/downloads
             // they are useless by now
-            [MXKMediaManager cancelDownloadsInCacheFolder:room.state.roomId];
+            [MXMediaManager cancelDownloadsInCacheFolder:room.state.roomId];
             
             // TODO GFO cancel pending uploads related to this room
             
