@@ -375,7 +375,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     
     // check if some media must be released to reduce the cache size
-    [MXKMediaManager reduceCacheSizeToInsert:0];
+    [MXMediaManager reduceCacheSizeToInsert:0];
     
     // Hide potential notification
     if (self.mxInAppNotification)
@@ -1516,7 +1516,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (clearCache)
     {
         // clear the media cache
-        [MXKMediaManager clearCache];
+        [MXMediaManager clearCache];
     }
 }
 
@@ -1526,7 +1526,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     isAPNSRegistered = NO;
     
     // Clear cache
-    [MXKMediaManager clearCache];
+    [MXMediaManager clearCache];
 
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack

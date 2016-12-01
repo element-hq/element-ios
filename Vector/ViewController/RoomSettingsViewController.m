@@ -121,7 +121,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     UITextField* addAddressTextField;
     
     // The potential image loader
-    MXKMediaLoader *uploader;
+    MXMediaLoader *uploader;
     
     // The pending http operation
     MXHTTPOperation* pendingOperation;
@@ -1044,7 +1044,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[updatedItemsDict objectForKey:kRoomSettingsAvatarKey]];
                 
                 // Upload picture
-                uploader = [MXKMediaManager prepareUploaderWithMatrixSession:mxRoom.mxSession initialRange:0 andRange:1.0];
+                uploader = [MXMediaManager prepareUploaderWithMatrixSession:mxRoom.mxSession initialRange:0 andRange:1.0];
                 
                 [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url) {
                     

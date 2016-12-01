@@ -80,8 +80,8 @@
                 UIImage *preview = nil;
                 if (bubbleData.attachment.previewURL)
                 {
-                    NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:bubbleData.attachment.previewURL andType:mimetype inFolder:self.attachmentImageView.mediaFolder];
-                    preview = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
+                    NSString *cacheFilePath = [MXMediaManager cachePathForMediaWithURL:bubbleData.attachment.previewURL andType:mimetype inFolder:self.attachmentImageView.mediaFolder];
+                    preview = [MXMediaManager loadPictureFromFilePath:cacheFilePath];
                 }
                 
                 if (url.length || preview)

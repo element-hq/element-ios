@@ -1897,7 +1897,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         UIImage *updatedPicture = [MXKTools forceImageOrientationUp:newAvatarImage];
         
         // Upload picture
-        MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:account.mxSession initialRange:0 andRange:1.0];
+        MXMediaLoader *uploader = [MXMediaManager prepareUploaderWithMatrixSession:account.mxSession initialRange:0 andRange:1.0];
         
         [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url) {
             

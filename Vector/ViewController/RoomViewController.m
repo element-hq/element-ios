@@ -1789,7 +1789,7 @@
         {
             // Upload id is stored in attachment url (nasty trick)
             NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
-            if ([MXKMediaManager existingUploaderWithId:uploadId])
+            if ([MXMediaManager existingUploaderWithId:uploadId])
             {
                 [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_upload", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
@@ -1797,7 +1797,7 @@
                     [strongSelf cancelEventSelection];
 
                     // Get again the loader
-                    MXKMediaLoader *loader = [MXKMediaManager existingUploaderWithId:uploadId];
+                    MXMediaLoader *loader = [MXMediaManager existingUploaderWithId:uploadId];
                     if (loader)
                     {
                         [loader cancel];
@@ -1815,7 +1815,7 @@
         if (level == 0 && selectedEvent.isMediaAttachment)
         {
             NSString *cacheFilePath = roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath;
-            if ([MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath])
+            if ([MXMediaManager existingDownloaderWithOutputFilePath:cacheFilePath])
             {
                 [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_download", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
@@ -1823,7 +1823,7 @@
                     [strongSelf cancelEventSelection];
 
                     // Get again the loader
-                    MXKMediaLoader *loader = [MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
+                    MXMediaLoader *loader = [MXMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
                     if (loader)
                     {
                         [loader cancel];
