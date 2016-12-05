@@ -46,7 +46,7 @@
     if (bubbleCell.attachmentView && bubbleCell->bubbleData.isAttachmentWithThumbnail)
     {
         // Show a red border when the attachment sending failed
-        if (bubbleCell->bubbleData.attachment.event.mxkState == MXKEventStateSendingFailed)
+        if (bubbleCell->bubbleData.attachment.event.sentState == MXEventSentStateFailed)
         {
             bubbleCell.attachmentView.layer.borderColor = kVectorColorPinkRed.CGColor;
             bubbleCell.attachmentView.layer.borderWidth = 1;

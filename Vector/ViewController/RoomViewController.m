@@ -1555,7 +1555,7 @@
             }
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView]
-                 && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event.mxkState == MXKEventStateSendingFailed)
+                 && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event.sentState == MXEventSentStateFailed)
         {
             // Shortcut: when clicking on an unsent media, show the action sheet to resend it
             [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event}];
@@ -1601,7 +1601,7 @@
     if (level == 0)
     {
         // Add actions for a failed event
-        if (selectedEvent.mxkState == MXKEventStateSendingFailed)
+        if (selectedEvent.sentState == MXEventSentStateFailed)
         {
             [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_resend", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
@@ -1717,10 +1717,7 @@
                     
                 }];
             }
-        }
-
-        if (level == 0)
-        {
+        
             [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -1746,6 +1743,33 @@
                 // Start animation in case of download during attachment preparing
                 [roomBubbleTableViewCell startProgressUI];
             }];
+            
+            // Check status of the selected event
+            if (selectedEvent.sentState == MXEventSentStateEncrypting || selectedEvent.sentState == MXEventSentStateUploading)
+            {
+                // Upload id is stored in attachment url (nasty trick)
+                NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
+                if ([MXMediaManager existingUploaderWithId:uploadId])
+                {
+                    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_upload", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        // TODO: Cancel the encryption if any.
+                        
+                        // Get again the loader
+                        MXMediaLoader *loader = [MXMediaManager existingUploaderWithId:uploadId];
+                        if (loader)
+                        {
+                            [loader cancel];
+                        }
+                        // Hide the progress animation
+                        roomBubbleTableViewCell.progressView.hidden = YES;
+                        
+                    }];
+                }
+            }
         }
 
         if (level == 1)
@@ -1783,33 +1807,7 @@
     }
 
     // Check status of the selected event
-    if (selectedEvent.mxkState == MXKEventStateUploading)
-    {
-        if (level == 0)
-        {
-            // Upload id is stored in attachment url (nasty trick)
-            NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
-            if ([MXMediaManager existingUploaderWithId:uploadId])
-            {
-                [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_upload", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    [strongSelf cancelEventSelection];
-
-                    // Get again the loader
-                    MXMediaLoader *loader = [MXMediaManager existingUploaderWithId:uploadId];
-                    if (loader)
-                    {
-                        [loader cancel];
-                    }
-                    // Hide the progress animation
-                    roomBubbleTableViewCell.progressView.hidden = YES;
-                    
-                }];
-            }
-        }
-    }
-    else if (selectedEvent.mxkState != MXKEventStateSending && selectedEvent.mxkState != MXKEventStateSendingFailed)
+    if (selectedEvent.sentState != MXEventSentStateSending && selectedEvent.sentState != MXEventSentStateFailed)
     {
         // Check whether download is in progress
         if (level == 0 && selectedEvent.isMediaAttachment)
@@ -2978,7 +2976,7 @@
         
         for (MXEvent *event in outgoingMsgs)
         {
-            if (event.mxkState == MXKEventStateSendingFailed)
+            if (event.sentState == MXEventSentStateFailed)
             {
                 hasUnsent = YES;
                 break;
@@ -3018,7 +3016,7 @@
                     for (NSUInteger index = 0; index < strongSelf.roomDataSource.room.outgoingMessages.count;)
                     {
                         MXEvent *event = strongSelf.roomDataSource.room.outgoingMessages[index];
-                        if (event.mxkState == MXKEventStateSendingFailed)
+                        if (event.sentState == MXEventSentStateFailed)
                         {
                             [strongSelf.roomDataSource removeEventWithEventId:event.eventId];
                         }
@@ -3055,7 +3053,7 @@
     
     for (MXEvent *event in outgoingMsgs)
     {
-        if (event.mxkState == MXKEventStateSendingFailed)
+        if (event.sentState == MXEventSentStateFailed)
         {
             [failedEventIds addObject:event.eventId];
         }
