@@ -152,7 +152,7 @@
             {
                 MXKRoomBubbleComponent *component = bubbleComponents[index];
                 
-                if (component.event.mxkState != MXKEventStateSendingFailed)
+                if (component.event.sentState != MXEventSentStateFailed)
                 {
                     // Get the events receipts by ignoring the current user receipt.
                     NSArray* receipts = [self.room getEventReceipts:component.event.eventId sorted:YES];
