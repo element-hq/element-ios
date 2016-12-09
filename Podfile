@@ -33,6 +33,7 @@ pod 'WebRTC', '54.6.13869'
 #pod 'OLMKit'
 pod 'OLMKit', :git => 'https://matrix.org/git/olm.git', :branch => 'olmkit'
 #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
+pod 'Realm', '~> 2.1.1'
 
 end
 
