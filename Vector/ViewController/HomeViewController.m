@@ -68,6 +68,9 @@
 
     // Current alert (if any).
     MXKAlert *currentAlert;
+    
+    // The launch animation container view
+    UIView *launchAnimationContainerView;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -130,6 +133,12 @@
 - (void)destroy
 {
     [super destroy];
+    
+    if (launchAnimationContainerView)
+    {
+        [launchAnimationContainerView removeFromSuperview];
+        launchAnimationContainerView = nil;
+    }
 
     if (currentAlert)
     {
@@ -176,6 +185,9 @@
     {
         [self updateSearch];
     }
+
+    // Check whether the data is loading.
+    [self handleLaunchAnimation];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -359,6 +371,14 @@
     // FIXME: Handle correctly messagesSearchDataSource and filesSearchDataSource
     
     [super removeMatrixSession:mxSession];
+}
+
+- (void)onMatrixSessionStateDidChange:(NSNotification *)notif
+{
+    [super onMatrixSessionStateDidChange:notif];
+
+    // Keep or remove the launch animation on the session state change.
+    [self handleLaunchAnimation];
 }
 
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
@@ -671,6 +691,76 @@
     createNewRoomImageView.hidden = (hidden ? YES : !self.searchBarHidden);
 }
 
+- (void)handleLaunchAnimation
+{
+    MXSession *mainSession = self.mainSession;
+    
+    if (mainSession)
+    {
+        if (mainSession.state < MXSessionStateStoreDataReady ||
+            ([recentsViewController.recentsTableView numberOfSections] == 0 && [AppDelegate theDelegate].isOffline == NO))
+        {
+            if (!launchAnimationContainerView)
+            {
+                UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+                
+                launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
+                launchAnimationContainerView.backgroundColor = [UIColor whiteColor];
+                launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                [window addSubview:launchAnimationContainerView];
+                
+                // Add animation view
+                UIImageView *animationView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 170, 170)];
+                animationView.image = [UIImage animatedImageNamed:@"animatedLogo-" duration:2];
+                
+                animationView.center = CGPointMake(launchAnimationContainerView.center.x, 3 * launchAnimationContainerView.center.y / 4);
+                
+                animationView.translatesAutoresizingMaskIntoConstraints = NO;
+                [launchAnimationContainerView addSubview:animationView];
+                
+                NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:animationView
+                                                                                   attribute:NSLayoutAttributeWidth
+                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                      toItem:nil
+                                                                                   attribute:NSLayoutAttributeNotAnAttribute
+                                                                                  multiplier:1
+                                                                                    constant:170];
+                
+                NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:animationView
+                                                                                    attribute:NSLayoutAttributeHeight
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:nil
+                                                                                    attribute:NSLayoutAttributeNotAnAttribute
+                                                                                   multiplier:1
+                                                                                     constant:170];
+                
+                NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:animationView
+                                                                                     attribute:NSLayoutAttributeCenterX
+                                                                                     relatedBy:NSLayoutRelationEqual
+                                                                                        toItem:launchAnimationContainerView
+                                                                                     attribute:NSLayoutAttributeCenterX
+                                                                                    multiplier:1
+                                                                                      constant:0];
+                
+                NSLayoutConstraint* centerYConstraint = [NSLayoutConstraint constraintWithItem:animationView
+                                                                                     attribute:NSLayoutAttributeCenterY
+                                                                                     relatedBy:NSLayoutRelationEqual
+                                                                                        toItem:launchAnimationContainerView
+                                                                                     attribute:NSLayoutAttributeCenterY
+                                                                                    multiplier:3.0/4.0
+                                                                                      constant:0];
+                
+                [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
+            }
+        }
+        else if (launchAnimationContainerView)
+        {
+            [launchAnimationContainerView removeFromSuperview];
+            launchAnimationContainerView = nil;
+        }
+    }
+}
+
 /**
  Check the existence of device id.
  */
@@ -901,7 +991,7 @@
 {
     [super hideSearch:animated];
 
-    createNewRoomImageView.hidden = NO;
+    createNewRoomImageView.hidden = self.isHidden;
     tableViewMaskLayer.hidden = NO;
     self.backgroundImageView.hidden = YES;
 
