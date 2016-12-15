@@ -346,7 +346,12 @@
         }
         
         // Retrieve member's devices
-        devicesArray = [self.mxRoom.mxSession.crypto storedDevicesForUser:self.mxRoomMember.userId];
+        [self.mxRoom.mxSession.crypto devicesForUser:self.mxRoomMember.userId complete:^(NSArray<MXDeviceInfo *> *devices) {
+            devicesArray = devices;
+
+            // Reload the full table to take into account a potential change on a device status.
+            [super updateMemberInfo];
+        }];
     }
     
     // Complete data update and reload table view
@@ -934,8 +939,12 @@
     }
     else
     {
-        [self.mxRoom.mxSession.crypto setDeviceVerification:verificationStatus forDevice:deviceTableViewCell.deviceInfo.deviceId ofUser:self.mxRoomMember.userId];
-        [self updateMemberInfo];
+        [self.mxRoom.mxSession.crypto setDeviceVerification:verificationStatus
+                                                  forDevice:deviceTableViewCell.deviceInfo.deviceId
+                                                     ofUser:self.mxRoomMember.userId
+                                                    success:^{
+                                                        [self updateMemberInfo];
+                                                    } failure:nil];
     }
 }
 

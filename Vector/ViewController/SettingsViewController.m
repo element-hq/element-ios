@@ -27,6 +27,8 @@
 #import <Photos/Photos.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "OLMKit/OLMKit.h"
+
 enum {
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
@@ -591,7 +593,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
                                                      attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    NSString *fingerprint = account.mxSession.crypto.olmDevice.deviceEd25519Key;
+    NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:fingerprint ? fingerprint : @""
                                                      attributes:@{NSForegroundColorAttributeName : kVectorTextColorBlack,

@@ -45,8 +45,7 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
     }
     else
     {
-        MXRoom *room = [session roomWithRoomId:event.roomId];
-        MXDeviceInfo *deviceInfo = [room eventDeviceInfo:event];
+        MXDeviceInfo *deviceInfo = [session.crypto eventDeviceInfo:event];
         
         if (deviceInfo)
         {
