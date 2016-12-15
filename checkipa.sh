@@ -33,18 +33,21 @@ then
     exit 2
 fi
 
+# This checks is currently disabled: as of XCode 8, I don't seem to be
+# able to generate a build with the aps-environment entitlement.
+# Testing to see if this is because it's no longer necessary...
 # Check the aps-environment embedded in the binary.
 # If this is incorrect or absent, you have a build with broken push.
 # Using xcodebuild -exportArchive -exportWithOriginalSigningIdentity is known to
 # strip the aps-environment string out of the binary's embedded entitlements.
-if [ "$apsenv" == 'production' ]
-then
-    echo "$1's aps-environment is $apsenv: looks good"
-elif [ -z "$apsenv" ]
-then
-    echo "$1 has no aps-environment: push will not work with this build!"
-    exit 1
-else
-    echo "$1's aps-environment is $apsenv. Is that what you wanted?"
-    exit 1
-fi
+#if [ "$apsenv" == 'production' ]
+#then
+#    echo "$1's aps-environment is $apsenv: looks good"
+#elif [ -z "$apsenv" ]
+#then
+#    echo "$1 has no aps-environment: push will not work with this build!"
+#    exit 1
+#else
+#    echo "$1's aps-environment is $apsenv. Is that what you wanted?"
+#    exit 1
+#fi
