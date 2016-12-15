@@ -942,9 +942,9 @@
         [self.mxRoom.mxSession.crypto setDeviceVerification:verificationStatus
                                                   forDevice:deviceTableViewCell.deviceInfo.deviceId
                                                      ofUser:self.mxRoomMember.userId
-                                                    success:nil failure:nil
-         ];
-        [self updateMemberInfo];
+                                                    success:^{
+                                                        [self updateMemberInfo];
+                                                    } failure:nil];
     }
 }
 
