@@ -229,7 +229,8 @@ static RageShakeManager* sharedInstance = nil;
             [message appendFormat:@"homeServerURL: %@\n", account.mxCredentials.homeServer];
 
             // e2e information
-            [message appendFormat:@"e2e device id: %@\n", account.mxCredentials.deviceId];
+            [message appendFormat:@"e2e device id : %@\n", account.mxCredentials.deviceId];
+            [message appendFormat:@"e2e device key: %@\n", account.mxSession.crypto.deviceEd25519Key];
        }
         
         [message appendFormat:@"------------------------------\n"];
