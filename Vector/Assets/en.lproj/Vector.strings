@@ -212,7 +212,7 @@
 "settings_title" = "Settings";
 "account_logout_all" = "Logout all accounts";
 
-"settings_config_no_build_info" = "(no build info)";
+"settings_config_no_build_info" = "No build info";
 "settings_mark_all_as_read" = "Mark all messages as read";
 "settings_clear_cache" = "Clear cache";
 "settings_config_home_server" = "Home server is %@";
