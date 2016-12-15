@@ -1743,7 +1743,7 @@
 				TargetAttributes = {
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 884E442RN2;
+						ProvisioningStyle = Manual;
 					};
 					F094A9BD1B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
@@ -2367,7 +2367,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Vector/Vector.entitlements;
-				DEVELOPMENT_TEAM = 884E442RN2;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Vector/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -2384,7 +2384,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Vector/Vector.entitlements;
-				DEVELOPMENT_TEAM = 884E442RN2;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Vector/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
