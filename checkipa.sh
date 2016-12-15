@@ -35,7 +35,9 @@ fi
 
 # This checks is currently disabled: as of XCode 8, I don't seem to be
 # able to generate a build with the aps-environment entitlement.
-# Testing to see if this is because it's no longer necessary...
+# Push still seeems to work with these builds so it appears the absence
+# of this entitlement no longer indicates a build with broken push.
+
 # Check the aps-environment embedded in the binary.
 # If this is incorrect or absent, you have a build with broken push.
 # Using xcodebuild -exportArchive -exportWithOriginalSigningIdentity is known to
