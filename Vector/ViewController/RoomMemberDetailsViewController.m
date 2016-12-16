@@ -704,6 +704,7 @@
                 [roomCell render:room];
             }
             roomCell.directRoomIcon.hidden = NO;
+            roomCell.encryptedRoomIcon.hidden = !room.state.isEncrypted;
         }
         else
         {

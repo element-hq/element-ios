@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -17,7 +21,7 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
                         <rect key="frame" x="13" y="15" width="42" height="42"/>
-                        <color key="backgroundColor" white="0.89720269880000003" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.89720267057418823" green="0.89720267057418823" blue="0.89720267057418823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="7Ys-gS-ja8"/>
                             <constraint firstAttribute="height" constant="42" id="WPC-tL-hnM"/>
@@ -29,7 +33,7 @@
                             <constraint firstAttribute="height" constant="21" id="BeP-eL-JKM"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LastEventDescription" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
@@ -38,7 +42,7 @@
                             <constraint firstAttribute="height" constant="20" id="qI2-ud-qcA"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tjf-WP-vTl" userLabel="buttonsContainer">
@@ -46,18 +50,18 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fc3-Id-aaG" userLabel="Left Button">
                                 <rect key="frame" x="0.0" y="0.0" width="229" height="30"/>
-                                <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <state key="normal" title="Left button">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lGf-lB-FsE" userLabel="Right Button">
                                 <rect key="frame" x="249" y="0.0" width="229" height="30"/>
-                                <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <state key="normal" title="Right Button">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                         </subviews>
@@ -79,11 +83,11 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ztl-w2-d20">
                                 <rect key="frame" x="11" y="2" width="5" height="17"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="27" id="1PJ-E8-qkY"/>
                             <constraint firstItem="Ztl-w2-d20" firstAttribute="centerX" secondItem="gCG-UR-b2u" secondAttribute="centerX" id="jzA-xv-12e"/>
@@ -98,6 +102,13 @@
                             <constraint firstAttribute="height" constant="13" id="l9u-Hu-qLp"/>
                         </constraints>
                     </imageView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="hVY-f3-80Y">
+                        <rect key="frame" x="50" y="42" width="11" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="11" id="0fX-ec-zEX"/>
+                            <constraint firstAttribute="height" constant="13" id="w8X-7u-pcM"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="1ka-cr-uZP"/>
@@ -105,23 +116,26 @@
                     <constraint firstItem="09l-aN-CyW" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="18" id="Cx2-7s-VlW"/>
                     <constraint firstItem="09l-aN-CyW" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="50" id="Ofc-DX-xoh"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
+                    <constraint firstItem="hVY-f3-80Y" firstAttribute="centerY" secondItem="dQt-mN-T6b" secondAttribute="centerY" id="RM0-3J-ihk"/>
                     <constraint firstItem="gCG-UR-b2u" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="Vb6-hc-Bsk"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
                     <constraint firstAttribute="trailing" secondItem="gCG-UR-b2u" secondAttribute="trailing" constant="10" id="Zf3-3f-SWg"/>
                     <constraint firstItem="gCG-UR-b2u" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="4" id="e2Q-RZ-IF2"/>
                     <constraint firstAttribute="trailing" secondItem="tjf-WP-vTl" secondAttribute="trailing" constant="54" id="kFW-Fa-ibz"/>
+                    <constraint firstItem="hVY-f3-80Y" firstAttribute="leading" secondItem="09l-aN-CyW" secondAttribute="leading" id="qEj-Zq-zEL"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
                     <constraint firstItem="tjf-WP-vTl" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="13" id="wEB-VM-vz8"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="tjf-WP-vTl" secondAttribute="bottom" constant="10" id="NTY-0b-Ylt"/>
                 <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="L2L-l5-wPx" secondAttribute="top" constant="15" id="uLf-cg-Vge"/>
             </constraints>
             <connections>
                 <outlet property="directRoomIcon" destination="09l-aN-CyW" id="yLs-vd-4OO"/>
+                <outlet property="encryptedRoomIcon" destination="hVY-f3-80Y" id="wyu-Sn-VaV"/>
                 <outlet property="lastEventDescription" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
                 <outlet property="leftButton" destination="Fc3-Id-aaG" id="cx4-98-B32"/>
                 <outlet property="noticeBadgeView" destination="gCG-UR-b2u" id="hTT-qW-DMa"/>
@@ -133,5 +147,6 @@
     </objects>
     <resources>
         <image name="direct_icon.png" width="11" height="13"/>
+        <image name="e2e_verified.png" width="10" height="12"/>
     </resources>
 </document>

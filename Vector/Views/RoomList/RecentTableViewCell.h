@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIView *missedNotifAndUnreadIndicator;
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *directRoomIcon;
+@property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
 
 @property (weak, nonatomic) IBOutlet UILabel *missedNotifAndUnreadBadgeLabel;
 @property (weak, nonatomic) IBOutlet UIView  *missedNotifAndUnreadBadgeBgView;

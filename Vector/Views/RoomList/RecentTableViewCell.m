@@ -128,7 +128,9 @@
         self.roomAvatar.backgroundColor = [UIColor clearColor];
         
         self.directRoomIcon.hidden = !roomCellData.roomDataSource.room.isDirect;
-        
+
+        self.encryptedRoomIcon.hidden = !roomCellData.roomDataSource.room.state.isEncrypted;
+
         [roomCellData.roomDataSource.room setRoomAvatarImageIn:self.roomAvatar];
     }
     else
