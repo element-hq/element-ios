@@ -147,6 +147,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      Currently displayed "Call not supported" alert.
      */
     MXKAlert *noCallSupportAlert;
+
+    /**
+     Prompt to ask the user to log in again.
+     */
+    MXKAlert *cryptoDataCorruptedAlert;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -356,6 +361,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [noCallSupportAlert dismiss:NO];
         noCallSupportAlert = nil;
     }
+
+    if (cryptoDataCorruptedAlert)
+    {
+        [cryptoDataCorruptedAlert dismiss:NO];
+        cryptoDataCorruptedAlert = nil;
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -467,6 +478,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [self showErrorAsAlert:note.object];
         
     }];
+
+    // Observe crypto data storage corruption
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSessionCryptoDidCorruptData:) name:kMXSessionCryptoDidCorruptDataNotification object:nil];
     
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -544,6 +558,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
                     [self showNotificationAlert:noCallSupportAlert];
+                }
+                else if (cryptoDataCorruptedAlert)
+                {
+                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible log in again");
+                    [self showNotificationAlert:cryptoDataCorruptedAlert];
                 }
                 // Check whether an error notification is pending
                 else if (_errorNotification)
@@ -638,6 +657,47 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         alert.sourceView = self.window.rootViewController.view;
         [alert showInViewController:self.window.rootViewController];
+    }
+}
+
+- (void)onSessionCryptoDidCorruptData:(NSNotification *)notification
+{
+    NSString *userId = notification.object;
+
+    MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
+    if (account)
+    {
+        if (cryptoDataCorruptedAlert)
+        {
+            [cryptoDataCorruptedAlert dismiss:NO];
+        }
+
+        cryptoDataCorruptedAlert = [[MXKAlert alloc] initWithTitle:nil
+                                                           message:NSLocalizedStringFromTable(@"e2e_need_log_in_again", @"Vector", nil)
+                                                             style:MXKAlertStyleAlert];
+
+        __weak typeof(self) weakSelf = self;
+
+        cryptoDataCorruptedAlert.cancelButtonIndex = [cryptoDataCorruptedAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"later"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->cryptoDataCorruptedAlert = nil;
+            }
+
+        }];
+
+        [cryptoDataCorruptedAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"settings_sign_out"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->cryptoDataCorruptedAlert = nil;
+
+            [[MXKAccountManager sharedManager] removeAccount:account completion:nil];
+
+        }];
+
+        [self showNotificationAlert:cryptoDataCorruptedAlert];
     }
 }
 
