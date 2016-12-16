@@ -1,3 +1,24 @@
+Changes in 0.3.5 (2016-12-19)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.4).
+ * Update Riot icons.
+ * Crypto: many improvements (including no more UI freeze) and bug fixes in sdk.
+ * Crypto: Show a popup when log out and in is required
+ * Room member details: Add devices sections.
+ * User settings: Display the cryptography info before the devices list.
+ 
+Bug fixes:
+ * Voip : decline call when room opened freeze riot (#764).
+ * Wrong room name of a direct chat in user's profile (#824).
+ * Direct Message: No little green man in direct chats from member's detail (#781).
+ * Messages: swipe is broken when user did try to swipe on invited room (#838).
+ * Chat screen - Encrypted room: the encryption icon may not be aligned with the last sent message.
+ * Recents: App crashes on recents.
+ * Messages: App crashes during drag and drop.
+ * Possible fix of app crash on exception: "UITableView dataSource is not set".
+
 Changes in 0.3.4 (2016-11-23)
 ===============================================
 
