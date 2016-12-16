@@ -76,13 +76,7 @@
                 }
                 
                 NSString *url = bubbleData.attachment.thumbnailURL;
-                
-                UIImage *preview = nil;
-                if (bubbleData.attachment.previewURL)
-                {
-                    NSString *cacheFilePath = [MXMediaManager cachePathForMediaWithURL:bubbleData.attachment.previewURL andType:mimetype inFolder:self.attachmentImageView.mediaFolder];
-                    preview = [MXMediaManager loadPictureFromFilePath:cacheFilePath];
-                }
+                UIImage *preview = bubbleData.attachment.previewImage;
                 
                 if (url.length || preview)
                 {

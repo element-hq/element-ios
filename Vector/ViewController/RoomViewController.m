@@ -1555,10 +1555,11 @@
             }
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView]
-                 && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event.sentState == MXEventSentStateFailed)
+                 && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventSentState == MXEventSentStateFailed)
         {
             // Shortcut: when clicking on an unsent media, show the action sheet to resend it
-            [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event}];
+            MXEvent *selectedEvent = [self.roomDataSource eventWithEventId:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId];
+            [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
         }
         else if ([actionIdentifier isEqualToString:kRoomEncryptedDataBubbleCellTapOnEncryptionIcon])
         {
@@ -1753,10 +1754,7 @@
                 {
                     [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_upload", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-                        [strongSelf cancelEventSelection];
-                        
-                        // TODO: Cancel the encryption if any.
+                        // TODO cancel the attachment encryption if it is in progress.
                         
                         // Get again the loader
                         MXMediaLoader *loader = [MXMediaManager existingUploaderWithId:uploadId];
@@ -1766,6 +1764,19 @@
                         }
                         // Hide the progress animation
                         roomBubbleTableViewCell.progressView.hidden = YES;
+                        
+                        if (weakSelf)
+                        {
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            strongSelf->currentAlert = nil;
+                            
+                            // Remove the outgoing message and its related cached file.
+                            [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath error:nil];
+                            [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheThumbnailPath error:nil];
+                            [strongSelf.roomDataSource removeEventWithEventId:selectedEvent.eventId];
+                            
+                            [strongSelf cancelEventSelection];
+                        }
                         
                     }];
                 }
@@ -1807,7 +1818,7 @@
     }
 
     // Check status of the selected event
-    if (selectedEvent.sentState != MXEventSentStateSending && selectedEvent.sentState != MXEventSentStateFailed)
+    if (selectedEvent.sentState == MXEventSentStateSent)
     {
         // Check whether download is in progress
         if (level == 0 && selectedEvent.isMediaAttachment)
