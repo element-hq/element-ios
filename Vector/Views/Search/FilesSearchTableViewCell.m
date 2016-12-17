@@ -54,7 +54,18 @@
         if (bubbleData.attachment)
         {
             self.title.text = bubbleData.attachment.originalFileName;
-            self.date.text = [bubbleData.eventFormatter dateStringFromEvent:bubbleData.attachment.event withTime:NO];
+            
+            // In case of attachment, the bubble data is composed by only one component.
+            if (bubbleData.bubbleComponents.count)
+            {
+                MXKRoomBubbleComponent *component = bubbleData.bubbleComponents.firstObject;
+                self.date.text = [bubbleData.eventFormatter dateStringFromEvent:component.event withTime:NO];
+            }
+            else
+            {
+                self.date.text = nil;
+            }
+            
             self.message.text = bubbleData.senderDisplayName;
             
             self.attachmentImageView.image = nil;
