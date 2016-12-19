@@ -187,18 +187,26 @@ static RageShakeManager* sharedInstance = nil;
 
         mailComposer = [[MFMailComposeViewController alloc] init];
 
-        if ([MXLogger crashLog]) {
-            [mailComposer setSubject:[NSString stringWithFormat:@"%@ crash report", appDisplayName]];
-        }
-        else {
-            [mailComposer setSubject:[NSString stringWithFormat:@"%@ bug report", appDisplayName]];
-        }
-
-        [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@riot.im"]];
-        
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
         NSString* build = [AppDelegate theDelegate].build;
-        
+
+        NSMutableString* subject;
+        if ([MXLogger crashLog]) {
+            subject = [NSMutableString stringWithFormat:@"[iOS] %@ crash report - %@", appDisplayName, appVersion];
+        }
+        else {
+            subject = [NSMutableString stringWithFormat:@"[iOS] %@ bug report - %@", appDisplayName, appVersion];
+        }
+
+        // Add the build version to the subject if the app does not come from app store
+        if (![build containsString:@"master"]) {
+            [subject appendFormat:@" (%@)", build];
+        }
+
+        [mailComposer setSubject:subject];
+
+        [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@riot.im"]];
+
         NSMutableString* message = [[NSMutableString alloc] init];
         
         [message appendFormat:@"Something went wrong on my Matrix client: \n\n\n"];
@@ -212,14 +220,18 @@ static RageShakeManager* sharedInstance = nil;
         for (MXKAccount* account in mxAccounts) {
             NSString *disabled = account.disabled ? @" (disabled)" : @"";
             
-            [message appendFormat:@"userId: %@%@\n", account.mxCredentials.userId, disabled];
+            [message appendFormat:@"user id: %@%@\n", account.mxCredentials.userId, disabled];
             if (account.mxSession.myUser.displayname)
             {
                 [message appendFormat:@"displayname: %@\n", account.mxSession.myUser.displayname];
             }
             
             [message appendFormat:@"homeServerURL: %@\n", account.mxCredentials.homeServer];
-        }
+
+            // e2e information
+            [message appendFormat:@"e2e device id : %@\n", account.mxCredentials.deviceId];
+            [message appendFormat:@"e2e device key: %@\n", account.mxSession.crypto.deviceEd25519Key];
+       }
         
         [message appendFormat:@"------------------------------\n"];
         [message appendFormat:@"Application info\n"];
@@ -233,7 +245,7 @@ static RageShakeManager* sharedInstance = nil;
         [message appendFormat:@"Device info\n"];
         [message appendFormat:@"model: %@\n", [GBDeviceInfo deviceInfo].modelString];
         [message appendFormat:@"operatingSystem: %@ %@\n", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
-        
+
         [mailComposer setMessageBody:message isHTML:NO];
 
         // Attach image only if required
