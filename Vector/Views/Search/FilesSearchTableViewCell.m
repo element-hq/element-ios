@@ -54,7 +54,18 @@
         if (bubbleData.attachment)
         {
             self.title.text = bubbleData.attachment.originalFileName;
-            self.date.text = [bubbleData.eventFormatter dateStringFromEvent:bubbleData.attachment.event withTime:NO];
+            
+            // In case of attachment, the bubble data is composed by only one component.
+            if (bubbleData.bubbleComponents.count)
+            {
+                MXKRoomBubbleComponent *component = bubbleData.bubbleComponents.firstObject;
+                self.date.text = [bubbleData.eventFormatter dateStringFromEvent:component.event withTime:NO];
+            }
+            else
+            {
+                self.date.text = nil;
+            }
+            
             self.message.text = bubbleData.senderDisplayName;
             
             self.attachmentImageView.image = nil;
@@ -76,13 +87,7 @@
                 }
                 
                 NSString *url = bubbleData.attachment.thumbnailURL;
-                
-                UIImage *preview = nil;
-                if (bubbleData.attachment.previewURL)
-                {
-                    NSString *cacheFilePath = [MXMediaManager cachePathForMediaWithURL:bubbleData.attachment.previewURL andType:mimetype inFolder:self.attachmentImageView.mediaFolder];
-                    preview = [MXMediaManager loadPictureFromFilePath:cacheFilePath];
-                }
+                UIImage *preview = bubbleData.attachment.previewImage;
                 
                 if (url.length || preview)
                 {
