@@ -49,6 +49,7 @@
         self.subTitleTextColor = kVectorTextColorGray;
         self.prefixTextColor = kVectorTextColorGray;
         self.bingTextColor = kVectorColorPinkRed;
+        self.encryptingTextColor = kVectorColorGreen;
         self.sendingTextColor = kVectorTextColorGray;
         self.errorTextColor = kVectorColorRed;
         
