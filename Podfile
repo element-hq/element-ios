@@ -22,7 +22,7 @@ pod 'MatrixKit', '0.4.3'
 #pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
 #pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
-pod 'GBDeviceInfo', '~> 4.1.0'
+pod 'GBDeviceInfo', '~> 4.2.2'
 
 pod 'GoogleAnalytics'
 
