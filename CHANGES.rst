@@ -3,11 +3,15 @@ Changes in 0.3.5 (2016-12-19)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.4).
- * Update Riot icons.
+ * Update Riot icons. 
+ * Launch screen is now animated.
  * Crypto: many improvements (including no more UI freeze) and bug fixes in sdk.
- * Crypto: Show a popup when log out and in is required
+ * Crypto: Show a popup when log out and in is required.
+ * Chat screen - Encrypted room: messages being encrypted are now displayed in green.
  * Room member details: Add devices sections.
  * User settings: Display the cryptography info before the devices list.
+ * Update rageshake email content.
+ * Recognise iPhone7.
  
 Bug fixes:
  * Voip : decline call when room opened freeze riot (#764).
