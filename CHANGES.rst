@@ -1,3 +1,9 @@
+Changes in 0.3.6 (2016-12-23)
+===============================================
+
+Improvements:
+ * Add descriptions for access permissions to Camera, Microphone, Photo Gallery and Contacts.
+
 Changes in 0.3.5 (2016-12-19)
 ===============================================
 
