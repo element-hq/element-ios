@@ -71,6 +71,7 @@
     
     // The launch animation container view
     UIView *launchAnimationContainerView;
+    NSDate *launchAnimationStart;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -805,10 +806,14 @@
                 [NSLayoutConstraint activateConstraints:@[widthConstraint2, heightConstraint2, centerXConstraint2, centerYConstraint2]];
 
                 [activityIndicator startAnimating];
+
+                launchAnimationStart = [NSDate date];
             }
         }
         else if (launchAnimationContainerView)
         {
+            NSLog(@"[HomeViewController] LaunchAnimation was shown for %.3fms", [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000);
+
             [launchAnimationContainerView removeFromSuperview];
             launchAnimationContainerView = nil;
         }
