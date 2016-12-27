@@ -2202,9 +2202,9 @@
         {
             RoomMemberDetailsViewController *memberViewController = pushedViewController;
 
-            // Set delegate to handle action on member (start chat, memtion)
+            // Set delegate to handle action on member (start chat, mention)
             memberViewController.delegate = self;
-            memberViewController.enableMention = YES;
+            memberViewController.enableMention = (self.inputToolbarView != nil);
             memberViewController.enableVoipCall = NO;
 
             [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
