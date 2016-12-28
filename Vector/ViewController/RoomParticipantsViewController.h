@@ -52,7 +52,9 @@
      */
     NSInteger participantsSection;
     NSInteger invitedSection;
-    NSInteger invitableSection;
+    NSInteger invitableSectionSearchInput;
+    NSInteger invitableSectionAddressBookContacts;
+    NSInteger invitableSectionMatrixContacts;
     
     /**
      The current list of joined members.
