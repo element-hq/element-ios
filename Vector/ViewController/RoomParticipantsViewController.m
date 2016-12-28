@@ -826,6 +826,21 @@
             // Display by default all the contacts who share a private room with the current user
             invitableContacts = [NSMutableArray arrayWithArray:[[MXKContactManager sharedManager] privateMatrixContacts:self.mxRoom.mxSession]];
             
+            // Remove the current participants
+            for (NSUInteger index = 0; index < invitableContacts.count;)
+            {
+                MXKContact* contact = invitableContacts[index];
+                if ([contactsById objectForKey:contact.matrixIdentifiers.firstObject] != nil)
+                {
+                    [invitableContacts removeObject:contact];
+                }
+                else
+                {
+                    // Next
+                    index ++;
+                }
+            }
+            
             // Sort alphabetically this list of contacts
             [self sortAlphabeticallyInvitableContacts];
         }
