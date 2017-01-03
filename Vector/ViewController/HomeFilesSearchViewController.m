@@ -31,14 +31,19 @@
 
 @implementation HomeFilesSearchViewController
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
     // Register cell class used to display the files search result
     [self.searchTableView registerClass:FilesSearchTableViewCell.class forCellReuseIdentifier:FilesSearchTableViewCell.defaultReuseIdentifier];

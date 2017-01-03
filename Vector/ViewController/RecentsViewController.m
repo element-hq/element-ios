@@ -79,15 +79,20 @@
     self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
 }
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
     
     // Register here the customized cell view class used to render recents
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
