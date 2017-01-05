@@ -43,11 +43,14 @@
     // HTTP Request
     MXHTTPOperation *roomCreationRequest;
     
-    // Search session
-    NSString *currentSearchText;
-    UIView* searchBarSeparator;
+    // Search processing
+    dispatch_queue_t searchProcessingQueue;
+    NSUInteger searchProcessingCount;
+    NSString *searchProcessingText;
+    NSMutableArray<MXKContact*> *searchProcessingContacts;
     
     // Search results
+    NSString *currentSearchText;
     NSMutableArray<MXKContact*> *invitableContacts;
     
     // Contact instances by matrix user id, or email address.
@@ -95,6 +98,12 @@
     
     // Prepare room participants
     participants = [NSMutableArray array];
+    
+    // Prepare search session
+    searchProcessingQueue = dispatch_queue_create("StartChatViewController", DISPATCH_QUEUE_SERIAL);
+    searchProcessingCount = 0;
+    searchProcessingText = nil;
+    searchProcessingContacts = nil;
 }
 
 - (void)viewDidLoad
@@ -191,6 +200,9 @@
         [currentAlert dismiss:NO];
         currentAlert = nil;
     }
+    
+    searchProcessingQueue = nil;
+    searchProcessingContacts = nil;
     
     [super destroy];
 }
@@ -306,7 +318,7 @@
     [participantsById setObject:userContact forKey:self.mainSession.myUser.userId];
 }
 
-- (void)sortInvitableContacts
+- (void)sortContacts:(NSMutableArray*)contacts
 {
     // Sort invitable contacts by displaying local email first
     // ...and then alphabetically.
@@ -328,7 +340,7 @@
     };
     
     // Sort invitable contacts list
-    [invitableContacts sortUsingComparator:comparator];
+    [contacts sortUsingComparator:comparator];
 }
 
 #pragma mark - UITableView data source
@@ -363,7 +375,7 @@
             invitableContacts = [NSMutableArray arrayWithArray:[[MXKContactManager sharedManager] privateMatrixContacts:self.mainSession]];
             
             // Sort the refreshed list of the invitable contacts
-            [self sortInvitableContacts];
+            [self sortContacts:invitableContacts];
         }
         
         count = invitableContacts.count;
@@ -727,95 +739,123 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     // Update search results.
-    NSMutableArray<MXKContact*> *contacts;
-    
     searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
-    if (currentSearchText.length && [searchText hasPrefix:currentSearchText])
-    {
-        contacts = invitableContacts;
-    }
-    else if (searchText.length)
-    {
-        // Retrieve all known matrix users
-        NSArray *matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
+    searchProcessingCount++;
+    [self startActivityIndicator];
+    
+    dispatch_async(searchProcessingQueue, ^{
         
-        // Retrieve all known email addresses from local contacts
-        NSArray *localEmailContacts = [MXKContactManager sharedManager].localEmailContacts;
-        
-        contacts = [NSMutableArray arrayWithCapacity:(matrixContacts.count + localEmailContacts.count)];
-        
-        // Add first email contacts
-        for (MXKContact* contact in localEmailContacts)
+        if (!searchText.length)
         {
-            // Remove the current emails listed in participants.
-            if ([participantsById objectForKey:contact.displayName] == nil)
-            {
-                [contacts addObject:contact];
-            }
+            searchProcessingContacts = nil;
         }
-        
-        // Matrix ids: split contacts with several ids, and remove the current participants.
-        for (MXKContact* contact in matrixContacts)
+        else if (!searchProcessingText.length || [searchText hasPrefix:searchProcessingText] == NO)
         {
-            NSArray *identifiers = contact.matrixIdentifiers;
-            if (identifiers.count > 1)
+            // Retrieve all known matrix users
+            NSArray *matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
+            
+            // Retrieve all known email addresses from local contacts
+            NSArray *localEmailContacts = [MXKContactManager sharedManager].localEmailContacts;
+            
+            searchProcessingContacts = [NSMutableArray arrayWithCapacity:(matrixContacts.count + localEmailContacts.count)];
+            
+            // Add first email contacts
+            for (MXKContact* contact in localEmailContacts)
             {
-                for (NSString *userId in identifiers)
+                // Remove the current emails listed in participants.
+                if ([participantsById objectForKey:contact.displayName] == nil)
                 {
+                    [searchProcessingContacts addObject:contact];
+                }
+            }
+            
+            // Matrix ids: split contacts with several ids, and remove the current participants.
+            for (MXKContact* contact in matrixContacts)
+            {
+                NSArray *identifiers = contact.matrixIdentifiers;
+                if (identifiers.count > 1)
+                {
+                    for (NSString *userId in identifiers)
+                    {
+                        if ([participantsById objectForKey:userId] == nil)
+                        {
+                            MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
+                            [searchProcessingContacts addObject:splitContact];
+                        }
+                    }
+                }
+                else if (identifiers.count)
+                {
+                    NSString *userId = identifiers.firstObject;
                     if ([participantsById objectForKey:userId] == nil)
                     {
-                        MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
-                        [contacts addObject:splitContact];
+                        [searchProcessingContacts addObject:contact];
                     }
                 }
             }
-            else if (identifiers.count)
+        }
+        
+        // Check whether the search input is a valid email or a Matrix user ID
+        BOOL isValidInput = ([MXTools isEmailAddress:searchText] || [MXTools isMatrixUserIdentifier:searchText]);
+        
+        for (NSUInteger index = 0; index < searchProcessingContacts.count;)
+        {
+            MXKContact* contact = searchProcessingContacts[index];
+            
+            if (![contact hasPrefix:searchText])
             {
-                NSString *userId = identifiers.firstObject;
-                if ([participantsById objectForKey:userId] == nil)
+                [searchProcessingContacts removeObjectAtIndex:index];
+            }
+            else
+            {
+                // Ignore the contact if it corresponds to the search input
+                if (isValidInput && [contact.displayName isEqualToString:searchText])
                 {
-                    [contacts addObject:contact];
+                    [searchProcessingContacts removeObjectAtIndex:index];
+                }
+                else
+                {
+                    // Next
+                    index++;
                 }
             }
         }
-    }
-    
-    currentSearchText = searchText;
-    
-    // Check whether the search input is a valid email or a Matrix user ID
-    BOOL isValidInput = ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]);
-    
-    // Update invitable contacts list:
-    invitableContacts = [NSMutableArray array];
-    
-    for (MXKContact* contact in contacts)
-    {
-        if ([contact hasPrefix:currentSearchText])
+        
+        // Sort the refreshed list of the invitable contacts
+        [self sortContacts:searchProcessingContacts];
+        
+        if (searchText.length)
         {
-            // Ignore the contact if it corresponds to the search input
-            if (!isValidInput || [contact.displayName isEqualToString:currentSearchText] == NO)
-            {
-                [invitableContacts addObject:contact];
-            }
+            // Show what the user is typing in a cell. So that he can click on it
+            MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:nil];
+            [searchProcessingContacts insertObject:contact atIndex:0];
         }
-    }
-    
-    // Sort the refreshed list of the invitable contacts
-    [self sortInvitableContacts];
-    
-    if (currentSearchText.length)
-    {
-        // Show what the user is typing in a cell. So that he can click on it
-        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:nil];
-        [invitableContacts insertObject:contact atIndex:0];
-    }
-    
-    // Refresh display
-    [self refreshTableView];
-    
-    // Force scroll to top
-    [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        
+        searchProcessingText = searchText;
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            // Render the search result only if there is no other search in progress.
+            searchProcessingCount --;
+            
+            if (!searchProcessingCount)
+            {
+                [self stopActivityIndicator];
+                
+                // Update the invitable contacts.
+                currentSearchText = searchProcessingText;
+                invitableContacts = searchProcessingContacts;
+                
+                // Refresh display
+                [self refreshTableView];
+                
+                // Force scroll to top
+                [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+            }
+        });
+        
+    });
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
