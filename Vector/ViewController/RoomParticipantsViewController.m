@@ -1773,36 +1773,17 @@
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    self.isAddParticipantSearchBarEditing = YES;
-    searchBar.showsCancelButton = YES;
-    
-    // Handle here local contacts
-#ifdef MX_USE_CONTACTS_SERVER_SYNC
-    // If not requested yet, ask user permission to sync their local contacts
-    if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
-    {
-        [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
-        
-        [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
-            if (granted)
-            {
-                // Allow local contacts sync in order to add address book emails in search result
-                [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-            }
-        }];
-    }
-#else
-    // If not requested yet, ask user permission to access their local contacts
+    // Check whether the access to the local contacts has been already asked.
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
     {
-        // Try to load the local contacts list
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [[MXKContactManager sharedManager] loadLocalContacts];
-            
-        });
+        // Allow by default the local contacts sync in order to discover matrix users.
+        // This setting change will trigger the loading of the local contacts, which will automatically
+        // ask user permission to access their local contacts.
+        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
     }
-#endif
+    
+    self.isAddParticipantSearchBarEditing = YES;
+    searchBar.showsCancelButton = YES;
 
     return YES;
 }

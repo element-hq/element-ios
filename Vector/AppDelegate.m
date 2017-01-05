@@ -41,9 +41,6 @@
 
 #import "CallViewController.h"
 
-// Uncomment the following line to use local contacts to discover matrix users.
-//#define MX_USE_CONTACTS_SERVER_SYNC
-
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -322,7 +319,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self startGoogleAnalytics];
     
     // Configure local contacts management
-    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
+    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = YES;
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -489,9 +486,35 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [account resume];
     }
     
-    // Check if the application is allowed to access the local contacts
+    // Check whether the application is allowed to access the local contacts.
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
     {
+        // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
+        if (![MXKAppSettings standardAppSettings].syncLocalContacts)
+        {
+            // Check whether it was not requested yet.
+            if (![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
+            {
+                [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
+                
+                UIViewController *viewController = self.window.rootViewController.presentedViewController;
+                if (!viewController)
+                {
+                    viewController = self.window.rootViewController;
+                }
+                
+                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:viewController completionHandler:^(BOOL granted) {
+                    
+                    if (granted)
+                    {
+                        // Allow local contacts sync in order to discover matrix users.
+                        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+                    }
+                    
+                }];
+            }
+        }
+
         // Refresh the local contacts list by reloading it
         [[MXKContactManager sharedManager] loadLocalContacts];
     }
