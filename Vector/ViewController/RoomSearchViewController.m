@@ -37,6 +37,13 @@
 
 @implementation RoomSearchViewController
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController).
+}
+
 - (void)viewDidLoad
 {
     // Set up the SegmentedVC tabs before calling [super viewDidLoad]
@@ -55,8 +62,6 @@
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [super viewDidLoad];
-    
-    // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController)
     
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];

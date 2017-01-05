@@ -60,6 +60,16 @@
 
 #pragma mark -
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,11 +80,6 @@
         // Instantiate view controller objects
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
-    
-    // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
 
     [self.contactsTableView registerNib:ContactTableViewCell.nib forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
 

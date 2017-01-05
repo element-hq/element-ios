@@ -85,6 +85,27 @@
 
 #pragma mark -
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    _isAddParticipantSearchBarEditing = NO;
+    
+    // Prepare room participants
+    participants = [NSMutableArray array];
+    
+    // Prepare search session
+    searchProcessingQueue = dispatch_queue_create("StartChatViewController", DISPATCH_QUEUE_SERIAL);
+    searchProcessingCount = 0;
+    searchProcessingText = nil;
+    searchProcessingContacts = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -118,11 +139,6 @@
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
-    // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
-    
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_creation_title", @"Vector", nil);
     
     cancelBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
@@ -138,8 +154,6 @@
         [self addMatrixSession:mxSession];
     }
     
-    _isAddParticipantSearchBarEditing = NO;
-    
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -149,15 +163,6 @@
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
-    
-    // Prepare room participants
-    participants = [NSMutableArray array];
-    
-    // Prepare search session
-    searchProcessingQueue = dispatch_queue_create("StartChatViewController", DISPATCH_QUEUE_SERIAL);
-    searchProcessingCount = 0;
-    searchProcessingText = nil;
-    searchProcessingContacts = nil;
     
     // FIXME: Handle multi accounts
     NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);

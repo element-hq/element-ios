@@ -52,6 +52,16 @@
 
 #pragma mark -
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -66,9 +76,6 @@
     
     // set the default extra
     [self setRoomActivitiesViewClass:nil];
-    
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
     
     // Register first customized cell view classes used to render bubbles
     [self.bubblesTableView registerClass:FilesSearchTableViewCell.class forCellReuseIdentifier:FilesSearchTableViewCell.defaultReuseIdentifier];

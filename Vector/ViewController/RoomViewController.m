@@ -206,12 +206,19 @@
 
 #pragma mark -
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
     
     // Register first customized cell view classes used to render bubbles
     [self.bubblesTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
@@ -308,9 +315,6 @@
     
     // Custom the attachmnet viewer
     [self setAttachmentsViewerClass:AttachmentsViewController.class];
-    
-    // Set rageShake handler
-    self.rageShakeManager = [RageShakeManager sharedManager];
     
     // Update navigation bar items
     self.navigationItem.rightBarButtonItem.target = self;

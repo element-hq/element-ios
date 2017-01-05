@@ -156,6 +156,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [super finalizeInit];
     
     _selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)initWithSession:(MXSession *)session andRoomId:(NSString *)roomId
@@ -197,11 +202,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
     
     updatedItemsDict = [[NSMutableDictionary alloc] init];
     historyVisibilityTickCells = [[NSMutableDictionary alloc] initWithCapacity:4];
