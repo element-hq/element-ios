@@ -90,19 +90,24 @@
 
 #pragma mark -
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
-    adminActionsArray = [[NSMutableArray alloc] init];
-    otherActionsArray = [[NSMutableArray alloc] init];
-    directChatsArray = [[NSMutableArray alloc] init];
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    adminActionsArray = [[NSMutableArray alloc] init];
+    otherActionsArray = [[NSMutableArray alloc] init];
+    directChatsArray = [[NSMutableArray alloc] init];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
     
     self.memberHeaderView.backgroundColor = kVectorColorLightGrey;
     self.roomMemberNameLabel.textColor = kVectorTextColorBlack;

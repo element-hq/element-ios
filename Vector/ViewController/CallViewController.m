@@ -18,6 +18,8 @@
 
 #import "AppDelegate.h"
 
+#import "RageShakeManager.h"
+
 #import "AvatarGenerator.h"
 #import "VectorDesignValues.h"
 
@@ -63,6 +65,16 @@
 }
 
 #pragma mark -
+
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+}
 
 - (void)viewDidLoad
 {

@@ -80,6 +80,13 @@
 
 @implementation HomeViewController
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController).
+}
+
 - (void)viewDidLoad
 {
     // Set up the SegmentedVC tabs before calling [super viewDidLoad]
@@ -110,8 +117,6 @@
 
     [super viewDidLoad];
     
-    // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController)
-
     self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
 
     // Add the Vector background image when search bar is empty
