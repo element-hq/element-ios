@@ -119,6 +119,10 @@
 "directory_searching_title" = "Searching directory...";
 "directory_search_fail" = "Failed to fetch data";
 
+// Contacts
+"contacts_address_book_section" = "LOCAL CONTACTS";
+"contacts_matrix_users_section" = "KNOWN CONTACTS";
+
 // Chat participants
 "room_participants_title" = "Participants";
 "room_participants_add_participant" = "Add participant";
@@ -133,9 +137,6 @@
 "room_participants_invite_another_user" = "Search / invite by name, email, id";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
-
-"room_participants_address_book_section" = "CONTACT BOOK";
-"room_participants_matrix_users_section" = "ROOM CONTACTS";
 "room_participants_invited_section" = "INVITED";
 
 "room_participants_online" = "Online";
