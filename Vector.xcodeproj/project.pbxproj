@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		322574E51D86E0C1009181D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 322574E41D86E0C1009181D3 /* InfoPlist.strings */; };
 		3235CD851C341FAA0084EA40 /* HomeMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235CD841C341FAA0084EA40 /* HomeMessagesSearchViewController.m */; };
 		323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */; };
 		32492DB21C293C8900035C79 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */; };
@@ -25,6 +24,7 @@
 		32C52BF91CBFF50C00863B33 /* RoomPreviewData.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C52BF81CBFF50C00863B33 /* RoomPreviewData.m */; };
 		32D200881C16C2B100A4E396 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D200871C16C2B100A4E396 /* HomeViewController.m */; };
 		32F2E61B1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F2E61A1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m */; };
+		55A8E59C1E23D01000B59231 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55A8E59E1E23D01000B59231 /* InfoPlist.strings */; };
 		71046D5E1C0C639300DCA984 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71046D5D1C0C639300DCA984 /* RoomTitleView.m */; };
 		71046D601C0C86C600DCA984 /* RoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71046D5F1C0C86C600DCA984 /* RoomTitleView.xib */; };
 		71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 71352D581C10569F001D50B0 /* AvatarGenerator.m */; };
@@ -401,7 +401,6 @@
 
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
-		322574E41D86E0C1009181D3 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		3235CD831C341FAA0084EA40 /* HomeMessagesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchViewController.h; sourceTree = "<group>"; };
 		3235CD841C341FAA0084EA40 /* HomeMessagesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeMessagesSearchViewController.m; sourceTree = "<group>"; };
 		323A52091C3183CC00010773 /* UIViewController+VectorSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VectorSearch.h"; sourceTree = "<group>"; };
@@ -434,6 +433,7 @@
 		32F2E6191C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
 		32F2E61A1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
+		55A8E59D1E23D01000B59231 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		71046D5C1C0C639300DCA984 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomTitleView.h; path = RoomTitle/RoomTitleView.h; sourceTree = "<group>"; };
 		71046D5D1C0C639300DCA984 /* RoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomTitleView.m; path = RoomTitle/RoomTitleView.m; sourceTree = "<group>"; };
 		71046D5F1C0C86C600DCA984 /* RoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomTitleView.xib; path = RoomTitle/RoomTitleView.xib; sourceTree = "<group>"; };
@@ -1487,7 +1487,7 @@
 				F0C47EFE1D7766F200A7929E /* Sounds */,
 				F094AA0B1B78E42600B1FBBF /* Localizable.strings */,
 				F094AA0D1B78E42600B1FBBF /* Vector.strings */,
-				322574E41D86E0C1009181D3 /* InfoPlist.strings */,
+				55A8E59E1E23D01000B59231 /* InfoPlist.strings */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -1863,7 +1863,7 @@
 				F023A0111D9034FE00C517FB /* call_audio_mute_on_icon@2x.png in Resources */,
 				F08714D91DC384810075F633 /* start_chat@2x.png in Resources */,
 				F09EAFB01DD2109B009C7EFB /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
-				322574E51D86E0C1009181D3 /* InfoPlist.strings in Resources */,
+				55A8E59C1E23D01000B59231 /* InfoPlist.strings in Resources */,
 				F083C4931D9EAFC500E5246C /* file_photo_icon.png in Resources */,
 				F03BF6C51D8BF5B1002EF6A7 /* selection_tick.png in Resources */,
 				F03BF64A1D8BF5B1002EF6A7 /* admin_icon@2x.png in Resources */,
@@ -2246,6 +2246,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		55A8E59E1E23D01000B59231 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				55A8E59D1E23D01000B59231 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		F094A9B21B78D8F000B1FBBF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
