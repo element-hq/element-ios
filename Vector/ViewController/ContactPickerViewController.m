@@ -152,18 +152,18 @@
 
 - (void)refreshContactsList
 {
-    // Retrieve all known matrix users
+    // Retrieve all the known matrix users
     NSArray *contacts = [NSArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
     
-    // Retrieve all known email addresses from local contacts
-    NSArray *localEmailContacts = [MXKContactManager sharedManager].localEmailContacts;
+    // Retrieve all the local contacts with methods
+    NSArray *localContactsWithMethods = [MXKContactManager sharedManager].localContactsWithMethods;
     
-    matrixContacts = [NSMutableArray arrayWithCapacity:(contacts.count + localEmailContacts.count)];
+    matrixContacts = [NSMutableArray arrayWithCapacity:(contacts.count + localContactsWithMethods.count)];
     
     // Add first email contacts
-    if (localEmailContacts.count)
+    if (localContactsWithMethods.count)
     {
-        [matrixContacts addObjectsFromArray:localEmailContacts];
+        [matrixContacts addObjectsFromArray:localContactsWithMethods];
     }
     
     if (contacts.count)
@@ -330,16 +330,9 @@
         }
         
         // Disambiguate the display name when it appears several times.
-        if (contact.displayName && [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
+        if (contact.displayName)
         {
-            NSArray *identifiers = contact.matrixIdentifiers;
-            if (identifiers.count)
-            {
-                NSString *participantId = identifiers.firstObject;
-                NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
-                
-                contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
-            }
+            participantCell.showMatrixIdInDisplayName = [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
         }
         
         [participantCell render:contact];

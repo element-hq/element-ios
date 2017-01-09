@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "ContactTableViewCell.h"
-
 #import "SegmentedViewController.h"
 
 @class Contact;

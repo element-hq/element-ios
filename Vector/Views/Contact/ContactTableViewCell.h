@@ -14,27 +14,35 @@
  limitations under the License.
  */
 
-#import <MatrixSDK/MatrixSDK.h>
-
-#import "MXKTableViewCell.h"
-#import "MXKCellRendering.h"
-#import "MXKImageView.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  'ContactTableCell' extends MXKTableViewCell.
  */
 @interface ContactTableViewCell : MXKTableViewCell <MXKCellRendering>
+{
+@protected
+    /**
+     The current displayed contact.
+     */
+    MXKContact *contact;
+}
 
 @property (nonatomic) IBOutlet MXKImageView *thumbnailView;
 @property (nonatomic) IBOutlet UIImageView *thumbnailBadgeView;
 @property (nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
-@property (nonatomic) IBOutlet UILabel *lastPresenceLabel;
+@property (nonatomic) IBOutlet UILabel *contactInformationLabel;
 @property (nonatomic) IBOutlet UIView *customAccessoryView;
 
 @property (nonatomic) BOOL showCustomAccessoryView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *customAccessViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *customAccessoryViewLeadingConstraint;
+
+/**
+ Tell whether the matrix id should be added in the contact display name (NO by default)
+ */
+@property (nonatomic) BOOL showMatrixIdInDisplayName;
 
 // The room where the contact is.
 // It is used to display the member information (like invitation)

@@ -210,6 +210,9 @@
 		F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */; };
 		F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsView.m */; };
 		F047DBBA1C576F6600952DA2 /* AuthInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB81C576F6600952DA2 /* AuthInputsView.xib */; };
+		F04ACE031E154C540000B970 /* riot_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F04ACE001E154C540000B970 /* riot_icon.png */; };
+		F04ACE041E154C540000B970 /* riot_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F04ACE011E154C540000B970 /* riot_icon@2x.png */; };
+		F04ACE051E154C540000B970 /* riot_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F04ACE021E154C540000B970 /* riot_icon@3x.png */; };
 		F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */; };
 		F056417C1C7C9FD7002276ED /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
@@ -642,6 +645,9 @@
 		F047DBB61C576F6600952DA2 /* AuthInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsView.h; sourceTree = "<group>"; };
 		F047DBB71C576F6600952DA2 /* AuthInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsView.m; sourceTree = "<group>"; };
 		F047DBB81C576F6600952DA2 /* AuthInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthInputsView.xib; sourceTree = "<group>"; };
+		F04ACE001E154C540000B970 /* riot_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = riot_icon.png; sourceTree = "<group>"; };
+		F04ACE011E154C540000B970 /* riot_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon@2x.png"; sourceTree = "<group>"; };
+		F04ACE021E154C540000B970 /* riot_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon@3x.png"; sourceTree = "<group>"; };
 		F05641781C7C9FD7002276ED /* TableViewCellWithButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithButton.h; path = TableViewCell/TableViewCellWithButton.h; sourceTree = "<group>"; };
 		F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithButton.m; path = TableViewCell/TableViewCellWithButton.m; sourceTree = "<group>"; };
 		F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithButton.xib; path = TableViewCell/TableViewCellWithButton.xib; sourceTree = "<group>"; };
@@ -1138,6 +1144,9 @@
 		F03BF5B41D8BF5B1002EF6A7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F04ACE001E154C540000B970 /* riot_icon.png */,
+				F04ACE011E154C540000B970 /* riot_icon@2x.png */,
+				F04ACE021E154C540000B970 /* riot_icon@3x.png */,
 				F0A4B2EB1E0073A30072D355 /* animatedLogo-0.png */,
 				F0A4B2EC1E0073A30072D355 /* animatedLogo-1.png */,
 				F0A4B2ED1E0073A30072D355 /* animatedLogo-2.png */,
@@ -1747,7 +1756,6 @@
 					};
 					F094A9BD1B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 884E442RN2;
 						TestTargetID = F094A9A11B78D8F000B1FBBF;
 					};
 				};
@@ -1815,6 +1823,7 @@
 				F0A4B2F11E0073A30072D355 /* animatedLogo-1.png in Resources */,
 				F03BF6B41D8BF5B1002EF6A7 /* priorityLow@2x.png in Resources */,
 				F08294691DB503FE00CEAB63 /* direct_icon@2x.png in Resources */,
+				F04ACE041E154C540000B970 /* riot_icon@2x.png in Resources */,
 				F09EAFA01DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F09EAF0B1DCCEE1D009C7EFB /* e2e_verified@3x.png in Resources */,
 				F03BF6971D8BF5B1002EF6A7 /* leave@3x.png in Resources */,
@@ -1942,6 +1951,7 @@
 				F09EAFA61DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				325F6A431C21D20F00C12F51 /* DirectoryRecentTableViewCell.xib in Resources */,
 				F03BF68C1D8BF5B1002EF6A7 /* favouriteOff.png in Resources */,
+				F04ACE031E154C540000B970 /* riot_icon.png in Resources */,
 				F003AA7C1C68A1F6008B430C /* ExpandedRoomTitleView.xib in Resources */,
 				F03BF6751D8BF5B1002EF6A7 /* camera_switch@3x.png in Resources */,
 				F03BF6D01D8BF5B1002EF6A7 /* shrink_icon@3x.png in Resources */,
@@ -2006,6 +2016,7 @@
 				F0CC4DCB1C4E594C003BBE45 /* MediaAlbumContentViewController.xib in Resources */,
 				F0C34B721C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F022285E1C64E356000AF23C /* RoomViewController.xib in Resources */,
+				F04ACE051E154C540000B970 /* riot_icon@3x.png in Resources */,
 				F03BF6BF1D8BF5B1002EF6A7 /* search_bg.png in Resources */,
 				F03BF69B1D8BF5B1002EF6A7 /* main_alias_icon.png in Resources */,
 				F0A4B2F31E0073A30072D355 /* animatedLogo-3.png in Resources */,
@@ -2400,7 +2411,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 884E442RN2;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -2421,7 +2432,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 884E442RN2;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

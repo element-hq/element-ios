@@ -421,16 +421,9 @@
                 contact = participants[index];
                 
                 // Disambiguate the display name when it appears several times.
-                if (contact.displayName && [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
+                if (contact.displayName)
                 {
-                    NSArray *identifiers = contact.matrixIdentifiers;
-                    if (identifiers.count)
-                    {
-                        NSString *participantId = identifiers.firstObject;
-                        NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
-                        
-                        contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
-                    }
+                    participantCell.showMatrixIdInDisplayName = [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
                 }
             }
         }
@@ -454,9 +447,7 @@
                 // Check whether the display name is not already the matrix id
                 if (![contact.displayName isEqualToString:participantId])
                 {
-                    NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
-                    
-                    contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
+                    participantCell.showMatrixIdInDisplayName = YES;
                 }
             }
         }
@@ -600,8 +591,21 @@
             }
             else
             {
-                // This is a text entered by the user, or a local email contact
-                NSString *participantId = contact.displayName;
+                // This is a text entered by the user, or a local contact
+                NSString *participantId;
+                
+                if (contact.emailAddresses.count)
+                {
+                    // This is a local contact, consider the first email by default.
+                    // TODO: Prompt the user to select the right email.
+                    MXKEmail *email = contact.emailAddresses.firstObject;
+                    participantId = email.emailAddress;
+                }
+                else
+                {
+                    // This is the text filled by the user.
+                    participantId = contact.displayName;
+                }
                 
                 // Is it an email or a Matrix user ID?
                 if ([MXTools isEmailAddress:participantId])
@@ -756,12 +760,12 @@
             NSArray *matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
             
             // Retrieve all known email addresses from local contacts
-            NSArray *localEmailContacts = [MXKContactManager sharedManager].localEmailContacts;
+            NSArray *localContactsWithMethods = [MXKContactManager sharedManager].localContactsWithMethods;
             
-            searchProcessingContacts = [NSMutableArray arrayWithCapacity:(matrixContacts.count + localEmailContacts.count)];
+            searchProcessingContacts = [NSMutableArray arrayWithCapacity:(matrixContacts.count + localContactsWithMethods.count)];
             
             // Add first email contacts
-            for (MXKContact* contact in localEmailContacts)
+            for (MXKContact* contact in localContactsWithMethods)
             {
                 // Remove the current emails listed in participants.
                 if ([participantsById objectForKey:contact.displayName] == nil)

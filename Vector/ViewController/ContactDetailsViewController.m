@@ -562,7 +562,7 @@
         directChatsIndex = sectionCount++;
     }
     // Else check whether the contact has been instantiated with an email or a matrix id
-    else if ([MXTools isEmailAddress:_contact.displayName])
+    else if ((!_contact.isMatrixContact && _contact.emailAddresses.count) || [MXTools isEmailAddress:_contact.displayName])
     {
         directChatsIndex = sectionCount++;
     }
@@ -878,7 +878,20 @@
                     // Prepare the invited participant data
                     NSArray *inviteArray;
                     NSArray *invite3PIDArray;
-                    NSString *participantId = _contact.displayName;
+                    NSString *participantId;
+                    
+                    if (_contact.emailAddresses.count)
+                    {
+                        // This is a local contact, consider the first email by default.
+                        // TODO: Prompt the user to select the right email.
+                        MXKEmail *email = _contact.emailAddresses.firstObject;
+                        participantId = email.emailAddress;
+                    }
+                    else
+                    {
+                        // This is the text filled by the user.
+                        participantId = _contact.displayName;
+                    }
                     
                     // Is it an email or a Matrix user ID?
                     if ([MXTools isEmailAddress:participantId])
@@ -908,7 +921,7 @@
                         
                         invite3PIDArray = @[invite3PID];
                     }
-                    else
+                    else //if ([MXTools isMatrixUserIdentifier:participantId])
                     {
                         inviteArray = @[participantId];
                     }
