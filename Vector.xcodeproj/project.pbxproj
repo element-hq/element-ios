@@ -433,7 +433,7 @@
 		32F2E6191C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
 		32F2E61A1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
-		55A8E59D1E23D01000B59231 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		55A8E59F1E23D3E400B59231 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		71046D5C1C0C639300DCA984 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomTitleView.h; path = RoomTitle/RoomTitleView.h; sourceTree = "<group>"; };
 		71046D5D1C0C639300DCA984 /* RoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomTitleView.m; path = RoomTitle/RoomTitleView.m; sourceTree = "<group>"; };
 		71046D5F1C0C86C600DCA984 /* RoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomTitleView.xib; path = RoomTitle/RoomTitleView.xib; sourceTree = "<group>"; };
@@ -2249,7 +2249,7 @@
 		55A8E59E1E23D01000B59231 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				55A8E59D1E23D01000B59231 /* en */,
+				55A8E59F1E23D3E400B59231 /* Base */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
