@@ -46,7 +46,7 @@
     HomeFilesSearchViewController *filesSearchViewController;
     MXKSearchDataSource *filesSearchDataSource;
     
-    ContactPickerViewController *contactsViewController;
+    HomePeopleSearchViewController *contactsViewController;
     MXKContact *selectedContact;
 
     // Display a gradient view above the screen
@@ -104,7 +104,7 @@
 
     // Add search People tab
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
-    contactsViewController = [ContactPickerViewController contactPickerViewController];
+    contactsViewController = [HomePeopleSearchViewController homePeopleSearchViewController];
     contactsViewController.delegate = self;
     [viewControllers addObject:contactsViewController];
     
@@ -1188,9 +1188,9 @@
     [self selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
-#pragma mark - ContactPickerViewControllerDelegate
+#pragma mark - HomePeopleSearchViewControllerDelegate
 
-- (void)contactPickerViewController:(ContactPickerViewController *)contactPickerViewController didSelectContact:(MXKContact*)contact
+- (void)homePeopleSearchViewController:(HomePeopleSearchViewController *)homePeopleSearchViewController didSelectContact:(MXKContact*)contact
 {
     selectedContact = contact;
     

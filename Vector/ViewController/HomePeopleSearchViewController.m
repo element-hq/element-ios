@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "ContactPickerViewController.h"
+#import "HomePeopleSearchViewController.h"
 
 #import "AppDelegate.h"
 
@@ -24,7 +24,7 @@
 
 #import "RageShakeManager.h"
 
-@interface ContactPickerViewController()
+@interface HomePeopleSearchViewController()
 {
     NSMutableArray *matrixContacts;
     
@@ -42,20 +42,20 @@
 
 @end
 
-@implementation ContactPickerViewController
+@implementation HomePeopleSearchViewController
 
 #pragma mark - Class methods
 
 + (UINib *)nib
 {
-    return [UINib nibWithNibName:NSStringFromClass([ContactPickerViewController class])
-                          bundle:[NSBundle bundleForClass:[ContactPickerViewController class]]];
+    return [UINib nibWithNibName:NSStringFromClass([HomePeopleSearchViewController class])
+                          bundle:[NSBundle bundleForClass:[HomePeopleSearchViewController class]]];
 }
 
-+ (instancetype)contactPickerViewController
++ (instancetype)homePeopleSearchViewController
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([ContactPickerViewController class])
-                                          bundle:[NSBundle bundleForClass:[ContactPickerViewController class]]];
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([HomePeopleSearchViewController class])
+                                          bundle:[NSBundle bundleForClass:[HomePeopleSearchViewController class]]];
 }
 
 #pragma mark -
@@ -364,7 +364,7 @@
     
     if (_delegate && selectedContact)
     {
-        [self.delegate contactPickerViewController:self didSelectContact:selectedContact];
+        [self.delegate homePeopleSearchViewController:self didSelectContact:selectedContact];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

@@ -16,27 +16,15 @@
 
 #import "StartChatViewController.h"
 
-#import "VectorDesignValues.h"
-
-#import "RageShakeManager.h"
-
 #import "AppDelegate.h"
-
-#import "AvatarGenerator.h"
 
 @interface StartChatViewController ()
 {
     // Section indexes
     NSInteger participantsSection;
-    NSInteger invitableSectionSearchInput;
-    NSInteger invitableSectionAddressBookContacts;
-    NSInteger invitableSectionMatrixContacts;
     
     // The current list of participants.
     NSMutableArray<MXKContact*> *participants;
-    
-    // The contact used to describe the current user.
-    MXKContact *userContact;
     
     // Navigation bar items
     UIBarButtonItem *cancelBarButtonItem;
@@ -45,28 +33,8 @@
     // HTTP Request
     MXHTTPOperation *roomCreationRequest;
     
-    // Search processing
-    dispatch_queue_t searchProcessingQueue;
-    NSUInteger searchProcessingCount;
-    NSString *searchProcessingText;
-    NSMutableArray<MXKContact*> *searchProcessingAddressBookContacts;
-    NSMutableArray<MXKContact*> *searchProcessingMatrixContacts;
-    
-    // Search results
-    NSString *currentSearchText;
-    NSMutableArray<MXKContact*> *invitableAddressBookContacts;
-    NSMutableArray<MXKContact*> *invitableMatrixContacts;
-    
-    // Contact instances by matrix user id, or email address.
-    NSMutableDictionary<NSString*, MXKContact*> *participantsById;
-    
     // This dictionary tells for each display name whether it appears several times in participants list
     NSMutableDictionary <NSString*, NSNumber*> *isMultiUseNameByDisplayName;
-    
-    MXKAlert *currentAlert;
-    
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 @end
@@ -81,7 +49,7 @@
                           bundle:[NSBundle bundleForClass:[StartChatViewController class]]];
 }
 
-+ (instancetype)roomParticipantsViewController
++ (instancetype)startChatViewController
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass([StartChatViewController class])
                                           bundle:[NSBundle bundleForClass:[StartChatViewController class]]];
@@ -93,22 +61,10 @@
 {
     [super finalizeInit];
     
-    // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
-    
     _isAddParticipantSearchBarEditing = NO;
     
     // Prepare room participants
     participants = [NSMutableArray array];
-    
-    // Prepare search session
-    searchProcessingQueue = dispatch_queue_create("StartChatViewController", DISPATCH_QUEUE_SERIAL);
-    searchProcessingCount = 0;
-    searchProcessingText = nil;
-    searchProcessingAddressBookContacts = nil;
-    searchProcessingMatrixContacts = nil;
 }
 
 - (void)viewDidLoad
@@ -117,7 +73,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     // Check whether the view controller has been pushed via storyboard
-    if (!_tableView)
+    if (!self.tableView)
     {
         // Instantiate view controller objects
         [[[self class] nib] instantiateWithOwner:self options:nil];
@@ -152,13 +108,6 @@
     createBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"start", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
     self.navigationItem.rightBarButtonItem = createBarButtonItem;
     
-    // Add each matrix session, to update the view controller appearance according to mx sessions state
-    NSArray *sessions = [AppDelegate theDelegate].mxSessions;
-    for (MXSession *mxSession in sessions)
-    {
-        [self addMatrixSession:mxSession];
-    }
-    
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -168,12 +117,8 @@
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
 }
 
 - (void)destroy
@@ -186,26 +131,10 @@
     
     cancelBarButtonItem = nil;
     createBarButtonItem = nil;
-
-    invitableAddressBookContacts = nil;
-    invitableMatrixContacts = nil;
-    
-    participantsById = nil;
     
     isMultiUseNameByDisplayName = nil;
     
     participants = nil;
-    userContact = nil;
-    
-    if (currentAlert)
-    {
-        [currentAlert dismiss:NO];
-        currentAlert = nil;
-    }
-    
-    searchProcessingQueue = nil;
-    searchProcessingAddressBookContacts = nil;
-    searchProcessingMatrixContacts = nil;
     
     [super destroy];
 }
@@ -214,9 +143,6 @@
 {
     [super addMatrixSession:mxSession];
     
-    // FIXME: Handle multi accounts
-    NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
-    userContact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:self.mainSession.myUser.userId];
     [self refreshParticipants];
 }
 
@@ -231,16 +157,6 @@
         [tracker set:kGAIScreenName value:@"StartChat"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
-    
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
-        
-    }];
-    
-    // Register on contact update
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView) name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
     
     // Active the search session if the current participant list is empty
     if (!participants.count)
@@ -257,23 +173,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if (currentAlert)
-    {
-        [currentAlert dismiss:NO];
-        currentAlert = nil;
-    }
  
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
-    
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
-    }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
 }
 
 #pragma mark -
@@ -302,15 +204,9 @@
 
 #pragma mark - Internals
 
-- (void)refreshTableView
-{
-    [self.tableView reloadData];
-}
-
 - (void)refreshParticipants
 {
-    // Refer all participants in one dictionary.
-    participantsById = [NSMutableDictionary dictionary];
+    // Refer all participants in ignored contacts dictionary.
     isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
     
     for (MXKContact* contact in participants)
@@ -319,7 +215,7 @@
         if (identifiers.count)
         {
             // Here the contact can only have one identifier
-            [participantsById setObject:contact forKey:identifiers.firstObject];
+            [ignoredContactsByMatrixId setObject:contact forKey:identifiers.firstObject];
         }
         else
         {
@@ -328,13 +224,16 @@
             {
                 // Here the contact can only have one email
                 MXKEmail *email = emails.firstObject;
-                [participantsById setObject:contact forKey:email.emailAddress];
+                [ignoredContactsByEmail setObject:contact forKey:email.emailAddress];
             }
         }
         isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
     }
     
-    [participantsById setObject:userContact forKey:self.mainSession.myUser.userId];
+    if (userContact)
+    {
+        [ignoredContactsByMatrixId setObject:userContact forKey:self.mainSession.myUser.userId];
+    }
 }
 
 #pragma mark - UITableView data source
@@ -343,68 +242,14 @@
 {
     NSInteger count = 0;
     
-    invitableSectionSearchInput = invitableSectionAddressBookContacts = invitableSectionMatrixContacts = participantsSection = -1;
-    
     if (_isAddParticipantSearchBarEditing)
     {
-        if (currentSearchText.length)
-        {
-            invitableSectionSearchInput = count++;
-            
-            if (invitableAddressBookContacts.count)
-            {
-                invitableSectionAddressBookContacts = count++;
-            }
-            
-            if (invitableMatrixContacts.count)
-            {
-                invitableSectionMatrixContacts = count++;
-            }
-        }
-        else
-        {
-            // Display by default the full address book ordered alphabetically, mixing Matrix enabled and non-Matrix enabled users.
-            invitableAddressBookContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].localContactsSplitByContactMethod];
-            
-            // Remove those who are already selected
-            for (NSUInteger index = 0; index < invitableAddressBookContacts.count;)
-            {
-                MXKContact* contact = invitableAddressBookContacts[index];
-                
-                NSArray *identifiers = contact.matrixIdentifiers;
-                if (identifiers.count)
-                {
-                    if ([participantsById objectForKey:identifiers.firstObject])
-                    {
-                        [invitableAddressBookContacts removeObjectAtIndex:index];
-                        continue;
-                    }
-                }
-                else
-                {
-                    NSArray *emails = contact.emailAddresses;
-                    if (emails.count)
-                    {
-                        MXKEmail *email = emails.firstObject;
-                        if ([participantsById objectForKey:email.emailAddress])
-                        {
-                            [invitableAddressBookContacts removeObjectAtIndex:index];
-                            continue;
-                        }
-                    }
-                }
-                
-                index++;
-            }
-            
-            if (invitableAddressBookContacts.count)
-            {
-                invitableSectionAddressBookContacts = count++;
-            }
-        }
+        participantsSection = -1;
+        count = [super numberOfSectionsInTableView:self.tableView];
     }
     else
     {
+        searchInputSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
         participantsSection = count++;
     }
     
@@ -415,45 +260,28 @@
 {
     NSInteger count = 0;
     
-    if (section == invitableSectionSearchInput)
-    {
-        count = 1;
-    }
-    else if (section == invitableSectionAddressBookContacts)
-    {
-        count = invitableAddressBookContacts.count;
-    }
-    else if (section == invitableSectionMatrixContacts)
-    {
-        count = invitableMatrixContacts.count;
-    }
-    else if (section == participantsSection)
+    if (section == participantsSection)
     {
         count = participants.count + 1;
     }
+    else
+    {
+        count = [super tableView:self.tableView numberOfRowsInSection:section];
+    }
+    
     return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier]];
-    
-    if (!participantCell)
-    {
-        participantCell = [[ContactTableViewCell alloc] init];
-    }
-    else
-    {
-        // Restore default values
-        participantCell.accessoryView = nil;
-        participantCell.contentView.alpha = 1;
-        participantCell.userInteractionEnabled = YES;
-    }
-    
-    MXKContact *contact;
+    UITableViewCell *cell;
     
     if (indexPath.section == participantsSection)
     {
+        ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:@"ParticipantTableViewCellId" forIndexPath:indexPath];
+        
+        MXKContact *contact;
+        
         if (indexPath.row == 0)
         {
             // oneself dedicated cell
@@ -476,62 +304,16 @@
         }
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    else if (indexPath.section == invitableSectionSearchInput)
-    {
-        // Show what the user is typing in a cell. So that he can click on it
-        contact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
-        
-        participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    }
-    else if (indexPath.section == invitableSectionAddressBookContacts)
-    {
-        if (indexPath.row < invitableAddressBookContacts.count)
-        {
-            contact = invitableAddressBookContacts[indexPath.row];
-            
-            participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            participantCell.showMatrixIdInDisplayName = YES;
-        }
-    }
-    else if (indexPath.section == invitableSectionMatrixContacts)
-    {
-        if (indexPath.row < invitableMatrixContacts.count)
-        {
-            contact = invitableMatrixContacts[indexPath.row];
-            
-            participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            participantCell.showMatrixIdInDisplayName = YES;
-        }
-    }
-    
-    if (contact)
-    {
         [participantCell render:contact];
         
-        // The search displays contacts to invite. Add a plus icon to the cell
-        // in order to make it more understandable for the end user
-        if (indexPath.section == invitableSectionAddressBookContacts || indexPath.section == invitableSectionMatrixContacts)
-        {
-            participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
-        }
-        else if (indexPath.section == invitableSectionSearchInput)
-        {
-            // This is the text entered by the user
-            // Check whether the search input is a valid email or a Matrix user ID before adding the plus icon.
-            if (![MXTools isEmailAddress:currentSearchText] && ![MXTools isMatrixUserIdentifier:currentSearchText])
-            {
-                participantCell.contentView.alpha = 0.5;
-                participantCell.userInteractionEnabled = NO;
-            }
-            else
-            {
-                participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
-            }
-        }
+        cell = participantCell;
+    }
+    else
+    {
+        cell = [super tableView:self.tableView cellForRowAtIndexPath:indexPath];
     }
     
-    return participantCell;
+    return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -552,48 +334,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == invitableSectionAddressBookContacts || section == invitableSectionMatrixContacts)
-    {
-        return 30.0;
-    }
-    return 0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView* sectionHeader;
+    CGFloat height = 0.0;
     
-    if (section == invitableSectionAddressBookContacts || section == invitableSectionMatrixContacts)
+    if (section != participantsSection)
     {
-        sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
-        sectionHeader.backgroundColor = kVectorColorLightGrey;
-        
-        CGRect frame = sectionHeader.frame;
-        frame.origin.x = 20;
-        frame.origin.y = 5;
-        frame.size.width = sectionHeader.frame.size.width - 10;
-        frame.size.height -= 10;
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-        headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        headerLabel.backgroundColor = [UIColor clearColor];
-        
-        if (section == invitableSectionAddressBookContacts)
-        {
-            headerLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
-        }
-        else if (section == invitableSectionMatrixContacts)
-        {
-            headerLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil);
-        }
-        
-        [sectionHeader addSubview:headerLabel];
+        height = [super tableView:self.tableView heightForHeaderInSection:section];
     }
-    return sectionHeader;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 74.0;
+    
+    return height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -601,17 +349,17 @@
     NSInteger row = indexPath.row;
     MXKContact *mxkContact;
     
-    if (indexPath.section == invitableSectionSearchInput)
+    if (indexPath.section == searchInputSection)
     {
         mxkContact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
     }
-    else if (indexPath.section == invitableSectionAddressBookContacts)
+    else if (indexPath.section == filteredLocalContactsSection)
     {
-        mxkContact = invitableAddressBookContacts[row];
+        mxkContact = filteredLocalContacts[row];
     }
-    else if (indexPath.section == invitableSectionMatrixContacts)
+    else if (indexPath.section == filteredMatrixContactsSection)
     {
-        mxkContact = invitableMatrixContacts[row];
+        mxkContact = filteredMatrixContacts[row];
     }
     
     if (mxkContact)
@@ -839,146 +587,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    // Update search results.
-    searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    searchProcessingCount++;
-    [self startActivityIndicator];
-    
-    dispatch_async(searchProcessingQueue, ^{
-        
-        if (!searchText.length)
-        {
-            searchProcessingAddressBookContacts = nil;
-            searchProcessingMatrixContacts = nil;
-        }
-        else if (!searchProcessingText.length || [searchText hasPrefix:searchProcessingText] == NO)
-        {
-            NSUInteger index;
-
-            // Retrieve all the local contacts
-            searchProcessingAddressBookContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].localContactsSplitByContactMethod];
-            
-            // Remove those who are already selected
-            for (index = 0; index < searchProcessingAddressBookContacts.count;)
-            {
-                MXKContact* contact = searchProcessingAddressBookContacts[index];
-                
-                NSArray *identifiers = contact.matrixIdentifiers;
-                if (identifiers.count)
-                {
-                    if ([participantsById objectForKey:identifiers.firstObject])
-                    {
-                        [searchProcessingAddressBookContacts removeObjectAtIndex:index];
-                        continue;
-                    }
-                }
-                else
-                {
-                    NSArray *emails = contact.emailAddresses;
-                    if (emails.count)
-                    {
-                        MXKEmail *email = emails.firstObject;
-                        if ([participantsById objectForKey:email.emailAddress])
-                        {
-                            [searchProcessingAddressBookContacts removeObjectAtIndex:index];
-                            continue;
-                        }
-                    }
-                }
-                
-                index++;
-            }
-            
-            // Retrieve all known matrix users
-            NSArray *matrixContacts = [MXKContactManager sharedManager].matrixContacts;
-            searchProcessingMatrixContacts = [NSMutableArray arrayWithCapacity:matrixContacts.count];
-            
-            // Matrix ids: split contacts with several ids, and remove the current participants.
-            for (MXKContact* contact in matrixContacts)
-            {
-                NSArray *identifiers = contact.matrixIdentifiers;
-                if (identifiers.count > 1)
-                {
-                    for (NSString *userId in identifiers)
-                    {
-                        if ([participantsById objectForKey:userId] == nil)
-                        {
-                            MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
-                            [searchProcessingMatrixContacts addObject:splitContact];
-                        }
-                    }
-                }
-                else if (identifiers.count)
-                {
-                    NSString *userId = identifiers.firstObject;
-                    if ([participantsById objectForKey:userId] == nil)
-                    {
-                        [searchProcessingMatrixContacts addObject:contact];
-                    }
-                }
-            }
-        }
-        
-        for (NSUInteger index = 0; index < searchProcessingAddressBookContacts.count;)
-        {
-            MXKContact* contact = searchProcessingAddressBookContacts[index];
-            
-            if (![contact hasPrefix:searchText])
-            {
-                [searchProcessingAddressBookContacts removeObjectAtIndex:index];
-            }
-            else
-            {
-                // Next
-                index++;
-            }
-        }
-        
-        for (NSUInteger index = 0; index < searchProcessingMatrixContacts.count;)
-        {
-            MXKContact* contact = searchProcessingMatrixContacts[index];
-            
-            if (![contact hasPrefix:searchText])
-            {
-                [searchProcessingMatrixContacts removeObjectAtIndex:index];
-            }
-            else
-            {
-                // Next
-                index++;
-            }
-        }
-        
-        // Sort the refreshed list of the invitable contacts
-        [[MXKContactManager sharedManager] sortAlphabeticallyContacts:searchProcessingAddressBookContacts];
-        [[MXKContactManager sharedManager] sortContactsByLastActiveInformation:searchProcessingMatrixContacts];
-        
-        searchProcessingText = searchText;
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            
-            // Render the search result only if there is no other search in progress.
-            searchProcessingCount --;
-            
-            if (!searchProcessingCount)
-            {
-                [self stopActivityIndicator];
-                
-                // Update the invitable contacts.
-                currentSearchText = searchProcessingText;
-                invitableAddressBookContacts = searchProcessingAddressBookContacts;
-                invitableMatrixContacts = searchProcessingMatrixContacts;
-                
-                // Refresh display
-                [self refreshTableView];
-                
-                // Force scroll to top
-                [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
-            }
-        });
-        
-    });
+    [self searchWithPattern:searchText forceRefresh:NO];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
@@ -1006,9 +615,9 @@
     if (currentSearchText.length && ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]))
     {
         // Select the contact related to the search input, rather than having to hit +
-        if (invitableSectionSearchInput != -1)
+        if (searchInputSection != -1)
         {
-            [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:invitableSectionSearchInput]];
+            [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:searchInputSection]];
             return;
         }
         
@@ -1020,10 +629,11 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    searchBar.text = currentSearchText = nil;
-    invitableAddressBookContacts = nil;
-    invitableMatrixContacts = nil;
+    searchBar.text = nil;
     self.isAddParticipantSearchBarEditing = NO;
+    
+    // Reset filtering
+    [self searchWithPattern:nil forceRefresh:NO];
     
     // Leave search
     [searchBar resignFirstResponder];

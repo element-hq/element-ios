@@ -207,6 +207,7 @@
 		F03BF6DB1D8BF5B1002EF6A7 /* voice_call_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03BF6471D8BF5B1002EF6A7 /* voice_call_icon@2x.png */; };
 		F03BF6DC1D8BF5B1002EF6A7 /* voice_call_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03BF6481D8BF5B1002EF6A7 /* voice_call_icon@3x.png */; };
 		F03DE2A51D0EFA6A00E8B65C /* AttachmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03DE2A41D0EFA6A00E8B65C /* AttachmentsViewController.m */; };
+		F046528D1E250B0A00EA4E77 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F046528C1E250B0A00EA4E77 /* ContactsTableViewController.m */; };
 		F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */; };
 		F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsView.m */; };
 		F047DBBA1C576F6600952DA2 /* AuthInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB81C576F6600952DA2 /* AuthInputsView.xib */; };
@@ -384,8 +385,8 @@
 		F0D2D9881C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D2D97F1C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.xib */; };
 		F0D2D9891C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D9811C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m */; };
 		F0D2D98A1C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D2D9821C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib */; };
-		F0DD2C701D1308E800654345 /* ContactPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0DD2C6F1D1308E800654345 /* ContactPickerViewController.m */; };
-		F0DD2C721D141B0600654345 /* ContactPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0DD2C711D141B0600654345 /* ContactPickerViewController.xib */; };
+		F0DD2C701D1308E800654345 /* HomePeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0DD2C6F1D1308E800654345 /* HomePeopleSearchViewController.m */; };
+		F0DD2C721D141B0600654345 /* HomePeopleSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0DD2C711D141B0600654345 /* HomePeopleSearchViewController.xib */; };
 		F0DD2C7B1D18386300654345 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0DD2C791D18386300654345 /* ContactDetailsViewController.m */; };
 		F0DD2C7C1D18386300654345 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0DD2C7A1D18386300654345 /* ContactDetailsViewController.xib */; };
 		F0FE6F7A1D63752A0004E747 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FE6F781D63752A0004E747 /* CallViewController.m */; };
@@ -641,6 +642,8 @@
 		F03BF6481D8BF5B1002EF6A7 /* voice_call_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@3x.png"; sourceTree = "<group>"; };
 		F03DE2A31D0EFA6A00E8B65C /* AttachmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentsViewController.h; sourceTree = "<group>"; };
 		F03DE2A41D0EFA6A00E8B65C /* AttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentsViewController.m; sourceTree = "<group>"; };
+		F046528B1E250B0A00EA4E77 /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
+		F046528C1E250B0A00EA4E77 /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
 		F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthenticationViewController.xib; sourceTree = "<group>"; };
 		F047DBB61C576F6600952DA2 /* AuthInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsView.h; sourceTree = "<group>"; };
 		F047DBB71C576F6600952DA2 /* AuthInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsView.m; sourceTree = "<group>"; };
@@ -889,9 +892,9 @@
 		F0D2D9801C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h; sourceTree = "<group>"; };
 		F0D2D9811C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m; sourceTree = "<group>"; };
 		F0D2D9821C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib; sourceTree = "<group>"; };
-		F0DD2C6E1D1308E800654345 /* ContactPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactPickerViewController.h; sourceTree = "<group>"; };
-		F0DD2C6F1D1308E800654345 /* ContactPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactPickerViewController.m; sourceTree = "<group>"; };
-		F0DD2C711D141B0600654345 /* ContactPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactPickerViewController.xib; sourceTree = "<group>"; };
+		F0DD2C6E1D1308E800654345 /* HomePeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePeopleSearchViewController.h; sourceTree = "<group>"; };
+		F0DD2C6F1D1308E800654345 /* HomePeopleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePeopleSearchViewController.m; sourceTree = "<group>"; };
+		F0DD2C711D141B0600654345 /* HomePeopleSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomePeopleSearchViewController.xib; sourceTree = "<group>"; };
 		F0DD2C781D18386300654345 /* ContactDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailsViewController.h; sourceTree = "<group>"; };
 		F0DD2C791D18386300654345 /* ContactDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsViewController.m; sourceTree = "<group>"; };
 		F0DD2C7A1D18386300654345 /* ContactDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactDetailsViewController.xib; sourceTree = "<group>"; };
@@ -1523,6 +1526,8 @@
 		F094AA151B78E42600B1FBBF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F046528B1E250B0A00EA4E77 /* ContactsTableViewController.h */,
+				F046528C1E250B0A00EA4E77 /* ContactsTableViewController.m */,
 				F0AC73461DA2A6130011DAEE /* RoomFilesSearchViewController.h */,
 				F0AC73471DA2A6130011DAEE /* RoomFilesSearchViewController.m */,
 				F0AC73481DA2A6130011DAEE /* RoomMessagesSearchViewController.h */,
@@ -1536,9 +1541,6 @@
 				F0DD2C781D18386300654345 /* ContactDetailsViewController.h */,
 				F0DD2C791D18386300654345 /* ContactDetailsViewController.m */,
 				F0DD2C7A1D18386300654345 /* ContactDetailsViewController.xib */,
-				F0DD2C6E1D1308E800654345 /* ContactPickerViewController.h */,
-				F0DD2C6F1D1308E800654345 /* ContactPickerViewController.m */,
-				F0DD2C711D141B0600654345 /* ContactPickerViewController.xib */,
 				F03DE2A31D0EFA6A00E8B65C /* AttachmentsViewController.h */,
 				F03DE2A41D0EFA6A00E8B65C /* AttachmentsViewController.m */,
 				F0BE3DEE1C6CE17200AC3111 /* RoomMemberDetailsViewController.h */,
@@ -1553,6 +1555,9 @@
 				F083C49A1D9EB13500E5246C /* HomeFilesSearchViewController.m */,
 				3235CD831C341FAA0084EA40 /* HomeMessagesSearchViewController.h */,
 				3235CD841C341FAA0084EA40 /* HomeMessagesSearchViewController.m */,
+				F0DD2C6E1D1308E800654345 /* HomePeopleSearchViewController.h */,
+				F0DD2C6F1D1308E800654345 /* HomePeopleSearchViewController.m */,
+				F0DD2C711D141B0600654345 /* HomePeopleSearchViewController.xib */,
 				32D200861C16C2B100A4E396 /* HomeViewController.h */,
 				32D200871C16C2B100A4E396 /* HomeViewController.m */,
 				F0A1CD201B9F4BBA00F9C15C /* RoomParticipantsViewController.h */,
@@ -1848,7 +1853,7 @@
 				F03BF6AF1D8BF5B1002EF6A7 /* plus_icon@3x.png in Resources */,
 				F03BF6C91D8BF5B1002EF6A7 /* selection_untick@2x.png in Resources */,
 				71046D601C0C86C600DCA984 /* RoomTitleView.xib in Resources */,
-				F0DD2C721D141B0600654345 /* ContactPickerViewController.xib in Resources */,
+				F0DD2C721D141B0600654345 /* HomePeopleSearchViewController.xib in Resources */,
 				F083C4681D9E9F8800E5246C /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				F03BF6D51D8BF5B1002EF6A7 /* upload_icon@2x.png in Resources */,
 				F03BF6CE1D8BF5B1002EF6A7 /* shrink_icon.png in Resources */,
@@ -2140,7 +2145,7 @@
 				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,
 				F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */,
 				F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */,
-				F0DD2C701D1308E800654345 /* ContactPickerViewController.m in Sources */,
+				F0DD2C701D1308E800654345 /* HomePeopleSearchViewController.m in Sources */,
 				F022285B1C64D529000AF23C /* ExpandedRoomTitleView.m in Sources */,
 				F01214D11DABD69D00755336 /* RoomFilesViewController.m in Sources */,
 				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -2176,6 +2181,7 @@
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F09EAFB51DD2109B009C7EFB /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
+				F046528D1E250B0A00EA4E77 /* ContactsTableViewController.m in Sources */,
 				F0CC4DCA1C4E594C003BBE45 /* MediaAlbumContentViewController.m in Sources */,
 				F09EAF9D1DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				F0B7037E1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,

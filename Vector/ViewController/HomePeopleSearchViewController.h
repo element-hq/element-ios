@@ -16,27 +16,27 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@class ContactPickerViewController;
+@class HomePeopleSearchViewController;
 
 /**
- `ContactPickerViewController` delegate.
+ `HomePeopleSearchViewController` delegate.
  */
-@protocol ContactPickerViewControllerDelegate <NSObject>
+@protocol HomePeopleSearchViewControllerDelegate <NSObject>
 
 /**
  Tells the delegate that the user selected a contact.
  
- @param contactPickerViewController the `ContactPickerViewController` instance.
+ @param homePeopleSearchViewController the `HomePeopleSearchViewController` instance.
  @param contact the selected contact.
  */
-- (void)contactPickerViewController:(ContactPickerViewController *)contactPickerViewController didSelectContact:(MXKContact*)contact;
+- (void)homePeopleSearchViewController:(HomePeopleSearchViewController *)homePeopleSearchViewController didSelectContact:(MXKContact*)contact;
 
 @end
 
 /**
- `ContactPickerViewController` displays people search in user's rooms under a `HomeViewController` segment.
+ `HomePeopleSearchViewController` displays people search in user's rooms under a `HomeViewController` segment.
  */
-@interface ContactPickerViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource>
+@interface HomePeopleSearchViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic) IBOutlet UITableView *contactsTableView;
 @property (weak, nonatomic) IBOutlet UILabel *noResultsLabel;
@@ -44,10 +44,10 @@
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<ContactPickerViewControllerDelegate> delegate;
+@property (nonatomic) id<HomePeopleSearchViewControllerDelegate> delegate;
 
 /**
- Returns the `UINib` object initialized for a `ContactPickerViewController`.
+ Returns the `UINib` object initialized for a `HomePeopleSearchViewController`.
  
  @return The initialized `UINib` object or `nil` if there were errors during initialization
  or the nib file could not be located.
@@ -55,12 +55,12 @@
 + (UINib *)nib;
 
 /**
- Creates and returns a new `ContactPickerViewController` object.
+ Creates and returns a new `HomePeopleSearchViewController` object.
  
  @discussion This is the designated initializer for programmatic instantiation.
- @return An initialized `ContactPickerViewController` object if successful, `nil` otherwise.
+ @return An initialized `HomePeopleSearchViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)contactPickerViewController;
++ (instancetype)homePeopleSearchViewController;
 
 /**
  */

@@ -69,9 +69,6 @@
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
-    
-    // Observe kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification to refresh the search result on new matrix enabled contact.
-    id kMXKContactManagerDidUpdateLocalContactMatrixIDsNotificationObserver;
 }
 
 @end
@@ -422,21 +419,6 @@
     if (_isAddParticipantSearchBarEditing != isAddParticipantsSearchBarEditing)
     {
         _isAddParticipantSearchBarEditing = isAddParticipantsSearchBarEditing;
-        
-        if (isAddParticipantsSearchBarEditing)
-        {
-            kMXKContactManagerDidUpdateLocalContactMatrixIDsNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-                
-                // Refresh search result display.
-                [self.tableView reloadData];
-                
-            }];
-        }
-        else if (kMXKContactManagerDidUpdateLocalContactMatrixIDsNotificationObserver)
-        {
-            [[NSNotificationCenter defaultCenter] removeObserver:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotificationObserver];
-            kMXKContactManagerDidUpdateLocalContactMatrixIDsNotificationObserver = nil;
-        }
         
         // Switch the display between search result and participants list
         [self.tableView reloadData];
