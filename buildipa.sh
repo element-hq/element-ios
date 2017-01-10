@@ -35,7 +35,7 @@ else
 		echo "Please run pod install first"
 		exit 1
 	fi
-	$basecmd -archivePath "out/Vector.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars" "$@"
+	$basecmd -archivePath "out/Vector.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars"
 	exportOptionsPlist=`mktemp`
 	cat > $exportOptionsPlist <<EOD
 <?xml version="1.0" encoding="UTF-8"?>
