@@ -102,13 +102,20 @@
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_creation_title", @"Vector", nil);
     
+    // Add each matrix session by default.
+    NSArray *sessions = [AppDelegate theDelegate].mxSessions;
+    for (MXSession *mxSession in sessions)
+    {
+        [self addMatrixSession:mxSession];
+    }
+    
     cancelBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
     self.navigationItem.leftBarButtonItem = cancelBarButtonItem;
     
     createBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"start", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
     self.navigationItem.rightBarButtonItem = createBarButtonItem;
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
+    _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_creation_invite_another_user", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self refreshSearchBarItemsColor:_searchBarView];

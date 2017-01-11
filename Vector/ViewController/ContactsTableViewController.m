@@ -65,13 +65,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    // Add each matrix session by default.
-    NSArray *sessions = [AppDelegate theDelegate].mxSessions;
-    for (MXSession *mxSession in sessions)
-    {
-        [self addMatrixSession:mxSession];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -170,7 +163,7 @@
         else if (forceRefresh || !searchProcessingText.length || [searchText hasPrefix:searchProcessingText] == NO)
         {
             // Retrieve all the local contacts
-            searchProcessingMatrixContacts = [self unfilteredLocalContactsArray];
+            searchProcessingLocalContacts = [self unfilteredLocalContactsArray];
             
             // Retrieve all known matrix users
             searchProcessingMatrixContacts = [self unfilteredMatrixContactsArray];
@@ -232,7 +225,7 @@
                     [self refreshTableView];
                     
                     // Force scroll to top
-                    [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+                    [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:NO];
                 }
                 else
                 {
