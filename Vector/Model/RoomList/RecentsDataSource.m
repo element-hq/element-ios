@@ -532,7 +532,7 @@
         {
             id<MXKRecentCellDataStoring> cellDataStoring = [cellDataArray objectAtIndex:index];
 
-            if ([roomId isEqualToString:cellDataStoring.roomDataSource.roomId] && (matrixSession == cellDataStoring.roomDataSource.mxSession))
+            if ([roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == cellDataStoring.roomSummary.room.mxSession))
             {
                 return index;
             }
@@ -667,7 +667,7 @@
         {
             NSUInteger pos;
             id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-            MXRoom* room = recentCellDataStoring.roomDataSource.room;
+            MXRoom* room = recentCellDataStoring.roomSummary.room;
 
             if ((pos = [sortedFavRooms indexOfObject:room]) != NSNotFound)
             {

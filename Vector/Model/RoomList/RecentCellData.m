@@ -26,7 +26,7 @@
 - (void)update
 {
     [super update];
-    roomDisplayname = self.roomDataSource.room.vectorDisplayname;
+    roomDisplayname = self.roomSummary.room.vectorDisplayname;
     if (!roomDisplayname.length)
     {
         roomDisplayname = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

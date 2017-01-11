@@ -66,7 +66,7 @@
 }
 
 #pragma mark - Room display name
-
+// @TODO: May worth to refactor to use MXRoomSummary
 - (NSString *)vectorDisplayname
 {
     // this algo is the one defined in
