@@ -23,13 +23,8 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
-#import "MXKContactManager.h"
-
 @interface ContactTableViewCell()
 {
-    // The current displayed contact.
-    MXKContact *contact;
-    
     /**
      The observer of the presence for matrix user.
      */
@@ -45,7 +40,10 @@
     [super awakeFromNib];
     
     // apply the vector colours
-    self.lastPresenceLabel.textColor = kVectorTextColorGray;
+    self.contactInformationLabel.textColor = kVectorTextColorGray;
+    
+    // Clear the default background color of a MXKImageView instance
+    self.thumbnailView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutSubviews
@@ -70,6 +68,16 @@
     {
         self.customAccessViewWidthConstraint.constant = 0;
         self.customAccessoryViewLeadingConstraint.constant = 0;
+    }
+}
+
+- (void)setShowMatrixIdInDisplayName:(BOOL)showMatrixIdInDisplayName
+{
+    _showMatrixIdInDisplayName = showMatrixIdInDisplayName;
+    
+    if (contact)
+    {
+        [self refreshContactDisplayName];
     }
 }
 
@@ -100,9 +108,6 @@
         mxPresenceObserver = nil;
     }
     
-    // Clear the default background color of a MXKImageView instance
-    self.thumbnailView.backgroundColor = [UIColor clearColor];
-    
     // Sanity check: accept only object of MXKContact classes or sub-classes
     NSParameterAssert([cellData isKindOfClass:[MXKContact class]]);
     contact = (MXKContact*)cellData;
@@ -113,7 +118,7 @@
     {
         self.thumbnailView.image = nil;
         self.contactDisplayNameLabel.text = nil;
-        self.lastPresenceLabel.text = nil;
+        self.contactInformationLabel.text = nil;
         
         return;
     }
@@ -121,26 +126,32 @@
     // Be warned when the thumbnail is updated
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kMXKContactThumbnailUpdateNotification object:nil];
     
-    // Observe contact presence change
-    mxPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        NSString* matrixId = self.firstMatrixId;
-        
-        if (matrixId && [matrixId isEqualToString:notif.object])
-        {
-            [self refreshContactPresence];
-        }
-    }];
+    [self refreshContactThumbnail];
     
-    if (!contact.isMatrixContact)
+    [self refreshContactDisplayName];
+    
+    if (contact.isMatrixContact)
+    {
+        // Observe contact presence change
+        mxPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            NSString* matrixId = self.firstMatrixId;
+            
+            if (matrixId && [matrixId isEqualToString:notif.object])
+            {
+                [self refreshContactPresence];
+            }
+        }];
+        
+        [self refreshContactPresence];
+    }
+    else
     {
         // Refresh matrix info of the contact
         [[MXKContactManager sharedManager] updateMatrixIDsForLocalContact:contact];
+        
+        [self refreshLocalContactInformation];
     }
-    
-    [self refreshContactDisplayName];
-    [self refreshContactPresence];
-    [self refreshContactThumbnail];
 }
 
 + (CGFloat)heightForCellData:(MXKCellData*)cellData withMaximumWidth:(CGFloat)maxWidth
@@ -176,15 +187,19 @@
     
     if (!image)
     {
-        NSString* matrixId = self.firstMatrixId;
+        NSArray *identifiers = contact.matrixIdentifiers;
         
-        if (matrixId)
+        if (identifiers.count)
         {
-            image = [AvatarGenerator generateAvatarForMatrixItem:matrixId withDisplayName:contact.displayName];
+            image = [AvatarGenerator generateAvatarForMatrixItem:identifiers.firstObject withDisplayName:contact.displayName];
         }
         else if (contact.isThirdPartyInvite)
         {
             image = [AvatarGenerator generateAvatarForText:contact.displayName];
+        }
+        else if ((!contact.isMatrixContact && contact.phoneNumbers.count && !contact.emailAddresses.count))
+        {
+            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:kVectorColorGreen];
         }
         else
         {
@@ -198,6 +213,56 @@
 - (void)refreshContactDisplayName
 {
     self.contactDisplayNameLabel.text = contact.displayName;
+    
+    // Check whether the matrix identifier must be displayed.
+    if (_showMatrixIdInDisplayName)
+    {
+        // Append the matrix identifier to the display name.
+        NSArray *identifiers = contact.matrixIdentifiers;
+        if (identifiers.count)
+        {
+            NSString *userId = identifiers.firstObject;
+            
+            // Check whether the display name is not already the matrix id
+            if (![contact.displayName isEqualToString:userId])
+            {
+                // Update the display name by adding the matrix id
+                NSMutableAttributedString *displayNameLabelText = [[NSMutableAttributedString alloc] initWithString:contact.displayName];
+                NSRange strRange = NSMakeRange(0, displayNameLabelText.length);
+                [displayNameLabelText addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:17 weight:UIFontWeightMedium] range:strRange];
+                
+                NSMutableAttributedString *userIdStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%@)", userId]];
+                strRange = NSMakeRange(0, userIdStr.length);
+                [userIdStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:17] range:strRange];
+                
+                [displayNameLabelText appendAttributedString:userIdStr];
+                self.contactDisplayNameLabel.attributedText = displayNameLabelText;
+            }
+        }
+    }
+}
+
+- (void)refreshLocalContactInformation
+{
+    NSArray *identifiers = contact.matrixIdentifiers;
+    if (identifiers.count)
+    {
+        self.thumbnailBadgeView.image = [UIImage imageNamed:@"riot_icon"];
+        self.thumbnailBadgeView.hidden = NO;
+    }
+    else
+    {
+        self.thumbnailBadgeView.hidden = YES;
+    }
+    
+    // Display the first contact method in sub label.
+    NSString *subLabelText = nil;
+    if (contact.emailAddresses.count)
+    {
+        MXKEmail* email = contact.emailAddresses.firstObject;
+        subLabelText = email.emailAddress;
+    }
+    self.contactInformationLabel.text = subLabelText;
 }
 
 - (void)refreshContactPresence
@@ -227,7 +292,7 @@
         presenceText =  NSLocalizedStringFromTable(@"room_participants_offline", @"Vector", nil);
     }
 
-    self.lastPresenceLabel.text = presenceText;
+    self.contactInformationLabel.text = presenceText;
 }
 
 #pragma mark - events

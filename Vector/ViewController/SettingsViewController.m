@@ -37,9 +37,6 @@ enum {
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_ADVANCED_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
-#ifdef MX_USE_CONTACTS_SERVER_SYNC
-    SETTINGS_SECTION_CONTACTS_INDEX,
-#endif
     SETTINGS_SECTION_LABS_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
     SETTINGS_SECTION_DEVICES_INDEX,
@@ -151,15 +148,24 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 @implementation SettingsViewController
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    isSavingInProgress = NO;
+    isResetPwdInProgress = NO;
+    isEmailBindingInProgress = NO;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"settings_title", @"Vector", nil);
     
@@ -195,7 +201,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [self.tableView reloadData];
         
     }];
-    
     
     // Add each matrix session, to update the view controller appearance according to mx sessions state
     NSArray *sessions = [AppDelegate theDelegate].mxSessions;

@@ -52,14 +52,19 @@
 
 #pragma mark -
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
     self.mainNavigationItem.title = nil;
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);

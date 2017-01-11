@@ -102,10 +102,9 @@ static void *RecordingContext = &RecordingContext;
 
 #pragma mark -
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
@@ -114,6 +113,12 @@ static void *RecordingContext = &RecordingContext;
     
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
     
     // Register collection view cell class
     [self.recentCapturesCollectionView registerClass:MXKMediaCollectionViewCell.class forCellWithReuseIdentifier:[MXKMediaCollectionViewCell defaultReuseIdentifier]];

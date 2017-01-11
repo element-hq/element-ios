@@ -36,14 +36,19 @@
 
 @implementation DirectoryViewController
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
     self.title = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
 

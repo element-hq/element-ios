@@ -206,12 +206,19 @@
 
 #pragma mark -
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
     
     // Register first customized cell view classes used to render bubbles
     [self.bubblesTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
@@ -308,9 +315,6 @@
     
     // Custom the attachmnet viewer
     [self setAttachmentsViewerClass:AttachmentsViewController.class];
-    
-    // Set rageShake handler
-    self.rageShakeManager = [RageShakeManager sharedManager];
     
     // Update navigation bar items
     self.navigationItem.rightBarButtonItem.target = self;
@@ -1746,7 +1750,9 @@
             }];
             
             // Check status of the selected event
-            if (selectedEvent.sentState == MXEventSentStateEncrypting || selectedEvent.sentState == MXEventSentStateUploading)
+            if (selectedEvent.sentState == MXEventSentStatePreparing ||
+                selectedEvent.sentState == MXEventSentStateEncrypting ||
+                selectedEvent.sentState == MXEventSentStateUploading)
             {
                 // Upload id is stored in attachment url (nasty trick)
                 NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
@@ -2200,9 +2206,9 @@
         {
             RoomMemberDetailsViewController *memberViewController = pushedViewController;
 
-            // Set delegate to handle action on member (start chat, memtion)
+            // Set delegate to handle action on member (start chat, mention)
             memberViewController.delegate = self;
-            memberViewController.enableMention = YES;
+            memberViewController.enableMention = (self.inputToolbarView != nil);
             memberViewController.enableVoipCall = NO;
 
             [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];

@@ -43,11 +43,14 @@
     // HTTP Request
     MXHTTPOperation *roomCreationRequest;
     
-    // Search session
-    NSString *currentSearchText;
-    UIView* searchBarSeparator;
+    // Search processing
+    dispatch_queue_t searchProcessingQueue;
+    NSUInteger searchProcessingCount;
+    NSString *searchProcessingText;
+    NSMutableArray<MXKContact*> *searchProcessingContacts;
     
     // Search results
+    NSString *currentSearchText;
     NSMutableArray<MXKContact*> *invitableContacts;
     
     // Contact instances by matrix user id, or email address.
@@ -82,6 +85,27 @@
 
 #pragma mark -
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    _isAddParticipantSearchBarEditing = NO;
+    
+    // Prepare room participants
+    participants = [NSMutableArray array];
+    
+    // Prepare search session
+    searchProcessingQueue = dispatch_queue_create("StartChatViewController", DISPATCH_QUEUE_SERIAL);
+    searchProcessingCount = 0;
+    searchProcessingText = nil;
+    searchProcessingContacts = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -115,11 +139,6 @@
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
-    // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
-    
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_creation_title", @"Vector", nil);
     
     cancelBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
@@ -135,8 +154,6 @@
         [self addMatrixSession:mxSession];
     }
     
-    _isAddParticipantSearchBarEditing = NO;
-    
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -146,9 +163,6 @@
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
-    
-    // Prepare room participants
-    participants = [NSMutableArray array];
     
     // FIXME: Handle multi accounts
     NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
@@ -186,6 +200,9 @@
         [currentAlert dismiss:NO];
         currentAlert = nil;
     }
+    
+    searchProcessingQueue = nil;
+    searchProcessingContacts = nil;
     
     [super destroy];
 }
@@ -301,7 +318,7 @@
     [participantsById setObject:userContact forKey:self.mainSession.myUser.userId];
 }
 
-- (void)sortInvitableContacts
+- (void)sortContacts:(NSMutableArray*)contacts
 {
     // Sort invitable contacts by displaying local email first
     // ...and then alphabetically.
@@ -323,7 +340,7 @@
     };
     
     // Sort invitable contacts list
-    [invitableContacts sortUsingComparator:comparator];
+    [contacts sortUsingComparator:comparator];
 }
 
 #pragma mark - UITableView data source
@@ -358,7 +375,7 @@
             invitableContacts = [NSMutableArray arrayWithArray:[[MXKContactManager sharedManager] privateMatrixContacts:self.mainSession]];
             
             // Sort the refreshed list of the invitable contacts
-            [self sortInvitableContacts];
+            [self sortContacts:invitableContacts];
         }
         
         count = invitableContacts.count;
@@ -404,16 +421,9 @@
                 contact = participants[index];
                 
                 // Disambiguate the display name when it appears several times.
-                if (contact.displayName && [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
+                if (contact.displayName)
                 {
-                    NSArray *identifiers = contact.matrixIdentifiers;
-                    if (identifiers.count)
-                    {
-                        NSString *participantId = identifiers.firstObject;
-                        NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
-                        
-                        contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
-                    }
+                    participantCell.showMatrixIdInDisplayName = [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
                 }
             }
         }
@@ -437,9 +447,7 @@
                 // Check whether the display name is not already the matrix id
                 if (![contact.displayName isEqualToString:participantId])
                 {
-                    NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
-                    
-                    contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
+                    participantCell.showMatrixIdInDisplayName = YES;
                 }
             }
         }
@@ -583,8 +591,21 @@
             }
             else
             {
-                // This is a text entered by the user, or a local email contact
-                NSString *participantId = contact.displayName;
+                // This is a text entered by the user, or a local contact
+                NSString *participantId;
+                
+                if (contact.emailAddresses.count)
+                {
+                    // This is a local contact, consider the first email by default.
+                    // TODO: Prompt the user to select the right email.
+                    MXKEmail *email = contact.emailAddresses.firstObject;
+                    participantId = email.emailAddress;
+                }
+                else
+                {
+                    // This is the text filled by the user.
+                    participantId = contact.displayName;
+                }
                 
                 // Is it an email or a Matrix user ID?
                 if ([MXTools isEmailAddress:participantId])
@@ -722,132 +743,138 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     // Update search results.
-    NSMutableArray<MXKContact*> *contacts;
-    
     searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
-    if (currentSearchText.length && [searchText hasPrefix:currentSearchText])
-    {
-        contacts = invitableContacts;
-    }
-    else if (searchText.length)
-    {
-        // Retrieve all known matrix users
-        NSArray *matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
+    searchProcessingCount++;
+    [self startActivityIndicator];
+    
+    dispatch_async(searchProcessingQueue, ^{
         
-        // Retrieve all known email addresses from local contacts
-        NSArray *localEmailContacts = [MXKContactManager sharedManager].localEmailContacts;
-        
-        contacts = [NSMutableArray arrayWithCapacity:(matrixContacts.count + localEmailContacts.count)];
-        
-        // Add first email contacts
-        for (MXKContact* contact in localEmailContacts)
+        if (!searchText.length)
         {
-            // Remove the current emails listed in participants.
-            if ([participantsById objectForKey:contact.displayName] == nil)
-            {
-                [contacts addObject:contact];
-            }
+            searchProcessingContacts = nil;
         }
-        
-        // Matrix ids: split contacts with several ids, and remove the current participants.
-        for (MXKContact* contact in matrixContacts)
+        else if (!searchProcessingText.length || [searchText hasPrefix:searchProcessingText] == NO)
         {
-            NSArray *identifiers = contact.matrixIdentifiers;
-            if (identifiers.count > 1)
+            // Retrieve all known matrix users
+            NSArray *matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
+            
+            // Retrieve all known email addresses from local contacts
+            NSArray *localContactsWithMethods = [MXKContactManager sharedManager].localContactsWithMethods;
+            
+            searchProcessingContacts = [NSMutableArray arrayWithCapacity:(matrixContacts.count + localContactsWithMethods.count)];
+            
+            // Add first email contacts
+            for (MXKContact* contact in localContactsWithMethods)
             {
-                for (NSString *userId in identifiers)
+                // Remove the current emails listed in participants.
+                if ([participantsById objectForKey:contact.displayName] == nil)
                 {
+                    [searchProcessingContacts addObject:contact];
+                }
+            }
+            
+            // Matrix ids: split contacts with several ids, and remove the current participants.
+            for (MXKContact* contact in matrixContacts)
+            {
+                NSArray *identifiers = contact.matrixIdentifiers;
+                if (identifiers.count > 1)
+                {
+                    for (NSString *userId in identifiers)
+                    {
+                        if ([participantsById objectForKey:userId] == nil)
+                        {
+                            MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
+                            [searchProcessingContacts addObject:splitContact];
+                        }
+                    }
+                }
+                else if (identifiers.count)
+                {
+                    NSString *userId = identifiers.firstObject;
                     if ([participantsById objectForKey:userId] == nil)
                     {
-                        MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
-                        [contacts addObject:splitContact];
+                        [searchProcessingContacts addObject:contact];
                     }
                 }
             }
-            else if (identifiers.count)
+        }
+        
+        // Check whether the search input is a valid email or a Matrix user ID
+        BOOL isValidInput = ([MXTools isEmailAddress:searchText] || [MXTools isMatrixUserIdentifier:searchText]);
+        
+        for (NSUInteger index = 0; index < searchProcessingContacts.count;)
+        {
+            MXKContact* contact = searchProcessingContacts[index];
+            
+            if (![contact hasPrefix:searchText])
             {
-                NSString *userId = identifiers.firstObject;
-                if ([participantsById objectForKey:userId] == nil)
+                [searchProcessingContacts removeObjectAtIndex:index];
+            }
+            else
+            {
+                // Ignore the contact if it corresponds to the search input
+                if (isValidInput && [contact.displayName isEqualToString:searchText])
                 {
-                    [contacts addObject:contact];
+                    [searchProcessingContacts removeObjectAtIndex:index];
+                }
+                else
+                {
+                    // Next
+                    index++;
                 }
             }
         }
-    }
-    
-    currentSearchText = searchText;
-    
-    // Check whether the search input is a valid email or a Matrix user ID
-    BOOL isValidInput = ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]);
-    
-    // Update invitable contacts list:
-    invitableContacts = [NSMutableArray array];
-    
-    for (MXKContact* contact in contacts)
-    {
-        if ([contact hasPrefix:currentSearchText])
+        
+        // Sort the refreshed list of the invitable contacts
+        [self sortContacts:searchProcessingContacts];
+        
+        if (searchText.length)
         {
-            // Ignore the contact if it corresponds to the search input
-            if (!isValidInput || [contact.displayName isEqualToString:currentSearchText] == NO)
-            {
-                [invitableContacts addObject:contact];
-            }
+            // Show what the user is typing in a cell. So that he can click on it
+            MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:nil];
+            [searchProcessingContacts insertObject:contact atIndex:0];
         }
-    }
-    
-    // Sort the refreshed list of the invitable contacts
-    [self sortInvitableContacts];
-    
-    if (currentSearchText.length)
-    {
-        // Show what the user is typing in a cell. So that he can click on it
-        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:nil];
-        [invitableContacts insertObject:contact atIndex:0];
-    }
-    
-    // Refresh display
-    [self refreshTableView];
-    
-    // Force scroll to top
-    [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        
+        searchProcessingText = searchText;
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            // Render the search result only if there is no other search in progress.
+            searchProcessingCount --;
+            
+            if (!searchProcessingCount)
+            {
+                [self stopActivityIndicator];
+                
+                // Update the invitable contacts.
+                currentSearchText = searchProcessingText;
+                invitableContacts = searchProcessingContacts;
+                
+                // Refresh display
+                [self refreshTableView];
+                
+                // Force scroll to top
+                [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+            }
+        });
+        
+    });
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    self.isAddParticipantSearchBarEditing = YES;
-    searchBar.showsCancelButton = NO;
-    
-    // Handle here local contacts
-#ifdef MX_USE_CONTACTS_SERVER_SYNC
-    if (![MXKAppSettings standardAppSettings].syncLocalContacts)
-    {
-        // If not requested yet, ask user permission to sync their local contacts
-        if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
-        {
-            [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
-            
-            [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
-                if (granted)
-                {
-                    // Allow local contacts sync in order to add address book emails in search result
-                    [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-                }
-            }];
-        }
-    }
-#else
-    // If not requested yet, ask user permission to access their local contacts
+    // Check whether the access to the local contacts has not been already asked.
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
     {
-        // Try to load the local contacts list
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [[MXKContactManager sharedManager] loadLocalContacts];
-            
-        });
+        // Allow by default the local contacts sync in order to discover matrix users.
+        // This setting change will trigger the loading of the local contacts, which will automatically
+        // ask user permission to access their local contacts.
+        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
     }
-#endif
+    
+    self.isAddParticipantSearchBarEditing = YES;
+    searchBar.showsCancelButton = NO;
     
     return YES;
 }

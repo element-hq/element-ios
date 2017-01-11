@@ -29,11 +29,24 @@ then
 	fi
 	rm -r "$builddir" "$outdir" || true
 else
+	method=$1
 	if [ ! -d "Vector.xcworkspace" ]
 	then
 		echo "Please run pod install first"
 		exit 1
 	fi
-	$basecmd -archivePath "out/Vector.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars" "$@"
-	xcrun -sdk $sdk PackageApplication -v $outdir/Vector.xcarchive/Products/Applications/Vector.app -o `pwd`/out/Vector.ipa
+	$basecmd -archivePath "out/Vector.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars"
+	exportOptionsPlist=`mktemp`
+	cat > $exportOptionsPlist <<EOD
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>method</key>
+    <string>$method</string>
+</dict>
+</plist>
+EOD
+	xcodebuild -exportArchive -archivePath "out/Vector.xcarchive" -exportPath out -exportOptionsPlist "$exportOptionsPlist"
+	rm "$exportOptionsPlist"
 fi

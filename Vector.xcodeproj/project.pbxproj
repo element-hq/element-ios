@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		322574E51D86E0C1009181D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 322574E41D86E0C1009181D3 /* InfoPlist.strings */; };
 		3235CD851C341FAA0084EA40 /* HomeMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235CD841C341FAA0084EA40 /* HomeMessagesSearchViewController.m */; };
 		323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */; };
 		32492DB21C293C8900035C79 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */; };
@@ -25,6 +24,7 @@
 		32C52BF91CBFF50C00863B33 /* RoomPreviewData.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C52BF81CBFF50C00863B33 /* RoomPreviewData.m */; };
 		32D200881C16C2B100A4E396 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D200871C16C2B100A4E396 /* HomeViewController.m */; };
 		32F2E61B1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F2E61A1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m */; };
+		55A8E59C1E23D01000B59231 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55A8E59E1E23D01000B59231 /* InfoPlist.strings */; };
 		71046D5E1C0C639300DCA984 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71046D5D1C0C639300DCA984 /* RoomTitleView.m */; };
 		71046D601C0C86C600DCA984 /* RoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71046D5F1C0C86C600DCA984 /* RoomTitleView.xib */; };
 		71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 71352D581C10569F001D50B0 /* AvatarGenerator.m */; };
@@ -210,6 +210,9 @@
 		F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */; };
 		F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsView.m */; };
 		F047DBBA1C576F6600952DA2 /* AuthInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB81C576F6600952DA2 /* AuthInputsView.xib */; };
+		F04ACE031E154C540000B970 /* riot_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F04ACE001E154C540000B970 /* riot_icon.png */; };
+		F04ACE041E154C540000B970 /* riot_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F04ACE011E154C540000B970 /* riot_icon@2x.png */; };
+		F04ACE051E154C540000B970 /* riot_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F04ACE021E154C540000B970 /* riot_icon@3x.png */; };
 		F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */; };
 		F056417C1C7C9FD7002276ED /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
@@ -401,7 +404,6 @@
 
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
-		322574E41D86E0C1009181D3 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		3235CD831C341FAA0084EA40 /* HomeMessagesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchViewController.h; sourceTree = "<group>"; };
 		3235CD841C341FAA0084EA40 /* HomeMessagesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeMessagesSearchViewController.m; sourceTree = "<group>"; };
 		323A52091C3183CC00010773 /* UIViewController+VectorSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VectorSearch.h"; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 		32F2E6191C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
 		32F2E61A1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
+		55A8E5A11E23D84C00B59231 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		71046D5C1C0C639300DCA984 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomTitleView.h; path = RoomTitle/RoomTitleView.h; sourceTree = "<group>"; };
 		71046D5D1C0C639300DCA984 /* RoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomTitleView.m; path = RoomTitle/RoomTitleView.m; sourceTree = "<group>"; };
 		71046D5F1C0C86C600DCA984 /* RoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomTitleView.xib; path = RoomTitle/RoomTitleView.xib; sourceTree = "<group>"; };
@@ -642,6 +645,9 @@
 		F047DBB61C576F6600952DA2 /* AuthInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsView.h; sourceTree = "<group>"; };
 		F047DBB71C576F6600952DA2 /* AuthInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsView.m; sourceTree = "<group>"; };
 		F047DBB81C576F6600952DA2 /* AuthInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthInputsView.xib; sourceTree = "<group>"; };
+		F04ACE001E154C540000B970 /* riot_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = riot_icon.png; sourceTree = "<group>"; };
+		F04ACE011E154C540000B970 /* riot_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon@2x.png"; sourceTree = "<group>"; };
+		F04ACE021E154C540000B970 /* riot_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon@3x.png"; sourceTree = "<group>"; };
 		F05641781C7C9FD7002276ED /* TableViewCellWithButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithButton.h; path = TableViewCell/TableViewCellWithButton.h; sourceTree = "<group>"; };
 		F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithButton.m; path = TableViewCell/TableViewCellWithButton.m; sourceTree = "<group>"; };
 		F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithButton.xib; path = TableViewCell/TableViewCellWithButton.xib; sourceTree = "<group>"; };
@@ -1138,6 +1144,9 @@
 		F03BF5B41D8BF5B1002EF6A7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F04ACE001E154C540000B970 /* riot_icon.png */,
+				F04ACE011E154C540000B970 /* riot_icon@2x.png */,
+				F04ACE021E154C540000B970 /* riot_icon@3x.png */,
 				F0A4B2EB1E0073A30072D355 /* animatedLogo-0.png */,
 				F0A4B2EC1E0073A30072D355 /* animatedLogo-1.png */,
 				F0A4B2ED1E0073A30072D355 /* animatedLogo-2.png */,
@@ -1487,7 +1496,7 @@
 				F0C47EFE1D7766F200A7929E /* Sounds */,
 				F094AA0B1B78E42600B1FBBF /* Localizable.strings */,
 				F094AA0D1B78E42600B1FBBF /* Vector.strings */,
-				322574E41D86E0C1009181D3 /* InfoPlist.strings */,
+				55A8E59E1E23D01000B59231 /* InfoPlist.strings */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -1743,11 +1752,17 @@
 				TargetAttributes = {
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = 7J4U792NQT;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					F094A9BD1B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 884E442RN2;
+						DevelopmentTeam = 7J4U792NQT;
 						TestTargetID = F094A9A11B78D8F000B1FBBF;
 					};
 				};
@@ -1815,6 +1830,7 @@
 				F0A4B2F11E0073A30072D355 /* animatedLogo-1.png in Resources */,
 				F03BF6B41D8BF5B1002EF6A7 /* priorityLow@2x.png in Resources */,
 				F08294691DB503FE00CEAB63 /* direct_icon@2x.png in Resources */,
+				F04ACE041E154C540000B970 /* riot_icon@2x.png in Resources */,
 				F09EAFA01DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F09EAF0B1DCCEE1D009C7EFB /* e2e_verified@3x.png in Resources */,
 				F03BF6971D8BF5B1002EF6A7 /* leave@3x.png in Resources */,
@@ -1858,7 +1874,7 @@
 				F023A0111D9034FE00C517FB /* call_audio_mute_on_icon@2x.png in Resources */,
 				F08714D91DC384810075F633 /* start_chat@2x.png in Resources */,
 				F09EAFB01DD2109B009C7EFB /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
-				322574E51D86E0C1009181D3 /* InfoPlist.strings in Resources */,
+				55A8E59C1E23D01000B59231 /* InfoPlist.strings in Resources */,
 				F083C4931D9EAFC500E5246C /* file_photo_icon.png in Resources */,
 				F03BF6C51D8BF5B1002EF6A7 /* selection_tick.png in Resources */,
 				F03BF64A1D8BF5B1002EF6A7 /* admin_icon@2x.png in Resources */,
@@ -1942,6 +1958,7 @@
 				F09EAFA61DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				325F6A431C21D20F00C12F51 /* DirectoryRecentTableViewCell.xib in Resources */,
 				F03BF68C1D8BF5B1002EF6A7 /* favouriteOff.png in Resources */,
+				F04ACE031E154C540000B970 /* riot_icon.png in Resources */,
 				F003AA7C1C68A1F6008B430C /* ExpandedRoomTitleView.xib in Resources */,
 				F03BF6751D8BF5B1002EF6A7 /* camera_switch@3x.png in Resources */,
 				F03BF6D01D8BF5B1002EF6A7 /* shrink_icon@3x.png in Resources */,
@@ -2006,6 +2023,7 @@
 				F0CC4DCB1C4E594C003BBE45 /* MediaAlbumContentViewController.xib in Resources */,
 				F0C34B721C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F022285E1C64E356000AF23C /* RoomViewController.xib in Resources */,
+				F04ACE051E154C540000B970 /* riot_icon@3x.png in Resources */,
 				F03BF6BF1D8BF5B1002EF6A7 /* search_bg.png in Resources */,
 				F03BF69B1D8BF5B1002EF6A7 /* main_alias_icon.png in Resources */,
 				F0A4B2F31E0073A30072D355 /* animatedLogo-3.png in Resources */,
@@ -2241,6 +2259,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		55A8E59E1E23D01000B59231 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				55A8E5A11E23D84C00B59231 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		F094A9B21B78D8F000B1FBBF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2367,7 +2393,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Vector/Vector.entitlements;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Vector/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -2384,8 +2411,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Vector/Vector.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Vector/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -2400,7 +2426,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 884E442RN2;
+				DEVELOPMENT_TEAM = 7J4U792NQT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -2421,7 +2447,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 884E442RN2;
+				DEVELOPMENT_TEAM = 7J4U792NQT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

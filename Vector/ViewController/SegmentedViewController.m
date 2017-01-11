@@ -115,14 +115,19 @@
 
 #pragma mark -
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
     // Check whether the view controller has been pushed via storyboard
     if (!self.viewControllerContainer)

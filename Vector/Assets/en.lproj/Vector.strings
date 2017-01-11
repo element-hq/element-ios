@@ -134,6 +134,8 @@
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 
+"room_participants_address_book_section" = "CONTACT BOOK";
+"room_participants_matrix_users_section" = "ROOM CONTACTS";
 "room_participants_invited_section" = "INVITED";
 
 "room_participants_online" = "Online";

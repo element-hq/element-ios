@@ -15,11 +15,8 @@
  */
 
 // Permissions usage explanations
-// The usage of the camera is explicit. No need of explanation.
-"NSCameraUsageDescription" = "";
-"NSPhotoLibraryUsageDescription" = "";
-"NSMicrophoneUsageDescription" = "";
-
-// We show a popup before accessing Contacts explaining why. No need of more explanation.
-"NSContactsUsageDescription" = "";
+"NSCameraUsageDescription" = "The camera is used to take photos and videos, make video calls.";
+"NSPhotoLibraryUsageDescription" = "The photo library is used to send photos and videos.";
+"NSMicrophoneUsageDescription" = "The microphone is used to take videos, make calls.";
+"NSContactsUsageDescription" = "The contact book is used to search for users by email or phone number on Riot.";
 

@@ -35,14 +35,19 @@
 
 @implementation HomeMessagesSearchViewController
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
     // Reuse cells from the RoomViewController to display results
     [self.searchTableView registerClass:MessagesSearchResultTextMsgBubbleCell.class forCellReuseIdentifier:MessagesSearchResultTextMsgBubbleCell.defaultReuseIdentifier];

@@ -60,6 +60,16 @@
 
 #pragma mark -
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,11 +80,6 @@
         // Instantiate view controller objects
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
-    
-    // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
 
     [self.contactsTableView registerNib:ContactTableViewCell.nib forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
 
@@ -109,36 +114,14 @@
     
     [self refreshContactsList];
     
-    // Handle here local contacts
-#ifdef MX_USE_CONTACTS_SERVER_SYNC
-    if (![MXKAppSettings standardAppSettings].syncLocalContacts)
-    {
-        // If not requested yet, ask user permission to sync their local contacts
-        if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
-        {
-            [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
-            
-            [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
-                if (granted)
-                {
-                    // Allow local contacts sync in order to add address book emails in search result
-                    [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-                }
-            }];
-        }
-    }
-#else
-    // If not requested yet, ask user permission to access their local contacts
+    // Check whether the access to the local contacts has not been already asked.
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
     {
-        // Try to load the local contacts list
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [[MXKContactManager sharedManager] loadLocalContacts];
-            
-        });
+        // Allow by default the local contacts sync in order to discover matrix users.
+        // This setting change will trigger the loading of the local contacts, which will automatically
+        // ask user permission to access their local contacts.
+        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
     }
-#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -169,18 +152,18 @@
 
 - (void)refreshContactsList
 {
-    // Retrieve all known matrix users
+    // Retrieve all the known matrix users
     NSArray *contacts = [NSArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
     
-    // Retrieve all known email addresses from local contacts
-    NSArray *localEmailContacts = [MXKContactManager sharedManager].localEmailContacts;
+    // Retrieve all the local contacts with methods
+    NSArray *localContactsWithMethods = [MXKContactManager sharedManager].localContactsWithMethods;
     
-    matrixContacts = [NSMutableArray arrayWithCapacity:(contacts.count + localEmailContacts.count)];
+    matrixContacts = [NSMutableArray arrayWithCapacity:(contacts.count + localContactsWithMethods.count)];
     
     // Add first email contacts
-    if (localEmailContacts.count)
+    if (localContactsWithMethods.count)
     {
-        [matrixContacts addObjectsFromArray:localEmailContacts];
+        [matrixContacts addObjectsFromArray:localContactsWithMethods];
     }
     
     if (contacts.count)
@@ -347,16 +330,9 @@
         }
         
         // Disambiguate the display name when it appears several times.
-        if (contact.displayName && [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
+        if (contact.displayName)
         {
-            NSArray *identifiers = contact.matrixIdentifiers;
-            if (identifiers.count)
-            {
-                NSString *participantId = identifiers.firstObject;
-                NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
-                
-                contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
-            }
+            participantCell.showMatrixIdInDisplayName = [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
         }
         
         [participantCell render:contact];

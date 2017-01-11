@@ -26,15 +26,20 @@
 
 #pragma mark -
 
-- (void)viewDidLoad
+- (void)finalizeInit
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "ContactTableViewCell.h"
-
 #import "SegmentedViewController.h"
 
 @class Contact;
@@ -52,7 +50,9 @@
      */
     NSInteger participantsSection;
     NSInteger invitedSection;
-    NSInteger invitableSection;
+    NSInteger invitableSectionSearchInput;
+    NSInteger invitableSectionAddressBookContacts;
+    NSInteger invitableSectionMatrixContacts;
     
     /**
      The current list of joined members.

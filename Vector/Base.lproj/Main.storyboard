@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--HomeNav-->
@@ -27,9 +31,9 @@
                     <navigationItem key="navigationItem" id="3Zt-Wl-J6o">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="aas-th-FW1" userLabel="Room title view container">
-                            <rect key="frame" x="60" y="2" width="480" height="40"/>
+                            <rect key="frame" x="8" y="2" width="312" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <barButtonItem key="rightBarButtonItem" image="search_icon.png" id="wyR-qv-IxC" userLabel="Menu Bar Button Item"/>
                     </navigationItem>
@@ -54,14 +58,14 @@
                         <viewControllerLayoutGuide type="bottom" id="6ie-9b-cBo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N8z-LO-417">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e8Z-uW-oDv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3326" y="-2175"/>
+            <point key="canvasLocation" x="4111" y="-2023"/>
         </scene>
         <!--Room Context Timeline-->
         <scene sceneID="Htr-h8-baq">
@@ -70,19 +74,21 @@
                     <navigationItem key="navigationItem" id="yLe-Hk-Sol">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="djN-zB-Vni" userLabel="Room title view container">
-                            <rect key="frame" x="60" y="2" width="480" height="40"/>
+                            <rect key="frame" x="8" y="2" width="312" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <barButtonItem key="rightBarButtonItem" image="search_icon.png" id="Koy-mU-PTG" userLabel="Menu Bar Button Item"/>
                     </navigationItem>
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="djN-zB-Vni" id="VQG-Mp-hSa"/>
+                        <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="fNQ-S3-DbZ"/>
+                        <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="ziz-Xl-QVg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yjg-uP-Hcy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3362" y="-1299"/>
+            <point key="canvasLocation" x="3326" y="-1299"/>
         </scene>
         <!--Room Search View Controller-->
         <scene sceneID="rUg-1s-vHX">
@@ -93,9 +99,9 @@
                         <viewControllerLayoutGuide type="bottom" id="BxE-Q4-YjP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Kg1-rX-y7X">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
                         <segue destination="Too-LV-OLW" kind="show" identifier="showTimeline" id="P1V-0d-mYL"/>
@@ -122,9 +128,9 @@
                         <viewControllerLayoutGuide type="bottom" id="gbK-Nm-HUT"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wIi-Yi-2pi">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mvZ-se-pqQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -140,11 +146,11 @@
                         <viewControllerLayoutGuide type="bottom" id="x0h-cK-85g"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hZq-6f-RBH">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="24" sectionFooterHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="FhP-wT-Bz5">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BfJ-uC-XeM" id="cGQ-We-8Dg"/>
@@ -152,7 +158,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="x0h-cK-85g" firstAttribute="top" secondItem="FhP-wT-Bz5" secondAttribute="bottom" id="Edp-wX-9No"/>
                             <constraint firstItem="FhP-wT-Bz5" firstAttribute="top" secondItem="hZq-6f-RBH" secondAttribute="top" id="UXv-Vl-XRY"/>
@@ -192,14 +198,14 @@
                         <viewControllerLayoutGuide type="bottom" id="GF2-be-Jca"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="eRR-tG-G8a">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="01q-h6-40E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2354" y="-3212"/>
+            <point key="canvasLocation" x="3490" y="-2999"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="O3K-sK-0fA">
@@ -210,9 +216,9 @@
                         <viewControllerLayoutGuide type="bottom" id="dim-1V-Mdx"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jgV-fC-DUP">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="lkL-Yi-y5i">
                         <barButtonItem key="leftBarButtonItem" image="settings_icon.png" id="RwK-LB-3ML">
@@ -245,9 +251,9 @@
             <objects>
                 <tableViewController id="dP6-5F-5s0" customClass="DirectoryViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="JIN-S2-qUn">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yn2-Xd-dn4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -296,9 +302,9 @@
                         <viewControllerLayoutGuide type="bottom" id="0pc-6H-UO9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="rVj-X8-v0f">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="Sre-eV-Crk"/>
                 </viewController>
@@ -313,6 +319,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="agy-3r-khl"/>
-        <segue reference="tcD-xb-ae8"/>
+        <segue reference="ziz-Xl-QVg"/>
+        <segue reference="fNQ-S3-DbZ"/>
     </inferredMetricsTieBreakers>
 </document>
