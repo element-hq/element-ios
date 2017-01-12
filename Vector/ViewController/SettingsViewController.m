@@ -875,6 +875,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
         [signOutCell.mxkButton addTarget:self action:@selector(onSignout:) forControlEvents:UIControlEventTouchUpInside];
+        signOutCell.mxkButton.accessibilityIdentifier=@"SettingsVCSignOutButton";
         
         cell = signOutCell;
     }
@@ -1243,6 +1244,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             [markAllBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [markAllBtnCell.mxkButton addTarget:self action:@selector(markAllAsRead:) forControlEvents:UIControlEventTouchUpInside];
+            markAllBtnCell.mxkButton.accessibilityIdentifier = nil;
             
             cell = markAllBtnCell;
         }
@@ -1262,6 +1264,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             [clearCacheBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [clearCacheBtnCell.mxkButton addTarget:self action:@selector(clearCache:) forControlEvents:UIControlEventTouchUpInside];
+            clearCacheBtnCell.mxkButton.accessibilityIdentifier = nil;
             
             cell = clearCacheBtnCell;
         }
