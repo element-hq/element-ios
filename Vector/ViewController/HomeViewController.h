@@ -26,7 +26,7 @@
 /**
  The `HomeViewController` screen is the main app screen.
  */
-@interface HomeViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate, HomePeopleSearchViewControllerDelegate>
+@interface HomeViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate, ContactsTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *searchBarButtonIem;

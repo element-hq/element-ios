@@ -33,6 +33,9 @@
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
     BOOL forceSearchResultRefresh;
+    
+    // This dictionary tells for each display name whether it appears several times.
+    NSMutableDictionary <NSString*,NSNumber*> *isMultiUseNameByDisplayName;
 }
 
 @end
@@ -59,6 +62,10 @@
     
     ignoredContactsByEmail = [NSMutableDictionary dictionary];
     ignoredContactsByMatrixId = [NSMutableDictionary dictionary];
+    
+    isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
+    
+    _forceMatrixIdInDisplayName = NO;
 }
 
 - (void)viewDidLoad
@@ -92,6 +99,8 @@
     searchProcessingQueue = nil;
     searchProcessingLocalContacts = nil;
     searchProcessingMatrixContacts = nil;
+    
+    isMultiUseNameByDisplayName = nil;
     
     [super destroy];
 }
@@ -145,7 +154,20 @@
 
 #pragma mark -
 
-- (void)searchWithPattern:(NSString *)searchText forceRefresh:(BOOL)forceRefresh
+- (void)setForceMatrixIdInDisplayName:(BOOL)forceMatrixIdInDisplayName
+{
+    if (_forceMatrixIdInDisplayName != forceMatrixIdInDisplayName)
+    {
+        _forceMatrixIdInDisplayName = forceMatrixIdInDisplayName;
+        
+        if (self.tableView)
+        {
+            [self refreshTableView];
+        }
+    }
+}
+
+- (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceRefresh
 {
     // Update search results.
     searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -221,6 +243,15 @@
                     filteredLocalContacts = searchProcessingLocalContacts;
                     filteredMatrixContacts = searchProcessingMatrixContacts;
                     
+                    if (!self.forceMatrixIdInDisplayName)
+                    {
+                        [isMultiUseNameByDisplayName removeAllObjects];
+                        for (MXKContact* contact in filteredMatrixContacts)
+                        {
+                            isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                        }
+                    }
+                    
                     // Refresh display
                     [self refreshTableView];
                     
@@ -231,7 +262,7 @@
                 {
                     // Launch a new search
                     forceSearchResultRefresh = NO;
-                    [self searchWithPattern:searchProcessingText forceRefresh:YES];
+                    [self searchWithPattern:searchProcessingText forceReset:YES];
                 }
             }
         });
@@ -256,7 +287,7 @@
     }
     
     // Refresh the search result
-    [self searchWithPattern:currentSearchText forceRefresh:YES];
+    [self searchWithPattern:currentSearchText forceReset:YES];
 }
 
 - (NSMutableArray<MXKContact*>*)unfilteredLocalContactsArray
@@ -432,7 +463,7 @@
             contact = filteredMatrixContacts[indexPath.row];
             
             contactCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            contactCell.showMatrixIdInDisplayName = YES;
+            contactCell.showMatrixIdInDisplayName = self.forceMatrixIdInDisplayName ? YES : [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
         }
     }
     
@@ -520,7 +551,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Do nothing by default - `ContactsTableViewController-inherited` instance must override this method.
+    if (self.contactsTableViewControllerDelegate)
+    {
+        NSInteger row = indexPath.row;
+        MXKContact *mxkContact;
+        
+        if (indexPath.section == searchInputSection)
+        {
+            mxkContact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
+        }
+        else if (indexPath.section == filteredLocalContactsSection)
+        {
+            mxkContact = filteredLocalContacts[row];
+        }
+        else if (indexPath.section == filteredMatrixContactsSection)
+        {
+            mxkContact = filteredMatrixContacts[row];
+        }
+        
+        if (mxkContact)
+        {
+            [self.contactsTableViewControllerDelegate contactsTableViewController:self didSelectContact:mxkContact];
+        }
+    }
+    // Else do nothing by default - `ContactsTableViewController-inherited` instance must override this method.
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

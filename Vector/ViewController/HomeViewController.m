@@ -105,7 +105,7 @@
     // Add search People tab
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
     contactsViewController = [HomePeopleSearchViewController homePeopleSearchViewController];
-    contactsViewController.delegate = self;
+    contactsViewController.contactsTableViewControllerDelegate = self;
     [viewControllers addObject:contactsViewController];
     
     // add Files tab
@@ -513,7 +513,7 @@
     }
     else if (self.selectedViewController == contactsViewController)
     {
-        self.backgroundImageView.hidden = (([contactsViewController.contactsTableView numberOfRowsInSection:0] != 0) || !contactsViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = (([contactsViewController.tableView numberOfRowsInSection:0] != 0) || (self.keyboardHeight == 0));
     }
     else if (self.selectedViewController == filesSearchViewController)
     {
@@ -1110,7 +1110,7 @@
         }
         else if (self.selectedViewController == contactsViewController)
         {
-            [contactsViewController searchWithPattern:self.searchBar.text];
+            [contactsViewController searchWithPattern:self.searchBar.text forceReset:NO];
         }
         else if (self.selectedViewController == filesSearchViewController)
         {
@@ -1138,7 +1138,7 @@
         {
             [messagesSearchDataSource searchMessages:nil force:NO];
         }
-        [contactsViewController searchWithPattern:nil];
+        [contactsViewController searchWithPattern:nil forceReset:NO];
         if (filesSearchDataSource.searchText.length)
         {
             [filesSearchDataSource searchMessages:nil force:NO];
@@ -1188,9 +1188,9 @@
     [self selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
-#pragma mark - HomePeopleSearchViewControllerDelegate
+#pragma mark - ContactsTableViewControllerDelegate
 
-- (void)homePeopleSearchViewController:(HomePeopleSearchViewController *)homePeopleSearchViewController didSelectContact:(MXKContact*)contact
+- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
 {
     selectedContact = contact;
     

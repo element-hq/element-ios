@@ -19,6 +19,23 @@
 #import "ContactTableViewCell.h"
 #import "VectorDesignValues.h"
 
+@class ContactsTableViewController;
+
+/**
+ `ContactsTableViewController` delegate.
+ */
+@protocol ContactsTableViewControllerDelegate <NSObject>
+
+/**
+ Tells the delegate that the user selected a contact.
+ 
+ @param contactsTableViewController the `ContactsTableViewController` instance.
+ @param contact the selected contact.
+ */
+- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact;
+
+@end
+
 /**
  'ContactsTableViewController' instance is used to display/filter a list of contacts.
  See 'ContactsTableViewController-inherited' object for example of use.
@@ -51,18 +68,29 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 /**
+ Tell whether the matrix id should be added by default in the matrix contact display name (NO by default).
+ If NO, the matrix id is added only to disambiguate the contact display names which appear several times.
+ */
+@property (nonatomic) BOOL forceMatrixIdInDisplayName;
+
+/**
  Filter the contacts list, by keeping only the contacts who have the search pattern
  as prefix in their display name, their matrix identifiers and/or their contact methods (emails, phones).
  
  @param searchText the search pattern (nil to reset filtering).
- @param forceRefresh tell whether the previous filtered contacts list must be reinitialized before searching (use NO by default).
+ @param forceReset tell whether the search request must be applied by ignoring the previous search result if any (use NO by default).
  */
-- (void)searchWithPattern:(NSString *)searchText forceRefresh:(BOOL)forceRefresh;
+- (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceReset;
 
 /**
  Refresh the contacts table display.
  */
 - (void)refreshTableView;
+
+/**
+ The delegate for the view controller.
+ */
+@property (nonatomic) id<ContactsTableViewControllerDelegate> contactsTableViewControllerDelegate;
 
 @end
 

@@ -61,6 +61,8 @@
 {
     [super finalizeInit];
     
+    self.forceMatrixIdInDisplayName = YES;
+    
     _isAddParticipantSearchBarEditing = NO;
     
     // Prepare room participants
@@ -594,7 +596,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self searchWithPattern:searchText forceRefresh:NO];
+    [self searchWithPattern:searchText forceReset:NO];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
@@ -640,7 +642,7 @@
     self.isAddParticipantSearchBarEditing = NO;
     
     // Reset filtering
-    [self searchWithPattern:nil forceRefresh:NO];
+    [self searchWithPattern:nil forceReset:NO];
     
     // Leave search
     [searchBar resignFirstResponder];

@@ -76,6 +76,8 @@
 {
     [super finalizeInit];
     
+    self.forceMatrixIdInDisplayName = YES;
+    
     _isAddParticipantScreenDisplaying = NO;
 }
 
@@ -399,7 +401,7 @@
             // Apply the search pattern if any
             if (currentSearchText)
             {
-                [self searchWithPattern:currentSearchText forceRefresh:YES];
+                [self searchWithPattern:currentSearchText forceReset:YES];
             }
         }
         else
@@ -1538,7 +1540,7 @@
 {
     if (_isAddParticipantScreenDisplaying)
     {
-        [self searchWithPattern:searchText forceRefresh:NO];
+        [self searchWithPattern:searchText forceReset:NO];
     }
     else
     {
@@ -1654,7 +1656,7 @@
         self.isAddParticipantScreenDisplaying = NO;
         
         // Reset filtering
-        [self searchWithPattern:nil forceRefresh:NO];
+        [self searchWithPattern:nil forceReset:NO];
     }
     else
     {

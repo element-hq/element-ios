@@ -14,37 +14,12 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
-@class HomePeopleSearchViewController;
-
-/**
- `HomePeopleSearchViewController` delegate.
- */
-@protocol HomePeopleSearchViewControllerDelegate <NSObject>
-
-/**
- Tells the delegate that the user selected a contact.
- 
- @param homePeopleSearchViewController the `HomePeopleSearchViewController` instance.
- @param contact the selected contact.
- */
-- (void)homePeopleSearchViewController:(HomePeopleSearchViewController *)homePeopleSearchViewController didSelectContact:(MXKContact*)contact;
-
-@end
+#import "ContactsTableViewController.h"
 
 /**
  `HomePeopleSearchViewController` displays people search in user's rooms under a `HomeViewController` segment.
  */
-@interface HomePeopleSearchViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource>
-
-@property (nonatomic) IBOutlet UITableView *contactsTableView;
-@property (weak, nonatomic) IBOutlet UILabel *noResultsLabel;
-
-/**
- The delegate for the view controller.
- */
-@property (nonatomic) id<HomePeopleSearchViewControllerDelegate> delegate;
+@interface HomePeopleSearchViewController : ContactsTableViewController
 
 /**
  Returns the `UINib` object initialized for a `HomePeopleSearchViewController`.
@@ -61,9 +36,5 @@
  @return An initialized `HomePeopleSearchViewController` object if successful, `nil` otherwise.
  */
 + (instancetype)homePeopleSearchViewController;
-
-/**
- */
-- (void)searchWithPattern:(NSString *)searchText;
 
 @end
