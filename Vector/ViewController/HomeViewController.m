@@ -46,7 +46,7 @@
     HomeFilesSearchViewController *filesSearchViewController;
     MXKSearchDataSource *filesSearchDataSource;
     
-    HomePeopleSearchViewController *contactsViewController;
+    ContactsTableViewController *contactsViewController;
     MXKContact *selectedContact;
 
     // Display a gradient view above the screen
@@ -104,7 +104,7 @@
 
     // Add search People tab
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
-    contactsViewController = [HomePeopleSearchViewController homePeopleSearchViewController];
+    contactsViewController = [ContactsTableViewController contactsTableViewController];
     contactsViewController.contactsTableViewControllerDelegate = self;
     [viewControllers addObject:contactsViewController];
     

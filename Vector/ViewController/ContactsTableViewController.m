@@ -16,6 +16,8 @@
 
 #import "ContactsTableViewController.h"
 
+#import "UIViewController+VectorSearch.h"
+
 #import "RageShakeManager.h"
 
 #import "AppDelegate.h"
@@ -42,6 +44,20 @@
 
 @implementation ContactsTableViewController
 
+#pragma mark - Class methods
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass([ContactsTableViewController class])
+                          bundle:[NSBundle bundleForClass:[ContactsTableViewController class]]];
+}
+
++ (instancetype)contactsTableViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([ContactsTableViewController class])
+                                          bundle:[NSBundle bundleForClass:[ContactsTableViewController class]]];
+}
+
 #pragma mark -
 
 - (void)finalizeInit
@@ -60,8 +76,8 @@
     searchProcessingLocalContacts = nil;
     searchProcessingMatrixContacts = nil;
     
-    ignoredContactsByEmail = [NSMutableDictionary dictionary];
-    ignoredContactsByMatrixId = [NSMutableDictionary dictionary];
+    _ignoredContactsByEmail = [NSMutableDictionary dictionary];
+    _ignoredContactsByMatrixId = [NSMutableDictionary dictionary];
     
     isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
     
@@ -72,6 +88,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // Check whether the view controller has been pushed via storyboard
+    if (!self.tableView)
+    {
+        // Instantiate view controller objects
+        [[[self class] nib] instantiateWithOwner:self options:nil];
+    }
+    
+    // Hide line separators of empty cells
+    self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,16 +111,10 @@
     filteredLocalContacts = nil;
     filteredMatrixContacts = nil;
     
-    ignoredContactsByEmail = nil;
-    ignoredContactsByMatrixId = nil;
+    _ignoredContactsByEmail = nil;
+    _ignoredContactsByMatrixId = nil;
     
     userContact = nil;
-    
-    if (currentAlert)
-    {
-        [currentAlert dismiss:NO];
-        currentAlert = nil;
-    }
     
     searchProcessingQueue = nil;
     searchProcessingLocalContacts = nil;
@@ -118,6 +138,23 @@
 {
     [super viewWillAppear:animated];
     
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:@"ContactsTable"];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+    
+    // Check whether the access to the local contacts has not been already asked.
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    {
+        // Allow by default the local contacts sync in order to discover matrix users.
+        // This setting change will trigger the loading of the local contacts, which will automatically
+        // ask user permission to access their local contacts.
+        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+    }
+    
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -134,12 +171,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if (currentAlert)
-    {
-        [currentAlert dismiss:NO];
-        currentAlert = nil;
-    }
     
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
@@ -303,7 +334,7 @@
         NSArray *identifiers = contact.matrixIdentifiers;
         if (identifiers.count)
         {
-            if ([ignoredContactsByMatrixId objectForKey:identifiers.firstObject])
+            if ([_ignoredContactsByMatrixId objectForKey:identifiers.firstObject])
             {
                 [unfilteredLocalContacts removeObjectAtIndex:index];
                 continue;
@@ -315,7 +346,7 @@
             if (emails.count)
             {
                 MXKEmail *email = emails.firstObject;
-                if ([ignoredContactsByEmail objectForKey:email.emailAddress])
+                if ([_ignoredContactsByEmail objectForKey:email.emailAddress])
                 {
                     [unfilteredLocalContacts removeObjectAtIndex:index];
                     continue;
@@ -342,7 +373,7 @@
         {
             for (NSString *userId in identifiers)
             {
-                if ([ignoredContactsByMatrixId objectForKey:userId] == nil)
+                if ([_ignoredContactsByMatrixId objectForKey:userId] == nil)
                 {
                     MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                     [unfilteredMatrixContacts addObject:splitContact];
@@ -352,7 +383,7 @@
         else if (identifiers.count)
         {
             NSString *userId = identifiers.firstObject;
-            if ([ignoredContactsByMatrixId objectForKey:userId] == nil)
+            if ([_ignoredContactsByMatrixId objectForKey:userId] == nil)
             {
                 [unfilteredMatrixContacts addObject:contact];
             }
@@ -577,6 +608,46 @@
     // Else do nothing by default - `ContactsTableViewController-inherited` instance must override this method.
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - UISearchBar delegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self searchWithPattern:searchText forceReset:NO];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    // "Done" key has been pressed.
+    
+    // Check whether the current search input is a valid email or a Matrix user ID
+    if (currentSearchText.length && ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]))
+    {
+        // Select the contact related to the search input, rather than having to hit +
+        if (searchInputSection != -1)
+        {
+            [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:searchInputSection]];
+            return;
+        }
+        
+    }
+    
+    // Dismiss keyboard
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    searchBar.text = nil;
+    
+    // Reset filtering
+    [self searchWithPattern:nil forceReset:NO];
+    
+    // Leave search
+    [searchBar resignFirstResponder];
+    
+    [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
 @end

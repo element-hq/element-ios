@@ -18,7 +18,7 @@
 
 #import "SegmentedViewController.h"
 
-#import "HomePeopleSearchViewController.h"
+#import "ContactsTableViewController.h"
 
 #import "RoomViewController.h"
 #import "AuthenticationViewController.h"

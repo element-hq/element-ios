@@ -28,6 +28,8 @@
 
 @interface RoomParticipantsViewController ()
 {
+    // Search result
+    NSString *currentSearchText;
     NSMutableArray<Contact*> *filteredActualParticipants;
     NSMutableArray<Contact*> *filteredInvitedParticipants;
     
@@ -44,12 +46,15 @@
     id roomDidFlushDataNotificationObserver;
 
     RoomMemberDetailsViewController *memberDetailsViewController;
+    ContactsTableViewController     *contactsPickerViewController;
     
     // Display a gradient view above the screen.
     CAGradientLayer* tableViewMaskLayer;
     
     // Display a button to invite new member.
     UIImageView* addParticipantButtonImageView;
+    
+    MXKAlert *currentAlert;
 }
 
 @end
@@ -75,10 +80,6 @@
 - (void)finalizeInit
 {
     [super finalizeInit];
-    
-    self.forceMatrixIdInDisplayName = YES;
-    
-    _isAddParticipantScreenDisplaying = NO;
 }
 
 - (void)viewDidLoad
@@ -165,6 +166,12 @@
         membersListener = nil;
     }
     
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+    
     _mxRoom = nil;
     
     filteredActualParticipants = nil;
@@ -197,6 +204,12 @@
         memberDetailsViewController = nil;
     }
     
+    if (contactsPickerViewController)
+    {
+        [contactsPickerViewController destroy];
+        contactsPickerViewController = nil;
+    }
+    
     // Refresh display
     [self refreshTableView];
 }
@@ -204,6 +217,12 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
  
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
@@ -385,36 +404,6 @@
     [self refreshTableView];
 }
 
-- (void)setIsAddParticipantScreenDisplaying:(BOOL)isAddParticipantScreenDisplaying
-{
-    if (_isAddParticipantScreenDisplaying != isAddParticipantScreenDisplaying)
-    {
-        _isAddParticipantScreenDisplaying = isAddParticipantScreenDisplaying;
-        
-        tableViewMaskLayer.hidden = addParticipantButtonImageView.hidden = isAddParticipantScreenDisplaying;
-        
-        if (isAddParticipantScreenDisplaying)
-        {
-            // Switch the participants list with the inviting people screen.
-            _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
-            
-            // Apply the search pattern if any
-            if (currentSearchText)
-            {
-                [self searchWithPattern:currentSearchText forceReset:YES];
-            }
-        }
-        else
-        {
-            // Switch back to the participants list.
-            _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
-        }
-        
-        [self refreshSearchBarItemsColor:_searchBarView];
-        [self refreshTableView];
-    }
-}
-
 - (void)setEnableMention:(BOOL)enableMention
 {
     if (_enableMention != enableMention)
@@ -461,6 +450,11 @@
 }
 
 #pragma mark - Internals
+
+- (void)refreshTableView
+{
+    [self.tableView reloadData];
+}
 
 - (void)setNavBarButtons
 {
@@ -551,10 +545,46 @@
 
 - (void)onAddParticipantButtonPressed
 {
-    // Switch the participants list with the inviting people screen.
-    self.isAddParticipantScreenDisplaying = YES;
+    // Push the contacts table screen.
+    contactsPickerViewController = [ContactsTableViewController contactsTableViewController];
     
-    [_searchBarView becomeFirstResponder];
+    // Set delegate to handle action on member (start chat, mention)
+    contactsPickerViewController.contactsTableViewControllerDelegate = self;
+    contactsPickerViewController.forceMatrixIdInDisplayName = YES;
+    
+    // List all the participants by their matrix user id, or a room 3pid invite token to ignore them during the contacts search.
+    [contactsPickerViewController.ignoredContactsByMatrixId removeAllObjects];
+    for (Contact *contact in actualParticipants)
+    {
+        [contactsPickerViewController.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
+    }
+    for (Contact *contact in invitedParticipants)
+    {
+        if (contact.mxMember)
+        {
+            [contactsPickerViewController.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
+        }
+        else if (contact.mxThirdPartyInvite)
+        {
+            [contactsPickerViewController.ignoredContactsByMatrixId setObject:contact forKey:contact.mxThirdPartyInvite.token];
+        }
+    }
+    if (userParticipant)
+    {
+        [contactsPickerViewController.ignoredContactsByMatrixId setObject:userParticipant forKey:userParticipant.mxMember.userId];
+    }
+    
+    [contactsPickerViewController showSearch:YES];
+    contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
+    
+    // Apply the search pattern if any
+    if (currentSearchText)
+    {
+        contactsPickerViewController.searchBar.text = currentSearchText;
+        [contactsPickerViewController searchWithPattern:currentSearchText forceReset:YES];
+    }
+    
+    [self pushViewController:contactsPickerViewController];
 }
 
 - (void)refreshParticipantsFromRoomMembers
@@ -781,29 +811,6 @@
     [actualParticipants sortUsingComparator:comparator];
     [invitedParticipants sortUsingComparator:comparator];
     
-    // Refer all the participants by their matrix user id, or a room 3pid invite token.
-    [ignoredContactsByMatrixId removeAllObjects];
-    
-    for (Contact *contact in actualParticipants)
-    {
-        [ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
-    }
-    for (Contact *contact in invitedParticipants)
-    {
-        if (contact.mxMember)
-        {
-            [ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
-        }
-        else if (contact.mxThirdPartyInvite)
-        {
-            [ignoredContactsByMatrixId setObject:contact forKey:contact.mxThirdPartyInvite.token];
-        }
-    }
-    if (userParticipant)
-    {
-        [ignoredContactsByMatrixId setObject:userParticipant forKey:userParticipant.mxMember.userId];
-    }
-    
     // Reload search result if any
     [self reloadSearchResult];
 }
@@ -870,40 +877,30 @@
 {
     NSInteger count = 0;
     
-    if (_isAddParticipantScreenDisplaying)
+    participantsSection = invitedSection = -1;
+    
+    if (currentSearchText.length)
     {
-        participantsSection = invitedSection = -1;
+        if (filteredActualParticipants.count)
+        {
+            participantsSection = count++;
+        }
         
-        count = [super numberOfSectionsInTableView:self.tableView];
+        if (filteredInvitedParticipants.count)
+        {
+            invitedSection = count++;
+        }
     }
     else
     {
-        participantsSection = invitedSection = -1;
-        searchInputSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
-        
-        if (currentSearchText.length)
+        if (userParticipant || actualParticipants.count)
         {
-            if (filteredActualParticipants.count)
-            {
-                participantsSection = count++;
-            }
-            
-            if (filteredInvitedParticipants.count)
-            {
-                invitedSection = count++;
-            }
+            participantsSection = count++;
         }
-        else
+        
+        if (invitedParticipants.count)
         {
-            if (userParticipant || actualParticipants.count)
-            {
-                participantsSection = count++;
-            }
-            
-            if (invitedParticipants.count)
-            {
-                invitedSection = count++;
-            }
+            invitedSection = count++;
         }
     }
     
@@ -939,10 +936,6 @@
         {
             count = invitedParticipants.count;
         }
-    }
-    else
-    {
-        count = [super tableView:self.tableView numberOfRowsInSection:section];
     }
     
     return count;
@@ -1035,10 +1028,6 @@
         
         cell = participantCell;
     }
-    else
-    {
-        cell = [super tableView:self.tableView cellForRowAtIndexPath:indexPath];
-    }
     
     return cell;
 }
@@ -1067,10 +1056,6 @@
     {
         height = 30.0;
     }
-    else if (section != participantsSection)
-    {
-        height = [super tableView:self.tableView heightForHeaderInSection:section];
-    }
     
     return height;
 }
@@ -1097,12 +1082,13 @@
         
         [sectionHeader addSubview:headerLabel];
     }
-    else if (section != participantsSection)
-    {
-        sectionHeader = [super tableView:self.tableView viewForHeaderInSection:section];
-    }
     
     return sectionHeader;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 74.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1113,90 +1099,64 @@
         return;
     }
     
-    NSInteger row = indexPath.row;
+    Contact *contact;
     
-    if (indexPath.section == searchInputSection)
+    // oneself dedicated cell
+    if ((indexPath.section == participantsSection && userParticipant && indexPath.row == 0) && !currentSearchText.length)
     {
-        MXKContact *mxkContact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
-        [self didSelectInvitableContact:mxkContact];
-    }
-    else if (indexPath.section == filteredLocalContactsSection)
-    {
-        if (row < filteredLocalContacts.count)
-        {
-            MXKContact *mxkContact = filteredLocalContacts[row];
-            [self didSelectInvitableContact:mxkContact];
-        }
-    }
-    else if (indexPath.section == filteredMatrixContactsSection)
-    {
-        if (row < filteredMatrixContacts.count)
-        {
-            MXKContact *mxkContact = filteredMatrixContacts[row];
-            [self didSelectInvitableContact:mxkContact];
-        }
+        contact = userParticipant;
     }
     else
     {
-        Contact *contact;
+        NSInteger index = indexPath.row;
+        NSArray *participants;
         
-        // oneself dedicated cell
-        if ((indexPath.section == participantsSection && userParticipant && indexPath.row == 0) && !currentSearchText.length)
+        if (indexPath.section == participantsSection)
         {
-            contact = userParticipant;
-        }
-        else
-        {
-            NSInteger index = indexPath.row;
-            NSArray *participants;
-            
-            if (indexPath.section == participantsSection)
+            if (currentSearchText.length)
             {
-                if (currentSearchText.length)
-                {
-                    participants = filteredActualParticipants;
-                }
-                else
-                {
-                    participants = actualParticipants;
-                    
-                    if (userParticipant)
-                    {
-                        index --;
-                    }
-                }
+                participants = filteredActualParticipants;
             }
             else
             {
-                if (currentSearchText.length)
+                participants = actualParticipants;
+                
+                if (userParticipant)
                 {
-                    participants = filteredInvitedParticipants;
-                }
-                else
-                {
-                    participants = invitedParticipants;
+                    index --;
                 }
             }
-            
-            if (index < participants.count)
+        }
+        else
+        {
+            if (currentSearchText.length)
             {
-                contact = participants[index];
+                participants = filteredInvitedParticipants;
+            }
+            else
+            {
+                participants = invitedParticipants;
             }
         }
         
-        if (contact.mxMember)
+        if (index < participants.count)
         {
-            memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
-            
-            // Set delegate to handle action on member (start chat, mention)
-            memberDetailsViewController.delegate = self;
-            memberDetailsViewController.enableMention = _enableMention;
-            memberDetailsViewController.enableVoipCall = NO;
-            
-            [memberDetailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
-            
-            [self pushViewController:memberDetailsViewController];
+            contact = participants[index];
         }
+    }
+    
+    if (contact.mxMember)
+    {
+        memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+        
+        // Set delegate to handle action on member (start chat, mention)
+        memberDetailsViewController.delegate = self;
+        memberDetailsViewController.enableMention = _enableMention;
+        memberDetailsViewController.enableVoipCall = NO;
+        
+        [memberDetailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
+        
+        [self pushViewController:memberDetailsViewController];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1245,6 +1205,13 @@
             
         }];
     }
+}
+
+#pragma mark - ContactsTableViewControllerDelegate
+
+- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
+{
+    [self didSelectInvitableContact:contact];
 }
 
 #pragma mark - Actions
@@ -1426,8 +1393,8 @@
                                          __strong __typeof(weakSelf)strongSelf = weakSelf;
                                          [strongSelf removePendingActionMask];
                                          
-                                         // Refresh display by leaving search session
-                                         [strongSelf searchBarCancelButtonClicked:strongSelf.searchBarView];
+                                         // Refresh display by removing the contacts picker
+                                         [strongSelf->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
                                          
                                      } failure:^(NSError *error) {
                                          
@@ -1463,8 +1430,8 @@
                                              __strong __typeof(weakSelf)strongSelf = weakSelf;
                                              [strongSelf removePendingActionMask];
                                              
-                                             // Refresh display by leaving search session
-                                             [strongSelf searchBarCancelButtonClicked:strongSelf.searchBarView];
+                                             // Refresh display by removing the contacts picker
+                                             [strongSelf->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
                                              
                                          } failure:^(NSError *error) {
                                              
@@ -1484,8 +1451,8 @@
                                              __strong __typeof(weakSelf)strongSelf = weakSelf;
                                              [strongSelf removePendingActionMask];
                                              
-                                             // Refresh display by leaving search session
-                                             [strongSelf searchBarCancelButtonClicked:strongSelf.searchBarView];
+                                             // Refresh display by removing the contacts picker
+                                             [strongSelf->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];                                             
                                              
                                          } failure:^(NSError *error) {
                                              
@@ -1538,87 +1505,68 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    if (_isAddParticipantScreenDisplaying)
+    // Update search results.
+    NSUInteger index;
+    MXKContact *contact;
+    
+    searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (!currentSearchText.length || [searchText hasPrefix:currentSearchText] == NO)
     {
-        [self searchWithPattern:searchText forceReset:NO];
+        // Copy participants and invited participants
+        filteredActualParticipants = [NSMutableArray arrayWithArray:actualParticipants];
+        filteredInvitedParticipants = [NSMutableArray arrayWithArray:invitedParticipants];
+        
+        // Add the current user if he belongs to the room members.
+        if (userParticipant)
+        {
+            [filteredActualParticipants addObject:userParticipant];
+        }
+    }
+    
+    currentSearchText = searchText;
+    
+    // Filter room participants
+    if (currentSearchText.length)
+    {
+        for (index = 0; index < filteredActualParticipants.count;)
+        {
+            contact = filteredActualParticipants[index];
+            if (![contact matchedWithPatterns:@[currentSearchText]])
+            {
+                [filteredActualParticipants removeObjectAtIndex:index];
+            }
+            else
+            {
+                index++;
+            }
+        }
+        
+        for (index = 0; index < filteredInvitedParticipants.count;)
+        {
+            contact = filteredInvitedParticipants[index];
+            if (![contact matchedWithPatterns:@[currentSearchText]])
+            {
+                [filteredInvitedParticipants removeObjectAtIndex:index];
+            }
+            else
+            {
+                index++;
+            }
+        }
     }
     else
     {
-        // Update search results.
-        NSUInteger index;
-        MXKContact *contact;
-        
-        searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        
-        if (!currentSearchText.length || [searchText hasPrefix:currentSearchText] == NO)
-        {
-            // Copy participants and invited participants
-            filteredActualParticipants = [NSMutableArray arrayWithArray:actualParticipants];
-            filteredInvitedParticipants = [NSMutableArray arrayWithArray:invitedParticipants];
-            
-            // Add the current user if he belongs to the room members.
-            if (userParticipant)
-            {
-                [filteredActualParticipants addObject:userParticipant];
-            }
-        }
-        
-        currentSearchText = searchText;
-        
-        // Filter room participants
-        if (currentSearchText.length)
-        {
-            for (index = 0; index < filteredActualParticipants.count;)
-            {
-                contact = filteredActualParticipants[index];
-                if (![contact matchedWithPatterns:@[currentSearchText]])
-                {
-                    [filteredActualParticipants removeObjectAtIndex:index];
-                }
-                else
-                {
-                    index++;
-                }
-            }
-            
-            for (index = 0; index < filteredInvitedParticipants.count;)
-            {
-                contact = filteredInvitedParticipants[index];
-                if (![contact matchedWithPatterns:@[currentSearchText]])
-                {
-                    [filteredInvitedParticipants removeObjectAtIndex:index];
-                }
-                else
-                {
-                    index++;
-                }
-            }
-        }
-        else
-        {
-            filteredActualParticipants = nil;
-            filteredInvitedParticipants = nil;
-        }
-        
-        // Refresh display
-        [self refreshTableView];
+        filteredActualParticipants = nil;
+        filteredInvitedParticipants = nil;
     }
+    
+    // Refresh display
+    [self refreshTableView];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    if (_isAddParticipantScreenDisplaying)
-    {
-        // Check whether the access to the local contacts has been already asked.
-        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
-        {
-            // Allow by default the local contacts sync in order to discover matrix users.
-            // This setting change will trigger the loading of the local contacts, which will automatically
-            // ask user permission to access their local contacts.
-            [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-        }
-    }
-    
     searchBar.showsCancelButton = YES;
 
     return YES;
@@ -1626,7 +1574,7 @@
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
-    searchBar.showsCancelButton = _isAddParticipantScreenDisplaying;
+    searchBar.showsCancelButton = NO;
     
     return YES;
 }
@@ -1634,14 +1582,6 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     // "Done" key has been pressed.
-    
-    // Check whether the current search input is a valid email or a Matrix user ID
-    if (_isAddParticipantScreenDisplaying && currentSearchText.length && ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]))
-    {
-        // Select this contact rather than having to hit +
-        MXKContact *mxkContact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
-        [self didSelectInvitableContact:mxkContact];
-    }
     
     // Dismiss keyboard
     [_searchBarView resignFirstResponder];
@@ -1651,21 +1591,12 @@
 {
     searchBar.text = nil;
     
-    if (self.isAddParticipantScreenDisplaying)
-    {
-        self.isAddParticipantScreenDisplaying = NO;
-        
-        // Reset filtering
-        [self searchWithPattern:nil forceReset:NO];
-    }
-    else
-    {
-        currentSearchText = nil;
-        filteredActualParticipants = nil;
-        filteredInvitedParticipants = nil;
-        
-        [self refreshTableView];
-    }
+    currentSearchText = nil;
+    filteredActualParticipants = nil;
+    filteredInvitedParticipants = nil;
+    
+    [self refreshTableView];
+    
     // Leave search
     [searchBar resignFirstResponder];
 }

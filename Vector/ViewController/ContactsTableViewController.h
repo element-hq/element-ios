@@ -51,20 +51,31 @@
     // The contact used to describe the current user.
     MXKContact *userContact;
     
-    // The dictionary of the ignored local contacts, the keys are their email. Empty by default.
-    NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByEmail;
-    
-    //The dictionary of the ignored matrix contacts, the keys are their matrix identifier. Empty by default.
-    NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByMatrixId;
-    
     // Search results
     NSString *currentSearchText;
     NSMutableArray<MXKContact*> *filteredLocalContacts;
     NSMutableArray<MXKContact*> *filteredMatrixContacts;
-    
-    MXKAlert *currentAlert;
 }
 
+/**
+ Returns the `UINib` object initialized for a `ContactsTableViewController`.
+ 
+ @return The initialized `UINib` object or `nil` if there were errors during initialization
+ or the nib file could not be located.
+ */
++ (UINib *)nib;
+
+/**
+ Creates and returns a new `ContactsTableViewController` object.
+ 
+ @discussion This is the designated initializer for programmatic instantiation.
+ @return An initialized `ContactsTableViewController` object if successful, `nil` otherwise.
+ */
++ (instancetype)contactsTableViewController;
+
+/**
+ The contacts table view.
+ */
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 /**
@@ -72,6 +83,16 @@
  If NO, the matrix id is added only to disambiguate the contact display names which appear several times.
  */
 @property (nonatomic) BOOL forceMatrixIdInDisplayName;
+
+/**
+ The dictionary of the ignored local contacts, the keys are their email. Empty by default.
+ */
+@property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByEmail;
+
+/**
+ The dictionary of the ignored matrix contacts, the keys are their matrix identifier. Empty by default.
+ */
+@property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByMatrixId;
 
 /**
  Filter the contacts list, by keeping only the contacts who have the search pattern

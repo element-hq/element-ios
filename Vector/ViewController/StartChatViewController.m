@@ -224,7 +224,7 @@
         if (identifiers.count)
         {
             // Here the contact can only have one identifier
-            [ignoredContactsByMatrixId setObject:contact forKey:identifiers.firstObject];
+            [self.ignoredContactsByMatrixId setObject:contact forKey:identifiers.firstObject];
         }
         else
         {
@@ -233,7 +233,7 @@
             {
                 // Here the contact can only have one email
                 MXKEmail *email = emails.firstObject;
-                [ignoredContactsByEmail setObject:contact forKey:email.emailAddress];
+                [self.ignoredContactsByEmail setObject:contact forKey:email.emailAddress];
             }
         }
         isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
@@ -241,7 +241,7 @@
     
     if (userContact)
     {
-        [ignoredContactsByMatrixId setObject:userContact forKey:self.mainSession.myUser.userId];
+        [self.ignoredContactsByMatrixId setObject:userContact forKey:self.mainSession.myUser.userId];
     }
 }
 

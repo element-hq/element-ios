@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomePeopleSearchViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactsTableViewController">
             <connections>
                 <outlet property="tableView" destination="orV-HH-88x" id="wUr-Sm-kc8"/>
                 <outlet property="view" destination="iN0-l3-epB" id="NUQ-LI-M61"/>
@@ -24,7 +24,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="HomePeopleSearchVCTableView"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="ContactsTableVCTableView"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="kQG-Hx-LNM"/>
