@@ -9,10 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactPickerViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactsTableViewController">
             <connections>
-                <outlet property="contactsTableView" destination="orV-HH-88x" id="4n5-5q-UyB"/>
-                <outlet property="noResultsLabel" destination="R0k-Za-T1q" id="B08-vF-6Fy"/>
+                <outlet property="tableView" destination="orV-HH-88x" id="wUr-Sm-kc8"/>
                 <outlet property="view" destination="iN0-l3-epB" id="NUQ-LI-M61"/>
             </connections>
         </placeholder>
@@ -24,28 +23,19 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="orV-HH-88x">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="ContactsTableVCTableView"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="kQG-Hx-LNM"/>
                         <outlet property="delegate" destination="-1" id="pQo-sI-THQ"/>
                     </connections>
                 </tableView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Results" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R0k-Za-T1q">
-                    <rect key="frame" x="15" y="16" width="375" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="RRM-CN-Pq2"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="R0k-Za-T1q" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="9YV-rq-xXR"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NaR-eJ-WMj"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="VIq-4L-6ij"/>
-                <constraint firstItem="R0k-Za-T1q" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="aaV-Bo-Vcp"/>
-                <constraint firstAttribute="trailing" secondItem="R0k-Za-T1q" secondAttribute="trailing" constant="-15" id="gSa-cX-Yah"/>
                 <constraint firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="m4x-32-odR"/>
                 <constraint firstAttribute="trailing" secondItem="orV-HH-88x" secondAttribute="trailing" id="yBp-63-kZi"/>
             </constraints>

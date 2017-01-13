@@ -95,6 +95,7 @@
 "room_creation_keep_private" = "Keep private";
 "room_creation_make_private" = "Make private";
 "room_creation_wait_for_creation" = "A room is already being created. Please wait.";
+"room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
 
 // Room recents
 "room_recents_directory" = "DIRECTORY";
@@ -110,6 +111,8 @@
 "search_messages" = "Messages";
 "search_people" = "People";
 "search_files" = "Files";
+"search_default_placeholder" = "Search...";
+"search_people_placeholder" = "Search by User ID, Name or email";
 
 // Directory
 "directory_cell_title" = "Browse directory";
@@ -118,6 +121,10 @@
 "directory_search_results" = "%tu results found for %@";
 "directory_searching_title" = "Searching directory...";
 "directory_search_fail" = "Failed to fetch data";
+
+// Contacts
+"contacts_address_book_section" = "LOCAL CONTACTS";
+"contacts_matrix_users_section" = "KNOWN CONTACTS";
 
 // Chat participants
 "room_participants_title" = "Participants";
@@ -130,12 +137,10 @@
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_invite_prompt_title" = "Invite?";
 "room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
-"room_participants_invite_another_user" = "Search / invite by name, email, id";
+"room_participants_filter_room_members" = "Filter room members";
+"room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
-
-"room_participants_address_book_section" = "CONTACT BOOK";
-"room_participants_matrix_users_section" = "ROOM CONTACTS";
 "room_participants_invited_section" = "INVITED";
 
 "room_participants_online" = "Online";

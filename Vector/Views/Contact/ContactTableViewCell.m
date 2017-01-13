@@ -44,6 +44,10 @@
     
     // Clear the default background color of a MXKImageView instance
     self.thumbnailView.backgroundColor = [UIColor clearColor];
+    
+    // Disable by default interactions defined in the cell
+    // because we want [tableView didSelectRowAtIndexPath:] to be called
+    self.thumbnailView.userInteractionEnabled = NO;
 }
 
 - (void)layoutSubviews
