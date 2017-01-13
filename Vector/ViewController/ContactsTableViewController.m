@@ -22,8 +22,8 @@
 
 #import "AppDelegate.h"
 
-#define CONTACTS_TABLEVC_LOCALCONTACTS_BIT     0x01
-#define CONTACTS_TABLEVC_KNOWNCONTACTS_BIT     0x02
+#define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE     0x01
+#define CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE     0x02
 
 @interface ContactsTableViewController ()
 {
@@ -508,11 +508,11 @@
     {
         count = 1;
     }
-    else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_LOCALCONTACTS_BIT))
+    else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE))
     {
         count = filteredLocalContacts.count;
     }
-    else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_KNOWNCONTACTS_BIT))
+    else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE))
     {
         count = filteredMatrixContacts.count;
     }
@@ -622,7 +622,7 @@
     
     if (section == filteredLocalContactsSection || section == filteredMatrixContactsSection)
     {
-        NSInteger sectionBit = -1;
+        NSInteger sectionBitwise = -1;
         
         sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
         sectionHeader.backgroundColor = kVectorColorLightGrey;
@@ -640,12 +640,12 @@
         if (section == filteredLocalContactsSection)
         {
             headerLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
-            sectionBit = CONTACTS_TABLEVC_LOCALCONTACTS_BIT;
+            sectionBitwise = CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE;
         }
         else //if (section == filteredMatrixContactsSection)
         {
             headerLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil);
-            sectionBit = CONTACTS_TABLEVC_KNOWNCONTACTS_BIT;
+            sectionBitwise = CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE;
         }
         
         if (enableSectionShrinking)
@@ -657,13 +657,13 @@
             shrinkButton.frame = frame;
             shrinkButton.backgroundColor = [UIColor clearColor];
             [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            shrinkButton.tag = sectionBit;
+            shrinkButton.tag = sectionBitwise;
             [sectionHeader addSubview:shrinkButton];
             sectionHeader.userInteractionEnabled = YES;
             
             // Add shrink icon
             UIImage *chevron;
-            if (shrinkedSectionsBitMask & sectionBit)
+            if (shrinkedSectionsBitMask & sectionBitwise)
             {
                 chevron = [UIImage imageNamed:@"disclosure_icon"];
             }
