@@ -209,6 +209,9 @@
 		F03DE2A51D0EFA6A00E8B65C /* AttachmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03DE2A41D0EFA6A00E8B65C /* AttachmentsViewController.m */; };
 		F046528D1E250B0A00EA4E77 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F046528C1E250B0A00EA4E77 /* ContactsTableViewController.m */; };
 		F046528F1E28439E00EA4E77 /* ContactsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F046528E1E28439E00EA4E77 /* ContactsTableViewController.xib */; };
+		F04652931E28E0E300EA4E77 /* add_participant.png in Resources */ = {isa = PBXBuildFile; fileRef = F04652901E28E0E300EA4E77 /* add_participant.png */; };
+		F04652941E28E0E300EA4E77 /* add_participant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F04652911E28E0E300EA4E77 /* add_participant@2x.png */; };
+		F04652951E28E0E300EA4E77 /* add_participant@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F04652921E28E0E300EA4E77 /* add_participant@3x.png */; };
 		F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */; };
 		F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsView.m */; };
 		F047DBBA1C576F6600952DA2 /* AuthInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB81C576F6600952DA2 /* AuthInputsView.xib */; };
@@ -644,6 +647,9 @@
 		F046528B1E250B0A00EA4E77 /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
 		F046528C1E250B0A00EA4E77 /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
 		F046528E1E28439E00EA4E77 /* ContactsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewController.xib; sourceTree = "<group>"; };
+		F04652901E28E0E300EA4E77 /* add_participant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_participant.png; sourceTree = "<group>"; };
+		F04652911E28E0E300EA4E77 /* add_participant@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_participant@2x.png"; sourceTree = "<group>"; };
+		F04652921E28E0E300EA4E77 /* add_participant@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_participant@3x.png"; sourceTree = "<group>"; };
 		F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthenticationViewController.xib; sourceTree = "<group>"; };
 		F047DBB61C576F6600952DA2 /* AuthInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsView.h; sourceTree = "<group>"; };
 		F047DBB71C576F6600952DA2 /* AuthInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsView.m; sourceTree = "<group>"; };
@@ -1144,6 +1150,9 @@
 		F03BF5B41D8BF5B1002EF6A7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F04652901E28E0E300EA4E77 /* add_participant.png */,
+				F04652911E28E0E300EA4E77 /* add_participant@2x.png */,
+				F04652921E28E0E300EA4E77 /* add_participant@3x.png */,
 				F04ACE001E154C540000B970 /* riot_icon.png */,
 				F04ACE011E154C540000B970 /* riot_icon@2x.png */,
 				F04ACE021E154C540000B970 /* riot_icon@3x.png */,
@@ -1793,6 +1802,7 @@
 			files = (
 				F0D2D9881C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
 				F03BF6CB1D8BF5B1002EF6A7 /* settings_icon.png in Resources */,
+				F04652931E28E0E300EA4E77 /* add_participant.png in Resources */,
 				F03BF6791D8BF5B1002EF6A7 /* chevron@3x.png in Resources */,
 				F03BF64B1D8BF5B1002EF6A7 /* admin_icon@3x.png in Resources */,
 				F09EAFB61DD2109B009C7EFB /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
@@ -1828,6 +1838,7 @@
 				7165A25C1C05CD42003635D7 /* SegmentedViewController.xib in Resources */,
 				F03BF65F1D8BF5B1002EF6A7 /* call_speaker_off_icon@2x.png in Resources */,
 				F0A4B2F11E0073A30072D355 /* animatedLogo-1.png in Resources */,
+				F04652941E28E0E300EA4E77 /* add_participant@2x.png in Resources */,
 				F03BF6B41D8BF5B1002EF6A7 /* priorityLow@2x.png in Resources */,
 				F08294691DB503FE00CEAB63 /* direct_icon@2x.png in Resources */,
 				F04ACE041E154C540000B970 /* riot_icon@2x.png in Resources */,
@@ -1889,6 +1900,7 @@
 				F0BE3DF21C6CE28300AC3111 /* RoomMemberDetailsViewController.xib in Resources */,
 				F09EAF9C1DD2109B009C7EFB /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				F023A0161D9034FE00C517FB /* call_video_mute_on_icon.png in Resources */,
+				F04652951E28E0E300EA4E77 /* add_participant@3x.png in Resources */,
 				F03BF66A1D8BF5B1002EF6A7 /* camera_capture.png in Resources */,
 				F0AF11F61D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.xib in Resources */,
 				F08714CC1DB9EFEE0075F633 /* directChatOff@3x.png in Resources */,

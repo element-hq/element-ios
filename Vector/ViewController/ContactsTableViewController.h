@@ -85,6 +85,18 @@
 @property (nonatomic) BOOL forceMatrixIdInDisplayName;
 
 /**
+ The type of standard accessory view the contact cells should use
+ Default is UITableViewCellAccessoryNone.
+ */
+@property (nonatomic) UITableViewCellAccessoryType contactCellAccessoryType;
+
+/**
+ An image used to create a custom accessy view on the right side of the contact cells.
+ If set, use custom view. ignore accessoryType
+ */
+@property (nonatomic) UIImage *contactCellAccessoryImage;
+
+/**
  The dictionary of the ignored local contacts, the keys are their email. Empty by default.
  */
 @property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByEmail;

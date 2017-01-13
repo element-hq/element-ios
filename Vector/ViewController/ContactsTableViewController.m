@@ -122,6 +122,8 @@
     
     isMultiUseNameByDisplayName = nil;
     
+    _contactCellAccessoryImage = nil;
+    
     [super destroy];
 }
 
@@ -466,6 +468,8 @@
         contactCell.accessoryView = nil;
         contactCell.contentView.alpha = 1;
         contactCell.userInteractionEnabled = YES;
+        contactCell.accessoryType = UITableViewCellAccessoryNone;
+        contactCell.accessoryView = nil;
     }
     
     MXKContact *contact;
@@ -502,16 +506,17 @@
     {
         [contactCell render:contact];
         
-        // The search displays contacts to invite. Add a plus icon to the cell
-        // in order to make it more understandable for the end user
+        // The search displays contacts to invite. 
         if (indexPath.section == filteredLocalContactsSection || indexPath.section == filteredMatrixContactsSection)
         {
-            contactCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+            // Add the right accessory view if any
+            contactCell.accessoryType = self.contactCellAccessoryType;
+            contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
         }
         else if (indexPath.section == searchInputSection)
         {
             // This is the text entered by the user
-            // Check whether the search input is a valid email or a Matrix user ID before adding the plus icon.
+            // Check whether the search input is a valid email or a Matrix user ID before adding the accessory view.
             if (![MXTools isEmailAddress:currentSearchText] && ![MXTools isMatrixUserIdentifier:currentSearchText])
             {
                 contactCell.contentView.alpha = 0.5;
@@ -519,7 +524,9 @@
             }
             else
             {
-                contactCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                // Add the right accessory view if any
+                contactCell.accessoryType = self.contactCellAccessoryType;
+                contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
             }
         }
     }

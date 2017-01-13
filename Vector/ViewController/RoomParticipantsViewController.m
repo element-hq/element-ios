@@ -495,7 +495,7 @@
     
     addParticipantButtonImageView.backgroundColor = [UIColor clearColor];
     addParticipantButtonImageView.contentMode = UIViewContentModeCenter;
-    addParticipantButtonImageView.image = [UIImage imageNamed:@"create_room"];
+    addParticipantButtonImageView.image = [UIImage imageNamed:@"add_participant"];
     
     CGFloat side = 78.0f;
     NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
@@ -545,12 +545,14 @@
 
 - (void)onAddParticipantButtonPressed
 {
-    // Push the contacts table screen.
+    // Push the contacts picker.
     contactsPickerViewController = [ContactsTableViewController contactsTableViewController];
     
     // Set delegate to handle action on member (start chat, mention)
     contactsPickerViewController.contactsTableViewControllerDelegate = self;
     contactsPickerViewController.forceMatrixIdInDisplayName = YES;
+    // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
+    contactsPickerViewController.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
     
     // List all the participants by their matrix user id, or a room 3pid invite token to ignore them during the contacts search.
     [contactsPickerViewController.ignoredContactsByMatrixId removeAllObjects];

@@ -67,6 +67,13 @@
     
     // Prepare room participants
     participants = [NSMutableArray array];
+    
+    // Assign itself as delegate
+    self.contactsTableViewControllerDelegate = self;
+    
+    // Add a plus icon to the contact cell when a search session is in progress,
+    // in order to make it more understandable for the end user.
+    self.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];;
 }
 
 - (void)viewDidLoad
@@ -269,13 +276,13 @@
 {
     NSInteger count = 0;
     
-    if (section == participantsSection)
-    {
-        count = participants.count + 1;
-    }
-    else
+    if (_isAddParticipantSearchBarEditing)
     {
         count = [super tableView:self.tableView numberOfRowsInSection:section];
+    }
+    else if (section == participantsSection)
+    {
+        count = participants.count + 1;
     }
     
     return count;
@@ -285,7 +292,11 @@
 {
     UITableViewCell *cell;
     
-    if (indexPath.section == participantsSection)
+    if (_isAddParticipantSearchBarEditing)
+    {
+        cell = [super tableView:self.tableView cellForRowAtIndexPath:indexPath];
+    }
+    else if (indexPath.section == participantsSection)
     {
         ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:@"ParticipantTableViewCellId" forIndexPath:indexPath];
         
@@ -317,10 +328,6 @@
         
         cell = participantCell;
     }
-    else
-    {
-        cell = [super tableView:self.tableView cellForRowAtIndexPath:indexPath];
-    }
     
     return cell;
 }
@@ -345,7 +352,7 @@
 {
     CGFloat height = 0.0;
     
-    if (section != participantsSection)
+    if (_isAddParticipantSearchBarEditing)
     {
         height = [super tableView:self.tableView heightForHeaderInSection:section];
     }
@@ -355,32 +362,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = indexPath.row;
-    MXKContact *mxkContact;
-    
-    if (indexPath.section == searchInputSection)
+    if (_isAddParticipantSearchBarEditing)
     {
-        mxkContact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
-    else if (indexPath.section == filteredLocalContactsSection)
+    else
     {
-        mxkContact = filteredLocalContacts[row];
+        // Do nothing
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    else if (indexPath.section == filteredMatrixContactsSection)
-    {
-        mxkContact = filteredMatrixContacts[row];
-    }
-    
-    if (mxkContact)
-    {
-        // Update here the mutable list of participants
-        [participants addObject:mxkContact];
-        
-        // Refresh display by leaving search session
-        [self searchBarCancelButtonClicked:_searchBarView];
-    }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -646,6 +636,20 @@
     
     // Leave search
     [searchBar resignFirstResponder];
+}
+
+#pragma mark - ContactsTableViewControllerDelegate
+
+- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
+{
+    if (contact)
+    {
+        // Update here the mutable list of participants
+        [participants addObject:contact];
+    }
+    
+    // Refresh display by leaving search session
+    [self searchBarCancelButtonClicked:_searchBarView];
 }
 
 @end
