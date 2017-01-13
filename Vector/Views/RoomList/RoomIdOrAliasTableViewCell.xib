@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -22,6 +22,7 @@
                 <subviews>
                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="TPL-8D-oME">
                         <rect key="frame" x="14" y="16" width="42" height="42"/>
+                        <accessibility key="accessibilityConfiguration" identifier="AvatarImageView"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="qAg-He-PXb"/>
                             <constraint firstAttribute="width" secondItem="TPL-8D-oME" secondAttribute="height" multiplier="1:1" id="wzs-X7-8wC"/>
@@ -29,6 +30,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
                         <rect key="frame" x="70" y="27" width="35" height="20"/>
+                        <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="NW9-MB-gf4"/>
                         </constraints>
@@ -46,6 +48,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomIdOrAliasTableViewCell"/>
             <connections>
                 <outlet property="avatarImageView" destination="TPL-8D-oME" id="bVo-bU-MBd"/>
                 <outlet property="titleLabel" destination="Lg1-xQ-AGn" id="uqU-hH-KT0"/>
