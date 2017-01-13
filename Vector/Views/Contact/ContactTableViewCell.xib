@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -21,6 +21,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="member avatar" customClass="MXKImageView">
                         <rect key="frame" x="13" y="15" width="42" height="42"/>
                         <color key="backgroundColor" red="0.89720267057418823" green="0.89720267057418823" blue="0.89720267057418823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="MemberAvatar"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="7Ys-gS-ja8"/>
                             <constraint firstAttribute="height" constant="42" id="WPC-tL-hnM"/>
@@ -28,6 +29,7 @@
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-sr-Kz4">
                         <rect key="frame" x="42" y="10" width="20" height="21"/>
+                        <accessibility key="accessibilityConfiguration" identifier="ThumbnailBadgeView"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="5Do-zm-vSO"/>
                             <constraint firstAttribute="width" constant="20" id="IIL-0b-xCh"/>
@@ -35,6 +37,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Display name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn" userLabel="member display name">
                         <rect key="frame" x="69" y="14" width="481" height="21"/>
+                        <accessibility key="accessibilityConfiguration" identifier="MemberDisplayName"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="vCd-fx-d5z"/>
                         </constraints>
@@ -44,6 +47,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="info label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
                         <rect key="frame" x="69" y="39" width="531" height="20"/>
+                        <accessibility key="accessibilityConfiguration" identifier="ContactInformationLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="e6p-DU-3ny"/>
                         </constraints>
@@ -54,6 +58,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ogo-Qt-u2C" userLabel="Custom accessory view">
                         <rect key="frame" x="563" y="25" width="24" height="24"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="CustomAccessoryView"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="pDU-SS-0mb"/>
                             <constraint firstAttribute="height" constant="24" id="w2M-nj-D56"/>
@@ -74,6 +79,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="ContactTableViewCell"/>
             <constraints>
                 <constraint firstItem="Ogo-Qt-u2C" firstAttribute="centerY" secondItem="L2L-l5-wPx" secondAttribute="centerY" id="LYX-FJ-cz3"/>
                 <constraint firstAttribute="trailing" secondItem="Ogo-Qt-u2C" secondAttribute="trailing" constant="13" id="cWl-2f-cvI"/>

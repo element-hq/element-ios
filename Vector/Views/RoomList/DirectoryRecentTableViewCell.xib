@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -22,6 +22,7 @@
                 <subviews>
                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="placeholder.png" translatesAutoresizingMaskIntoConstraints="NO" id="TPL-8D-oME">
                         <rect key="frame" x="14" y="16" width="42" height="42"/>
+                        <accessibility key="accessibilityConfiguration" identifier="PlaceHolder"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="qAg-He-PXb"/>
                             <constraint firstAttribute="width" secondItem="TPL-8D-oME" secondAttribute="height" multiplier="1:1" id="wzs-X7-8wC"/>
@@ -29,6 +30,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
                         <rect key="frame" x="70" y="38" width="523" height="21"/>
+                        <accessibility key="accessibilityConfiguration" identifier="DescriptionLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="e6p-DU-3ny"/>
                         </constraints>
@@ -38,6 +40,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
                         <rect key="frame" x="70" y="14" width="35" height="20"/>
+                        <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="NW9-MB-gf4"/>
                         </constraints>
@@ -47,6 +50,7 @@
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.png" translatesAutoresizingMaskIntoConstraints="NO" id="Xgp-JV-bm1">
                         <rect key="frame" x="571" y="28" width="8" height="17"/>
+                        <accessibility key="accessibilityConfiguration" identifier="ChevronImageView"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="2fh-OW-kCh"/>
                             <constraint firstAttribute="width" constant="8" id="9CB-Si-J5N"/>
@@ -67,6 +71,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="DirectoryRecentTableViewCell"/>
             <connections>
                 <outlet property="chevronImageView" destination="Xgp-JV-bm1" id="tU6-gd-lAX"/>
                 <outlet property="descriptionLabel" destination="dQt-mN-T6b" id="XON-GW-a6T"/>

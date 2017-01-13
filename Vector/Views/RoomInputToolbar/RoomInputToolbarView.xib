@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -29,6 +29,7 @@
                         <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="dd4-pE-Es1" userLabel="Picture View" customClass="MXKImageView">
                             <rect key="frame" x="13" y="8" width="30" height="30"/>
                             <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="PictureView"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="30" id="gwh-Qs-gY1"/>
                                 <constraint firstAttribute="height" constant="30" id="wMB-Ec-D9s"/>
@@ -36,6 +37,7 @@
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_unencrypted.png" translatesAutoresizingMaskIntoConstraints="NO" id="fRI-9x-jgw">
                             <rect key="frame" x="41" y="7" width="28" height="28"/>
+                            <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="28" id="JHs-nc-tML"/>
                                 <constraint firstAttribute="width" constant="28" id="K0H-Va-ZsL"/>
@@ -47,6 +49,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="HPGrowingTextView">
                                     <rect key="frame" x="0.0" y="0.0" width="443" height="38"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="GrowingTextView"/>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -59,6 +62,7 @@
                         </view>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Z-CM-tGs" userLabel="send Button">
                             <rect key="frame" x="550" y="0.0" width="46" height="46"/>
+                            <accessibility key="accessibilityConfiguration" identifier="SendButton"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="KnT-92-5v2"/>
                                 <constraint firstAttribute="width" constant="46" id="Moy-iD-5A4"/>
@@ -71,6 +75,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
                             <rect key="frame" x="508" y="0.0" width="46" height="46"/>
+                            <accessibility key="accessibilityConfiguration" identifier="AttachButton"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="O2T-T8-EjV"/>
                                 <constraint firstAttribute="width" secondItem="Hga-l8-Wua" secondAttribute="height" multiplier="1:1" id="f0T-3f-BJu"/>
@@ -83,6 +88,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Owf-M8-qJi" userLabel="voice call Button">
                             <rect key="frame" x="554" y="0.0" width="46" height="46"/>
+                            <accessibility key="accessibilityConfiguration" identifier="VoiceCallButton"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Owf-M8-qJi" secondAttribute="height" multiplier="1:1" id="1Ni-y7-Nsa"/>
                                 <constraint firstAttribute="width" constant="46" id="9FZ-CI-diT"/>
@@ -97,6 +103,7 @@
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2nY-YP-BvA" userLabel="hangup call Button">
                             <rect key="frame" x="554" y="0.0" width="46" height="46"/>
+                            <accessibility key="accessibilityConfiguration" identifier="HangupCallButton"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="2nY-YP-BvA" secondAttribute="height" multiplier="1:1" id="59L-Jf-tXO"/>
                             </constraints>
@@ -138,6 +145,7 @@
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomInputToolbarView"/>
             <constraints>
                 <constraint firstItem="a84-Vc-6ud" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VBS-kE-WiP"/>
                 <constraint firstAttribute="trailing" secondItem="a84-Vc-6ud" secondAttribute="trailing" id="cNb-nJ-iAI"/>

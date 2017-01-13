@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,12 +15,13 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2L-l5-wPx" id="aXz-IR-jj5">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7r-zL-9bw" userLabel="Bing indicator">
                         <rect key="frame" x="0.0" y="0.0" width="5" height="73"/>
                         <color key="backgroundColor" red="0.028153735484073149" green="0.82494870580808077" blue="0.051896891282274656" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="BingIndicator"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="73" id="C2z-3m-zJG"/>
                             <constraint firstAttribute="width" constant="5" id="TWc-jq-awv"/>
@@ -29,6 +30,7 @@
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
                         <rect key="frame" x="13" y="15" width="42" height="42"/>
                         <color key="backgroundColor" red="0.89720267057418823" green="0.89720267057418823" blue="0.89720267057418823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="AvatarImageView"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="7Ys-gS-ja8"/>
                             <constraint firstAttribute="height" constant="42" id="WPC-tL-hnM"/>
@@ -36,6 +38,7 @@
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
                         <rect key="frame" x="69" y="14" width="451" height="21"/>
+                        <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="vCd-fx-d5z"/>
                         </constraints>
@@ -45,6 +48,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LastEventDescription" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
                         <rect key="frame" x="69" y="39" width="521" height="20"/>
+                        <accessibility key="accessibilityConfiguration" identifier="LastEventDescription"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="e6p-DU-3ny"/>
                         </constraints>
@@ -54,6 +58,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sun 20:28" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="360-Go-RcG">
                         <rect key="frame" x="532" y="16" width="58" height="15"/>
+                        <accessibility key="accessibilityConfiguration" identifier="LastEventDate"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="uOj-6w-G8q"/>
                         </constraints>
@@ -66,6 +71,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mbn-A1-1Yw">
                                 <rect key="frame" x="-4" y="2" width="9" height="17"/>
+                                <accessibility key="accessibilityConfiguration" identifier="MissedNotifAndUnreadBadge"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -81,6 +87,7 @@
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="direct_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZNW-8U-7ma">
                         <rect key="frame" x="50" y="18" width="11" height="13"/>
+                        <accessibility key="accessibilityConfiguration" identifier="DirectRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="13" id="4Re-7i-8kN"/>
                             <constraint firstAttribute="width" constant="11" id="aip-1x-C5a"/>
@@ -88,6 +95,7 @@
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="NAZ-zd-MHS">
                         <rect key="frame" x="50" y="42" width="11" height="13"/>
+                        <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="13" id="QdE-73-LyZ"/>
                             <constraint firstAttribute="width" constant="11" id="i9u-Bs-pBy"/>
@@ -116,6 +124,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RecentTableViewCell"/>
             <connections>
                 <outlet property="directRoomIcon" destination="ZNW-8U-7ma" id="e2n-1R-mbc"/>
                 <outlet property="encryptedRoomIcon" destination="NAZ-zd-MHS" id="ZsH-Zr-Q4K"/>
