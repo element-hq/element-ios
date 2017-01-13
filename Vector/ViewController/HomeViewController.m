@@ -515,7 +515,7 @@
     }
     else if (self.selectedViewController == peopleSearchViewController)
     {
-        self.backgroundImageView.hidden = (([peopleSearchViewController.tableView numberOfRowsInSection:0] != 0) || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = (([peopleSearchViewController.tableView numberOfSections] != 0) || (self.keyboardHeight == 0));
     }
     else if (self.selectedViewController == filesSearchViewController)
     {
