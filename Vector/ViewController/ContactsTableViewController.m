@@ -22,6 +22,9 @@
 
 #import "AppDelegate.h"
 
+#define CONTACTS_TABLEVC_LOCALCONTACTS_BIT     0x01
+#define CONTACTS_TABLEVC_KNOWNCONTACTS_BIT     0x02
+
 @interface ContactsTableViewController ()
 {
     // Search processing
@@ -39,8 +42,12 @@
     // This dictionary tells for each display name whether it appears several times.
     NSMutableDictionary <NSString*,NSNumber*> *isMultiUseNameByDisplayName;
     
-    // Report all the contacts by matrix id
+    // Report all the contacts by matrix id.
     NSMutableDictionary <NSString*, MXKContact*> *contactsByMatrixId;
+    
+    // Shrinked sections.
+    BOOL enableSectionShrinking;
+    NSInteger shrinkedSectionsBitMask;
 }
 
 @end
@@ -86,6 +93,9 @@
     contactsByMatrixId = [NSMutableDictionary dictionary];
     
     _forceMatrixIdInDisplayName = NO;
+    
+    enableSectionShrinking = NO;
+    shrinkedSectionsBitMask = 0;
 }
 
 - (void)viewDidLoad
@@ -219,6 +229,9 @@
         {
             searchProcessingLocalContacts = nil;
             searchProcessingMatrixContacts = nil;
+            
+            // Disclose the sections
+            shrinkedSectionsBitMask = 0;
         }
         else if (forceRefresh || !searchProcessingText.length || [searchText hasPrefix:searchProcessingText] == NO)
         {
@@ -227,6 +240,9 @@
             
             // Retrieve all known matrix users
             searchProcessingMatrixContacts = [self unfilteredMatrixContactsArray];
+            
+            // Disclose the sections
+            shrinkedSectionsBitMask = 0;
         }
         
         // List all the filtered local Matrix-enabled contacts by their matrix id to remove a contact
@@ -473,6 +489,14 @@
         }
     }
     
+    // Enable the section shrinking only when all the contacts sections are displayed.
+    enableSectionShrinking = (filteredLocalContactsSection != -1 && filteredMatrixContactsSection != -1);
+    if (enableSectionShrinking == NO)
+    {
+        // Disclose the section
+        shrinkedSectionsBitMask = 0;
+    }
+    
     return count;
 }
 
@@ -484,11 +508,11 @@
     {
         count = 1;
     }
-    else if (section == filteredLocalContactsSection)
+    else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_LOCALCONTACTS_BIT))
     {
         count = filteredLocalContacts.count;
     }
-    else if (section == filteredMatrixContactsSection)
+    else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_KNOWNCONTACTS_BIT))
     {
         count = filteredMatrixContacts.count;
     }
@@ -598,6 +622,8 @@
     
     if (section == filteredLocalContactsSection || section == filteredMatrixContactsSection)
     {
+        NSInteger sectionBit = -1;
+        
         sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
         sectionHeader.backgroundColor = kVectorColorLightGrey;
         
@@ -609,17 +635,51 @@
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
         headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
         headerLabel.backgroundColor = [UIColor clearColor];
+        [sectionHeader addSubview:headerLabel];
         
         if (section == filteredLocalContactsSection)
         {
             headerLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
+            sectionBit = CONTACTS_TABLEVC_LOCALCONTACTS_BIT;
         }
-        else if (section == filteredMatrixContactsSection)
+        else //if (section == filteredMatrixContactsSection)
         {
             headerLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil);
+            sectionBit = CONTACTS_TABLEVC_KNOWNCONTACTS_BIT;
         }
         
-        [sectionHeader addSubview:headerLabel];
+        if (enableSectionShrinking)
+        {
+            // Add shrink button
+            UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            frame = sectionHeader.frame;
+            frame.origin.x = frame.origin.y = 0;
+            shrinkButton.frame = frame;
+            shrinkButton.backgroundColor = [UIColor clearColor];
+            [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            shrinkButton.tag = sectionBit;
+            [sectionHeader addSubview:shrinkButton];
+            sectionHeader.userInteractionEnabled = YES;
+            
+            // Add shrink icon
+            UIImage *chevron;
+            if (shrinkedSectionsBitMask & sectionBit)
+            {
+                chevron = [UIImage imageNamed:@"disclosure_icon"];
+            }
+            else
+            {
+                chevron = [UIImage imageNamed:@"shrink_icon"];
+            }
+            UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
+            chevronView.contentMode = UIViewContentModeCenter;
+            frame = chevronView.frame;
+            frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
+            frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
+            chevronView.frame = frame;
+            [sectionHeader addSubview:chevronView];
+            chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        }
     }
     return sectionHeader;
 }
@@ -697,6 +757,31 @@
     [searchBar resignFirstResponder];
     
     [self withdrawViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Action
+
+- (IBAction)onButtonPressed:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]])
+    {
+        UIButton *shrinkButton = (UIButton*)sender;
+        NSInteger selectedSectionBit = shrinkButton.tag;
+        
+        if (shrinkedSectionsBitMask & selectedSectionBit)
+        {
+            // Disclose the section
+            shrinkedSectionsBitMask &= ~selectedSectionBit;
+        }
+        else
+        {
+            // Shrink this section
+            shrinkedSectionsBitMask |= selectedSectionBit;
+        }
+        
+        // Refresh
+        [self refreshTableView];
+    }
 }
 
 @end
