@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "SegmentedViewController.h"
+
+#import "ContactsTableViewController.h"
 
 @class Contact;
 @class RoomParticipantsViewController;
@@ -42,7 +42,7 @@
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  When this property is nil, the view controller is empty.
  */
-@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, MXKRoomMemberDetailsViewControllerDelegate>
+@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
 {
 @protected
     /**
@@ -50,9 +50,6 @@
      */
     NSInteger participantsSection;
     NSInteger invitedSection;
-    NSInteger invitableSectionSearchInput;
-    NSInteger invitableSectionAddressBookContacts;
-    NSInteger invitableSectionMatrixContacts;
     
     /**
      The current list of joined members.
@@ -67,14 +64,13 @@
     /**
      The contact used to describe the current user (nil if the user is not a participant of the room).
      */
-    Contact *userContact;
+    Contact *userParticipant;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
-
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewBottomConstraint;
@@ -83,11 +79,6 @@
  A matrix room (nil by default).
  */
 @property (nonatomic) MXRoom *mxRoom;
-
-/**
- Tell whether a search session is in progress
- */
-@property (nonatomic) BOOL isAddParticipantSearchBarEditing;
 
 /**
  Enable mention option in member details view. NO by default
