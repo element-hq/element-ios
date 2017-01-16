@@ -1350,6 +1350,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     // Disable identicon use
     [MXSDKOptions sharedInstance].disableIdenticonUseForUserAvatar = YES;
+
+    // Enable SDK stats upload to GA
+    [MXSDKOptions sharedInstance].enableGoogleAnalytics = YES;
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];

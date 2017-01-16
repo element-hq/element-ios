@@ -828,7 +828,17 @@
         }
         else if (launchAnimationContainerView)
         {
-            NSLog(@"[HomeViewController] LaunchAnimation was shown for %.3fms", [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000);
+            NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
+            NSLog(@"[HomeViewController] LaunchAnimation was shown for %.3fms", durationMs);
+
+            if ([MXSDKOptions sharedInstance].enableGoogleAnalytics)
+            {
+                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:kMXGoogleAnalyticsStartupCategory
+                                                                     interval:@((int)durationMs)
+                                                                         name:kMXGoogleAnalyticsStartupLaunchScreen
+                                                                        label:nil] build]];
+            }
 
             [launchAnimationContainerView removeFromSuperview];
             launchAnimationContainerView = nil;
