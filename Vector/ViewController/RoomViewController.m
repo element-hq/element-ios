@@ -1171,7 +1171,7 @@
 {
     // This operation is ignored if a screen rotation is in progress,
     // or if the view controller is not embedded inside a split view controller yet.
-    if (self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
+    if (self.previewHeaderContainer && self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
     {
         if (isVisible)
         {
