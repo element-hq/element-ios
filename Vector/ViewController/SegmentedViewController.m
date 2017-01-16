@@ -218,6 +218,7 @@
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = kVectorColorGreen;
         label.backgroundColor = [UIColor clearColor];
+        label.accessibilityIdentifier = [NSString stringWithFormat:@"SegmentedVCSectionLabel%tu", index];
         
         // the constraint defines the label frame
         // so ignore any autolayout stuff
