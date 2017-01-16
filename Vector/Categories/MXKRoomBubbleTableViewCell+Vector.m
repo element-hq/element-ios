@@ -66,6 +66,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         timeLabel.tag = componentIndex;
         
         [timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        timeLabel.accessibilityIdentifier = @"timestampLabel";
         [self.bubbleInfoContainer addSubview:timeLabel];
         
         // Define timeLabel constraints (to handle auto-layout in case of screen rotation)
@@ -190,6 +191,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         markerView.backgroundColor = kVectorColorGreen;
 
         [markerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        markerView.accessibilityIdentifier = @"markerView";
         [self.contentView addSubview:markerView];
 
         // Define the marker constraints
@@ -253,6 +255,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         timeLabel.adjustsFontSizeToFitWidth = YES;
         
         [timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        timeLabel.accessibilityIdentifier = @"dateLabel";
         [self.bubbleInfoContainer addSubview:timeLabel];
         
         // Define timeLabel constraints (to handle auto-layout in case of screen rotation)
@@ -403,6 +406,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     [editButton addTarget:self action:@selector(onEditButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     [editButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    editButton.accessibilityIdentifier = @"editButton";
     [self.bubbleInfoContainer addSubview:editButton];
     self.bubbleInfoContainer.userInteractionEnabled = YES;
     

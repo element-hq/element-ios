@@ -329,6 +329,7 @@
     [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
     
     [missedDiscussionsBarButtonCustomView addSubview:missedDiscussionsBadgeLabelBgView];
+    missedDiscussionsBarButtonCustomView.accessibilityIdentifier = @"RoomVCMissedDiscussionsBarButton";
     
     missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
     missedDiscussionsBadgeLabel.textColor = [UIColor whiteColor];
