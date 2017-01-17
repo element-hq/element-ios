@@ -319,7 +319,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self startGoogleAnalytics];
     
     // Configure local contacts management
-    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = YES;
+    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
