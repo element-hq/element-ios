@@ -666,9 +666,6 @@
     
     if (self.roomDataSource)
     {
-        // This room view controller has its own typing management.
-        self.roomDataSource.showTypingNotifications = NO;
-
         // Set room title view
         [self refreshRoomTitle];
         
