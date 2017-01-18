@@ -405,8 +405,11 @@
             NSArray *emails = contact.emailAddresses;
             if (emails.count)
             {
+                // Here the contact has only one email address.
                 MXKEmail *email = emails.firstObject;
-                if ([_ignoredContactsByEmail objectForKey:email.emailAddress])
+                
+                // Trick: ignore @facebook.com email addresses from the results - facebook have discontinued that service...
+                if ([_ignoredContactsByEmail objectForKey:email.emailAddress] || [email.emailAddress hasSuffix:@"@facebook.com"])
                 {
                     [unfilteredLocalContacts removeObjectAtIndex:index];
                     continue;
