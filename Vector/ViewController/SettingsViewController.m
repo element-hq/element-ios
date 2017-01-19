@@ -1155,7 +1155,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             versionCell.textLabel.font = [UIFont systemFontOfSize:17];
             
-            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), OLMKitVersionString()];
+            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), [OLMKit versionString]];
             versionCell.textLabel.textColor = kVectorTextColorBlack;
             
             cell = versionCell;
