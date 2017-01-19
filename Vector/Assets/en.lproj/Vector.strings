@@ -145,7 +145,7 @@
 
 "room_participants_online" = "Online";
 "room_participants_offline" = "Offline";
-"room_participants_unkown" = "Unkwown";
+"room_participants_unknown" = "Unknown";
 "room_participants_idle" = "Idle";
 "room_participants_now" = "now";
 "room_participants_ago" = "ago";
