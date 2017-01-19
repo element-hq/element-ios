@@ -215,7 +215,7 @@
     }
 }
 
-- (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceRefresh
+- (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceRefresh complete:(void (^)())complete
 {
     // Update search results.
     searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -348,12 +348,17 @@
                     
                     // Force scroll to top
                     [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:NO];
+                    
+                    if (complete)
+                    {
+                        complete();
+                    }
                 }
                 else
                 {
                     // Launch a new search
                     forceSearchResultRefresh = NO;
-                    [self searchWithPattern:searchProcessingText forceReset:YES];
+                    [self searchWithPattern:searchProcessingText forceReset:YES complete:complete];
                 }
             }
         });
@@ -378,7 +383,7 @@
     }
     
     // Refresh the search result
-    [self searchWithPattern:currentSearchText forceReset:YES];
+    [self searchWithPattern:currentSearchText forceReset:YES complete:nil];
 }
 
 - (NSMutableArray<MXKContact*>*)unfilteredLocalContactsArray
@@ -726,7 +731,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self searchWithPattern:searchText forceReset:NO];
+    [self searchWithPattern:searchText forceReset:NO complete:nil];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -754,7 +759,7 @@
     searchBar.text = nil;
     
     // Reset filtering
-    [self searchWithPattern:nil forceReset:NO];
+    [self searchWithPattern:nil forceReset:NO complete:nil];
     
     // Leave search
     [searchBar resignFirstResponder];

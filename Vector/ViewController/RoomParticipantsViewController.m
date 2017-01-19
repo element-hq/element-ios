@@ -583,7 +583,7 @@
     if (currentSearchText)
     {
         contactsPickerViewController.searchBar.text = currentSearchText;
-        [contactsPickerViewController searchWithPattern:currentSearchText forceReset:YES];
+        [contactsPickerViewController searchWithPattern:currentSearchText forceReset:YES complete:nil];
     }
     
     [self pushViewController:contactsPickerViewController];
