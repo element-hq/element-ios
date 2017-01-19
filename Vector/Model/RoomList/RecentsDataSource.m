@@ -102,6 +102,9 @@
         // Replace default event formatter
         recentsDataSource.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:mxSession];
         recentsDataSource.eventFormatter.isForSubtitle = YES;
+
+        // And default room summary updater
+        mxSession.roomSummaryUpdateDelegate = recentsDataSource.eventFormatter;
     }
 
     // Initialise the public room directory data source
