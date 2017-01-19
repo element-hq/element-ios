@@ -46,7 +46,7 @@
     HomeFilesSearchViewController *filesSearchViewController;
     MXKSearchDataSource *filesSearchDataSource;
     
-    ContactPickerViewController *contactsViewController;
+    ContactsTableViewController *peopleSearchViewController;
     MXKContact *selectedContact;
 
     // Display a gradient view above the screen
@@ -104,9 +104,10 @@
 
     // Add search People tab
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
-    contactsViewController = [ContactPickerViewController contactPickerViewController];
-    contactsViewController.delegate = self;
-    [viewControllers addObject:contactsViewController];
+    peopleSearchViewController = [ContactsTableViewController contactsTableViewController];
+    peopleSearchViewController.contactsTableViewControllerDelegate = self;
+    peopleSearchViewController.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [viewControllers addObject:peopleSearchViewController];
     
     // add Files tab
     [titles addObject: NSLocalizedStringFromTable(@"search_files", @"Vector", nil)];
@@ -129,6 +130,7 @@
     [self initializeDataSources];
     
     self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
 }
 
 - (void)dealloc
@@ -511,9 +513,9 @@
     {
         self.backgroundImageView.hidden = ((messagesSearchDataSource.serverCount != 0) || !messagesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
     }
-    else if (self.selectedViewController == contactsViewController)
+    else if (self.selectedViewController == peopleSearchViewController)
     {
-        self.backgroundImageView.hidden = (([contactsViewController.contactsTableView numberOfRowsInSection:0] != 0) || !contactsViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = (([peopleSearchViewController.tableView numberOfSections] != 0) || (self.keyboardHeight == 0));
     }
     else if (self.selectedViewController == filesSearchViewController)
     {
@@ -546,6 +548,15 @@
 
     if (!self.searchBarHidden)
     {
+        if (self.selectedViewController == peopleSearchViewController)
+        {
+            self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_people_placeholder", @"Vector", nil);
+        }
+        else
+        {
+            self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+        }
+        
         [self updateSearch];
     }
 }
@@ -817,7 +828,17 @@
         }
         else if (launchAnimationContainerView)
         {
-            NSLog(@"[HomeViewController] LaunchAnimation was shown for %.3fms", [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000);
+            NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
+            NSLog(@"[HomeViewController] LaunchAnimation was shown for %.3fms", durationMs);
+
+            if ([MXSDKOptions sharedInstance].enableGoogleAnalytics)
+            {
+                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:kMXGoogleAnalyticsStartupCategory
+                                                                     interval:@((int)durationMs)
+                                                                         name:kMXGoogleAnalyticsStartupLaunchScreen
+                                                                        label:nil] build]];
+            }
 
             [launchAnimationContainerView removeFromSuperview];
             launchAnimationContainerView = nil;
@@ -1108,9 +1129,13 @@
                 });
             }
         }
-        else if (self.selectedViewController == contactsViewController)
+        else if (self.selectedViewController == peopleSearchViewController)
         {
-            [contactsViewController searchWithPattern:self.searchBar.text];
+            [peopleSearchViewController searchWithPattern:self.searchBar.text forceReset:NO complete:^{
+                
+                [self checkAndShowBackgroundImage];
+                
+            }];
         }
         else if (self.selectedViewController == filesSearchViewController)
         {
@@ -1138,7 +1163,13 @@
         {
             [messagesSearchDataSource searchMessages:nil force:NO];
         }
-        [contactsViewController searchWithPattern:nil];
+        
+        [peopleSearchViewController searchWithPattern:nil forceReset:NO complete:^{
+            
+            [self checkAndShowBackgroundImage];
+            
+        }];
+        
         if (filesSearchDataSource.searchText.length)
         {
             [filesSearchDataSource searchMessages:nil force:NO];
@@ -1157,7 +1188,7 @@
         // As the public room search is local, it can be updated on each text change
         [self updateSearch];
     }
-    else if (self.selectedViewController == contactsViewController)
+    else if (self.selectedViewController == peopleSearchViewController)
     {
         // As the contact search is local, it can be updated on each text change
         [self updateSearch];
@@ -1188,9 +1219,9 @@
     [self selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
-#pragma mark - ContactPickerViewControllerDelegate
+#pragma mark - ContactsTableViewControllerDelegate
 
-- (void)contactPickerViewController:(ContactPickerViewController *)contactPickerViewController didSelectContact:(MXKContact*)contact
+- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
 {
     selectedContact = contact;
     

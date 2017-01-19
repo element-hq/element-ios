@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -21,12 +21,14 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="584" translatesAutoresizingMaskIntoConstraints="NO" id="DE7-uC-Oz2">
                         <rect key="frame" x="15" y="12" width="42" height="21"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="Label"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="a text" translatesAutoresizingMaskIntoConstraints="NO" id="6xh-yB-9FP">
                         <rect key="frame" x="532" y="12" width="53" height="100"/>
+                        <accessibility key="accessibilityConfiguration" identifier="TextView"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="53" id="Nrj-Yh-zMx"/>
                         </constraints>
@@ -42,6 +44,7 @@
                     <constraint firstItem="DE7-uC-Oz2" firstAttribute="leading" secondItem="hCm-wd-Yup" secondAttribute="leading" constant="15" id="qse-r7-x6e"/>
                 </constraints>
             </tableViewCellContentView>
+            <accessibility key="accessibilityConfiguration" identifier="TableViewCell"/>
             <constraints>
                 <constraint firstItem="DE7-uC-Oz2" firstAttribute="top" secondItem="5Je-1y-foH" secondAttribute="top" constant="12" id="4gW-jW-XUX"/>
                 <constraint firstAttribute="bottom" secondItem="6xh-yB-9FP" secondAttribute="bottom" constant="12" id="Io9-HP-DJE"/>

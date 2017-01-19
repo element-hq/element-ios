@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -34,6 +34,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ouj-VM-zdT">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="117"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCAvatarHeaderBackground"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="117" id="dBL-G6-Yec"/>
                             </constraints>
@@ -41,12 +42,14 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MAS-3M-3cg">
                             <rect key="frame" x="137.5" y="0.0" width="100" height="125"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCAvatarMask"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="100" id="fwv-qE-IV1"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92g-hC-6jB">
                             <rect key="frame" x="165" y="125" width="45" height="21"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCNameLabel"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="WyU-2u-Lek"/>
                             </constraints>
@@ -56,6 +59,7 @@
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5le-5e-Vml">
                             <rect key="frame" x="168" y="153" width="39" height="21"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCStatusLabel"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="7lY-ku-cPk"/>
                             </constraints>
@@ -66,12 +70,14 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wEo-Mk-SgZ">
                             <rect key="frame" x="0.0" y="119" width="375" height="33"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCNameLabelMask"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="33" id="qhK-10-7AW"/>
                             </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCHeaderView"/>
                     <constraints>
                         <constraint firstItem="wEo-Mk-SgZ" firstAttribute="centerY" secondItem="92g-hC-6jB" secondAttribute="centerY" id="3Zt-MD-sZK"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="top" secondItem="92g-hC-6jB" secondAttribute="bottom" constant="7" id="5zX-1T-n38"/>
@@ -112,6 +118,7 @@
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group.png" translatesAutoresizingMaskIntoConstraints="NO" id="7Dc-jk-9sT">
                     <rect key="frame" x="0.0" y="469" width="375" height="198"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCBottomImageView"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="198" id="bkF-2R-F6Q"/>
                     </constraints>
@@ -119,6 +126,9 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" style="grouped" separatorStyle="default" rowHeight="46" sectionHeaderHeight="28" sectionFooterHeight="8" translatesAutoresizingMaskIntoConstraints="NO" id="R6u-PR-DcU">
                     <rect key="frame" x="0.0" y="192" width="375" height="475"/>
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="RoomMemberDetailsVCTableView"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="DbO-MV-3hm"/>
                         <outlet property="delegate" destination="-1" id="dFh-bI-jUW"/>
@@ -126,6 +136,7 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVC"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="7Dc-jk-9sT" secondAttribute="trailing" id="3C8-er-hQ7"/>
                 <constraint firstAttribute="trailing" secondItem="YXr-As-Mqh" secondAttribute="trailing" id="3DV-SV-Ifa"/>

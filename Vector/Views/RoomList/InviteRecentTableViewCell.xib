@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,6 +22,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
                         <rect key="frame" x="13" y="15" width="42" height="42"/>
                         <color key="backgroundColor" red="0.89720267057418823" green="0.89720267057418823" blue="0.89720267057418823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="AvatarImageView"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="7Ys-gS-ja8"/>
                             <constraint firstAttribute="height" constant="42" id="WPC-tL-hnM"/>
@@ -29,6 +30,7 @@
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
                         <rect key="frame" x="69" y="14" width="79" height="21"/>
+                        <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="BeP-eL-JKM"/>
                         </constraints>
@@ -38,6 +40,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LastEventDescription" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
                         <rect key="frame" x="69" y="39" width="531" height="20"/>
+                        <accessibility key="accessibilityConfiguration" identifier="LastEventDescription"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="qI2-ud-qcA"/>
                         </constraints>
@@ -51,6 +54,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fc3-Id-aaG" userLabel="Left Button">
                                 <rect key="frame" x="0.0" y="0.0" width="229" height="30"/>
                                 <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <state key="normal" title="Left button">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -59,6 +63,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lGf-lB-FsE" userLabel="Right Button">
                                 <rect key="frame" x="249" y="0.0" width="229" height="30"/>
                                 <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <accessibility key="accessibilityConfiguration" identifier="RightButton"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <state key="normal" title="Right Button">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -88,6 +93,7 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="NoticeBadgeView"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="27" id="1PJ-E8-qkY"/>
                             <constraint firstItem="Ztl-w2-d20" firstAttribute="centerX" secondItem="gCG-UR-b2u" secondAttribute="centerX" id="jzA-xv-12e"/>
@@ -97,6 +103,7 @@
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="direct_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="09l-aN-CyW">
                         <rect key="frame" x="50" y="18" width="11" height="13"/>
+                        <accessibility key="accessibilityConfiguration" identifier="DirectRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="11" id="LnK-GM-Hha"/>
                             <constraint firstAttribute="height" constant="13" id="l9u-Hu-qLp"/>
@@ -104,6 +111,7 @@
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="hVY-f3-80Y">
                         <rect key="frame" x="50" y="42" width="11" height="13"/>
+                        <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="11" id="0fX-ec-zEX"/>
                             <constraint firstAttribute="height" constant="13" id="w8X-7u-pcM"/>
@@ -129,6 +137,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="InviteRecentTableViewCell"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="tjf-WP-vTl" secondAttribute="bottom" constant="10" id="NTY-0b-Ylt"/>
                 <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="L2L-l5-wPx" secondAttribute="top" constant="15" id="uLf-cg-Vge"/>

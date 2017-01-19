@@ -45,10 +45,12 @@
                                 <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="w7z-f3-kdT" userLabel="Preview Container View">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
                                     <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCPreviewContainerView"/>
                                 </view>
                                 <button opaque="NO" alpha="0.40000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXk-ZD-TYS" userLabel="Camera Switch Button">
                                     <rect key="frame" x="317" y="24" width="46" height="46"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCameraSwitchButton"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="46" id="5IK-zA-C0Z"/>
                                         <constraint firstAttribute="width" constant="46" id="JWE-xq-eRq"/>
@@ -70,6 +72,7 @@
                                 <button opaque="NO" alpha="0.40000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sO8-Ds-mXZ" userLabel="Close Button">
                                     <rect key="frame" x="12" y="24" width="46" height="46"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCloseButton"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="46" id="Rrv-zB-kX4"/>
                                         <constraint firstAttribute="height" constant="46" id="nXZ-ee-z3I"/>
@@ -94,6 +97,7 @@
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXP-Vh-zUp" customClass="MXKPieChartView">
                                     <rect key="frame" x="141.5" y="432.5" width="92" height="92"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCameraVideoCaptureProgressView"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="92" id="xVc-PA-ekx"/>
                                         <constraint firstAttribute="width" constant="92" id="xcR-cZ-E3Z"/>
@@ -101,6 +105,7 @@
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRG-b0-CjY" userLabel="Capture Button">
                                     <rect key="frame" x="146" y="437" width="83" height="83"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCaptureButton"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="uRG-b0-CjY" secondAttribute="height" multiplier="1:1" id="1aP-D4-EI5"/>
                                         <constraint firstAttribute="width" constant="83" id="gmN-48-HHd"/>
@@ -114,6 +119,7 @@
                                     </connections>
                                 </button>
                             </subviews>
+                            <accessibility key="accessibilityConfiguration" identifier="accessibilityIdentifierCaptureView"/>
                             <constraints>
                                 <constraint firstItem="etc-h5-0u2" firstAttribute="centerX" secondItem="PXk-ZD-TYS" secondAttribute="centerX" id="1Kl-Hi-rvU"/>
                                 <constraint firstItem="PXk-ZD-TYS" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" constant="24" id="3bv-hT-POE"/>
@@ -148,6 +154,9 @@
                                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </collectionViewFlowLayout>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MediaPickerVCRecentCapturesCollectionView"/>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <outlet property="dataSource" destination="-1" id="Muv-lU-58u"/>
                                         <outlet property="delegate" destination="-1" id="mW5-pj-ZDH"/>
@@ -169,12 +178,16 @@
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="74" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mCG-GH-ADc" userLabel="Albums Table View">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MediaPickerVCAlbumsTableView"/>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <outlet property="dataSource" destination="-1" id="j68-uL-bro"/>
                                         <outlet property="delegate" destination="-1" id="aCT-mL-1LW"/>
                                     </connections>
                                 </tableView>
                             </subviews>
+                            <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCLibraryView"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="mCG-GH-ADc" secondAttribute="bottom" id="BLR-tx-xTO"/>
                                 <constraint firstAttribute="trailing" secondItem="mCG-GH-ADc" secondAttribute="trailing" id="CV6-CG-ob1"/>
@@ -197,12 +210,16 @@
                         <constraint firstItem="jzs-FL-Rqd" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="bottom" id="q35-tT-GBd"/>
                         <constraint firstItem="jzs-FL-Rqd" firstAttribute="leading" secondItem="ZfS-wG-RjJ" secondAttribute="leading" id="wZf-nP-JTD"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MediaPickerVCMainScrollView"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="delegate" destination="-1" id="Wso-Tg-NuE"/>
                     </connections>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCView"/>
             <constraints>
                 <constraint firstItem="ZfS-wG-RjJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BJx-Hb-D6M"/>
                 <constraint firstAttribute="bottom" secondItem="ZfS-wG-RjJ" secondAttribute="bottom" id="Sre-5e-ocp"/>

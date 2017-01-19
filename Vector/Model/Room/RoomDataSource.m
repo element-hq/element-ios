@@ -193,6 +193,7 @@
                         [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
                         
                         avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
+                        avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";
                         [bubbleCell.bubbleOverlayContainer addSubview:avatarsContainer];
                         
                         // Force receipts container size

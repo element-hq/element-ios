@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,6 +23,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FfX-ul-Kr4" customClass="MXKImageView">
                         <rect key="frame" x="14" y="16" width="42" height="42"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="AvatarImageView"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="DCk-EO-Wpn"/>
                             <constraint firstAttribute="width" secondItem="FfX-ul-Kr4" secondAttribute="height" multiplier="1:1" id="ycc-8M-xEj"/>
@@ -30,6 +31,7 @@
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
                         <rect key="frame" x="70" y="27" width="34" height="20"/>
+                        <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="NW9-MB-gf4"/>
                         </constraints>
@@ -39,6 +41,7 @@
                     </label>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="direct_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="z0D-Vp-W1P">
                         <rect key="frame" x="50" y="18" width="11" height="13"/>
+                        <accessibility key="accessibilityConfiguration" identifier="DirectRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="13" id="3UP-dK-nZW"/>
                             <constraint firstAttribute="width" constant="11" id="jeb-V2-1z0"/>
@@ -48,6 +51,7 @@
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="apY-Nk-wQh">
                         <rect key="frame" x="50" y="42" width="11" height="13"/>
+                        <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="11" id="2BN-VL-aj3"/>
                             <constraint firstAttribute="width" constant="11" id="6Pz-2E-7D8"/>
@@ -69,6 +73,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomTableViewCell"/>
             <connections>
                 <outlet property="avatarImageView" destination="FfX-ul-Kr4" id="NOo-Lj-BBY"/>
                 <outlet property="directRoomIcon" destination="z0D-Vp-W1P" id="DBb-xx-jRY"/>

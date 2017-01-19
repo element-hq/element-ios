@@ -329,6 +329,7 @@
     [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
     
     [missedDiscussionsBarButtonCustomView addSubview:missedDiscussionsBadgeLabelBgView];
+    missedDiscussionsBarButtonCustomView.accessibilityIdentifier = @"RoomVCMissedDiscussionsBarButton";
     
     missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
     missedDiscussionsBadgeLabel.textColor = [UIColor whiteColor];
@@ -665,9 +666,6 @@
     
     if (self.roomDataSource)
     {
-        // This room view controller has its own typing management.
-        self.roomDataSource.showTypingNotifications = NO;
-
         // Set room title view
         [self refreshRoomTitle];
         
@@ -1171,7 +1169,7 @@
 {
     // This operation is ignored if a screen rotation is in progress,
     // or if the view controller is not embedded inside a split view controller yet.
-    if (self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
+    if (self.previewHeaderContainer && self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
     {
         if (isVisible)
         {

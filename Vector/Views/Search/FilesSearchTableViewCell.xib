@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -21,6 +21,7 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3MK-Eq-5gW">
                         <rect key="frame" x="18" y="12" width="37" height="50"/>
+                        <accessibility key="accessibilityConfiguration" identifier="IconImage"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="37" id="sDo-ex-9Cy"/>
                             <constraint firstAttribute="height" constant="50" id="vC8-Wc-ahh"/>
@@ -29,6 +30,7 @@
                     <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNx-NQ-DRn" customClass="MXKImageView">
                         <rect key="frame" x="0.0" y="0.0" width="73" height="73"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="AttachmentImageView"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="tNx-NQ-DRn" secondAttribute="height" multiplier="1:1" id="9Ss-GB-MJU"/>
                             <constraint firstAttribute="width" constant="73" id="Ci0-xg-Kdh"/>
@@ -36,11 +38,13 @@
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
                         <rect key="frame" x="84" y="14" width="414" height="21"/>
+                        <accessibility key="accessibilityConfiguration" identifier="Title"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
                         <rect key="frame" x="84" y="39" width="506" height="20"/>
+                        <accessibility key="accessibilityConfiguration" identifier="Message"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="e6p-DU-3ny"/>
                         </constraints>
@@ -50,6 +54,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oct 12 18:15" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="360-Go-RcG">
                         <rect key="frame" x="503" y="16" width="87" height="18"/>
+                        <accessibility key="accessibilityConfiguration" identifier="Date"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="uOj-6w-G8q"/>
                         </constraints>
@@ -75,6 +80,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="FilesSearchTableViewCell"/>
             <connections>
                 <outlet property="attachmentImageView" destination="tNx-NQ-DRn" id="8cE-eQ-BEC"/>
                 <outlet property="date" destination="360-Go-RcG" id="Y0L-Dj-ZVn"/>

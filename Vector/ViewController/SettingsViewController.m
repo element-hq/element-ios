@@ -875,6 +875,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
         [signOutCell.mxkButton addTarget:self action:@selector(onSignout:) forControlEvents:UIControlEventTouchUpInside];
+        signOutCell.mxkButton.accessibilityIdentifier=@"SettingsVCSignOutButton";
         
         cell = signOutCell;
     }
@@ -1154,7 +1155,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             versionCell.textLabel.font = [UIFont systemFontOfSize:17];
             
-            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), OLMKitVersionString()];
+            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), [OLMKit versionString]];
             versionCell.textLabel.textColor = kVectorTextColorBlack;
             
             cell = versionCell;
@@ -1243,6 +1244,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             [markAllBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [markAllBtnCell.mxkButton addTarget:self action:@selector(markAllAsRead:) forControlEvents:UIControlEventTouchUpInside];
+            markAllBtnCell.mxkButton.accessibilityIdentifier = nil;
             
             cell = markAllBtnCell;
         }
@@ -1262,6 +1264,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             [clearCacheBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [clearCacheBtnCell.mxkButton addTarget:self action:@selector(clearCache:) forControlEvents:UIControlEventTouchUpInside];
+            clearCacheBtnCell.mxkButton.accessibilityIdentifier = nil;
             
             cell = clearCacheBtnCell;
         }

@@ -69,11 +69,6 @@
     // Do not show toolbar
     [self setRoomInputToolbarViewClass:nil];
     
-    // Update the inputToolBar height
-    [UIView setAnimationsEnabled:NO];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:0 completion:nil];
-    [UIView setAnimationsEnabled:YES];
-    
     // set the default extra
     [self setRoomActivitiesViewClass:nil];
     
@@ -86,6 +81,11 @@
     self.bubblesTableView.tableFooterView = [[UIView alloc] init];
     
     [self setNavBarButtons];
+    
+    // Update the inputToolBar height (This will trigger a layout refresh)
+    [UIView setAnimationsEnabled:NO];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:0 completion:nil];
+    [UIView setAnimationsEnabled:YES];
 }
 
 // This method is called when the viewcontroller is added or removed from a container view controller.

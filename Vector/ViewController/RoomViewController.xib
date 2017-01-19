@@ -34,10 +34,14 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="BGD-sd-SQR">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="626"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="RoomVCBubblesTableView"/>
+                    </userDefinedRuntimeAttributes>
                 </tableView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uK2-9a-rZj" userLabel="Expanded Header Container" customClass="ExpandedRoomTitleView">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RoomVCExpandedHeaderContainer"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="215" id="w9z-HS-7wJ"/>
                     </constraints>
@@ -45,6 +49,7 @@
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="54r-18-K1g">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="368"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RoomVCPreviewHeaderContainer"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="368" id="goj-GZ-IkD"/>
                     </constraints>
@@ -52,6 +57,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XX4-n6-hCm" userLabel="Activities Container">
                     <rect key="frame" x="0.0" y="606" width="375" height="20"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RoomVCActivitiesContainer"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="E8v-l2-8eV"/>
                     </constraints>
@@ -59,12 +65,14 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nLd-BP-JAE" userLabel="Room Input Toolbar Container">
                     <rect key="frame" x="0.0" y="626" width="375" height="41"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RoomVCRoomInputToolbarContainer"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="5eD-Fm-RDb"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomVCView"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="BGD-sd-SQR" secondAttribute="trailing" id="0la-ok-MBr"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4Q7-hr-rqi"/>

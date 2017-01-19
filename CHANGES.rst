@@ -1,3 +1,29 @@
+Changes in 0.3.7 (2017-01-19)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.5).
+ * The contact book is used to search for users by email or phone number on Riot.
+ * Ask to the existing users the permission to upload emails when the contact access is already granted.
+ * ContactTableViewCell: Highlight the Matrix-enabled contacts in local contacts section.
+ * Improve the people invite screens (#904).
+ * "Add contact" button has been added on Room Member list (#905).
+ * Google Analytics: enable MXSession GA stats and send stat on launch screen display time.
+ 
+Bug fixes:
+ * Resend now function doesn't work on canceled upload file (#890).
+ * Riot is picking up my name within words and highlighting them (#893).
+ * Failure to decrypt megolm event despite receiving the keys (#913).
+ * Cloned rooms in rooms list (#889).
+ * Riot looks to me like I'm sending the same message twice (#894).
+ * matrix.to links containing room ids are not hyperlinked (#886).
+ * Integer negative wraparound in upload progress meter (#892).
+ * Performance on searching people when inviting is terrible (#887).
+ * App crashes when the user taps on an avatar in a search result (#895).
+ * Hit File tab from room details view make Riot crash (#931).
+ * Crash on Create a room button (#935).
+ * Local contacts are missing when the user logs in again (PR #942).
+
 Changes in 0.3.6 (2016-12-23)
 ===============================================
 

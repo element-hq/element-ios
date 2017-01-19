@@ -14,16 +14,13 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
-#import "ContactTableViewCell.h"
+#import "ContactsTableViewController.h"
 
 /**
  'StartChatViewController' instance is used to prepare new room creation.
  */
-@interface StartChatViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
+@interface StartChatViewController : ContactsTableViewController <UISearchBarDelegate, ContactsTableViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
@@ -50,7 +47,7 @@
  @discussion This is the designated initializer for programmatic instantiation.
  @return An initialized `StartChatViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)roomParticipantsViewController;
++ (instancetype)startChatViewController;
 
 @end
 
