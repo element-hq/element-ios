@@ -1131,7 +1131,11 @@
         }
         else if (self.selectedViewController == peopleSearchViewController)
         {
-            [peopleSearchViewController searchWithPattern:self.searchBar.text forceReset:NO];
+            [peopleSearchViewController searchWithPattern:self.searchBar.text forceReset:NO complete:^{
+                
+                [self checkAndShowBackgroundImage];
+                
+            }];
         }
         else if (self.selectedViewController == filesSearchViewController)
         {
@@ -1159,7 +1163,13 @@
         {
             [messagesSearchDataSource searchMessages:nil force:NO];
         }
-        [peopleSearchViewController searchWithPattern:nil forceReset:NO];
+        
+        [peopleSearchViewController searchWithPattern:nil forceReset:NO complete:^{
+            
+            [self checkAndShowBackgroundImage];
+            
+        }];
+        
         if (filesSearchDataSource.searchText.length)
         {
             [filesSearchDataSource searchMessages:nil force:NO];

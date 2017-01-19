@@ -112,8 +112,9 @@
  
  @param searchText the search pattern (nil to reset filtering).
  @param forceReset tell whether the search request must be applied by ignoring the previous search result if any (use NO by default).
+ @param complete a block object called when the operation is complete.
  */
-- (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceReset;
+- (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceReset complete:(void (^)())complete;
 
 /**
  Refresh the contacts table display.

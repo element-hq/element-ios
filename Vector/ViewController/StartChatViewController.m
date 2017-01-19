@@ -586,7 +586,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self searchWithPattern:searchText forceReset:NO];
+    [self searchWithPattern:searchText forceReset:NO complete:nil];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
@@ -632,7 +632,7 @@
     self.isAddParticipantSearchBarEditing = NO;
     
     // Reset filtering
-    [self searchWithPattern:nil forceReset:NO];
+    [self searchWithPattern:nil forceReset:NO complete:nil];
     
     // Leave search
     [searchBar resignFirstResponder];
