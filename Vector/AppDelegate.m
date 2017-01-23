@@ -317,10 +317,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Configure Google Analytics here if the option is enabled
     [self startGoogleAnalytics];
-    
-    // Configure local contacts management
-    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
-    
+        
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
@@ -2007,8 +2004,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
         }
         
-        // Refresh the local contacts list by reloading it
-        [[MXKContactManager sharedManager] loadLocalContacts];
+        // Refresh the local contacts list.
+        [[MXKContactManager sharedManager] refreshLocalContacts];
     }
 }
 

@@ -916,7 +916,7 @@
                         
                         MXInvite3PID *invite3PID = [[MXInvite3PID alloc] init];
                         invite3PID.identityServer = identityServer;
-                        invite3PID.medium = @"email";
+                        invite3PID.medium = kMX3PIDMediumEmail;
                         invite3PID.address = participantId;
                         
                         invite3PIDArray = @[invite3PID];
