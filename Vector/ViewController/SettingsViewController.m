@@ -1619,19 +1619,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
     [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        strongSelf->currentAlert = nil;
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
 
-        // Feedback: disable button and run activity indicator
-        UIButton *button = (UIButton*)sender;
-        button.enabled = NO;
-        [strongSelf startActivityIndicator];
+            // Feedback: disable button and run activity indicator
+            UIButton *button = (UIButton*)sender;
+            button.enabled = NO;
+            [strongSelf startActivityIndicator];
 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 
-            [[MXKAccountManager sharedManager] logout];
-            
-        });
+                [[MXKAccountManager sharedManager] logout];
+                
+            });
+        }
     }];
 
     currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
