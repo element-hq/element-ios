@@ -1639,9 +1639,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
     currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
 
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        strongSelf->currentAlert = nil;
-
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+        }
     }];
 
     [currentAlert showInViewController:self];
