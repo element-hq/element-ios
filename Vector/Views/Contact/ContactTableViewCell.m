@@ -151,9 +151,6 @@
     }
     else
     {
-        // Refresh matrix info of the contact
-        [[MXKContactManager sharedManager] updateMatrixIDsForLocalContact:contact];
-        
         [self refreshLocalContactInformation];
     }
 }
