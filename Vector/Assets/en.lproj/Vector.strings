@@ -237,6 +237,8 @@
 "settings_cryptography" = "CRYPTOGRAPHY";
 
 "settings_sign_out" = "Sign Out";
+"settings_sign_out_confirmation" = "Are you sure?";
+"settings_sign_out_e2e_warn" = "You will lose your end-to-end encryption keys. That means you will be no more able to read old messages in encrypted rooms on this device.";
 "settings_profile_picture" = "Profile Picture";
 "settings_display_name" = "Display Name";
 "settings_first_name" = "First Name";
