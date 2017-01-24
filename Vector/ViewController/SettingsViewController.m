@@ -1609,7 +1609,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\n%@", NSLocalizedStringFromTable(@"settings_sign_out_e2e_warn", @"Vector", nil)]];
             break;
-
         }
     }
 
