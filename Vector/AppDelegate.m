@@ -245,9 +245,20 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 #else
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
-    
-    // Override point for customization after application launch.
-    
+
+    // Log app information
+    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString* appVersion = [AppDelegate theDelegate].appVersion;
+    NSString* build = [AppDelegate theDelegate].build;
+
+    NSLog(@"------------------------------");
+    NSLog(@"Application info:");
+    NSLog(@"%@ version: %@", appDisplayName, appVersion);
+    NSLog(@"MatrixKit version: %@", MatrixKitVersion);
+    NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
+    NSLog(@"Build: %@\n", build);
+    NSLog(@"------------------------------\n");
+
     // Define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:kVectorColorGreen];
     
