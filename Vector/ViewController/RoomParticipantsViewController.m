@@ -26,6 +26,8 @@
 
 #import "ContactTableViewCell.h"
 
+#import "RageShakeManager.h"
+
 @interface RoomParticipantsViewController ()
 {
     // Search result
@@ -80,6 +82,11 @@
 - (void)finalizeInit
 {
     [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)viewDidLoad
