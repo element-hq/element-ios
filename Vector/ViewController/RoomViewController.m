@@ -598,21 +598,18 @@
     // If we don't hide the header, the navigation bar is in a wrong state after rotation. FIXME: Find a way to keep visible the header on rotation.
     if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay5p5Inch)
     {
-        // Hide expanded header (if any) on device rotation
+        // Hide the expanded header (if any) on device rotation
         [self showExpandedHeader:NO];
         
-        // Refresh preview header (if any) during device rotation
-        if (previewHeader)
-        {
-            // Hide preview header before rotating
-            [self showPreviewHeader:NO];
+        // Hide the preview header (if any) before rotating (It will be restored by `refreshRoomTitle` call if this is still a room preview).
+        [self showPreviewHeader:NO];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-
-                // Restore preview header
-                [self showPreviewHeader:YES];
-            });
-        }
+            // Let [self refreshRoomTitle] refresh this title view correctly
+            [self refreshRoomTitle];
+            
+        });
     }
     else if (previewHeader)
     {
@@ -644,6 +641,16 @@
             
             [self refreshPreviewHeader:isLandscapeOriented];
         }
+    }
+    else
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            // Refresh the room title at the end of the transition to take into account the potential changes during the transition.
+            // For example the display of a preview header is ignored during transition.
+            [self refreshRoomTitle];
+            
+        });
     }
     
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
@@ -1167,10 +1174,17 @@
 
 - (void)showPreviewHeader:(BOOL)isVisible
 {
-    // This operation is ignored if a screen rotation is in progress,
-    // or if the view controller is not embedded inside a split view controller yet.
-    if (self.previewHeaderContainer && self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
+    if (self.previewHeaderContainer && self.previewHeaderContainer.isHidden == isVisible)
     {
+        // Check conditions before making the preview room header visible.
+        // This operation is ignored if a screen rotation is in progress,
+        // or if the view controller is not embedded inside a split view controller yet.
+        if (isVisible && (isSizeTransitionInProgress == YES || !self.splitViewController))
+        {
+            NSLog(@"[Vector RoomVC] Show preview header ignored");
+            return;
+        }
+        
         if (isVisible)
         {
             previewHeader = [PreviewRoomTitleView roomTitleView];
