@@ -20,7 +20,7 @@
 
 + (NSString *)presenceText:(MXUser *)user
 {
-    NSString* presenceText = NSLocalizedStringFromTable(@"room_participants_unkown", @"Vector", nil);
+    NSString* presenceText = NSLocalizedStringFromTable(@"room_participants_unknown", @"Vector", nil);
 
     if (user)
     {

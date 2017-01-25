@@ -1,3 +1,19 @@
+Changes in 0.3.8 (2017-01-24)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.6).
+ * Crypto: Prevent people from relogging when upgrading from v0.3.4, the current app store version (PR https://github.com/matrix-org/matrix-ios-sdk/pull/226).
+ * AuthenticationViewController: update layout on iPhone 7.
+ * ContactsTableViewController: refresh the matrix ids in the local contacts when view will appear.
+ * ContactTableViewCell: Let ContactsTableViewController update the matrix ids of the local contacts.
+ * Warn that logging out will lose E2E keys (#950).
+ * Logs: Log versions of app, MatrixKit, MatrixSDK etc at startup.
+ 
+Bug fixes:
+ * Room details members: wrong unknown wording (#941).
+ * App may crash when user rotates the device while he joins a room.
+
 Changes in 0.3.7 (2017-01-19)
 ===============================================
 

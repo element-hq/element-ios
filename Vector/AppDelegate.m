@@ -245,9 +245,20 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 #else
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
-    
-    // Override point for customization after application launch.
-    
+
+    // Log app information
+    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString* appVersion = [AppDelegate theDelegate].appVersion;
+    NSString* build = [AppDelegate theDelegate].build;
+
+    NSLog(@"------------------------------");
+    NSLog(@"Application info:");
+    NSLog(@"%@ version: %@", appDisplayName, appVersion);
+    NSLog(@"MatrixKit version: %@", MatrixKitVersion);
+    NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
+    NSLog(@"Build: %@\n", build);
+    NSLog(@"------------------------------\n");
+
     // Define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:kVectorColorGreen];
     
@@ -317,10 +328,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Configure Google Analytics here if the option is enabled
     [self startGoogleAnalytics];
-    
-    // Configure local contacts management
-    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
-    
+        
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
@@ -2007,8 +2015,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
         }
         
-        // Refresh the local contacts list by reloading it
-        [[MXKContactManager sharedManager] loadLocalContacts];
+        // Refresh the local contacts list.
+        [[MXKContactManager sharedManager] refreshLocalContacts];
     }
 }
 

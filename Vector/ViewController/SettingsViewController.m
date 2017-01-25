@@ -1594,16 +1594,59 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)onSignout:(id)sender
 {
-    // Feedback: disable button and run activity indicator
-    UIButton *button = (UIButton*)sender;
-    button.enabled = NO;
-    [self startActivityIndicator];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        
-        [[MXKAccountManager sharedManager] logout];
-        
-    });
+
+    [currentAlert dismiss:NO];
+
+    __weak typeof(self) weakSelf = self;
+
+    NSString *message = NSLocalizedStringFromTable(@"settings_sign_out_confirmation", @"Vector", nil);
+
+    // If the user has encrypted rooms, warn he will lose his e2e keys
+    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    for (MXRoom *room in session.rooms)
+    {
+        if (room.state.isEncrypted)
+        {
+            message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\n%@", NSLocalizedStringFromTable(@"settings_sign_out_e2e_warn", @"Vector", nil)]];
+            break;
+        }
+    }
+
+    // Ask confirmation
+    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil)
+                                           message:message
+                                             style:MXKAlertStyleAlert];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+
+            // Feedback: disable button and run activity indicator
+            UIButton *button = (UIButton*)sender;
+            button.enabled = NO;
+            [strongSelf startActivityIndicator];
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+
+                [[MXKAccountManager sharedManager] logout];
+                
+            });
+        }
+    }];
+
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+        }
+    }];
+
+    [currentAlert showInViewController:self];
 }
 
 - (void)togglePushNotifications:(id)sender
