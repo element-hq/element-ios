@@ -55,6 +55,7 @@
     
     // Display a button to invite new member.
     UIImageView* addParticipantButtonImageView;
+    NSLayoutConstraint *addParticipantButtonImageViewBottomConstraint;
     
     MXKAlert *currentAlert;
 }
@@ -252,18 +253,33 @@
 {
     [super viewDidLayoutSubviews];
     
-    // sanity check
+    // Sanity check
     if (tableViewMaskLayer)
     {
         CGRect currentBounds = tableViewMaskLayer.bounds;
         CGRect newBounds = CGRectIntegral(self.view.frame);
         
-        // check if there is an update
+        newBounds.size.height -= self.keyboardHeight;
+        
+        // Check if there is an update
         if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
         {
             newBounds.origin = CGPointZero;
-            tableViewMaskLayer.bounds = newBounds;
+            
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                             animations:^{
+                                 
+                                 tableViewMaskLayer.bounds = newBounds;
+                                 
+                             }
+                             completion:^(BOOL finished){
+                             }];
+            
         }
+        
+        // Hide the addParticipants button on landscape when keyboard is visible
+        BOOL isLandscapeOriented = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+        addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = (isLandscapeOriented && self.keyboardHeight);
     }
 }
 
@@ -456,6 +472,24 @@
     }
 }
 
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    super.keyboardHeight = keyboardHeight;
+    
+    // Update addParticipants button position with animation
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         
+                         addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
+                         
+                         // Force to render the view
+                         [self.view layoutIfNeeded];
+                         
+                     }
+                     completion:^(BOOL finished){
+                     }];
+}
+
 #pragma mark - Internals
 
 - (void)refreshTableView
@@ -529,16 +563,16 @@
                                                                         multiplier:1
                                                                           constant:0];
     
-    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
+    addParticipantButtonImageViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
                                                                         attribute:NSLayoutAttributeBottom
                                                                         relatedBy:NSLayoutRelationEqual
                                                                            toItem:addParticipantButtonImageView
                                                                         attribute:NSLayoutAttributeBottom
                                                                        multiplier:1
-                                                                         constant:9];
+                                                                         constant:self.keyboardHeight + 9];
     
     // Available on iOS 8 and later
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, addParticipantButtonImageViewBottomConstraint]];
     
     addParticipantButtonImageView.userInteractionEnabled = YES;
     
