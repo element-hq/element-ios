@@ -253,7 +253,7 @@
 {
     [super viewDidLayoutSubviews];
     
-    // sanity check
+    // Sanity check
     if (tableViewMaskLayer)
     {
         CGRect currentBounds = tableViewMaskLayer.bounds;
@@ -261,11 +261,20 @@
         
         newBounds.size.height -= self.keyboardHeight;
         
-        // check if there is an update
+        // Check if there is an update
         if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
         {
             newBounds.origin = CGPointZero;
-            tableViewMaskLayer.bounds = newBounds;
+            
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                             animations:^{
+                                 
+                                 tableViewMaskLayer.bounds = newBounds;
+                                 
+                             }
+                             completion:^(BOOL finished){
+                             }];
+            
         }
         
         // Hide the addParticipants button on landscape when keyboard is visible
@@ -465,10 +474,20 @@
 
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
-    // Update addParticipants button position
-    addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
-    
     super.keyboardHeight = keyboardHeight;
+    
+    // Update addParticipants button position with animation
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         
+                         addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
+                         
+                         // Force to render the view
+                         [self.view layoutIfNeeded];
+                         
+                     }
+                     completion:^(BOOL finished){
+                     }];
 }
 
 #pragma mark - Internals
