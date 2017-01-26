@@ -40,7 +40,7 @@
  'ContactsTableViewController' instance is used to display/filter a list of contacts.
  See 'ContactsTableViewController-inherited' object for example of use.
  */
-@interface ContactsTableViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource>
+@interface ContactsTableViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 {
 @protected
     // Section indexes
@@ -50,6 +50,9 @@
     
     // The contact used to describe the current user.
     MXKContact *userContact;
+    
+    // Tell whether the non-matrix-enabled contacts must be hidden or not. NO by default.
+    BOOL hideNonMatrixEnabledContacts;
     
     // Search results
     NSString *currentSearchText;

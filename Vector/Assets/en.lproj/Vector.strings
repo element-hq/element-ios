@@ -125,6 +125,7 @@
 // Contacts
 "contacts_address_book_section" = "LOCAL CONTACTS";
 "contacts_matrix_users_section" = "KNOWN CONTACTS";
+"contacts_address_book_matrix_users_toggle" = "Matrix users only";
 
 // Chat participants
 "room_participants_title" = "Participants";
