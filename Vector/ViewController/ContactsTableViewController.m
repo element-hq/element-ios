@@ -681,13 +681,12 @@
         
         if (section == filteredLocalContactsSection)
         {
-            headerLabel.text = [NSString stringWithFormat:@"%@ (%tu)", NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
-            
+            headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
             sectionBitwise = CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE;
         }
         else //if (section == filteredMatrixContactsSection)
         {
-            headerLabel.text = [NSString stringWithFormat:@"%@ (%tu)", NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil), filteredMatrixContacts.count];
+            headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil), filteredMatrixContacts.count];
             sectionBitwise = CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE;
         }
         
