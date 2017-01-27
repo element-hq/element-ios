@@ -505,10 +505,8 @@
     {
         searchInputSection = count++;
         
-        if (filteredLocalContacts.count)
-        {
-            filteredLocalContactsSection = count++;
-        }
+        // Keep visible the Local contacts header even if no local contacts is displayed in order to keep visible the check box "Matrix user only".
+        filteredLocalContactsSection = count++;
         
         if (filteredMatrixContacts.count)
         {
@@ -523,10 +521,8 @@
             filteredLocalContacts = [self unfilteredLocalContactsArray];
         }
         
-        if (filteredLocalContacts.count)
-        {
-            filteredLocalContactsSection = count++;
-        }
+        // Keep visible the Local contacts header even if no local contacts is displayed in order to keep visible the check box "Matrix user only".
+        filteredLocalContactsSection = count++;
     }
     
     // Enable the section shrinking only when all the contacts sections are displayed.
@@ -685,12 +681,12 @@
         
         if (section == filteredLocalContactsSection)
         {
-            headerLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
+            headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
             sectionBitwise = CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE;
         }
         else //if (section == filteredMatrixContactsSection)
         {
-            headerLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil);
+            headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil), filteredMatrixContacts.count];
             sectionBitwise = CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE;
         }
         
