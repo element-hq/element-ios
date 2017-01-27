@@ -108,7 +108,7 @@
         }
         
         // Set the flag in the right cell data
-        NSString *lastMessageEventID = self.room.summary.lastEventId;
+        NSString *lastMessageEventID = self.room.summary.lastMessageEventId;
         if (lastMessageEventID)
         {
             RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:lastMessageEventID];
