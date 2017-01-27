@@ -112,6 +112,8 @@
         mxPresenceObserver = nil;
     }
     
+    self.thumbnailBadgeView.hidden = YES;
+    
     // Sanity check: accept only object of MXKContact classes or sub-classes
     NSParameterAssert([cellData isKindOfClass:[MXKContact class]]);
     contact = (MXKContact*)cellData;
