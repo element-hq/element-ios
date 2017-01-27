@@ -687,6 +687,7 @@
                                  
                              }];
     
+    currentAlert.mxkAccessibilityIdentifier = @"HomeVCUseGoogleAnalyticsAlert";
     [currentAlert showInViewController:self];
 }
 
@@ -898,6 +899,7 @@
 
             }];
 
+            currentAlert.mxkAccessibilityIdentifier = @"HomeVCCheckDeviceIdAlert";
             [currentAlert showInViewController:self];
         }
     }
@@ -1273,6 +1275,7 @@
     
     currentAlert.sourceView = createNewRoomImageView;
     
+    currentAlert.mxkAccessibilityIdentifier = @"HomeVCCreateRoomAlert";
     [currentAlert showInViewController:self];
 }
     
@@ -1339,8 +1342,8 @@
                                                                           strongSelf->currentAlert = nil;
 
                                                                       }];
+            currentAlert.mxkAccessibilityIdentifier = @"HomeVCRoomCreationInProgressAlert";
             [currentAlert showInViewController:self];
-
         }
     }
 }

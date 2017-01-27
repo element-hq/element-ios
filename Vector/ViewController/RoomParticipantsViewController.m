@@ -1313,6 +1313,7 @@
                                          
                                      }];
             
+            currentAlert.mxkAccessibilityIdentifier = @"RoomParticipantsVCLeaveAlert";
             [currentAlert showInViewController:self];
         }
         else
@@ -1382,6 +1383,7 @@
                                                                  }];
                                          }];
                 
+                currentAlert.mxkAccessibilityIdentifier = @"RoomParticipantsVCKickAlert";
                 [currentAlert showInViewController:self];
             }
         }
@@ -1511,6 +1513,7 @@
 
                              }];
     
+    currentAlert.mxkAccessibilityIdentifier = @"RoomParticipantsVCInviteAlert";
     [currentAlert showInViewController:self];
 }
 
