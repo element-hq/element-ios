@@ -836,6 +836,7 @@
                     strongSelf->currentAlert = nil;
                 }];
                 
+                currentAlert.mxkAccessibilityIdentifier = @"ContactDetailsVCIgnoreAlert";
                 [currentAlert showInViewController:self];
                 break;
             }

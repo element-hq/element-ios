@@ -569,6 +569,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
     }];
     
+    currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCSaveChangesAlert";
     [currentAlert showInViewController:self];
 }
 
@@ -604,6 +605,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
         }];
         
+        currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCCopyRoomIdAlert";
         currentAlert.sourceView = roomIdLabel;
         [currentAlert showInViewController:self];
     }
@@ -722,6 +724,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
         }];
         
+        currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCOnSelectedAliasAlert";
         currentAlert.sourceView = roomAliasLabel;
         [currentAlert showInViewController:self];
     }
@@ -1024,6 +1027,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
     }];
     
+    currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCSaveChangesFailedAlert";
     [currentAlert showInViewController:self];
 }
 
@@ -2729,6 +2733,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
     }];
     
+    currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCChangeHistoryVisibilityAlert";
     [currentAlert showInViewController:self];
 }
 
@@ -2810,6 +2815,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
     }];
     
+    currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCRemoveCanonicalAliasAlert";
     [currentAlert showInViewController:self];
 }
 
@@ -2903,6 +2909,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                  
                              }];
     
+    currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCLeaveAlert";
     [currentAlert showInViewController:self];
 }
 
@@ -2993,6 +3000,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                          }
                                      }];
             
+            currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCEnableEncryptionAlert";
             [currentAlert showInViewController:self];
         }
         else
@@ -3182,6 +3190,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                   }
                                                               }];
     
+    currentAlert.mxkAccessibilityIdentifier = @"RoomSettingsVCAddAliasAlert";
     [currentAlert showInViewController:self];
     
     return NO;

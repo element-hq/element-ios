@@ -2049,6 +2049,7 @@
     // Do not display empty action sheet
     if (currentAlert.cancelButtonIndex)
     {
+        currentAlert.mxkAccessibilityIdentifier = @"RoomVCEventMenuAlert";
         currentAlert.sourceView = roomBubbleTableViewCell;
         [currentAlert showInViewController:self];
     }
@@ -2273,6 +2274,7 @@
             strongSelf->currentAlert = nil;
         }];
 
+        currentAlert.mxkAccessibilityIdentifier = @"RoomVCCallAlert";
         [currentAlert showInViewController:self];
     }
     // In case of conference call, check that the user has enough power level
@@ -2290,6 +2292,7 @@
             strongSelf->currentAlert = nil;
         }];
 
+        currentAlert.mxkAccessibilityIdentifier = @"RoomVCCallAlert";
         [currentAlert showInViewController:self];
     }
     else
@@ -3064,6 +3067,7 @@
                     
                 }];
                 
+                currentAlert.mxkAccessibilityIdentifier = @"RoomVCUnsentMessagesMenuAlert";
                 currentAlert.sourceView = roomActivitiesView;
                 [currentAlert showInViewController:self];
                 

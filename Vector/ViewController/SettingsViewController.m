@@ -535,6 +535,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
     }];
 
+    currentAlert.mxkAccessibilityIdentifier = @"SettingsVCEmailValidationAlert";
     [currentAlert showInViewController:self];
 }
 
@@ -1534,6 +1535,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     
                 }];
                 
+                currentAlert.mxkAccessibilityIdentifier = @"SettingsVCUnignoreAlert";
                 [currentAlert showInViewController:self];
             }
         }
@@ -1646,6 +1648,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
     }];
 
+    currentAlert.mxkAccessibilityIdentifier = @"SettingsVCSignoutAlert";
     [currentAlert showInViewController:self];
 }
 
@@ -1671,6 +1674,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
         }];
         
+        currentAlert.mxkAccessibilityIdentifier = @"SettingsVCPushNotificationsAlert";
         [currentAlert showInViewController:self];
         
         // Keep off the switch
@@ -1781,6 +1785,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }];
             
             
+            currentAlert.mxkAccessibilityIdentifier = @"SettingsVCEnableEncryptionAlert";
             [currentAlert showInViewController:self];
         }
         else
@@ -2079,6 +2084,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }];
         
         
+        currentAlert.mxkAccessibilityIdentifier = @"SettingsVCSaveChangesFailedAlert";
         [currentAlert showInViewController:rootViewController];
     }
 }
@@ -2103,6 +2109,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             
         }];
+        
+        currentAlert.mxkAccessibilityIdentifier = @"SettingsVCAddEmailAlert";
         [currentAlert showInViewController:self];
 
         return;
@@ -2321,6 +2329,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                 
                             }];
                             
+                            strongSelf->currentAlert.mxkAccessibilityIdentifier = @"SettingsVCOnPasswordUpdatedAlert";
                             [strongSelf->currentAlert showInViewController:strongSelf];
                         }
                         else
@@ -2366,6 +2375,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                 
                             }];
                             
+                            strongSelf->currentAlert.mxkAccessibilityIdentifier = @"SettingsVCPasswordChangeFailedAlert";
                             [strongSelf->currentAlert showInViewController:rootViewController];
                         }
                     }
