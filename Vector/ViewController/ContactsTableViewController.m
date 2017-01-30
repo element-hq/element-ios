@@ -681,7 +681,14 @@
         
         if (section == filteredLocalContactsSection)
         {
-            headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
+            if (currentSearchText.length)
+            {
+                headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
+            }
+            else
+            {
+                headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_default_section", @"Vector", nil), filteredLocalContacts.count];
+            }
             sectionBitwise = CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE;
         }
         else //if (section == filteredMatrixContactsSection)
