@@ -2178,6 +2178,8 @@
             MXKRoomDataSource *roomFilesDataSource = [[MXKRoomDataSource alloc] initWithRoomId:roomId andMatrixSession:session];
             roomFilesDataSource.filterMessagesWithURL = YES;
             [roomFilesDataSource finalizeInitialization];
+            // Give the data source ownership to the room files view controller.
+            roomFilesViewController.hasRoomDataSourceOwnership = YES;
             [roomFilesViewController displayRoom:roomFilesDataSource];
             [viewControllers addObject:roomFilesViewController];
 
