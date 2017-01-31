@@ -715,8 +715,10 @@
     
     if (mainSession)
     {
-        if (mainSession.state < MXSessionStateStoreDataReady ||
-            ([recentsViewController.recentsTableView numberOfSections] == 0 && [AppDelegate theDelegate].isOffline == NO))
+        // Display the Riot animation until the stored data are ready.
+        // When the stored data are ready, keep the animation running if the recents table
+        // is not rendered yet (except in offline mode, or if a room has been selected).
+        if (mainSession.state < MXSessionStateStoreDataReady || ([recentsViewController.recentsTableView numberOfSections] == 0 && [AppDelegate theDelegate].isOffline == NO && _currentRoomViewController == nil))
         {
             if (!launchAnimationContainerView)
             {
@@ -1006,6 +1008,9 @@
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
+        
+        // Remove the Riot animation as soon as a room is selected.
+        [self handleLaunchAnimation];
     }
     else
     {
