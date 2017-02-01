@@ -149,6 +149,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      Prompt to ask the user to log in again.
      */
     MXKAlert *cryptoDataCorruptedAlert;
+    
+    /**
+     The launch animation container view
+     */
+    UIView *launchAnimationContainerView;
+    NSDate *launchAnimationStart;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -498,6 +504,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self refreshLocalContacts];
     
     _isAppForeground = YES;
+    
+    [self handleLaunchAnimation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -1419,6 +1427,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // A new call observer may be added here
             [self addMatrixCallObserver];
         }
+        
+        [self handleLaunchAnimation];
     }];
     
     // Register an observer in order to handle new account
@@ -1732,6 +1742,158 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         
     }];
+}
+
+- (void)handleLaunchAnimation
+{
+    MXSession *mainSession = self.mxSessions.firstObject;
+    
+    if (mainSession)
+    {
+        BOOL isLaunching = NO;
+        
+        switch (mainSession.state)
+        {
+            case MXSessionStateClosed:
+            case MXSessionStateInitialised:
+                isLaunching = YES;
+                break;
+            case MXSessionStateStoreDataReady:
+            case MXSessionStateSyncInProgress:
+                isLaunching = (mainSession.rooms.count == 0);
+            default:
+                break;
+        }
+        
+        if (isLaunching)
+        {
+            UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+            
+            if (!launchAnimationContainerView && window)
+            {
+                launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
+                launchAnimationContainerView.backgroundColor = [UIColor whiteColor];
+                launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                [window addSubview:launchAnimationContainerView];
+                
+                // Add animation view
+                UIImageView *animationView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 170, 170)];
+                animationView.image = [UIImage animatedImageNamed:@"animatedLogo-" duration:2];
+                
+                animationView.center = CGPointMake(launchAnimationContainerView.center.x, 3 * launchAnimationContainerView.center.y / 4);
+                
+                animationView.translatesAutoresizingMaskIntoConstraints = NO;
+                [launchAnimationContainerView addSubview:animationView];
+                
+                NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:animationView
+                                                                                   attribute:NSLayoutAttributeWidth
+                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                      toItem:nil
+                                                                                   attribute:NSLayoutAttributeNotAnAttribute
+                                                                                  multiplier:1
+                                                                                    constant:170];
+                
+                NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:animationView
+                                                                                    attribute:NSLayoutAttributeHeight
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:nil
+                                                                                    attribute:NSLayoutAttributeNotAnAttribute
+                                                                                   multiplier:1
+                                                                                     constant:170];
+                
+                NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:animationView
+                                                                                     attribute:NSLayoutAttributeCenterX
+                                                                                     relatedBy:NSLayoutRelationEqual
+                                                                                        toItem:launchAnimationContainerView
+                                                                                     attribute:NSLayoutAttributeCenterX
+                                                                                    multiplier:1
+                                                                                      constant:0];
+                
+                NSLayoutConstraint* centerYConstraint = [NSLayoutConstraint constraintWithItem:animationView
+                                                                                     attribute:NSLayoutAttributeCenterY
+                                                                                     relatedBy:NSLayoutRelationEqual
+                                                                                        toItem:launchAnimationContainerView
+                                                                                     attribute:NSLayoutAttributeCenterY
+                                                                                    multiplier:3.0/4.0
+                                                                                      constant:0];
+                
+                [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
+                
+                
+                // In addition, show a spinner under this giffy animation
+                UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+                activityIndicator.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
+                activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+                activityIndicator.hidesWhenStopped = YES;
+                
+                CGRect frame = activityIndicator.frame;
+                frame.size.width += 30;
+                frame.size.height += 30;
+                activityIndicator.bounds = frame;
+                [activityIndicator.layer setCornerRadius:5];
+                
+                activityIndicator.center = CGPointMake(launchAnimationContainerView.center.x, 6 * launchAnimationContainerView.center.y / 4);
+                [launchAnimationContainerView addSubview:activityIndicator];
+                
+                activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+                
+                NSLayoutConstraint* widthConstraint2 = [NSLayoutConstraint constraintWithItem:activityIndicator
+                                                                                    attribute:NSLayoutAttributeWidth
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:nil
+                                                                                    attribute:NSLayoutAttributeNotAnAttribute
+                                                                                   multiplier:1
+                                                                                     constant:frame.size.width];
+                
+                NSLayoutConstraint* heightConstraint2 = [NSLayoutConstraint constraintWithItem:activityIndicator
+                                                                                     attribute:NSLayoutAttributeHeight
+                                                                                     relatedBy:NSLayoutRelationEqual
+                                                                                        toItem:nil
+                                                                                     attribute:NSLayoutAttributeNotAnAttribute
+                                                                                    multiplier:1
+                                                                                      constant:frame.size.height];
+                
+                NSLayoutConstraint* centerXConstraint2 = [NSLayoutConstraint constraintWithItem:activityIndicator
+                                                                                      attribute:NSLayoutAttributeCenterX
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:launchAnimationContainerView
+                                                                                      attribute:NSLayoutAttributeCenterX
+                                                                                     multiplier:1
+                                                                                       constant:0];
+                
+                NSLayoutConstraint* centerYConstraint2 = [NSLayoutConstraint constraintWithItem:activityIndicator
+                                                                                      attribute:NSLayoutAttributeCenterY
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:launchAnimationContainerView
+                                                                                      attribute:NSLayoutAttributeCenterY
+                                                                                     multiplier:6.0/4.0
+                                                                                       constant:0];
+                
+                [NSLayoutConstraint activateConstraints:@[widthConstraint2, heightConstraint2, centerXConstraint2, centerYConstraint2]];
+                
+                [activityIndicator startAnimating];
+                
+                launchAnimationStart = [NSDate date];
+            }
+        }
+        else if (launchAnimationContainerView)
+        {
+            NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
+            NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", durationMs);
+            
+            if ([MXSDKOptions sharedInstance].enableGoogleAnalytics)
+            {
+                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:kMXGoogleAnalyticsStartupCategory
+                                                                     interval:@((int)durationMs)
+                                                                         name:kMXGoogleAnalyticsStartupLaunchScreen
+                                                                        label:nil] build]];
+            }
+            
+            [launchAnimationContainerView removeFromSuperview];
+            launchAnimationContainerView = nil;
+        }
+    }
 }
 
 #pragma mark - Matrix Accounts handling
