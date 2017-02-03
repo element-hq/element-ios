@@ -27,6 +27,8 @@
 #import <Photos/Photos.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "MXKEncryptionKeysExportView.h"
+
 #import "OLMKit/OLMKit.h"
 
 enum {
@@ -69,6 +71,10 @@ enum {
 
 #define LABS_CRYPTO_INDEX            0
 #define LABS_COUNT                   1
+
+#define CRYPTOGRAPHY_INFO_INDEX      0
+#define CRYPTOGRAPHY_EXPORT_INDEX    1
+#define CRYPTOGRAPHY_COUNT           2
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
@@ -798,7 +804,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         // Check whether this section is visible.
         if (self.mainSession.crypto)
         {
-            count = 1;
+            count = CRYPTOGRAPHY_COUNT;
         }
     }
     return count;
@@ -1323,16 +1329,39 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
     {
-        MXKTableViewCell *cryptoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-        if (!cryptoCell)
+        if (row == CRYPTOGRAPHY_INFO_INDEX)
         {
-            cryptoCell = [[MXKTableViewCell alloc] init];
+            MXKTableViewCell *cryptoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!cryptoCell)
+            {
+                cryptoCell = [[MXKTableViewCell alloc] init];
+            }
+
+            cryptoCell.textLabel.attributedText = [self cryptographyInformation];
+            cryptoCell.textLabel.numberOfLines = 0;
+
+            cell = cryptoCell;
         }
-        
-        cryptoCell.textLabel.attributedText = [self cryptographyInformation];
-        cryptoCell.textLabel.numberOfLines = 0;
-        
-        cell = cryptoCell;
+        else if (row == CRYPTOGRAPHY_EXPORT_INDEX)
+        {
+            MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+            if (!exportKeysBtnCell)
+            {
+                exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+
+            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
+            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            [exportKeysBtnCell.mxkButton setTintColor:kVectorColorGreen];
+            exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+
+            [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [exportKeysBtnCell.mxkButton addTarget:self action:@selector(exportEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
+            exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
+
+            cell = exportKeysBtnCell;
+        }
     }
 
     return cell;
@@ -1427,7 +1456,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [label sizeToFit];
         return label.frame.size.height + 16;
     }
-    else if (indexPath.section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
+    else if (indexPath.section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX && indexPath.row == CRYPTOGRAPHY_INFO_INDEX)
     {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
         label.numberOfLines = 0;
@@ -2178,6 +2207,40 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [navigationController pushViewController:mediaPicker animated:NO];
     
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
+{
+    [currentAlert dismiss:NO];
+
+    MXKEncryptionKeysExportView *exportView = [[MXKEncryptionKeysExportView alloc] initWithMatrixSession:self.mainSession];
+    currentAlert = exportView;
+
+    // Use a temporary file for the export
+    NSURL *keyFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"riot-keys.txt"]];
+
+    // Show the export dialog
+    __weak typeof(self) weakSelf = self;
+    [exportView showInViewController:self toExportKeysToFile:keyFile onComplete:^(BOOL success) {
+
+        if (weakSelf && success)
+        {
+             typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+
+            // Let another app handling this file
+            UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[keyFile] applicationActivities:nil];
+            activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+            if (activityViewController)
+            {
+                [self presentViewController:activityViewController animated:YES completion:nil];
+            }
+
+            // TODO: Delete the file after usage. But how can we know when the file
+            // has been processed by the other app ?
+        }
+    }];
 }
 
 #pragma mark - MediaPickerViewController Delegate
