@@ -1,5 +1,5 @@
 /*
- Copyright 2017 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -44,9 +44,6 @@
     
     // This dictionary tells for each display name whether it appears several times.
     NSMutableDictionary <NSString*,NSNumber*> *isMultiUseNameByDisplayName;
-    
-    // Report all the contacts by matrix id.
-    NSMutableDictionary <NSString*, MXKContact*> *contactsByMatrixId;
     
     // Shrinked sections.
     BOOL enableSectionShrinking;
@@ -96,7 +93,6 @@
     _ignoredContactsByMatrixId = [NSMutableDictionary dictionary];
     
     isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
-    contactsByMatrixId = [NSMutableDictionary dictionary];
     
     _forceMatrixIdInDisplayName = NO;
     
@@ -143,7 +139,6 @@
     searchProcessingMatrixContacts = nil;
     
     isMultiUseNameByDisplayName = nil;
-    contactsByMatrixId = nil;
     
     _contactCellAccessoryImage = nil;
     
@@ -264,10 +259,6 @@
             shrinkedSectionsBitMask = 0;
         }
         
-        // List all the filtered local Matrix-enabled contacts by their matrix id to remove a contact
-        // from the "Known Contacts" section if a local contact matches with his Matrix identifier.
-        [contactsByMatrixId removeAllObjects];
-        
         for (NSUInteger index = 0; index < searchProcessingLocalContacts.count;)
         {
             MXKContact* contact = searchProcessingLocalContacts[index];
@@ -278,13 +269,6 @@
             }
             else
             {
-                NSArray *identifiers = contact.matrixIdentifiers;
-                if (identifiers.count)
-                {
-                    // Here the contact can only have one identifier
-                    contactsByMatrixId[identifiers.firstObject] = contact;
-                }
-                
                 // Next
                 index++;
             }
@@ -328,33 +312,7 @@
                     // Update the filtered contacts.
                     currentSearchText = searchProcessingText;
                     filteredLocalContacts = searchProcessingLocalContacts;
-                    
-                    // Check whether some Matrix-enabled contacts are listed in the local contact.
-                    if (contactsByMatrixId.count)
-                    {
-                        // Remove a contact from the "Known Contacts" section if a local contact matches with his Matrix identifier.
-                        filteredMatrixContacts = [NSMutableArray arrayWithArray:searchProcessingMatrixContacts];
-                        for (NSUInteger index = 0; index < filteredMatrixContacts.count;)
-                        {
-                            MXKContact* contact = filteredMatrixContacts[index];
-                            
-                            // Here the contact can only have one identifier
-                            NSArray *identifiers = contact.matrixIdentifiers;
-                            if (identifiers.count && contactsByMatrixId[identifiers.firstObject])
-                            {
-                                [filteredMatrixContacts removeObjectAtIndex:index];
-                            }
-                            else
-                            {
-                                // Next
-                                index++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        filteredMatrixContacts = searchProcessingMatrixContacts;
-                    }
+                    filteredMatrixContacts = searchProcessingMatrixContacts;
                     
                     if (!self.forceMatrixIdInDisplayName)
                     {
