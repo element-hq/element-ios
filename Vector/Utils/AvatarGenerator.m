@@ -78,7 +78,7 @@ static UILabel* backgroundLabel = nil;
     
     if (text.length > 0)
     {
-        firstChar = [[text substringToIndex:1] uppercaseString];
+        firstChar = [[text substringToIndex:NSMaxRange([text rangeOfComposedCharacterSequenceAtIndex:0])] uppercaseString];
     }
     
     return firstChar;
