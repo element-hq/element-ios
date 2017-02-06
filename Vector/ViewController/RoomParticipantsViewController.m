@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2015 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -1337,51 +1338,71 @@
             if (row < participants.count)
             {
                 Contact *contact = participants[row];
-                NSString *memberUserId = contact.mxMember ? contact.mxMember.userId : contact.mxThirdPartyInvite.token;
                 
-                // Kick ?
-                NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_remove_prompt_msg", @"Vector", nil), (contact ? contact.displayName : memberUserId)];
-                currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_remove_prompt_title", @"Vector", nil)
-                                                       message:promptMsg
-                                                         style:MXKAlertStyleAlert];
-                
-                currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                                            style:MXKAlertActionStyleCancel
-                                                                          handler:^(MXKAlert *alert) {
-                                                                              
-                                                                              __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                                                              strongSelf->currentAlert = nil;
-                                                                              
-                                                                          }];
-                
-                [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
-                                           style:MXKAlertActionStyleDefault
-                                         handler:^(MXKAlert *alert) {
-                                             
-                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                             strongSelf->currentAlert = nil;
-                                             
-                                             [strongSelf addPendingActionMask];
-                                             [strongSelf.mxRoom kickUser:memberUserId
-                                                                  reason:nil
-                                                                 success:^{
-                                                                     
-                                                                     [strongSelf removePendingActionMask];
-                                                                     
-                                                                     [participants removeObjectAtIndex:row];
-                                                                     
-                                                                     // Refresh display
-                                                                     [strongSelf.tableView reloadData];
-                                                                     
-                                                                 } failure:^(NSError *error) {
-                                                                     
-                                                                     [strongSelf removePendingActionMask];
-                                                                     NSLog(@"[RoomParticipantsVC] Kick %@ failed", memberUserId);
-                                                                     // Alert user
-                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                     
-                                                                 }];
-                                         }];
+                if (contact.mxMember)
+                {
+                    NSString *memberUserId = contact.mxMember.userId;
+                    
+                    // Kick ?
+                    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_remove_prompt_msg", @"Vector", nil), (contact ? contact.displayName : memberUserId)];
+                    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_remove_prompt_title", @"Vector", nil)
+                                                           message:promptMsg
+                                                             style:MXKAlertStyleAlert];
+                    
+                    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                                style:MXKAlertActionStyleCancel
+                                                                              handler:^(MXKAlert *alert) {
+                                                                                  
+                                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                                  strongSelf->currentAlert = nil;
+                                                                                  
+                                                                              }];
+                    
+                    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                                               style:MXKAlertActionStyleDefault
+                                             handler:^(MXKAlert *alert) {
+                                                 
+                                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                 strongSelf->currentAlert = nil;
+                                                 
+                                                 [strongSelf addPendingActionMask];
+                                                 [strongSelf.mxRoom kickUser:memberUserId
+                                                                      reason:nil
+                                                                     success:^{
+                                                                         
+                                                                         [strongSelf removePendingActionMask];
+                                                                         
+                                                                         [participants removeObjectAtIndex:row];
+                                                                         
+                                                                         // Refresh display
+                                                                         [strongSelf.tableView reloadData];
+                                                                         
+                                                                     } failure:^(NSError *error) {
+                                                                         
+                                                                         [strongSelf removePendingActionMask];
+                                                                         NSLog(@"[RoomParticipantsVC] Kick %@ failed", memberUserId);
+                                                                         // Alert user
+                                                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                         
+                                                                     }];
+                                             }];
+                }
+                else
+                {
+                    // This is a third-party invite, it could not be removed until the api exists
+                    currentAlert = [[MXKAlert alloc] initWithTitle:nil
+                                                           message:NSLocalizedStringFromTable(@"room_participants_remove_third_party_invite_msg", @"Vector", nil)
+                                                             style:MXKAlertStyleAlert];
+                    
+                    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                                style:MXKAlertActionStyleCancel
+                                                                              handler:^(MXKAlert *alert) {
+                                                                                  
+                                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                                  strongSelf->currentAlert = nil;
+                                                                                  
+                                                                              }];
+                }
                 
                 currentAlert.mxkAccessibilityIdentifier = @"RoomParticipantsVCKickAlert";
                 [currentAlert showInViewController:self];
