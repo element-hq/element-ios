@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -292,6 +293,7 @@
 "settings_crypto_device_name" = "Device name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
 "settings_crypto_device_key" = "\nDevice key: ";
+"settings_crypto_export" = "Export keys";
 
 // Room Details
 "room_details_title" = "Room Details";
