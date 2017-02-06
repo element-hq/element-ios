@@ -27,7 +27,7 @@ pod 'GBDeviceInfo', '~> 4.2.2'
 pod 'GoogleAnalytics'
 
 # The Google WebRTC stack
-pod 'WebRTC', '54.6.13869'
+pod 'WebRTC', '56.10.15101'
 
 # OLMKit for crypto
 pod 'OLMKit'
