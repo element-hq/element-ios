@@ -144,6 +144,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     //
     UIAlertController *resetPwdAlertController;
+
+    // The document interaction Controller used to export e2e keys
+    UIDocumentInteractionController *documentInteractionController;
+    NSURL *keyExportsFile;
+    NSTimer *keyExportsFileDeletionTimer;
 }
 
 /**
@@ -227,6 +232,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)destroy
 {
+    if (documentInteractionController)
+    {
+        [documentInteractionController dismissPreviewAnimated:NO];
+        [documentInteractionController dismissMenuAnimated:NO];
+        documentInteractionController = nil;
+    }
+
     if (isSavingInProgress || isResetPwdInProgress || isEmailBindingInProgress)
     {
         __weak typeof(self) weakSelf = self;
@@ -2218,11 +2230,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     currentAlert = exportView;
 
     // Use a temporary file for the export
-    NSURL *keyFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"riot-keys.txt"]];
+    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"riot-keys.txt"]];
+
+    // Make sure the file is empty
+    [self deleteKeyExportFile];
 
     // Show the export dialog
     __weak typeof(self) weakSelf = self;
-    [exportView showInViewController:self toExportKeysToFile:keyFile onComplete:^(BOOL success) {
+    [exportView showInViewController:self toExportKeysToFile:keyExportsFile onComplete:^(BOOL success) {
 
         if (weakSelf && success)
         {
@@ -2230,18 +2245,46 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             self->currentAlert = nil;
 
             // Let another app handling this file
-            UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[keyFile] applicationActivities:nil];
-            activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
+            [self->documentInteractionController setDelegate:self];
 
-            if (activityViewController)
+            if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
             {
-                [self presentViewController:activityViewController animated:YES completion:nil];
+                // We want to delete the temp keys file after it has been processed by the other app.
+                // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
+                // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
+                // So, arm a timer to auto delete the file after 10mins.
+                keyExportsFileDeletionTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:(10 * 60)]
+                                                                       interval:0
+                                                                         target:self
+                                                                       selector:@selector(deleteKeyExportFile)
+                                                                       userInfo:nil
+                                                                        repeats:NO];
+                [[NSRunLoop mainRunLoop] addTimer:keyExportsFileDeletionTimer forMode:NSDefaultRunLoopMode];
             }
-
-            // TODO: Delete the file after usage. But how can we know when the file
-            // has been processed by the other app ?
+            else
+            {
+                self->documentInteractionController = nil;
+                [self deleteKeyExportFile];
+            }
         }
     }];
+}
+
+- (void)deleteKeyExportFile
+{
+    // Cancel the deletion timer if it is still here
+    if (keyExportsFileDeletionTimer)
+    {
+        [keyExportsFileDeletionTimer invalidate];
+        keyExportsFileDeletionTimer = nil;
+    }
+
+    // And delete the file
+    if (keyExportsFile && [[NSFileManager defaultManager] fileExistsAtPath:keyExportsFile.path])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
+    }
 }
 
 #pragma mark - MediaPickerViewController Delegate
@@ -2511,6 +2554,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [resetPwdAlertController addAction:savePasswordAction];
 
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+}
+
+#pragma mark - UIDocumentInteractionControllerDelegate
+
+- (void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application
+{
+    // If iOS wants to call this method, this is the right time to remove the file
+    [self deleteKeyExportFile];
+}
+
+- (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller
+{
+    documentInteractionController = nil;
 }
 
 @end
