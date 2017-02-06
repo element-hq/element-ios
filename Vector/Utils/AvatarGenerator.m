@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -78,7 +79,7 @@ static UILabel* backgroundLabel = nil;
     
     if (text.length > 0)
     {
-        firstChar = [[text substringToIndex:1] uppercaseString];
+        firstChar = [[text substringToIndex:NSMaxRange([text rangeOfComposedCharacterSequenceAtIndex:0])] uppercaseString];
     }
     
     return firstChar;
