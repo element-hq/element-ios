@@ -1,4 +1,5 @@
 /*
+ Copyright 2017 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
