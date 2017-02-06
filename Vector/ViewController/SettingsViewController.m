@@ -2254,13 +2254,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
                 // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
                 // So, arm a timer to auto delete the file after 10mins.
-                keyExportsFileDeletionTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:(10 * 60)]
-                                                                       interval:0
-                                                                         target:self
-                                                                       selector:@selector(deleteKeyExportFile)
-                                                                       userInfo:nil
-                                                                        repeats:NO];
-                [[NSRunLoop mainRunLoop] addTimer:keyExportsFileDeletionTimer forMode:NSDefaultRunLoopMode];
+                keyExportsFileDeletionTimer = [NSTimer scheduledTimerWithTimeInterval:600 target:self selector:@selector(deleteKeyExportFile) userInfo:self repeats:NO];
             }
             else
             {
