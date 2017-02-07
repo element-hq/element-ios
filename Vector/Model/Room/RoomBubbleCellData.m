@@ -115,6 +115,17 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     MXKRoomBubbleComponent *component = [bubbleComponents firstObject];
     NSAttributedString *componentString = component.attributedTextMessage;
     
+#ifndef DEBUG
+    // Sanity check: we observed some app crashes due to a nil string in a component.
+    // According to the implementation this case should not happen because the components are removed as soon as their string is nil.
+    // We patch here this issue by adding some logs in order to investigate it in the future.
+    if (!componentString)
+    {
+        NSLog(@"[RoomBubbleCellData] WARNING: refreshAttributedTextMessage: unexpected empty component (0/%tu), %@", bubbleComponents.count, component.event.eventId);
+        componentString = [[NSAttributedString alloc] initWithString:@""];
+    }
+#endif
+    
     NSInteger selectedComponentIndex = self.selectedComponentIndex;
     NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
     
@@ -150,12 +161,23 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
     }
     
-    for (NSInteger index = 1; index < bubbleComponents.count; index++)
+    for (NSUInteger index = 1; index < bubbleComponents.count; index++)
     {
         [currentAttributedTextMsg appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
         
         component = bubbleComponents[index];
         componentString = component.attributedTextMessage;
+        
+#ifndef DEBUG
+        // Sanity check: we observed some app crashes due to a nil string in a component.
+        // According to the implementation this case should not happen because the components are removed as soon as their string is nil.
+        // We patch here this issue by adding some logs in order to investigate it in the future.
+        if (!componentString)
+        {
+            NSLog(@"[RoomBubbleCellData] refreshAttributedTextMessage: WARNING: unexpected empty component (%tu/%tu), %@", index, bubbleComponents.count, component.event.eventId);
+            componentString = [[NSAttributedString alloc] initWithString:@""];
+        }
+#endif
         
         // Check whether another component than this one is selected
         if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index)
