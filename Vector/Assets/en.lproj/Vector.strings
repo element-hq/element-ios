@@ -124,10 +124,11 @@
 "directory_search_fail" = "Failed to fetch data";
 
 // Contacts
-"contacts_address_book_default_section" = "LOCAL CONTACTS";
 "contacts_address_book_section" = "LOCAL CONTACTS (%tu)";
-"contacts_matrix_users_section" = "KNOWN CONTACTS (%tu)";
 "contacts_address_book_matrix_users_toggle" = "Matrix users only";
+"contacts_matrix_users_section" = "KNOWN CONTACTS (%tu)";
+"contacts_matrix_users_default_section" = "KNOWN CONTACTS (-)";
+"contacts_matrix_users_search_prompt" = "Too many contacts, please use the search field";
 
 // Chat participants
 "room_participants_title" = "Participants";
