@@ -47,7 +47,6 @@
     NSMutableDictionary <NSString*,NSNumber*> *isMultiUseNameByDisplayName;
     
     // Shrinked sections.
-    BOOL enableSectionShrinking;
     NSInteger shrinkedSectionsBitMask;
     
     UIView *localContactsCheckboxContainer;
@@ -97,7 +96,6 @@
     
     _forceMatrixIdInDisplayName = NO;
     
-    enableSectionShrinking = NO;
     shrinkedSectionsBitMask = 0;
     
     hideNonMatrixEnabledContacts = NO;
@@ -245,8 +243,11 @@
             searchProcessingLocalContacts = nil;
             searchProcessingMatrixContacts = nil;
             
-            // Disclose the sections
-            shrinkedSectionsBitMask = 0;
+            // Disclose by default the sections if a search was in progress.
+            if (searchProcessingText.length)
+            {
+                shrinkedSectionsBitMask = 0;
+            }
         }
         else if (forceRefresh || !searchProcessingText.length || [searchText hasPrefix:searchProcessingText] == NO)
         {
@@ -463,14 +464,6 @@
     if (currentSearchText.length)
     {
         searchInputSection = count++;
-        
-        // Keep visible the Local contacts header even if no local contacts is displayed in order to keep visible the check box "Matrix user only".
-        filteredLocalContactsSection = count++;
-        
-        if (filteredMatrixContacts.count)
-        {
-            filteredMatrixContactsSection = count++;
-        }
     }
     else
     {
@@ -479,18 +472,11 @@
         {
             filteredLocalContacts = [self unfilteredLocalContactsArray];
         }
-        
-        // Keep visible the Local contacts header even if no local contacts is displayed in order to keep visible the check box "Matrix user only".
-        filteredLocalContactsSection = count++;
     }
     
-    // Enable the section shrinking only when all the contacts sections are displayed.
-    enableSectionShrinking = (filteredLocalContactsSection != -1 && filteredMatrixContactsSection != -1);
-    if (enableSectionShrinking == NO)
-    {
-        // Disclose the section
-        shrinkedSectionsBitMask = 0;
-    }
+    // Keep visible the header for the both contact sections, even if their are empty.
+    filteredLocalContactsSection = count++;
+    filteredMatrixContactsSection = count++;
     
     return count;
 }
@@ -509,7 +495,15 @@
     }
     else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE))
     {
-        count = filteredMatrixContacts.count;
+        if (currentSearchText.length)
+        {
+            count = filteredMatrixContacts.count;
+        }
+        else
+        {
+            // Display a message to invite the user to use the search field.
+            count = 1;
+        }
     }
     
     return count;
@@ -517,6 +511,24 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Consider first the case of the known contacts section when no search is in progress.
+    if (!currentSearchText.length && indexPath.section == filteredMatrixContactsSection && indexPath.row == 0)
+    {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"defaultKnownContactCell"];
+        if (!cell)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"defaultKnownContactCell"];
+        }
+        
+        cell.textLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_search_prompt", @"Vector", nil);
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.textColor = kVectorTextColorGray;
+        cell.textLabel.font = [UIFont systemFontOfSize:15.0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    
+    // Prepare a contact cell here
     ContactTableViewCell* contactCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier]];
     
     if (!contactCell)
@@ -640,23 +652,29 @@
         
         if (section == filteredLocalContactsSection)
         {
-            if (currentSearchText.length)
-            {
-                headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
-            }
-            else
-            {
-                headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_default_section", @"Vector", nil), filteredLocalContacts.count];
-            }
+            headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
+            
             sectionBitwise = CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE;
         }
         else //if (section == filteredMatrixContactsSection)
         {
-            headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil), filteredMatrixContacts.count];
-            sectionBitwise = CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE;
+            if (currentSearchText.length)
+            {
+                headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil), filteredMatrixContacts.count];
+                
+                // This section is collapsable only if it is not empty
+                if (filteredMatrixContacts.count)
+                {
+                    sectionBitwise = CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE;
+                }
+            }
+            else
+            {
+                headerLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_default_section", @"Vector", nil);
+            }
         }
         
-        if (enableSectionShrinking)
+        if (sectionBitwise != -1)
         {
             // Add shrink button
             UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -871,6 +889,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!currentSearchText.length && indexPath.section == filteredMatrixContactsSection && indexPath.row == 0)
+    {
+        return 50;
+    }
+    
     return 74.0;
 }
 
