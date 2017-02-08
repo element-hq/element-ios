@@ -38,13 +38,13 @@ PODS:
   - GoogleAnalytics (3.17.0)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.8.17)
-  - MatrixKit (0.4.6):
+  - MatrixKit (0.4.7):
     - DTCoreText (~> 1.6.17)
     - GHMarkdownParser (~> 0.1.2)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.14)
-    - MatrixSDK (= 0.7.6)
-  - MatrixSDK (0.7.6):
+    - MatrixSDK (= 0.7.7)
+  - MatrixSDK (0.7.7):
     - AFNetworking (~> 3.1.0)
   - OLMKit (2.2.1):
     - OLMKit/olmc (= 2.2.1)
@@ -54,15 +54,15 @@ PODS:
   - Realm (2.1.2):
     - Realm/Headers (= 2.1.2)
   - Realm/Headers (2.1.2)
-  - WebRTC (54.6.13869)
+  - WebRTC (56.10.15101)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.2.2)
   - GoogleAnalytics
-  - MatrixKit (= 0.4.6)
+  - MatrixKit (= 0.4.7)
   - OLMKit
   - Realm (~> 2.1.1)
-  - WebRTC (= 54.6.13869)
+  - WebRTC (= 56.10.15101)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -73,12 +73,12 @@ SPEC CHECKSUMS:
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: 9f083847f8cb9b81064cff2ed2c98cbf18d9f9f2
-  MatrixKit: ae3152d3ae398ba88a462f94a3d94c0953e89244
-  MatrixSDK: b5081df00dcb781d1a64fbf7d317cc75873fbcd2
+  MatrixKit: 03a23e96f23a6f39d5ce3290f06abe1c61fd58e8
+  MatrixSDK: a638135ef6058d42bae9539649c2b45184155fdb
   OLMKit: 72bbdad6c8d60b44a9dd160743d8cb85ddcf23a2
   Realm: efe855f4d977c8ce5a82d3116d9f1ff155a6550c
-  WebRTC: 9f23349248fd2e94a14cb4552bae6e591bb2fe28
+  WebRTC: 116e2a81290a8551d67dd2e471b94803a5bba813
 
-PODFILE CHECKSUM: b66b2813bc7ee18974b44f5854fded832aacd9f0
+PODFILE CHECKSUM: 7318275a8dfe704ba7957201b89386ba42d4d2ec
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0
