@@ -643,6 +643,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Display the error notification
     if (!isErrorNotificationSuspended)
     {
+        _errorNotification.mxkAccessibilityIdentifier = @"AppDelegateErrorAlert";
         [self showNotificationAlert:_errorNotification];
     }
     
@@ -1733,6 +1734,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                           }
                                                       }];
                 
+                _incomingCallNotification.mxkAccessibilityIdentifier = @"AppDelegateIncomingCallAlert";
                 [self showNotificationAlert:_incomingCallNotification];
             }
             else
