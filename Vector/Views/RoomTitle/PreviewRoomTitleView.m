@@ -87,13 +87,13 @@
         self.roomTopic.text = self.roomPreviewData.roomTopic;
         
         // Joined members count
-        if (self.roomPreviewData.numJoinedMembers == 1)
+        if (self.roomPreviewData.numJoinedMembers > 1)
+        {
+            self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_members", @"Vector", nil), @(self.roomPreviewData.numJoinedMembers)];
+        }
+        else if (self.roomPreviewData.numJoinedMembers == 1)
         {
             self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_one_member", @"Vector", nil);
-        }
-        else if (self.roomPreviewData.numJoinedMembers != 1)
-        {
-            self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_members", @"Vector", nil), self.roomPreviewData.numJoinedMembers];
         }
         else
         {
@@ -179,11 +179,11 @@
 //        {
 //            if (activeCount > 1)
 //            {
-//                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), activeCount, memberCount];
+//                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), @(activeCount), @(memberCount)];
 //            }
 //            else
 //            {
-//                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), activeCount, memberCount];
+//                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), @(activeCount), @(memberCount)];
 //            }
 //        }
 //        else

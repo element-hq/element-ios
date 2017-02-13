@@ -115,6 +115,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      Only one fragment is handled at a time.
      */
     NSString *universalLinkFragmentPending;
+    
+    /**
+     The potential room alias related to the fragment of the universal link being processing.
+     Only one alias is handled at a time, the key is the room id and the value is the alias.
+     */
+    NSDictionary *universalLinkFragmentPendingRoomAlias;
 
     /**
      An universal link may need to wait for an account to be logged in or for a
@@ -1099,8 +1105,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         roomIdOrAlias = pathParams[0];
         eventId = (pathParams.count >= 2) ? pathParams[1] : nil;
     }
+    
+    // Check the conditions to keep the room alias information of a pending fragment.
+    if (universalLinkFragmentPendingRoomAlias)
+    {
+        if (!roomIdOrAlias || !universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+        {
+            universalLinkFragmentPendingRoomAlias = nil;
+        }
+    }
+    
     if (roomIdOrAlias)
-     {
+    {
         if (accountManager.activeAccounts.count)
         {
             // Check there is an account that knows this room
@@ -1150,6 +1166,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                 NSString *newUniversalLinkFragment =
                                 [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
                                                                     withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                                
+                                universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
+                                
                                 [self handleUniversalLinkFragment:newUniversalLinkFragment];
                             }
 
@@ -1210,6 +1229,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
                                 // Note: the activity indicator will not disappear if the session is not ready
                                 [_homeViewController stopActivityIndicator];
+                                
+                                // If no data is available for this room, we name it with the known room alias (if any).
+                                if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+                                {
+                                    roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
+                                }
+                                universalLinkFragmentPendingRoomAlias = nil;
 
                                 [self showRoomPreview:roomPreviewData];
                             }];

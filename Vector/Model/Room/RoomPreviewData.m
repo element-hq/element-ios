@@ -72,7 +72,7 @@
     _emailInvitation = nil;
 }
 
-- (void)peekInRoom:(void (^)(BOOL successed))completion
+- (void)peekInRoom:(void (^)(BOOL succeeded))completion
 {
     [_mxSession peekInRoomWithRoomId:_roomId success:^(MXPeekingRoom *peekingRoom) {
 
