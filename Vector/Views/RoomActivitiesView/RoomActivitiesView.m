@@ -20,6 +20,14 @@
 
 #import <objc/runtime.h>
 
+@interface RoomActivitiesView ()
+{
+    // The default height as defined in the xib
+    CGFloat xibMainHeightConstraint;
+}
+
+@end
+
 @implementation RoomActivitiesView
 
 + (UINib *)nib
@@ -30,7 +38,57 @@
 
 - (CGFloat)height
 {
+    [self checkHeight:NO];
+
     return self.mainHeightConstraint.constant;
+}
+
+- (void)setHeight:(CGFloat)height notify:(BOOL)notify
+{
+    if (self.mainHeightConstraint.constant != height)
+    {
+        CGFloat oldHeight = self.mainHeightConstraint.constant;
+        self.mainHeightConstraint.constant = height;
+
+        if (notify && self.delegate)
+        {
+            [self.delegate didChangeHeight:self oldHeight:oldHeight newHeight:self.mainHeightConstraint.constant];
+        }
+    }
+}
+
+- (void)checkHeight:(BOOL)notify
+{
+    if (!self.messageTextView.isHidden)
+    {
+        // Compute the required height to display the text in messageTextView
+        CGFloat height = [self.messageTextView sizeThatFits:self.messageTextView.frame.size].height + 20;
+
+        height = MAX(xibMainHeightConstraint, height);
+        if (height != self.mainHeightConstraint.constant)
+        {
+            [self setHeight:height notify:notify];
+        }
+    }
+    else
+    {
+        // In other use case, come back to the default xib value
+        if (self.mainHeightConstraint.constant != xibMainHeightConstraint)
+        {
+            [self setHeight:xibMainHeightConstraint notify:notify];
+        }
+    }
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    // Check the required height in case on view update
+    // We need to delay the check in case of screen rotation to get the right screen width
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self checkHeight:YES];
+    });
 }
 
 - (void)awakeFromNib
@@ -45,6 +103,8 @@
     // Reset textContainer.lineFragmentPadding to remove horizontal margin.
     self.messageTextView.textContainerInset = UIEdgeInsetsZero;
     self.messageTextView.textContainer.lineFragmentPadding = 0;
+
+    xibMainHeightConstraint = self.mainHeightConstraint.constant;
 }
 
 - (void)displayUnsentMessagesNotificationWithResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
@@ -96,6 +156,8 @@
         [self.iconImageView addGestureRecognizer:tapGesture];
         self.iconImageView.userInteractionEnabled = YES;
     }
+
+    [self checkHeight:YES];
 }
 
 - (void)displayNetworkErrorNotification:(NSString*)labelText
@@ -111,6 +173,8 @@
         self.iconImageView.hidden = NO;
         self.messageLabel.hidden = NO;
     }
+
+    [self checkHeight:YES];
 }
 
 - (void)displayTypingNotification:(NSString*)labelText
@@ -125,6 +189,8 @@
         self.iconImageView.hidden = NO;
         self.messageLabel.hidden = NO;
     }
+
+    [self checkHeight:YES];
 }
 
 - (void)displayOngoingConferenceCall:(void (^)(BOOL))onOngoingConferenceCallPressed
@@ -166,6 +232,8 @@
 
     // Hide the separator to display correctly the red pink conf call banner
     self.separatorView.hidden = YES;
+
+    [self checkHeight:YES];
 }
 
 - (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture
@@ -210,6 +278,8 @@
         [self.iconImageView addGestureRecognizer:tapGesture];
         self.iconImageView.userInteractionEnabled = YES;
     }
+
+    [self checkHeight:YES];
 }
 
 - (void)reset
@@ -234,6 +304,8 @@
     self.iconImageView.userInteractionEnabled = NO;
     
     objc_removeAssociatedObjects(self.iconImageView);
+
+    [self checkHeight:YES];
 }
 
 - (void)resetMessage

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -26,7 +26,7 @@
                             </constraints>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="typing.png" translatesAutoresizingMaskIntoConstraints="NO" id="d6j-oN-9uA">
-                            <rect key="frame" x="13" y="10" width="30" height="30"/>
+                            <rect key="frame" x="13" y="11.5" width="30" height="30"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewIconImageView"/>
                             <constraints>
@@ -35,7 +35,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bS-1u-GUX" userLabel="Message Label">
-                            <rect key="frame" x="56" y="4" width="514" height="42"/>
+                            <rect key="frame" x="56" y="5.5" width="514" height="42"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageLabel"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="PVB-be-euJ"/>
@@ -45,12 +45,9 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6ND-Cq-ABj">
-                            <rect key="frame" x="56" y="4" width="514" height="42"/>
+                            <rect key="frame" x="56" y="10" width="514" height="33"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageTextView"/>
-                            <constraints>
-                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="42" id="lGP-xN-uuP"/>
-                            </constraints>
                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <color key="textColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -67,7 +64,9 @@
                         <constraint firstAttribute="trailing" secondItem="1Mq-77-vvo" secondAttribute="trailing" constant="10" id="YBp-az-maq"/>
                         <constraint firstItem="d6j-oN-9uA" firstAttribute="leading" secondItem="qhJ-5H-64e" secondAttribute="leading" constant="13" id="YYC-Q1-IoC"/>
                         <constraint firstItem="6ND-Cq-ABj" firstAttribute="leading" secondItem="d6j-oN-9uA" secondAttribute="trailing" constant="13" id="ZdK-4Z-Yfz"/>
-                        <constraint firstItem="d6j-oN-9uA" firstAttribute="top" secondItem="qhJ-5H-64e" secondAttribute="top" constant="10" id="o73-7z-XtV"/>
+                        <constraint firstItem="6ND-Cq-ABj" firstAttribute="top" secondItem="qhJ-5H-64e" secondAttribute="top" constant="10" id="j7I-pC-7fV"/>
+                        <constraint firstAttribute="bottom" secondItem="6ND-Cq-ABj" secondAttribute="bottom" constant="10" id="m0j-16-mJw"/>
+                        <constraint firstItem="d6j-oN-9uA" firstAttribute="centerY" secondItem="qhJ-5H-64e" secondAttribute="centerY" id="rEU-px-J59"/>
                         <constraint firstItem="1Mq-77-vvo" firstAttribute="top" secondItem="qhJ-5H-64e" secondAttribute="top" id="stG-o2-SK4"/>
                         <constraint firstAttribute="trailing" secondItem="7bS-1u-GUX" secondAttribute="trailing" constant="30" id="tCW-EI-6Yt"/>
                         <constraint firstItem="6ND-Cq-ABj" firstAttribute="centerY" secondItem="d6j-oN-9uA" secondAttribute="centerY" id="vF4-wk-Jqe"/>
