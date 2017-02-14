@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		320FFB781E531520007F5277 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 320FFB771E531520007F5277 /* UsersDevicesViewController.m */; };
 		3235CD851C341FAA0084EA40 /* HomeMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235CD841C341FAA0084EA40 /* HomeMessagesSearchViewController.m */; };
 		323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */; };
 		32492DB21C293C8900035C79 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */; };
@@ -407,6 +408,8 @@
 
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
+		320FFB761E531520007F5277 /* UsersDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersDevicesViewController.h; sourceTree = "<group>"; };
+		320FFB771E531520007F5277 /* UsersDevicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersDevicesViewController.m; sourceTree = "<group>"; };
 		3235CD831C341FAA0084EA40 /* HomeMessagesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchViewController.h; sourceTree = "<group>"; };
 		3235CD841C341FAA0084EA40 /* HomeMessagesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeMessagesSearchViewController.m; sourceTree = "<group>"; };
 		323A52091C3183CC00010773 /* UIViewController+VectorSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VectorSearch.h"; sourceTree = "<group>"; };
@@ -1589,6 +1592,8 @@
 				7165A2581C05CD42003635D7 /* SegmentedViewController.h */,
 				7165A2591C05CD42003635D7 /* SegmentedViewController.m */,
 				7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */,
+				320FFB761E531520007F5277 /* UsersDevicesViewController.h */,
+				320FFB771E531520007F5277 /* UsersDevicesViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2149,6 +2154,7 @@
 				32C52BF61CBE4B0A00863B33 /* RoomEmailInvitation.m in Sources */,
 				F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */,
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
+				320FFB781E531520007F5277 /* UsersDevicesViewController.m in Sources */,
 				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,
 				F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */,
 				F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */,

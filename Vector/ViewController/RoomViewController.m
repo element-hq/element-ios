@@ -45,6 +45,8 @@
 
 #import "RoomSearchViewController.h"
 
+#import "UsersDevicesViewController.h"
+
 #import "RoomIncomingTextMsgBubbleCell.h"
 #import "RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
 #import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
@@ -137,6 +139,9 @@
     
     // Potential encryption details view.
     EncryptionInfoView *encryptionInfoView;
+
+    // The list of unknown devices that prevent outgoing messages from being sent
+    MXUsersDevicesMap<MXDeviceInfo*> *unknownDevices;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
@@ -2247,6 +2252,16 @@
             selectedContact = nil;
         }
     }
+    else if ([[segue identifier] isEqualToString:@"showUnknownDevices"])
+    {
+        if (unknownDevices)
+        {
+            UsersDevicesViewController *usersDevicesViewController = (UsersDevicesViewController *)segue.destinationViewController.childViewControllers.firstObject;
+            [usersDevicesViewController displayUsersDevices:unknownDevices andMatrixSession:self.roomDataSource.mxSession];
+
+            unknownDevices = nil;
+        }
+    }
 
     // Hide back button title
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -3117,21 +3132,41 @@
                                                  style:MXKAlertStyleAlert];
 
         currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
             typeof(self) self = weakSelf;
             self->currentAlert = nil;
         }];
         
         [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-            // @TODO
             typeof(self) self = weakSelf;
             self->currentAlert = nil;
+
+            [self showUnknownDevices];
         }];
 
         currentAlert.mxkAccessibilityIdentifier = @"RoomVCUnknownDevicesAlert";
         [currentAlert showInViewController:self];
     }
+}
+
+- (void)showUnknownDevices
+{
+    // List all unknown devices
+    unknownDevices  = [[MXUsersDevicesMap alloc] init];
+
+    NSArray<MXEvent*> *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
+    for (MXEvent *event in outgoingMsgs)
+    {
+        if (event.sentState == MXEventSentStateFailed
+            && [event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
+            && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
+        {
+            MXUsersDevicesMap<MXDeviceInfo*> *eventUnknownDevices = event.sentError.userInfo[MXEncryptingErrorUnknownDeviceDevicesKey];
+
+            [unknownDevices addEntriesFromMap:eventUnknownDevices];
+        }
+    }
+
+    [self performSegueWithIdentifier:@"showUnknownDevices" sender:self];
 }
 
 - (void)resendAllUnsentMessages
