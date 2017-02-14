@@ -273,7 +273,6 @@
 		F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA091B78E42600B1FBBF /* RageShakeManager.m */; };
 		F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F094AA0B1B78E42600B1FBBF /* Localizable.strings */; };
 		F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F094AA0D1B78E42600B1FBBF /* Vector.strings */; };
-		F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = F094AA141B78E42600B1FBBF /* countryCodes.plist */; };
 		F094AA301B78E42600B1FBBF /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */; };
 		F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA231B78E42600B1FBBF /* RecentsViewController.m */; };
 		F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA271B78E42600B1FBBF /* RoomViewController.m */; };
@@ -731,7 +730,6 @@
 		F094AA091B78E42600B1FBBF /* RageShakeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RageShakeManager.m; sourceTree = "<group>"; };
 		F094AA0C1B78E42600B1FBBF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F094AA0E1B78E42600B1FBBF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Vector.strings; sourceTree = "<group>"; };
-		F094AA141B78E42600B1FBBF /* countryCodes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = countryCodes.plist; sourceTree = "<group>"; };
 		F094AA181B78E42600B1FBBF /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
 		F094AA221B78E42600B1FBBF /* RecentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsViewController.h; sourceTree = "<group>"; };
@@ -1445,7 +1443,6 @@
 				F094AA0A1B78E42600B1FBBF /* Assets */,
 				F0C34CB51C17145F00C36F09 /* Categories */,
 				F094AA101B78E42600B1FBBF /* Model */,
-				F094AA131B78E42600B1FBBF /* Resources */,
 				F094AA151B78E42600B1FBBF /* ViewController */,
 				F001D7521B8207C000A162C3 /* Views */,
 				F08BE09B1B87025B00C480FB /* Utils */,
@@ -1519,14 +1516,6 @@
 				F08BE09F1B87064000C480FB /* Room */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		F094AA131B78E42600B1FBBF /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				F094AA141B78E42600B1FBBF /* countryCodes.plist */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		F094AA151B78E42600B1FBBF /* ViewController */ = {
@@ -1935,7 +1924,6 @@
 				F09EAF0E1DCCEE1D009C7EFB /* e2e_warning@3x.png in Resources */,
 				F03BF69F1D8BF5B1002EF6A7 /* mod_icon@2x.png in Resources */,
 				F03BF6781D8BF5B1002EF6A7 /* chevron@2x.png in Resources */,
-				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
 				F03BF6A71D8BF5B1002EF6A7 /* notificationsOff.png in Resources */,
 				F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */,
 				F083C48D1D9EAFC500E5246C /* file_doc_icon.png in Resources */,
