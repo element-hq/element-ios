@@ -53,7 +53,7 @@
 /**
  Preview information.
  */
-@property (nonatomic, readonly) NSString *roomName;
+@property (nonatomic) NSString *roomName;
 @property (nonatomic, readonly) NSString *roomTopic;
 @property (nonatomic, readonly) NSString *roomAvatarUrl;
 @property (nonatomic, readonly) NSArray<NSString*> *roomAliases;
@@ -88,10 +88,10 @@
 
  The operation succeeds only if the room history is world_readable.
 
- @param completion the block called when the request is complete. `successed` means
+ @param completion the block called when the request is complete. `succeeded` means
                    the self.roomDataSource has been created and is ready to provide
                    room history.
  */
-- (void)peekInRoom:(void (^)(BOOL successed))completion;
+- (void)peekInRoom:(void (^)(BOOL succeeded))completion;
 
 @end
