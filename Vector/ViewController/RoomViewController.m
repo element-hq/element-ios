@@ -214,6 +214,9 @@
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+
+    // Listen to the event sent state changes
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
 }
 
 - (void)viewDidLoad
@@ -929,7 +932,9 @@
     missedDiscussionsBarButtonCustomView = nil;
     missedDiscussionsBadgeLabelBgView = nil;
     missedDiscussionsBadgeLabel = nil;
-    
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeSentStateNotification object:nil];
+
     [super destroy];
 }
 
@@ -3003,24 +3008,36 @@
 -(BOOL)checkUnsentMessages
 {
     BOOL hasUnsent = NO;
-    
+    BOOL hasUnsentDueToUnknownDevices = NO;
+
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
-        NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
+        NSArray<MXEvent*> *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
         
         for (MXEvent *event in outgoingMsgs)
         {
             if (event.sentState == MXEventSentStateFailed)
             {
                 hasUnsent = YES;
-                break;
+
+                // Check if the error is due to unknown devices
+                if ([event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
+                        && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
+                {
+                    hasUnsentDueToUnknownDevices = YES;
+                    break;
+                }
             }
         }
         
         if (hasUnsent)
         {
+            NSString *notification = hasUnsentDueToUnknownDevices ?
+                NSLocalizedStringFromTable(@"room_unsent_messages_unknown_devices_notification", @"Vector", nil) :
+                NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
+
             RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
-            [roomActivitiesView displayUnsentMessagesNotificationWithResendLink:^{
+            [roomActivitiesView displayUnsentMessagesNotification:notification withResendLink:^{
                 
                 [self resendAllUnsentMessages];
                 
@@ -3078,6 +3095,43 @@
     }
     
     return hasUnsent;
+}
+
+- (void)eventDidChangeSentState:(NSNotification *)notif
+{
+    // We are only interested by event that has just failed in their encryption
+    // because of unknown devices in the room
+    MXEvent *event = notif.object;
+    if (event.sentState == MXEventSentStateFailed &&
+        [event.roomId isEqualToString:self.roomDataSource.roomId]
+        && [event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
+        && event.sentError.code == MXEncryptingErrorUnknownDeviceCode
+        && !currentAlert)   // Show the alert once in case of resending several events
+    {
+        __weak __typeof(self) weakSelf = self;
+
+        [self dismissTemporarySubViews];
+
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
+                                               message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+                                                 style:MXKAlertStyleAlert];
+
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+        }];
+        
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            // @TODO
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+        }];
+
+        currentAlert.mxkAccessibilityIdentifier = @"RoomVCUnknownDevicesAlert";
+        [currentAlert showInViewController:self];
+    }
 }
 
 - (void)resendAllUnsentMessages

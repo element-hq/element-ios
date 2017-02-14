@@ -33,10 +33,11 @@
  Notify that some messages are not sent.
  Replace the current notification if any.
  
+ @param notification the notification message to display.
  @param onResendLinkPressed block called when user selects the resend link.
  @param onIconTapGesture block called when user taps on notification icon.
  */
-- (void)displayUnsentMessagesNotificationWithResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture;
+- (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture;
 
 /**
  Display network error.
