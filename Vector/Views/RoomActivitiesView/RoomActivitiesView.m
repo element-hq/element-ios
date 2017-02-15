@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
- 
+ Copyright 2017 Vector Creations Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -62,7 +63,7 @@
     if (!self.messageTextView.isHidden)
     {
         // Compute the required height to display the text in messageTextView
-        CGFloat height = [self.messageTextView sizeThatFits:self.messageTextView.frame.size].height + 20;
+        CGFloat height = [self.messageTextView sizeThatFits:self.messageTextView.frame.size].height + 20; // 20 is the top and bottom margins in xib
 
         height = MAX(xibMainHeightConstraint, height);
         if (height != self.mainHeightConstraint.constant)
@@ -107,12 +108,10 @@
     xibMainHeightConstraint = self.mainHeightConstraint.constant;
 }
 
-- (void)displayUnsentMessagesNotificationWithResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
+- (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
 {
     [self reset];
-    
-    NSString *notification = NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
-    
+
     if (onResendLinkPressed)
     {
         NSString *resendLink = NSLocalizedStringFromTable(@"room_prompt_resend", @"Vector", nil);

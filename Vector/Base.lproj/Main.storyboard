@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -14,6 +14,7 @@
             <objects>
                 <navigationController title="Messages" id="RMx-3f-FxP" userLabel="HomeNav" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -43,11 +44,12 @@
                         <segue destination="KDg-aD-xlK" kind="show" identifier="showRoomSearch" id="hdA-V1-9AF"/>
                         <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="cUw-vU-gJq"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" action="showDetailViewController:sender:" id="f5u-Y1-7nt"/>
+                        <segue destination="ZZb-IS-a1F" kind="presentation" identifier="showUnknownDevices" id="wUx-4y-ybn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94y-cU-qQD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1384" y="-1063"/>
+            <point key="canvasLocation" x="1385" y="-1082"/>
         </scene>
         <!--Room Member Details View Controller-->
         <scene sceneID="eq5-qi-gDd">
@@ -111,13 +113,47 @@
             </objects>
             <point key="canvasLocation" x="2558" y="-1299"/>
         </scene>
+        <!--Users Devices View Controller-->
+        <scene sceneID="fKQ-Tq-qUc">
+            <objects>
+                <viewController id="z83-KC-trJ" customClass="UsersDevicesViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KBN-JV-gSS"/>
+                        <viewControllerLayoutGuide type="bottom" id="lAN-yJ-zNI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="b5v-sy-iSu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="43F-4t-lHi">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="43F-4t-lHi" secondAttribute="trailing" id="6FJ-ku-UE3"/>
+                            <constraint firstItem="43F-4t-lHi" firstAttribute="bottom" secondItem="lAN-yJ-zNI" secondAttribute="top" id="GK2-7h-FE0"/>
+                            <constraint firstItem="43F-4t-lHi" firstAttribute="leading" secondItem="b5v-sy-iSu" secondAttribute="leading" id="Qda-BV-cf8"/>
+                            <constraint firstItem="43F-4t-lHi" firstAttribute="top" secondItem="b5v-sy-iSu" secondAttribute="top" id="uhO-a4-0iq"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Wgm-wm-4Qq"/>
+                    <connections>
+                        <outlet property="tableView" destination="43F-4t-lHi" id="ebQ-8p-875"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UVa-0l-PGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2558" y="180"/>
+        </scene>
         <!--Segmented View Controller-->
         <scene sceneID="NZu-Q0-P0z">
             <objects>
                 <tableViewController id="e7G-NU-7ck" customClass="SegmentedViewController" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXh-hO-Zgf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2558" y="-595"/>
+            <point key="canvasLocation" x="2558" y="-546"/>
         </scene>
         <!--Authentication View Controller-->
         <scene sceneID="FoA-N2-3aF">
@@ -135,7 +171,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mvZ-se-pqQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="414" y="1356"/>
+            <point key="canvasLocation" x="1364" y="-3090"/>
         </scene>
         <!--Settings-->
         <scene sceneID="3md-j7-Qex">
@@ -172,7 +208,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ndh-yC-OwR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1359" y="71"/>
+            <point key="canvasLocation" x="2364" y="-3089"/>
         </scene>
         <!--RecentsSplitVC-->
         <scene sceneID="Nki-YV-4Qg">
@@ -265,6 +301,7 @@
             <objects>
                 <navigationController title="RoomNav" id="vC3-pB-5Vb" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="DjV-YW-jjY">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -312,14 +349,32 @@
             </objects>
             <point key="canvasLocation" x="3346" y="-3935"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Qyz-FA-hw5">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MHE-SG-tnL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="z83-KC-trJ" kind="relationship" relationship="rootViewController" id="83C-0z-Ld8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aTW-5P-KnU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1385" y="180"/>
+        </scene>
     </scenes>
     <resources>
         <image name="search_icon.png" width="22" height="22"/>
         <image name="settings_icon.png" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="f5u-Y1-7nt"/>
         <segue reference="agy-3r-khl"/>
-        <segue reference="ziz-Xl-QVg"/>
-        <segue reference="fNQ-S3-DbZ"/>
+        <segue reference="cUw-vU-gJq"/>
     </inferredMetricsTieBreakers>
 </document>

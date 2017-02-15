@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -51,6 +52,7 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         {
             switch (deviceInfo.verified)
             {
+                case MXDeviceUnknown:
                 case MXDeviceUnverified:
                 {
                     encryptionIcon = @"e2e_warning";
