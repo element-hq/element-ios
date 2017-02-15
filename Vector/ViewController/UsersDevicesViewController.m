@@ -54,8 +54,6 @@
 
     self.title = NSLocalizedStringFromTable(@"unknown_devices_title", @"Vector", nil);
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
-
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)];
 
     self.tableView.delegate = self;
@@ -218,11 +216,6 @@
 }
 
 #pragma mark - User actions
-
-- (IBAction)onCancel:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 - (IBAction)onDone:(id)sender
 {
