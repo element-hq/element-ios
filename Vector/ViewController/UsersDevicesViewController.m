@@ -22,14 +22,10 @@
 
 #import "VectorDesignValues.h"
 
-#import "EncryptionInfoView.h"
-
 @interface UsersDevicesViewController ()
 {
     MXUsersDevicesMap<MXDeviceInfo*> *usersDevices;
     MXSession *mxSession;
-
-    EncryptionInfoView *encryptionInfoView;
 }
 
 @end
@@ -150,8 +146,10 @@
     if (verificationStatus == MXDeviceVerified)
     {
         // Prompt the user before marking as verified the device.
-        encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceTableViewCell.deviceInfo andMatrixSession:mxSession];
+        EncryptionInfoView *encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceTableViewCell.deviceInfo andMatrixSession:mxSession];
         [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
+
+        encryptionInfoView.delegate = self;
 
         // Add shadow on added view
         encryptionInfoView.layer.cornerRadius = 5;
@@ -206,6 +204,17 @@
 
                                         } failure:nil];
     }
+}
+
+#pragma mark - MXKEncryptionInfoViewDelegate
+
+- (void)encryptionInfoView:(MXKEncryptionInfoView *)encryptionInfoView didDeviceInfoVerifiedChange:(MXDeviceInfo *)deviceInfo
+{
+    // Update our map
+    MXDeviceInfo *device = [usersDevices objectForDevice:deviceInfo.deviceId forUser:deviceInfo.userId];
+    device.verified = deviceInfo.verified;
+
+    [self.tableView reloadData];
 }
 
 #pragma mark - User actions
