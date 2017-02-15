@@ -3152,8 +3152,10 @@
             self->currentAlert = nil;
 
             // Acknowledge the existence of all devices
+            [self startActivityIndicator];
             [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
                 self->unknownDevices = nil;
+                [self stopActivityIndicator];
             }];
         }];
         

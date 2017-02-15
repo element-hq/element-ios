@@ -220,8 +220,10 @@
 - (IBAction)onDone:(id)sender
 {
     // Acknowledge the existence of all devices before leaving this screen
+    [self startActivityIndicator];
     [mxSession.crypto setDevicesKnown:usersDevices complete:^{
-        
+
+        [self stopActivityIndicator];
         [self dismissViewControllerAnimated:YES completion:nil];
     }];
 }
