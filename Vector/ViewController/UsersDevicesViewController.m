@@ -36,6 +36,12 @@
 
 @implementation UsersDevicesViewController
 
+- (void)displayUsersDevices:(MXUsersDevicesMap<MXDeviceInfo*>*)theUsersDevices andMatrixSession:(MXSession*)matrixSession;
+{
+    usersDevices = theUsersDevices;
+    mxSession = matrixSession;
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];
@@ -91,13 +97,8 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)displayUsersDevices:(MXUsersDevicesMap<MXDeviceInfo*>*)theUsersDevices andMatrixSession:(MXSession*)matrixSession;
-{
-    usersDevices = theUsersDevices;
-    mxSession = matrixSession;
-}
-
 #pragma mark - UITableViewDataSource
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return usersDevices.userIds.count;
@@ -163,20 +164,20 @@
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
                                                               attribute:NSLayoutAttributeTop
                                                               relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.tableView
-                                                              attribute:NSLayoutAttributeTop
+                                                                 toItem:self.topLayoutGuide
+                                                              attribute:NSLayoutAttributeBottom
                                                              multiplier:1.0f
                                                                constant:10.0f]];
 
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
                                                               attribute:NSLayoutAttributeBottom
                                                               relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.tableView
-                                                              attribute:NSLayoutAttributeBottom
+                                                                 toItem:self.bottomLayoutGuide
+                                                              attribute:NSLayoutAttributeTop
                                                              multiplier:1.0f
                                                                constant:-10.0f]];
 
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
                                                               attribute:NSLayoutAttributeLeading
                                                               relatedBy:NSLayoutRelationEqual
                                                                  toItem:encryptionInfoView
@@ -184,7 +185,7 @@
                                                              multiplier:1.0f
                                                                constant:-10.0f]];
 
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
                                                               attribute:NSLayoutAttributeTrailing
                                                               relatedBy:NSLayoutRelationEqual
                                                                  toItem:encryptionInfoView

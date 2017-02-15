@@ -18,7 +18,7 @@
 
 #import "DeviceTableViewCell.h"
 
-@interface UsersDevicesViewController : MXKTableViewController <UITableViewDelegate, UITableViewDataSource, DeviceTableViewCellDelegate>
+@interface UsersDevicesViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, DeviceTableViewCellDelegate>
 
 /**
  Display a map of users/devices.
@@ -26,5 +26,7 @@
  @param usersDevices the map to display.
  */
 - (void)displayUsersDevices:(MXUsersDevicesMap<MXDeviceInfo*>*)usersDevices andMatrixSession:(MXSession*)mxSession;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
