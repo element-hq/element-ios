@@ -133,6 +133,8 @@
     
     userContact = nil;
     
+    forceSearchResultRefresh = NO;
+    
     searchProcessingQueue = nil;
     searchProcessingLocalContacts = nil;
     searchProcessingMatrixContacts = nil;
@@ -298,6 +300,12 @@
         searchProcessingText = searchText;
         
         dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            // Sanity check: check whether self has been destroyed.
+            if (!searchProcessingQueue)
+            {
+                return;
+            }
             
             // Render the search result only if there is no other search in progress.
             searchProcessingCount --;
