@@ -30,7 +30,11 @@
 
 #import "MXKEncryptionKeysExportView.h"
 
+#import "CountryPickerViewController.h"
+
 #import "OLMKit/OLMKit.h"
+
+NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 enum {
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
@@ -55,9 +59,6 @@ enum {
 //#define NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX           5
 //#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX             6
 #define NOTIFICATION_SETTINGS_COUNT                             2
-
-#define CONTACTS_SETTINGS_ENABLE_LOCAL_CONTACTS_SYNC    0
-#define CONTACTS_SETTINGS_COUNT                         1
 
 #define OTHER_VERSION_INDEX          0
 #define OTHER_OLM_VERSION_INDEX      1
@@ -129,6 +130,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     NSInteger userSettingsNightModeSepIndex;
     NSInteger userSettingsNightModeIndex;
     
+    // Dynamic rows in the local contacts section
+    NSInteger localContactsSyncIndex;
+    NSInteger localContactsPhoneBookCountryIndex;
+    
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
@@ -186,6 +191,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+    
+    // Enable self sizing cells
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 50;
     
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -384,6 +393,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 }
 
 #pragma mark - Internal methods
+
+- (void)pushViewController:(UIViewController*)viewController
+{
+    // Hide back button title
+    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    [self.navigationController pushViewController:viewController animated:YES];
+}
 
 - (void)dismissKeyboard
 {
@@ -794,7 +811,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
     {
-        count = CONTACTS_SETTINGS_COUNT;
+        localContactsSyncIndex = count++;
+        
+        if ([MXKAppSettings standardAppSettings].syncLocalContacts)
+        {
+            localContactsPhoneBookCountryIndex = count++;
+        }
+        else
+        {
+            localContactsPhoneBookCountryIndex = -1;
+        }
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -855,6 +881,27 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = kVectorTextColorBlack;
+    
+    return cell;
+}
+
+- (MXKTableViewCell*)getDefaultTableViewCell:(UITableView*)tableView
+{
+    MXKTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+    if (!cell)
+    {
+        cell = [[MXKTableViewCell alloc] init];
+    }
+    else
+    {
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryView = nil;
+    }
+    
+    cell.textLabel.font = [UIFont systemFontOfSize:17];
+    cell.textLabel.textColor = kVectorTextColorBlack;
     
     return cell;
 }
@@ -1083,45 +1130,39 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
         {
-            MXKTableViewCell *globalInfoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-            if (!globalInfoCell)
-            {
-                globalInfoCell = [[MXKTableViewCell alloc] init];
-            }
+            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
 
             NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
 
             globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil), appDisplayName];
             globalInfoCell.textLabel.numberOfLines = 0;
+            
+            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
             cell = globalInfoCell;
         }
     }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        MXKTableViewCell *privacyPolicyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-        if (!privacyPolicyCell)
-        {
-            privacyPolicyCell = [[MXKTableViewCell alloc] init];
-        }
-        privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
+        MXKTableViewCell *ignoredUserCell = [self getDefaultTableViewCell:tableView];
 
         NSString *ignoredUserId;
         if (indexPath.row < session.ignoredUsers.count)
         {
             ignoredUserId = session.ignoredUsers[indexPath.row];
         }
-        privacyPolicyCell.textLabel.text = ignoredUserId;
-        privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
+        ignoredUserCell.textLabel.text = ignoredUserId;
 
-        cell = privacyPolicyCell;
+        cell = ignoredUserCell;
     }
     else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
     {
-        if (row == CONTACTS_SETTINGS_ENABLE_LOCAL_CONTACTS_SYNC)
+        if (row == localContactsSyncIndex)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users_with_local_emails", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.numberOfLines = 0;
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1129,21 +1170,37 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             cell = labelAndSwitchCell;
         }
+        else if (row == localContactsPhoneBookCountryIndex)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            }
+            
+            NSString* countryCode = [[MXKAppSettings standardAppSettings] phonebookCountryCode];
+            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
+            NSString *countryName = [local displayNameForKey:NSLocaleCountryCode value:countryCode];
+            
+            cell.textLabel.textColor = kVectorTextColorBlack;
+            
+            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
+            cell.detailTextLabel.text = countryName;
+            
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
-        MXKTableViewCell *configCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-        if (!configCell)
-        {
-            configCell = [[MXKTableViewCell alloc] init];
-        }
-        configCell.textLabel.font = [UIFont systemFontOfSize:17];
+        MXKTableViewCell *configCell = [self getDefaultTableViewCell:tableView];
         
         NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@", [NSBundle mxk_localizedStringForKey:@"settings_config_user_id"], [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
         
         configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
         configCell.textLabel.numberOfLines = 0;
-        configCell.textLabel.textColor = kVectorTextColorBlack;
+        
+        configCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         cell = configCell;
     }
@@ -1151,88 +1208,64 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         if (row == OTHER_VERSION_INDEX)
         {
-            MXKTableViewCell *versionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-            if (!versionCell)
-            {
-                versionCell = [[MXKTableViewCell alloc] init];
-            }
-            versionCell.textLabel.font = [UIFont systemFontOfSize:17];
+            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
             
             NSString* appVersion = [AppDelegate theDelegate].appVersion;
             NSString* build = [AppDelegate theDelegate].build;
             
             versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
-            versionCell.textLabel.textColor = kVectorTextColorBlack;
+            
+            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             cell = versionCell;
         }
         else if (row == OTHER_OLM_VERSION_INDEX)
         {
-            MXKTableViewCell *versionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-            if (!versionCell)
-            {
-                versionCell = [[MXKTableViewCell alloc] init];
-            }
-            versionCell.textLabel.font = [UIFont systemFontOfSize:17];
+            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
             
             versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), [OLMKit versionString]];
-            versionCell.textLabel.textColor = kVectorTextColorBlack;
+            
+            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             cell = versionCell;
         }
         else if (row == OTHER_TERM_CONDITIONS_INDEX)
         {
-            MXKTableViewCell *termAndConditionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-            if (!termAndConditionCell)
-            {
-                termAndConditionCell = [[MXKTableViewCell alloc] init];
-            }
-            termAndConditionCell.textLabel.font = [UIFont systemFontOfSize:17];
+            MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
 
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
-            termAndConditionCell.textLabel.textColor = kVectorTextColorBlack;
-
+            
+            termAndConditionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
             cell = termAndConditionCell;
         }
         else if (row == OTHER_COPYRIGHT_INDEX)
         {
-            MXKTableViewCell *copyrightCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-            if (!copyrightCell)
-            {
-                copyrightCell = [[MXKTableViewCell alloc] init];
-            }
-            copyrightCell.textLabel.font = [UIFont systemFontOfSize:17];
+            MXKTableViewCell *copyrightCell = [self getDefaultTableViewCell:tableView];
 
             copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
-            copyrightCell.textLabel.textColor = kVectorTextColorBlack;
-
+            
+            copyrightCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
             cell = copyrightCell;
         }
         else if (row == OTHER_PRIVACY_INDEX)
         {
-            MXKTableViewCell *privacyPolicyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-            if (!privacyPolicyCell)
-            {
-                privacyPolicyCell = [[MXKTableViewCell alloc] init];
-            }
-            privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
+            MXKTableViewCell *privacyPolicyCell = [self getDefaultTableViewCell:tableView];
             
             privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
-            privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
+            
+            privacyPolicyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
             cell = privacyPolicyCell;
         }
         else if (row == OTHER_THIRD_PARTY_INDEX)
         {
-            MXKTableViewCell *thirdPartyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-            if (!thirdPartyCell)
-            {
-                thirdPartyCell = [[MXKTableViewCell alloc] init];
-            }
-            thirdPartyCell.textLabel.font = [UIFont systemFontOfSize:17];
+            MXKTableViewCell *thirdPartyCell = [self getDefaultTableViewCell:tableView];
             
             thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
-            thirdPartyCell.textLabel.textColor = kVectorTextColorBlack;
+            
+            thirdPartyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
             cell = thirdPartyCell;
         }
@@ -1314,11 +1347,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
-        MXKTableViewCell *deviceCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-        if (!deviceCell)
-        {
-            deviceCell = [[MXKTableViewCell alloc] init];
-        }
+        MXKTableViewCell *deviceCell = [self getDefaultTableViewCell:tableView];
         
         if (row < devicesArray.count)
         {
@@ -1331,12 +1360,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
             }
-            else
-            {
-                deviceCell.textLabel.font = [UIFont systemFontOfSize:17];
-            }
         }
-        deviceCell.textLabel.textColor = kVectorTextColorBlack;
         
         cell = deviceCell;
     }
@@ -1344,14 +1368,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         if (row == CRYPTOGRAPHY_INFO_INDEX)
         {
-            MXKTableViewCell *cryptoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-            if (!cryptoCell)
-            {
-                cryptoCell = [[MXKTableViewCell alloc] init];
-            }
+            MXKTableViewCell *cryptoCell = [self getDefaultTableViewCell:tableView];
 
             cryptoCell.textLabel.attributedText = [self cryptographyInformation];
             cryptoCell.textLabel.numberOfLines = 0;
+            
+            cryptoCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
             cell = cryptoCell;
         }
@@ -1451,37 +1473,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 #pragma mark - UITableView delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == SETTINGS_SECTION_ADVANCED_INDEX)
-    {
-        // TODO Handle multi accounts
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
-        label.numberOfLines = 0;
-        label.font = [UIFont systemFontOfSize:17];
-        
-        NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@",[NSBundle mxk_localizedStringForKey:@"settings_config_user_id"],  [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
-        
-        label.text = [NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
-        
-        [label sizeToFit];
-        return label.frame.size.height + 16;
-    }
-    else if (indexPath.section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX && indexPath.row == CRYPTOGRAPHY_INFO_INDEX)
-    {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
-        label.numberOfLines = 0;
-        label.attributedText = [self cryptographyInformation];
-        [label sizeToFit];
-        
-        return label.frame.size.height + 16;
-    }
-    
-    return 50;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
@@ -1518,9 +1509,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return 24;
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.tableView == aTableView)
+    if (self.tableView == tableView)
     {
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
@@ -1586,24 +1577,36 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (row == OTHER_COPYRIGHT_INDEX)
             {
                 MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
-                [self.navigationController pushViewController:webViewViewController animated:YES];
+                
+                webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
+                
+                [self pushViewController:webViewViewController];
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
                 MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
-                [self.navigationController pushViewController:webViewViewController animated:YES];
+                
+                webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
+                
+                [self pushViewController:webViewViewController];
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
                 MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
-                [self.navigationController pushViewController:webViewViewController animated:YES];
+                
+                webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
+                
+                [self pushViewController:webViewViewController];
             }
             else if (row == OTHER_THIRD_PARTY_INDEX)
             {
                 NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
 
                 MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
-                [self.navigationController pushViewController:webViewViewController animated:YES];
+                
+                webViewViewController.title = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
+                
+                [self pushViewController:webViewViewController];
             }
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
@@ -1629,8 +1632,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 [self showDeviceDetails:devicesArray[row]];
             }
         }
+        else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+        {
+            if (row == localContactsPhoneBookCountryIndex)
+            {
+                CountryPickerViewController *countryPicker = [CountryPickerViewController countryPickerViewController];
+                countryPicker.delegate = self;
+                countryPicker.showCountryCallingCode = YES;
+                [self pushViewController:countryPicker];
+            }
+        }
         
-        [aTableView deselectRowAtIndexPath:indexPath animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
@@ -1742,13 +1755,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
 
             [MXKAppSettings standardAppSettings].syncLocalContacts = granted;
-            switchButton.on = granted;
+            
+            [self.tableView reloadData];
         }];
     }
     else
     {
         [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
-        switchButton.on = NO;
+        
+        [self.tableView reloadData];
     }
 }
 
@@ -2561,6 +2576,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller
 {
     documentInteractionController = nil;
+}
+
+#pragma mark - MXKCountryPickerViewControllerDelegate
+
+- (void)countryPickerViewController:(MXKCountryPickerViewController *)countryPickerViewController didSelectCountry:(NSString *)isoCountryCode
+{
+    [MXKAppSettings standardAppSettings].phonebookCountryCode = isoCountryCode;
+    
+    [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
 }
 
 @end

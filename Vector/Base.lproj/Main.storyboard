@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -174,41 +174,22 @@
             <point key="canvasLocation" x="1364" y="-3090"/>
         </scene>
         <!--Settings-->
-        <scene sceneID="3md-j7-Qex">
+        <scene sceneID="9we-7Q-LBo">
             <objects>
-                <viewController title="Settings" id="BfJ-uC-XeM" customClass="SettingsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="17C-JB-bS3"/>
-                        <viewControllerLayoutGuide type="bottom" id="x0h-cK-85g"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="hZq-6f-RBH">
+                <tableViewController title="Settings" id="taU-5Q-sdv" customClass="SettingsViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="egL-pK-Xhr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="24" sectionFooterHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="FhP-wT-Bz5">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="BfJ-uC-XeM" id="cGQ-We-8Dg"/>
-                                    <outlet property="delegate" destination="BfJ-uC-XeM" id="Yeg-yu-2Od"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="x0h-cK-85g" firstAttribute="top" secondItem="FhP-wT-Bz5" secondAttribute="bottom" id="Edp-wX-9No"/>
-                            <constraint firstItem="FhP-wT-Bz5" firstAttribute="top" secondItem="hZq-6f-RBH" secondAttribute="top" id="UXv-Vl-XRY"/>
-                            <constraint firstItem="FhP-wT-Bz5" firstAttribute="leading" secondItem="hZq-6f-RBH" secondAttribute="leading" id="uQE-61-tdh"/>
-                            <constraint firstAttribute="trailing" secondItem="FhP-wT-Bz5" secondAttribute="trailing" id="usM-NH-pXB"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="tableView" destination="FhP-wT-Bz5" id="Uup-02-F3t"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ndh-yC-OwR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="taU-5Q-sdv" id="Ipf-IM-E39"/>
+                            <outlet property="delegate" destination="taU-5Q-sdv" id="kIU-uT-h9Y"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s7I-UT-YCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2364" y="-3089"/>
+            <point key="canvasLocation" x="2455" y="-3099"/>
         </scene>
         <!--RecentsSplitVC-->
         <scene sceneID="Nki-YV-4Qg">
@@ -259,7 +240,7 @@
                     <navigationItem key="navigationItem" id="lkL-Yi-y5i">
                         <barButtonItem key="leftBarButtonItem" image="settings_icon.png" id="RwK-LB-3ML">
                             <connections>
-                                <segue destination="BfJ-uC-XeM" kind="show" identifier="showSettings" id="DeP-gh-EmS"/>
+                                <segue destination="taU-5Q-sdv" kind="show" identifier="showSettings" id="Q2c-YA-kxI"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="search_icon.png" id="mxO-nq-rJ1">
@@ -373,8 +354,8 @@
         <image name="settings_icon.png" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="f5u-Y1-7nt"/>
         <segue reference="agy-3r-khl"/>
+        <segue reference="tcD-xb-ae8"/>
         <segue reference="cUw-vU-gJq"/>
     </inferredMetricsTieBreakers>
 </document>
