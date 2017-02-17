@@ -546,7 +546,6 @@
     else
     {
         // Restore default values
-        contactCell.accessoryView = nil;
         contactCell.contentView.alpha = 1;
         contactCell.userInteractionEnabled = YES;
         contactCell.accessoryType = UITableViewCellAccessoryNone;
@@ -592,7 +591,11 @@
         {
             // Add the right accessory view if any
             contactCell.accessoryType = self.contactCellAccessoryType;
-            contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
+            if (self.contactCellAccessoryImage)
+            {
+                contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
+            }
+            
         }
         else if (indexPath.section == searchInputSection)
         {
@@ -607,7 +610,10 @@
             {
                 // Add the right accessory view if any
                 contactCell.accessoryType = self.contactCellAccessoryType;
-                contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
+                if (self.contactCellAccessoryImage)
+                {
+                    contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
+                }
             }
         }
     }

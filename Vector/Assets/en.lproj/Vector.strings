@@ -275,7 +275,8 @@
 
 "settings_unignore_user" = "Show all messages from %@?";
 
-"settings_contacts_discover_matrix_users_with_local_emails" = "Use emails to discover users";
+"settings_contacts_discover_matrix_users" = "Use emails and phone numbers to discover users";
+"settings_contacts_phonebook_country" = "Phonebook country";
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
@@ -284,7 +285,7 @@
 "settings_olm_version" = "Olm Version %@";
 "settings_copyright" = "Copyright";
 "settings_copyright_url" = "https://riot.im/copyright";
-"settings_term_conditions" = "Terms & conditions";
+"settings_term_conditions" = "Terms & Conditions";
 "settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_privacy_policy_url" = "https://riot.im/privacy";

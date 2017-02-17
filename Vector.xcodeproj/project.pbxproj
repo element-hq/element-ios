@@ -391,6 +391,7 @@
 		F0D2D98A1C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D2D9821C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib */; };
 		F0DD2C7B1D18386300654345 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0DD2C791D18386300654345 /* ContactDetailsViewController.m */; };
 		F0DD2C7C1D18386300654345 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0DD2C7A1D18386300654345 /* ContactDetailsViewController.xib */; };
+		F0FDF26B1E54A98900D23C47 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FDF26A1E54A98900D23C47 /* CountryPickerViewController.m */; };
 		F0FE6F7A1D63752A0004E747 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FE6F781D63752A0004E747 /* CallViewController.m */; };
 		F0FE6F7B1D63752A0004E747 /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FE6F791D63752A0004E747 /* CallViewController.xib */; };
 /* End PBXBuildFile section */
@@ -902,6 +903,8 @@
 		F0DD2C781D18386300654345 /* ContactDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailsViewController.h; sourceTree = "<group>"; };
 		F0DD2C791D18386300654345 /* ContactDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsViewController.m; sourceTree = "<group>"; };
 		F0DD2C7A1D18386300654345 /* ContactDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactDetailsViewController.xib; sourceTree = "<group>"; };
+		F0FDF2691E54A98900D23C47 /* CountryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryPickerViewController.h; sourceTree = "<group>"; };
+		F0FDF26A1E54A98900D23C47 /* CountryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryPickerViewController.m; sourceTree = "<group>"; };
 		F0FE6F771D63752A0004E747 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		F0FE6F781D63752A0004E747 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
 		F0FE6F791D63752A0004E747 /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
@@ -1524,6 +1527,8 @@
 		F094AA151B78E42600B1FBBF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0FDF2691E54A98900D23C47 /* CountryPickerViewController.h */,
+				F0FDF26A1E54A98900D23C47 /* CountryPickerViewController.m */,
 				F046528B1E250B0A00EA4E77 /* ContactsTableViewController.h */,
 				F046528C1E250B0A00EA4E77 /* ContactsTableViewController.m */,
 				F046528E1E28439E00EA4E77 /* ContactsTableViewController.xib */,
@@ -2135,6 +2140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0FDF26B1E54A98900D23C47 /* CountryPickerViewController.m in Sources */,
 				F07420A31D940FA80043B679 /* UINavigationController+Vector.m in Sources */,
 				F0DD2C7B1D18386300654345 /* ContactDetailsViewController.m in Sources */,
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
