@@ -31,6 +31,9 @@
 #import "MXKEncryptionKeysExportView.h"
 
 #import "CountryPickerViewController.h"
+#import "TableViewCellWithPhoneNumberTextField.h"
+
+#import "NBPhoneNumberUtil.h"
 
 #import "OLMKit/OLMKit.h"
 
@@ -117,7 +120,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
     // New email address to bind
     UITextField* newEmailTextField;
-
+    
+    // New phone number to bind
+    TableViewCellWithPhoneNumberTextField * newPhoneNumberCell;
+    CountryPickerViewController *newPhoneNumberCountryPicker;
+    NBPhoneNumber *newPhoneNumber;
+    
     // Dynamic rows in the user settings section
     NSInteger userSettingsProfilePictureIndex;
     NSInteger userSettingsDisplayNameIndex;
@@ -125,8 +133,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     NSInteger userSettingsSurnameIndex;
     NSInteger userSettingsEmailStartIndex;  // The user can have several linked emails. Hence, the dynamic section items count
     NSInteger userSettingsNewEmailIndex;    // This index also marks the end of the emails list
+    NSInteger userSettingsPhoneStartIndex;  // The user can have several linked phone numbers. Hence, the dynamic section items count
+    NSInteger userSettingsNewPhoneIndex;    // This index also marks the end of the phone numbers list
     NSInteger userSettingsChangePasswordIndex;
-    NSInteger userSettingsPhoneNumberIndex;
     NSInteger userSettingsNightModeSepIndex;
     NSInteger userSettingsNightModeIndex;
     
@@ -144,7 +153,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Postpone destroy operation when saving, pwd reset or email binding is in progress
     BOOL isSavingInProgress;
     BOOL isResetPwdInProgress;
-    BOOL isEmailBindingInProgress;
+    BOOL is3PIDBindingInProgress;
     blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
     
     //
@@ -154,12 +163,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     UIDocumentInteractionController *documentInteractionController;
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
+    
+    BOOL keepNewEmailEditing;
+    BOOL keepNewPhoneNumberEditing;
 }
 
 /**
  Flag indicating whether the user is typing an email to bind.
  */
 @property (nonatomic) BOOL newEmailEditingEnabled;
+
+/**
+ Flag indicating whether the user is typing a phone number to bind.
+ */
+@property (nonatomic) BOOL newPhoneEditingEnabled;
 
 @end
 
@@ -176,7 +193,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     isSavingInProgress = NO;
     isResetPwdInProgress = NO;
-    isEmailBindingInProgress = NO;
+    is3PIDBindingInProgress = NO;
 }
 
 - (void)viewDidLoad
@@ -191,6 +208,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+    [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -202,7 +220,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         if ([MXKAccountManager sharedManager].accounts.count)
         {
             // Refresh table to remove this account
-            [self.tableView reloadData];
+            [self refreshSettings];
         }
         
     }];
@@ -211,7 +229,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     accountUserInfoObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountUserInfoDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self stopActivityIndicator];
-        [self.tableView reloadData];
+        
+        // Refresh the corresponding table view cells with animation
+        [self.tableView reloadRowsAtIndexPaths:@[
+                                                 [NSIndexPath indexPathForRow:userSettingsProfilePictureIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX],
+                                                 [NSIndexPath indexPathForRow:userSettingsDisplayNameIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
+                                                 ]
+                              withRowAnimation:UITableViewRowAnimationFade];
         
     }];
     
@@ -219,7 +243,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     apnsInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self stopActivityIndicator];
-        [self.tableView reloadData];
+        
+        // Refresh the corresponding table view cell with animation
+        [self.tableView reloadRowsAtIndexPaths:@[
+                                                 [NSIndexPath indexPathForRow:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX inSection:SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX]
+                                                 ]
+                              withRowAnimation:UITableViewRowAnimationFade];
         
     }];
     
@@ -248,7 +277,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         documentInteractionController = nil;
     }
 
-    if (isSavingInProgress || isResetPwdInProgress || isEmailBindingInProgress)
+    if (isSavingInProgress || isResetPwdInProgress || is3PIDBindingInProgress)
     {
         __weak typeof(self) weakSelf = self;
         onReadyToDestroyHandler = ^() {
@@ -298,44 +327,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
     
-    if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
-    {
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        
-        // Refresh existing notification rules
-        [account.mxSession.notificationCenter refreshRules:^{
-            
-            [self stopActivityIndicator];
-            [self.tableView reloadData];
-            
-        } failure:^(NSError *error) {
-            
-            [self stopActivityIndicator];
-            
-        }];
-        
-        notificationCenterWillUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterWillUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            [self startActivityIndicator];
-        }];
-        
-        notificationCenterDidUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            [self stopActivityIndicator];
-            [self.tableView reloadData];
-        }];
-        
-        notificationCenterDidFailObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidFailRulesUpdate object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            [self stopActivityIndicator];
-            
-            // Notify MatrixKit user
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:note.userInfo[kMXNotificationCenterErrorKey]];
-        }];
-    }
-    
     // Refresh display
-    [self.tableView reloadData];
+    [self refreshSettings];
 
-    // Refresh linked emails in parallel
-    [self loadLinkedEmails];
+    // Refresh linked emails and phone numbers in parallel
+    [self loadAccount3PIDs];
     
     // Refresh the current device information in parallel
     [self loadCurrentDeviceInformation];
@@ -349,6 +345,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
         
     }];
+    
+    newPhoneNumberCountryPicker = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -408,6 +406,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [newPasswordTextField1 resignFirstResponder];
     [newPasswordTextField2 resignFirstResponder];
     [newEmailTextField resignFirstResponder];
+    [newPhoneNumberCell.mxkTextField resignFirstResponder];
 }
 
 - (void)reset
@@ -449,22 +448,44 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         // Update the flag
         _newEmailEditingEnabled = newEmailEditingEnabled;
 
-        // Update the top-rigth corner button
-        if (!_newEmailEditingEnabled)
+        if (!newEmailEditingEnabled)
         {
             newEmailTextField = nil;
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
         }
-        else
-        {
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onAddNewEmail:)];
-        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            // Refresh the corresponding table view cell with animation
+            [self.tableView reloadRowsAtIndexPaths:@[
+                                                     [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
+                                                     ]
+                                  withRowAnimation:UITableViewRowAnimationFade];
+            
+        });
+    }
+}
 
-        // And refresh the corresponding table view cell with animation
-        [self.tableView reloadRowsAtIndexPaths:@[
-                                                 [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
-                                                 ]
-                              withRowAnimation:UITableViewRowAnimationFade];
+-(void)setNewPhoneEditingEnabled:(BOOL)newPhoneEditingEnabled
+{
+    if (newPhoneEditingEnabled != _newPhoneEditingEnabled)
+    {
+        // Update the flag
+        _newPhoneEditingEnabled = newPhoneEditingEnabled;
+        
+        if (!newPhoneEditingEnabled)
+        {
+            newPhoneNumberCell = nil;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            // Refresh the corresponding table view cell with animation
+            [self.tableView reloadRowsAtIndexPaths:@[
+                                                     [NSIndexPath indexPathForRow:userSettingsNewPhoneIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
+                                                     ]
+                                  withRowAnimation:UITableViewRowAnimationFade];
+            
+        });
     }
 }
 
@@ -499,7 +520,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         if (weakSelf)
         {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->isEmailBindingInProgress = YES;
+            strongSelf->is3PIDBindingInProgress = YES;
             
             // We always bind emails when registering, so let's do the same here
             [threePID add3PIDToUser:YES success:^{
@@ -507,7 +528,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 if (weakSelf)
                 {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->isEmailBindingInProgress = NO;
+                    strongSelf->is3PIDBindingInProgress = NO;
                     
                     // Check whether destroy has been called during email binding
                     if (strongSelf->onReadyToDestroyHandler)
@@ -526,7 +547,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                         strongSelf.newEmailEditingEnabled = NO;
                         
                         // Update linked emails
-                        [strongSelf loadLinkedEmails];
+                        [strongSelf loadAccount3PIDs];
                     }
                 }
                 
@@ -537,7 +558,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 if (weakSelf)
                 {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->isEmailBindingInProgress = NO;
+                    strongSelf->is3PIDBindingInProgress = NO;
                     
                     // Check whether destroy has been called during email binding
                     if (strongSelf->onReadyToDestroyHandler)
@@ -575,7 +596,143 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [currentAlert showInViewController:self];
 }
 
-- (void)loadLinkedEmails
+- (void)showValidationMsisdnDialogWithMessage:(NSString*)message for3PID:(MXK3PID*)threePID
+{
+    __weak typeof(self) weakSelf = self;
+    
+    [currentAlert dismiss:NO];
+    currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_title"]
+                                           message:message
+                                             style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            
+            [strongSelf stopActivityIndicator];
+            
+            // Reset new email adding
+            strongSelf.newPhoneEditingEnabled = NO;
+        }
+        
+    }];
+    
+    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDecimalPad;
+    }];
+    
+    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"submit"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        
+        UITextField *textField = [alert textFieldAtIndex:0];
+        NSString *smsCode = textField.text;
+        
+        if (smsCode.length && weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->is3PIDBindingInProgress = YES;
+            
+            [threePID submitValidationToken:smsCode success:^{
+                
+                // We always bind the phone numbers when registering, so let's do the same here
+                [threePID add3PIDToUser:YES success:^{
+                    
+                    if (weakSelf)
+                    {
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        strongSelf->is3PIDBindingInProgress = NO;
+                        
+                        // Check whether destroy has been called during the binding
+                        if (strongSelf->onReadyToDestroyHandler)
+                        {
+                            // Ready to destroy
+                            strongSelf->onReadyToDestroyHandler();
+                            strongSelf->onReadyToDestroyHandler = nil;
+                        }
+                        else
+                        {
+                            strongSelf->currentAlert = nil;
+                            
+                            [strongSelf stopActivityIndicator];
+                            
+                            // Reset new phone adding
+                            strongSelf.newPhoneEditingEnabled = NO;
+                            
+                            // Update linked 3pids
+                            [strongSelf loadAccount3PIDs];
+                        }
+                    }
+                    
+                } failure:^(NSError *error) {
+                    
+                    NSLog(@"[SettingsViewController] Failed to bind phone number");
+                    
+                    if (weakSelf)
+                    {
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        strongSelf->is3PIDBindingInProgress = NO;
+                        
+                        // Check whether destroy has been called during phone binding
+                        if (strongSelf->onReadyToDestroyHandler)
+                        {
+                            // Ready to destroy
+                            strongSelf->onReadyToDestroyHandler();
+                            strongSelf->onReadyToDestroyHandler = nil;
+                        }
+                        else
+                        {
+                            strongSelf->currentAlert = nil;
+                            
+                            [strongSelf stopActivityIndicator];
+                            
+                            // Notify MatrixKit user
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                        }
+                    }
+                    
+                }];
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[SettingsViewController] Failed to submit the sms token");
+                
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->is3PIDBindingInProgress = NO;
+                    
+                    // Check whether destroy has been called during phone binding
+                    if (strongSelf->onReadyToDestroyHandler)
+                    {
+                        // Ready to destroy
+                        strongSelf->onReadyToDestroyHandler();
+                        strongSelf->onReadyToDestroyHandler = nil;
+                    }
+                    else
+                    {
+                        strongSelf->currentAlert = nil;
+                        
+                        [strongSelf stopActivityIndicator];
+                        
+                        // Notify MatrixKit user
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                    }
+                }
+                
+            }];
+        }
+        
+    }];
+    
+    currentAlert.mxkAccessibilityIdentifier = @"SettingsVCMsisdnValidationAlert";
+    [currentAlert showInViewController:self];
+}
+
+- (void)loadAccount3PIDs
 {
     // Refresh the account 3PIDs list
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
@@ -583,13 +740,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self.tableView reloadData];
+        [self refreshSettings];
 
     } failure:^(NSError *error) {
         
         // Display the data that has been loaded last time
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self.tableView reloadData];
+        [self refreshSettings];
         
     }];
 }
@@ -602,7 +759,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self.tableView reloadData];
+        [self refreshSettings];
         
     } failure:nil];
 }
@@ -680,13 +837,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self.tableView reloadData];
+        [self refreshSettings];
         
     } failure:^(NSError *error) {
         
         // Display the data that has been loaded last time
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self.tableView reloadData];
+        [self refreshSettings];
         
     }];
 }
@@ -746,6 +903,68 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self loadDevices];
 }
 
+- (void)editNewEmailTextField
+{
+    if (newEmailTextField && ![newEmailTextField becomeFirstResponder])
+    {
+        // Retry asynchronously
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self editNewEmailTextField];
+            
+        });
+    }
+}
+
+- (void)editNewPhoneNumberTextField
+{
+    if (newPhoneNumberCell && ![newPhoneNumberCell.mxkTextField becomeFirstResponder])
+    {
+        // Retry asynchronously
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self editNewPhoneNumberTextField];
+            
+        });
+    }
+}
+
+- (void)refreshSettings
+{
+    // Check whether a text input is currently edited
+    keepNewEmailEditing = newEmailTextField ? newEmailTextField.isFirstResponder : NO;
+    keepNewPhoneNumberEditing = newPhoneNumberCell ? newPhoneNumberCell.mxkTextField.isFirstResponder : NO;
+    
+    // Trigger a full table reloadData
+    [self.tableView reloadData];
+    
+    // Restore the previous edited field
+    if (keepNewEmailEditing)
+    {
+        [self editNewEmailTextField];
+        keepNewEmailEditing = NO;
+    }
+    else if (keepNewPhoneNumberEditing)
+    {
+        [self editNewPhoneNumberTextField];
+        keepNewPhoneNumberEditing = NO;
+    }
+}
+
+- (void)formatNewPhoneNumber
+{
+    if (newPhoneNumber)
+    {
+        NSString *formattedNumber = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
+        NSString *prefix = newPhoneNumberCell.mxkLabel.text;
+        if ([formattedNumber hasPrefix:prefix])
+        {
+            // Format the display phone number
+            newPhoneNumberCell.mxkTextField.text = [formattedNumber substringFromIndex:prefix.length];
+        }
+    }
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -783,15 +1002,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         userSettingsChangePasswordIndex = 2;
         userSettingsEmailStartIndex = 3;
         userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
+        userSettingsPhoneStartIndex = userSettingsNewEmailIndex + 1;
+        userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
 
         // Hide some unsupported account settings
         userSettingsFirstNameIndex = -1;
         userSettingsSurnameIndex = -1;
-        userSettingsPhoneNumberIndex = -1;
         userSettingsNightModeSepIndex = -1;
         userSettingsNightModeIndex = -1;
 
-        count = userSettingsNewEmailIndex + 1;
+        count = userSettingsNewPhoneIndex + 1;
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
@@ -863,6 +1083,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
     cell.mxkTextField.textAlignment = NSTextAlignmentRight;
     cell.mxkTextField.textColor = kVectorTextColorGray;
+    cell.mxkTextField.font = [UIFont systemFontOfSize:16];
+    cell.mxkTextField.placeholder = nil;
     
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
@@ -1045,11 +1267,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 newEmailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_email_address", @"Vector", nil);
                 newEmailCell.mxkTextField.text = nil;
                 newEmailCell.mxkTextField.userInteractionEnabled = NO;
-                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
             }
             else
             {
                 newEmailCell.mxkLabel.text = nil;
+                newEmailCell.mxkTextField.placeholder = NSLocalizedStringFromTable(@"settings_email_address_placeholder", @"Vector", nil);
                 newEmailCell.mxkTextField.text = newEmailTextField.text;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
                 newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
@@ -1066,16 +1288,94 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 // When displaying the textfield the 1st time, open the keyboard
                 if (!newEmailTextField)
                 {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [newEmailCell.mxkTextField becomeFirstResponder];
-                    });
+                    newEmailTextField = newEmailCell.mxkTextField;
+                    [self editNewEmailTextField];
                 }
-                newEmailTextField = newEmailCell.mxkTextField;
+                else
+                {
+                    // Update the current text field.
+                    newEmailTextField = newEmailCell.mxkTextField;
+                }
             }
 
+            newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
             newEmailCell.mxkTextField.tag = row;
 
             cell = newEmailCell;
+        }
+        else if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
+        {
+            MXKTableViewCellWithLabelAndTextField *phoneCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
+            
+            phoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_phone_number", @"Vector", nil);
+            
+            NSString *e164 = [NSString stringWithFormat:@"+%@", account.linkedPhoneNumbers[row - userSettingsPhoneStartIndex]];
+            NBPhoneNumber *phoneNb = [[NBPhoneNumberUtil sharedInstance] parse:e164 defaultRegion:nil error:nil];
+            phoneCell.mxkTextField.text = [[NBPhoneNumberUtil sharedInstance] format:phoneNb numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
+            phoneCell.mxkTextField.userInteractionEnabled = NO;
+            
+            cell = phoneCell;
+        }
+        else if (row == userSettingsNewPhoneIndex)
+        {
+            // Render the cell according to the `newPhoneEditingEnabled` property
+            if (!_newPhoneEditingEnabled)
+            {
+                MXKTableViewCellWithLabelAndTextField *newPhoneCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
+                
+                newPhoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_phone_number", @"Vector", nil);
+                newPhoneCell.mxkTextField.text = nil;
+                newPhoneCell.mxkTextField.userInteractionEnabled = NO;
+                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                
+                cell = newPhoneCell;
+            }
+            else
+            {
+                TableViewCellWithPhoneNumberTextField * newPhoneCell = [self.tableView dequeueReusableCellWithIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier] forIndexPath:indexPath];
+                
+                [newPhoneCell.countryCodeButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+                [newPhoneCell.countryCodeButton addTarget:self action:@selector(selectPhoneNumberCountry:) forControlEvents:UIControlEventTouchUpInside];
+                newPhoneCell.countryCodeButton.accessibilityIdentifier = @"SettingsVCPhoneCountryButton";
+                
+                newPhoneCell.mxkLabel.font = newPhoneCell.mxkTextField.font = [UIFont systemFontOfSize:16];
+                
+                newPhoneCell.mxkTextField.userInteractionEnabled = YES;
+                newPhoneCell.mxkTextField.keyboardType = UIKeyboardTypePhonePad;
+                newPhoneCell.mxkTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+                newPhoneCell.mxkTextField.spellCheckingType = UITextSpellCheckingTypeNo;
+                newPhoneCell.mxkTextField.delegate = self;
+                
+                [newPhoneCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+                [newPhoneCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+                
+                [newPhoneCell.mxkTextField removeTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
+                [newPhoneCell.mxkTextField addTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
+                
+                newPhoneCell.mxkTextField.tag = row;
+                
+                // When displaying the textfield the 1st time, open the keyboard
+                if (!newPhoneNumberCell)
+                {
+                    newPhoneCell.isoCountryCode = [MXKAppSettings standardAppSettings].phonebookCountryCode;
+                    newPhoneCell.mxkTextField.text = nil;
+                    
+                    newPhoneNumberCell = newPhoneCell;
+
+                    [self editNewPhoneNumberTextField];
+                }
+                else
+                {
+                    newPhoneCell.isoCountryCode = newPhoneNumberCell.isoCountryCode;
+                    newPhoneCell.mxkTextField.text = newPhoneNumberCell.mxkTextField.text;
+                    
+                    newPhoneNumberCell = newPhoneCell;
+                }
+                
+                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                
+                cell = newPhoneCell;
+            }
         }
         else if (row == userSettingsChangePasswordIndex)
         {
@@ -1086,15 +1386,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             passwordCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = passwordCell;
-        }
-        else if (row == userSettingsPhoneNumberIndex)
-        {
-            MXKTableViewCellWithLabelAndTextField *phonenumberCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
-            
-            phonenumberCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_phone_number", @"Vector", nil);
-            phonenumberCell.mxkTextField.userInteractionEnabled = NO;
-            
-            cell = phonenumberCell;
         }
         else if (row == userSettingsNightModeSepIndex)
         {
@@ -1621,8 +1912,27 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             else if (row == userSettingsNewEmailIndex)
             {
-                // Enable the new email text field
-                self.newEmailEditingEnabled = YES;
+                if (!self.newEmailEditingEnabled)
+                {
+                    // Enable the new email text field
+                    self.newEmailEditingEnabled = YES;
+                }
+                else if (newEmailTextField)
+                {
+                    [self onAddNewEmail:newEmailTextField];
+                }
+            }
+            else if (row == userSettingsNewPhoneIndex)
+            {
+                if (!self.newPhoneEditingEnabled)
+                {
+                    // Enable the new phone text field
+                    self.newPhoneEditingEnabled = YES;
+                }
+                else if (newPhoneNumberCell.mxkTextField)
+                {
+                    [self onAddNewPhone:newPhoneNumberCell.mxkTextField];
+                }
             }
         }
         else if (section == SETTINGS_SECTION_DEVICES_INDEX)
@@ -1637,6 +1947,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (row == localContactsPhoneBookCountryIndex)
             {
                 CountryPickerViewController *countryPicker = [CountryPickerViewController countryPickerViewController];
+                countryPicker.view.tag = SETTINGS_SECTION_CONTACTS_INDEX;
                 countryPicker.delegate = self;
                 countryPicker.showCountryCallingCode = YES;
                 [self pushViewController:countryPicker];
@@ -1921,6 +2232,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     });
 }
 
+- (void)selectPhoneNumberCountry:(id)sender
+{
+    newPhoneNumberCountryPicker = [CountryPickerViewController countryPickerViewController];
+    newPhoneNumberCountryPicker.view.tag = SETTINGS_SECTION_USER_SETTINGS_INDEX;
+    newPhoneNumberCountryPicker.delegate = self;
+    newPhoneNumberCountryPicker.showCountryCallingCode = YES;
+    [self pushViewController:newPhoneNumberCountryPicker];
+}
+
 //- (void)onRuleUpdate:(id)sender
 //{
 //    MXPushRule* pushRule = nil;
@@ -2148,6 +2468,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (IBAction)onAddNewEmail:(id)sender
 {
+    // Ignore empty field
+    if (!newEmailTextField.text.length)
+    {
+        return;
+    }
+    
     // Email check
     if (![MXTools isEmailAddress:newEmailTextField.text])
     {
@@ -2197,29 +2523,90 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }];
 }
 
+- (IBAction)onAddNewPhone:(id)sender
+{
+    // Ignore empty field
+    if (!newPhoneNumberCell.mxkTextField.text.length)
+    {
+        return;
+    }
+    
+    // Phone check
+    if (![[NBPhoneNumberUtil sharedInstance] isValidNumber:newPhoneNumber])
+    {
+        [currentAlert dismiss:NO];
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_msisdn_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_msisdn_wrong_description"] style:MXKAlertStyleAlert];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                strongSelf->currentAlert = nil;
+            }
+            
+        }];
+        
+        currentAlert.mxkAccessibilityIdentifier = @"SettingsVCAddMsisdnAlert";
+        [currentAlert showInViewController:self];
+        
+        return;
+    }
+    
+    [self startActivityIndicator];
+    
+    // Dismiss the keyboard
+    [newPhoneNumberCell.mxkTextField resignFirstResponder];
+    
+    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    
+    NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
+    NSString *msisdn;
+    if ([e164 hasPrefix:@"+"])
+    {
+        msisdn = [e164 substringFromIndex:1];
+    }
+    else if ([e164 hasPrefix:@"00"])
+    {
+        msisdn = [e164 substringFromIndex:2];
+    }
+    
+    MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
+    
+    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient nextLink:nil success:^{
+        
+        [self showValidationMsisdnDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_message"] for3PID:new3PID];
+        
+    } failure:^(NSError *error) {
+        
+        [self stopActivityIndicator];
+        
+        NSLog(@"[SettingsViewController] Failed to request msisdn token");
+        
+        // Notify MatrixKit user
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+        
+    }];
+}
+
 - (void)updateSaveButtonStatus
 {
     if ([AppDelegate theDelegate].mxSessions.count > 0)
     {
-        BOOL saveButtonEnabled;
-        if (!_newEmailEditingEnabled)
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        MXMyUser* myUser = session.myUser;
+        
+        BOOL saveButtonEnabled = (nil != newAvatarImage);
+        
+        if (!saveButtonEnabled)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-            MXMyUser* myUser = session.myUser;
-
-            saveButtonEnabled = (nil != newAvatarImage);
-
-            if (!saveButtonEnabled)
+            if (newDisplayName)
             {
-                if (newDisplayName)
-                {
-                    saveButtonEnabled = ![myUser.displayname isEqualToString:newDisplayName];
-                }
+                saveButtonEnabled = ![myUser.displayname isEqualToString:newDisplayName];
             }
-        }
-        else
-        {
-            saveButtonEnabled = (0 != newEmailTextField.text.length);
         }
         
         self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
@@ -2333,9 +2720,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         newDisplayName = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         [self updateSaveButtonStatus];
     }
-    else if (textField.tag == userSettingsNewEmailIndex)
+    else if (textField.tag == userSettingsNewPhoneIndex)
     {
-        [self updateSaveButtonStatus];
+        newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:textField.text defaultRegion:newPhoneNumberCell.isoCountryCode error:nil];
+        
+        [self formatNewPhoneNumber];
     }
 }
 
@@ -2344,9 +2733,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     UITextField* textField = (UITextField*)sender;
 
     // Disable the new email edition if the user leaves the text field empty
-    if (textField.tag == userSettingsNewEmailIndex && textField.text.length == 0)
+    if (textField.tag == userSettingsNewEmailIndex && textField.text.length == 0 && !keepNewEmailEditing)
     {
         self.newEmailEditingEnabled = NO;
+    }
+    else if (textField.tag == userSettingsNewPhoneIndex && textField.text.length == 0 && !keepNewPhoneNumberEditing && !newPhoneNumberCountryPicker)
+    {
+        // Disable the new phone edition if the user leaves the text field empty
+        self.newPhoneEditingEnabled = NO;
     }
 }
 
@@ -2582,7 +2976,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)countryPickerViewController:(MXKCountryPickerViewController *)countryPickerViewController didSelectCountry:(NSString *)isoCountryCode
 {
-    [MXKAppSettings standardAppSettings].phonebookCountryCode = isoCountryCode;
+    if (countryPickerViewController.view.tag == SETTINGS_SECTION_CONTACTS_INDEX)
+    {
+        [MXKAppSettings standardAppSettings].phonebookCountryCode = isoCountryCode;
+    }
+    else if (countryPickerViewController.view.tag == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    {
+        if (newPhoneNumberCell)
+        {
+            newPhoneNumberCell.isoCountryCode = isoCountryCode;
+            
+            newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:newPhoneNumberCell.mxkTextField.text defaultRegion:isoCountryCode error:nil];
+            [self formatNewPhoneNumber];
+        }
+    }
     
     [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
 }

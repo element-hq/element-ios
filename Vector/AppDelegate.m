@@ -1033,7 +1033,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSMutableDictionary *queryParams;
         [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
 
-        [identityRestClient submitEmailValidationToken:queryParams[@"token"] clientSecret:queryParams[@"client_secret"] sid:queryParams[@"sid"] success:^{
+        [identityRestClient submit3PIDValidationToken:queryParams[@"token"] medium:kMX3PIDMediumEmail clientSecret:queryParams[@"client_secret"] sid:queryParams[@"sid"] success:^{
 
             NSLog(@"[AppDelegate] handleUniversalLink. Email successfully validated.");
 
@@ -1358,6 +1358,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)initMatrixSessions
 {
+    NSLog(@"[AppDelegate] initMatrixSessions");
+    
     // Enable e2e encryption for newly created MXSession
     [MXSDKOptions sharedInstance].enableCryptoWhenStartingMXSession = YES;
 
@@ -1539,6 +1541,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // except if the app is still in background.
     if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
     {
+        NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts");
         [accountManager prepareSessionForActiveAccounts];
     }
     else
