@@ -1906,24 +1906,27 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
                 launchAnimationStart = [NSDate date];
             }
+            
+            return;
         }
-        else if (launchAnimationContainerView)
+    }
+    
+    if (launchAnimationContainerView)
+    {
+        NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
+        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", durationMs);
+        
+        if ([MXSDKOptions sharedInstance].enableGoogleAnalytics)
         {
-            NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
-            NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", durationMs);
-            
-            if ([MXSDKOptions sharedInstance].enableGoogleAnalytics)
-            {
-                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-                [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:kMXGoogleAnalyticsStartupCategory
-                                                                     interval:@((int)durationMs)
-                                                                         name:kMXGoogleAnalyticsStartupLaunchScreen
-                                                                        label:nil] build]];
-            }
-            
-            [launchAnimationContainerView removeFromSuperview];
-            launchAnimationContainerView = nil;
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:kMXGoogleAnalyticsStartupCategory
+                                                                 interval:@((int)durationMs)
+                                                                     name:kMXGoogleAnalyticsStartupLaunchScreen
+                                                                    label:nil] build]];
         }
+        
+        [launchAnimationContainerView removeFromSuperview];
+        launchAnimationContainerView = nil;
     }
 }
 
