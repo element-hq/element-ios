@@ -137,10 +137,10 @@
 "room_participants_multi_participants" = "%d participants";
 "room_participants_leave_prompt_title" = "Leave room";
 "room_participants_leave_prompt_msg" = "Are you sure you want to leave the room?";
-"room_participants_remove_prompt_title" = "Remove?";
+"room_participants_remove_prompt_title" = "Confirmation";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_remove_third_party_invite_msg" = "Remove third-party invite is not supported yet until the api exists";
-"room_participants_invite_prompt_title" = "Invite?";
+"room_participants_invite_prompt_title" = "Confirmation";
 "room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
 "room_participants_filter_room_members" = "Filter room members";
 "room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
@@ -255,6 +255,9 @@
 "settings_display_name" = "Display Name";
 "settings_first_name" = "First Name";
 "settings_surname" = "Surname";
+"settings_remove_prompt_title" = "Confirmation";
+"settings_remove_email_prompt_msg" = "Are you sure you want to remove the email address %@?";
+"settings_remove_phone_prompt_msg" = "Are you sure you want to remove the phone number %@?";
 "settings_email_address" = "Email";
 "settings_email_address_placeholder" = "Enter your email address";
 "settings_add_email_address" = "Add email address";

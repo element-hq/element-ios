@@ -581,7 +581,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                         {
                             [strongSelf stopActivityIndicator];
                             
-                            // Notify MatrixKit user
+                            // Notify user
                             [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
                         }
                     }
@@ -689,7 +689,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                             
                             [strongSelf stopActivityIndicator];
                             
-                            // Notify MatrixKit user
+                            // Notify user
                             [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
                         }
                     }
@@ -718,7 +718,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                         
                         [strongSelf stopActivityIndicator];
                         
-                        // Notify MatrixKit user
+                        // Notify user
                         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
                     }
                 }
@@ -1762,6 +1762,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    {
+        NSInteger row = indexPath.row;
+        if ((userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex) ||
+            (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex))
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    // iOS8 requires this method to enable editing (see editActionsForRowAtIndexPath).
+}
+
 #pragma mark - UITableView delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -1798,6 +1817,37 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 
     return 24;
+}
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray* actions;
+    
+    // Add the swipe to delete user's email or phone number
+    if (indexPath.section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    {
+        NSInteger row = indexPath.row;
+        if ((userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex) ||
+            (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex))
+        {
+            actions = [[NSMutableArray alloc] init];
+            
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            CGFloat cellHeight = cell ? cell.frame.size.height : 50;
+            
+            // Patch: Force the width of the button by adding whitespace characters into the title string.
+            UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"    "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self onRemove3PID:indexPath];
+                
+            }];
+            
+            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(20, 18)];
+            [actions insertObject:leaveAction atIndex:0];
+        }
+    }
+    
+    return actions;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1846,7 +1896,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
                         NSLog(@"[ContactDetailsViewController] Unignore %@ failed", ignoredUserId);
 
-                        // Notify MatrixKit user
+                        // Notify user
                         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
 
                     }];
@@ -1962,7 +2012,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)onSignout:(id)sender
 {
-
     [currentAlert dismiss:NO];
 
     __weak typeof(self) weakSelf = self;
@@ -2016,6 +2065,116 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
     currentAlert.mxkAccessibilityIdentifier = @"SettingsVCSignoutAlert";
     [currentAlert showInViewController:self];
+}
+
+- (void)onRemove3PID:(NSIndexPath*)path
+{
+    NSUInteger section = path.section;
+    NSUInteger row = path.row;
+    
+    if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    {
+        NSString *address, *medium;
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        NSString *promptMsg;
+        
+        if (userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex)
+        {
+            medium = kMX3PIDMediumEmail;
+            row = row - userSettingsEmailStartIndex;
+            NSArray<NSString *> *linkedEmails = account.linkedEmails;
+            if (row < linkedEmails.count)
+            {
+                address = linkedEmails[row];
+                promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_remove_email_prompt_msg", @"Vector", nil), address];
+            }
+        }
+        else if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
+        {
+            medium = kMX3PIDMediumMSISDN;
+            row = row - userSettingsPhoneStartIndex;
+            NSArray<NSString *> *linkedPhones = account.linkedPhoneNumbers;
+            if (row < linkedPhones.count)
+            {
+                address = linkedPhones[row];
+                NSString *e164 = [NSString stringWithFormat:@"+%@", address];
+                NBPhoneNumber *phoneNb = [[NBPhoneNumberUtil sharedInstance] parse:e164 defaultRegion:nil error:nil];
+                NSString *phoneMunber = [[NBPhoneNumberUtil sharedInstance] format:phoneNb numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
+                
+                promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_remove_phone_prompt_msg", @"Vector", nil), phoneMunber];
+            }
+        }
+        
+        if (address && medium)
+        {
+            __weak typeof(self) weakSelf = self;
+            
+            if (currentAlert)
+            {
+                [currentAlert dismiss:NO];
+                currentAlert = nil;
+            }
+            
+            // Remove ?
+            currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"settings_remove_prompt_title", @"Vector", nil)
+                                                   message:promptMsg
+                                                     style:MXKAlertStyleAlert];
+            
+            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                        style:MXKAlertActionStyleCancel
+                                                                      handler:^(MXKAlert *alert) {
+                                                                          
+                                                                          if (weakSelf)
+                                                                          {
+                                                                              __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                              strongSelf->currentAlert = nil;
+                                                                          }
+                                                                          
+                                                                      }];
+            
+            [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                                       style:MXKAlertActionStyleDefault
+                                     handler:^(MXKAlert *alert) {
+                                         
+                                         if (weakSelf)
+                                         {
+                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                             strongSelf->currentAlert = nil;
+                                             
+                                             [strongSelf startActivityIndicator];
+                                             
+                                             [strongSelf.mainSession.matrixRestClient remove3PID:address medium:medium success:^{
+                                                 
+                                                 if (weakSelf)
+                                                 {
+                                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                     
+                                                     [strongSelf stopActivityIndicator];
+                                                     
+                                                     // Update linked 3pids
+                                                     [strongSelf loadAccount3PIDs];
+                                                 }
+                                                 
+                                             } failure:^(NSError *error) {
+                                                 
+                                                 NSLog(@"[SettingsViewController] Remove 3PID: %@ failed", address);
+                                                 if (weakSelf)
+                                                 {
+                                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                     
+                                                     [strongSelf stopActivityIndicator];
+                                                     
+                                                     // Notify user
+                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                                                 }
+                                             }];
+                                         }
+                                     }];
+            
+            currentAlert.mxkAccessibilityIdentifier = @"SettingsVCRemove3PIDAlert";
+            [currentAlert showInViewController:self];
+        }
+    }
 }
 
 - (void)togglePushNotifications:(id)sender
@@ -2471,6 +2630,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Ignore empty field
     if (!newEmailTextField.text.length)
     {
+        // Dismiss the keyboard
+        [newEmailTextField resignFirstResponder];
+        
         return;
     }
     
@@ -2517,7 +2679,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         NSLog(@"[SettingsViewController] Failed to request email token");
 
-        // Notify MatrixKit user
+        // Notify user
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
 
     }];
@@ -2586,7 +2748,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         NSLog(@"[SettingsViewController] Failed to request msisdn token");
         
-        // Notify MatrixKit user
+        // Notify user
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
         
     }];
