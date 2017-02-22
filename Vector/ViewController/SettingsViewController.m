@@ -1832,6 +1832,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             actions = [[NSMutableArray alloc] init];
             
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            CGFloat cellHeight = cell ? cell.frame.size.height : 50;
+            
             // Patch: Force the width of the button by adding whitespace characters into the title string.
             UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"    "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
                 
@@ -1839,7 +1842,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
             }];
             
-            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(50, 50) resourceSize:CGSizeMake(20, 18)];
+            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(20, 18)];
             [actions insertObject:leaveAction atIndex:0];
         }
     }
