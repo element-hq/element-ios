@@ -256,8 +256,8 @@
 "settings_first_name" = "First Name";
 "settings_surname" = "Surname";
 "settings_remove_prompt_title" = "Confirmation";
-"settings_remove_email_prompt_msg" = "Are you sure you want to remove the email address: %@?";
-"settings_remove_phone_prompt_msg" = "Are you sure you want to remove the phone number: %@?";
+"settings_remove_email_prompt_msg" = "Are you sure you want to remove the email address %@?";
+"settings_remove_phone_prompt_msg" = "Are you sure you want to remove the phone number %@?";
 "settings_email_address" = "Email";
 "settings_email_address_placeholder" = "Enter your email address";
 "settings_add_email_address" = "Add email address";
