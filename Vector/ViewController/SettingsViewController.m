@@ -244,11 +244,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         [self stopActivityIndicator];
         
-        // Refresh the corresponding table view cell with animation
-        [self.tableView reloadRowsAtIndexPaths:@[
-                                                 [NSIndexPath indexPathForRow:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX inSection:SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX]
-                                                 ]
-                              withRowAnimation:UITableViewRowAnimationFade];
+        [self refreshSettings];
         
     }];
     
