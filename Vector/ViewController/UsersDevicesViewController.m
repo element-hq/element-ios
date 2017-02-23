@@ -53,10 +53,11 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedStringFromTable(@"unknown_devices_title", @"Vector", nil);
-
+    self.accessibilityLabel=@"UsersDevicesVCTitleStaticText";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)];
-
+self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"UsersDevicesVCDoneButton";
     self.tableView.delegate = self;
+    self.tableView.accessibilityIdentifier=@"UsersDevicesVCDTableView";
     self.tableView.dataSource = self;
 
     // Register collection view cell class
