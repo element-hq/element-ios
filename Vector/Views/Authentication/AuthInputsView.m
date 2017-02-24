@@ -427,12 +427,20 @@
                     // Async response
                     return;
                 }
-                else if (self.isPasswordBasedFlowSupported)
+                else if (self.isDummyFlowSupported)
                 {
                     parameters = @{
+                                   @"auth": @{@"session":currentSession.session, @"type": kMXLoginFlowTypeDummy},
                                    @"username": self.userLoginTextField.text,
                                    @"password": self.passWordTextField.text,
                                    @"bind_email": @(NO)
+                                   };
+                }
+                else if (self.isPasswordBasedFlowSupported)
+                {
+                    // Note: this use case was not tested yet.
+                    parameters = @{
+                                   @"auth": @{@"session":currentSession.session, @"username": self.userLoginTextField.text, @"password": self.passWordTextField.text, @"type": kMXLoginFlowTypePassword}
                                    };
                 }
             }
@@ -729,6 +737,10 @@
     {
         return YES;
     }
+    else if ([flowType isEqualToString:kMXLoginFlowTypeDummy])
+    {
+        return YES;
+    }
     
     return NO;
 }
@@ -895,6 +907,22 @@
         }
         
         return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)isDummyFlowSupported
+{
+    if (currentSession)
+    {
+        for (MXLoginFlow *loginFlow in currentSession.flows)
+        {
+            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeDummy] != NSNotFound || [loginFlow.type isEqualToString:kMXLoginFlowTypeDummy])
+            {
+                return YES;
+            }
+        }
     }
     
     return NO;
