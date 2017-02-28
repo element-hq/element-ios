@@ -24,6 +24,8 @@
 
 #import <Photos/Photos.h>
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 @interface RoomInputToolbarView()
 {
     MediaPickerViewController *mediaPicker;

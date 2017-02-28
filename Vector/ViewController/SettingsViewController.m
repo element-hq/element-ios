@@ -27,6 +27,7 @@
 
 #import <Photos/Photos.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "MXKEncryptionKeysExportView.h"
 

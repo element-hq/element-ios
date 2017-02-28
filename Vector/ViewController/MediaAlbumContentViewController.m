@@ -22,6 +22,8 @@
 
 #import "RageShakeManager.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 @interface MediaAlbumContentViewController ()
 {
     /**

@@ -22,6 +22,8 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "MediaAlbumContentViewController.h"
 
 #import "MediaAlbumTableCell.h"

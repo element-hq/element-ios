@@ -34,6 +34,8 @@
 
 #import "RoomMemberDetailsViewController.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #define ROOM_SETTINGS_MAIN_SECTION_INDEX               0
 #define ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX        1
 #define ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX 2
