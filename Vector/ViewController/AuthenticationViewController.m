@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -86,6 +87,13 @@
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     self.submitButton.enabled = YES;
     
+    [self.skipButton.layer setCornerRadius:5];
+    self.skipButton.clipsToBounds = YES;
+    self.skipButton.backgroundColor = kVectorColorGreen;
+    [self.skipButton setTitle:NSLocalizedStringFromTable(@"auth_skip", @"Vector", nil) forState:UIControlStateNormal];
+    [self.skipButton setTitle:NSLocalizedStringFromTable(@"auth_skip", @"Vector", nil) forState:UIControlStateHighlighted];
+    self.skipButton.enabled = YES;
+    
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
     [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, forgotPasswordTitle.length)];
     [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kVectorColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
@@ -94,14 +102,14 @@
     
     [self updateForgotPwdButtonVisibility];
     
-    [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
-    [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
+    [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
+    [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
     NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : kVectorTextColorGray, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
-    [self.serverOptionsTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
-    [self.serverOptionsTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
+    [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
+    [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
-    [self hideServerOptionsContainer:YES];
+    [self hideCustomServers:YES];
     
     // The view controller dismiss itself on successful login.
     self.delegate = self;
@@ -133,6 +141,12 @@
 
 - (void)setAuthType:(MXKAuthenticationType)authType
 {
+    if (self.authType == MXKAuthenticationTypeRegister)
+    {
+        // Restore the default registration screen
+        [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:YES];
+    }
+    
     super.authType = authType;
     
     // Check a potential stored error.
@@ -197,6 +211,9 @@
     {
         // The right bar button is used to cancel the running request.
         self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
+
+        // Remove the potential back button.
+        self.mainNavigationItem.leftBarButtonItem = nil;
     }
     else
     {
@@ -208,6 +225,13 @@
         else if (self.authType == MXKAuthenticationTypeRegister)
         {
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
+            
+            // Restore the back button
+            if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+            {
+                AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+                [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:authInputsview.thirdPartyIdentifiersHidden];
+            }
         }
         else if (self.authType == MXKAuthenticationTypeForgotPassword)
         {
@@ -219,9 +243,9 @@
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    if (sender == self.serverOptionsTickButton)
+    if (sender == self.customServersTickButton)
     {
-        [self hideServerOptionsContainer:!self.serverOptionsContainer.hidden];
+        [self hideCustomServers:!self.customServersContainer.hidden];
     }
     else if (sender == self.forgotPasswordButton)
     {
@@ -247,39 +271,80 @@
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
         }
     }
+    else if (sender == self.mainNavigationItem.leftBarButtonItem)
+    {
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        {
+            AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+            
+            // Hide the supported 3rd party ids which may be added to the account
+            authInputsview.thirdPartyIdentifiersHidden = YES;
+            
+            [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:YES];
+        }
+    }
     else if (sender == self.submitButton)
     {
-        // Check whether the user should set an email
-        if (self.authInputsView.shouldPromptUserForEmailAddress)
+        // Handle here the second screen used to manage the 3rd party ids during the registration.
+        if (self.authType == MXKAuthenticationTypeRegister)
         {
-            [self dismissKeyboard];
-            
-            if (alert)
+            // Sanity check
+            if ([self.authInputsView isKindOfClass:AuthInputsView.class])
             {
-                [alert dismiss:NO];
+                AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+                
+                // Show the 3rd party ids screen if it is not shown yet
+                if (authInputsview.isThirdPartyIdentifiersSupported && authInputsview.isThirdPartyIdentifiersHidden)
+                {
+                    [self dismissKeyboard];
+                    
+                    [self.authenticationActivityIndicator startAnimating];
+                    
+                    // Check parameters validity
+                    NSString *errorMsg = [self.authInputsView validateParameters];
+                    if (errorMsg)
+                    {
+                        [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:errorMsg}]];
+                    }
+                    else
+                    {
+                        [self isUserNameInUse:^(BOOL isUserNameInUse) {
+                            
+                            if (isUserNameInUse)
+                            {
+                                NSLog(@"[AuthenticationVC] User name is already use");
+                                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_username_in_use"]}]];
+                            }
+                            else
+                            {
+                                [self.authenticationActivityIndicator stopAnimating];
+                                
+                                // Show the supported 3rd party ids which may be added to the account
+                                authInputsview.thirdPartyIdentifiersHidden = NO;
+                                
+                                [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];
+                            }
+                        }];
+                    }
+                    
+                    return;
+                }
             }
-            
-             __weak typeof(self) weakSelf = self;
-            
-            alert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_missing_optional_email", @"Vector", nil) style:MXKAlertStyleAlert];
-            alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->alert = nil;
-            }];
-            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->alert = nil;
-                
-                [super onButtonPressed:sender];
-            }];
-            [alert showInViewController:self];
         }
-        else
+        
+        [super onButtonPressed:sender];
+    }
+    else if (sender == self.skipButton)
+    {
+        // Reset the potential email or phone values
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
         {
-            [super onButtonPressed:sender];
+            AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+            
+            [authInputsview resetThirdPartyIdentifiers];
         }
+        
+        [super onButtonPressed:self.submitButton];
     }
     else
     {
@@ -372,26 +437,57 @@
 
 #pragma mark -
 
-- (void)refreshContentViewHeightConstraint
+- (void)updateRegistrationScreenWithThirdPartyIdentifiersHidden:(BOOL)thirdPartyIdentifiersHidden
 {
-    // Refresh content view height by considering the options container display.
-    CGRect serverOptionsContainerFrame = self.serverOptionsContainer.frame;
+    self.skipButton.hidden = thirdPartyIdentifiersHidden;
     
-    self.contentViewHeightConstraint.constant = self.optionsContainer.frame.origin.y + 10;
+    self.serverOptionsContainer.hidden = !thirdPartyIdentifiersHidden;
+    [self refreshContentViewHeightConstraint];
     
-    if (!self.optionsContainer.isHidden)
+    if (thirdPartyIdentifiersHidden)
     {
-        self.contentViewHeightConstraint.constant += serverOptionsContainerFrame.origin.y;
-        if (!self.serverOptionsContainer.isHidden)
-        {
-            self.contentViewHeightConstraint.constant += serverOptionsContainerFrame.size.height;
-        }
+        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
+        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
+        
+        self.mainNavigationItem.leftBarButtonItem = nil;
+    }
+    else
+    {
+        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_submit", @"Vector", nil) forState:UIControlStateNormal];
+        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_submit", @"Vector", nil) forState:UIControlStateHighlighted];
+        
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
+        self.mainNavigationItem.leftBarButtonItem = leftBarButtonItem;
     }
 }
 
-- (void)hideServerOptionsContainer:(BOOL)hidden
+- (void)refreshContentViewHeightConstraint
 {
-    if (self.serverOptionsContainer.isHidden == hidden)
+    // Refresh content view height by considering the options container display.
+    CGFloat constant = self.optionsContainer.frame.origin.y + 10;
+    
+    if (!self.optionsContainer.isHidden)
+    {
+        constant += self.serverOptionsContainer.frame.origin.y;
+        
+        if (!self.serverOptionsContainer.isHidden)
+        {
+            CGRect customServersContainerFrame = self.customServersContainer.frame;
+            constant += customServersContainerFrame.origin.y;
+            
+            if (!self.customServersContainer.isHidden)
+            {
+                constant += customServersContainerFrame.size.height;
+            }
+        }
+    }
+    
+    self.contentViewHeightConstraint.constant = constant;
+}
+
+- (void)hideCustomServers:(BOOL)hidden
+{
+    if (self.customServersContainer.isHidden == hidden)
     {
         return;
     }
@@ -428,11 +524,11 @@
         [self setHomeServerTextFieldText:self.defaultHomeServerUrl];
         [self setIdentityServerTextFieldText:self.defaultIdentityServerUrl];
         
-        [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
-        self.serverOptionsContainer.hidden = YES;
+        [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
+        self.customServersContainer.hidden = YES;
         
         // Refresh content view height
-        self.contentViewHeightConstraint.constant -= self.serverOptionsContainer.frame.size.height;
+        self.contentViewHeightConstraint.constant -= self.customServersContainer.frame.size.height;
     }
     else
     {
@@ -448,15 +544,15 @@
             [self setIdentityServerTextFieldText:customIdentityServerURL];
         }
         
-        [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_tick"] forState:UIControlStateNormal];
-        self.serverOptionsContainer.hidden = NO;
+        [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_tick"] forState:UIControlStateNormal];
+        self.customServersContainer.hidden = NO;
         
         // Refresh content view height
-        self.contentViewHeightConstraint.constant += self.serverOptionsContainer.frame.size.height;
+        self.contentViewHeightConstraint.constant += self.customServersContainer.frame.size.height;
 
         // Scroll to display server options
         CGPoint offset = self.authenticationScrollView.contentOffset;
-        offset.y += self.serverOptionsContainer.frame.size.height;
+        offset.y += self.customServersContainer.frame.size.height;
         self.authenticationScrollView.contentOffset = offset;
     }
 }
@@ -486,8 +582,8 @@
 
 - (void)authenticationViewController:(MXKAuthenticationViewController *)authenticationViewController didLogWithUserId:(NSString *)userId
 {
-    // Hide server options in order to save customized inputs
-    [self hideServerOptionsContainer:YES];
+    // Hide the custom server details in order to save customized inputs
+    [self hideCustomServers:YES];
     
     // Remove auth view controller on successful login
     if (self.navigationController)

@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,12 +20,22 @@
 #import "VectorDesignValues.h"
 #import "Tools.h"
 
+#import "CountryPickerViewController.h"
+#import "NBPhoneNumberUtil.h"
+
 @interface AuthInputsView ()
 {
     /**
      The current email validation
      */
     MXK3PID  *submittedEmail;
+    
+    /**
+     The current msisdn validation
+     */
+    MXK3PID  *submittedMSISDN;
+    CountryPickerViewController *phoneNumberCountryPicker;
+    NBPhoneNumber *newPhoneNumber;
     
     /**
      The set of parameters ready to use for a registration.
@@ -56,8 +67,11 @@
     self.passWordTextField.textColor = kVectorTextColorBlack;
     
     self.emailTextField.textColor = kVectorTextColorBlack;
+    self.phoneTextField.textColor = kVectorTextColorBlack;
     
     self.messageLabel.numberOfLines = 0;
+    
+    _thirdPartyIdentifiersHidden = YES;
 }
 
 - (void)destroy
@@ -65,6 +79,7 @@
     [super destroy];
     
     submittedEmail = nil;
+    submittedMSISDN = nil;
 }
 
 -(void)layoutSubviews
@@ -101,6 +116,13 @@
             submittedEmail = nil;
         }
         
+        // Cancel msisdn validation if any
+        if (submittedMSISDN)
+        {
+            [submittedMSISDN cancelCurrentRequest];
+            submittedMSISDN = nil;
+        }
+        
         // Reset external registration parameters
         externalRegistrationParameters = nil;
         
@@ -115,51 +137,17 @@
                 
                 self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
                 
-                self.userLoginContainerTopConstraint.constant = 0;
-                self.passwordContainerTopConstraint.constant = 50;
-                
                 self.userLoginContainer.hidden = NO;
                 self.passwordContainer.hidden = NO;
-                self.emailContainer.hidden = YES;
-                self.repeatPasswordContainer.hidden = YES;
+                
+                CGRect frame = self.passwordContainer.frame;
+                self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
             }
             else
             {
-                self.passWordTextField.returnKeyType = UIReturnKeyNext;
-                
-                self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
-                
-                if (self.isEmailIdentityFlowSupported)
-                {
-                    if (self.isEmailIdentityFlowRequired)
-                    {
-                        self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
-                    }
-                    else
-                    {
-                        self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
-                    }
-                    
-                    self.userLoginContainerTopConstraint.constant = 50;
-                    self.passwordContainerTopConstraint.constant = 100;
-                    
-                    self.emailContainer.hidden = NO;
-                }
-                else
-                {
-                    self.userLoginContainerTopConstraint.constant = 0;
-                    self.passwordContainerTopConstraint.constant = 50;
-                    
-                    self.emailContainer.hidden = YES;
-                }
-                
-                self.userLoginContainer.hidden = NO;
-                self.passwordContainer.hidden = NO;
-                self.repeatPasswordContainer.hidden = NO;
+                // Update the registration inputs layout by hidding third-party ids fields.
+                self.thirdPartyIdentifiersHidden = _thirdPartyIdentifiersHidden;
             }
-            
-            CGRect frame = self.repeatPasswordContainer.frame;
-            self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
             
             return YES;
         }
@@ -201,49 +189,73 @@
     }
     else if (type == MXKAuthenticationTypeRegister)
     {
-        if (!self.userLoginTextField.text.length)
+        if (self.isThirdPartyIdentifiersHidden)
         {
-            NSLog(@"[AuthInputsView] Invalid user name");
-            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
-        }
-        else if (!self.passWordTextField.text.length)
-        {
-            NSLog(@"[AuthInputsView] Missing Passwords");
-            errorMsg = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
-        }
-        else if (self.passWordTextField.text.length < 6)
-        {
-            NSLog(@"[AuthInputsView] Invalid Passwords");
-            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
-        }
-        else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
-        {
-            NSLog(@"[AuthInputsView] Passwords don't match");
-            errorMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
-        }
-        else if (self.isEmailIdentityFlowRequired && !self.emailTextField.text.length)
-        {
-            NSLog(@"[AuthInputsView] Missing email");
-            errorMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
-        }
-        else
-        {
-            // Check validity of the non empty user name
-            NSString *user = self.userLoginTextField.text;
-            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[a-z0-9.\\-_]+$" options:NSRegularExpressionCaseInsensitive error:nil];
-            
-            if ([regex firstMatchInString:user options:0 range:NSMakeRange(0, user.length)] == nil)
+            if (!self.userLoginTextField.text.length)
             {
                 NSLog(@"[AuthInputsView] Invalid user name");
                 errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
             }
-            else if (self.emailTextField.text.length)
+            else if (!self.passWordTextField.text.length)
             {
-                // Check validity of the non empty email
-                if ([MXTools isEmailAddress:self.emailTextField.text] == NO)
+                NSLog(@"[AuthInputsView] Missing Passwords");
+                errorMsg = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
+            }
+            else if (self.passWordTextField.text.length < 6)
+            {
+                NSLog(@"[AuthInputsView] Invalid Passwords");
+                errorMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
+            }
+            else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
+            {
+                NSLog(@"[AuthInputsView] Passwords don't match");
+                errorMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
+            }
+            else
+            {
+                // Check validity of the non empty user name
+                NSString *user = self.userLoginTextField.text;
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[a-z0-9.\\-_]+$" options:NSRegularExpressionCaseInsensitive error:nil];
+                
+                if ([regex firstMatchInString:user options:0 range:NSMakeRange(0, user.length)] == nil)
                 {
-                    NSLog(@"[AuthInputsView] Invalid email");
-                    errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
+                    NSLog(@"[AuthInputsView] Invalid user name");
+                    errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
+                }
+            }
+        }
+        else
+        {
+            if (self.isEmailIdentityFlowRequired && !self.emailTextField.text.length)
+            {
+                NSLog(@"[AuthInputsView] Missing email");
+                errorMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
+            }
+            else if (self.isMSISDNFlowRequired && !self.phoneTextField.text.length)
+            {
+                NSLog(@"[AuthInputsView] Missing phone");
+                errorMsg = NSLocalizedStringFromTable(@"auth_missing_phone", @"Vector", nil);
+            }
+            else
+            {
+                if (self.emailTextField.text.length)
+                {
+                    // Check validity of the non empty email
+                    if (![MXTools isEmailAddress:self.emailTextField.text])
+                    {
+                        NSLog(@"[AuthInputsView] Invalid email");
+                        errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
+                    }
+                }
+                
+                if (!errorMsg && newPhoneNumber)
+                {
+                    // Check validity of the non empty phone
+                    if (![[NBPhoneNumberUtil sharedInstance] isValidNumber:newPhoneNumber])
+                    {
+                        NSLog(@"[AuthInputsView] Invalid phone number");
+                        errorMsg = NSLocalizedStringFromTable(@"auth_invalid_phone", @"Vector", nil);
+                    }
                 }
             }
         }
@@ -605,16 +617,6 @@
     return YES;
 }
 
-- (BOOL)shouldPromptUserForEmailAddress
-{
-    BOOL shouldPrompt = (self.isEmailIdentityFlowSupported && !self.emailTextField.text.length);
-    
-    // Do not prompt if at least the username or a password is missing.
-    shouldPrompt = (shouldPrompt && self.userLoginTextField.text.length && self.passWordTextField.text.length && self.repeatPasswordTextField.text.length);
-    
-    return shouldPrompt;
-}
-
 - (void)dismissKeyboard
 {
     [self.userLoginTextField resignFirstResponder];
@@ -635,6 +637,153 @@
     return self.passWordTextField.text;
 }
 
+#pragma mark -
+
+- (BOOL)isThirdPartyIdentifiersSupported
+{
+    return (self.isEmailIdentityFlowSupported || self.isMSISDNFlowSupported);
+}
+
+
+- (void)setThirdPartyIdentifiersHidden:(BOOL)thirdPartyIdentifiersHidden
+{
+    [self hideInputsContainer];
+    
+    CGFloat viewHeight = 0;
+    
+    if (thirdPartyIdentifiersHidden)
+    {
+        self.passWordTextField.returnKeyType = UIReturnKeyNext;
+        
+        self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
+        
+        self.userLoginContainer.hidden = NO;
+        self.passwordContainer.hidden = NO;
+        self.repeatPasswordContainer.hidden = NO;
+        
+        viewHeight = 150;
+    }
+    else
+    {
+        if (self.isEmailIdentityFlowSupported)
+        {
+            if (self.isEmailIdentityFlowRequired)
+            {
+                self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
+            }
+            else
+            {
+                self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
+            }
+            
+            self.emailContainer.hidden = NO;
+            
+            self.messageLabel.hidden = NO;
+            self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_message", @"Vector", nil);
+            
+            viewHeight = 50;
+        }
+        
+        if (self.isMSISDNFlowSupported)
+        {
+            if (self.isMSISDNFlowRequired)
+            {
+                self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
+            }
+            else
+            {
+                self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_phone_placeholder", @"Vector", nil);
+            }
+            
+            self.phoneContainer.hidden = NO;
+            
+            if (!_emailContainer.isHidden)
+            {
+                self.emailTextField.returnKeyType = UIReturnKeyNext;
+                
+                self.phoneContainerTopConstraint.constant = 50;
+                
+                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_msisdn_message", @"Vector", nil);
+                
+                viewHeight = 100;
+            }
+            else
+            {
+                self.messageLabel.hidden = NO;
+                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_phone_message", @"Vector", nil);
+                
+                viewHeight = 50;
+            }
+        }
+        
+        if (!self.messageLabel.isHidden)
+        {
+            [self.messageLabel sizeToFit];
+            
+            CGRect frame = self.messageLabel.frame;
+            
+            CGFloat offset = frame.origin.x + frame.size.height;
+            
+            self.emailContainerTopConstraint.constant = offset;
+            self.phoneContainerTopConstraint.constant += offset;
+            viewHeight += offset;
+        }
+    }
+    
+    self.viewHeightConstraint.constant = viewHeight;
+    
+    _thirdPartyIdentifiersHidden = thirdPartyIdentifiersHidden;
+}
+
+- (IBAction)selectPhoneNumberCountry:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(authInputsView:presentViewController:)])
+    {
+        phoneNumberCountryPicker = [CountryPickerViewController countryPickerViewController];
+        phoneNumberCountryPicker.delegate = self;
+        phoneNumberCountryPicker.showCountryCallingCode = YES;
+        
+        [self.delegate authInputsView:self presentViewController:phoneNumberCountryPicker];
+    }
+}
+
+- (void)setIsoCountryCode:(NSString *)isoCountryCode
+{
+    _isoCountryCode = isoCountryCode;
+    
+    NSNumber *callingCode = [[NBPhoneNumberUtil sharedInstance] getCountryCodeForRegion:isoCountryCode];
+    
+    self.callingCodeLabel.text = [NSString stringWithFormat:@"+%@", callingCode.stringValue];
+    
+    self.isoCountryCodeLabel.text = isoCountryCode;
+    
+    // Update displayed phone
+    [self textFieldDidChange:self.phoneTextField];
+}
+
+- (void)resetThirdPartyIdentifiers
+{
+    [self dismissKeyboard];
+    
+    self.emailTextField.text = nil;
+    self.phoneTextField.text = nil;
+
+    newPhoneNumber = nil;
+}
+
+#pragma mark - MXKCountryPickerViewControllerDelegate
+
+- (void)countryPickerViewController:(MXKCountryPickerViewController *)countryPickerViewController didSelectCountry:(NSString *)isoCountryCode
+{
+    self.isoCountryCode = isoCountryCode;
+            
+    newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:self.phoneTextField.text defaultRegion:isoCountryCode error:nil];
+    [self formatNewPhoneNumber];
+    
+    [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+    phoneNumberCountryPicker = nil;
+}
+
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
@@ -650,11 +799,7 @@
     else
     {
         //"Next" key has been pressed
-        if (textField == self.emailTextField)
-        {
-            [self.userLoginTextField becomeFirstResponder];
-        }
-        else if (textField == self.userLoginTextField)
+        if (textField == self.userLoginTextField)
         {
             [self.passWordTextField becomeFirstResponder];
         }
@@ -662,9 +807,27 @@
         {
             [self.repeatPasswordTextField becomeFirstResponder];
         }
+        else if (textField == self.emailTextField)
+        {
+            [self.phoneTextField becomeFirstResponder];
+        }
     }
     
     return YES;
+}
+
+#pragma mark - TextField listener
+
+- (IBAction)textFieldDidChange:(id)sender
+{
+    UITextField* textField = (UITextField*)sender;
+    
+    if (textField == self.phoneTextField)
+    {
+        newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:self.phoneTextField.text defaultRegion:self.isoCountryCode error:nil];
+        
+        [self formatNewPhoneNumber];
+    }
 }
 
 #pragma mark -
@@ -675,11 +838,26 @@
     self.userLoginContainer.hidden = YES;
     self.passwordContainer.hidden = YES;
     self.emailContainer.hidden = YES;
+    self.phoneContainer.hidden = YES;
     self.repeatPasswordContainer.hidden = YES;
     
     // Hide other items
     self.messageLabel.hidden = YES;
     self.recaptchaWebView.hidden = YES;
+}
+
+- (void)formatNewPhoneNumber
+{
+    if (newPhoneNumber)
+    {
+        NSString *formattedNumber = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
+        NSString *prefix = self.callingCodeLabel.text;
+        if ([formattedNumber hasPrefix:prefix])
+        {
+            // Format the display phone number
+            self.phoneTextField.text = [formattedNumber substringFromIndex:prefix.length];
+        }
+    }
 }
 
 - (BOOL)displayRecaptchaForm:(void (^)(NSString *response))callback
@@ -734,6 +912,10 @@
         return YES;
     }
     else if ([flowType isEqualToString:kMXLoginFlowTypeRecaptcha])
+    {
+        return YES;
+    }
+    else if ([flowType isEqualToString:kMXLoginFlowTypeMSISDN])
     {
         return YES;
     }
@@ -893,6 +1075,54 @@
     
     return NO;
 }
+
+- (BOOL)isMSISDNFlowSupported
+{
+    if (currentSession)
+    {
+        for (MXLoginFlow *loginFlow in currentSession.flows)
+        {
+            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeMSISDN] != NSNotFound || [loginFlow.type isEqualToString:kMXLoginFlowTypeMSISDN])
+            {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (BOOL)isMSISDNFlowRequired
+{
+    if (currentSession && currentSession.flows)
+    {
+        for (MXLoginFlow *loginFlow in currentSession.flows)
+        {
+            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeMSISDN] == NSNotFound && ![loginFlow.type isEqualToString:kMXLoginFlowTypeMSISDN])
+            {
+                return NO;
+            }
+        }
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)isMSISDNFlowCompleted
+{
+    if (currentSession && currentSession.completed)
+    {
+        if ([currentSession.completed indexOfObject:kMXLoginFlowTypeMSISDN] != NSNotFound)
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 
 - (BOOL)isRecaptchaFlowRequired
 {
