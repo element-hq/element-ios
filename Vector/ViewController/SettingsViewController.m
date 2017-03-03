@@ -281,8 +281,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                [strongSelf destroy];
+                typeof(self) self = weakSelf;
+                [self destroy];
             }
             
         };
@@ -499,13 +499,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->currentAlert = nil;
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
             
-            [strongSelf stopActivityIndicator];
+            [self stopActivityIndicator];
             
             // Reset new email adding
-            strongSelf.newEmailEditingEnabled = NO;
+            self.newEmailEditingEnabled = NO;
         }
         
     }];
@@ -516,35 +516,35 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->is3PIDBindingInProgress = YES;
+            typeof(self) self = weakSelf;
+            self->is3PIDBindingInProgress = YES;
             
             // We always bind emails when registering, so let's do the same here
             [threePID add3PIDToUser:YES success:^{
                 
                 if (weakSelf)
                 {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->is3PIDBindingInProgress = NO;
+                    typeof(self) self = weakSelf;
+                    self->is3PIDBindingInProgress = NO;
                     
                     // Check whether destroy has been called during email binding
-                    if (strongSelf->onReadyToDestroyHandler)
+                    if (self->onReadyToDestroyHandler)
                     {
                         // Ready to destroy
-                        strongSelf->onReadyToDestroyHandler();
-                        strongSelf->onReadyToDestroyHandler = nil;
+                        self->onReadyToDestroyHandler();
+                        self->onReadyToDestroyHandler = nil;
                     }
                     else
                     {
-                        strongSelf->currentAlert = nil;
+                        self->currentAlert = nil;
                         
-                        [strongSelf stopActivityIndicator];
+                        [self stopActivityIndicator];
                         
                         // Reset new email adding
-                        strongSelf.newEmailEditingEnabled = NO;
+                        self.newEmailEditingEnabled = NO;
                         
                         // Update linked emails
-                        [strongSelf loadAccount3PIDs];
+                        [self loadAccount3PIDs];
                     }
                 }
                 
@@ -554,29 +554,29 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
                 if (weakSelf)
                 {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->is3PIDBindingInProgress = NO;
+                    typeof(self) self = weakSelf;
+                    self->is3PIDBindingInProgress = NO;
                     
                     // Check whether destroy has been called during email binding
-                    if (strongSelf->onReadyToDestroyHandler)
+                    if (self->onReadyToDestroyHandler)
                     {
                         // Ready to destroy
-                        strongSelf->onReadyToDestroyHandler();
-                        strongSelf->onReadyToDestroyHandler = nil;
+                        self->onReadyToDestroyHandler();
+                        self->onReadyToDestroyHandler = nil;
                     }
                     else
                     {
-                        strongSelf->currentAlert = nil;
+                        self->currentAlert = nil;
                         
                         // Display the same popup again if the error is M_THREEPID_AUTH_FAILED
                         MXError *mxError = [[MXError alloc] initWithNSError:error];
                         if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
                         {
-                            [strongSelf showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PID:strongThreePID];
+                            [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PID:strongThreePID];
                         }
                         else
                         {
-                            [strongSelf stopActivityIndicator];
+                            [self stopActivityIndicator];
                             
                             // Notify user
                             [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -606,13 +606,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->currentAlert = nil;
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
             
-            [strongSelf stopActivityIndicator];
+            [self stopActivityIndicator];
             
-            // Reset new email adding
-            strongSelf.newPhoneEditingEnabled = NO;
+            // Reset new phone adding
+            self.newPhoneEditingEnabled = NO;
         }
         
     }];
@@ -628,99 +628,138 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         UITextField *textField = [alert textFieldAtIndex:0];
         NSString *smsCode = textField.text;
         
-        if (smsCode.length && weakSelf)
+        if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->is3PIDBindingInProgress = YES;
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
             
-            [threePID submitValidationToken:smsCode success:^{
+            if (smsCode.length)
+            {
+                self->is3PIDBindingInProgress = YES;
                 
-                // We always bind the phone numbers when registering, so let's do the same here
-                [threePID add3PIDToUser:YES success:^{
+                [threePID submitValidationToken:smsCode success:^{
                     
-                    if (weakSelf)
-                    {
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-                        strongSelf->is3PIDBindingInProgress = NO;
+                    // We always bind the phone numbers when registering, so let's do the same here
+                    [threePID add3PIDToUser:YES success:^{
                         
-                        // Check whether destroy has been called during the binding
-                        if (strongSelf->onReadyToDestroyHandler)
+                        if (weakSelf)
                         {
-                            // Ready to destroy
-                            strongSelf->onReadyToDestroyHandler();
-                            strongSelf->onReadyToDestroyHandler = nil;
+                            typeof(self) self = weakSelf;
+                            self->is3PIDBindingInProgress = NO;
+                            
+                            // Check whether destroy has been called during the binding
+                            if (self->onReadyToDestroyHandler)
+                            {
+                                // Ready to destroy
+                                self->onReadyToDestroyHandler();
+                                self->onReadyToDestroyHandler = nil;
+                            }
+                            else
+                            {
+                                [self stopActivityIndicator];
+                                
+                                // Reset new phone adding
+                                self.newPhoneEditingEnabled = NO;
+                                
+                                // Update linked 3pids
+                                [self loadAccount3PIDs];
+                            }
                         }
-                        else
+                        
+                    } failure:^(NSError *error) {
+                        
+                        NSLog(@"[SettingsViewController] Failed to bind phone number");
+                        
+                        if (weakSelf)
                         {
-                            strongSelf->currentAlert = nil;
+                            typeof(self) self = weakSelf;
+                            self->is3PIDBindingInProgress = NO;
                             
-                            [strongSelf stopActivityIndicator];
-                            
-                            // Reset new phone adding
-                            strongSelf.newPhoneEditingEnabled = NO;
-                            
-                            // Update linked 3pids
-                            [strongSelf loadAccount3PIDs];
+                            // Check whether destroy has been called during phone binding
+                            if (self->onReadyToDestroyHandler)
+                            {
+                                // Ready to destroy
+                                self->onReadyToDestroyHandler();
+                                self->onReadyToDestroyHandler = nil;
+                            }
+                            else
+                            {
+                                [self stopActivityIndicator];
+                                
+                                // Notify user
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                            }
                         }
-                    }
+                        
+                    }];
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[SettingsViewController] Failed to bind phone number");
+                    NSLog(@"[SettingsViewController] Failed to submit the sms token");
                     
                     if (weakSelf)
                     {
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-                        strongSelf->is3PIDBindingInProgress = NO;
+                        typeof(self) self = weakSelf;
+                        self->is3PIDBindingInProgress = NO;
                         
                         // Check whether destroy has been called during phone binding
-                        if (strongSelf->onReadyToDestroyHandler)
+                        if (self->onReadyToDestroyHandler)
                         {
                             // Ready to destroy
-                            strongSelf->onReadyToDestroyHandler();
-                            strongSelf->onReadyToDestroyHandler = nil;
+                            self->onReadyToDestroyHandler();
+                            self->onReadyToDestroyHandler = nil;
                         }
                         else
                         {
-                            strongSelf->currentAlert = nil;
+                            // Ignore connection cancellation error
+                            if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                            {
+                                [self stopActivityIndicator];
+                                return;
+                            }
                             
-                            [strongSelf stopActivityIndicator];
+                            // Alert user
+                            NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+                            NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+                            if (!title)
+                            {
+                                if (msg)
+                                {
+                                    title = msg;
+                                    msg = nil;
+                                }
+                                else
+                                {
+                                    title = [NSBundle mxk_localizedStringForKey:@"error"];
+                                }
+                            }
                             
-                            // Notify user
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                            self->currentAlert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+                            self->currentAlert.cancelButtonIndex = [self->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                
+                                if (weakSelf)
+                                {
+                                    typeof(self) self = weakSelf;
+                                    self->currentAlert = nil;
+                                    
+                                    // Ask again the sms token
+                                    [self showValidationMsisdnDialogWithMessage:message for3PID:threePID];
+                                }
+                                
+                            }];
+                            
+                            self->currentAlert.mxkAccessibilityIdentifier = @"SettingsVCErrorAlert";
+                            [self->currentAlert showInViewController:self];
                         }
                     }
                     
                 }];
-                
-            } failure:^(NSError *error) {
-                
-                NSLog(@"[SettingsViewController] Failed to submit the sms token");
-                
-                if (weakSelf)
-                {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->is3PIDBindingInProgress = NO;
-                    
-                    // Check whether destroy has been called during phone binding
-                    if (strongSelf->onReadyToDestroyHandler)
-                    {
-                        // Ready to destroy
-                        strongSelf->onReadyToDestroyHandler();
-                        strongSelf->onReadyToDestroyHandler = nil;
-                    }
-                    else
-                    {
-                        strongSelf->currentAlert = nil;
-                        
-                        [strongSelf stopActivityIndicator];
-                        
-                        // Notify user
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
-                    }
-                }
-                
-            }];
+            }
+            else
+            {
+                // Ask again the sms token
+                [self showValidationMsisdnDialogWithMessage:message for3PID:threePID];
+            }
         }
         
     }];
@@ -1876,20 +1915,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
                 [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->currentAlert = nil;
+                    typeof(self) self = weakSelf;
+                    self->currentAlert = nil;
 
                     MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
 
                     // Remove the member from the ignored user list
-                    [strongSelf startActivityIndicator];
+                    [self startActivityIndicator];
                     [session unIgnoreUsers:@[ignoredUserId] success:^{
 
-                        [strongSelf stopActivityIndicator];
+                        [self stopActivityIndicator];
 
                     } failure:^(NSError *error) {
 
-                        [strongSelf stopActivityIndicator];
+                        [self stopActivityIndicator];
 
                         NSLog(@"[ContactDetailsViewController] Unignore %@ failed", ignoredUserId);
 
@@ -1901,8 +1940,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
                 currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
 
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->currentAlert = nil;
+                    typeof(self) self = weakSelf;
+                    self->currentAlert = nil;
                     
                 }];
                 
@@ -2035,13 +2074,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->currentAlert = nil;
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
 
             // Feedback: disable button and run activity indicator
             UIButton *button = (UIButton*)sender;
             button.enabled = NO;
-            [strongSelf startActivityIndicator];
+            [self startActivityIndicator];
 
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 
@@ -2055,8 +2094,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->currentAlert = nil;
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
         }
     }];
 
@@ -2123,8 +2162,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                                           
                                                                           if (weakSelf)
                                                                           {
-                                                                              __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                                                              strongSelf->currentAlert = nil;
+                                                                              typeof(self) self = weakSelf;
+                                                                              self->currentAlert = nil;
                                                                           }
                                                                           
                                                                       }];
@@ -2135,21 +2174,21 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                          
                                          if (weakSelf)
                                          {
-                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                             strongSelf->currentAlert = nil;
+                                             typeof(self) self = weakSelf;
+                                             self->currentAlert = nil;
                                              
-                                             [strongSelf startActivityIndicator];
+                                             [self startActivityIndicator];
                                              
-                                             [strongSelf.mainSession.matrixRestClient remove3PID:address medium:medium success:^{
+                                             [self.mainSession.matrixRestClient remove3PID:address medium:medium success:^{
                                                  
                                                  if (weakSelf)
                                                  {
-                                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                     typeof(self) self = weakSelf;
                                                      
-                                                     [strongSelf stopActivityIndicator];
+                                                     [self stopActivityIndicator];
                                                      
                                                      // Update linked 3pids
-                                                     [strongSelf loadAccount3PIDs];
+                                                     [self loadAccount3PIDs];
                                                  }
                                                  
                                              } failure:^(NSError *error) {
@@ -2157,9 +2196,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                  NSLog(@"[SettingsViewController] Remove 3PID: %@ failed", address);
                                                  if (weakSelf)
                                                  {
-                                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                     typeof(self) self = weakSelf;
                                                      
-                                                     [strongSelf stopActivityIndicator];
+                                                     [self stopActivityIndicator];
                                                      
                                                      // Notify user
                                                      [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -2191,8 +2230,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
             
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->currentAlert = nil;
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
             
         }];
         
@@ -2280,8 +2319,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
                 if (weakSelf)
                 {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->currentAlert = nil;
+                    typeof(self) self = weakSelf;
+                    self->currentAlert = nil;
                 }
                 
                 // Reset toggle button
@@ -2293,11 +2332,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
                 if (weakSelf)
                 {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->currentAlert = nil;
+                    typeof(self) self = weakSelf;
+                    self->currentAlert = nil;
                     
                     switchButton.enabled = NO;
-                    [strongSelf startActivityIndicator];
+                    [self startActivityIndicator];
                     
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                         
@@ -2445,6 +2484,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         return;
     }
     
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     [self startActivityIndicator];
     isSavingInProgress = YES;
     __weak typeof(self) weakSelf = self;
@@ -2460,11 +2500,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (weakSelf)
             {
                 // Update the current displayname
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->newDisplayName = nil;
+                typeof(self) self = weakSelf;
+                self->newDisplayName = nil;
                 
                 // Go to the next change saving step
-                [strongSelf onSave:nil];
+                [self onSave:nil];
             }
             
         } failure:^(NSError *error) {
@@ -2473,8 +2513,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                [strongSelf handleErrorDuringProfileChangeSaving:error];
+                typeof(self) self = weakSelf;
+                [self handleErrorDuringProfileChangeSaving:error];
             }
             
         }];
@@ -2494,12 +2534,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                typeof(self) self = weakSelf;
                 
                 // Store uploaded picture url and trigger picture saving
-                strongSelf->uploadedAvatarURL = url;
-                strongSelf->newAvatarImage = nil;
-                [strongSelf onSave:nil];
+                self->uploadedAvatarURL = url;
+                self->newAvatarImage = nil;
+                [self onSave:nil];
             }
             
             
@@ -2509,8 +2549,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                [strongSelf handleErrorDuringProfileChangeSaving:error];
+                typeof(self) self = weakSelf;
+                [self handleErrorDuringProfileChangeSaving:error];
             }
             
         }];
@@ -2524,9 +2564,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                  
                                  if (weakSelf)
                                  {
-                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                     strongSelf->uploadedAvatarURL = nil;
-                                     [strongSelf onSave:nil];
+                                     typeof(self) self = weakSelf;
+                                     self->uploadedAvatarURL = nil;
+                                     [self onSave:nil];
                                  }
                                  
                              }
@@ -2536,8 +2576,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                 
                                  if (weakSelf)
                                  {
-                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                     [strongSelf handleErrorDuringProfileChangeSaving:error];
+                                     typeof(self) self = weakSelf;
+                                     [self handleErrorDuringProfileChangeSaving:error];
                                  }
                                  
                              }];
@@ -2585,19 +2625,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                typeof(self) self = weakSelf;
                 
-                strongSelf->currentAlert = nil;
+                self->currentAlert = nil;
                 
                 // Reset the updated displayname
-                strongSelf->newDisplayName = nil;
+                self->newDisplayName = nil;
                 
                 // Discard picture change
-                strongSelf->uploadedAvatarURL = nil;
-                strongSelf->newAvatarImage = nil;
+                self->uploadedAvatarURL = nil;
+                self->newAvatarImage = nil;
                 
                 // Loop to end saving
-                [strongSelf onSave:nil];
+                [self onSave:nil];
             }
             
         }];
@@ -2606,12 +2646,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                typeof(self) self = weakSelf;
                 
-                strongSelf->currentAlert = nil;
+                self->currentAlert = nil;
                 
                 // Loop to retry saving
-                [strongSelf onSave:nil];
+                [self onSave:nil];
             }
             
         }];
@@ -2645,9 +2685,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                typeof(self) self = weakSelf;
                 
-                strongSelf->currentAlert = nil;
+                self->currentAlert = nil;
             }
             
         }];
@@ -2702,9 +2742,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                typeof(self) self = weakSelf;
                 
-                strongSelf->currentAlert = nil;
+                self->currentAlert = nil;
             }
             
         }];
@@ -2952,14 +2992,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            typeof(self) self = weakSelf;
             
-            strongSelf->resetPwdAlertController = nil;
+            self->resetPwdAlertController = nil;
             
             if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
             {
-                [strongSelf startActivityIndicator];
-                strongSelf->isResetPwdInProgress = YES;
+                [self startActivityIndicator];
+                self->isResetPwdInProgress = YES;
                 
                 MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
                 
@@ -2967,45 +3007,45 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     
                     if (weakSelf)
                     {
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        typeof(self) self = weakSelf;
                         
-                        strongSelf->isResetPwdInProgress = NO;
-                        [strongSelf stopActivityIndicator];
+                        self->isResetPwdInProgress = NO;
+                        [self stopActivityIndicator];
                         
                         // Display a successful message only if the settings screen is still visible (destroy is not called yet)
-                        if (!strongSelf->onReadyToDestroyHandler)
+                        if (!self->onReadyToDestroyHandler)
                         {
-                            [strongSelf->currentAlert dismiss:NO];
+                            [self->currentAlert dismiss:NO];
                             
-                            strongSelf->currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) style:MXKAlertStyleAlert];
+                            self->currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) style:MXKAlertStyleAlert];
                             
-                            strongSelf->currentAlert.cancelButtonIndex = [strongSelf->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                            self->currentAlert.cancelButtonIndex = [self->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                                 
                                 if (weakSelf)
                                 {
-                                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                    typeof(self) self = weakSelf;
                                     
-                                    strongSelf->currentAlert = nil;
+                                    self->currentAlert = nil;
                                     
                                     // Check whether destroy has been called durign pwd change
-                                    if (strongSelf->onReadyToDestroyHandler)
+                                    if (self->onReadyToDestroyHandler)
                                     {
                                         // Ready to destroy
-                                        strongSelf->onReadyToDestroyHandler();
-                                        strongSelf->onReadyToDestroyHandler = nil;
+                                        self->onReadyToDestroyHandler();
+                                        self->onReadyToDestroyHandler = nil;
                                     }
                                 }
                                 
                             }];
                             
-                            strongSelf->currentAlert.mxkAccessibilityIdentifier = @"SettingsVCOnPasswordUpdatedAlert";
-                            [strongSelf->currentAlert showInViewController:strongSelf];
+                            self->currentAlert.mxkAccessibilityIdentifier = @"SettingsVCOnPasswordUpdatedAlert";
+                            [self->currentAlert showInViewController:self];
                         }
                         else
                         {
                             // Ready to destroy
-                            strongSelf->onReadyToDestroyHandler();
-                            strongSelf->onReadyToDestroyHandler = nil;
+                            self->onReadyToDestroyHandler();
+                            self->onReadyToDestroyHandler = nil;
                         }
                     }
                     
@@ -3013,39 +3053,39 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     
                     if (weakSelf)
                     {
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        typeof(self) self = weakSelf;
                         
-                        strongSelf->isResetPwdInProgress = NO;
-                        [strongSelf stopActivityIndicator];
+                        self->isResetPwdInProgress = NO;
+                        [self stopActivityIndicator];
                         
                         // Display a failure message on the current screen
                         UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
                         if (rootViewController)
                         {
-                            [strongSelf->currentAlert dismiss:NO];
-                            strongSelf->currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) style:MXKAlertStyleAlert];
+                            [self->currentAlert dismiss:NO];
+                            self->currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) style:MXKAlertStyleAlert];
                             
-                            strongSelf->currentAlert.cancelButtonIndex = [strongSelf->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                            self->currentAlert.cancelButtonIndex = [self->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                                 
                                 if (weakSelf)
                                 {
-                                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                    typeof(self) self = weakSelf;
                                     
-                                    strongSelf->currentAlert = nil;
+                                    self->currentAlert = nil;
                                     
                                     // Check whether destroy has been called durign pwd change
-                                    if (strongSelf->onReadyToDestroyHandler)
+                                    if (self->onReadyToDestroyHandler)
                                     {
                                         // Ready to destroy
-                                        strongSelf->onReadyToDestroyHandler();
-                                        strongSelf->onReadyToDestroyHandler = nil;
+                                        self->onReadyToDestroyHandler();
+                                        self->onReadyToDestroyHandler = nil;
                                     }
                                 }
                                 
                             }];
                             
-                            strongSelf->currentAlert.mxkAccessibilityIdentifier = @"SettingsVCPasswordChangeFailedAlert";
-                            [strongSelf->currentAlert showInViewController:rootViewController];
+                            self->currentAlert.mxkAccessibilityIdentifier = @"SettingsVCPasswordChangeFailedAlert";
+                            [self->currentAlert showInViewController:rootViewController];
                         }
                     }
                     
@@ -3063,9 +3103,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            typeof(self) self = weakSelf;
             
-            strongSelf->resetPwdAlertController = nil;
+            self->resetPwdAlertController = nil;
         }
         
     }];
@@ -3074,12 +3114,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            typeof(self) self = weakSelf;
             
-            strongSelf->currentPasswordTextField = textField;
-            strongSelf->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
-            strongSelf->currentPasswordTextField.secureTextEntry = YES;
-            [strongSelf->currentPasswordTextField addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+            self->currentPasswordTextField = textField;
+            self->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
+            self->currentPasswordTextField.secureTextEntry = YES;
+            [self->currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
          
      }];
@@ -3088,12 +3128,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            typeof(self) self = weakSelf;
             
-            strongSelf->newPasswordTextField1 = textField;
-            strongSelf->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
-            strongSelf->newPasswordTextField1.secureTextEntry = YES;
-            [strongSelf->newPasswordTextField1 addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+            self->newPasswordTextField1 = textField;
+            self->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
+            self->newPasswordTextField1.secureTextEntry = YES;
+            [self->newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
         
     }];
@@ -3102,12 +3142,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (weakSelf)
         {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            typeof(self) self = weakSelf;
             
-            strongSelf->newPasswordTextField2 = textField;
-            strongSelf->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
-            strongSelf->newPasswordTextField2.secureTextEntry = YES;
-            [strongSelf->newPasswordTextField2 addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+            self->newPasswordTextField2 = textField;
+            self->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
+            self->newPasswordTextField2.secureTextEntry = YES;
+            [self->newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
     }];
 
