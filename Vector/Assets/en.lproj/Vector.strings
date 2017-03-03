@@ -71,14 +71,19 @@
 "auth_missing_password" = "Missing password";
 "auth_add_email_message" = "Add an email address to your account to let users discover you, and let you reset passwords.";
 "auth_add_phone_message" = "Add a phone number to your account to let users discover you, and let you reset passwords.";
-"auth_add_email_phone_message" = "Add an email address and a phone number to your account to let users discover you, and let you reset passwords.";
+"auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you, and let you reset passwords.";
+"auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you, and let you reset passwords.";
 "auth_missing_email" = "Missing email address";
 "auth_missing_phone" = "Missing phone number";
+"auth_missing_email_or_phone" = "Missing email address or phone number";
 "auth_password_dont_match" = "Passwords don't match";
 "auth_username_in_use" = "Username in use";
 "auth_forgot_password" = "Forgot password?";
 "auth_use_server_options" = "Use custom server options (advanced)";
 "auth_email_validation_message" = "Please check your email to continue registration";
+"auth_msisdn_validation_title" = "Verification Pending";
+"auth_msisdn_validation_message" = "We\'ve sent an SMS with an activation code. Please enter this code below.";
+"auth_msisdn_validation_error" = "Unable to verify phone number.";
 "auth_recaptcha_message" = "This Home Server would like to make sure you are not a robot";
 "auth_reset_password_message" = "To reset your password, enter the email address linked to your account:";
 "auth_reset_password_missing_email" = "The email address linked to your account must be entered.";
@@ -88,6 +93,7 @@
 "auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
 "auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
+"auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
 
 // Chat creation
 "room_creation_title" = "New Chat";
