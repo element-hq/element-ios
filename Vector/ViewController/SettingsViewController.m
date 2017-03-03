@@ -40,7 +40,8 @@
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
-enum {
+enum
+{
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
@@ -54,33 +55,45 @@ enum {
     SETTINGS_SECTION_COUNT
 };
 
-#define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
-#define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
-//#define NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX     1
-//#define NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX  2
-//#define NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX                  3
-//#define NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX             4
-//#define NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX           5
-//#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX             6
-#define NOTIFICATION_SETTINGS_COUNT                             2
+enum
+{
+    NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
+    NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
+    //NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX,
+    //NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX,
+    //NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX,
+    //NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX,
+    //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
+    //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
+    NOTIFICATION_SETTINGS_COUNT
+};
 
-#define OTHER_VERSION_INDEX          0
-#define OTHER_OLM_VERSION_INDEX      1
-#define OTHER_COPYRIGHT_INDEX        2
-#define OTHER_TERM_CONDITIONS_INDEX  3
-#define OTHER_PRIVACY_INDEX          4
-#define OTHER_THIRD_PARTY_INDEX      5
-#define OTHER_CRASH_REPORT_INDEX     6
-#define OTHER_MARK_ALL_AS_READ_INDEX 7
-#define OTHER_CLEAR_CACHE_INDEX      8
-#define OTHER_COUNT                  9
+enum
+{
+    OTHER_VERSION_INDEX = 0,
+    OTHER_OLM_VERSION_INDEX,
+    OTHER_COPYRIGHT_INDEX,
+    OTHER_TERM_CONDITIONS_INDEX,
+    OTHER_PRIVACY_INDEX,
+    OTHER_THIRD_PARTY_INDEX,
+    OTHER_CRASH_REPORT_INDEX,
+    OTHER_MARK_ALL_AS_READ_INDEX,
+    OTHER_CLEAR_CACHE_INDEX,
+    OTHER_COUNT
+};
 
-#define LABS_CRYPTO_INDEX            0
-#define LABS_COUNT                   1
+enum
+{
+    LABS_CRYPTO_INDEX = 0,
+    LABS_COUNT
+};
 
-#define CRYPTOGRAPHY_INFO_INDEX      0
-#define CRYPTOGRAPHY_EXPORT_INDEX    1
-#define CRYPTOGRAPHY_COUNT           2
+enum {
+    CRYPTOGRAPHY_INFO_INDEX = 0,
+    CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX,
+    CRYPTOGRAPHY_EXPORT_INDEX,
+    CRYPTOGRAPHY_COUNT
+};
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
@@ -1665,6 +1678,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             cell = cryptoCell;
         }
+        else if (row == CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = account.mxSession.crypto.globalBlacklistUnverifiedDevices;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
         else if (row == CRYPTOGRAPHY_EXPORT_INDEX)
         {
             MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -2355,6 +2380,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }];
         }
     }
+}
+
+- (void)toggleBlacklistUnverifiedDevices:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    account.mxSession.crypto.globalBlacklistUnverifiedDevices = switchButton.on;
+
+    [self.tableView reloadData];
 }
 
 - (void)markAllAsRead:(id)sender
