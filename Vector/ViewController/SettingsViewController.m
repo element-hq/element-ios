@@ -2454,6 +2454,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         return;
     }
     
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     [self startActivityIndicator];
     isSavingInProgress = YES;
     __weak typeof(self) weakSelf = self;
