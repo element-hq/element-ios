@@ -2380,15 +2380,29 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     roomEncryptionSwitch = nil;
                 }
 
-                // For the switch value, use first the changed value made by the user, then the value used by the crypto
+                // For the switch value, use by order:
+                // - the MXCrypto.globalBlacklistUnverifiedDevices if its value is YES
+                //   In this case, the switch is disabled.
+                // - the changed value made by the user
+                // - the value used by the crypto
                 BOOL blacklistUnverifiedDevices;
-                if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
+                if (mxRoom.mxSession.crypto.globalBlacklistUnverifiedDevices)
                 {
-                    blacklistUnverifiedDevices = [((NSNumber*)updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey]) boolValue];
+                    blacklistUnverifiedDevices = YES;
+                    roomEncryptionBlacklistUnverifiedDevicesSwitch.enabled = NO;
                 }
                 else
                 {
-                    blacklistUnverifiedDevices = [mxRoom.mxSession.crypto isBlacklistUnverifiedDevicesInRoom:mxRoom.roomId];
+                    roomEncryptionBlacklistUnverifiedDevicesSwitch.enabled = YES;
+
+                    if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
+                    {
+                        blacklistUnverifiedDevices = [((NSNumber*)updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey]) boolValue];
+                    }
+                    else
+                    {
+                        blacklistUnverifiedDevices = [mxRoom.mxSession.crypto isBlacklistUnverifiedDevicesInRoom:mxRoom.roomId];
+                    }
                 }
 
                 roomEncryptionBlacklistUnverifiedDevicesSwitch.on = blacklistUnverifiedDevices;
