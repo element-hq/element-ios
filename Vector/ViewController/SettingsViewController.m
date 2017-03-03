@@ -631,6 +631,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
+            self->currentAlert = nil;
             
             if (smsCode.length)
             {
@@ -655,8 +656,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                             }
                             else
                             {
-                                self->currentAlert = nil;
-                                
                                 [self stopActivityIndicator];
                                 
                                 // Reset new phone adding
@@ -685,8 +684,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                             }
                             else
                             {
-                                self->currentAlert = nil;
-                                
                                 [self stopActivityIndicator];
                                 
                                 // Notify user
@@ -714,12 +711,45 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                         }
                         else
                         {
-                            self->currentAlert = nil;
+                            // Ignore connection cancellation error
+                            if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                            {
+                                [self stopActivityIndicator];
+                                return;
+                            }
                             
-                            [self stopActivityIndicator];
+                            // Alert user
+                            NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+                            NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+                            if (!title)
+                            {
+                                if (msg)
+                                {
+                                    title = msg;
+                                    msg = nil;
+                                }
+                                else
+                                {
+                                    title = [NSBundle mxk_localizedStringForKey:@"error"];
+                                }
+                            }
                             
-                            // Notify user
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                            self->currentAlert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+                            self->currentAlert.cancelButtonIndex = [self->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                
+                                if (weakSelf)
+                                {
+                                    typeof(self) self = weakSelf;
+                                    self->currentAlert = nil;
+                                    
+                                    // Ask again the sms token
+                                    [self showValidationMsisdnDialogWithMessage:message for3PID:threePID];
+                                }
+                                
+                            }];
+                            
+                            self->currentAlert.mxkAccessibilityIdentifier = @"SettingsVCErrorAlert";
+                            [self->currentAlert showInViewController:self];
                         }
                     }
                     
