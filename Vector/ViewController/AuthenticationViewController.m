@@ -294,7 +294,7 @@
                 AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
                 
                 // Show the 3rd party ids screen if it is not shown yet
-                if (authInputsview.isThirdPartyIdentifiersSupported && authInputsview.isThirdPartyIdentifiersHidden)
+                if (authInputsview.areThirdPartyIdentifiersSupported && authInputsview.isThirdPartyIdentifiersHidden)
                 {
                     [self dismissKeyboard];
                     
@@ -320,6 +320,9 @@
                                 [self.authenticationActivityIndicator stopAnimating];
                                 
                                 // Show the supported 3rd party ids which may be added to the account
+                                // Retrieve the MCC from the SIM card information (Note: the phone book country code is not defined yet)
+                                authInputsview.isoCountryCode = [MXKAppSettings standardAppSettings].phonebookCountryCode;
+                                authInputsview.delegate = self;
                                 authInputsview.thirdPartyIdentifiersHidden = NO;
                                 
                                 [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];
@@ -417,6 +420,35 @@
     {
         [super onFailureDuringAuthRequest:error];
     }
+}
+
+- (void)onSuccessfulLogin:(MXCredentials*)credentials
+{
+    // Check whether a third party identifiers has not been used
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+        if (authInputsview.isThirdPartyIdentifierPending)
+        {
+            // Alert user
+            if (alert)
+            {
+                [alert dismiss:NO];
+            }
+            
+            alert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_add_email_and_phone_warning", @"Vector", nil) style:MXKAlertStyleAlert];
+            
+            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert)
+             {
+                 [super onSuccessfulLogin:credentials];
+             }];
+            
+            [alert showInViewController:self];
+            return;
+        }
+    }
+    
+    [super onSuccessfulLogin:credentials];
 }
 
 - (void)updateForgotPwdButtonVisibility
@@ -596,6 +628,20 @@
         // Dismiss on successful login
         [self dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+#pragma mark - MXKAuthInputsViewDelegate
+
+- (void)authInputsView:(MXKAuthInputsView *)authInputsView presentViewController:(UIViewController*)viewControllerToPresent
+{
+    [self dismissKeyboard];
+    
+    [self presentViewController:viewControllerToPresent animated:YES completion:nil];
+}
+
+- (void)authInputsViewDidCancelOperation:(MXKAuthInputsView *)authInputsView
+{
+    [self cancel];
 }
 
 @end

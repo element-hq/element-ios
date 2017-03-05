@@ -53,13 +53,28 @@
 /**
  Tell whether some third-party identifiers may be added during the account registration.
  */
-@property (nonatomic, readonly) BOOL isThirdPartyIdentifiersSupported;
+@property (nonatomic, readonly) BOOL areThirdPartyIdentifiersSupported;
+
+/**
+ Tell whether at least one third-party identifier is required to create a new account.
+ */
+@property (nonatomic, readonly) BOOL isThirdPartyIdentifierRequired;
+
+/**
+ Tell whether all the supported third-party identifiers are required to create a new account.
+ */
+@property (nonatomic, readonly) BOOL areAllThirdPartyIdentifiersRequired;
 
 /**
  Update the registration inputs layout by hidding the third-party identifiers fields (YES by default).
  Set NO to show these fields and hide the others.
  */
 @property (nonatomic, getter=isThirdPartyIdentifiersHidden) BOOL thirdPartyIdentifiersHidden;
+
+/**
+ Tell whether a second third-party identifier is waiting for being added to the new account.
+ */
+@property (nonatomic, readonly) BOOL isThirdPartyIdentifierPending;
 
 /**
  The current selected country code

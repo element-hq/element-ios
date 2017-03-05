@@ -34,6 +34,7 @@
      The current msisdn validation
      */
     MXK3PID  *submittedMSISDN;
+    UINavigationController *phoneNumberPickerNavigationController;
     CountryPickerViewController *phoneNumberCountryPicker;
     NBPhoneNumber *newPhoneNumber;
     
@@ -42,6 +43,11 @@
      */
     NSDictionary *externalRegistrationParameters;
 }
+
+/**
+ The current view container displayed at last position.
+ */
+@property (nonatomic) UIView *currentLastContainer;
 
 @end
 
@@ -72,6 +78,7 @@
     self.messageLabel.numberOfLines = 0;
     
     _thirdPartyIdentifiersHidden = YES;
+    _isThirdPartyIdentifierPending = NO;
 }
 
 - (void)destroy
@@ -86,18 +93,10 @@
 {
     [super layoutSubviews];
     
-    CGRect lastItemFrame;
-    
-    if (self.recaptchaWebView.isHidden)
+    if (_currentLastContainer)
     {
-        lastItemFrame = self.repeatPasswordContainer.frame;
+        self.currentLastContainer = _currentLastContainer;
     }
-    else
-    {
-        lastItemFrame = self.recaptchaWebView.frame;
-    }
-    
-    self.viewHeightConstraint.constant = lastItemFrame.origin.y + lastItemFrame.size.height;
 }
 
 #pragma mark -
@@ -140,8 +139,7 @@
                 self.userLoginContainer.hidden = NO;
                 self.passwordContainer.hidden = NO;
                 
-                CGRect frame = self.passwordContainer.frame;
-                self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
+                self.currentLastContainer = self.passwordContainer;
             }
             else
             {
@@ -226,35 +224,54 @@
         }
         else
         {
-            if (self.isEmailIdentityFlowRequired && !self.emailTextField.text.length)
+            // Check email field
+            if (self.isEmailIdentityFlowSupported && !self.emailTextField.text.length)
             {
-                NSLog(@"[AuthInputsView] Missing email");
-                errorMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
-            }
-            else if (self.isMSISDNFlowRequired && !self.phoneTextField.text.length)
-            {
-                NSLog(@"[AuthInputsView] Missing phone");
-                errorMsg = NSLocalizedStringFromTable(@"auth_missing_phone", @"Vector", nil);
-            }
-            else
-            {
-                if (self.emailTextField.text.length)
+                if (self.areAllThirdPartyIdentifiersRequired)
                 {
-                    // Check validity of the non empty email
-                    if (![MXTools isEmailAddress:self.emailTextField.text])
+                    NSLog(@"[AuthInputsView] Missing email");
+                    errorMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
+                }
+                else if (self.isMSISDNFlowSupported && !self.phoneTextField.text.length && self.isThirdPartyIdentifierRequired)
+                {
+                    NSLog(@"[AuthInputsView] Missing email or phone number");
+                    errorMsg = NSLocalizedStringFromTable(@"auth_missing_email_or_phone", @"Vector", nil);
+                }
+            }
+            
+            if (!errorMsg)
+            {
+                // Check phone field
+                if (self.isMSISDNFlowSupported && !self.phoneTextField.text.length)
+                {
+                    if (self.areAllThirdPartyIdentifiersRequired)
                     {
-                        NSLog(@"[AuthInputsView] Invalid email");
-                        errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
+                        NSLog(@"[AuthInputsView] Missing phone");
+                        errorMsg = NSLocalizedStringFromTable(@"auth_missing_phone", @"Vector", nil);
                     }
                 }
                 
-                if (!errorMsg && newPhoneNumber)
+                if (!errorMsg)
                 {
-                    // Check validity of the non empty phone
-                    if (![[NBPhoneNumberUtil sharedInstance] isValidNumber:newPhoneNumber])
+                    // Check email/phone validity
+                    if (self.emailTextField.text.length)
                     {
-                        NSLog(@"[AuthInputsView] Invalid phone number");
-                        errorMsg = NSLocalizedStringFromTable(@"auth_invalid_phone", @"Vector", nil);
+                        // Check validity of the non empty email
+                        if (![MXTools isEmailAddress:self.emailTextField.text])
+                        {
+                            NSLog(@"[AuthInputsView] Invalid email");
+                            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
+                        }
+                    }
+                    
+                    if (!errorMsg && newPhoneNumber)
+                    {
+                        // Check validity of the non empty phone
+                        if (![[NBPhoneNumberUtil sharedInstance] isValidNumber:newPhoneNumber])
+                        {
+                            NSLog(@"[AuthInputsView] Invalid phone number");
+                            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_phone", @"Vector", nil);
+                        }
                     }
                 }
             }
@@ -347,9 +364,11 @@
             }
             else if (type == MXKAuthenticationTypeRegister)
             {
-                // Check whether an email has been set, and if it is not handled yet
-                if (!self.emailContainer.isHidden && self.emailTextField.text.length && !self.isEmailIdentityFlowCompleted)
+                // Check whether a phone number has been set, and if it is not handled yet
+                if (newPhoneNumber && !self.isMSISDNFlowCompleted)
                 {
+                    NSLog(@"[AuthInputsView] Prepare msisdn stage");
+                    
                     // Retrieve the REST client from delegate
                     MXRestClient *restClient;
                     
@@ -360,6 +379,65 @@
                     
                     if (restClient)
                     {
+                        // Check whether a second 3pid is available
+                        _isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && !self.isEmailIdentityFlowCompleted);
+                        
+                        // Launch msisdn validation
+                        NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
+                        NSString *msisdn;
+                        if ([e164 hasPrefix:@"+"])
+                        {
+                            msisdn = [e164 substringFromIndex:1];
+                        }
+                        else if ([e164 hasPrefix:@"00"])
+                        {
+                            msisdn = [e164 substringFromIndex:2];
+                        }
+                        submittedMSISDN = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
+                        
+                        [submittedMSISDN requestValidationTokenWithMatrixRestClient:restClient
+                                                                          nextLink:nil
+                                                                           success:^{
+                                                                               
+                                                                               [self showValidationMSISDNDialogToPrepareParameters:callback];
+                                                                               
+                                                                           } failure:^(NSError *error) {
+                                                                               
+                                                                               NSLog(@"[AuthInputsView] Failed to request msisdn token");
+                                                                               
+                                                                               // Ignore connection cancellation error
+                                                                               if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                                                                               {
+                                                                                   return;
+                                                                               }
+                                                                               
+                                                                               callback(nil);
+                                                                               
+                                                                           }];
+                        
+                        // Async response
+                        return;
+                    }
+                    NSLog(@"[AuthInputsView] Authentication failed during the msisdn stage");
+                }
+                // Check whether an email has been set, and if it is not handled yet
+                else if (!self.emailContainer.isHidden && self.emailTextField.text.length && !self.isEmailIdentityFlowCompleted)
+                {
+                    NSLog(@"[AuthInputsView] Prepare email identity stage");
+                    
+                    // Retrieve the REST client from delegate
+                    MXRestClient *restClient;
+                    
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+                    {
+                        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+                    }
+                    
+                    if (restClient)
+                    {
+                        // Check whether a second 3pid is available
+                        _isThirdPartyIdentifierPending = (newPhoneNumber && !self.isMSISDNFlowCompleted);
+                        
                         // Launch email validation
                         submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:self.emailTextField.text];
 
@@ -381,6 +459,7 @@
                                                                                               @"auth": @{@"session":currentSession.session, @"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
                                                                                               @"username": self.userLoginTextField.text,
                                                                                               @"password": self.passWordTextField.text,
+                                                                                              @"bind_msisdn": [NSNumber numberWithBool:self.isMSISDNFlowCompleted],
                                                                                               @"bind_email": @(YES)
                                                                                               };
                                                                                
@@ -408,13 +487,12 @@
                         // Async response
                         return;
                     }
-                    else if (self.isEmailIdentityFlowRequired)
-                    {
-                        NSLog(@"[AuthInputsView] Authentication failed during the email identity stage");
-                    }
+                    NSLog(@"[AuthInputsView] Authentication failed during the email identity stage");
                 }
                 else if (self.isRecaptchaFlowRequired)
                 {
+                    NSLog(@"[AuthInputsView] Prepare reCaptcha stage");
+                    
                     [self displayRecaptchaForm:^(NSString *response) {
                         
                         if (response.length)
@@ -423,6 +501,7 @@
                                                          @"auth": @{@"session":currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
                                                          @"username": self.userLoginTextField.text,
                                                          @"password": self.passWordTextField.text,
+                                                         @"bind_msisdn": [NSNumber numberWithBool:self.isMSISDNFlowCompleted],
                                                          @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
                                                          };
                             
@@ -445,6 +524,7 @@
                                    @"auth": @{@"session":currentSession.session, @"type": kMXLoginFlowTypeDummy},
                                    @"username": self.userLoginTextField.text,
                                    @"password": self.passWordTextField.text,
+                                   @"bind_msisdn": @(NO),
                                    @"bind_email": @(NO)
                                    };
                 }
@@ -470,9 +550,20 @@
         {
             currentSession.completed = completedStages;
             
-            // Check the supported use case
-            if ([completedStages indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound && self.isRecaptchaFlowRequired)
+            // Check the supported use cases
+            if ([completedStages indexOfObject:kMXLoginFlowTypeMSISDN] != NSNotFound && self.isThirdPartyIdentifierPending)
             {
+                NSLog(@"[AuthInputsView] Prepare a new third-party stage");
+                
+                // Here an email address is available, we add it to the authentication session.
+                [self prepareParameters:callback];
+                
+                return;
+            }
+            else if ([completedStages indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound && self.isRecaptchaFlowRequired)
+            {
+                NSLog(@"[AuthInputsView] Display reCaptcha stage");
+                
                 [self displayRecaptchaForm:^(NSString *response) {
                     
                     if (response.length)
@@ -493,6 +584,7 @@
                                            @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
                                            @"username": self.userLoginTextField.text,
                                            @"password": self.passWordTextField.text,
+                                           @"bind_msisdn": [NSNumber numberWithBool:self.isMSISDNFlowCompleted],
                                            @"bind_email": @(YES)
                                            };
                         }
@@ -622,9 +714,20 @@
     [self.userLoginTextField resignFirstResponder];
     [self.passWordTextField resignFirstResponder];
     [self.emailTextField resignFirstResponder];
+    [self.phoneTextField resignFirstResponder];
     [self.repeatPasswordTextField resignFirstResponder];
     
     [super dismissKeyboard];
+}
+
+- (void)dismissCountryPicker
+{
+    [phoneNumberCountryPicker withdrawViewControllerAnimated:YES completion:nil];
+    [phoneNumberCountryPicker destroy];
+    phoneNumberCountryPicker = nil;
+    
+    [phoneNumberPickerNavigationController dismissViewControllerAnimated:YES completion:nil];
+    phoneNumberPickerNavigationController = nil;
 }
 
 - (NSString*)userId
@@ -637,19 +740,98 @@
     return self.passWordTextField.text;
 }
 
+- (void)setCurrentLastContainer:(UIView*)currentLastContainer
+{
+    _currentLastContainer = currentLastContainer;
+    
+    CGRect frame = _currentLastContainer.frame;
+    self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
+}
+
 #pragma mark -
 
-- (BOOL)isThirdPartyIdentifiersSupported
+- (BOOL)areThirdPartyIdentifiersSupported
 {
     return (self.isEmailIdentityFlowSupported || self.isMSISDNFlowSupported);
 }
 
+- (BOOL)isThirdPartyIdentifierRequired
+{
+    // Check first whether some 3pids are supported
+    if (!self.areThirdPartyIdentifiersSupported)
+    {
+        return NO;
+    }
+    
+    // Check whether an account may be created without third-party identifiers.
+    for (MXLoginFlow *loginFlow in currentSession.flows)
+    {
+        if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeDummy] != NSNotFound || [loginFlow.type isEqualToString:kMXLoginFlowTypeDummy])
+        {
+            // The dummy flow is supported, the 3pid are then optional.
+            return NO;
+        }
+        
+        if ((loginFlow.stages.count == 1 && [loginFlow.stages[0] isEqualToString:kMXLoginFlowTypeRecaptcha]) || [loginFlow.type isEqualToString:kMXLoginFlowTypeRecaptcha])
+        {
+            // The recaptcha flow is supported alone, the 3pids are then optional.
+            return NO;
+        }
+        
+        if ((loginFlow.stages.count == 1 && [loginFlow.stages[0] isEqualToString:kMXLoginFlowTypePassword]) || [loginFlow.type isEqualToString:kMXLoginFlowTypePassword])
+        {
+            // The password flow is supported alone, the 3pids are then optional.
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+- (BOOL)areAllThirdPartyIdentifiersRequired
+{
+    // Check first whether some 3pids are required
+    if (!self.isThirdPartyIdentifierRequired)
+    {
+        return NO;
+    }
+    
+    BOOL isEmailIdentityFlowSupported = self.isEmailIdentityFlowSupported;
+    BOOL isMSISDNFlowSupported = self.isMSISDNFlowSupported;
+    
+    for (MXLoginFlow *loginFlow in currentSession.flows)
+    {
+        if (isEmailIdentityFlowSupported)
+        {
+            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeEmailIdentity] == NSNotFound)
+            {
+                return NO;
+            }
+            else if (isMSISDNFlowSupported)
+            {
+                if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeMSISDN] == NSNotFound)
+                {
+                    return NO;
+                }
+            }
+        }
+        else if (isMSISDNFlowSupported)
+        {
+            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeMSISDN] == NSNotFound)
+            {
+                return NO;
+            }
+        }
+    }
+    
+    return YES;
+}
 
 - (void)setThirdPartyIdentifiersHidden:(BOOL)thirdPartyIdentifiersHidden
 {
     [self hideInputsContainer];
     
-    CGFloat viewHeight = 0;
+    UIView *lastViewContainer;
     
     if (thirdPartyIdentifiersHidden)
     {
@@ -661,13 +843,13 @@
         self.passwordContainer.hidden = NO;
         self.repeatPasswordContainer.hidden = NO;
         
-        viewHeight = 150;
+        lastViewContainer = self.repeatPasswordContainer;
     }
     else
     {
         if (self.isEmailIdentityFlowSupported)
         {
-            if (self.isEmailIdentityFlowRequired)
+            if (self.isThirdPartyIdentifierRequired)
             {
                 self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
             }
@@ -681,12 +863,12 @@
             self.messageLabel.hidden = NO;
             self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_message", @"Vector", nil);
             
-            viewHeight = 50;
+            lastViewContainer = self.emailContainer;
         }
         
         if (self.isMSISDNFlowSupported)
         {
-            if (self.isMSISDNFlowRequired)
+            if (self.isThirdPartyIdentifierRequired)
             {
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
             }
@@ -703,17 +885,22 @@
                 
                 self.phoneContainerTopConstraint.constant = 50;
                 
-                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_msisdn_message", @"Vector", nil);
-                
-                viewHeight = 100;
+                if (self.areAllThirdPartyIdentifiersRequired)
+                {
+                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_and_phone_message", @"Vector", nil);
+                }
+                else
+                {
+                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_phone_message", @"Vector", nil);
+                }
             }
             else
             {
                 self.messageLabel.hidden = NO;
                 self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_phone_message", @"Vector", nil);
-                
-                viewHeight = 50;
             }
+            
+            lastViewContainer = self.phoneContainer;
         }
         
         if (!self.messageLabel.isHidden)
@@ -722,15 +909,14 @@
             
             CGRect frame = self.messageLabel.frame;
             
-            CGFloat offset = frame.origin.x + frame.size.height;
+            CGFloat offset = frame.origin.y + frame.size.height;
             
             self.emailContainerTopConstraint.constant = offset;
             self.phoneContainerTopConstraint.constant += offset;
-            viewHeight += offset;
         }
     }
     
-    self.viewHeightConstraint.constant = viewHeight;
+    self.currentLastContainer = lastViewContainer;
     
     _thirdPartyIdentifiersHidden = thirdPartyIdentifiersHidden;
 }
@@ -743,7 +929,13 @@
         phoneNumberCountryPicker.delegate = self;
         phoneNumberCountryPicker.showCountryCallingCode = YES;
         
-        [self.delegate authInputsView:self presentViewController:phoneNumberCountryPicker];
+        phoneNumberPickerNavigationController = [[UINavigationController alloc] init];
+        [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
+        
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];
+        phoneNumberCountryPicker.navigationItem.leftBarButtonItem = leftBarButtonItem;
+        
+        [self.delegate authInputsView:self presentViewController:phoneNumberPickerNavigationController];
     }
 }
 
@@ -780,8 +972,7 @@
     newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:self.phoneTextField.text defaultRegion:isoCountryCode error:nil];
     [self formatNewPhoneNumber];
     
-    [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
-    phoneNumberCountryPicker = nil;
+    [self dismissCountryPicker];
 }
 
 #pragma mark - UITextField delegate
@@ -844,6 +1035,8 @@
     // Hide other items
     self.messageLabel.hidden = YES;
     self.recaptchaWebView.hidden = YES;
+    
+    _currentLastContainer = nil;
 }
 
 - (void)formatNewPhoneNumber
@@ -889,8 +1082,7 @@
         self.messageLabel.text = NSLocalizedStringFromTable(@"auth_recaptcha_message", @"Vector", nil);
         
         self.recaptchaWebView.hidden = NO;
-        CGRect frame = self.recaptchaWebView.frame;
-        self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
+        self.currentLastContainer = self.recaptchaWebView;
         
         [self.recaptchaWebView openRecaptchaWidgetWithSiteKey:siteKey fromHomeServer:restClient.homeserver callback:callback];
         
@@ -1013,6 +1205,133 @@
     return nil;
 }
 
+- (void)showValidationMSISDNDialogToPrepareParameters:(void (^)(NSDictionary *parameters))callback
+{
+    __weak typeof(self) weakSelf = self;
+    
+    if (inputsAlert)
+    {
+        [inputsAlert dismiss:NO];
+    }
+    
+    inputsAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"auth_msisdn_validation_title", @"Vector", nil)
+                                          message:NSLocalizedStringFromTable(@"auth_msisdn_validation_message", @"Vector", nil)
+                                            style:MXKAlertStyleAlert];
+    inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+        
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            self->inputsAlert = nil;
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewDidCancelOperation:)])
+            {
+                [self.delegate authInputsViewDidCancelOperation:self];
+            }
+        }
+        
+    }];
+    
+    [inputsAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDecimalPad;
+        
+    }];
+    
+    [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"submit"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        
+        UITextField *textField = [alert textFieldAtIndex:0];
+        NSString *smsCode = textField.text;
+        
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            self->inputsAlert = nil;
+            
+            if (smsCode.length)
+            {
+                [self->submittedMSISDN submitValidationToken:smsCode success:^{
+                    
+                    // Retrieve the REST client from delegate
+                    MXRestClient *restClient;
+                    
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+                    {
+                        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+                    }
+                    
+                    NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
+                    NSDictionary *parameters;
+                    parameters = @{
+                                   @"auth": @{@"session":self->currentSession.session, @"threepid_creds": @{@"client_secret": self->submittedMSISDN.clientSecret, @"id_server": identServerURL.host, @"sid": self->submittedMSISDN.sid}, @"type": kMXLoginFlowTypeMSISDN},
+                                   @"username": self.userLoginTextField.text,
+                                   @"password": self.passWordTextField.text,
+                                   @"bind_msisdn": @(YES),
+                                   @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
+                                   };
+                    
+                    callback(parameters);
+                    
+                } failure:^(NSError *error) {
+                    
+                    NSLog(@"[AuthInputsView] Failed to submit the sms token");
+                    
+                    // Ignore connection cancellation error
+                    if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                    {
+                        return;
+                    }
+                    
+                    // Alert user
+                    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+                    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+                    if (!title)
+                    {
+                        if (msg)
+                        {
+                            title = msg;
+                            msg = nil;
+                        }
+                        else
+                        {
+                            title = [NSBundle mxk_localizedStringForKey:@"error"];
+                        }
+                    }
+                    
+                    self->inputsAlert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+                    self->inputsAlert.cancelButtonIndex = [self->inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            self->inputsAlert = nil;
+                            
+                            // Ask again for the token
+                            [self showValidationMSISDNDialogToPrepareParameters:callback];
+                        }
+                        
+                    }];
+                    
+                    self->inputsAlert.mxkAccessibilityIdentifier = @"AuthInputsViewErrorAlert";
+                    [self.delegate authInputsView:self presentMXKAlert:self->inputsAlert];
+                    
+                }];
+            }
+            else
+            {
+                // Ask again for the token
+                [self showValidationMSISDNDialogToPrepareParameters:callback];
+            }            
+        }
+        
+    }];
+    
+    inputsAlert.mxkAccessibilityIdentifier = @"AuthInputsViewMsisdnValidationAlert";
+    [self.delegate authInputsView:self presentMXKAlert:inputsAlert];
+}
+
 - (BOOL)isPasswordBasedFlowSupported
 {
     if (currentSession)
@@ -1040,24 +1359,6 @@
                 return YES;
             }
         }
-    }
-    
-    return NO;
-}
-
-- (BOOL)isEmailIdentityFlowRequired
-{
-    if (currentSession && currentSession.flows)
-    {
-        for (MXLoginFlow *loginFlow in currentSession.flows)
-        {
-            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeEmailIdentity] == NSNotFound && ![loginFlow.type isEqualToString:kMXLoginFlowTypeEmailIdentity])
-            {
-                return NO;
-            }
-        }
-        
-        return YES;
     }
     
     return NO;
@@ -1092,24 +1393,6 @@
     return NO;
 }
 
-- (BOOL)isMSISDNFlowRequired
-{
-    if (currentSession && currentSession.flows)
-    {
-        for (MXLoginFlow *loginFlow in currentSession.flows)
-        {
-            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeMSISDN] == NSNotFound && ![loginFlow.type isEqualToString:kMXLoginFlowTypeMSISDN])
-            {
-                return NO;
-            }
-        }
-        
-        return YES;
-    }
-    
-    return NO;
-}
-
 - (BOOL)isMSISDNFlowCompleted
 {
     if (currentSession && currentSession.completed)
@@ -1122,7 +1405,6 @@
     
     return NO;
 }
-
 
 - (BOOL)isRecaptchaFlowRequired
 {
