@@ -372,9 +372,9 @@
                     // Retrieve the REST client from delegate
                     MXRestClient *restClient;
                     
-                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewThirdPartyIdValidationRestClient:)])
                     {
-                        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+                        restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
                     }
                     
                     if (restClient)
@@ -428,9 +428,9 @@
                     // Retrieve the REST client from delegate
                     MXRestClient *restClient;
                     
-                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewThirdPartyIdValidationRestClient:)])
                     {
-                        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+                        restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
                     }
                     
                     if (restClient)
@@ -624,9 +624,9 @@
     
     // Retrieve the REST client from delegate
     MXRestClient *restClient;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewThirdPartyIdValidationRestClient:)])
     {
-        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+        restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
     }
     
     if (restClient)
@@ -1068,9 +1068,9 @@
     // Retrieve the REST client from delegate
     MXRestClient *restClient;
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewThirdPartyIdValidationRestClient:)])
     {
-        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+        restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
     }
     
     // Sanity check
@@ -1257,9 +1257,9 @@
                     // Retrieve the REST client from delegate
                     MXRestClient *restClient;
                     
-                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewThirdPartyIdValidationRestClient:)])
                     {
-                        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+                        restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
                     }
                     
                     NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];

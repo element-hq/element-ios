@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -188,9 +189,9 @@
             // Retrieve the REST client from delegate
             MXRestClient *restClient;
             
-            if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+            if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewThirdPartyIdValidationRestClient:)])
             {
-                restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+                restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
             }
             
             if (restClient)
