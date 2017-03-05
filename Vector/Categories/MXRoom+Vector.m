@@ -28,28 +28,37 @@
 {
     NSString* roomAvatarUrl = self.state.avatar;
     
-    // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
+    // by default consider room with 2 members as an empty
+    BOOL isEmptyRoom = self.state.members.count == 2;
+    
+    // detect if it is a room with no more than 2 members (i.e. 1:1 chat)
     if (!roomAvatarUrl)
     {
         NSString* myUserId = self.mxSession.myUser.userId;
         
         NSArray* members = self.state.members;
         
-        if (members.count < 3)
+        if (members.count == 2)
         {
             // use the member avatar only it is an active member
             for (MXRoomMember *roomMember in members)
             {
-                if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
+                if (MXMembershipJoin == roomMember.membership && ![roomMember.userId isEqualToString:myUserId])
                 {
                     roomAvatarUrl = roomMember.avatarUrl;
+                    isEmptyRoom = NO;
                     break;
                 }
             }
         }
     }
     
-    UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:self.state.roomId withDisplayName:self.vectorDisplayname];
+    // for an empty room(room with one active person) generate a solid color avatar without any text
+    NSString *avatarDisplayName = [NSString string];
+    if (roomAvatarUrl || !isEmptyRoom)
+        avatarDisplayName = self.vectorDisplayname;
+    
+    UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:self.state.roomId withDisplayName:avatarDisplayName];
     
     if (roomAvatarUrl)
     {
