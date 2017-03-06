@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -23,12 +24,14 @@
 
 @property (weak, nonatomic) IBOutlet UIView *optionsContainer;
 
+@property (weak, nonatomic) IBOutlet UIButton *skipButton;
 @property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
-@property (weak, nonatomic) IBOutlet UIButton *serverOptionsTickButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *submitButtonMinLeadingConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *serverOptionsContainer;
+@property (weak, nonatomic) IBOutlet UIButton *customServersTickButton;
+@property (weak, nonatomic) IBOutlet UIView *customServersContainer;
 @property (weak, nonatomic) IBOutlet UIView *homeServerContainer;
 @property (weak, nonatomic) IBOutlet UIView *identityServerContainer;
 

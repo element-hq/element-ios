@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Je-1y-foH" id="hCm-wd-Yup">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="SBE-PS-i6p">
@@ -38,14 +38,14 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8KD-C4-hzY">
-                        <rect key="frame" x="8" y="-0.5" width="44" height="44.5"/>
+                        <rect key="frame" x="8" y="-1" width="44" height="45"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="44" id="IXc-6F-gtQ"/>
                         </constraints>
                         <state key="normal" image="shrink_icon.png"/>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7J-Li-Rej">
-                        <rect key="frame" x="13" y="11.5" width="30" height="20.5"/>
+                        <rect key="frame" x="13" y="11" width="30" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="ioP-sM-wA4"/>
                         </constraints>
