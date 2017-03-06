@@ -69,10 +69,10 @@
 "auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";
-"auth_add_email_message" = "Add an email address to your account to let users discover you, and let you reset passwords.";
-"auth_add_phone_message" = "Add a phone number to your account to let users discover you, and let you reset passwords.";
-"auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you, and let you reset passwords.";
-"auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you, and let you reset passwords.";
+"auth_add_email_message" = "Add an email address to your account to let users discover you, and let you reset password.";
+"auth_add_phone_message" = "Add a phone number to your account to let users discover you, and let you reset password.";
+"auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you, and let you reset password.";
+"auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you, and let you reset password.";
 "auth_missing_email" = "Missing email address";
 "auth_missing_phone" = "Missing phone number";
 "auth_missing_email_or_phone" = "Missing email address or phone number";
