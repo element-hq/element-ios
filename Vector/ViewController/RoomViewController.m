@@ -3140,26 +3140,32 @@
                                                  style:MXKAlertStyleAlert];
 
         [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            typeof(self) self = weakSelf;
-            self->currentAlert = nil;
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
 
-            [self performSegueWithIdentifier:@"showUnknownDevices" sender:self];
+                [self performSegueWithIdentifier:@"showUnknownDevices" sender:self];
+            }
         }];
 
         [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            typeof(self) self = weakSelf;
-            self->currentAlert = nil;
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
 
-            // Acknowledge the existence of all devices
-            [self startActivityIndicator];
-            [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+                // Acknowledge the existence of all devices
+                [self startActivityIndicator];
+                [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
 
-                self->unknownDevices = nil;
-                [self stopActivityIndicator];
+                    self->unknownDevices = nil;
+                    [self stopActivityIndicator];
 
-                // And resend pending messages
-                [self resendAllUnsentMessages];
-            }];
+                    // And resend pending messages
+                    [self resendAllUnsentMessages];
+                }];
+            }
         }];
 
         currentAlert.mxkAccessibilityIdentifier = @"RoomVCUnknownDevicesAlert";
