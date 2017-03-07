@@ -36,9 +36,10 @@
  
  @param notification the notification message to display.
  @param onResendLinkPressed block called when user selects the resend link.
+ @param onCancelLinkPressed block called when user selects the cancel link.
  @param onIconTapGesture block called when user taps on notification icon.
  */
-- (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture;
+- (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture;
 
 /**
  Display network error.

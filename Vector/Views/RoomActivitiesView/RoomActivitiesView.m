@@ -108,21 +108,28 @@
     xibMainHeightConstraint = self.mainHeightConstraint.constant;
 }
 
-- (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
+- (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
 {
     [self reset];
 
-    if (onResendLinkPressed)
+    if (onResendLinkPressed && onCancelLinkPressed)
     {
         NSString *resendLink = NSLocalizedStringFromTable(@"room_prompt_resend", @"Vector", nil);
-        
-        NSMutableAttributedString *tappableNotif = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", notification, resendLink]];
+        NSString *cancelLink = NSLocalizedStringFromTable(@"room_prompt_cancel", @"Vector", nil);
+
+        NSString *notif = [NSString stringWithFormat:notification, resendLink, cancelLink];
+        NSMutableAttributedString *tappableNotif = [[NSMutableAttributedString alloc] initWithString:notif];
         
         objc_setAssociatedObject(self.messageTextView, "onResendLinkPressed", [onResendLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        
-        NSRange range = NSMakeRange(notification.length + 1, resendLink.length);
+        objc_setAssociatedObject(self.messageTextView, "onCancelLinkPressed", [onCancelLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+        NSRange range = [notif rangeOfString:resendLink];
         [tappableNotif addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
         [tappableNotif addAttribute:NSLinkAttributeName value:@"onResendLink" range:range];
+
+        range = [notif rangeOfString:cancelLink];
+        [tappableNotif addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
+        [tappableNotif addAttribute:NSLinkAttributeName value:@"onCancelLink" range:range];
         
         NSRange wholeString = NSMakeRange(0, tappableNotif.length);
         [tappableNotif addAttribute:NSForegroundColorAttributeName value:kVectorColorPinkRed range:wholeString];
@@ -331,6 +338,16 @@
             onResendLinkPressed ();
         }
         
+        return NO;
+    }
+    else if ([[URL absoluteString] isEqualToString:@"onCancelLink"])
+    {
+        void (^onCancelLinkPressed)(void) = objc_getAssociatedObject(self.messageTextView, "onCancelLinkPressed");
+        if (onCancelLinkPressed)
+        {
+            onCancelLinkPressed ();
+        }
+
         return NO;
     }
     else if ([[URL absoluteString] isEqualToString:@"onOngoingConferenceCallWithVoicePressed"])

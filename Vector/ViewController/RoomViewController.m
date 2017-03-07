@@ -3057,8 +3057,12 @@
                 
                 [self resendAllUnsentMessages];
                 
+            } andCancelLink:^{
+
+                [self cancelAllUnsentMessages];
+
             } andIconTapGesture:^{
-                
+
                 if (currentAlert)
                 {
                     [currentAlert dismiss:NO];
@@ -3078,20 +3082,7 @@
                 [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_delete_unsent_messages", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    
-                    // Remove unsent event ids
-                    for (NSUInteger index = 0; index < strongSelf.roomDataSource.room.outgoingMessages.count;)
-                    {
-                        MXEvent *event = strongSelf.roomDataSource.room.outgoingMessages[index];
-                        if (event.sentState == MXEventSentStateFailed)
-                        {
-                            [strongSelf.roomDataSource removeEventWithEventId:event.eventId];
-                        }
-                        else
-                        {
-                            index ++;
-                        }
-                    }
+                    [strongSelf cancelAllUnsentMessages];
                     strongSelf->currentAlert = nil;
                 }];
                 
@@ -3219,12 +3210,29 @@
     [self refreshActivitiesViewDisplay];
 }
 
+- (void)cancelAllUnsentMessages
+{
+    // Remove unsent event ids
+    for (NSUInteger index = 0; index < self.roomDataSource.room.outgoingMessages.count;)
+    {
+        MXEvent *event = self.roomDataSource.room.outgoingMessages[index];
+        if (event.sentState == MXEventSentStateFailed)
+        {
+            [self.roomDataSource removeEventWithEventId:event.eventId];
+        }
+        else
+        {
+            index ++;
+        }
+    }
+}
+
 # pragma mark - Encryption Information view
 
 - (void)showEncryptionInformation:(MXEvent *)event
 {
     [self dismissKeyboard];
-    
+
     // Remove potential existing subviews
     [self dismissTemporarySubViews];
     
