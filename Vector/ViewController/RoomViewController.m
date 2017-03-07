@@ -1,6 +1,7 @@
 /*
  Copyright 2014 OpenMarket Ltd
- 
+ Copyright 2017 Vector Creations Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -3147,23 +3148,27 @@
                                                message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
                                                  style:MXKAlertStyleAlert];
 
-        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+
+            [self performSegueWithIdentifier:@"showUnknownDevices" sender:self];
+        }];
+
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             typeof(self) self = weakSelf;
             self->currentAlert = nil;
 
             // Acknowledge the existence of all devices
             [self startActivityIndicator];
             [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+
                 self->unknownDevices = nil;
                 [self stopActivityIndicator];
-            }];
-        }];
-        
-        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            typeof(self) self = weakSelf;
-            self->currentAlert = nil;
 
-            [self performSegueWithIdentifier:@"showUnknownDevices" sender:self];
+                // And resend pending messages
+                [self resendAllUnsentMessages];
+            }];
         }];
 
         currentAlert.mxkAccessibilityIdentifier = @"RoomVCUnknownDevicesAlert";
