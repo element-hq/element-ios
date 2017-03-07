@@ -197,10 +197,11 @@
 "room_many_users_are_typing" = "%@, %@ & others are typing...";
 "room_message_placeholder" = "Type a message...";
 "room_offline_notification" = "Connectivity to the server has been lost.";
-"room_unsent_messages_notification" = "Messages not sent.";
-"room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present.";
+"room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
+"room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present. %@ or %@ now?";
 "room_ongoing_conference_call" = "Ongoing conference call. Join as %@ or %@.";
-"room_prompt_resend" = "Resend now?";
+"room_prompt_resend" = "Resend all";
+"room_prompt_cancel" = "cancel all";
 "room_resend_unsent_messages" = "Resend unsent messages";
 "room_delete_unsent_messages" = "Delete unsent messages";
 "room_event_action_copy" = "Copy";
