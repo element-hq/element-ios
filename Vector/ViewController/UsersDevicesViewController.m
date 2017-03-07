@@ -55,7 +55,9 @@
     self.title = NSLocalizedStringFromTable(@"unknown_devices_title", @"Vector", nil);
     self.accessibilityLabel=@"UsersDevicesVCTitleStaticText";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)];
-self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"UsersDevicesVCDoneButton";
+    self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"UsersDevicesVCDoneButton";
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier=@"UsersDevicesVCCancelButton";
     self.tableView.delegate = self;
     self.tableView.accessibilityIdentifier=@"UsersDevicesVCDTableView";
     self.tableView.dataSource = self;
@@ -227,6 +229,11 @@ self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"UsersDevicesVCD
         [self stopActivityIndicator];
         [self dismissViewControllerAnimated:YES completion:nil];
     }];
+}
+
+- (IBAction)onCancel:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private methods
