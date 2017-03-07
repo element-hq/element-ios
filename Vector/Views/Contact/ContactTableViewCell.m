@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -264,6 +265,19 @@
     {
         MXKEmail* email = contact.emailAddresses.firstObject;
         subLabelText = email.emailAddress;
+    }
+    else if (contact.phoneNumbers.count)
+    {
+        MXKPhoneNumber *phoneNumber = contact.phoneNumbers.firstObject;
+        
+        if (phoneNumber.nbPhoneNumber)
+        {
+            subLabelText = [[NBPhoneNumberUtil sharedInstance] format:phoneNumber.nbPhoneNumber numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
+        }
+        else
+        {
+            subLabelText = phoneNumber.textNumber;
+        }
     }
     self.contactInformationLabel.text = subLabelText;
 }
