@@ -903,53 +903,62 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     deviceView = [[DeviceView alloc] initWithDevice:device andMatrixSession:self.mainSession];
     deviceView.delegate = self;
-    
+
     // Add the view and define edge constraints
-    [self.view addSubview:deviceView];
+    [self.tableView.superview addSubview:deviceView];
+    [self.tableView.superview bringSubviewToFront:deviceView];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:deviceView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.topLayoutGuide
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:deviceView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.tableView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:deviceView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.bottomLayoutGuide
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:deviceView
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.tableView
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                     multiplier:1.0f
+                                                                       constant:0.0f];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
-                                                          attribute:NSLayoutAttributeLeading
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:deviceView
-                                                          attribute:NSLayoutAttributeLeading
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:deviceView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.tableView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                      multiplier:1.0f
+                                                                        constant:0.0f];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
-                                                          attribute:NSLayoutAttributeTrailing
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:deviceView
-                                                          attribute:NSLayoutAttributeTrailing
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    [self.view setNeedsUpdateConstraints];
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:deviceView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.tableView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    
+    [NSLayoutConstraint activateConstraints:@[topConstraint, leftConstraint, widthConstraint, heightConstraint]];
 }
 
-- (void)deviceView:(DeviceView*)deviceView presentMXKAlert:(MXKAlert*)alert
+- (void)deviceView:(DeviceView*)theDeviceView presentMXKAlert:(MXKAlert*)alert
 {
     [self dismissKeyboard];
+    
     [alert showInViewController:self];
 }
 
-- (void)deviceViewDidUpdate:(DeviceView*)deviceView
+- (void)dismissDeviceView:(MXKDeviceView *)theDeviceView didUpdate:(BOOL)isUpdated
 {
-    [self loadDevices];
+    [deviceView removeFromSuperview];
+    deviceView = nil;
+    
+    if (isUpdated)
+    {
+        [self loadDevices];
+    }
 }
 
 - (void)editNewEmailTextField
