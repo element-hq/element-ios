@@ -70,9 +70,9 @@
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";
 "auth_add_email_message" = "Add an email address to your account to let users discover you, and let you reset password.";
-"auth_add_phone_message" = "Add a phone number to your account to let users discover you, and let you reset password.";
-"auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you, and let you reset password.";
-"auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you, and let you reset password.";
+"auth_add_phone_message" = "Add a phone number to your account to let users discover you.";
+"auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you. Email address will also let you reset your password.";
+"auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you. Email address will also let you reset your password.";
 "auth_missing_email" = "Missing email address";
 "auth_missing_phone" = "Missing phone number";
 "auth_missing_email_or_phone" = "Missing email address or phone number";
