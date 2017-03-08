@@ -233,6 +233,8 @@
 		F08294681DB503FE00CEAB63 /* direct_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F08294651DB503FE00CEAB63 /* direct_icon.png */; };
 		F08294691DB503FE00CEAB63 /* direct_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F08294661DB503FE00CEAB63 /* direct_icon@2x.png */; };
 		F082946A1DB503FE00CEAB63 /* direct_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F08294671DB503FE00CEAB63 /* direct_icon@3x.png */; };
+		F083BB051E7005FD00A9B29C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BB031E7005FD00A9B29C /* Info.plist */; };
+		F083BB061E7005FD00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
 		F083C4581D9E982900E5246C /* FilesSearchCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F083C4571D9E982900E5246C /* FilesSearchCellData.m */; };
 		F083C45D1D9E9C2400E5246C /* FilesSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F083C45B1D9E9C2400E5246C /* FilesSearchTableViewCell.m */; };
 		F083C45E1D9E9C2400E5246C /* FilesSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083C45C1D9E9C2400E5246C /* FilesSearchTableViewCell.xib */; };
@@ -271,7 +273,6 @@
 		F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F094A9B21B78D8F000B1FBBF /* Main.storyboard */; };
 		F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F094A9B51B78D8F000B1FBBF /* Images.xcassets */; };
 		F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F094A9B71B78D8F000B1FBBF /* LaunchScreen.xib */; };
-		F094A9C51B78D8F000B1FBBF /* VectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9C41B78D8F000B1FBBF /* VectorTests.m */; };
 		F094AA051B78E3D400B1FBBF /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = F094AA031B78E3D400B1FBBF /* empty.mm */; };
 		F094AA061B78E3D400B1FBBF /* Vector-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F094AA041B78E3D400B1FBBF /* Vector-Defaults.plist */; };
 		F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA091B78E42600B1FBBF /* RageShakeManager.m */; };
@@ -684,6 +685,8 @@
 		F08294651DB503FE00CEAB63 /* direct_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = direct_icon.png; sourceTree = "<group>"; };
 		F08294661DB503FE00CEAB63 /* direct_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "direct_icon@2x.png"; sourceTree = "<group>"; };
 		F08294671DB503FE00CEAB63 /* direct_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "direct_icon@3x.png"; sourceTree = "<group>"; };
+		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F083BB041E7005FD00A9B29C /* RiotTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotTests.m; sourceTree = "<group>"; };
 		F083C4561D9E982900E5246C /* FilesSearchCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchCellData.h; sourceTree = "<group>"; };
 		F083C4571D9E982900E5246C /* FilesSearchCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesSearchCellData.m; sourceTree = "<group>"; };
 		F083C45A1D9E9C2400E5246C /* FilesSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchTableViewCell.h; sourceTree = "<group>"; };
@@ -734,8 +737,6 @@
 		F094A9B51B78D8F000B1FBBF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F094A9B81B78D8F000B1FBBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RiotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F094A9C31B78D8F000B1FBBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F094A9C41B78D8F000B1FBBF /* VectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VectorTests.m; sourceTree = "<group>"; };
 		F094AA031B78E3D400B1FBBF /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		F094AA041B78E3D400B1FBBF /* Vector-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Vector-Defaults.plist"; sourceTree = "<group>"; };
 		F094AA081B78E42600B1FBBF /* RageShakeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakeManager.h; sourceTree = "<group>"; };
@@ -1368,6 +1369,23 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		F083BB021E7005FD00A9B29C /* RiotTests */ = {
+			isa = PBXGroup;
+			children = (
+				F083BB041E7005FD00A9B29C /* RiotTests.m */,
+				F083BB071E70067700A9B29C /* Supporting Files */,
+			);
+			path = RiotTests;
+			sourceTree = "<group>";
+		};
+		F083BB071E70067700A9B29C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F083BB031E7005FD00A9B29C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		F083C4551D9E982900E5246C /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1441,8 +1459,8 @@
 		F094A9991B78D8F000B1FBBF = {
 			isa = PBXGroup;
 			children = (
+				F083BB021E7005FD00A9B29C /* RiotTests */,
 				F094A9A41B78D8F000B1FBBF /* Vector */,
-				F094A9C11B78D8F000B1FBBF /* VectorTests */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				E1451F540F8BC02A7FB7AA31 /* Pods */,
 				6567B0BBF3C05D7F7A7F79CC /* Frameworks */,
@@ -1488,23 +1506,6 @@
 				F094AA041B78E3D400B1FBBF /* Vector-Defaults.plist */,
 				F094A9A61B78D8F000B1FBBF /* Info.plist */,
 				F094A9A71B78D8F000B1FBBF /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		F094A9C11B78D8F000B1FBBF /* VectorTests */ = {
-			isa = PBXGroup;
-			children = (
-				F094A9C41B78D8F000B1FBBF /* VectorTests.m */,
-				F094A9C21B78D8F000B1FBBF /* Supporting Files */,
-			);
-			path = VectorTests;
-			sourceTree = "<group>";
-		};
-		F094A9C21B78D8F000B1FBBF /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F094A9C31B78D8F000B1FBBF /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1837,6 +1838,7 @@
 				F03BF6871D8BF5B1002EF6A7 /* error@2x.png in Resources */,
 				F03BF6B51D8BF5B1002EF6A7 /* priorityLow@3x.png in Resources */,
 				F008D6FC1D0180FB0049444D /* GoogleService-Info.plist in Resources */,
+				F083BB051E7005FD00A9B29C /* Info.plist in Resources */,
 				F0B7037F1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				F09EAFA21DD2109B009C7EFB /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */,
@@ -2207,6 +2209,7 @@
 				325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F09EAFB51DD2109B009C7EFB /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				F083BB061E7005FD00A9B29C /* RiotTests.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
 				F046528D1E250B0A00EA4E77 /* ContactsTableViewController.m in Sources */,
 				F0CC4DCA1C4E594C003BBE45 /* MediaAlbumContentViewController.m in Sources */,
@@ -2278,7 +2281,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F094A9C51B78D8F000B1FBBF /* VectorTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
