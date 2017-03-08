@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,7 +21,7 @@
 
 #import "RoomMemberTitleView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "RageShakeManager.h"
 
@@ -95,7 +96,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
@@ -109,9 +110,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.memberHeaderView.backgroundColor = kVectorColorLightGrey;
-    self.roomMemberNameLabel.textColor = kVectorTextColorBlack;
-    self.roomMemberStatusLabel.textColor = kVectorColorGreen;
+    self.memberHeaderView.backgroundColor = kRiotColorLightGrey;
+    self.roomMemberNameLabel.textColor = kRiotTextColorBlack;
+    self.roomMemberStatusLabel.textColor = kRiotColorGreen;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -313,12 +314,12 @@
         // Update member badge
         MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
         NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
-        if (powerLevel >= kVectorRoomAdminLevel)
+        if (powerLevel >= kRiotRoomAdminLevel)
         {
             memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
             memberTitleView.memberBadge.hidden = NO;
         }
-        else if (powerLevel >= kVectorRoomModeratorLevel)
+        else if (powerLevel >= kRiotRoomModeratorLevel)
         {
             memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
             memberTitleView.memberBadge.hidden = NO;
@@ -413,13 +414,13 @@
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
         {
             // Check whether the user is admin (in this case he may reduce his power level to become moderator or less, EXCEPT if he is the only admin).
-            if (oneSelfPowerLevel >= kVectorRoomAdminLevel)
+            if (oneSelfPowerLevel >= kRiotRoomAdminLevel)
             {
                 NSArray *levelValues = powerLevels.users.allValues;
                 NSUInteger adminCount = 0;
                 for (NSNumber *valueNumber in levelValues)
                 {
-                    if ([valueNumber unsignedIntegerValue] >= kVectorRoomAdminLevel)
+                    if ([valueNumber unsignedIntegerValue] >= kRiotRoomAdminLevel)
                     {
                         adminCount ++;
                     }
@@ -432,7 +433,7 @@
                 }
             }
             // Check whether the user is moderator (in this case he may reduce his power level to become normal user).
-            else if (oneSelfPowerLevel >= kVectorRoomModeratorLevel)
+            else if (oneSelfPowerLevel >= kRiotRoomModeratorLevel)
             {
                 [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
             }
@@ -450,18 +451,18 @@
                 if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels] && oneSelfPowerLevel > memberPowerLevel)
                 {
                     // Check whether user is admin
-                    if (oneSelfPowerLevel >= kVectorRoomAdminLevel)
+                    if (oneSelfPowerLevel >= kRiotRoomAdminLevel)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetAdmin)];
                     }
                     
                     // Check whether the member may become moderator
-                    if (oneSelfPowerLevel >= kVectorRoomModeratorLevel && memberPowerLevel < kVectorRoomModeratorLevel)
+                    if (oneSelfPowerLevel >= kRiotRoomModeratorLevel && memberPowerLevel < kRiotRoomModeratorLevel)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
                     }
                     
-                    if (memberPowerLevel >= kVectorRoomModeratorLevel)
+                    if (memberPowerLevel >= kRiotRoomModeratorLevel)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
                     }
@@ -681,13 +682,13 @@
             
             if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
             {
-                [cellWithButton.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:kRiotColorPinkRed forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:kRiotColorPinkRed forState:UIControlStateHighlighted];
             }
             else
             {
-                [cellWithButton.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateHighlighted];
             }
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -831,12 +832,12 @@
             }
             case MXKRoomMemberDetailsActionSetModerator:
             {
-                [self setPowerLevel:kVectorRoomModeratorLevel promptUser:YES];
+                [self setPowerLevel:kRiotRoomModeratorLevel promptUser:YES];
                 break;
             }
             case MXKRoomMemberDetailsActionSetAdmin:
             {
-                [self setPowerLevel:kVectorRoomAdminLevel promptUser:YES];
+                [self setPowerLevel:kRiotRoomAdminLevel promptUser:YES];
                 break;
             }
             default:

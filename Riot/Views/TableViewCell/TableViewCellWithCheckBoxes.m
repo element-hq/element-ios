@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "TableViewCellWithCheckBoxes.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 // The space between 2 check boxes
 #define TABLEVIEWCELLWITHCHECKBOXES_MARGIN 8
@@ -136,7 +137,7 @@
         
         UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, containerWidth - 60, 31)];
         theLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        theLabel.textColor = kVectorTextColorBlack;
+        theLabel.textColor = kRiotTextColorBlack;
         [checkboxContainer addSubview:theLabel];
         [labelArray addObject:theLabel];
         

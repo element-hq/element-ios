@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,7 +21,7 @@
 
 #import "AppDelegate.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "RageShakeManager.h"
 
@@ -57,7 +58,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }

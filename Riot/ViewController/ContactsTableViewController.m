@@ -78,7 +78,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
@@ -541,7 +541,7 @@
         
         cell.textLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_search_prompt", @"Vector", nil);
         cell.textLabel.numberOfLines = 2;
-        cell.textLabel.textColor = kVectorTextColorGray;
+        cell.textLabel.textColor = kRiotTextColorGray;
         cell.textLabel.font = [UIFont systemFontOfSize:15.0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
@@ -663,7 +663,7 @@
         NSInteger sectionBitwise = -1;
         
         sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, height)];
-        sectionHeader.backgroundColor = kVectorColorLightGrey;
+        sectionHeader.backgroundColor = kRiotColorLightGrey;
         
         CGRect frame = sectionHeader.frame;
         frame.origin.x = 20;
@@ -753,7 +753,7 @@
                 
                 UILabel *checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(54, 5, containerWidth - 64, 30)];
                 checkboxLabel.translatesAutoresizingMaskIntoConstraints = NO;
-                checkboxLabel.textColor = kVectorTextColorBlack;
+                checkboxLabel.textColor = kRiotTextColorBlack;
                 checkboxLabel.font = [UIFont systemFontOfSize:16.0];
                 checkboxLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_matrix_users_toggle", @"Vector", nil);
                 [localContactsCheckboxContainer addSubview:checkboxLabel];

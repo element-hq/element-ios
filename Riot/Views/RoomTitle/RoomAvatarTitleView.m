@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "RoomAvatarTitleView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "MXRoom+Vector.h"
 
@@ -89,7 +90,7 @@
     self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
     self.roomAvatar.clipsToBounds = YES;
     
-    self.roomAvatar.backgroundColor = kVectorColorLightGrey;
+    self.roomAvatar.backgroundColor = kRiotColorLightGrey;
 }
 
 - (void)setRoomAvatarURL:(NSString *)roomAvatarURL

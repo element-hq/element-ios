@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation RoomOutgoingTextMsgWithoutSenderInfoBubbleCell
 
@@ -25,7 +26,7 @@
     [super awakeFromNib];
     
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
-    self.messageTextView.tintColor = kVectorColorGreen;
+    self.messageTextView.tintColor = kRiotColorGreen;
 }
 
 @end

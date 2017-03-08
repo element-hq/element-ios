@@ -17,7 +17,7 @@
 
 #import "RoomActivitiesView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import <objc/runtime.h>
 
@@ -96,8 +96,8 @@
 {
     [super awakeFromNib];
     
-    self.separatorView.backgroundColor = kVectorColorLightGrey;
-    self.messageLabel.textColor = kVectorTextColorGray;
+    self.separatorView.backgroundColor = kRiotColorLightGrey;
+    self.messageLabel.textColor = kRiotTextColorGray;
     
     // Adjust text view
     // Remove the container inset: this operation impacts only the vertical margin.
@@ -132,18 +132,18 @@
         [tappableNotif addAttribute:NSLinkAttributeName value:@"onCancelLink" range:range];
         
         NSRange wholeString = NSMakeRange(0, tappableNotif.length);
-        [tappableNotif addAttribute:NSForegroundColorAttributeName value:kVectorColorPinkRed range:wholeString];
+        [tappableNotif addAttribute:NSForegroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
         [tappableNotif addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
         
         self.messageTextView.attributedText = tappableNotif;
-        self.messageTextView.tintColor = kVectorColorPinkRed;
+        self.messageTextView.tintColor = kRiotColorPinkRed;
         self.messageTextView.hidden = NO;
         self.messageTextView.backgroundColor = [UIColor clearColor];
     }
     else
     {
         self.messageLabel.text = notification;
-        self.messageLabel.textColor = kVectorColorPinkRed;
+        self.messageLabel.textColor = kRiotColorPinkRed;
         self.messageLabel.hidden = NO;
     }
     
@@ -174,7 +174,7 @@
     {
         self.iconImageView.image = [UIImage imageNamed:@"error"];
         self.messageLabel.text = labelText;
-        self.messageLabel.textColor = kVectorColorPinkRed;
+        self.messageLabel.textColor = kRiotColorPinkRed;
         
         self.iconImageView.hidden = NO;
         self.messageLabel.hidden = NO;
@@ -226,15 +226,15 @@
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
     [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:wholeString];
-    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kVectorColorPinkRed range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
 
     self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
     self.messageTextView.tintColor = UIColor.whiteColor;
     self.messageTextView.hidden = NO;
 
-    self.backgroundColor = kVectorColorPinkRed;
-    self.messageTextView.backgroundColor = kVectorColorPinkRed;
+    self.backgroundColor = kRiotColorPinkRed;
+    self.messageTextView.backgroundColor = kRiotColorPinkRed;
 
     // Hide the separator to display correctly the red pink conf call banner
     self.separatorView.hidden = YES;
@@ -260,7 +260,7 @@
             notification = NSLocalizedStringFromTable(@"room_new_message_notification", @"Vector", nil);
         }
         self.messageLabel.text = [NSString stringWithFormat:notification, newMessagesCount];
-        self.messageLabel.textColor = kVectorColorPinkRed;
+        self.messageLabel.textColor = kRiotColorPinkRed;
         self.messageLabel.hidden = NO;
     }
     else
@@ -321,7 +321,7 @@
     [self.messageTextView resignFirstResponder];
     self.messageTextView.hidden = YES;
     
-    self.messageLabel.textColor = kVectorTextColorGray;
+    self.messageLabel.textColor = kRiotTextColorGray;
 
     objc_removeAssociatedObjects(self.messageTextView);
 }

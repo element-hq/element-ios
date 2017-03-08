@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,7 +19,7 @@
 
 #import "RoomBubbleCellData.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import <objc/runtime.h>
 
@@ -52,7 +53,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         
         timeLabel.text = [bubbleData.eventFormatter timeStringFromDate:component.date];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = kVectorTextColorGray;
+        timeLabel.textColor = kRiotTextColorGray;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
              timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
@@ -188,7 +189,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
                                                                 markPosY,
                                                                 VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH,
                                                                 markHeight)];
-        markerView.backgroundColor = kVectorColorGreen;
+        markerView.backgroundColor = kRiotColorGreen;
 
         [markerView setTranslatesAutoresizingMaskIntoConstraints:NO];
         markerView.accessibilityIdentifier = @"markerView";
@@ -243,7 +244,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = kVectorTextColorGray;
+        timeLabel.textColor = kRiotTextColorGray;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
             timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];

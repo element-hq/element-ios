@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,7 +19,7 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation DirectoryRecentTableViewCell
 
@@ -28,8 +29,8 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.textColor = kVectorTextColorBlack;
-    self.descriptionLabel.textColor = kVectorTextColorGray;
+    self.titleLabel.textColor = kRiotTextColorBlack;
+    self.descriptionLabel.textColor = kRiotTextColorGray;
 }
 
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource

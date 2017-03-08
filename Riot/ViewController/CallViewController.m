@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -21,7 +22,7 @@
 #import "RageShakeManager.h"
 
 #import "AvatarGenerator.h"
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "MXRoom+Vector.h"
 
@@ -71,7 +72,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -102,10 +103,10 @@
     [self.endCallButton setImage:[UIImage imageNamed:@"call_hangup_icon"] forState:UIControlStateNormal];
     [self.endCallButton setImage:[UIImage imageNamed:@"call_hangup_icon"] forState:UIControlStateHighlighted];
     
-    self.callerNameLabel.textColor = kVectorTextColorBlack;
-    self.callStatusLabel.textColor = kVectorTextColorDarkGray;
+    self.callerNameLabel.textColor = kRiotTextColorBlack;
+    self.callStatusLabel.textColor = kRiotTextColorDarkGray;
     
-    self.localPreviewContainerView.layer.borderColor = kVectorColorGreen.CGColor;
+    self.localPreviewContainerView.layer.borderColor = kRiotColorGreen.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;

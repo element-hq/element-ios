@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation RoomOutgoingTextMsgWithPaginationTitleBubbleCell
 
@@ -25,11 +26,11 @@
     [super awakeFromNib];
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
     
-    self.userNameLabel.textColor = kVectorTextColorBlack;
+    self.userNameLabel.textColor = kRiotTextColorBlack;
     
-    self.paginationLabel.textColor = kVectorColorGreen;
-    self.paginationSeparatorView.backgroundColor = kVectorColorGreen;
-    self.messageTextView.tintColor = kVectorColorGreen;
+    self.paginationLabel.textColor = kRiotColorGreen;
+    self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
+    self.messageTextView.tintColor = kRiotColorGreen;
 }
 
 - (void)render:(MXKCellData *)cellData

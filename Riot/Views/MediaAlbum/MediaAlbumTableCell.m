@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "MediaAlbumTableCell.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation MediaAlbumTableCell
 
@@ -24,8 +25,8 @@
 {
     [super awakeFromNib];
     
-    self.albumDisplayNameLabel.textColor = kVectorTextColorBlack;
-    self.albumCountLabel.textColor = kVectorTextColorGray;
+    self.albumDisplayNameLabel.textColor = kRiotTextColorBlack;
+    self.albumCountLabel.textColor = kRiotTextColorGray;
 }
 
 @end

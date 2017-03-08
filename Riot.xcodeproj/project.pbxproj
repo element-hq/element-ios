@@ -239,7 +239,7 @@
 		F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
 		F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC131E7009EC00A9B29C /* EventFormatter.m */; };
 		F083BE041E7009ED00A9B29C /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
-		F083BE051E7009ED00A9B29C /* VectorDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* VectorDesignValues.m */; };
+		F083BE051E7009ED00A9B29C /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		F083BE061E7009ED00A9B29C /* Vector-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BC181E7009EC00A9B29C /* Vector-Defaults.plist */; };
 		F083BE071E7009ED00A9B29C /* AttachmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC1B1E7009EC00A9B29C /* AttachmentsViewController.m */; };
 		F083BE081E7009ED00A9B29C /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC1D1E7009EC00A9B29C /* AuthenticationViewController.m */; };
@@ -669,8 +669,8 @@
 		F083BC131E7009EC00A9B29C /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F083BC141E7009EC00A9B29C /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		F083BC151E7009EC00A9B29C /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
-		F083BC161E7009EC00A9B29C /* VectorDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorDesignValues.h; sourceTree = "<group>"; };
-		F083BC171E7009EC00A9B29C /* VectorDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VectorDesignValues.m; sourceTree = "<group>"; };
+		F083BC161E7009EC00A9B29C /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
+		F083BC171E7009EC00A9B29C /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
 		F083BC181E7009EC00A9B29C /* Vector-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Vector-Defaults.plist"; sourceTree = "<group>"; };
 		F083BC1A1E7009EC00A9B29C /* AttachmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentsViewController.h; sourceTree = "<group>"; };
 		F083BC1B1E7009EC00A9B29C /* AttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentsViewController.m; sourceTree = "<group>"; };
@@ -1316,8 +1316,8 @@
 				F083BC131E7009EC00A9B29C /* EventFormatter.m */,
 				F083BC141E7009EC00A9B29C /* Tools.h */,
 				F083BC151E7009EC00A9B29C /* Tools.m */,
-				F083BC161E7009EC00A9B29C /* VectorDesignValues.h */,
-				F083BC171E7009EC00A9B29C /* VectorDesignValues.m */,
+				F083BC161E7009EC00A9B29C /* RiotDesignValues.h */,
+				F083BC171E7009EC00A9B29C /* RiotDesignValues.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2218,7 +2218,7 @@
 				F083BE211E7009ED00A9B29C /* RoomSearchViewController.m in Sources */,
 				F083BE3E1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE071E7009ED00A9B29C /* AttachmentsViewController.m in Sources */,
-				F083BE051E7009ED00A9B29C /* VectorDesignValues.m in Sources */,
+				F083BE051E7009ED00A9B29C /* RiotDesignValues.m in Sources */,
 				F083BE311E7009ED00A9B29C /* DeviceTableViewCell.m in Sources */,
 				F083BE501E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Vector.m in Sources */,

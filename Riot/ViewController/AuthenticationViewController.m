@@ -24,7 +24,7 @@
 
 #import "RageShakeManager.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @interface AuthenticationViewController ()
 {
@@ -58,7 +58,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -71,32 +71,32 @@
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
     self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
-    self.homeServerTextField.textColor = kVectorTextColorBlack;
-    self.homeServerLabel.textColor = kVectorTextColorGray;
+    self.homeServerTextField.textColor = kRiotTextColorBlack;
+    self.homeServerLabel.textColor = kRiotTextColorGray;
     
     self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
-    self.identityServerTextField.textColor = kVectorTextColorBlack;
-    self.identityServerLabel.textColor = kVectorTextColorGray;
+    self.identityServerTextField.textColor = kRiotTextColorBlack;
+    self.identityServerLabel.textColor = kRiotTextColorGray;
     
     self.welcomeImageView.image = [UIImage imageNamed:@"logo"];
     
     [self.submitButton.layer setCornerRadius:5];
     self.submitButton.clipsToBounds = YES;
-    self.submitButton.backgroundColor = kVectorColorGreen;
+    self.submitButton.backgroundColor = kRiotColorGreen;
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     self.submitButton.enabled = YES;
     
     [self.skipButton.layer setCornerRadius:5];
     self.skipButton.clipsToBounds = YES;
-    self.skipButton.backgroundColor = kVectorColorGreen;
+    self.skipButton.backgroundColor = kRiotColorGreen;
     [self.skipButton setTitle:NSLocalizedStringFromTable(@"auth_skip", @"Vector", nil) forState:UIControlStateNormal];
     [self.skipButton setTitle:NSLocalizedStringFromTable(@"auth_skip", @"Vector", nil) forState:UIControlStateHighlighted];
     self.skipButton.enabled = YES;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
     [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, forgotPasswordTitle.length)];
-    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kVectorColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kRiotColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
     
@@ -105,7 +105,7 @@
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
-    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : kVectorTextColorGray, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
+    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : kRiotTextColorGray, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     

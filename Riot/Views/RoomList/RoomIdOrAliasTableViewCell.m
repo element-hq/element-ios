@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,7 +18,7 @@
 #import "RoomIdOrAliasTableViewCell.h"
 
 #import "AvatarGenerator.h"
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation RoomIdOrAliasTableViewCell
 
@@ -27,7 +28,7 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.textColor = kVectorTextColorBlack;
+    self.titleLabel.textColor = kRiotTextColorBlack;
 }
 
 - (void)layoutSubviews

@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,7 +21,7 @@
 
 #import "RoomMemberTitleView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "RageShakeManager.h"
 
@@ -103,7 +104,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -123,9 +124,9 @@
     actionsArray = [[NSMutableArray alloc] init];
     directChatsArray = [[NSMutableArray alloc] init];
     
-    self.headerView.backgroundColor = kVectorColorLightGrey;
-    self.contactNameLabel.textColor = kVectorTextColorBlack;
-    self.contactStatusLabel.textColor = kVectorColorGreen;
+    self.headerView.backgroundColor = kRiotColorLightGrey;
+    self.contactNameLabel.textColor = kRiotTextColorBlack;
+    self.contactStatusLabel.textColor = kRiotColorGreen;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -659,8 +660,8 @@
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
             
-            [cellWithButton.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateNormal];
-            [cellWithButton.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateHighlighted];
+            [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateNormal];
+            [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateHighlighted];
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             

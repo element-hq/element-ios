@@ -17,7 +17,7 @@
 
 #import "ForgotPasswordInputsView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @interface ForgotPasswordInputsView ()
 {
@@ -52,19 +52,19 @@
     [super awakeFromNib];
     
     self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
-    self.emailTextField.textColor = kVectorTextColorBlack;
+    self.emailTextField.textColor = kRiotTextColorBlack;
     
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_new_password_placeholder", @"Vector", nil);
-    self.passWordTextField.textColor = kVectorTextColorBlack;
+    self.passWordTextField.textColor = kRiotTextColorBlack;
     
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_new_password_placeholder", @"Vector", nil);
-    self.repeatPasswordTextField.textColor = kVectorTextColorBlack;
+    self.repeatPasswordTextField.textColor = kRiotTextColorBlack;
     
     self.messageLabel.numberOfLines = 0;
     
     [self.nextStepButton.layer setCornerRadius:5];
     self.nextStepButton.clipsToBounds = YES;
-    self.nextStepButton.backgroundColor = kVectorColorGreen;
+    self.nextStepButton.backgroundColor = kRiotColorGreen;
     [self.nextStepButton setTitle:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_next_step_button"] forState:UIControlStateNormal];
     [self.nextStepButton setTitle:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_next_step_button"] forState:UIControlStateHighlighted];
     self.nextStepButton.enabled = YES;

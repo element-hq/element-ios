@@ -17,7 +17,7 @@
 
 #import "AuthInputsView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 #import "Tools.h"
 
 #import "CountryPickerViewController.h"
@@ -64,16 +64,16 @@
     [super awakeFromNib];
     
     _repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
-    _repeatPasswordTextField.textColor = kVectorTextColorBlack;
+    _repeatPasswordTextField.textColor = kRiotTextColorBlack;
     
     self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
-    self.userLoginTextField.textColor = kVectorTextColorBlack;
+    self.userLoginTextField.textColor = kRiotTextColorBlack;
     
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
-    self.passWordTextField.textColor = kVectorTextColorBlack;
+    self.passWordTextField.textColor = kRiotTextColorBlack;
     
-    self.emailTextField.textColor = kVectorTextColorBlack;
-    self.phoneTextField.textColor = kVectorTextColorBlack;
+    self.emailTextField.textColor = kRiotTextColorBlack;
+    self.phoneTextField.textColor = kRiotTextColorBlack;
     
     self.messageLabel.numberOfLines = 0;
     

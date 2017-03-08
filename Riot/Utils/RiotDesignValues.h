@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -25,31 +26,31 @@
                      blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
                     alpha:1.0]
 
-#pragma mark - Vector Colors
-extern UIColor *kVectorColorGreen;
-extern UIColor *kVectorColorLightGreen;
-extern UIColor *kVectorColorLightGrey;
-extern UIColor *kVectorColorSilver;
-extern UIColor *kVectorColorOrange;
-extern UIColor *kVectorColorPinkRed;
-extern UIColor *kVectorColorRed;
+#pragma mark - Riot Colors
+extern UIColor *kRiotColorGreen;
+extern UIColor *kRiotColorLightGreen;
+extern UIColor *kRiotColorLightGrey;
+extern UIColor *kRiotColorSilver;
+extern UIColor *kRiotColorOrange;
+extern UIColor *kRiotColorPinkRed;
+extern UIColor *kRiotColorRed;
 
-#pragma mark - Vector Text Colors
-extern UIColor *kVectorTextColorBlack;
-extern UIColor *kVectorTextColorDarkGray;
-extern UIColor *kVectorTextColorGray;
+#pragma mark - Riot Text Colors
+extern UIColor *kRiotTextColorBlack;
+extern UIColor *kRiotTextColorDarkGray;
+extern UIColor *kRiotTextColorGray;
 
-#pragma mark - Vector Navigation Bar Tint Color
-extern UIColor *kVectorNavBarTintColor;
+#pragma mark - Riot Navigation Bar Tint Color
+extern UIColor *kRiotNavBarTintColor;
 
-#pragma mark - Vector Standard Room Member Power Level
-extern NSInteger const kVectorRoomModeratorLevel;
-extern NSInteger const kVectorRoomAdminLevel;
+#pragma mark - Riot Standard Room Member Power Level
+extern NSInteger const kRiotRoomModeratorLevel;
+extern NSInteger const kRiotRoomAdminLevel;
 
 /**
- `VectorDesignValues` class manages the Vector design parameters
+ `RiotDesignValues` class manages the Riot design parameters
  */
-@interface VectorDesignValues : NSObject
+@interface RiotDesignValues : NSObject
 
 // to update the navigation bar buttons color
 // [[AppDelegate theDelegate] recentsNavigationController].navigationBar.tintColor = [UIColor greenColor];

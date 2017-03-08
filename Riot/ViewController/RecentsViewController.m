@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -27,7 +28,7 @@
 #import "HomeViewController.h"
 #import "RoomViewController.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "InviteRecentTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
@@ -84,7 +85,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -443,7 +444,7 @@
         }];
         
         UIImage *actionIcon = isDirect ? [UIImage imageNamed:@"directChatOff"] : [UIImage imageNamed:@"directChatOn"];
-        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:directAction atIndex:0];
         
         
@@ -457,7 +458,7 @@
         }];
         
         actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
         
         // Favorites management
@@ -482,7 +483,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favouriteOff"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -494,7 +495,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favourite"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -507,7 +508,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityHigh"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -519,7 +520,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityLow"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -530,7 +531,7 @@
         }];
         
         actionIcon = [UIImage imageNamed:@"leave"];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         
         [actions insertObject:leaveAction atIndex:0];
     }
