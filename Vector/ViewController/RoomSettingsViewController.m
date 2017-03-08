@@ -3051,7 +3051,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [currentAlert dismiss:NO];
             
-            currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_prompt_title", @"Vector", nil)
+            currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
                                                    message:NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_prompt_message", @"Vector", nil)
                                                      style:MXKAlertStyleAlert];
             

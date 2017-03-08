@@ -478,6 +478,33 @@
         
     }];
     [self refreshMissedDiscussionsCount:YES];
+
+    // Warn about the beta state of e2e encryption when entering the first time in an encrypted room
+    MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:self.roomDataSource.mxSession.myUser.userId];
+    if (account && !account.isWarnedAboutEncryption && self.roomDataSource.room.state.isEncrypted)
+    {
+        [currentAlert dismiss:NO];
+
+        __weak __typeof(self) weakSelf = self;
+        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
+                                               message:NSLocalizedStringFromTable(@"room_warning_about_encryption", @"Vector", nil)
+                                                 style:MXKAlertStyleAlert];
+
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)self = weakSelf;
+                self->currentAlert = nil;
+
+                account.warnedAboutEncryption = YES;
+            }
+
+        }];
+
+        currentAlert.mxkAccessibilityIdentifier = @"RoomVCEncryptionAlert";
+        [currentAlert showInViewController:self];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -3172,6 +3199,7 @@
         [currentAlert showInViewController:self];
     }
 }
+
 
 - (void)resendAllUnsentMessages
 {
