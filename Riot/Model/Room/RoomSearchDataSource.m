@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,7 +19,7 @@
 
 #import "RoomBubbleCellData.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "MXKRoomBubbleTableViewCell+Vector.h"
 
@@ -67,7 +68,7 @@
         if (cellData)
         {
             // Highlight the search pattern
-            [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:kVectorColorGreen andFont:patternFont];
+            [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:kRiotColorGreen andFont:patternFont];
             
             [cellDataArray insertObject:cellData atIndex:0];
         }

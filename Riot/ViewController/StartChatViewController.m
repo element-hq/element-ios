@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -129,7 +130,7 @@
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = kVectorColorSilver;
+    _searchBarHeaderBorder.backgroundColor = kRiotColorSilver;
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -389,7 +390,7 @@
         
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -557,19 +558,19 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = kVectorColorGreen;
-    searchBar.tintColor = kVectorColorGreen;
+    searchBar.barTintColor = searchBar.tintColor = kRiotColorGreen;
+    searchBar.tintColor = kRiotColorGreen;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
 
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = kVectorTextColorGray;
+    searchBarTextField.textColor = kRiotTextColorGray;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = kVectorColorGreen;
+    leftImageView.tintColor = kRiotColorGreen;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -580,8 +581,8 @@
     // place holder
     searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: kVectorColorGreen,
-                                                                                            NSForegroundColorAttributeName: kVectorColorGreen}];
+                                                                                            NSUnderlineColorAttributeName: kRiotColorGreen,
+                                                                                            NSForegroundColorAttributeName: kRiotColorGreen}];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

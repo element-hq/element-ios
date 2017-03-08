@@ -18,7 +18,7 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import "ContactTableViewCell.h"
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @class ContactsTableViewController;
 

@@ -19,7 +19,7 @@
 
 #import "MXKContactManager.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
@@ -41,7 +41,7 @@
     [super awakeFromNib];
     
     // apply the vector colours
-    self.contactInformationLabel.textColor = kVectorTextColorGray;
+    self.contactInformationLabel.textColor = kRiotTextColorGray;
     
     // Clear the default background color of a MXKImageView instance
     self.thumbnailView.backgroundColor = [UIColor clearColor];
@@ -203,11 +203,11 @@
         }
         else if ((!contact.isMatrixContact && contact.phoneNumbers.count && !contact.emailAddresses.count))
         {
-            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:kVectorColorGreen];
+            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:kRiotColorGreen];
         }
         else
         {
-            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:kVectorColorGreen];
+            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:kRiotColorGreen];
         }
     }
     

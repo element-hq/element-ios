@@ -17,7 +17,7 @@
 
 #import "DeviceTableViewCell.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 #import "MXRoom+Vector.h"
 
 #define DEVICE_TABLEVIEW_ROW_CELL_HEIGHT_WITHOUT_LABEL_HEIGHT 59
@@ -30,15 +30,15 @@
 {
     [super awakeFromNib];
     
-    self.deviceName.textColor = kVectorTextColorBlack;
+    self.deviceName.textColor = kRiotTextColorBlack;
     
     [self.verifyButton.layer setCornerRadius:5];
     self.verifyButton.clipsToBounds = YES;
-    self.verifyButton.backgroundColor = kVectorColorGreen;
+    self.verifyButton.backgroundColor = kRiotColorGreen;
     
     [self.blockButton.layer setCornerRadius:5];
     self.blockButton.clipsToBounds = YES;
-    self.blockButton.backgroundColor = kVectorColorGreen;
+    self.blockButton.backgroundColor = kRiotColorGreen;
 }
 
 - (void)render:(MXDeviceInfo *)deviceInfo

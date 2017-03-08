@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "MessagesSearchResultTextMsgBubbleCell.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "MXRoom+Vector.h"
 
@@ -26,11 +27,11 @@
 {
     [super awakeFromNib];
     
-    self.userNameLabel.textColor = kVectorTextColorBlack;
+    self.userNameLabel.textColor = kRiotTextColorBlack;
     
-    self.roomNameLabel.textColor = kVectorTextColorGray;
+    self.roomNameLabel.textColor = kRiotTextColorGray;
     
-    self.messageTextView.tintColor = kVectorColorGreen;
+    self.messageTextView.tintColor = kRiotColorGreen;
 }
 
 - (void)render:(MXKCellData *)cellData

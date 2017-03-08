@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "RoomOutgoingAttachmentBubbleCell.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation RoomOutgoingAttachmentBubbleCell
 
@@ -25,8 +26,8 @@
     [super awakeFromNib];
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
     
-    self.userNameLabel.textColor = kVectorTextColorBlack;
-    self.messageTextView.tintColor = kVectorColorGreen;
+    self.userNameLabel.textColor = kRiotTextColorBlack;
+    self.messageTextView.tintColor = kRiotColorGreen;
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -48,7 +49,7 @@
         // Show a red border when the attachment sending failed
         if (bubbleCell->bubbleData.attachment.eventSentState == MXEventSentStateFailed)
         {
-            bubbleCell.attachmentView.layer.borderColor = kVectorColorPinkRed.CGColor;
+            bubbleCell.attachmentView.layer.borderColor = kRiotColorPinkRed.CGColor;
             bubbleCell.attachmentView.layer.borderWidth = 1;
         }
         else

@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "PreviewRoomTitleView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "MXRoom+Vector.h"
 
@@ -32,28 +33,28 @@
 {
     [super awakeFromNib];
     
-    self.mainHeaderBackground.backgroundColor = kVectorColorLightGrey;
+    self.mainHeaderBackground.backgroundColor = kRiotColorLightGrey;
     
-    self.displayNameTextField.textColor = kVectorTextColorBlack;
+    self.displayNameTextField.textColor = kRiotTextColorBlack;
     
-    self.roomTopic.textColor = kVectorTextColorDarkGray;
+    self.roomTopic.textColor = kRiotTextColorDarkGray;
     self.roomTopic.numberOfLines = 0;
     
-    self.roomMembers.textColor = kVectorColorGreen;
+    self.roomMembers.textColor = kRiotColorGreen;
     
-    self.previewLabel.textColor = kVectorTextColorDarkGray;
+    self.previewLabel.textColor = kRiotTextColorDarkGray;
     self.previewLabel.numberOfLines = 0;
     self.previewLabel.text = nil;
     
-    self.subNoticeLabel.textColor = kVectorTextColorGray;
+    self.subNoticeLabel.textColor = kRiotTextColorGray;
     self.subNoticeLabel.numberOfLines = 0;
     self.subNoticeLabel.text = nil;
     
-    self.bottomBorderView.backgroundColor = kVectorColorLightGrey;
+    self.bottomBorderView.backgroundColor = kRiotColorLightGrey;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kVectorColorGreen;
+    self.leftButton.backgroundColor = kRiotColorGreen;
     [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
     [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
@@ -65,7 +66,7 @@
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kVectorColorGreen;
+    self.rightButton.backgroundColor = kRiotColorGreen;
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
@@ -137,11 +138,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-            self.displayNameTextField.textColor = kVectorTextColorGray;
+            self.displayNameTextField.textColor = kRiotTextColorGray;
         }
         else
         {
-            self.displayNameTextField.textColor = kVectorTextColorBlack;
+            self.displayNameTextField.textColor = kRiotTextColorBlack;
         }
         
         // Display room topic

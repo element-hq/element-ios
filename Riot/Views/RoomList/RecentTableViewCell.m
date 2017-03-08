@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,7 +21,7 @@
 
 #import "MXEvent.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "MXRoom+Vector.h"
 
@@ -36,9 +37,9 @@
     [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
     
-    self.roomTitle.textColor = kVectorTextColorBlack;
-    self.lastEventDescription.textColor = kVectorTextColorGray;
-    self.lastEventDate.textColor = kVectorTextColorGray;
+    self.roomTitle.textColor = kRiotTextColorBlack;
+    self.lastEventDescription.textColor = kRiotTextColorGray;
+    self.lastEventDate.textColor = kRiotTextColorGray;
     self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
 }
 
@@ -70,7 +71,7 @@
         {
             // Force the default text color for the last message (cancel highlighted message color)
             NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
-            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:kVectorTextColorGray range:NSMakeRange(0, lastEventDescription.length)];
+            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:kRiotTextColorGray range:NSMakeRange(0, lastEventDescription.length)];
             self.lastEventDescription.attributedText = lastEventDescription;
         }
         else
@@ -85,7 +86,7 @@
             
             if (0 < roomCellData.notificationCount)
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? kVectorColorPinkRed : kVectorColorGreen;
+                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? kRiotColorPinkRed : kRiotColorGreen;
                 
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;
@@ -97,7 +98,7 @@
             }
             else
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = kVectorColorSilver;
+                self.missedNotifAndUnreadIndicator.backgroundColor = kRiotColorSilver;
             }
             
             // Use bold font for the room title
@@ -112,7 +113,7 @@
         }
         else
         {
-            self.lastEventDate.textColor = kVectorTextColorGray;
+            self.lastEventDate.textColor = kRiotTextColorGray;
             
             // The room title is not bold anymore
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])

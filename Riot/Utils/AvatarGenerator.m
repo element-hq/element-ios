@@ -17,7 +17,7 @@
 
 #import "AvatarGenerator.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation AvatarGenerator
 
@@ -34,9 +34,9 @@ static UILabel* backgroundLabel = nil;
     if (!colorsList)
     {
         colorsList = [[NSMutableArray alloc] init];
-        [colorsList addObject:kVectorColorGreen];
-        [colorsList addObject:kVectorColorLightGreen];
-        [colorsList addObject:kVectorColorOrange];
+        [colorsList addObject:kRiotColorGreen];
+        [colorsList addObject:kRiotColorLightGreen];
+        [colorsList addObject:kRiotColorOrange];
     }
 }
 

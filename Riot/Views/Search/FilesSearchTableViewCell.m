@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "FilesSearchTableViewCell.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation FilesSearchTableViewCell
 @synthesize delegate, mxkCellData;
@@ -25,11 +26,11 @@
 {
     [super awakeFromNib];
     
-    self.title.textColor = kVectorTextColorBlack;
+    self.title.textColor = kRiotTextColorBlack;
     
-    self.message.textColor = kVectorTextColorGray;
+    self.message.textColor = kRiotTextColorGray;
     
-    self.date.tintColor = kVectorTextColorGray;
+    self.date.tintColor = kRiotTextColorGray;
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth

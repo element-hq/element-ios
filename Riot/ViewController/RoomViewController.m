@@ -21,7 +21,7 @@
 
 #import "AppDelegate.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "RageShakeManager.h"
 
@@ -89,7 +89,7 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -217,7 +217,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 
@@ -267,7 +267,7 @@
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     
     // Prepare expanded header
-    self.expandedHeaderContainer.backgroundColor = kVectorColorLightGrey;
+    self.expandedHeaderContainer.backgroundColor = kRiotColorLightGrey;
     
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
     expandedHeader.delegate = self;
@@ -306,7 +306,7 @@
     [self.expandedHeaderContainer addGestureRecognizer:swipe];
     
     // Prepare preview header container
-    self.previewHeaderContainer.backgroundColor = kVectorColorLightGrey;
+    self.previewHeaderContainer.backgroundColor = kRiotColorLightGrey;
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
@@ -3021,11 +3021,11 @@
             // Set the right background color
             if (highlightCount)
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = kVectorColorPinkRed;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = kRiotColorPinkRed;
             }
             else
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = kVectorColorGreen;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = kRiotColorGreen;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)

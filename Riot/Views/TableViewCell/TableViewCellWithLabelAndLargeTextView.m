@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "TableViewCellWithLabelAndLargeTextView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation TableViewCellWithLabelAndLargeTextView
 
@@ -24,7 +25,7 @@
 {
     [super awakeFromNib];
     
-    _label.textColor = kVectorTextColorBlack;
+    _label.textColor = kRiotTextColorBlack;
     
     // Adjust text view
     // Remove the container inset: this operation impacts only the vertical margin.

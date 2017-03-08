@@ -16,7 +16,7 @@
 
 #import "TableViewCellWithCheckBoxAndLabel.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation TableViewCellWithCheckBoxAndLabel
 
@@ -24,7 +24,7 @@
 {
     [super awakeFromNib];
     
-    _label.textColor = kVectorTextColorBlack;
+    _label.textColor = kRiotTextColorBlack;
 }
 
 - (void)setEnabled:(BOOL)enabled

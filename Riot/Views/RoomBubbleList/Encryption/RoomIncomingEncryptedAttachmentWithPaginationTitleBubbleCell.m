@@ -18,7 +18,7 @@
 
 #import "RoomEncryptedDataBubbleCell.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @implementation RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell
 

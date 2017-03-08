@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "RoomInputToolbarView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "UINavigationController+Vector.h"
 
@@ -67,10 +68,10 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    [self.rightInputToolbarButton setTitleColor:kVectorColorGreen forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitleColor:kVectorColorGreen forState:UIControlStateHighlighted];
+    [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateHighlighted];
     
-    self.separatorView.backgroundColor = kVectorColorSilver;
+    self.separatorView.backgroundColor = kRiotColorSilver;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
@@ -78,8 +79,8 @@
     growingTextView.backgroundColor = [UIColor clearColor];
     
     growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = kVectorTextColorBlack;
-    growingTextView.tintColor = kVectorColorGreen;
+    growingTextView.textColor = kRiotTextColorBlack;
+    growingTextView.tintColor = kRiotColorGreen;
     
     self.placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
 }

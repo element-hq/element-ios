@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "EventFormatter.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @interface EventFormatter ()
 {
@@ -45,13 +46,13 @@
 
         localTimeZone = [NSTimeZone localTimeZone];
         
-        self.defaultTextColor = kVectorTextColorBlack;
-        self.subTitleTextColor = kVectorTextColorGray;
-        self.prefixTextColor = kVectorTextColorGray;
-        self.bingTextColor = kVectorColorPinkRed;
-        self.encryptingTextColor = kVectorColorGreen;
-        self.sendingTextColor = kVectorTextColorGray;
-        self.errorTextColor = kVectorColorRed;
+        self.defaultTextColor = kRiotTextColorBlack;
+        self.subTitleTextColor = kRiotTextColorGray;
+        self.prefixTextColor = kRiotTextColorGray;
+        self.bingTextColor = kRiotColorPinkRed;
+        self.encryptingTextColor = kRiotColorGreen;
+        self.sendingTextColor = kRiotTextColorGray;
+        self.errorTextColor = kRiotColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];

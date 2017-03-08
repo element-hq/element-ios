@@ -1,5 +1,6 @@
 /*
  Copyright 2014 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -52,7 +53,7 @@
 
 #include <MatrixSDK/MXJingleCallStack.h>
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #define CALL_STATUS_BAR_HEIGHT 44
 
@@ -272,7 +273,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"------------------------------\n");
 
     // Define the navigation bar text color
-    [[UINavigationBar appearance] setTintColor:kVectorColorGreen];
+    [[UINavigationBar appearance] setTintColor:kRiotColorGreen];
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
@@ -2327,7 +2328,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         _callStatusBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
     }
     
-    [_callStatusBarButton setBackgroundColor:kVectorColorGreen];
+    [_callStatusBarButton setBackgroundColor:kRiotColorGreen];
     [_callStatusBarButton addTarget:self action:@selector(presentCallViewController) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window

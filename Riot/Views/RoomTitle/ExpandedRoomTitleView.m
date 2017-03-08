@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "ExpandedRoomTitleView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "MXRoom+Vector.h"
 
@@ -32,9 +33,9 @@
 {
     [super awakeFromNib];
     
-    self.displayNameTextField.textColor = kVectorTextColorBlack;
-    self.roomTopic.textColor = kVectorTextColorDarkGray;
-    self.roomMembers.textColor = kVectorColorGreen;
+    self.displayNameTextField.textColor = kRiotTextColorBlack;
+    self.roomTopic.textColor = kRiotTextColorDarkGray;
+    self.roomMembers.textColor = kRiotColorGreen;
 }
 
 - (void)refreshDisplay
@@ -47,11 +48,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-            self.displayNameTextField.textColor = kVectorTextColorGray;
+            self.displayNameTextField.textColor = kRiotTextColorGray;
         }
         else
         {
-            self.displayNameTextField.textColor = kVectorTextColorBlack;
+            self.displayNameTextField.textColor = kRiotTextColorBlack;
         }
         
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];

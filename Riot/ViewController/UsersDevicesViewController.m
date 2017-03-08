@@ -20,7 +20,7 @@
 #import "AppDelegate.h"
 #import "RageShakeManager.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 @interface UsersDevicesViewController ()
 {
@@ -43,7 +43,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }

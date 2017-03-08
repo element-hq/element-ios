@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,7 +19,7 @@
 
 #import "EventFormatter.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "RoomIdOrAliasTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
@@ -333,7 +334,7 @@
         }
         
         sectionHeader = [[UIView alloc] initWithFrame:frame];
-        sectionHeader.backgroundColor = kVectorColorLightGrey;
+        sectionHeader.backgroundColor = kRiotColorLightGrey;
         
         if (sectionBitwise)
         {

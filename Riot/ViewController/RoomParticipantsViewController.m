@@ -86,7 +86,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -131,7 +131,7 @@
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = kVectorColorSilver;
+    _searchBarHeaderBorder.backgroundColor = kRiotColorSilver;
     
     // Search bar header is hidden when no room is provided
     _searchBarHeader.hidden = (self.mxRoom == nil);
@@ -1051,12 +1051,12 @@
                 // Update member badge
                 MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
-                if (powerLevel >= kVectorRoomAdminLevel)
+                if (powerLevel >= kRiotRoomAdminLevel)
                 {
                     participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon"];
                     participantCell.thumbnailBadgeView.hidden = NO;
                 }
-                else if (powerLevel >= kVectorRoomModeratorLevel)
+                else if (powerLevel >= kRiotRoomModeratorLevel)
                 {
                     participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon"];
                     participantCell.thumbnailBadgeView.hidden = NO;
@@ -1111,7 +1111,7 @@
     if (section == invitedSection)
     {
         sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
-        sectionHeader.backgroundColor = kVectorColorLightGrey;
+        sectionHeader.backgroundColor = kRiotColorLightGrey;
         
         CGRect frame = sectionHeader.frame;
         frame.origin.x = 20;
@@ -1222,7 +1222,7 @@
         
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -1543,19 +1543,19 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = kVectorColorGreen;
-    searchBar.tintColor = kVectorColorGreen;
+    searchBar.barTintColor = searchBar.tintColor = kRiotColorGreen;
+    searchBar.tintColor = kRiotColorGreen;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
 
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = kVectorTextColorGray;
+    searchBarTextField.textColor = kRiotTextColorGray;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = kVectorColorGreen;
+    leftImageView.tintColor = kRiotColorGreen;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -1566,8 +1566,8 @@
     // place holder
     searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: kVectorColorGreen,
-                                                                                            NSForegroundColorAttributeName: kVectorColorGreen}];
+                                                                                            NSUnderlineColorAttributeName: kRiotColorGreen,
+                                                                                            NSForegroundColorAttributeName: kRiotColorGreen}];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

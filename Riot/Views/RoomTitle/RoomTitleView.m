@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 #import "RoomTitleView.h"
 
-#import "VectorDesignValues.h"
+#import "RiotDesignValues.h"
 
 #import "MXRoom+Vector.h"
 
@@ -37,7 +38,7 @@
 {
     [super awakeFromNib];
     
-    self.displayNameTextField.textColor = kVectorTextColorBlack;
+    self.displayNameTextField.textColor = kRiotTextColorBlack;
     
     if (_titleMask)
     {
@@ -120,11 +121,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-            self.displayNameTextField.textColor = kVectorTextColorGray;
+            self.displayNameTextField.textColor = kRiotTextColorGray;
         }
         else
         {
-            self.displayNameTextField.textColor = kVectorTextColorBlack;
+            self.displayNameTextField.textColor = kRiotTextColorBlack;
         }
     }
 }
