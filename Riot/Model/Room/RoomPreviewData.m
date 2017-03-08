@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -80,7 +81,7 @@
         _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
         [_roomDataSource finalizeInitialization];
 
-        _roomName = peekingRoom.vectorDisplayname;
+        _roomName = peekingRoom.riotDisplayname;
         _roomAvatarUrl = peekingRoom.state.avatar;
         
         _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.state.topic];;

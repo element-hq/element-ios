@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -28,36 +29,33 @@
 {
     NSString* roomAvatarUrl = self.state.avatar;
     
-    // by default consider room with 2 members as an empty
-    BOOL isEmptyRoom = self.state.members.count == 2;
-    
-    // detect if it is a room with no more than 2 members (i.e. 1:1 chat)
     if (!roomAvatarUrl)
     {
-        NSString* myUserId = self.mxSession.myUser.userId;
-        
+        // If the room has only two members, use the avatar of the second member.
         NSArray* members = self.state.members;
         
         if (members.count == 2)
         {
-            // use the member avatar only it is an active member
+            NSString* myUserId = self.mxSession.myUser.userId;
+            
             for (MXRoomMember *roomMember in members)
             {
-                if (MXMembershipJoin == roomMember.membership && ![roomMember.userId isEqualToString:myUserId])
+                if (![roomMember.userId isEqualToString:myUserId])
                 {
-                    roomAvatarUrl = roomMember.avatarUrl;
-                    isEmptyRoom = NO;
+                    // Use the avatar of this member only if he joined or he is invited.
+                    if (MXMembershipJoin == roomMember.membership || MXMembershipInvite == roomMember.membership)
+                    {
+                        roomAvatarUrl = roomMember.avatarUrl;
+                    }
                     break;
                 }
             }
         }
     }
     
-    // for an empty room(room with one active person) generate a solid color avatar without any text
-    NSString *avatarDisplayName = [NSString string];
-    if (roomAvatarUrl || !isEmptyRoom)
-        avatarDisplayName = self.vectorDisplayname;
-    
+    // Retrieve the Riot room display name to prepare the default avatar image.
+    // Note: this display name is nil for an "empty room" without display name (We name "empty room" a room in which the current user is the only active member).
+    NSString *avatarDisplayName = self.riotDisplayname;
     UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:self.state.roomId withDisplayName:avatarDisplayName];
     
     if (roomAvatarUrl)
@@ -76,7 +74,7 @@
 
 #pragma mark - Room display name
 
-- (NSString *)vectorDisplayname
+- (NSString *)riotDisplayname
 {
     // this algo is the one defined in
     // https://github.com/matrix-org/matrix-js-sdk/blob/develop/lib/models/room.js#L617

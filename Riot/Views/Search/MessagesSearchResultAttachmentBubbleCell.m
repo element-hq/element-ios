@@ -43,7 +43,7 @@
         MXRoom* room = [bubbleData.mxSession roomWithRoomId:bubbleData.roomId];
         if (room)
         {
-            self.roomNameLabel.text = room.vectorDisplayname;
+            self.roomNameLabel.text = room.riotDisplayname;
             if (!self.roomNameLabel.text.length)
             {
                 self.roomNameLabel.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

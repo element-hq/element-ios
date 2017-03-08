@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -26,7 +27,7 @@
 - (void)update
 {
     [super update];
-    roomDisplayname = self.roomDataSource.room.vectorDisplayname;
+    roomDisplayname = self.roomDataSource.room.riotDisplayname;
     if (!roomDisplayname.length)
     {
         roomDisplayname = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

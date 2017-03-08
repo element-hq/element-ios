@@ -43,7 +43,7 @@
         MXRoom* room = [bubbleData.mxSession roomWithRoomId:bubbleData.roomId];
         if (room)
         {
-            self.roomNameLabel.text = room.vectorDisplayname;
+            self.roomNameLabel.text = room.riotDisplayname;
         }
         else
         {

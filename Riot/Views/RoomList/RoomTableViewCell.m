@@ -45,7 +45,7 @@
     [room setRoomAvatarImageIn:self.avatarImageView];
     self.avatarImageView.backgroundColor = [UIColor clearColor];
     
-    self.titleLabel.text = room.vectorDisplayname;
+    self.titleLabel.text = room.riotDisplayname;
 }
 
 + (CGFloat)cellHeight

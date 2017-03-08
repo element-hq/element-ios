@@ -187,7 +187,7 @@
     }
     else if (self.mxCall.room)
     {
-        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.vectorDisplayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.riotDisplayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
     }
     
     return [UIImage imageNamed:@"placeholder"];
@@ -216,7 +216,7 @@
     }
     else if (self.mxCall.isConferenceCall)
     {
-        peerDisplayName = self.mxCall.room.vectorDisplayname;
+        peerDisplayName = self.mxCall.room.riotDisplayname;
         peerAvatarURL = self.mxCall.room.state.avatar;
     }
     
