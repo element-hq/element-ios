@@ -58,7 +58,7 @@
                     </constraints>
                     <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <items>
-                        <navigationItem title="Vector" id="rj9-wP-8QS">
+                        <navigationItem title="Riot" id="rj9-wP-8QS">
                             <barButtonItem key="rightBarButtonItem" title="Register" id="Kwt-KN-aVL">
                                 <connections>
                                     <action selector="onButtonPressed:" destination="-1" id="nwk-aV-eBO"/>
