@@ -6,7 +6,7 @@ builddir="build"
 outdir="out"
 
 sdk="iphoneos"
-basecmd="xcodebuild -scheme Vector -workspace Vector.xcworkspace -configuration Release -sdk $sdk -derivedDataPath $builddir"
+basecmd="xcodebuild -scheme Riot -workspace Riot.xcworkspace -configuration Release -sdk $sdk -derivedDataPath $builddir"
 vars=""
 
 # Clean the Xcode build folder to avoid caching issues that happens sometimes
@@ -23,19 +23,19 @@ fi
 
 if [ "$1" == 'clean' ]
 then
-	if [ -d "Vector.xcworkspace" ]
+	if [ -d "Riot.xcworkspace" ]
 	then
 		$basecmd clean
 	fi
 	rm -r "$builddir" "$outdir" || true
 else
 	method=$1
-	if [ ! -d "Vector.xcworkspace" ]
+	if [ ! -d "Riot.xcworkspace" ]
 	then
 		echo "Please run pod install first"
 		exit 1
 	fi
-	$basecmd -archivePath "out/Vector.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars"
+	$basecmd -archivePath "out/Riot.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars"
 	exportOptionsPlist=`mktemp`
 	cat > $exportOptionsPlist <<EOD
 <?xml version="1.0" encoding="UTF-8"?>
@@ -47,6 +47,6 @@ else
 </dict>
 </plist>
 EOD
-	xcodebuild -exportArchive -archivePath "out/Vector.xcarchive" -exportPath out -exportOptionsPlist "$exportOptionsPlist"
+	xcodebuild -exportArchive -archivePath "out/Riot.xcarchive" -exportPath out -exportOptionsPlist "$exportOptionsPlist"
 	rm "$exportOptionsPlist"
 fi

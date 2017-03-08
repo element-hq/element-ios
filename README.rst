@@ -1,10 +1,10 @@
-Vector-ios
+Riot-ios
 ==========
 
-Vector/iOS is an iOS Matrix client. 
+Riot/iOS is an iOS Matrix client. 
 
 .. image:: https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg
-   :target: https://itunes.apple.com/us/app/vector-open-source-collaboration/id1083446067?mt=8
+   :target: https://itunes.apple.com/us/app/riot-open-source-collaboration/id1083446067?mt=8
 
 It is based on MatrixKit (https://github.com/matrix-org/matrix-ios-kit) and MatrixSDK (https://github.com/matrix-org/matrix-ios-sdk).
 
@@ -13,19 +13,19 @@ You can build the app from source as per below:
 Build instructions
 ==================
 
-Before opening the Vector Xcode workspace, you need to build it with the
+Before opening the Riot Xcode workspace, you need to build it with the
 CocoaPods command::
 
-        $ cd Vector
+        $ cd Riot
         $ pod install
 
-This will load all dependencies for the Vector source code, including MatrixKit 
+This will load all dependencies for the Riot source code, including MatrixKit 
 and MatrixSDK.  You will need an recent and updated (``pod update``) install of
 CocoaPods.
 
-Then, open ``Vector.xcworkspace`` with Xcode
+Then, open ``Riot.xcworkspace`` with Xcode
 
-        $ open Vector.xcworkspace
+        $ open Riot.xcworkspace
 
 Developing
 ==========

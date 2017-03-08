@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F094A9A11B78D8F000B1FBBF"
-               BuildableName = "Vector.app"
-               BlueprintName = "Vector"
-               ReferencedContainer = "container:Vector.xcodeproj">
+               BuildableName = "Riot.app"
+               BlueprintName = "Riot"
+               ReferencedContainer = "container:Riot.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F094A9BD1B78D8F000B1FBBF"
-               BuildableName = "VectorTests.xctest"
-               BlueprintName = "VectorTests"
-               ReferencedContainer = "container:Vector.xcodeproj">
+               BuildableName = "RiotTests.xctest"
+               BlueprintName = "RiotTests"
+               ReferencedContainer = "container:Riot.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F094A9BD1B78D8F000B1FBBF"
-               BuildableName = "VectorTests.xctest"
-               BlueprintName = "VectorTests"
-               ReferencedContainer = "container:Vector.xcodeproj">
+               BuildableName = "RiotTests.xctest"
+               BlueprintName = "RiotTests"
+               ReferencedContainer = "container:Riot.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F094A9A11B78D8F000B1FBBF"
-            BuildableName = "Vector.app"
-            BlueprintName = "Vector"
-            ReferencedContainer = "container:Vector.xcodeproj">
+            BuildableName = "Riot.app"
+            BlueprintName = "Riot"
+            ReferencedContainer = "container:Riot.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -80,9 +80,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F094A9A11B78D8F000B1FBBF"
-            BuildableName = "Vector.app"
-            BlueprintName = "Vector"
-            ReferencedContainer = "container:Vector.xcodeproj">
+            BuildableName = "Riot.app"
+            BlueprintName = "Riot"
+            ReferencedContainer = "container:Riot.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -99,9 +99,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F094A9A11B78D8F000B1FBBF"
-            BuildableName = "Vector.app"
-            BlueprintName = "Vector"
-            ReferencedContainer = "container:Vector.xcodeproj">
+            BuildableName = "Riot.app"
+            BlueprintName = "Riot"
+            ReferencedContainer = "container:Riot.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

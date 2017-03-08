@@ -443,7 +443,7 @@
 		32C52BF81CBFF50C00863B33 /* RoomPreviewData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomPreviewData.m; sourceTree = "<group>"; };
 		32D200861C16C2B100A4E396 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		32D200871C16C2B100A4E396 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		32F2ABFC1CB5694B00BF205F /* Vector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Vector.entitlements; sourceTree = "<group>"; };
+		32F2ABFC1CB5694B00BF205F /* Riot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Riot.entitlements; sourceTree = "<group>"; };
 		32F2E6191C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
 		32F2E61A1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
@@ -725,7 +725,7 @@
 		F08BE09D1B87025B00C480FB /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F08BE0A01B87064000C480FB /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
 		F08BE0A11B87064000C480FB /* RoomDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataSource.m; sourceTree = "<group>"; };
-		F094A9A21B78D8F000B1FBBF /* Vector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vector.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F094A9A21B78D8F000B1FBBF /* Riot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Riot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9A61B78D8F000B1FBBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F094A9A71B78D8F000B1FBBF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F094A9A91B78D8F000B1FBBF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -733,7 +733,7 @@
 		F094A9B31B78D8F000B1FBBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F094A9B51B78D8F000B1FBBF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F094A9B81B78D8F000B1FBBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		F094A9BE1B78D8F000B1FBBF /* VectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RiotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9C31B78D8F000B1FBBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F094A9C41B78D8F000B1FBBF /* VectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VectorTests.m; sourceTree = "<group>"; };
 		F094AA031B78E3D400B1FBBF /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
@@ -1452,8 +1452,8 @@
 		F094A9A31B78D8F000B1FBBF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F094A9A21B78D8F000B1FBBF /* Vector.app */,
-				F094A9BE1B78D8F000B1FBBF /* VectorTests.xctest */,
+				F094A9A21B78D8F000B1FBBF /* Riot.app */,
+				F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1461,7 +1461,7 @@
 		F094A9A41B78D8F000B1FBBF /* Vector */ = {
 			isa = PBXGroup;
 			children = (
-				32F2ABFC1CB5694B00BF205F /* Vector.entitlements */,
+				32F2ABFC1CB5694B00BF205F /* Riot.entitlements */,
 				F094AA071B78E42600B1FBBF /* API */,
 				F094AA0A1B78E42600B1FBBF /* Assets */,
 				F0C34CB51C17145F00C36F09 /* Categories */,
@@ -1728,9 +1728,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F094A9A11B78D8F000B1FBBF /* Vector */ = {
+		F094A9A11B78D8F000B1FBBF /* Riot */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Vector" */;
+			buildConfigurationList = F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Riot" */;
 			buildPhases = (
 				9131C24971B46D743282FCF6 /* [CP] Check Pods Manifest.lock */,
 				F094A99E1B78D8F000B1FBBF /* Sources */,
@@ -1743,14 +1743,14 @@
 			);
 			dependencies = (
 			);
-			name = Vector;
+			name = Riot;
 			productName = Vector;
-			productReference = F094A9A21B78D8F000B1FBBF /* Vector.app */;
+			productReference = F094A9A21B78D8F000B1FBBF /* Riot.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F094A9BD1B78D8F000B1FBBF /* VectorTests */ = {
+		F094A9BD1B78D8F000B1FBBF /* RiotTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F094A9CB1B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "VectorTests" */;
+			buildConfigurationList = F094A9CB1B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "RiotTests" */;
 			buildPhases = (
 				F094A9BA1B78D8F000B1FBBF /* Sources */,
 				F094A9BB1B78D8F000B1FBBF /* Frameworks */,
@@ -1761,9 +1761,9 @@
 			dependencies = (
 				F094A9C01B78D8F000B1FBBF /* PBXTargetDependency */,
 			);
-			name = VectorTests;
+			name = RiotTests;
 			productName = VectorTests;
-			productReference = F094A9BE1B78D8F000B1FBBF /* VectorTests.xctest */;
+			productReference = F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1792,7 +1792,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Vector" */;
+			buildConfigurationList = F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Riot" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1805,8 +1805,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F094A9A11B78D8F000B1FBBF /* Vector */,
-				F094A9BD1B78D8F000B1FBBF /* VectorTests */,
+				F094A9A11B78D8F000B1FBBF /* Riot */,
+				F094A9BD1B78D8F000B1FBBF /* RiotTests */,
 			);
 		};
 /* End PBXProject section */
@@ -2287,7 +2287,7 @@
 /* Begin PBXTargetDependency section */
 		F094A9C01B78D8F000B1FBBF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F094A9A11B78D8F000B1FBBF /* Vector */;
+			target = F094A9A11B78D8F000B1FBBF /* Riot */;
 			targetProxy = F094A9BF1B78D8F000B1FBBF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2473,7 +2473,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.matrix.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vector.app/Vector";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Riot.app/Riot";
 			};
 			name = Debug;
 		};
@@ -2490,14 +2490,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.matrix.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vector.app/Vector";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Riot.app/Riot";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Vector" */ = {
+		F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Riot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F094A9C61B78D8F000B1FBBF /* Debug */,
@@ -2506,7 +2506,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Vector" */ = {
+		F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Riot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F094A9C91B78D8F000B1FBBF /* Debug */,
@@ -2515,7 +2515,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F094A9CB1B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "VectorTests" */ = {
+		F094A9CB1B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "RiotTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F094A9CC1B78D8F000B1FBBF /* Debug */,
