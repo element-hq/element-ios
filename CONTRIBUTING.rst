@@ -1,4 +1,4 @@
-Contributing code to Vector iOS
+Contributing code to Riot iOS
 ==================================
 
-vector-ios follows the same pattern as https://github.com/matrix-org/synapse/blob/master/CONTRIBUTING.rst
+riot-ios follows the same pattern as https://github.com/matrix-org/synapse/blob/master/CONTRIBUTING.rst
