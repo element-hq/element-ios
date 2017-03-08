@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
-		F083BB051E7005FD00A9B29C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BB031E7005FD00A9B29C /* Info.plist */; };
-		F083BB061E7005FD00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
+		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
 		F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0B1E7009EC00A9B29C /* RageShakeManager.m */; };
 		F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		F083BD1F1E7009ED00A9B29C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F083BB0F1E7009EC00A9B29C /* InfoPlist.strings */; };
@@ -225,7 +223,6 @@
 		F083BDF11E7009ED00A9B29C /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = F083BBED1E7009EC00A9B29C /* empty.mm */; };
 		F083BDF21E7009ED00A9B29C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */; };
 		F083BDF31E7009ED00A9B29C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEF1E7009EC00A9B29C /* Images.xcassets */; };
-		F083BDF41E7009ED00A9B29C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BBF01E7009EC00A9B29C /* Info.plist */; };
 		F083BDF51E7009ED00A9B29C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBF11E7009EC00A9B29C /* main.m */; };
 		F083BDF61E7009ED00A9B29C /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBF51E7009EC00A9B29C /* Contact.m */; };
 		F083BDF71E7009ED00A9B29C /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBF81E7009EC00A9B29C /* RoomBubbleCellData.m */; };
@@ -401,6 +398,7 @@
 		F083BEA11E7009ED00A9B29C /* TableViewCellWithLabelAndLargeTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BD191E7009ED00A9B29C /* TableViewCellWithLabelAndLargeTextView.xib */; };
 		F083BEA21E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BD1B1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m */; };
 		F083BEA31E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BD1C1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib */; };
+		F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -414,9 +412,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
-		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
-		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1129C74A281B080432B1A1A1 /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
+		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F083BB041E7005FD00A9B29C /* RiotTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotTests.m; sourceTree = "<group>"; };
 		F083BB0A1E7009EC00A9B29C /* RageShakeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakeManager.h; sourceTree = "<group>"; };
@@ -921,6 +918,7 @@
 		F083BD1C1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
 		F094A9A21B78D8F000B1FBBF /* Riot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Riot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RiotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9D678EF54918C036FDEDBF9 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -928,7 +926,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */,
+				E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -945,7 +943,7 @@
 		6567B0BBF3C05D7F7A7F79CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9B179239B79688A61A3F465F /* libPods-Vector.a */,
+				7D8737F782E108CFD6908691 /* libPods-Riot.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -953,8 +951,8 @@
 		E1451F540F8BC02A7FB7AA31 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */,
-				435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */,
+				1129C74A281B080432B1A1A1 /* Pods-Riot.debug.xcconfig */,
+				F9D678EF54918C036FDEDBF9 /* Pods-Riot.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1836,7 +1834,6 @@
 				F083BDC81E7009ED00A9B29C /* search_icon.png in Resources */,
 				F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */,
 				F083BE431E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
-				F083BB051E7005FD00A9B29C /* Info.plist in Resources */,
 				F083BDD81E7009ED00A9B29C /* start_chat@2x.png in Resources */,
 				F083BD641E7009ED00A9B29C /* direct_icon@3x.png in Resources */,
 				F083BE261E7009ED00A9B29C /* SegmentedViewController.xib in Resources */,
@@ -1918,7 +1915,6 @@
 				F083BE4F1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BD241E7009ED00A9B29C /* add_participant@3x.png in Resources */,
 				F083BD891E7009ED00A9B29C /* file_music_icon.png in Resources */,
-				F083BDF41E7009ED00A9B29C /* Info.plist in Resources */,
 				F083BDD11E7009ED00A9B29C /* settings_icon.png in Resources */,
 				F083BD811E7009ED00A9B29C /* favourite@2x.png in Resources */,
 				F083BD9F1E7009ED00A9B29C /* mod_icon@2x.png in Resources */,
@@ -2125,7 +2121,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Vector/Pods-Vector-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		44C35695CFA4F9799C449367 /* [CP] Copy Pods Resources */ = {
@@ -2140,7 +2136,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Vector/Pods-Vector-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9131C24971B46D743282FCF6 /* [CP] Check Pods Manifest.lock */ = {
@@ -2221,7 +2217,6 @@
 				F083BE3C1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE211E7009ED00A9B29C /* RoomSearchViewController.m in Sources */,
 				F083BE3E1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
-				F083BB061E7005FD00A9B29C /* RiotTests.m in Sources */,
 				F083BE071E7009ED00A9B29C /* AttachmentsViewController.m in Sources */,
 				F083BE051E7009ED00A9B29C /* VectorDesignValues.m in Sources */,
 				F083BE311E7009ED00A9B29C /* DeviceTableViewCell.m in Sources */,
@@ -2283,6 +2278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2427,14 +2423,14 @@
 		};
 		F094A9C91B78D8F000B1FBBF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */;
+			baseConfigurationReference = 1129C74A281B080432B1A1A1 /* Pods-Riot.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Vector/Info.plist;
+				INFOPLIST_FILE = Riot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
@@ -2445,13 +2441,13 @@
 		};
 		F094A9CA1B78D8F000B1FBBF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */;
+			baseConfigurationReference = F9D678EF54918C036FDEDBF9 /* Pods-Riot.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Vector/Info.plist;
+				INFOPLIST_FILE = Riot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
