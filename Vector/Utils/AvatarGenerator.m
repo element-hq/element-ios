@@ -103,9 +103,14 @@ static UILabel* backgroundLabel = nil;
     
     // set to the top quality
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-    [[backgroundLabel layer] renderInContext: UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *image;
+    if (context)
+    {
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+        [[backgroundLabel layer] renderInContext: context];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+    }
+    
     UIGraphicsEndImageContext();
     
     // Return the image.
@@ -127,9 +132,14 @@ static UILabel* backgroundLabel = nil;
     
     // set to the top quality
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-    [[bgLabel layer] renderInContext: UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *image;
+    if (context)
+    {
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+        [[bgLabel layer] renderInContext: context];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+    }   
+    
     UIGraphicsEndImageContext();
     
     // Return the image.
