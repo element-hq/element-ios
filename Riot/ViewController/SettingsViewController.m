@@ -1444,7 +1444,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             passwordCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
             passwordCell.mxkTextField.text = @"*********";
             passwordCell.mxkTextField.userInteractionEnabled = NO;
-            passwordCell.mxkLabel.accessibilityIdentifier=@"SettingsVCChangePasswordStaticText";
+            passwordCell.mxkLabel.accessibilityIdentifier=@"SettingsVCChangePwdStaticText";
             
             cell = passwordCell;
         }
@@ -3166,7 +3166,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             self->currentPasswordTextField = textField;
             self->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
             self->currentPasswordTextField.secureTextEntry = YES;
-            self->currentPasswordTextField.accessibilityIdentifier=@"ChgPwdAlertViewCurrentPasswordButton";
             [self->currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
          
@@ -3181,7 +3180,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             self->newPasswordTextField1 = textField;
             self->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
             self->newPasswordTextField1.secureTextEntry = YES;
-            self->newPasswordTextField1.accessibilityIdentifier=@"ChgPwdAlertViewNewPasswordButton";
             [self->newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
         
@@ -3196,7 +3194,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             self->newPasswordTextField2 = textField;
             self->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
             self->newPasswordTextField2.secureTextEntry = YES;
-            self->newPasswordTextField2.accessibilityIdentifier=@"ChgPwdAlertViewConfirmPasswordButton";
             [self->newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
     }];
