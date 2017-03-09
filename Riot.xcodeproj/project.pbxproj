@@ -240,7 +240,7 @@
 		F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC131E7009EC00A9B29C /* EventFormatter.m */; };
 		F083BE041E7009ED00A9B29C /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
 		F083BE051E7009ED00A9B29C /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
-		F083BE061E7009ED00A9B29C /* Vector-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BC181E7009EC00A9B29C /* Vector-Defaults.plist */; };
+		F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */; };
 		F083BE071E7009ED00A9B29C /* AttachmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC1B1E7009EC00A9B29C /* AttachmentsViewController.m */; };
 		F083BE081E7009ED00A9B29C /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC1D1E7009EC00A9B29C /* AuthenticationViewController.m */; };
 		F083BE091E7009ED00A9B29C /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BC1E1E7009EC00A9B29C /* AuthenticationViewController.xib */; };
@@ -671,7 +671,7 @@
 		F083BC151E7009EC00A9B29C /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		F083BC161E7009EC00A9B29C /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
 		F083BC171E7009EC00A9B29C /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
-		F083BC181E7009EC00A9B29C /* Vector-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Vector-Defaults.plist"; sourceTree = "<group>"; };
+		F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Riot-Defaults.plist"; sourceTree = "<group>"; };
 		F083BC1A1E7009EC00A9B29C /* AttachmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentsViewController.h; sourceTree = "<group>"; };
 		F083BC1B1E7009EC00A9B29C /* AttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentsViewController.m; sourceTree = "<group>"; };
 		F083BC1C1E7009EC00A9B29C /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
@@ -1700,7 +1700,7 @@
 				F083BBF01E7009EC00A9B29C /* Info.plist */,
 				F083BBF11E7009EC00A9B29C /* main.m */,
 				F083BC0E1E7009EC00A9B29C /* third_party_licenses.html */,
-				F083BC181E7009EC00A9B29C /* Vector-Defaults.plist */,
+				F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1981,7 +1981,7 @@
 				F083BDDD1E7009ED00A9B29C /* upload_icon.png in Resources */,
 				F083BD3B1E7009ED00A9B29C /* call_chat_icon@3x.png in Resources */,
 				F083BD351E7009ED00A9B29C /* call_audio_mute_off_icon@3x.png in Resources */,
-				F083BE061E7009ED00A9B29C /* Vector-Defaults.plist in Resources */,
+				F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */,
 				F083BD2C1E7009ED00A9B29C /* animatedLogo-4.png in Resources */,
 				F083BD7E1E7009ED00A9B29C /* error@2x.png in Resources */,
 				F083BE931E7009ED00A9B29C /* SimpleRoomTitleView.xib in Resources */,
