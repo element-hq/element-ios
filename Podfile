@@ -3,11 +3,11 @@
 
 source 'https://github.com/CocoaPods/Specs.git'
 
-target "Vector" do
+target "Riot" do
 
 
 # Different flavours of pods to MatrixKit
-# The tagged version on which this version of Vector has been built
+# The tagged version on which this version of Riot has been built
 pod 'MatrixKit', '0.4.7'
 
 # The lastest release available on the CocoaPods repository 
