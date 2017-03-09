@@ -24,7 +24,7 @@
 #import "AvatarGenerator.h"
 #import "RiotDesignValues.h"
 
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 @interface CallViewController ()
 {

@@ -217,9 +217,9 @@
 		F083BDEB1E7009ED00A9B29C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BBE01E7009EC00A9B29C /* LaunchScreen.xib */; };
 		F083BDEC1E7009ED00A9B29C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F083BBE21E7009EC00A9B29C /* Main.storyboard */; };
 		F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */; };
-		F083BDEE1E7009ED00A9B29C /* MXRoom+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Vector.m */; };
-		F083BDEF1E7009ED00A9B29C /* UINavigationController+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Vector.m */; };
-		F083BDF01E7009ED00A9B29C /* UIViewController+VectorSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEC1E7009EC00A9B29C /* UIViewController+VectorSearch.m */; };
+		F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
+		F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */; };
+		F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */; };
 		F083BDF11E7009ED00A9B29C /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = F083BBED1E7009EC00A9B29C /* empty.mm */; };
 		F083BDF21E7009ED00A9B29C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */; };
 		F083BDF31E7009ED00A9B29C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEF1E7009EC00A9B29C /* Images.xcassets */; };
@@ -628,12 +628,12 @@
 		F083BBE31E7009EC00A9B29C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F083BBE51E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXKRoomBubbleTableViewCell+Riot.h"; sourceTree = "<group>"; };
 		F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXKRoomBubbleTableViewCell+Riot.m"; sourceTree = "<group>"; };
-		F083BBE71E7009EC00A9B29C /* MXRoom+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoom+Vector.h"; sourceTree = "<group>"; };
-		F083BBE81E7009EC00A9B29C /* MXRoom+Vector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoom+Vector.m"; sourceTree = "<group>"; };
-		F083BBE91E7009EC00A9B29C /* UINavigationController+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Vector.h"; sourceTree = "<group>"; };
-		F083BBEA1E7009EC00A9B29C /* UINavigationController+Vector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Vector.m"; sourceTree = "<group>"; };
-		F083BBEB1E7009EC00A9B29C /* UIViewController+VectorSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VectorSearch.h"; sourceTree = "<group>"; };
-		F083BBEC1E7009EC00A9B29C /* UIViewController+VectorSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VectorSearch.m"; sourceTree = "<group>"; };
+		F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoom+Riot.h"; sourceTree = "<group>"; };
+		F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoom+Riot.m"; sourceTree = "<group>"; };
+		F083BBE91E7009EC00A9B29C /* UINavigationController+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Riot.h"; sourceTree = "<group>"; };
+		F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Riot.m"; sourceTree = "<group>"; };
+		F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RiotSearch.h"; sourceTree = "<group>"; };
+		F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RiotSearch.m"; sourceTree = "<group>"; };
 		F083BBED1E7009EC00A9B29C /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F083BBEF1E7009EC00A9B29C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -1236,12 +1236,12 @@
 			children = (
 				F083BBE51E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.h */,
 				F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */,
-				F083BBE71E7009EC00A9B29C /* MXRoom+Vector.h */,
-				F083BBE81E7009EC00A9B29C /* MXRoom+Vector.m */,
-				F083BBE91E7009EC00A9B29C /* UINavigationController+Vector.h */,
-				F083BBEA1E7009EC00A9B29C /* UINavigationController+Vector.m */,
-				F083BBEB1E7009EC00A9B29C /* UIViewController+VectorSearch.h */,
-				F083BBEC1E7009EC00A9B29C /* UIViewController+VectorSearch.m */,
+				F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */,
+				F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */,
+				F083BBE91E7009EC00A9B29C /* UINavigationController+Riot.h */,
+				F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */,
+				F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */,
+				F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2181,7 +2181,7 @@
 				F083BE0E1E7009ED00A9B29C /* ContactsTableViewController.m in Sources */,
 				F083BE861E7009ED00A9B29C /* RoomTableViewCell.m in Sources */,
 				F083BDF51E7009ED00A9B29C /* main.m in Sources */,
-				F083BDEE1E7009ED00A9B29C /* MXRoom+Vector.m in Sources */,
+				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
 				F083BE331E7009ED00A9B29C /* DeviceView.m in Sources */,
 				F083BE2B1E7009ED00A9B29C /* AuthInputsView.m in Sources */,
 				F083BE661E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
@@ -2196,7 +2196,7 @@
 				F083BE481E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				F083BE6A1E7009ED00A9B29C /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
-				F083BDEF1E7009ED00A9B29C /* UINavigationController+Vector.m in Sources */,
+				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				F083BE761E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE5A1E7009ED00A9B29C /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				F083BE541E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
@@ -2264,7 +2264,7 @@
 				F083BDF61E7009ED00A9B29C /* Contact.m in Sources */,
 				F083BE961E7009ED00A9B29C /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				F083BE391E7009ED00A9B29C /* RoomEncryptedDataBubbleCell.m in Sources */,
-				F083BDF01E7009ED00A9B29C /* UIViewController+VectorSearch.m in Sources */,
+				F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */,
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
 				F083BE341E7009ED00A9B29C /* EncryptionInfoView.m in Sources */,
 				F083BE641E7009ED00A9B29C /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,

@@ -17,7 +17,7 @@
 
 #import "RecentCellData.h"
 
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 @implementation RecentCellData
 // trick to hide the mother class property as it is readonly one.

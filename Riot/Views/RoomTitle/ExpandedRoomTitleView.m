@@ -19,7 +19,7 @@
 
 #import "RiotDesignValues.h"
 
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 @implementation ExpandedRoomTitleView
 

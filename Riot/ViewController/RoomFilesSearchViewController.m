@@ -19,7 +19,7 @@
 
 #import "RoomSearchViewController.h"
 
-#import "UIViewController+VectorSearch.h"
+#import "UIViewController+RiotSearch.h"
 
 #import "FilesSearchCellData.h"
 #import "FilesSearchTableViewCell.h"
