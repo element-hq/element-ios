@@ -134,7 +134,7 @@
     else if (self.mxRoom)
     {
         // The user is here invited to join a room (This invitation has been received from server sync)
-        self.displayNameTextField.text = self.mxRoom.vectorDisplayname;
+        self.displayNameTextField.text = self.mxRoom.riotDisplayname;
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

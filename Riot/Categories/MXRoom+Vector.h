@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -22,9 +23,9 @@
 @interface MXRoom (Vector)
 
 /**
- The vector displayname of the room
+ The Riot displayname of the room
  */
-@property(nonatomic, readonly) NSString* vectorDisplayname;
+@property(nonatomic, readonly) NSString* riotDisplayname;
 
 /**
  Tell whether all the notifications are disabled for the room.

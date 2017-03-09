@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -74,7 +75,7 @@
         MXRoom *room = [searchDataSource.mxSession roomWithRoomId:roomId];
         if (room)
         {
-            roomDisplayName = room.vectorDisplayname;
+            roomDisplayName = room.riotDisplayname;
             if (!roomDisplayName.length)
             {
                 roomDisplayName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

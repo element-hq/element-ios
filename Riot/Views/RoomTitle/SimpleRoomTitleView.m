@@ -74,7 +74,7 @@
     
     if (self.mxRoom)
     {
-        self.displayNameTextField.text = self.mxRoom.vectorDisplayname;
+        self.displayNameTextField.text = self.mxRoom.riotDisplayname;
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
