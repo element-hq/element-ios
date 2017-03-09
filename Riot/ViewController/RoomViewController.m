@@ -84,7 +84,7 @@
 #import "RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
 
-#import "MXKRoomBubbleTableViewCell+Vector.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
