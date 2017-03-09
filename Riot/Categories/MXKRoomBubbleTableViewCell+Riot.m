@@ -15,7 +15,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomBubbleTableViewCell+Vector.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
 #import "RoomBubbleCellData.h"
 
@@ -28,9 +28,9 @@
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X 48
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH 4
 
-NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCellVectorEditButtonPressed";
+NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRiotEditButtonPressed";
 
-@implementation MXKRoomBubbleTableViewCell (Vector)
+@implementation MXKRoomBubbleTableViewCell (Riot)
 
 - (void)addTimestampLabelForComponent:(NSUInteger)componentIndex
 {
@@ -383,7 +383,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         
         if (selectedEvent)
         {
-            [self.delegate cell:self didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
+            [self.delegate cell:self didRecognizeAction:kMXKRoomBubbleCellRiotEditButtonPressed userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
         }
     }
 }

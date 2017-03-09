@@ -21,12 +21,12 @@
  
  The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the selected event.
  */
-extern NSString *const kMXKRoomBubbleCellVectorEditButtonPressed;
+extern NSString *const kMXKRoomBubbleCellRiotEditButtonPressed;
 
 /**
- Define a `MXKRoomBubbleTableViewCell` category at Vector level to handle bubble customisation.
+ Define a `MXKRoomBubbleTableViewCell` category at Riot level to handle bubble customisation.
  */
-@interface MXKRoomBubbleTableViewCell (Vector)
+@interface MXKRoomBubbleTableViewCell (Riot)
 
 /**
  Add timestamp label for a component in receiver.
