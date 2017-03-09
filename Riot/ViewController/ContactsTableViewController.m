@@ -17,7 +17,7 @@
 
 #import "ContactsTableViewController.h"
 
-#import "UIViewController+VectorSearch.h"
+#import "UIViewController+RiotSearch.h"
 
 #import "RageShakeManager.h"
 

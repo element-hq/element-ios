@@ -29,7 +29,7 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 #import "AppDelegate.h"
 

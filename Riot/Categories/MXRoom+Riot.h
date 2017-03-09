@@ -18,9 +18,9 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
- Define a `MXRoom` category at Vector level.
+ Define a `MXRoom` category at Riot level.
  */
-@interface MXRoom (Vector)
+@interface MXRoom (Riot)
 
 /**
  The Riot displayname of the room

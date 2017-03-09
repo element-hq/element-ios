@@ -19,7 +19,7 @@
 
 #import "RoomSearchViewController.h"
 
-#import "UIViewController+VectorSearch.h"
+#import "UIViewController+RiotSearch.h"
 
 // Use RoomViewController cells to display results
 #import "RoomBubbleCellData.h"

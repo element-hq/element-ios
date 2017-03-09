@@ -18,7 +18,7 @@
 #import "DeviceTableViewCell.h"
 
 #import "RiotDesignValues.h"
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 #define DEVICE_TABLEVIEW_ROW_CELL_HEIGHT_WITHOUT_LABEL_HEIGHT 59
 

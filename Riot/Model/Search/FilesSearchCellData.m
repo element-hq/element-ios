@@ -17,7 +17,7 @@
 
 #import "FilesSearchCellData.h"
 
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 @implementation FilesSearchCellData
 @synthesize roomId, senderDisplayName;

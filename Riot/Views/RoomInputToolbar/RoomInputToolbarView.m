@@ -19,7 +19,7 @@
 
 #import "RiotDesignValues.h"
 
-#import "UINavigationController+Vector.h"
+#import "UINavigationController+Riot.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 

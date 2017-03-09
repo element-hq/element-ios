@@ -21,7 +21,7 @@
 
 #import "RageShakeManager.h"
 
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 #import "NSBundle+MatrixKit.h"
 

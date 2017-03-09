@@ -26,7 +26,7 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 #import "RecentCellData.h"
 

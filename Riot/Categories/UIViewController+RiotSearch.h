@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,10 +18,10 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
- The `VectorSearch` category adds the management of the search bar in Vector screens.
+ The `RiotSearch` category adds the management of the search bar in Riot screens.
  */
 
-@interface UIViewController (VectorSearch) <UISearchBarDelegate>
+@interface UIViewController (RiotSearch) <UISearchBarDelegate>
 
 /**
  The search bar.
@@ -33,7 +34,7 @@
 @property (nonatomic, readonly) BOOL searchBarHidden;
 
 /**
- The Vector empty search background image (champagne bubbles).
+ The Riot empty search background image (champagne bubbles).
  The image adapts its width to its parent view width. 
  Its bottom is aligned to the top of the keyboard.
  */

@@ -1,5 +1,6 @@
 /*
-Copyright 2015 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@ limitations under the License.
 
 #import <MatrixSDK/MatrixSDK.h>
 
-#import "UIViewController+VectorSearch.h"
+#import "UIViewController+RiotSearch.h"
 
 /**
  This view controller manages several uiviewcontrollers like UISegmentedControlled manages uiTableView
