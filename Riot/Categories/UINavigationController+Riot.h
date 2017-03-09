@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,6 +21,6 @@
  The `UINavigationController` category overrides the default auto rotation handling.
  */
 
-@interface UINavigationController (Vector)
+@interface UINavigationController (Riot)
 
 @end

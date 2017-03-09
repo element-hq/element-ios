@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,16 +15,16 @@
  limitations under the License.
  */
 
-#import "UIViewController+VectorSearch.h"
+#import "UIViewController+RiotSearch.h"
 
 #import <objc/runtime.h>
 
 /**
- `UIViewControllerVectorSearchInternals` is the internal single point storage for the search feature.
+ `UIViewControllerRiotSearchInternals` is the internal single point storage for the search feature.
  
  It hosts all required data so that only one associated object can be used in the category.
  */
-@interface UIViewControllerVectorSearchInternals : NSObject
+@interface UIViewControllerRiotSearchInternals : NSObject
 
 // The search bar
 @property (nonatomic) UISearchBar *searchBar;
@@ -34,27 +35,27 @@
 @property (nonatomic) UIBarButtonItem *backupLeftBarButtonItem;
 @property (nonatomic) UIBarButtonItem *backupRightBarButtonItem;
 
-// The Vector empty search background image (champagne bubbles)
+// The Riot empty search background image (champagne bubbles)
 @property (nonatomic) UIImageView *backgroundImageView;
 @property (nonatomic) NSLayoutConstraint *backgroundImageViewBottomConstraint;
 
 @end
 
-@implementation UIViewControllerVectorSearchInternals
+@implementation UIViewControllerRiotSearchInternals
 @end
 
 
-#pragma mark - UIViewController+VectorSearch
+#pragma mark - UIViewController+RiotSearch
 #pragma mark -
 
 @interface UIViewController ()
 
 // The single associated object hosting all data.
-@property(nonatomic) UIViewControllerVectorSearchInternals *searchInternals;
+@property(nonatomic) UIViewControllerRiotSearchInternals *searchInternals;
 
 @end
 
-@implementation UIViewController (VectorSearch)
+@implementation UIViewController (RiotSearch)
 
 - (UISearchBar *)searchBar
 {
@@ -188,7 +189,7 @@
     {
         self.searchInternals.backgroundImageView.hidden = NO;
 
-        // 60 = 18 + 42 from the Vector design
+        // 60 = 18 + 42 from the Riot design
         self.searchInternals.backgroundImageViewBottomConstraint.constant = keyboardHeight - 60;
     }
     else
@@ -242,18 +243,18 @@
 
 #pragma mark - Internal associated object
 
-- (void)setSearchInternals:(UIViewControllerVectorSearchInternals *)searchInternals
+- (void)setSearchInternals:(UIViewControllerRiotSearchInternals *)searchInternals
 {
     objc_setAssociatedObject(self, @selector(searchInternals), searchInternals, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (UIViewControllerVectorSearchInternals *)searchInternals
+- (UIViewControllerRiotSearchInternals *)searchInternals
 {
-    UIViewControllerVectorSearchInternals *searchInternals = objc_getAssociatedObject(self, @selector(searchInternals));
+    UIViewControllerRiotSearchInternals *searchInternals = objc_getAssociatedObject(self, @selector(searchInternals));
     if (!searchInternals)
     {
         // Initialise internal data at the first call
-        searchInternals = [[UIViewControllerVectorSearchInternals alloc] init];
+        searchInternals = [[UIViewControllerRiotSearchInternals alloc] init];
 
         UISearchBar *searchBar = [[UISearchBar alloc] init];
         searchBar.showsCancelButton = YES;

@@ -15,13 +15,13 @@
  limitations under the License.
  */
 
-#import "MXRoom+Vector.h"
+#import "MXRoom+Riot.h"
 
 #import "AvatarGenerator.h"
 
 #import <objc/runtime.h>
 
-@implementation MXRoom (Vector)
+@implementation MXRoom (Riot)
 
 #pragma mark - Room avatar
 
@@ -218,7 +218,7 @@
     
     NSString* tagOrder = [self.mxSession tagOrderToBeAtIndex:0 from:NSNotFound withTag:tag];
     
-    NSLog(@"[MXRoom+Vector] Update the room %@ tag from %@ to %@ with tag order %@", self.state.roomId, oldTag, tag, tagOrder);
+    NSLog(@"[MXRoom+Riot] Update the room %@ tag from %@ to %@ with tag order %@", self.state.roomId, oldTag, tag, tagOrder);
     
     [self replaceTag:oldTag
                byTag:tag
@@ -232,7 +232,7 @@
                  
              } failure:^(NSError *error) {
                  
-                 NSLog(@"[MXRoom+Vector] Failed to update the tag %@ of room (%@)", tag, self.state.roomId);
+                 NSLog(@"[MXRoom+Riot] Failed to update the tag %@ of room (%@)", tag, self.state.roomId);
                  
                  // Notify user
                  [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -338,7 +338,7 @@
         // Check whether there is no pending update for this room
         if (self.notificationCenterDidUpdateObserver)
         {
-            NSLog(@"[MXRoom+Vector] Request in progress: ignore push rule update");
+            NSLog(@"[MXRoom+Riot] Request in progress: ignore push rule update");
             if (completion)
             {
                 completion();
@@ -416,7 +416,7 @@
         // Check whether there is no pending update for this room
         if (self.notificationCenterDidUpdateObserver)
         {
-            NSLog(@"[MXRoom+Vector] Request in progress: ignore push rule update");
+            NSLog(@"[MXRoom+Riot] Request in progress: ignore push rule update");
             if (completion)
             {
                 completion();
