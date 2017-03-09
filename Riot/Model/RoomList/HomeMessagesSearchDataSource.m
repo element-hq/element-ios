@@ -21,7 +21,7 @@
 
 #import "RiotDesignValues.h"
 
-#import "MXKRoomBubbleTableViewCell+Vector.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
 @implementation HomeMessagesSearchDataSource
 

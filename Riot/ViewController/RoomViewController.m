@@ -84,7 +84,7 @@
 #import "RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
 
-#import "MXKRoomBubbleTableViewCell+Vector.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
@@ -1597,7 +1597,7 @@
             // Cancel the current event selection
             [self cancelEventSelection];
         }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellVectorEditButtonPressed])
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRiotEditButtonPressed])
         {
             [self dismissKeyboard];
             
@@ -1613,7 +1613,7 @@
         {
             // Shortcut: when clicking on an unsent media, show the action sheet to resend it
             MXEvent *selectedEvent = [self.roomDataSource eventWithEventId:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId];
-            [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
+            [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellRiotEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
         }
         else if ([actionIdentifier isEqualToString:kRoomEncryptedDataBubbleCellTapOnEncryptionIcon])
         {
