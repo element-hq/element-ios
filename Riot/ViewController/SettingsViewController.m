@@ -270,6 +270,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
+    self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"SettingsVCNavBarSaveButton";
 }
 
 - (void)didReceiveMemoryWarning
@@ -1284,6 +1285,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             displaynameCell.mxkTextField.delegate = self;
             [displaynameCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
             [displaynameCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+            displaynameCell.mxkTextField.accessibilityIdentifier=@"SettingsVCDisplayNameTextField";
             
             cell = displaynameCell;
         }
@@ -1442,6 +1444,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             passwordCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
             passwordCell.mxkTextField.text = @"*********";
             passwordCell.mxkTextField.userInteractionEnabled = NO;
+            passwordCell.mxkLabel.accessibilityIdentifier=@"SettingsVCChangePwdStaticText";
             
             cell = passwordCell;
         }
@@ -3031,7 +3034,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
     
     resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
+    resetPwdAlertController.accessibilityLabel=@"ChangePasswordAlertController";
     savePasswordAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         
         if (weakSelf)
@@ -3198,7 +3201,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     [resetPwdAlertController addAction:cancel];
     [resetPwdAlertController addAction:savePasswordAction];
-
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
 }
 
