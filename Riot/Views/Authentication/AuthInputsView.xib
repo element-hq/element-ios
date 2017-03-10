@@ -228,14 +228,14 @@
                     </constraints>
                 </view>
                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68j-f9-JG4">
-                    <rect key="frame" x="10" y="8" width="580" height="18"/>
+                    <rect key="frame" x="10" y="8" width="580" height="19.5"/>
                     <accessibility key="accessibilityConfiguration" identifier="AuthInputsViewMessageLabel"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <webView hidden="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="whs-Ob-uzD" customClass="MXKAuthenticationRecaptchaWebView">
-                    <rect key="frame" x="0.0" y="26" width="600" height="500"/>
+                    <rect key="frame" x="0.0" y="27.5" width="600" height="500"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="500" id="Opu-bi-f6t"/>
@@ -284,6 +284,7 @@
                 <outlet property="emailTextField" destination="odF-W1-Vdr" id="DOS-H7-MZy"/>
                 <outlet property="isoCountryCodeLabel" destination="u0g-Z1-e7a" id="gfa-7T-Zgb"/>
                 <outlet property="messageLabel" destination="68j-f9-JG4" id="LfM-qs-gEM"/>
+                <outlet property="messageLabelTopConstraint" destination="BK1-XE-vz5" id="Kc9-ub-nge"/>
                 <outlet property="passWordTextField" destination="6rs-rR-DkS" id="VeL-kt-Fpp"/>
                 <outlet property="passwordContainer" destination="UfH-jv-6w4" id="aGz-rZ-j5q"/>
                 <outlet property="passwordContainerTopConstraint" destination="1LY-GW-rgL" id="feb-7y-uob"/>
