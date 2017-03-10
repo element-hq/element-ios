@@ -136,6 +136,7 @@
                 
                 self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
                 self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
+                self.messageLabel.textColor = kRiotTextColorGray;
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
                 
                 self.userLoginContainer.hidden = NO;
@@ -1070,6 +1071,7 @@
     self.repeatPasswordContainer.hidden = YES;
     
     // Hide other items
+    self.messageLabel.textColor = kRiotTextColorBlack;
     self.messageLabelTopConstraint.constant = 8;
     self.messageLabel.hidden = YES;
     self.recaptchaWebView.hidden = YES;
