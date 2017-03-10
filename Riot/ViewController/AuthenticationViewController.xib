@@ -162,7 +162,7 @@
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wEJ-AF-rdH">
                                             <rect key="frame" x="11" y="33" width="106" height="30"/>
                                             <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCLoginButton"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCSkipButton"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="HIX-iq-vTC"/>
                                             </constraints>
