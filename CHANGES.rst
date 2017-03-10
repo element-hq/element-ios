@@ -1,3 +1,32 @@
+Changes in 0.3.10 (2017-03-10)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.8).
+ * RoomActivitiesViews: Automatically update its height according to the messageTextView content.
+ * Room preview: If no data is available for this room, we name it with the known room alias if any.
+ * Crypto: Show an alert when sending a message while there are unknown devices in the room.
+ * Crypto: Add the screen that list unknown devices (UsersDevicesViewController).
+ * Crypto: Add global and per-room settings to blacklist unverified devices.
+ * Crypto - Warn unknown devices: Add a send anyway button.
+ * Crypto: Display an alert warning about the beta state of e2e encryption when entering the first time in an encrypted room.
+ * Settings: Add mobile phone numbers in user's profile.
+ * Settings: Support the third-party identifier deletion in the user's profile.
+ * Registration: Support the login flow based on a mobile phone number (msisdn).
+ * Login: Support the new login API with different types of identifiers (id, thirdparty and phone). We keep supporting the old login API.
+ * Improve the people invite screens: Discover Riot/Matrix users by using the local phone numbers (#904).
+ 
+Bug fixes:
+ * Avatars (and probably other media) do not display with account on a self-signed server (#816)
+ * App crashes on new start chat.
+ * Corrupted room state: some joined rooms appear in Invites section (#1029).
+ * Remove Riot animation (if any) in case of a forced logout.
+ * Registration: support the dummy authentication flow (#912).
+ * Settings: Disable 'Save' button on saving.
+ * Default room avatar for an empty room should not be your own face (#1044).
+ * Resend msgs now? needs cancel button if you want to discard them (#306).
+ * Crypto: After importing keys, the newly decrypted msg have a forbidden icon (#1028).
+
 Changes in 0.3.9 (2017-02-08)
 ===============================================
 
