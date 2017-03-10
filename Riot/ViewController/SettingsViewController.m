@@ -461,6 +461,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         if (!newEmailEditingEnabled)
         {
+            // Dismiss the keyboard
+            [newEmailTextField resignFirstResponder];
             newEmailTextField = nil;
         }
         
@@ -485,6 +487,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (!newPhoneEditingEnabled)
         {
+            // Dismiss the keyboard
+            [newPhoneNumberCell.mxkTextField resignFirstResponder];
             newPhoneNumberCell = nil;
         }
         
@@ -1327,6 +1331,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 newEmailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_email_address", @"Vector", nil);
                 newEmailCell.mxkTextField.text = nil;
                 newEmailCell.mxkTextField.userInteractionEnabled = NO;
+                
+                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
             }
             else
             {
@@ -1356,9 +1362,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     // Update the current text field.
                     newEmailTextField = newEmailCell.mxkTextField;
                 }
+                
+                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:kRiotColorGreen];
+                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
             }
-
-            newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+            
             newEmailCell.mxkTextField.tag = row;
 
             cell = newEmailCell;
@@ -1432,7 +1440,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     newPhoneNumberCell = newPhoneCell;
                 }
                 
-                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:kRiotColorGreen];
+                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
                 
                 cell = newPhoneCell;
             }
@@ -2714,9 +2723,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Ignore empty field
     if (!newEmailTextField.text.length)
     {
-        // Dismiss the keyboard
-        [newEmailTextField resignFirstResponder];
-        
+        // Reset new email adding
+        self.newEmailEditingEnabled = NO;
         return;
     }
     
@@ -2774,6 +2782,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Ignore empty field
     if (!newPhoneNumberCell.mxkTextField.text.length)
     {
+        // Disable the new phone edition if the text field is empty
+        self.newPhoneEditingEnabled = NO;
         return;
     }
     
