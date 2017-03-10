@@ -1425,7 +1425,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 // When displaying the textfield the 1st time, open the keyboard
                 if (!newPhoneNumberCell)
                 {
-                    newPhoneCell.isoCountryCode = [MXKAppSettings standardAppSettings].phonebookCountryCode;
+                    NSString *countryCode = [MXKAppSettings standardAppSettings].phonebookCountryCode;
+                    if (!countryCode)
+                    {
+                        // If none, consider the preferred locale
+                        NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
+                        if ([local respondsToSelector:@selector(countryCode)])
+                        {
+                            countryCode = local.countryCode;
+                        }
+                        
+                        if (!countryCode)
+                        {
+                            countryCode = @"GB";
+                        }
+                    }
+                    newPhoneCell.isoCountryCode = countryCode;
                     newPhoneCell.mxkTextField.text = nil;
                     
                     newPhoneNumberCell = newPhoneCell;

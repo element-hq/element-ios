@@ -36,7 +36,7 @@
     MXK3PID  *submittedMSISDN;
     UINavigationController *phoneNumberPickerNavigationController;
     CountryPickerViewController *phoneNumberCountryPicker;
-    NBPhoneNumber *newPhoneNumber;
+    NBPhoneNumber *nbPhoneNumber;
     
     /**
      The set of parameters ready to use for a registration.
@@ -135,9 +135,18 @@
                 self.passWordTextField.returnKeyType = UIReturnKeyDone;
                 
                 self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
+                self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
+                self.messageLabel.textColor = kRiotTextColorGray;
+                self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
                 
                 self.userLoginContainer.hidden = NO;
+                self.messageLabel.hidden = NO;
+                self.phoneContainer.hidden = NO;
                 self.passwordContainer.hidden = NO;
+                
+                self.messageLabelTopConstraint.constant = 59;
+                self.phoneContainerTopConstraint.constant = 70;
+                self.passwordContainerTopConstraint.constant = 150;
                 
                 self.currentLastContainer = self.passwordContainer;
             }
@@ -264,10 +273,10 @@
                         }
                     }
                     
-                    if (!errorMsg && newPhoneNumber)
+                    if (!errorMsg && nbPhoneNumber)
                     {
                         // Check validity of the non empty phone
-                        if (![[NBPhoneNumberUtil sharedInstance] isValidNumber:newPhoneNumber])
+                        if (![[NBPhoneNumberUtil sharedInstance] isValidNumber:nbPhoneNumber])
                         {
                             NSLog(@"[AuthInputsView] Invalid phone number");
                             errorMsg = NSLocalizedStringFromTable(@"auth_invalid_phone", @"Vector", nil);
@@ -321,41 +330,66 @@
             {
                 if (self.isPasswordBasedFlowSupported)
                 {
-                    //Check whether user login is an email or a username.
+                    // Check whether the user login has been set.
                     NSString *user = self.userLoginTextField.text;
                     
-                    if ([MXTools isEmailAddress:user])
+                    if (user.length)
                     {
-                        parameters = @{
-                                       @"type": kMXLoginFlowTypePassword,
-                                       @"medium": kMX3PIDMediumEmail,
-                                       @"address": user,
-                                       @"password": self.passWordTextField.text
-                                       };
-                    }
-                    else
-                    {
-                        // Retrieve the MCC (from the SIM card information)
-                        // Note: the phone book country code is not defined yet
-                        NSString *MCC = [MXKAppSettings standardAppSettings].phonebookCountryCode;
-                        
-                        // Check whether the user login is a valid phone number.
-                        NSString *msisdn = [MXKTools msisdnWithPhoneNumber:user andCountryCode:MCC];
-                        
-                        if (msisdn)
+                        // Check whether user login is an email or a username.
+                        if ([MXTools isEmailAddress:user])
                         {
                             parameters = @{
                                            @"type": kMXLoginFlowTypePassword,
-                                           @"medium": kMX3PIDMediumMSISDN,
-                                           @"address": msisdn,
-                                           @"password": self.passWordTextField.text
+                                           @"identifier": @{
+                                                   @"type": kMXLoginIdentifierTypeThirdParty,
+                                                   @"medium": kMX3PIDMediumEmail,
+                                                   @"address": user
+                                                   },
+                                           @"password": self.passWordTextField.text,
+                                           // Patch: add the old login api parameters for an email address (medium and address),
+                                           // to keep logging in against old HS.
+                                           @"medium": kMX3PIDMediumEmail,
+                                           @"address": user
                                            };
                         }
                         else
                         {
                             parameters = @{
                                            @"type": kMXLoginFlowTypePassword,
-                                           @"user": user,
+                                           @"identifier": @{
+                                                   @"type": kMXLoginIdentifierTypeUser,
+                                                   @"user": user
+                                                   },
+                                           @"password": self.passWordTextField.text,
+                                           // Patch: add the old login api parameters for a username (user),
+                                           // to keep logging in against old HS.
+                                           @"user": user
+                                           };
+                        }
+                    }
+                    else if (nbPhoneNumber)
+                    {
+                        NSString *countryCode = [[NBPhoneNumberUtil sharedInstance] getRegionCodeForNumber:nbPhoneNumber];
+                        NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
+                        NSString *msisdn;
+                        if ([e164 hasPrefix:@"+"])
+                        {
+                            msisdn = [e164 substringFromIndex:1];
+                        }
+                        else if ([e164 hasPrefix:@"00"])
+                        {
+                            msisdn = [e164 substringFromIndex:2];
+                        }
+                        
+                        if (msisdn && countryCode)
+                        {
+                            parameters = @{
+                                           @"type": kMXLoginFlowTypePassword,
+                                           @"identifier": @{
+                                                   @"type": kMXLoginIdentifierTypePhone,
+                                                   @"country": countryCode,
+                                                   @"number": msisdn
+                                                   },
                                            @"password": self.passWordTextField.text
                                            };
                         }
@@ -365,7 +399,7 @@
             else if (type == MXKAuthenticationTypeRegister)
             {
                 // Check whether a phone number has been set, and if it is not handled yet
-                if (newPhoneNumber && !self.isMSISDNFlowCompleted)
+                if (nbPhoneNumber && !self.isMSISDNFlowCompleted)
                 {
                     NSLog(@"[AuthInputsView] Prepare msisdn stage");
                     
@@ -383,7 +417,7 @@
                         _isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && !self.isEmailIdentityFlowCompleted);
                         
                         // Launch msisdn validation
-                        NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
+                        NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
                         NSString *msisdn;
                         if ([e164 hasPrefix:@"+"])
                         {
@@ -436,7 +470,7 @@
                     if (restClient)
                     {
                         // Check whether a second 3pid is available
-                        _isThirdPartyIdentifierPending = (newPhoneNumber && !self.isMSISDNFlowCompleted);
+                        _isThirdPartyIdentifierPending = (nbPhoneNumber && !self.isMSISDNFlowCompleted);
                         
                         // Launch email validation
                         submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:self.emailTextField.text];
@@ -843,6 +877,8 @@
         self.passwordContainer.hidden = NO;
         self.repeatPasswordContainer.hidden = NO;
         
+        self.passwordContainerTopConstraint.constant = 50;
+        
         lastViewContainer = self.repeatPasswordContainer;
     }
     else
@@ -896,6 +932,8 @@
             }
             else
             {
+                self.phoneContainerTopConstraint.constant = 0;
+                
                 self.messageLabel.hidden = NO;
                 self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_phone_message", @"Vector", nil);
             }
@@ -960,7 +998,7 @@
     self.emailTextField.text = nil;
     self.phoneTextField.text = nil;
 
-    newPhoneNumber = nil;
+    nbPhoneNumber = nil;
 }
 
 #pragma mark - MXKCountryPickerViewControllerDelegate
@@ -969,7 +1007,7 @@
 {
     self.isoCountryCode = isoCountryCode;
             
-    newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:self.phoneTextField.text defaultRegion:isoCountryCode error:nil];
+    nbPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:self.phoneTextField.text defaultRegion:isoCountryCode error:nil];
     [self formatNewPhoneNumber];
     
     [self dismissCountryPicker];
@@ -1015,7 +1053,7 @@
     
     if (textField == self.phoneTextField)
     {
-        newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:self.phoneTextField.text defaultRegion:self.isoCountryCode error:nil];
+        nbPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:self.phoneTextField.text defaultRegion:self.isoCountryCode error:nil];
         
         [self formatNewPhoneNumber];
     }
@@ -1033,6 +1071,8 @@
     self.repeatPasswordContainer.hidden = YES;
     
     // Hide other items
+    self.messageLabel.textColor = kRiotTextColorBlack;
+    self.messageLabelTopConstraint.constant = 8;
     self.messageLabel.hidden = YES;
     self.recaptchaWebView.hidden = YES;
     
@@ -1041,9 +1081,9 @@
 
 - (void)formatNewPhoneNumber
 {
-    if (newPhoneNumber)
+    if (nbPhoneNumber)
     {
-        NSString *formattedNumber = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
+        NSString *formattedNumber = [[NBPhoneNumberUtil sharedInstance] format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
         NSString *prefix = self.callingCodeLabel.text;
         if ([formattedNumber hasPrefix:prefix])
         {

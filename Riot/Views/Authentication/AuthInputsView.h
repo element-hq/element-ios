@@ -45,6 +45,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *passwordContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *emailContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *phoneContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageLabelTopConstraint;
 
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 
