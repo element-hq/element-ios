@@ -29,6 +29,9 @@
 {
     NSString* roomAvatarUrl = self.state.avatar;
     
+    // by default consider room with less than 2 members as an empty
+    BOOL isEmptyRoom = self.state.members.count <= 2;
+    
     if (!roomAvatarUrl)
     {
         // If the room has only two members, use the avatar of the second member.
@@ -46,6 +49,7 @@
                     if (MXMembershipJoin == roomMember.membership || MXMembershipInvite == roomMember.membership)
                     {
                         roomAvatarUrl = roomMember.avatarUrl;
+                        isEmptyRoom = NO;
                     }
                     break;
                 }
@@ -54,8 +58,11 @@
     }
     
     // Retrieve the Riot room display name to prepare the default avatar image.
-    // Note: this display name is nil for an "empty room" without display name (We name "empty room" a room in which the current user is the only active member).
-    NSString *avatarDisplayName = self.riotDisplayname;
+    // Note: we use an empty string for an "empty room" (We name "empty room" a room in which the current user is the only active member).
+    NSString *avatarDisplayName = [NSString string];
+    if (roomAvatarUrl || !isEmptyRoom)
+        avatarDisplayName = self.riotDisplayname;
+    
     UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:self.state.roomId withDisplayName:avatarDisplayName];
     
     if (roomAvatarUrl)
@@ -76,9 +83,8 @@
 
 - (NSString *)riotDisplayname
 {
-    // this algo is the one defined in
-    // https://github.com/matrix-org/matrix-js-sdk/blob/develop/lib/models/room.js#L617
-    // calculateRoomName(room, userId)
+    // Description of the algorithm
+    // https://matrix.org/docs/spec/client_server/r0.2.0.html#calculating-the-display-name-for-a-room
     
     MXRoomState* roomState = self.state;
     
@@ -174,6 +180,10 @@
                 {
                     displayName = NSLocalizedStringFromTable(@"room_displayname_room_invite", @"Vector", nil);
                 }
+            }
+            else if (member.membership == MXMembershipJoin)
+            {
+                displayName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
             }
         }
     }
