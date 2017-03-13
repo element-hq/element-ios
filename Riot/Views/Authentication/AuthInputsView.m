@@ -133,6 +133,7 @@
             if (authType == MXKAuthenticationTypeLogin)
             {
                 self.passWordTextField.returnKeyType = UIReturnKeyDone;
+                self.phoneTextField.returnKeyType = UIReturnKeyNext;
                 
                 self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
                 self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
@@ -183,7 +184,7 @@
         if (self.isPasswordBasedFlowSupported)
         {
             // Check required fields
-            if (!self.userLoginTextField.text.length || !self.passWordTextField.text.length)
+            if ((!self.userLoginTextField.text.length && !nbPhoneNumber) || !self.passWordTextField.text.length)
             {
                 NSLog(@"[AuthInputsView] Invalid user/password");
                 errorMsg = NSLocalizedStringFromTable(@"auth_invalid_login_param", @"Vector", nil);
@@ -904,6 +905,8 @@
         
         if (self.isMSISDNFlowSupported)
         {
+            self.phoneTextField.returnKeyType = UIReturnKeyDone;
+            
             if (self.isThirdPartyIdentifierRequired)
             {
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
@@ -1028,7 +1031,7 @@
     else
     {
         //"Next" key has been pressed
-        if (textField == self.userLoginTextField)
+        if (textField == self.userLoginTextField || textField == self.phoneTextField)
         {
             [self.passWordTextField becomeFirstResponder];
         }

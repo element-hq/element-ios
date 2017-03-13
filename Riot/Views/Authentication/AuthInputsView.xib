@@ -159,7 +159,7 @@
                                 <constraint firstAttribute="height" constant="21" id="Atb-T3-6eG"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad" returnKeyType="done"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad" returnKeyType="next"/>
                             <connections>
                                 <action selector="textFieldDidChange:" destination="x74-04-ezp" eventType="editingChanged" id="kR9-TL-ZDM"/>
                                 <outlet property="delegate" destination="x74-04-ezp" id="5Vt-tC-vJ4"/>
