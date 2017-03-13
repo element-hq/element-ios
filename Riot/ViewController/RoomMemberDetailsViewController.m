@@ -398,6 +398,8 @@
 {
     NSInteger sectionCount = 0;
     
+    BOOL isOneself = NO;
+    
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
     NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
@@ -409,6 +411,8 @@
     // Consider the case of the user himself
     if ([self.mxRoomMember.userId isEqualToString:self.mainSession.myUser.userId])
     {
+        isOneself = YES;
+        
         [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
         
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
@@ -550,7 +554,10 @@
         adminToolsIndex = sectionCount++;
     }
     
-    directChatsIndex = sectionCount++;
+    if (!isOneself)
+    {
+        directChatsIndex = sectionCount++;
+    }
     
     if (devicesArray.count)
     {
@@ -718,6 +725,7 @@
             
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
             roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
+            roomCell.avatarImageView.userInteractionEnabled = NO;
             roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
         }
         
