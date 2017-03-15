@@ -26,16 +26,19 @@
 {
     MXUsersDevicesMap<MXDeviceInfo*> *usersDevices;
     MXSession *mxSession;
+
+    void (^onCompleteBlock)(BOOL doneButtonPressed);
 }
 
 @end
 
 @implementation UsersDevicesViewController
 
-- (void)displayUsersDevices:(MXUsersDevicesMap<MXDeviceInfo*>*)theUsersDevices andMatrixSession:(MXSession*)matrixSession;
+- (void)displayUsersDevices:(MXUsersDevicesMap<MXDeviceInfo*>*)theUsersDevices andMatrixSession:(MXSession*)matrixSession onComplete:(void (^)(BOOL doneButtonPressed))onComplete
 {
     usersDevices = theUsersDevices;
     mxSession = matrixSession;
+    onCompleteBlock = onComplete;
 }
 
 - (void)finalizeInit
@@ -228,12 +231,22 @@
 
         [self stopActivityIndicator];
         [self dismissViewControllerAnimated:YES completion:nil];
+
+        if (onCompleteBlock)
+        {
+            onCompleteBlock(YES);
+        }
     }];
 }
 
 - (IBAction)onCancel:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+
+    if (onCompleteBlock)
+    {
+        onCompleteBlock(NO);
+    }
 }
 
 #pragma mark - Private methods
