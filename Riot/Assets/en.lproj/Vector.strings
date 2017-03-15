@@ -226,6 +226,8 @@
 "unknown_devices_alert_title" = "Room contains unknown devices";
 "unknown_devices_alert" = "This room contains unknown devices which have not been verified.\nThis means there is no guarantee that the devices belong to the users they claim to.\nWe recommend you go through the verification process for each device before continuing, but you can resend the message without verifying if you prefer.";
 "unknown_devices_send_anyway" = "Send Anyway";
+"unknown_devices_call_anyway" = "Call Anyway";
+"unknown_devices_answer_anyway" = "Answer Anyway";
 "unknown_devices_verify" = "Verify...";
 "unknown_devices_title" = "Unknown devices";
 
