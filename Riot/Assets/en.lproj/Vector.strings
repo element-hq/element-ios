@@ -1,0 +1,428 @@
+/*
+ Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+// Titles
+"title_recents" = "Messages";
+"warning" = "Warning";
+
+// Actions
+"view" = "View";
+"next" = "Next";
+"back" = "Back";
+"continue" = "Continue";
+"create" = "Create";
+"start" = "Start";
+"leave" = "Leave";
+"remove" = "Remove";
+"invite" = "Invite";
+"retry" = "Retry";
+"on" = "On";
+"off" = "Off";
+"cancel" = "Cancel";
+"save" = "Save";
+"join" = "Join";
+"decline" = "Decline";
+"accept" = "Accept";
+"preview" = "Preview";
+"camera" = "Camera";
+"voice" = "Voice";
+"video" = "Video";
+"active_call" = "Active Call";
+"active_call_details" = "Active Call (%@)";
+"later" = "Later";
+"rename" = "Rename";
+
+// Authentication
+"auth_login" = "Log in";
+"auth_register" = "Register";
+"auth_submit" = "Submit";
+"auth_skip" = "Skip";
+"auth_send_reset_email" = "Send Reset Email";
+"auth_return_to_login" = "Return to login screen";
+"auth_user_id_placeholder" = "Email or user name";
+"auth_password_placeholder" = "Password";
+"auth_new_password_placeholder" = "New password";
+"auth_user_name_placeholder" = "User name";
+"auth_optional_email_placeholder" = "Email address (optional)";
+"auth_email_placeholder" = "Email address";
+"auth_optional_phone_placeholder" = "Phone number (optional)";
+"auth_phone_placeholder" = "Phone number";
+"auth_repeat_password_placeholder" = "Repeat password";
+"auth_repeat_new_password_placeholder" = "Confirm your new password";
+"auth_invalid_login_param" = "Incorrect username and/or password";
+"auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
+"auth_invalid_password" = "Password too short (min 6)";
+"auth_invalid_email" = "This doesn't look like a valid email address";
+"auth_invalid_phone" = "This doesn't look like a valid phone number";
+"auth_missing_password" = "Missing password";
+"auth_add_email_message" = "Add an email address to your account to let users discover you, and let you reset password.";
+"auth_add_phone_message" = "Add a phone number to your account to let users discover you.";
+"auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you. Email address will also let you reset your password.";
+"auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you. Email address will also let you reset your password.";
+"auth_missing_email" = "Missing email address";
+"auth_missing_phone" = "Missing phone number";
+"auth_missing_email_or_phone" = "Missing email address or phone number";
+"auth_password_dont_match" = "Passwords don't match";
+"auth_username_in_use" = "Username in use";
+"auth_forgot_password" = "Forgot password?";
+"auth_use_server_options" = "Use custom server options (advanced)";
+"auth_email_validation_message" = "Please check your email to continue registration";
+"auth_msisdn_validation_title" = "Verification Pending";
+"auth_msisdn_validation_message" = "We\'ve sent an SMS with an activation code. Please enter this code below.";
+"auth_msisdn_validation_error" = "Unable to verify phone number.";
+"auth_recaptcha_message" = "This Home Server would like to make sure you are not a robot";
+"auth_reset_password_message" = "To reset your password, enter the email address linked to your account:";
+"auth_reset_password_missing_email" = "The email address linked to your account must be entered.";
+"auth_reset_password_missing_password" = "A new password must be entered.";
+"auth_reset_password_email_validation_message" = "An email has been sent to %@. Once you've followed the link it contains, click below.";
+"auth_reset_password_next_step_button" = "I have verified my email address";
+"auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
+"auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
+"auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
+"auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
+
+// Chat creation
+"room_creation_title" = "New Chat";
+"room_creation_account" = "Account";
+"room_creation_appearance" = "Appearance";
+"room_creation_appearance_name" = "Name";
+"room_creation_appearance_picture" = "Chat picture (optional)";
+"room_creation_privacy" = "Privacy";
+"room_creation_private_room" = "This chat is private";
+"room_creation_public_room" = "This chat is public";
+"room_creation_make_public" = "Make public";
+"room_creation_make_public_prompt_title" = "Make this chat public?";
+"room_creation_make_public_prompt_msg" = "Are you sure you want to make this chat public? Anyone can read your messages and join the chat.";
+"room_creation_keep_private" = "Keep private";
+"room_creation_make_private" = "Make private";
+"room_creation_wait_for_creation" = "A room is already being created. Please wait.";
+"room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
+
+// Room recents
+"room_recents_directory" = "DIRECTORY";
+"room_recents_favourites" = "FAVOURITES";
+"room_recents_conversations" = "ROOMS";
+"room_recents_low_priority" = "LOW PRIORITY";
+"room_recents_invites" = "INVITES";
+"room_recents_start_chat_with" = "Start chat";
+"room_recents_create_empty_room" = "Create room";
+
+// Search
+"search_rooms" = "Rooms";
+"search_messages" = "Messages";
+"search_people" = "People";
+"search_files" = "Files";
+"search_default_placeholder" = "Search...";
+"search_people_placeholder" = "Search by User ID, Name or email";
+
+// Directory
+"directory_cell_title" = "Browse directory";
+"directory_cell_description" = "%tu rooms";
+"directory_search_results_title" = "Browse directory results";
+"directory_search_results" = "%tu results found for %@";
+"directory_searching_title" = "Searching directory...";
+"directory_search_fail" = "Failed to fetch data";
+
+// Contacts
+"contacts_address_book_section" = "LOCAL CONTACTS (%tu)";
+"contacts_address_book_matrix_users_toggle" = "Matrix users only";
+"contacts_matrix_users_section" = "KNOWN CONTACTS (%tu)";
+"contacts_matrix_users_default_section" = "KNOWN CONTACTS (-)";
+"contacts_matrix_users_search_prompt" = "Too many contacts, please use the search field";
+
+// Chat participants
+"room_participants_title" = "Participants";
+"room_participants_add_participant" = "Add participant";
+"room_participants_one_participant" = "1 participant";
+"room_participants_multi_participants" = "%d participants";
+"room_participants_leave_prompt_title" = "Leave room";
+"room_participants_leave_prompt_msg" = "Are you sure you want to leave the room?";
+"room_participants_remove_prompt_title" = "Confirmation";
+"room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
+"room_participants_remove_third_party_invite_msg" = "Remove third-party invite is not supported yet until the api exists";
+"room_participants_invite_prompt_title" = "Confirmation";
+"room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
+"room_participants_filter_room_members" = "Filter room members";
+"room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
+"room_participants_invite_malformed_id_title" = "Invite Error";
+"room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
+"room_participants_invited_section" = "INVITED";
+
+"room_participants_online" = "Online";
+"room_participants_offline" = "Offline";
+"room_participants_unknown" = "Unknown";
+"room_participants_idle" = "Idle";
+"room_participants_now" = "now";
+"room_participants_ago" = "ago";
+
+"room_participants_action_section_admin_tools" = "Admin tools";
+"room_participants_action_section_direct_chats" = "Direct chats";
+"room_participants_action_section_devices" = "Devices";
+"room_participants_action_section_other" = "Other";
+
+"room_participants_action_invite" = "Invite";
+"room_participants_action_leave" = "Leave this room";
+"room_participants_action_remove" = "Remove from this room";
+"room_participants_action_ban" = "Ban from this room";
+"room_participants_action_unban" = "Unban";
+"room_participants_action_ignore" = "Hide all messages from this user";
+"room_participants_action_unignore" = "Show all messages from this user";
+"room_participants_action_set_default_power_level" = "Reset to normal user";
+"room_participants_action_set_moderator" = "Make moderator";
+"room_participants_action_set_admin" = "Make admin";
+"room_participants_action_start_new_chat" = "Start new chat";
+"room_participants_action_start_voice_call" = "Start voice call";
+"room_participants_action_start_video_call" = "Start video call";
+"room_participants_action_mention" = "Mention";
+
+// Chat
+"room_new_message_notification" = "%d new message";
+"room_new_messages_notification" = "%d new messages";
+"room_one_user_is_typing" = "%@ is typing...";
+"room_two_users_are_typing" = "%@ & %@ are typing...";
+"room_many_users_are_typing" = "%@, %@ & others are typing...";
+"room_message_placeholder" = "Type a message...";
+"room_offline_notification" = "Connectivity to the server has been lost.";
+"room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
+"room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present. %@ or %@ now?";
+"room_ongoing_conference_call" = "Ongoing conference call. Join as %@ or %@.";
+"room_prompt_resend" = "Resend all";
+"room_prompt_cancel" = "cancel all";
+"room_resend_unsent_messages" = "Resend unsent messages";
+"room_delete_unsent_messages" = "Delete unsent messages";
+"room_event_action_copy" = "Copy";
+"room_event_action_quote" = "Quote";
+"room_event_action_redact" = "Redact";
+"room_event_action_more" = "More";
+"room_event_action_share" = "Share";
+"room_event_action_permalink" = "Permalink";
+"room_event_action_view_source" = "View Source";
+"room_event_action_report" = "Report content";
+"room_event_action_report_prompt_reason" = "Reason for reporting this content";
+"room_event_action_report_prompt_ignore_user" = "Do you want to hide all messages from this user?";
+"room_event_action_save" = "Save";
+"room_event_action_resend" = "Resend";
+"room_event_action_delete" = "Delete";
+"room_event_action_cancel_upload" = "Cancel Upload";
+"room_event_action_cancel_download" = "Cancel Download";
+"room_event_action_view_encryption" = "Encryption Information";
+"room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
+
+// Unknown devices
+"unknown_devices_alert_title" = "Room contains unknown devices";
+"unknown_devices_alert" = "This room contains unknown devices which have not been verified.\nThis means there is no guarantee that the devices belong to the users they claim to.\nWe recommend you go through the verification process for each device before continuing, but you can resend the message without verifying if you prefer.";
+"unknown_devices_send_anyway" = "Send Anyway";
+"unknown_devices_verify" = "Verify...";
+"unknown_devices_title" = "Unknown devices";
+
+// Room Title
+"room_title_new_room" = "New room";
+"room_title_multiple_active_members" = "%@/%@ active members";
+"room_title_one_active_member" = "%@/%@ active member";
+"room_title_invite_members" = "Invite members";
+"room_title_members" = "%@ members";
+"room_title_one_member" = "1 member";
+
+// Room Preview
+"room_preview_invitation_format" = "You have been invited to join this room by %@";
+"room_preview_subtitle" = "This is a preview of this room. Room interactions have been disabled.";
+"room_preview_unlinked_email_warning" = "This invitation was sent to %@, which is not associated with this account. You may wish to login with a different account, or add this email to your this account.";
+"room_preview_try_join_an_unknown_room" = "You are trying to access %@. Would you like to join in order to participate in the discussion?";
+"room_preview_try_join_an_unknown_room_default" = "a room";
+
+// Settings
+"settings_title" = "Settings";
+"account_logout_all" = "Logout all accounts";
+
+"settings_config_no_build_info" = "No build info";
+"settings_mark_all_as_read" = "Mark all messages as read";
+"settings_clear_cache" = "Clear cache";
+"settings_config_home_server" = "Home server is %@";
+"settings_config_identity_server" = "Identity server is %@";
+"settings_config_user_id" = "Logged in as %@";
+
+"settings_user_settings" = "USER SETTINGS";
+"settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_ignored_users" = "IGNORED USERS";
+"settings_contacts" = "LOCAL CONTACTS";
+"settings_advanced" = "ADVANCED";
+"settings_other" = "OTHER";
+"settings_labs" = "LABS";
+"settings_devices" = "DEVICES";
+"settings_cryptography" = "CRYPTOGRAPHY";
+
+"settings_sign_out" = "Sign Out";
+"settings_sign_out_confirmation" = "Are you sure?";
+"settings_sign_out_e2e_warn" = "You will lose your end-to-end encryption keys. That means you will be no more able to read old messages in encrypted rooms on this device.";
+"settings_profile_picture" = "Profile Picture";
+"settings_display_name" = "Display Name";
+"settings_first_name" = "First Name";
+"settings_surname" = "Surname";
+"settings_remove_prompt_title" = "Confirmation";
+"settings_remove_email_prompt_msg" = "Are you sure you want to remove the email address %@?";
+"settings_remove_phone_prompt_msg" = "Are you sure you want to remove the phone number %@?";
+"settings_email_address" = "Email";
+"settings_email_address_placeholder" = "Enter your email address";
+"settings_add_email_address" = "Add email address";
+"settings_phone_number" = "Phone";
+"settings_add_phone_number" = "Add phone number";
+"settings_change_password" = "Change password";
+"settings_night_mode" = "Night Mode";
+"settings_fail_to_update_profile" = "Fail to update profile";
+
+"settings_enable_push_notif" = "Notifications on this device";
+"settings_global_settings_info" = "Global notification settings are available on your %@ web client";
+"settings_on_denied_notification" = "Notifications are denied for %@, please allow them in your device settings";
+//"settings_enable_all_notif" = "Enable all notifications";
+//"settings_messages_my_display_name" = "Msg containing my display name";
+//"settings_messages_my_user_name" = "Msg containing my user name";
+//"settings_messages_sent_to_me" = "Messages sent to me";
+//"settings_invited_to_room" = "When i'm invited to a room";
+//"settings_join_leave_rooms" = "When people join or leave rooms";
+//"settings_call_invitations" = "Call invitations";
+
+"settings_unignore_user" = "Show all messages from %@?";
+
+"settings_contacts_discover_matrix_users" = "Use emails and phone numbers to discover users";
+"settings_contacts_phonebook_country" = "Phonebook country";
+
+"settings_labs_e2e_encryption" = "End-to-End Encryption";
+"settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
+
+"settings_version" = "Version %@";
+"settings_olm_version" = "Olm Version %@";
+"settings_copyright" = "Copyright";
+"settings_copyright_url" = "https://riot.im/copyright";
+"settings_term_conditions" = "Terms & Conditions";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
+"settings_privacy_policy" = "Privacy Policy";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
+"settings_third_party_notices" = "Third-party Notices";
+"settings_send_crash_report" = "Send anon crash & usage data";
+"settings_clear_cache" = "Clear cache";
+
+"settings_change_password" = "Change password";
+"settings_old_password" = "old password";
+"settings_new_password" = "new password";
+"settings_confirm_password" = "confirm password";
+"settings_fail_to_update_password" = "Fail to update password";
+"settings_password_updated" = "Your password has been updated";
+
+"settings_crypto_device_name" = "Device name: ";
+"settings_crypto_device_id" = "\nDevice ID: ";
+"settings_crypto_device_key" = "\nDevice key: ";
+"settings_crypto_export" = "Export keys";
+"settings_crypto_blacklist_unverified_devices" = "Encrypt to verified devices only";
+
+// Room Details
+"room_details_title" = "Room Details";
+"room_details_people" = "Members";
+"room_details_files" = "Files";
+"room_details_settings" = "Settings";
+"room_details_photo" = "Room Photo";
+"room_details_room_name" = "Room Name";
+"room_details_topic" = "Topic";
+"room_details_favourite_tag" = "Favourite";
+"room_details_low_priority_tag" = "Low priority";
+"room_details_mute_notifs" = "Mute notifications";
+"room_details_access_section"="Who can access this room?";
+"room_details_access_section_invited_only"="Only people who have been invited";
+"room_details_access_section_anyone_apart_from_guest"="Anyone who knows the room's link, apart from guests";
+"room_details_access_section_anyone"="Anyone who knows the room's link, including guests";
+"room_details_access_section_no_address_warning" = "To link to a room it must have an address";
+"room_details_access_section_directory_toggle"="List this room in room directory";
+"room_details_history_section"="Who can read history?";
+"room_details_history_section_anyone"="Anyone";
+"room_details_history_section_members_only"="Members only (since the point in time of selecting this option)";
+"room_details_history_section_members_only_since_invited"="Members only (since they were invited)";
+"room_details_history_section_members_only_since_joined"="Members only (since they joined)";
+"room_details_history_section_prompt_title" = "Privacy warning";
+"room_details_history_section_prompt_msg" = "Changes to who can read history will only apply to future messages in this room. The visibility of existing history will be unchanged.";
+"room_details_addresses_section"="Addresses";
+"room_details_no_local_addresses" = "This room has no local addresses";
+"room_details_new_address" = "Add new address";
+"room_details_new_address_placeholder" = "Add new address (e.g. #foo%@)";
+"room_details_addresses_invalid_address_prompt_title" = "Invalid alias format";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
+"room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
+"room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
+"room_details_banned_users_section"="Banned users";
+"room_details_advanced_section"="Advanced";
+"room_details_advanced_room_id"="Room ID:";
+"room_details_advanced_enable_e2e_encryption"="Enable encryption (warning: cannot be disabled again!)";
+"room_details_advanced_e2e_encryption_enabled"="Encryption is enabled in this room";
+"room_details_advanced_e2e_encryption_disabled"="Encryption is not enabled in this room.";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices"="Encrypt to verified devices only";
+"room_details_advanced_e2e_encryption_prompt_message"="End-to-end encryption is experimental and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nOnce encryption is enabled for a room it cannot be turned off again (for now).\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
+"room_details_fail_to_update_avatar" = "Fail to update the room photo";
+"room_details_fail_to_update_room_name" = "Fail to update the room name";
+"room_details_fail_to_update_topic" = "Fail to update the topic";
+"room_details_fail_to_update_room_guest_access" = "Fail to update the room guest access";
+"room_details_fail_to_update_room_join_rule" = "Fail to update the join rule";
+"room_details_fail_to_update_room_directory_visibility" = "Fail to update the room directory visibility";
+"room_details_fail_to_update_history_visibility" = "Fail to update the history visibility";
+"room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
+"room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
+"room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
+"room_details_fail_to_enable_encryption" = "Fail to enable encryption in this room";
+"room_details_save_changes_prompt" = "Do you want to save changes?";
+"room_details_set_main_address" = "Set as Main Address";
+"room_details_unset_main_address" = "Unset as Main Address";
+"room_details_copy_room_id" = "Copy Room ID";
+"room_details_copy_room_address" = "Copy Room Address";
+"room_details_copy_room_url" = "Copy Room URL";
+
+// Media picker
+"media_picker_library" = "Library";
+"media_picker_select" = "Select";
+
+// Directory
+"directory_title" = "Directory";
+
+// Others
+"or" = "or";
+"you" = "You";
+"today" = "Today";
+"yesterday" = "Yesterday";
+"network_offline_prompt" = "The Internet connection appears to be offline.";
+"public_room_section_title" = "Public Rooms (at %@):";
+"bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
+"rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
+"camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
+
+// room display name
+"room_displayname_invite_from" = "Invite from %@";
+"room_displayname_room_invite" = "Room Invite";
+"room_displayname_two_members" = "%@ and %@";
+"room_displayname_more_than_two_members" = "%@ and %u others";
+"room_displayname_no_title" = "Empty room";
+
+// Call
+"call_incoming_voice_prompt" = "Incoming voice call from %@";
+"call_incoming_video_prompt" = "Incoming video call from %@";
+
+// No VoIP support
+"no_voip_title" = "Incoming call";
+"no_voip" = "%@ is calling you but %@ does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
+
+// Crash report
+"google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
+
+// Crypto
+"e2e_enabling_on_app_update" = "Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
+"e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this device and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
+

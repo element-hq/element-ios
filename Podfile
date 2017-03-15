@@ -3,12 +3,12 @@
 
 source 'https://github.com/CocoaPods/Specs.git'
 
-target "Vector" do
+target "Riot" do
 
 
 # Different flavours of pods to MatrixKit
-# The tagged version on which this version of Vector has been built
-pod 'MatrixKit', '0.4.6'
+# The tagged version on which this version of Riot has been built
+pod 'MatrixKit', '0.4.8'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
@@ -27,7 +27,7 @@ pod 'GBDeviceInfo', '~> 4.2.2'
 pod 'GoogleAnalytics'
 
 # The Google WebRTC stack
-pod 'WebRTC', '54.6.13869'
+pod 'WebRTC', '56.10.15101'
 
 # OLMKit for crypto
 pod 'OLMKit'

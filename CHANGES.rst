@@ -1,3 +1,58 @@
+Changes in 0.3.10 (2017-03-10)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.8).
+ * RoomActivitiesViews: Automatically update its height according to the messageTextView content.
+ * Room preview: If no data is available for this room, we name it with the known room alias if any.
+ * Crypto: Show an alert when sending a message while there are unknown devices in the room.
+ * Crypto: Add the screen that list unknown devices (UsersDevicesViewController).
+ * Crypto: Add global and per-room settings to blacklist unverified devices.
+ * Crypto - Warn unknown devices: Add a send anyway button.
+ * Crypto: Display an alert warning about the beta state of e2e encryption when entering the first time in an encrypted room.
+ * Settings: Add mobile phone numbers in user's profile.
+ * Settings: Support the third-party identifier deletion in the user's profile.
+ * Registration: Support the login flow based on a mobile phone number (msisdn).
+ * Login: Support the new login API with different types of identifiers (id, thirdparty and phone). We keep supporting the old login API.
+ * Improve the people invite screens: Discover Riot/Matrix users by using the local phone numbers (#904).
+ 
+Bug fixes:
+ * Avatars (and probably other media) do not display with account on a self-signed server (#816)
+ * App crashes on new start chat.
+ * Corrupted room state: some joined rooms appear in Invites section (#1029).
+ * Remove Riot animation (if any) in case of a forced logout.
+ * Registration: support the dummy authentication flow (#912).
+ * Settings: Disable 'Save' button on saving.
+ * Default room avatar for an empty room should not be your own face (#1044).
+ * Resend msgs now? needs cancel button if you want to discard them (#306).
+ * Crypto: After importing keys, the newly decrypted msg have a forbidden icon (#1028).
+
+Changes in 0.3.9 (2017-02-08)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.7).
+ * E2E keys export: Add an "Export keys" button to the settings
+ * Update WebRTC pod to 56.10.15101 (#991).
+ * Trying to delete 3pid invites fails with terrible error (#999).
+ * Hide/show the non-matrix-enabled contacts from the local contacts section (#904).
+ * Show riot enabled local contacts in known contacts too (#1001).
+ * Local contact section should be collapsable even when no search is started (#1017).
+ 
+Bug fixes:
+ * App stuck in Riot animation on cold start (#964).
+ * Got stuck syncing forever (#1008).
+ * Duplicated msg when going into room details (#970).
+ * Local echoes for typed messages stay (far) longer in grey (#1007).
+ * App crashes a few seconds after a successful login (#965).
+ * Unexpected red navigation bar.
+ * Rageshake on membership list doesn't work (#987).
+ * New invite button should still be visible when the keyboard is shown (#961).
+ * RoomDataSource: some room data listeners are not removed correctly.
+ * Emoji displaynames aren't correctly initialed (#979).
+ * App crash: [MXKRoomInputToolbarView contentEditingInputsForAssets:withResult:onComplete:] (#1015).
+ * App crash: [__NSCFString replaceCharactersInRange:withString:]: nil argument (#990).
+
 Changes in 0.3.8 (2017-01-24)
 ===============================================
 

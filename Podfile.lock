@@ -14,71 +14,71 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - DTCoreText (1.6.19):
-    - DTCoreText/Core (= 1.6.19)
+  - cmark (0.24.1)
+  - DTCoreText (1.6.20):
+    - DTCoreText/Core (= 1.6.20)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.19):
+  - DTCoreText/Core (1.6.20):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.11)
-  - DTFoundation/DTAnimatedGIF (1.7.11)
-  - DTFoundation/DTHTMLParser (1.7.11):
+  - DTFoundation/Core (1.7.12)
+  - DTFoundation/DTAnimatedGIF (1.7.12)
+  - DTFoundation/DTHTMLParser (1.7.12):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.11):
+  - DTFoundation/UIKit (1.7.12):
     - DTFoundation/Core
   - GBDeviceInfo (4.2.2):
     - GBDeviceInfo/Core (= 4.2.2)
   - GBDeviceInfo/Core (4.2.2)
-  - GHMarkdownParser (0.1.2)
   - GoogleAnalytics (3.17.0)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.8.17)
-  - MatrixKit (0.4.6):
+  - MatrixKit (0.4.8):
+    - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
-    - GHMarkdownParser (~> 0.1.2)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.14)
-    - MatrixSDK (= 0.7.6)
-  - MatrixSDK (0.7.6):
+    - MatrixSDK (= 0.7.8)
+  - MatrixSDK (0.7.8):
     - AFNetworking (~> 3.1.0)
-  - OLMKit (2.2.1):
-    - OLMKit/olmc (= 2.2.1)
-    - OLMKit/olmcpp (= 2.2.1)
-  - OLMKit/olmc (2.2.1)
-  - OLMKit/olmcpp (2.2.1)
+  - OLMKit (2.2.2):
+    - OLMKit/olmc (= 2.2.2)
+    - OLMKit/olmcpp (= 2.2.2)
+  - OLMKit/olmc (2.2.2)
+  - OLMKit/olmcpp (2.2.2)
   - Realm (2.1.2):
     - Realm/Headers (= 2.1.2)
   - Realm/Headers (2.1.2)
-  - WebRTC (54.6.13869)
+  - WebRTC (56.10.15101)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.2.2)
   - GoogleAnalytics
-  - MatrixKit (= 0.4.6)
+  - MatrixKit (= 0.4.8)
   - OLMKit
   - Realm (~> 2.1.1)
-  - WebRTC (= 54.6.13869)
+  - WebRTC (= 56.10.15101)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  DTCoreText: 184cc2f460c2177108e8700dfb0eb1b1cb72c99d
-  DTFoundation: 0ef29c70a9814e15518694862bd739347abe2a50
+  cmark: ec0275215b504780287b6fca360224e384368af8
+  DTCoreText: 51904f2374af443e0d270d6fdc76035ab6f9ef8a
+  DTFoundation: 26a164ef510877387906fb92bff524a792db4bf8
   GBDeviceInfo: 0a6e2fc04989ce248572bb988f1a764102eb0e5d
-  GHMarkdownParser: 14cbf59d0ab9450017d843dffd4a3ef691e5bd77
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: 9f083847f8cb9b81064cff2ed2c98cbf18d9f9f2
-  MatrixKit: ae3152d3ae398ba88a462f94a3d94c0953e89244
-  MatrixSDK: b5081df00dcb781d1a64fbf7d317cc75873fbcd2
-  OLMKit: 72bbdad6c8d60b44a9dd160743d8cb85ddcf23a2
+  MatrixKit: b6e2df3b6a04707439d2e6093d9b59acaeb78d52
+  MatrixSDK: ab4038c99252cd532088506f61cc7809c247b973
+  OLMKit: b9d8c0ffee9ea8c45bc0aaa9afb47f93fba7efbd
   Realm: efe855f4d977c8ce5a82d3116d9f1ff155a6550c
-  WebRTC: 9f23349248fd2e94a14cb4552bae6e591bb2fe28
+  WebRTC: 116e2a81290a8551d67dd2e471b94803a5bba813
 
-PODFILE CHECKSUM: b66b2813bc7ee18974b44f5854fded832aacd9f0
+PODFILE CHECKSUM: 91c442670cd4f060b24d95fa446287f313ec0faa
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0
