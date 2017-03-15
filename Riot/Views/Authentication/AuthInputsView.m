@@ -595,7 +595,7 @@
                 
                 return;
             }
-            else if ([completedStages indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound && self.isRecaptchaFlowRequired)
+            else if (([completedStages indexOfObject:kMXLoginFlowTypeMSISDN] != NSNotFound || [completedStages indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound) && self.isRecaptchaFlowRequired)
             {
                 NSLog(@"[AuthInputsView] Display reCaptcha stage");
                 
