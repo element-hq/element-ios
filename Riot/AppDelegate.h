@@ -58,7 +58,13 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
 
+/**
+ The navigation controller of the master view controller of the main split view controller.
+ */
 @property (nonatomic, readonly) UINavigationController *homeNavigationController;
+/**
+ The navigation controller of the detail view controller of the main split view controller (may be nil).
+ */
 @property (nonatomic, readonly) UINavigationController *secondaryNavigationController;
 
 // Associated matrix sessions (empty by default).

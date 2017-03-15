@@ -248,6 +248,27 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+- (UINavigationController*)secondaryNavigationController
+{
+    UIViewController* rootViewController = self.window.rootViewController;
+    
+    if ([rootViewController isKindOfClass:[UISplitViewController class]])
+    {
+        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
+        if (splitViewController.viewControllers.count == 2)
+        {
+            UIViewController *secondViewController = [splitViewController.viewControllers lastObject];
+            
+            if ([secondViewController isKindOfClass:[UINavigationController class]])
+            {
+                return (UINavigationController*)secondViewController;
+            }
+        }
+    }
+    
+    return nil;
+}
+
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -299,8 +320,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             if ([detailsViewController isKindOfClass:[UINavigationController class]])
             {
-                _secondaryNavigationController = (UINavigationController*)detailsViewController;
-                detailsViewController = _secondaryNavigationController.topViewController;
+                UINavigationController *navigationController = (UINavigationController*)detailsViewController;
+                detailsViewController = navigationController.topViewController;
             }
             
             detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
@@ -722,6 +743,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
 {
+    UINavigationController *secondNavController = self.secondaryNavigationController;
+    if (secondNavController)
+    {
+        [secondNavController popToRootViewControllerAnimated:animated];
+    }
+
     // Force back to the main screen if this is the not the one that is displayed
     if (_homeViewController && _homeViewController != _homeNavigationController.visibleViewController)
     {
@@ -2483,11 +2510,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         || [topViewController isKindOfClass:[SettingsViewController class]]
         || [topViewController isKindOfClass:[ContactDetailsViewController class]])
     {
-        if (_secondaryNavigationController)
+        UINavigationController *secondNavController = self.secondaryNavigationController;
+        if (secondNavController)
         {
             // Return the default secondary view controller to keep on primaryViewController side
             // the Directory, the Settings or the Contact details view controller.
-            return _secondaryNavigationController;
+            return secondNavController;
         }
         else
         {
