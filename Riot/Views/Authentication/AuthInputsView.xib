@@ -124,6 +124,7 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5r3-Tj-ARd">
                             <rect key="frame" x="8" y="0.0" width="44" height="50"/>
+                            <accessibility key="accessibilityConfiguration" identifier="AuthInputsViewPhoneCountryCodeButton"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="44" id="Jm3-K6-0hG"/>
                             </constraints>
@@ -135,6 +136,7 @@
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u0g-Z1-e7a">
                             <rect key="frame" x="13" y="18" width="30" height="0.0"/>
+                            <accessibility key="accessibilityConfiguration" identifier="AuthInputsViewPhoneCountryCodeLabel"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="30" id="dTe-UY-tRF"/>
                             </constraints>
@@ -145,6 +147,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="584" translatesAutoresizingMaskIntoConstraints="NO" id="CLw-uO-q5T">
                             <rect key="frame" x="60" y="18" width="10" height="0.0"/>
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="AuthInputsViewPhoneCallingCodeLabel"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="G1u-di-SRu"/>
                             </constraints>
@@ -154,7 +157,7 @@
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Md-Fk-tj9">
                             <rect key="frame" x="78" y="18" width="504" height="21"/>
-                            <accessibility key="accessibilityConfiguration" identifier="AuthInputsViewEmailTextField"/>
+                            <accessibility key="accessibilityConfiguration" identifier="AuthInputsViewPhoneTextField"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="Atb-T3-6eG"/>
                             </constraints>
@@ -174,7 +177,7 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    <accessibility key="accessibilityConfiguration" identifier="AuthInputsViewEmailContainer"/>
+                    <accessibility key="accessibilityConfiguration" identifier="AuthInputsViewPhoneContainer"/>
                     <constraints>
                         <constraint firstItem="4Md-Fk-tj9" firstAttribute="leading" secondItem="CLw-uO-q5T" secondAttribute="trailing" constant="8" id="195-Hm-3Ue"/>
                         <constraint firstItem="5r3-Tj-ARd" firstAttribute="top" secondItem="IB7-1E-eeL" secondAttribute="top" id="4gX-WV-3yS"/>
