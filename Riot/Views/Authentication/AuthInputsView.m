@@ -585,8 +585,11 @@
         {
             currentSession.completed = completedStages;
             
+            BOOL isMSISDNFlowCompleted = self.isMSISDNFlowCompleted;
+            BOOL isEmailFlowCompleted = self.isEmailIdentityFlowCompleted;
+            
             // Check the supported use cases
-            if ([completedStages indexOfObject:kMXLoginFlowTypeMSISDN] != NSNotFound && self.isThirdPartyIdentifierPending)
+            if (isMSISDNFlowCompleted && self.isThirdPartyIdentifierPending)
             {
                 NSLog(@"[AuthInputsView] Prepare a new third-party stage");
                 
@@ -595,7 +598,7 @@
                 
                 return;
             }
-            else if ([completedStages indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound && self.isRecaptchaFlowRequired)
+            else if ((isMSISDNFlowCompleted || isEmailFlowCompleted) && self.isRecaptchaFlowRequired)
             {
                 NSLog(@"[AuthInputsView] Display reCaptcha stage");
                 
@@ -619,8 +622,8 @@
                                            @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
                                            @"username": self.userLoginTextField.text,
                                            @"password": self.passWordTextField.text,
-                                           @"bind_msisdn": [NSNumber numberWithBool:self.isMSISDNFlowCompleted],
-                                           @"bind_email": @(YES)
+                                           @"bind_msisdn": [NSNumber numberWithBool:isMSISDNFlowCompleted],
+                                           @"bind_email": [NSNumber numberWithBool:isEmailFlowCompleted]
                                            };
                         }
                         

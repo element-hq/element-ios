@@ -1344,6 +1344,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 newEmailCell.mxkTextField.autocorrectionType = UITextAutocorrectionTypeNo;
                 newEmailCell.mxkTextField.spellCheckingType = UITextSpellCheckingTypeNo;
                 newEmailCell.mxkTextField.delegate = self;
+                newEmailCell.mxkTextField.accessibilityIdentifier=@"SettingsVCAddEmailTextField";
 
                 [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
                 [newEmailCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -1413,6 +1414,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 newPhoneCell.mxkTextField.autocorrectionType = UITextAutocorrectionTypeNo;
                 newPhoneCell.mxkTextField.spellCheckingType = UITextSpellCheckingTypeNo;
                 newPhoneCell.mxkTextField.delegate = self;
+                newPhoneCell.mxkTextField.accessibilityIdentifier=@"SettingsVCAddPhoneTextField";
                 
                 [newPhoneCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
                 [newPhoneCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
