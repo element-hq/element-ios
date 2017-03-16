@@ -8,7 +8,7 @@ target "Riot" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Riot has been built
-#pod 'MatrixKit', '0.4.8'
+pod 'MatrixKit', '0.4.8'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
@@ -19,8 +19,8 @@ target "Riot" do
 
 # The one used for developing both MatrixSDK and MatrixKit
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
-pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
-pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+#pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
+#pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
 pod 'GBDeviceInfo', '~> 4.2.2'
 
