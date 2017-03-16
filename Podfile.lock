@@ -59,10 +59,17 @@ PODS:
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.2.2)
   - GoogleAnalytics
-  - MatrixKit (= 0.4.8)
+  - MatrixKit (from `../matrix-ios-kit/MatrixKit.podspec`)
+  - MatrixSDK (from `../matrix-ios-sdk/MatrixSDK.podspec`)
   - OLMKit
   - Realm (~> 2.1.1)
   - WebRTC (= 56.10.15101)
+
+EXTERNAL SOURCES:
+  MatrixKit:
+    :path: ../matrix-ios-kit/MatrixKit.podspec
+  MatrixSDK:
+    :path: ../matrix-ios-sdk/MatrixSDK.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -79,6 +86,6 @@ SPEC CHECKSUMS:
   Realm: efe855f4d977c8ce5a82d3116d9f1ff155a6550c
   WebRTC: 116e2a81290a8551d67dd2e471b94803a5bba813
 
-PODFILE CHECKSUM: 91c442670cd4f060b24d95fa446287f313ec0faa
+PODFILE CHECKSUM: 081aa5620b64db528870aacfd7a3696b0757236b
 
 COCOAPODS: 1.2.0
