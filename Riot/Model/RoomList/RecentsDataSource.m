@@ -97,16 +97,6 @@
 - (MXKSessionRecentsDataSource *)addMatrixSession:(MXSession *)mxSession
 {
     MXKSessionRecentsDataSource *recentsDataSource = [super addMatrixSession:mxSession];
-    
-    if (recentsDataSource)
-    {
-        // Replace default event formatter
-        recentsDataSource.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:mxSession];
-        recentsDataSource.eventFormatter.isForSubtitle = YES;
-
-        // And default room summary updater
-        mxSession.roomSummaryUpdateDelegate = recentsDataSource.eventFormatter;
-    }
 
     // Initialise the public room directory data source
     // Note that it is single matrix session only for now

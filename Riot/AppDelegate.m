@@ -1495,6 +1495,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         MXKAccount *account = notif.object;
         if (account)
         {
+            // Replace default room summary updater
+            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
+            eventFormatter.isForSubtitle = YES;
+            account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
+
             // Set the push gateway URL.
             account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
             
@@ -1584,13 +1589,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSArray *mxAccounts = accountManager.accounts;
     if (mxAccounts.count)
     {
-        // The push gateway url is now configurable.
-        // Set this url in the existing accounts when it is undefined.
         for (MXKAccount *account in mxAccounts)
         {
+            // Replace default room summary updater
+            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
+            eventFormatter.isForSubtitle = YES;
+            account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
+
+            // The push gateway url is now configurable.
+            // Set this url in the existing accounts when it is undefined.
             if (!account.pushGatewayURL)
             {
-                // Set the push gateway URL.
                 account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
             }
         }
