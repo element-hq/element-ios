@@ -2999,6 +2999,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)onRoomAvatarTap:(UITapGestureRecognizer *)recognizer
 {
+    // Check whether user can change room avatar
+    MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+    if (oneSelfPowerLevel < [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomAvatar])
+        return;
+    
     mediaPicker = [MediaPickerViewController mediaPickerViewController];
     mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
     mediaPicker.delegate = self;
