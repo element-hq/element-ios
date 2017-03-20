@@ -327,7 +327,8 @@
     else if (sender == self.submitButton)
     {
         // Handle here the second screen used to manage the 3rd party ids during the registration.
-        if (self.authType == MXKAuthenticationTypeRegister)
+        // Except if there is an external set of parameters defined to perform a registration.
+        if (self.authType == MXKAuthenticationTypeRegister && !self.externalRegistrationParameters)
         {
             // Sanity check
             if ([self.authInputsView isKindOfClass:AuthInputsView.class])
