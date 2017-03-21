@@ -1,3 +1,14 @@
+Changes in 0.3.12 (2017-03-21)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.10).
+ 
+Bug fixes: 
+ * Registration with email failed when the email address is validated on the mobile phone.
+ * Chat screen - The missed discussions badge is missing in the navigation bar.
+
+
 Changes in 0.3.11 (2017-03-16)
 ===============================================
 
