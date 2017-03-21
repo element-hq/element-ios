@@ -2940,7 +2940,7 @@
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
     // Ignore this action when no room is displayed
-    if (!self.roomDataSource)
+    if (!self.roomDataSource || !missedDiscussionsBarButtonCustomView)
     {
         return;
     }
