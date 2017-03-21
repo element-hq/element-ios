@@ -303,6 +303,8 @@
             callback(externalRegistrationParameters);
             
             // CAUTION: Do not reset this dictionary here, it is used later to handle this registration until the end (see [updateAuthSessionWithCompletedStages:didUpdateParameters:])
+            
+            return;
         }
         
         // Prepare here parameters dict by checking each required fields.
