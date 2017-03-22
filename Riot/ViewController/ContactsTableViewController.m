@@ -837,14 +837,6 @@
                 [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
                 
                 // Add check box mask constraints
-                widthConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
-                                                               attribute:NSLayoutAttributeWidth
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:nil
-                                                               attribute:NSLayoutAttributeNotAnAttribute
-                                                              multiplier:1
-                                                                constant:36];
-                
                 heightConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
                                                                 attribute:NSLayoutAttributeHeight
                                                                 relatedBy:NSLayoutRelationEqual
@@ -852,14 +844,6 @@
                                                                 attribute:NSLayoutAttributeNotAnAttribute
                                                                multiplier:1
                                                                  constant:36];
-                
-                centerXConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
-                                                                 attribute:NSLayoutAttributeCenterX
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:localContactsCheckbox
-                                                                 attribute:NSLayoutAttributeCenterX
-                                                                multiplier:1
-                                                                  constant:0.0f];
                 
                 centerYConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
                                                                  attribute:NSLayoutAttributeCenterY
@@ -869,7 +853,23 @@
                                                                 multiplier:1
                                                                   constant:0.0f];
                 
-                [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
+                leadingConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
+                                                                 attribute:NSLayoutAttributeLeading
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:localContactsCheckbox
+                                                                 attribute:NSLayoutAttributeLeading
+                                                                multiplier:1
+                                                                  constant:-7];
+                
+                trailingConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
+                                                                  attribute:NSLayoutAttributeTrailing
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:checkboxLabel
+                                                                  attribute:NSLayoutAttributeTrailing
+                                                                 multiplier:1
+                                                                   constant:0];
+                
+                [NSLayoutConstraint activateConstraints:@[heightConstraint, centerYConstraint, leadingConstraint, trailingConstraint]];
             }
             
             // Set the right value of the tick box
