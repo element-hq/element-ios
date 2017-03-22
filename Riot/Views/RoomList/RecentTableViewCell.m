@@ -131,10 +131,8 @@
         // @TODO
         self.directRoomIcon.hidden = !roomCellData.roomSummary.room.isDirect;
 
-        // @TODO
-        self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.room.state.isEncrypted;
+        self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.isEncrypted;
 
-        // @TODO
         [roomCellData.roomSummary.room setRoomAvatarImageIn:self.roomAvatar];
     }
     else
