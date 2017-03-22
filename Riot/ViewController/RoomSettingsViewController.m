@@ -416,6 +416,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         NSString *eventTypeForSelectedField = eventTypes[@(selectedRoomSettingsField)];
         
+        if (!eventTypeForSelectedField)
+            return;
+        
         MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
         NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
         
