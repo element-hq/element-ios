@@ -26,10 +26,17 @@
 
 #import "MXRoom+Riot.h"
 
+#import "UsersDevicesViewController.h"
+
 @interface CallViewController ()
 {
     // Display a gradient view above the screen
     CAGradientLayer* gradientMaskLayer;
+
+    /**
+     Current alert (if any).
+     */
+    MXKAlert *currentAlert;
 }
 
 @end
@@ -160,6 +167,17 @@
     self.callerImageView.clipsToBounds = YES;
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+
+    [super viewWillDisappear:animated];
+}
+
 - (void)dealloc
 {
 }
@@ -172,6 +190,99 @@
     
     [gradientMaskLayer removeFromSuperlayer];
     gradientMaskLayer = nil;
+}
+
+#pragma mark - MXCallDelegate
+
+- (void)call:(MXCall *)call didEncounterError:(NSError *)error
+{
+    if ([error.domain isEqualToString:MXEncryptingErrorDomain]
+        && error.code == MXEncryptingErrorUnknownDeviceCode)
+    {
+        // There are unknown devices, check what the user wants to do
+        __weak __typeof(self) weakSelf = self;
+
+        MXUsersDevicesMap<MXDeviceInfo*> *unknownDevices = error.userInfo[MXEncryptingErrorUnknownDeviceDevicesKey];
+
+        [currentAlert dismiss:NO];
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
+                                               message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+                                                 style:MXKAlertStyleAlert];
+
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+
+                // Get the UsersDevicesViewController from the storyboard
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                UsersDevicesViewController *usersDevicesViewController = [storyboard instantiateViewControllerWithIdentifier:@"UsersDevicesViewControllerStoryboardId"];
+
+                [usersDevicesViewController displayUsersDevices:unknownDevices andMatrixSession:self.mainSession onComplete:^(BOOL doneButtonPressed) {
+
+                    if (doneButtonPressed)
+                    {
+                        // Retry the call
+                        if (call.isIncoming)
+                        {
+                            [call answer];
+                        }
+                        else
+                        {
+                            [call callWithVideo:call.isVideoCall];
+                        }
+                    }
+                    else
+                    {
+                        // Ignore the call
+                        [call hangup];
+                    }
+                }];
+
+                // Show this screen within a navigation controller
+                UINavigationController *usersDevicesNavigationController = [[UINavigationController alloc] init];
+                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
+
+                [self presentViewController:usersDevicesNavigationController animated:YES completion:nil];
+
+            }
+        }];
+
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:(call.isIncoming ? @"unknown_devices_answer_anyway":@"unknown_devices_call_anyway")]
+                                   style:MXKAlertActionStyleDefault
+                                 handler:^(MXKAlert *alert) {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+
+                // Acknowledge the existence of all devices
+                [self startActivityIndicator];
+                [self.mainSession.crypto setDevicesKnown:unknownDevices complete:^{
+
+                    [self stopActivityIndicator];
+
+                    // Retry the call
+                    if (call.isIncoming)
+                    {
+                        [call answer];
+                    }
+                    else
+                    {
+                        [call callWithVideo:call.isVideoCall];
+                    }
+                }];
+            }
+        }];
+
+        currentAlert.mxkAccessibilityIdentifier = @"CallVCUnknownDevicesAlert";
+        [currentAlert showInViewController:self];
+    }
+    else
+    {
+        [super call:call didEncounterError:error];
+    }
 }
 
 #pragma mark - Properties

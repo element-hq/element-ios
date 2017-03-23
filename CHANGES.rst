@@ -1,3 +1,36 @@
+Changes in 0.3.13 (2017-03-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.11).
+ 
+Bug fixes:
+ * Chat screen: image thumbnails management is broken (#1121).
+ * Image viewer repeatedly loses overlay menu (#1109).
+
+Changes in 0.3.12 (2017-03-21)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.10).
+ 
+Bug fixes: 
+ * Registration with email failed when the email address is validated on the mobile phone.
+ * Chat screen - The missed discussions badge is missing in the navigation bar.
+
+
+Changes in 0.3.11 (2017-03-16)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.9).
+ * Crypto: manage unknown devices when placing or answering a call (#1058).
+ 
+Bug fixes: 
+ * [Direct Chat] No placeholder avatar and display name from the member details view (#923).
+ * MSIDSN registration.
+ * [Tablet / split mode] The room member details page is not popped after signing out (#1062).
+
 Changes in 0.3.10 (2017-03-10)
 ===============================================
 
@@ -8,7 +41,7 @@ Improvements:
  * Crypto: Show an alert when sending a message while there are unknown devices in the room.
  * Crypto: Add the screen that list unknown devices (UsersDevicesViewController).
  * Crypto: Add global and per-room settings to blacklist unverified devices.
- * Crypto - Warn unknown devices: Add a send anyway button.
+ * Crypto: Warn unknown devices: Add a send anyway button.
  * Crypto: Display an alert warning about the beta state of e2e encryption when entering the first time in an encrypted room.
  * Settings: Add mobile phone numbers in user's profile.
  * Settings: Support the third-party identifier deletion in the user's profile.

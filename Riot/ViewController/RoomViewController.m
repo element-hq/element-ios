@@ -2285,7 +2285,7 @@
         if (unknownDevices)
         {
             UsersDevicesViewController *usersDevicesViewController = (UsersDevicesViewController *)segue.destinationViewController.childViewControllers.firstObject;
-            [usersDevicesViewController displayUsersDevices:unknownDevices andMatrixSession:self.roomDataSource.mxSession];
+            [usersDevicesViewController displayUsersDevices:unknownDevices andMatrixSession:self.roomDataSource.mxSession onComplete:nil];
 
             unknownDevices = nil;
         }
@@ -2940,7 +2940,7 @@
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
     // Ignore this action when no room is displayed
-    if (!self.roomDataSource)
+    if (!self.roomDataSource || !missedDiscussionsBarButtonCustomView)
     {
         return;
     }

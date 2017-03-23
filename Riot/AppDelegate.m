@@ -1388,6 +1388,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     NSLog(@"[AppDelegate] initMatrixSessions");
     
+    // Define the media cache version
+    [MXSDKOptions sharedInstance].mediaCacheAppVersion = 0;
+    
     // Enable e2e encryption for newly created MXSession
     [MXSDKOptions sharedInstance].enableCryptoWhenStartingMXSession = YES;
 
