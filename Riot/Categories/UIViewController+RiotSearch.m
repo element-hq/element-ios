@@ -112,8 +112,7 @@
     [self.searchBar becomeFirstResponder];
 }
 
-- (void)hideSearch:(BOOL)animated
-{
+- (void)promptUserBeforeUsingGoogleAnalytics{
     if (!self.searchInternals.searchBarHidden)
     {
         // Restore the screen header

@@ -22,7 +22,6 @@
 
 #import "EventFormatter.h"
 
-#import "HomeViewController.h"
 #import "RoomViewController.h"
 
 #import "DirectoryViewController.h"
@@ -306,13 +305,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // to the Home screen ("Messages").
     // Note: UISplitViewController is not supported on iPhone for iOS < 8.0
     UIViewController* rootViewController = self.window.rootViewController;
-    _homeNavigationController = nil;
+    _masterNavigationController = nil;
     if ([rootViewController isKindOfClass:[UISplitViewController class]])
     {
         UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
         splitViewController.delegate = self;
         
-        _homeNavigationController = [splitViewController.viewControllers objectAtIndex:0];
+        _masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
         
         if (splitViewController.viewControllers.count == 2)
         {
@@ -337,19 +336,19 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
     }
     
-    if (_homeNavigationController)
+    if (_masterNavigationController)
     {
-        for (UIViewController *viewController in _homeNavigationController.viewControllers)
+        for (UIViewController *viewController in _masterNavigationController.viewControllers)
         {
-            if ([viewController isKindOfClass:[HomeViewController class]])
+            if ([viewController isKindOfClass:[MasterTabBarController class]])
             {
-                _homeViewController = (HomeViewController*)viewController;
+                _masterTabBarController = (MasterTabBarController*)viewController;
             }
         }
     }
     
     // Sanity check
-    NSAssert(_homeViewController, @"Something wrong in Main.storyboard");
+    NSAssert(_masterTabBarController, @"Something wrong in Main.storyboard");
     
     _isAppForeground = NO;
     
@@ -564,9 +563,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     isErrorNotificationSuspended = YES;
     
     // Cancel search
-    if (_homeViewController)
+    if (_masterTabBarController)
     {
-        [_homeViewController hideSearch:NO];
+        [_masterTabBarController hideSearch:NO];
     }
     
     // Dismiss potential view controllers that were presented modally (like the media picker).
@@ -720,16 +719,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
             if (weakSelf)
             {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->cryptoDataCorruptedAlert = nil;
+                typeof(self) self = weakSelf;
+                self->cryptoDataCorruptedAlert = nil;
             }
 
         }];
 
         [cryptoDataCorruptedAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"settings_sign_out"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->cryptoDataCorruptedAlert = nil;
+            typeof(self) self = weakSelf;
+            self->cryptoDataCorruptedAlert = nil;
 
             [[MXKAccountManager sharedManager] removeAccount:account completion:nil];
 
@@ -749,18 +748,21 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [secondNavController popToRootViewControllerAnimated:animated];
     }
 
-    // Force back to the main screen if this is the not the one that is displayed
-    if (_homeViewController && _homeViewController != _homeNavigationController.visibleViewController)
+    // Force back to the main screen if this is not the one that is displayed
+    if (_masterTabBarController && _masterTabBarController != _masterNavigationController.visibleViewController)
     {
-        // Listen to the homeNavigationController changes
-        // We need to be sure that homeViewController is back to the screen
+        // Listen to the masterNavigationController changes
+        // We need to be sure that masterTabBarController is back to the screen
         popToHomeViewControllerCompletion = completion;
-        _homeNavigationController.delegate = self;
+        _masterNavigationController.delegate = self;
 
-        [_homeNavigationController popToViewController:_homeViewController animated:animated];
+        [_masterNavigationController popToViewController:_masterTabBarController animated:animated];
     }
     else
     {
+        // Select the Home tab
+        _masterTabBarController.selectedIndex = TABBAR_HOME_INDEX;
+        
         if (completion)
         {
             completion();
@@ -772,17 +774,20 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (viewController == _homeViewController)
+    if (viewController == _masterTabBarController)
     {
-        _homeNavigationController.delegate = nil;
+        _masterNavigationController.delegate = nil;
         
         // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
         // when a ViewController has hidden it (see MXKAttachmentsViewController).
         // Patch: restore navigation bar by default here.
-        _homeNavigationController.navigationBarHidden = NO;
+        _masterNavigationController.navigationBarHidden = NO;
         
         // Release the current selected room (if any).
-        [_homeViewController closeSelectedRoom];
+        [_masterTabBarController closeSelectedRoom];
+        
+        // Select the Home tab
+        _masterTabBarController.selectedIndex = TABBAR_HOME_INDEX;
         
         if (popToHomeViewControllerCompletion)
         {
@@ -1173,101 +1178,107 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // We will display something but we need to do some requests before.
                 // So, come back to the home VC and show its loading wheel while processing
                 [self restoreInitialDisplay:^{
-
-                    [_homeViewController startActivityIndicator];
-
-                    if ([roomIdOrAlias hasPrefix:@"#"])
+                    
+                    if ([_masterTabBarController.selectedViewController isKindOfClass:MXKViewController.class])
                     {
-                        // The alias may be not part of user's rooms states
-                        // Ask the HS to resolve the room alias into a room id and then retry
-                        universalLinkFragmentPending = fragment;
-                        MXKAccount* account = accountManager.activeAccounts.firstObject;
-                        [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
-
-                            // Note: the activity indicator will not disappear if the session is not ready
-                            [_homeViewController stopActivityIndicator];
-
-                            // Check that 'fragment' has not been cancelled
-                            if ([universalLinkFragmentPending isEqualToString:fragment])
-                            {
-                                // Retry opening the link but with the returned room id
-                                NSString *newUniversalLinkFragment =
-                                [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                                                    withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                                
-                                universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
-                                
-                                [self handleUniversalLinkFragment:newUniversalLinkFragment];
-                            }
-
-                        } failure:^(NSError *error) {
-                            NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
-                        }];
-                    }
-                    else if ([roomIdOrAlias hasPrefix:@"!"] && ((MXKAccount*)accountManager.activeAccounts.firstObject).mxSession.state != MXSessionStateRunning)
-                    {
-                        // The user does not know the room id but this may be because their session is not yet sync'ed
-                        // So, wait for the completion of the sync and then retry
-                        // FIXME: Manange all user's accounts not only the first one
-                        MXKAccount* account = accountManager.activeAccounts.firstObject;
-
-                        NSLog(@"[AppDelegate] Universal link: Need to wait for the session to be sync'ed and running");
-                        universalLinkFragmentPending = fragment;
-
-                        universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
-
-                            // Check that 'fragment' has not been cancelled
-                            if ([universalLinkFragmentPending isEqualToString:fragment])
-                            {
-                                // Check whether the concerned session is the associated one
-                                if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
-                                {
-                                    NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
-                                    [self handleUniversalLinkFragment:fragment];
-                                }
-                            }
-                        }];
-                    }
-                    else
-                    {
-                        NSLog(@"[AppDelegate] Universal link: The room (%@) is not known by any account (email invitation: %@). Display its preview to try to join it", roomIdOrAlias, queryParams ? @"YES" : @"NO");
-
-                        // FIXME: In case of multi-account, ask the user which one to use
-                        MXKAccount* account = accountManager.activeAccounts.firstObject;
-
-                        RoomPreviewData *roomPreviewData;
-                        if (queryParams)
+                        MXKViewController *homeViewController = (MXKViewController*)_masterTabBarController.selectedViewController;
+                        
+                        [homeViewController startActivityIndicator];
+                        
+                        if ([roomIdOrAlias hasPrefix:@"#"])
                         {
-                            // Note: the activity indicator will not disappear if the session is not ready
-                            [_homeViewController stopActivityIndicator];
-
-                            roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
-                            [self showRoomPreview:roomPreviewData];
+                            // The alias may be not part of user's rooms states
+                            // Ask the HS to resolve the room alias into a room id and then retry
+                            universalLinkFragmentPending = fragment;
+                            MXKAccount* account = accountManager.activeAccounts.firstObject;
+                            [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
+                                
+                                // Note: the activity indicator will not disappear if the session is not ready
+                                [homeViewController stopActivityIndicator];
+                                
+                                // Check that 'fragment' has not been cancelled
+                                if ([universalLinkFragmentPending isEqualToString:fragment])
+                                {
+                                    // Retry opening the link but with the returned room id
+                                    NSString *newUniversalLinkFragment =
+                                    [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                                                        withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                                    
+                                    universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
+                                    
+                                    [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                                }
+                                
+                            } failure:^(NSError *error) {
+                                NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+                            }];
+                        }
+                        else if ([roomIdOrAlias hasPrefix:@"!"] && ((MXKAccount*)accountManager.activeAccounts.firstObject).mxSession.state != MXSessionStateRunning)
+                        {
+                            // The user does not know the room id but this may be because their session is not yet sync'ed
+                            // So, wait for the completion of the sync and then retry
+                            // FIXME: Manange all user's accounts not only the first one
+                            MXKAccount* account = accountManager.activeAccounts.firstObject;
+                            
+                            NSLog(@"[AppDelegate] Universal link: Need to wait for the session to be sync'ed and running");
+                            universalLinkFragmentPending = fragment;
+                            
+                            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+                                
+                                // Check that 'fragment' has not been cancelled
+                                if ([universalLinkFragmentPending isEqualToString:fragment])
+                                {
+                                    // Check whether the concerned session is the associated one
+                                    if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
+                                    {
+                                        NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
+                                        [self handleUniversalLinkFragment:fragment];
+                                    }
+                                }
+                            }];
                         }
                         else
                         {
-                            roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
-
-                            // Is it a link to an event of a room?
-                            // If yes, the event will be displayed once the room is joined
-                            roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-
-                            // Try to get more information about the room before opening its preview
-                            [roomPreviewData peekInRoom:^(BOOL succeeded) {
-
+                            NSLog(@"[AppDelegate] Universal link: The room (%@) is not known by any account (email invitation: %@). Display its preview to try to join it", roomIdOrAlias, queryParams ? @"YES" : @"NO");
+                            
+                            // FIXME: In case of multi-account, ask the user which one to use
+                            MXKAccount* account = accountManager.activeAccounts.firstObject;
+                            
+                            RoomPreviewData *roomPreviewData;
+                            if (queryParams)
+                            {
                                 // Note: the activity indicator will not disappear if the session is not ready
-                                [_homeViewController stopActivityIndicator];
+                                [homeViewController stopActivityIndicator];
                                 
-                                // If no data is available for this room, we name it with the known room alias (if any).
-                                if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
-                                {
-                                    roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
-                                }
-                                universalLinkFragmentPendingRoomAlias = nil;
-
+                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
                                 [self showRoomPreview:roomPreviewData];
-                            }];
+                            }
+                            else
+                            {
+                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
+                                
+                                // Is it a link to an event of a room?
+                                // If yes, the event will be displayed once the room is joined
+                                roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+                                
+                                // Try to get more information about the room before opening its preview
+                                [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                                    
+                                    // Note: the activity indicator will not disappear if the session is not ready
+                                    [homeViewController stopActivityIndicator];
+                                    
+                                    // If no data is available for this room, we name it with the known room alias (if any).
+                                    if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+                                    {
+                                        roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
+                                    }
+                                    universalLinkFragmentPendingRoomAlias = nil;
+                                    
+                                    [self showRoomPreview:roomPreviewData];
+                                }];
+                            }
                         }
+
                     }
                 }];
 
@@ -1299,7 +1310,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSLog(@"[AppDelegate] Universal link with registration parameters");
         continueUserActivity = YES;
         
-        [_homeViewController showAuthenticationScreenWithRegistrationParameters:queryParams];
+        [_masterTabBarController showAuthenticationScreenWithRegistrationParameters:queryParams];
     }
     else
     {
@@ -1622,9 +1633,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [[MXKContactManager sharedManager] addMatrixSession:mxSession];
         
         // Update home data sources
-        [_homeViewController addMatrixSession:mxSession];
+        [_masterTabBarController addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
+        
+        // Do the one time check on device id
+        [self checkDeviceId:mxSession];
     }
 }
 
@@ -1633,7 +1647,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
     
     // Update home data sources
-    [_homeViewController removeMatrixSession:mxSession];
+    [_masterTabBarController removeMatrixSession:mxSession];
 
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
@@ -1688,7 +1702,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [[MXKAccountManager sharedManager] logout];
     
     // Return to authentication screen
-    [_homeViewController showAuthenticationScreen];
+    [_masterTabBarController showAuthenticationScreen];
     
     // Note: Keep App settings
     
@@ -1757,18 +1771,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                                                         
                                                                                                         if (weakSelf)
                                                                                                         {
-                                                                                                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                                                            typeof(self) self = weakSelf;
 
                                                                                                             // Reject the call.
                                                                                                             // Note: Do not reset the incoming call notification before this operation, because it is used to release properly the dismissed call view controller.
-                                                                                                            if (strongSelf->currentCallViewController)
+                                                                                                            if (self->currentCallViewController)
                                                                                                             {
-                                                                                                                [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.rejectCallButton];
+                                                                                                                [self->currentCallViewController onButtonPressed:self->currentCallViewController.rejectCallButton];
 
                                                                                                                 currentCallViewController = nil;
                                                                                                             }
                                                                                                             
-                                                                                                            strongSelf.incomingCallNotification = nil;
+                                                                                                            self.incomingCallNotification = nil;
                                                                                                             
                                                                                                             mxCall.delegate = nil;
                                                                                                         }
@@ -1780,15 +1794,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                       handler:^(MXKAlert *alert) {
                                                           if (weakSelf)
                                                           {
-                                                              __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                              typeof(self) self = weakSelf;
                                                               
-                                                              strongSelf.incomingCallNotification = nil;
+                                                              self.incomingCallNotification = nil;
 
-                                                              if (strongSelf->currentCallViewController)
+                                                              if (self->currentCallViewController)
                                                               {
-                                                                  [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.answerCallButton];
+                                                                  [self->currentCallViewController onButtonPressed:self->currentCallViewController.answerCallButton];
 
-                                                                  [strongSelf presentCallViewController:nil];
+                                                                  [self presentCallViewController:nil];
                                                               }
                                                               
                                                           }
@@ -1961,6 +1975,61 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+#pragma mark -
+
+/**
+ Check the existence of device id.
+ */
+- (void)checkDeviceId:(MXSession*)mxSession
+{
+    // In case of the app update for the e2e encryption, the app starts with
+    // no device id provided by the homeserver.
+    // Ask the user to login again in order to enable e2e. Ask it once
+    if (!isErrorNotificationSuspended && ![[NSUserDefaults standardUserDefaults] boolForKey:@"deviceIdAtStartupChecked"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deviceIdAtStartupChecked"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        // Check if there is a device id
+        if (!mxSession.matrixRestClient.credentials.deviceId)
+        {
+            NSLog(@"WARNING: The user has no device. Prompt for login again");
+            
+            NSString *msg = NSLocalizedStringFromTable(@"e2e_enabling_on_app_update", @"Vector", nil);
+            
+            __weak typeof(self) weakSelf = self;
+            [_errorNotification dismiss:NO];
+            _errorNotification = [[MXKAlert alloc] initWithTitle:nil message:msg style:MXKAlertStyleAlert];
+            
+            _errorNotification.cancelButtonIndex = [_errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"later"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    self->_errorNotification = nil;
+                }
+                
+            }];
+            
+            [_errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    self->_errorNotification = nil;
+                    
+                    [self logout];
+                }
+                
+            }];
+            
+            // Prompt the user
+            _errorNotification.mxkAccessibilityIdentifier = @"AppDelegateErrorAlert";
+            [self showNotificationAlert:_errorNotification];
+        }
+    }
+}
+
 #pragma mark - Matrix Accounts handling
 
 - (void)enableInAppNotificationsForAccount:(MXKAccount*)account
@@ -2063,8 +2132,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             [accountPicker addActionWithTitle:account.mxCredentials.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->accountPicker = nil;
+                typeof(self) self = weakSelf;
+                self->accountPicker = nil;
                 
                 if (onSelection)
                 {
@@ -2075,8 +2144,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->accountPicker = nil;
+            typeof(self) self = weakSelf;
+            self->accountPicker = nil;
             
             if (onSelection)
             {
@@ -2095,7 +2164,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self restoreInitialDisplay:^{
         
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_homeViewController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession];
+        [_masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession];
         
     }];
 }
@@ -2103,7 +2172,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
 {
     [self restoreInitialDisplay:^{
-        [_homeViewController showRoomPreview:roomPreviewData];
+        
+        [_masterTabBarController showRoomPreview:roomPreviewData];
+        
     }];
 }
 
@@ -2505,7 +2576,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (nullable UIViewController *)splitViewController:(UISplitViewController *)splitViewController separateSecondaryViewControllerFromPrimaryViewController:(UIViewController *)primaryViewController
 {
-    UIViewController *topViewController = _homeNavigationController.topViewController;
+    UIViewController *topViewController = _masterNavigationController.topViewController;
     
     // Check the case where we don't want to use as a secondary view controller the top view controller
     // of the navigation controller of the home view controller.
@@ -2635,8 +2706,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
                     noCallSupportAlert.cancelButtonIndex = [noCallSupportAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ignore"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-                        strongSelf->noCallSupportAlert = nil;
+                        typeof(self) self = weakSelf;
+                        self->noCallSupportAlert = nil;
 
                     }];
 
@@ -2652,8 +2723,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                             NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event.");
                         }];
 
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-                        strongSelf->noCallSupportAlert = nil;
+                        typeof(self) self = weakSelf;
+                        self->noCallSupportAlert = nil;
 
                     }];
 

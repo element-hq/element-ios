@@ -1,5 +1,4 @@
 /*
- Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +16,13 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "RecentsViewController.h"
+#import "SegmentedViewController.h"
+
+#import "ContactsTableViewController.h"
 
 /**
- The `HomeViewController` screen is the main app screen.
+ The `UnifiedSearchViewController` screen is the global search screen.
  */
-@interface HomeViewController : RecentsViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate>
+@interface UnifiedSearchViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate, ContactsTableViewControllerDelegate>
 
 @end

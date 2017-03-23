@@ -25,7 +25,6 @@
 
 #import "NSBundle+MatrixKit.h"
 
-#import "HomeViewController.h"
 #import "RoomViewController.h"
 
 #import "RiotDesignValues.h"
@@ -38,9 +37,6 @@
 
 @interface RecentsViewController ()
 {
-    // The "parent" segmented view controller
-    HomeViewController *homeViewController;
-    
     // The room identifier related to the cell which is in editing mode (if any).
     NSString *editedRoomId;
     
@@ -146,48 +142,38 @@
 {
     [super viewWillAppear:animated];
     
-    // Check whether the view controller is displayed in its "parent" segmented view controller.
-    if (homeViewController)
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
     {
-        // Screen tracking (via Google Analytics)
-        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-        if (tracker)
-        {
-            NSString *screenName = homeViewController.searchBarHidden ? @"RoomsList" : @"RoomsGlobalSearch";
-            NSString *currentScreenName = [tracker get:kGAIScreenName];
-            
-            if (!currentScreenName || ![currentScreenName isEqualToString:screenName])
-            {
-                [tracker set:kGAIScreenName value:screenName];
-                [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-            }
-        }
-        
-        // Deselect the current selected row, it will be restored on viewDidAppear (if any)
-        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-        if (indexPath)
-        {
-            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
-        
-        // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-        kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            [self scrollToTop:YES];
-            
-        }];
-        
-        // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
-        kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            
-            // Do not refresh if there is a pending recent drag and drop
-            if (!movingCellPath)
-            {
-                [self refreshRecentsTable];
-            }
-            
-        }];
+        [tracker set:kGAIScreenName value:@"UnifiedSearchRooms"];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
+    
+    // Deselect the current selected row, it will be restored on viewDidAppear (if any)
+    NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+    if (indexPath)
+    {
+        [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self scrollToTop:YES];
+        
+    }];
+    
+    // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
+    kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        
+        // Do not refresh if there is a pending recent drag and drop
+        if (!movingCellPath)
+        {
+            [self refreshRecentsTable];
+        }
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -214,31 +200,23 @@
 {
     [super viewDidAppear:animated];
     
-    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed)
-    {
-        // Release the current selected room (if any).
-        [homeViewController closeSelectedRoom];
-    }
-    else
-    {
-        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
-        // the selected room (if any) is highlighted.
-        [self refreshCurrentSelectedCell:YES];
-    }
+//    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+//    if (!self.splitViewController || self.splitViewController.isCollapsed)
+//    {
+//        // Release the current selected room (if any).
+//        [[AppDelegate theDelegate].homeViewController closeSelectedRoom];
+//    }
+//    else
+//    {
+//        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+//        // the selected room (if any) is highlighted.
+//        [self refreshCurrentSelectedCell:YES];
+//    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-}
-
-#pragma mark -
-
-- (void)displayList:(MXKRecentsDataSource*)listDataSource fromHomeViewController:(HomeViewController*)homeViewController2
-{
-    [super displayList:listDataSource];
-    homeViewController = homeViewController2;
 }
 
 #pragma mark - Internal methods
@@ -281,16 +259,17 @@
     
     if (self.dataSource.mxSession.state == MXSessionStateRunning)
     {
-        // The Directory cell is displayed when the recents list is empty
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-        if (recentsDataSource.hidePublicRoomsDirectory)
-        {
-            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections != 0);
-        }
-        else if (homeViewController.searchBarHidden)
-        {
-            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections > 1);
-        }
+        // TODO
+//        // The Directory cell is displayed when the recents list is empty
+//        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
+//        if (recentsDataSource.hidePublicRoomsDirectory)
+//        {
+//            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections != 0);
+//        }
+//        else if (homeViewController.searchBarHidden)
+//        {
+//            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections > 1);
+//        }
     }
 }
 
@@ -303,10 +282,11 @@
 {
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
-    if (homeViewController.currentRoomViewController)
+    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
+    if (masterTabBarController.currentRoomViewController)
     {
         // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:homeViewController.selectedRoomId andMatrixSession:homeViewController.selectedRoomSession];
+        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
     }
 
     if (currentSelectedCellIndexPath)
@@ -723,8 +703,9 @@
     }
     else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
     {
-        // Show the directory screen
-        [homeViewController showPublicRoomsDirectory];
+        // TODO
+//        // Show the directory screen
+//        [homeViewController showPublicRoomsDirectory];
     }
     else if ([cell isKindOfClass:[RoomIdOrAliasTableViewCell class]])
     {

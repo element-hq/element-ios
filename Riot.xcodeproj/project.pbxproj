@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
+		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
+		F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */; };
 		F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0B1E7009EC00A9B29C /* RageShakeManager.m */; };
 		F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		F083BD1F1E7009ED00A9B29C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F083BB0F1E7009EC00A9B29C /* InfoPlist.strings */; };
@@ -414,6 +416,10 @@
 /* Begin PBXFileReference section */
 		1129C74A281B080432B1A1A1 /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
+		F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchViewController.m; sourceTree = "<group>"; };
+		F05BD79F1E7C0E4500C69941 /* MasterTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTabBarController.h; sourceTree = "<group>"; };
+		F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterTabBarController.m; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F083BB041E7005FD00A9B29C /* RiotTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotTests.m; sourceTree = "<group>"; };
 		F083BB0A1E7009EC00A9B29C /* RageShakeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakeManager.h; sourceTree = "<group>"; };
@@ -1325,6 +1331,10 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F05BD79F1E7C0E4500C69941 /* MasterTabBarController.h */,
+				F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */,
+				F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */,
+				F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */,
 				F083BC1A1E7009EC00A9B29C /* AttachmentsViewController.h */,
 				F083BC1B1E7009EC00A9B29C /* AttachmentsViewController.m */,
 				F083BC1C1E7009EC00A9B29C /* AuthenticationViewController.h */,
@@ -2222,6 +2232,7 @@
 				F083BE311E7009ED00A9B29C /* DeviceTableViewCell.m in Sources */,
 				F083BE501E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
+				F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */,
 				F083BE561E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				F083BE151E7009ED00A9B29C /* MediaAlbumContentViewController.m in Sources */,
@@ -2255,6 +2266,7 @@
 				F083BE271E7009ED00A9B29C /* SettingsViewController.m in Sources */,
 				F083BE9A1E7009ED00A9B29C /* TableViewCellWithButton.m in Sources */,
 				F083BE8E1E7009ED00A9B29C /* RoomAvatarTitleView.m in Sources */,
+				F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */,
 				F083BE4E1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE6C1E7009ED00A9B29C /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE681E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,

@@ -85,17 +85,17 @@
 {
     [super viewDidAppear:animated];
 
-    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (self.splitViewController && self.splitViewController.isCollapsed)
-    {
-        [[AppDelegate theDelegate].homeViewController closeSelectedRoom];
-    }
-    else
-    {
-        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
-        // the selected room (if any) is highlighted.
-        [self refreshCurrentSelectedCell:YES];
-    }
+//    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+//    if (self.splitViewController && self.splitViewController.isCollapsed)
+//    {
+//        [[AppDelegate theDelegate].homeViewController closeSelectedRoom];
+//    }
+//    else
+//    {
+//        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+//        // the selected room (if any) is highlighted.
+//        [self refreshCurrentSelectedCell:YES];
+//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -133,72 +133,72 @@
         // Open the public room.
         [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
     }
-    else
-    {
-        // Preview the public room
-        if (publicRoom.worldReadable)
-        {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:dataSource.mxSession];
-            
-            [self startActivityIndicator];
-            
-            // Try to get more information about the room before opening its preview
-            [roomPreviewData peekInRoom:^(BOOL succeeded) {
-                
-                [self stopActivityIndicator];
-                
-                [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
-            }];
-        }
-        else
-        {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
-            [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
-        }
-        
-    }
+//    else
+//    {
+//        // Preview the public room
+//        if (publicRoom.worldReadable)
+//        {
+//            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:dataSource.mxSession];
+//            
+//            [self startActivityIndicator];
+//            
+//            // Try to get more information about the room before opening its preview
+//            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+//                
+//                [self stopActivityIndicator];
+//                
+//                [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
+//            }];
+//        }
+//        else
+//        {
+//            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
+//            [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
+//        }
+//        
+//    }
 }
 
 #pragma mark - Private methods
 
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {
-    [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
+//    [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
-    HomeViewController *homeViewController = [AppDelegate theDelegate].homeViewController;
-
-    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    NSIndexPath *currentSelectedCellIndexPath = nil;
-    if (homeViewController.currentRoomViewController)
-    {
-        // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [dataSource cellIndexPathWithRoomId:homeViewController.selectedRoomId andMatrixSession:homeViewController.selectedRoomSession];
-    }
-
-    if (currentSelectedCellIndexPath)
-    {
-        // Select the right row
-        [self.tableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-
-        if (forceVisible)
-        {
-            // Scroll table view to make the selected row appear at second position
-            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
-            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
-    }
-    else
-    {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        if (indexPath)
-        {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
-    }
+//    HomeViewController *homeViewController;// = [AppDelegate theDelegate].homeViewController;
+//
+//    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+//    NSIndexPath *currentSelectedCellIndexPath = nil;
+//    if (homeViewController.currentRoomViewController)
+//    {
+//        // Look for the rank of this selected room in displayed recents
+//        currentSelectedCellIndexPath = [dataSource cellIndexPathWithRoomId:homeViewController.selectedRoomId andMatrixSession:homeViewController.selectedRoomSession];
+//    }
+//
+//    if (currentSelectedCellIndexPath)
+//    {
+//        // Select the right row
+//        [self.tableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+//
+//        if (forceVisible)
+//        {
+//            // Scroll table view to make the selected row appear at second position
+//            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
+//            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
+//            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+//        }
+//    }
+//    else
+//    {
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        if (indexPath)
+//        {
+//            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//        }
+//    }
 }
 
 @end
