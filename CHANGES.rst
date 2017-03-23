@@ -1,3 +1,13 @@
+Changes in 0.3.13 (2017-03-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.4.11).
+ 
+Bug fixes:
+ * Chat screen: image thumbnails management is broken (#1121).
+ * Image viewer repeatedly loses overlay menu (#1109).
+
 Changes in 0.3.12 (2017-03-21)
 ===============================================
 
