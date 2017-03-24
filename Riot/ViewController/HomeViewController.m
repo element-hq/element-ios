@@ -63,6 +63,8 @@
     self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -143,15 +145,7 @@
     // sanity check
     if (tableViewMaskLayer)
     {
-        CGRect currentBounds = tableViewMaskLayer.bounds;
-        CGRect newBounds = CGRectIntegral(self.view.frame);
-
-        // check if there is an update
-        if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
-        {
-            newBounds.origin = CGPointZero;
-            tableViewMaskLayer.bounds = newBounds;
-        }
+        tableViewMaskLayer.frame = self.recentsTableView.frame;
     }
 }
 
@@ -173,7 +167,7 @@
                                     [NSNumber numberWithFloat:0.85],
                                     [NSNumber numberWithFloat:1.0], nil];
     
-    tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    tableViewMaskLayer.frame = self.recentsTableView.frame;
     tableViewMaskLayer.anchorPoint = CGPointZero;
     
     // CAConstraint is not supported on IOS.
@@ -207,16 +201,16 @@
                                                                        multiplier:1
                                                                          constant:side];
     
-    NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                         attribute:NSLayoutAttributeCenterX
+    NSLayoutConstraint* trailingConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                         attribute:NSLayoutAttributeTrailing
                                                                          relatedBy:NSLayoutRelationEqual
                                                                             toItem:self.view
-                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         attribute:NSLayoutAttributeTrailing
                                                                         multiplier:1
                                                                           constant:0];
     
-    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                        attribute:NSLayoutAttributeBottom
+    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
+                                                                        attribute:NSLayoutAttributeTop
                                                                         relatedBy:NSLayoutRelationEqual
                                                                            toItem:createNewRoomImageView
                                                                         attribute:NSLayoutAttributeBottom
@@ -224,7 +218,7 @@
                                                                          constant:9];
     
     // Available on iOS 8 and later
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, trailingConstraint, bottomConstraint]];
     
     createNewRoomImageView.userInteractionEnabled = YES;
     

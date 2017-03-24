@@ -36,9 +36,6 @@
 // Associated matrix sessions (empty by default).
 @property (nonatomic, readonly) NSArray *mxSessions;
 
-// Current selected room id. nil if no room is presently visible.
-@property (strong, nonatomic) NSString *visibleRoomId;
-
 // Add a matrix session. This session is propagated to all view controllers handled by the tab bar controller.
 - (void)addMatrixSession:(MXSession*)mxSession;
 // Remove a matrix session.
@@ -81,6 +78,11 @@
  Close the current selected room (if any)
  */
 - (void)closeSelectedRoom;
+
+/**
+ Dismiss the unified search screen (if any).
+ */
+- (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion;
 
 //- (void)showRoomCreationForm;
 //- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession;

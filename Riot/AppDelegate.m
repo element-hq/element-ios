@@ -562,12 +562,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Suspend error notifications during navigation stack change.
     isErrorNotificationSuspended = YES;
     
-    // Cancel search
-    if (_masterTabBarController)
-    {
-        [_masterTabBarController hideSearch:NO];
-    }
-    
     // Dismiss potential view controllers that were presented modally (like the media picker).
     if (self.window.rootViewController.presentedViewController)
     {

@@ -55,18 +55,7 @@
     // Do any additional setup after loading the view, typically from a nib.
 
     // Retrieve the home view controller
-    UIViewController* home = [self.viewControllers objectAtIndex:TABBAR_HOME_INDEX];
-    if ([home isKindOfClass:[UINavigationController class]])
-    {
-        UINavigationController *homeNavigationController = (UINavigationController*)home;
-        for (UIViewController *viewController in homeNavigationController.viewControllers)
-        {
-            if ([viewController isKindOfClass:[HomeViewController class]])
-            {
-                _homeViewController = (HomeViewController*)viewController;
-            }
-        }
-    }
+    _homeViewController = [self.viewControllers objectAtIndex:TABBAR_HOME_INDEX];
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
@@ -289,22 +278,19 @@
     }
 }
 
-- (void)setVisibleRoomId:(NSString *)roomId
-{  
-    if (roomId)
+- (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion
+{
+    if (unifiedSearchViewController)
     {
-        // Enable inApp notification for this room in all existing accounts.
-        NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-        for (MXKAccount *account in mxAccounts)
-        {
-            [account updateNotificationListenerForRoomId:roomId ignore:NO];
-        }
+        [self.navigationController dismissViewControllerAnimated:animated completion:completion];
     }
-    
-    _visibleRoomId = roomId;
+    else if (completion)
+    {
+        completion();
+    }
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

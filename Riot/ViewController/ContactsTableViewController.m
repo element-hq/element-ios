@@ -736,7 +736,7 @@
         if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE))
         {
             NSLayoutConstraint *leadingConstraint, *trailingConstraint, *topConstraint, *bottomConstraint;
-            NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint, *centerXConstraint;
+            NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint;
             
             if (!localContactsCheckboxContainer)
             {
