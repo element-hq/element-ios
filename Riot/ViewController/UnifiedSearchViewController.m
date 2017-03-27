@@ -169,6 +169,26 @@
 
 #pragma mark -
 
+- (MXEvent*)selectedSearchEvent
+{
+    if (messagesSearchViewController.selectedEvent)
+    {
+        return messagesSearchViewController.selectedEvent;
+    }
+    return filesSearchViewController.selectedEvent;
+}
+
+- (MXSession*)selectedSearchEventSession
+{
+    if (messagesSearchViewController.selectedEvent)
+    {
+        return messagesSearchDataSource.mxSession;
+    }
+    return filesSearchDataSource.mxSession;
+}
+
+#pragma mark -
+
 - (void)initializeDataSources
 {
     MXSession *mainSession = self.mainSession;

@@ -118,8 +118,8 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    // Make the HomeViewController (that contains this VC) open the RoomViewController
-    [self.parentViewController performSegueWithIdentifier:@"showDetails" sender:self];
+    // Make the master tabBar view controller open the RoomViewController
+    [[AppDelegate theDelegate].masterTabBarController performSegueWithIdentifier:@"showDetails" sender:self];
 
     // Reset the selected event. HomeViewController got it when here
     _selectedEvent = nil;

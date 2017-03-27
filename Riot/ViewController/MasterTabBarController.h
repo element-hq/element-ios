@@ -84,10 +84,6 @@
  */
 - (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion;
 
-//- (void)showRoomCreationForm;
-//- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession;
-
-//- (void)popRoomViewControllerAnimated:(BOOL)animated;
 
 // Reference to the current auth VC. It is not nil only when the auth screen is displayed.
 @property (nonatomic, readonly) AuthenticationViewController *authViewController;

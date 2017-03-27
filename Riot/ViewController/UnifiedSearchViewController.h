@@ -31,4 +31,10 @@
  */
 - (void)showPublicRoomsDirectory;
 
+/**
+ Tell whether an event has been selected from messages or files search tab.
+ */
+@property (nonatomic, readonly) MXEvent *selectedSearchEvent;
+@property (nonatomic, readonly) MXSession *selectedSearchEventSession;
+
 @end

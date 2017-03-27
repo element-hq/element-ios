@@ -331,16 +331,11 @@
             {
                 MXKRoomDataSource *roomDataSource;
                 
-//                // Check whether an event has been selected from messages or files search tab. Live timeline or timeline from a search result?
-//                MXEvent *selectedSearchEvent = messagesSearchViewController.selectedEvent;
-//                MXSession *selectedSearchEventSession = messagesSearchDataSource.mxSession;
-//                if (!selectedSearchEvent)
-//                {
-//                    selectedSearchEvent = filesSearchViewController.selectedEvent;
-//                    selectedSearchEventSession = filesSearchDataSource.mxSession;
-//                }
+                // Check whether an event has been selected from messages or files search tab.
+                MXEvent *selectedSearchEvent = unifiedSearchViewController.selectedSearchEvent;
+                MXSession *selectedSearchEventSession = unifiedSearchViewController.selectedSearchEventSession;
                 
-//                if (!selectedSearchEvent)
+                if (!selectedSearchEvent)
                 {
                     if (!_selectedEventId)
                     {
@@ -358,15 +353,15 @@
                         _currentRoomViewController.hasRoomDataSourceOwnership = YES;
                     }
                 }
-//                else
-//                {
-//                    // Search result: Create a temp timeline from the selected event
-//                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
-//                    [roomDataSource finalizeInitialization];
-//                    
-//                    // Give the data source ownership to the room view controller.
-//                    _currentRoomViewController.hasRoomDataSourceOwnership = YES;
-//                }
+                else
+                {
+                    // Search result: Create a temp timeline from the selected event
+                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
+                    [roomDataSource finalizeInitialization];
+                    
+                    // Give the data source ownership to the room view controller.
+                    _currentRoomViewController.hasRoomDataSourceOwnership = YES;
+                }
                 
                 [_currentRoomViewController displayRoom:roomDataSource];
             }
@@ -380,7 +375,7 @@
         if (self.splitViewController)
         {
             // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
-//            [self refreshCurrentSelectedCellInChild:NO];
+            [self refreshCurrentSelectedCell:NO];
             
             // IOS >= 8
             if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)])
@@ -430,6 +425,16 @@
         }
     }
 }
+
+// Made the actual selected view controller update its selected cell.
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
+    UIViewController *selectedViewController = self.selectedViewController;
+    
+    if ([selectedViewController respondsToSelector:@selector(refreshCurrentSelectedCell:)])
+    {
+        [(id)selectedViewController refreshCurrentSelectedCell:forceVisible];
+    }}
 
 #pragma mark - 
 

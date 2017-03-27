@@ -71,7 +71,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
     
     // Add room creation button programatically
     [self addRoomCreationButton];
