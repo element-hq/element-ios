@@ -407,6 +407,24 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         [self dismissFirstResponder];
         
+        // Check whether user allowed to change room info
+        NSDictionary *eventTypes = @{
+                                     @(RoomSettingsViewControllerFieldName): kMXEventTypeStringRoomName,
+                                     @(RoomSettingsViewControllerFieldTopic): kMXEventTypeStringRoomTopic,
+                                     @(RoomSettingsViewControllerFieldAvatar): kMXEventTypeStringRoomAvatar
+                                     };
+        
+        NSString *eventTypeForSelectedField = eventTypes[@(selectedRoomSettingsField)];
+        
+        if (!eventTypeForSelectedField)
+            return;
+        
+        MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+        
+        if (oneSelfPowerLevel < [powerLevels minimumPowerLevelForSendingEventAsStateEvent:eventTypeForSelectedField])
+            return;
+        
         switch (selectedRoomSettingsField)
         {
             case RoomSettingsViewControllerFieldName:
