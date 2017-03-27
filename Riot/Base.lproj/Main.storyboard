@@ -170,6 +170,7 @@
                     </view>
                     <connections>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="SMN-xr-Ppl"/>
+                        <segue destination="aHG-CH-koI" kind="show" identifier="showDirectory" id="ndE-eu-9lm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G2g-bd-dSj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -280,6 +281,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cZU-Oi-B1e" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2722" y="-1658"/>
+        </scene>
+        <!--Directory View Controller-->
+        <scene sceneID="96e-HZ-Idz">
+            <objects>
+                <tableViewController id="aHG-CH-koI" customClass="DirectoryViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tbG-uL-KGT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="aHG-CH-koI" id="Ftx-LW-VkD"/>
+                            <outlet property="delegate" destination="aHG-CH-koI" id="LIG-gR-Lz9"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b5t-fe-rSJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4398" y="-3732"/>
         </scene>
         <!--Contact Details View Controller-->
         <scene sceneID="grY-bt-CcD">

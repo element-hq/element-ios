@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@class HomeViewController;
-
 @interface RecentsViewController : MXKRecentListViewController
 
 /**

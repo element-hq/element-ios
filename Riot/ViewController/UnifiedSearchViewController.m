@@ -177,6 +177,7 @@
     {
         // Init the recents data source
         recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
+        recentsDataSource.hidePublicRoomsDirectory = NO;
         [recentsViewController displayList:recentsDataSource];
         
         // Init the search for messages
@@ -254,8 +255,6 @@
 
 - (void)showPublicRoomsDirectory
 {
-    //TODO remove
-    
     // Force hiding the keyboard
     [self.searchBar resignFirstResponder];
     
@@ -309,7 +308,7 @@
     // The other conditions depend on the current selected view controller.
     if (self.selectedViewController == recentsViewController)
     {
-        self.backgroundImageView.hidden = (!recentsDataSource.hideRecents || !recentsDataSource.hidePublicRoomsDirectory || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = YES;
     }
     else if (self.selectedViewController == messagesSearchViewController)
     {
@@ -373,11 +372,19 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
+    
     if ([[segue identifier] isEqualToString:@"showContactDetails"])
     {
         ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
         contactDetailsViewController.enableVoipCall = NO;
         contactDetailsViewController.contact = selectedContact;
+    }
+    else if ([[segue identifier] isEqualToString:@"showDirectory"])
+    {
+        DirectoryViewController *directoryViewController = segue.destinationViewController;
+        [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
     }
 
     // Hide back button title
@@ -397,7 +404,6 @@
     if (self.searchBar.text.length)
     {
         recentsDataSource.hideRecents = NO;
-        recentsDataSource.hidePublicRoomsDirectory = NO;
         self.backgroundImageView.hidden = YES;
 
         // Forward the search request to the data source
@@ -448,7 +454,6 @@
     {
         // Nothing to search, show only the public dictionary
         recentsDataSource.hideRecents = YES;
-        recentsDataSource.hidePublicRoomsDirectory = NO;
         
         // Reset search result (if any)
         [recentsDataSource searchWithPatterns:nil];

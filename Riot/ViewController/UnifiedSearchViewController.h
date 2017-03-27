@@ -25,4 +25,10 @@
  */
 @interface UnifiedSearchViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate, ContactsTableViewControllerDelegate>
 
+/**
+ Open the public rooms directory page.
+ It uses the `publicRoomsDirectoryDataSource` managed by the recents view controller data source
+ */
+- (void)showPublicRoomsDirectory;
+
 @end

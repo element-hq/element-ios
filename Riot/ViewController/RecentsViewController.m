@@ -19,6 +19,8 @@
 #import "RecentsDataSource.h"
 #import "RecentTableViewCell.h"
 
+#import "UnifiedSearchViewController.h"
+
 #import "RageShakeManager.h"
 
 #import "MXRoom+Riot.h"
@@ -200,23 +202,59 @@
 {
     [super viewDidAppear:animated];
     
-//    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-//    if (!self.splitViewController || self.splitViewController.isCollapsed)
-//    {
-//        // Release the current selected room (if any).
-//        [[AppDelegate theDelegate].homeViewController closeSelectedRoom];
-//    }
-//    else
-//    {
-//        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
-//        // the selected room (if any) is highlighted.
-//        [self refreshCurrentSelectedCell:YES];
-//    }
+    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+    if (!self.splitViewController || self.splitViewController.isCollapsed)
+    {
+        // Release the current selected room (if any).
+        [[AppDelegate theDelegate].masterTabBarController closeSelectedRoom];
+    }
+    else
+    {
+        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+        // the selected room (if any) is highlighted.
+        [self refreshCurrentSelectedCell:YES];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+}
+
+#pragma mark -
+
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
+    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+    NSIndexPath *currentSelectedCellIndexPath = nil;
+    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
+    if (masterTabBarController.currentRoomViewController)
+    {
+        // Look for the rank of this selected room in displayed recents
+        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
+    }
+    
+    if (currentSelectedCellIndexPath)
+    {
+        // Select the right row
+        [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+        
+        if (forceVisible)
+        {
+            // Scroll table view to make the selected row appear at second position
+            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
+            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
+            [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
+    }
+    else
+    {
+        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+        if (indexPath)
+        {
+            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+    }
 }
 
 #pragma mark - Internal methods
@@ -256,21 +294,6 @@
     {
         [self refreshCurrentSelectedCell:YES];
     }
-    
-    if (self.dataSource.mxSession.state == MXSessionStateRunning)
-    {
-        // TODO
-//        // The Directory cell is displayed when the recents list is empty
-//        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-//        if (recentsDataSource.hidePublicRoomsDirectory)
-//        {
-//            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections != 0);
-//        }
-//        else if (homeViewController.searchBarHidden)
-//        {
-//            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections > 1);
-//        }
-    }
 }
 
 - (void)scrollToTop:(BOOL)animated
@@ -278,37 +301,14 @@
     [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top) animated:animated];
 }
 
-- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+-(void)showPublicRoomsDirectory
 {
-    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    NSIndexPath *currentSelectedCellIndexPath = nil;
-    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-    if (masterTabBarController.currentRoomViewController)
+    // Here the recents view controller is displayed inside a unified search view controller.
+    // Sanity check
+    if (self.parentViewController && [self.parentViewController isKindOfClass:UnifiedSearchViewController.class])
     {
-        // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
-    }
-
-    if (currentSelectedCellIndexPath)
-    {
-        // Select the right row
-        [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        
-        if (forceVisible)
-        {
-            // Scroll table view to make the selected row appear at second position
-            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
-            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-            [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
-    }
-    else
-    {
-        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-        if (indexPath)
-        {
-            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
+        // Show the directory screen
+        [((UnifiedSearchViewController*)self.parentViewController) showPublicRoomsDirectory];
     }
 }
 
@@ -703,9 +703,7 @@
     }
     else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
     {
-        // TODO
-//        // Show the directory screen
-//        [homeViewController showPublicRoomsDirectory];
+        [self showPublicRoomsDirectory];
     }
     else if ([cell isKindOfClass:[RoomIdOrAliasTableViewCell class]])
     {
