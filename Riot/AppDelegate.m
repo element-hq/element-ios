@@ -1659,6 +1659,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     for (MXKAccount *account in mxAccounts)
     {
         [account reload:clearCache];
+
+        // Replace default room summary updater
+        EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
+        eventFormatter.isForSubtitle = YES;
+        account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
