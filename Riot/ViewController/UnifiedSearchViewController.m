@@ -47,7 +47,6 @@
     MXKSearchDataSource *filesSearchDataSource;
     
     ContactsTableViewController *peopleSearchViewController;
-    MXKContact *selectedContact;
     
     // Current alert (if any).
     MXKAlert *currentAlert;
@@ -395,13 +394,7 @@
     // Keep ref on destinationViewController
     [super prepareForSegue:segue sender:sender];
     
-    if ([[segue identifier] isEqualToString:@"showContactDetails"])
-    {
-        ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
-        contactDetailsViewController.enableVoipCall = NO;
-        contactDetailsViewController.contact = selectedContact;
-    }
-    else if ([[segue identifier] isEqualToString:@"showDirectory"])
+    if ([[segue identifier] isEqualToString:@"showDirectory"])
     {
         DirectoryViewController *directoryViewController = segue.destinationViewController;
         [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
@@ -541,12 +534,10 @@
 
 - (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
 {
-    selectedContact = contact;
-    
     // Force hiding the keyboard
     [self.searchBar resignFirstResponder];
     
-    [self performSegueWithIdentifier:@"showContactDetails" sender:self];
+    [[AppDelegate theDelegate].masterTabBarController selectContact:contact];
 }
 
 @end

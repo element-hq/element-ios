@@ -256,6 +256,21 @@
     self.bottomImageView.hidden = YES;
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    // Restore navigation bar display
+    [self hideNavigationBarBorder:NO];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        // Hide the bottom border of the navigation bar
+        [self hideNavigationBarBorder:YES];
+        
+    });
+}
+
 - (void)destroy
 {
     [super destroy];

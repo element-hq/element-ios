@@ -202,11 +202,11 @@
 {
     [super viewDidAppear:animated];
     
-    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+    // Release the current selected item (if any) except if the second view controller is still visible (see splitViewController.isCollapsed condition)
     if (!self.splitViewController || self.splitViewController.isCollapsed)
     {
         // Release the current selected room (if any).
-        [[AppDelegate theDelegate].masterTabBarController closeSelectedRoom];
+        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
     }
     else
     {

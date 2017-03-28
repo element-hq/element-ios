@@ -21,6 +21,7 @@
 #import "HomeViewController.h"
 
 #import "RoomViewController.h"
+#import "ContactDetailsViewController.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
@@ -75,9 +76,19 @@
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 /**
- Close the current selected room (if any)
+ Open a ContactDetailsViewController to display the information of the provided contact.
  */
-- (void)closeSelectedRoom;
+- (void)selectContact:(MXKContact*)contact;
+
+/**
+ Release the current selected item (if any).
+ */
+- (void)releaseSelectedItem;
+
+/**
+ Remove the current contact details (if any).
+ */
+- (void)hideContactDetails;
 
 /**
  Dismiss the unified search screen (if any).
@@ -96,6 +107,10 @@
 @property (nonatomic, readonly) NSString  *selectedEventId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
 @property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
+
+// References on the currently selected contact and its view controller
+@property (nonatomic, readonly) ContactDetailsViewController *currentContactDetailViewController;
+@property (nonatomic, readonly) MXKContact *selectedContact;
 
 @end
 

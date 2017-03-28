@@ -237,11 +237,11 @@
     
     if (roomId && matrixSession)
     {
-        [self performSegueWithIdentifier:@"showDetails" sender:self];
+        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
     }
     else
     {
-        [self closeSelectedRoom];
+        [self releaseSelectedItem];
     }
 }
 
@@ -251,10 +251,17 @@
     _selectedRoomId = roomPreviewData.roomId;
     _selectedRoomSession = roomPreviewData.mxSession;
     
-    [self performSegueWithIdentifier:@"showDetails" sender:self];
+    [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
 }
 
-- (void)closeSelectedRoom
+- (void)selectContact:(MXKContact*)contact
+{
+    _selectedContact = contact;
+    
+    [self performSegueWithIdentifier:@"showContactDetails" sender:self];
+}
+
+- (void)releaseSelectedItem
 {
     _selectedRoomId = nil;
     _selectedEventId = nil;
@@ -276,6 +283,14 @@
         [_currentRoomViewController destroy];
         _currentRoomViewController = nil;
     }
+    
+    _selectedContact = nil;
+    
+    if (_currentContactDetailViewController)
+    {
+        [_currentContactDetailViewController destroy];
+        _currentContactDetailViewController = nil;
+    }
 }
 
 - (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion
@@ -294,38 +309,40 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showDetails"])
+    if ([[segue identifier] isEqualToString:@"showRoomDetails"] || [[segue identifier] isEqualToString:@"showContactDetails"])
     {
-        UIViewController *controller;
-        if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]])
-        {
-            controller = [[segue destinationViewController] topViewController];
-        }
-        else
-        {
-            controller = [segue destinationViewController];
-        }
+        UINavigationController *navigationController = [segue destinationViewController];
         
-        if ([controller isKindOfClass:[RoomViewController class]])
+        // Release existing Room view controller (if any)
+        if (_currentRoomViewController)
         {
-            // Release existing Room view controller (if any)
-            if (_currentRoomViewController)
+            // If the displayed data is not a preview, let the manager release the room data source
+            // (except if the view controller has the room data source ownership).
+            if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
             {
-                // If the displayed data is not a preview, let the manager release the room data source
-                // (except if the view controller has the room data source ownership).
-                if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
-                {
-                    MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
-                    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-                    
-                    [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
-                }
+                MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
+                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
                 
-                [_currentRoomViewController destroy];
-                _currentRoomViewController = nil;
+                [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
             }
             
-            _currentRoomViewController = (RoomViewController *)controller;
+            [_currentRoomViewController destroy];
+            _currentRoomViewController = nil;
+        }
+        else if (_currentContactDetailViewController)
+        {
+            [_currentContactDetailViewController destroy];
+            _currentContactDetailViewController = nil;
+        }
+        
+        if ([[segue identifier] isEqualToString:@"showRoomDetails"])
+        {
+            // Replace the rootviewcontroller with a room view controller
+            // Get the RoomViewController from the storyboard
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            _currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
+            
+            navigationController.viewControllers = @[_currentRoomViewController];
             
             if (!_selectedRoomPreviewData)
             {
@@ -371,20 +388,31 @@
                 _selectedRoomPreviewData = nil;
             }
         }
+        else
+        {
+            // Replace the rootviewcontroller with a contact details view controller
+            _currentContactDetailViewController = [ContactDetailsViewController contactDetailsViewController];
+            _currentContactDetailViewController.enableVoipCall = NO;
+            _currentContactDetailViewController.contact = _selectedContact;
+            
+            navigationController.viewControllers = @[_currentContactDetailViewController];
+        }
         
         if (self.splitViewController)
         {
             // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
             [self refreshCurrentSelectedCell:NO];
             
-            // IOS >= 8
-            if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)])
+            if (_currentRoomViewController)
             {
-                controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+                _currentRoomViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+                _currentRoomViewController.navigationItem.leftItemsSupplementBackButton = YES;
             }
-            
-            //
-            controller.navigationItem.leftItemsSupplementBackButton = YES;
+            else
+            {
+                _currentContactDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+                _currentContactDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+            }
         }
     }
     else
@@ -424,6 +452,9 @@
             }
         }
     }
+    
+    // Hide back button title
+    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 // Made the actual selected view controller update its selected cell.

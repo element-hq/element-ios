@@ -313,19 +313,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         _masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
         
-        if (splitViewController.viewControllers.count == 2)
-        {
-            UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
-            
-            if ([detailsViewController isKindOfClass:[UINavigationController class]])
-            {
-                UINavigationController *navigationController = (UINavigationController*)detailsViewController;
-                detailsViewController = navigationController.topViewController;
-            }
-            
-            detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
-        }
-        
         // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
         // to avoid empty room View Controller in portrait orientation
         // else, the user cannot select a room
@@ -777,8 +764,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Patch: restore navigation bar by default here.
         _masterNavigationController.navigationBarHidden = NO;
         
-        // Release the current selected room (if any).
-        [_masterTabBarController closeSelectedRoom];
+        // Release the current selected item (room/contact/...).
+        [_masterTabBarController releaseSelectedItem];
         
         // Select the Home tab
         _masterTabBarController.selectedIndex = TABBAR_HOME_INDEX;
@@ -2570,45 +2557,21 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (nullable UIViewController *)splitViewController:(UISplitViewController *)splitViewController separateSecondaryViewControllerFromPrimaryViewController:(UIViewController *)primaryViewController
 {
+    // Return the top view controller of the master navigation controller, if it is a navigation controller itself.
     UIViewController *topViewController = _masterNavigationController.topViewController;
-    
-    // Check the case where we don't want to use as a secondary view controller the top view controller
-    // of the navigation controller of the home view controller.
-    if ([topViewController isKindOfClass:[DirectoryViewController class]]
-        || [topViewController isKindOfClass:[SettingsViewController class]]
-        || [topViewController isKindOfClass:[ContactDetailsViewController class]])
+    if ([topViewController isKindOfClass:UINavigationController.class])
     {
-        UINavigationController *secondNavController = self.secondaryNavigationController;
-        if (secondNavController)
-        {
-            // Return the default secondary view controller to keep on primaryViewController side
-            // the Directory, the Settings or the Contact details view controller.
-            return secondNavController;
-        }
-        else
-        {
-            // Return a fake room view controller for the secondary view controller.
-            return [RoomViewController roomViewController];
-        }
+        return topViewController;
     }
-    return nil;
+    
+    // Else return the default empty details view controller from the storyboard
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    return [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
 }
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
 {
-    RoomViewController *roomViewController;
-    
-    if ([secondaryViewController isKindOfClass:[RoomViewController class]])
-    {
-        roomViewController = (RoomViewController*)secondaryViewController;
-    }
-    else if ([secondaryViewController isKindOfClass:[UINavigationController class]] &&
-             [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]])
-    {
-        roomViewController = (RoomViewController*)[(UINavigationController *)secondaryViewController topViewController];
-    }
-    
-    if (roomViewController && roomViewController.roomDataSource == nil && roomViewController.roomPreviewData == nil)
+    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController)
     {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;
