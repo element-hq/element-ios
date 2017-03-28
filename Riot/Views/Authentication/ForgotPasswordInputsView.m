@@ -17,25 +17,25 @@
 
 #import "ForgotPasswordInputsView.h"
 
+#import "MXHttpOperation.h"
 #import "RiotDesignValues.h"
 
 @interface ForgotPasswordInputsView ()
-{
-    /**
-     The current email validation
-     */
-    MXK3PID  *submittedEmail;
-    
-    /**
-     The current set of parameters ready to use.
-     */
-    NSDictionary *parameters;
-    
-    /**
-     The block called when the parameters are ready and the user confirms he has checked his email.
-     */
-    void (^didPrepareParametersCallback)(NSDictionary *parameters);
-}
+
+/**
+ The current email validation request operation
+ */
+@property (nonatomic, strong) MXHTTPOperation *mxCurrentOperation;
+
+/**
+ The current set of parameters ready to use.
+ */
+@property (nonatomic, strong) NSDictionary *parameters;
+
+/**
+ The block called when the parameters are ready and the user confirms he has checked his email.
+ */
+@property (nonatomic, copy) void (^didPrepareParametersCallback)(NSDictionary *parameters);
 
 @end
 
@@ -74,10 +74,10 @@
 {
     [super destroy];
     
-    submittedEmail = nil;
+    self.mxCurrentOperation = nil;
     
-    parameters = nil;
-    didPrepareParametersCallback = nil;
+    self.parameters = nil;
+    self.didPrepareParametersCallback = nil;
 }
 
 -(void)layoutSubviews
@@ -165,8 +165,8 @@
     if (callback)
     {
         // Prepare here parameters dict by checking each required fields.
-        parameters = nil;
-        didPrepareParametersCallback = nil;
+        self.parameters = nil;
+        self.didPrepareParametersCallback = nil;
         
         // Check the validity of the parameters
         NSString *errorMsg = [self validateParameters];
@@ -197,42 +197,73 @@
             if (restClient)
             {
                 // Launch email validation
-                submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:self.emailTextField.text];
+                NSString *clientSecret = [MXTools generateSecret];
                 
-                [submittedEmail requestValidationTokenWithMatrixRestClient:restClient
-                                                                  nextLink:nil
-                                                                   success:^{
-                                                                       
-                                                                       didPrepareParametersCallback = callback;
-                                                                       
-                                                                       NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
-                                                                       parameters = @{
-                                                                                      @"auth": @{@"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
-                                                                                      @"new_password": self.passWordTextField.text};
-                                                                       
-                                                                       [self hideInputsContainer];
-                                                                       
-                                                                       self.messageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_reset_password_email_validation_message", @"Vector", nil), self.emailTextField.text];
-                                                                       
-                                                                       self.messageLabel.hidden = NO;
-                                                                       
-                                                                       [self.nextStepButton addTarget:self action:@selector(didCheckEmail:) forControlEvents:UIControlEventTouchUpInside];
-                                                                       
-                                                                       self.nextStepButton.hidden = NO;
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       NSLog(@"[ForgotPasswordInputsView] Failed to request email token");
-                                                                       
-                                                                       // Ignore connection cancellation error
-                                                                       if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
-                                                                       {
-                                                                           return;
-                                                                       }
-                                                                       
-                                                                       callback(nil);
-                                                                       
-                                                                   }];
+                __weak typeof(self) weakSelf = self;
+                [restClient forgetPasswordForEmail:self.emailTextField.text
+                                      clientSecret:clientSecret
+                                       sendAttempt:1
+                                           success:^(NSString *sid) {
+                                               typeof(weakSelf) strongSelf = weakSelf;
+                                               if (strongSelf) {
+                                                   strongSelf.didPrepareParametersCallback = callback;
+                                                   
+                                                   NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
+                                                   strongSelf.parameters = @{
+                                                                             @"auth": @{
+                                                                                     @"threepid_creds": @{
+                                                                                             @"client_secret": clientSecret,
+                                                                                             @"id_server": identServerURL.host,
+                                                                                             @"sid": sid
+                                                                                             },
+                                                                                     @"type": kMXLoginFlowTypeEmailIdentity
+                                                                                     },
+                                                                             @"new_password": strongSelf.passWordTextField.text
+                                                                             };
+                                                   
+                                                   [strongSelf hideInputsContainer];
+                                                   
+                                                   strongSelf.messageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_reset_password_email_validation_message", @"Vector", nil), strongSelf.emailTextField.text];
+                                                   
+                                                   strongSelf.messageLabel.hidden = NO;
+                                                   
+                                                   [strongSelf.nextStepButton addTarget:strongSelf
+                                                                                 action:@selector(didCheckEmail:)
+                                                                       forControlEvents:UIControlEventTouchUpInside];
+                                                   
+                                                   strongSelf.nextStepButton.hidden = NO;
+                                               }
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"[ForgotPasswordInputsView] Failed to request email token");
+                                               
+                                               // Ignore connection cancellation error
+                                               if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                                               {
+                                                   return;
+                                               }
+                                               
+                                               NSString *errorMessage;
+                                               if (error.userInfo[@"error"])
+                                                   errorMessage = error.userInfo[@"error"];
+                                               else
+                                                   errorMessage = error.localizedDescription;
+                                               
+                                               __strong typeof(weakSelf) strongSelf = weakSelf;
+                                               if (strongSelf) {
+                                                   if (strongSelf->inputsAlert)
+                                                   {
+                                                       [strongSelf->inputsAlert dismiss:NO];
+                                                   }
+                                                   
+                                                   strongSelf->inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage style:MXKAlertStyleAlert];
+                                                   strongSelf->inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                                       strongSelf->inputsAlert = nil;
+                                                       [strongSelf.delegate authInputsViewDidCancelOperation:strongSelf];
+                                                   }];
+                                                   
+                                                   [strongSelf.delegate authInputsView:strongSelf presentMXKAlert:strongSelf->inputsAlert];
+                                               }
+                                           }];
                 
                 // Async response
                 return;
@@ -243,7 +274,7 @@
             }
         }
         
-        callback(parameters);
+        callback(self.parameters);
     }
 }
 
@@ -270,8 +301,8 @@
 - (void)nextStep
 {
     // Here the password has been reseted with success
-    didPrepareParametersCallback = nil;
-    parameters = nil;
+    self.didPrepareParametersCallback = nil;
+    self.parameters = nil;
     
     [self hideInputsContainer];
     
@@ -284,15 +315,12 @@
 
 - (void)reset
 {
-    // Cancel email validation if any
-    if (submittedEmail)
-    {
-        [submittedEmail cancelCurrentRequest];
-        submittedEmail = nil;
-    }
+    // Cancel email validation request
+    [self.mxCurrentOperation cancel];
+    self.mxCurrentOperation = nil;
     
-    parameters = nil;
-    didPrepareParametersCallback = nil;
+    self.parameters = nil;
+    self.didPrepareParametersCallback = nil;
     
     // Reset UI by hidding all items
     [self hideInputsContainer];
@@ -313,9 +341,9 @@
 {
     if (sender == self.nextStepButton)
     {
-        if (didPrepareParametersCallback)
+        if (self.didPrepareParametersCallback)
         {
-            didPrepareParametersCallback(parameters);
+            self.didPrepareParametersCallback(self.parameters);
         }
     }
 }
