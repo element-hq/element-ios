@@ -93,8 +93,6 @@
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
     [super viewDidLoad];
-    
-    self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
 
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];

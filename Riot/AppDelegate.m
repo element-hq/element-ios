@@ -301,37 +301,20 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
     
-    // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related
-    // to the Home screen ("Messages").
-    // Note: UISplitViewController is not supported on iPhone for iOS < 8.0
-    UIViewController* rootViewController = self.window.rootViewController;
-    _masterNavigationController = nil;
-    if ([rootViewController isKindOfClass:[UISplitViewController class]])
-    {
-        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
-        splitViewController.delegate = self;
-        
-        _masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
-        
-        // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
-        // to avoid empty room View Controller in portrait orientation
-        // else, the user cannot select a room
-        // shouldHideViewController delegate method is also implemented
-        if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
-        {
-            splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-        }
-    }
+    // To simplify navigation into the app, we retrieve here the main navigation controller and the tab bar controller.
+    UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
+    splitViewController.delegate = self;
     
-    if (_masterNavigationController)
+    _masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
+    _masterTabBarController = _masterNavigationController.viewControllers.firstObject;
+    
+    // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
+    // to avoid empty room View Controller in portrait orientation
+    // else, the user cannot select a room
+    // shouldHideViewController delegate method is also implemented
+    if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
     {
-        for (UIViewController *viewController in _masterNavigationController.viewControllers)
-        {
-            if ([viewController isKindOfClass:[MasterTabBarController class]])
-            {
-                _masterTabBarController = (MasterTabBarController*)viewController;
-            }
-        }
+        splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     }
     
     // Sanity check

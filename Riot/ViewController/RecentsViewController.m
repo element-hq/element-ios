@@ -74,8 +74,6 @@
     {
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
-    
-    self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
 }
 
 - (void)finalizeInit
