@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -33,22 +34,26 @@
 @interface PublicRoomsDirectoryDataSource : MXKDataSource <UITableViewDataSource>
 
 /**
- All public rooms of the directory.
+ The number of rooms corresponding to the query.
+ It is accurate only if 'moreThanRoomsCount' is NO.
  */
-@property (nonatomic, readonly) NSArray<MXPublicRoom*> *rooms;
+@property (nonatomic, readonly) NSUInteger roomsCount;
+
+/**
+ In case of search with a lot of matching public rooms, we cannot return an accurate
+ value except by paginating the full list of rooms.
+ This flag indicates that we know that there is more matching rooms than we got
+ so far.
+ */
+@property (nonatomic, readonly) BOOL moreThanRoomsCount;
 
 /**
  The filter being applied. Nil if there is no filter.
- A 'AND' search is made with the strings of the array.
+ 
  Setting a new value may trigger a request to the home server. So, the data source state
  may change to MXKDataSourceStatePreparing.
  */
-@property (nonatomic) NSArray<NSString*> *searchPatternsList;
-
-/**
- Public rooms of the directory that match `searchPatternsList`.
- */
-@property (nonatomic, readonly) NSArray<MXPublicRoom*> *filteredRooms;
+@property (nonatomic) NSString *searchPattern;
 
 /**
  Refresh public rooms list (take into account the potential search pattern list).
@@ -63,5 +68,13 @@
  @return indexPath the index of the cell (nil if not found or if the related section is shrinked).
  */
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession;
+
+/**
+ Get the public at the given index path.
+ 
+ @param indexPath the position of the room in the table view.
+ @return the public room object.
+ */
+- (MXPublicRoom*)roomAtIndexPath:(NSIndexPath*)indexPath;
 
 @end

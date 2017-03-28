@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -32,22 +33,36 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     // The pending request to refresh public rooms data.
     MXHTTPOperation *publicRoomsRequest;
 
-    // The date of the last fetched data.
-    NSDate *lastRefreshDate;
+    /**
+     All public rooms fetched so far.
+     */
+    NSMutableArray<MXPublicRoom*> *rooms;
+
+    /**
+     The next token to use for pagination.
+     */
+    NSString *nextBatch;
 }
 
 @end
 
 @implementation PublicRoomsDirectoryDataSource
 
-- (void)setSearchPatternsList:(NSArray<NSString *> *)newSearchPatternsList
+- (instancetype)init
 {
-    NSString *searchPatternsListString = [_searchPatternsList componentsJoinedByString:@""];
-    NSString *newSearchPatternsListString = [newSearchPatternsList componentsJoinedByString:@""];
-
-    if ((searchPatternsListString || newSearchPatternsListString) && ![newSearchPatternsListString isEqualToString:searchPatternsListString])
+    self = [super init];
+    if (self)
     {
-        _searchPatternsList = newSearchPatternsList;
+        rooms = [NSMutableArray array];
+    }
+    return self;
+}
+
+- (void)setSearchPattern:(NSString *)searchPattern
+{
+    if (![_searchPattern isEqualToString:searchPattern])
+    {
+        _searchPattern = searchPattern;
         [self refreshPublicRooms];
     }
 }
@@ -57,9 +72,9 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     NSIndexPath *indexPath = nil;
 
     // Look for the public room
-    for (NSInteger index = 0; index < _filteredRooms.count; index ++)
+    for (NSInteger index = 0; index < rooms.count; index ++)
     {
-        MXPublicRoom *room = _filteredRooms[index];
+        MXPublicRoom *room = rooms[index];
         if ([roomId isEqualToString:room.roomId])
         {
             // Got it
@@ -71,118 +86,91 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return indexPath;
 }
 
+- (MXPublicRoom *)roomAtIndexPath:(NSIndexPath *)indexPath
+{
+    MXPublicRoom *room;
+
+    if (indexPath.row < rooms.count)
+    {
+        room = rooms[indexPath.row];
+    }
+
+    return room;
+}
+
 - (void)refreshPublicRooms
 {
-    // Do not refresh data if it is not too old
-    if (lastRefreshDate && -lastRefreshDate.timeIntervalSinceNow < kPublicRoomsDirectoryDataExpiration)
+    // Cancel the previous request
+    if (publicRoomsRequest)
     {
-        // Do not disturb the current request if any
-        if (!publicRoomsRequest)
-        {
-            // Apply the new filter on the current data
-            [self refreshFilteredPublicRooms];
-            
-            [self setState:MXKDataSourceStateReady];
-        }
+        [publicRoomsRequest cancel];
     }
-    else
-    {
-        // Cancel the previous request
-        if (publicRoomsRequest)
+
+    [self setState:MXKDataSourceStatePreparing];
+
+    [rooms removeAllObjects];
+    nextBatch = nil;
+    _roomsCount = 0;
+    _moreThanRoomsCount = NO;
+
+    __weak typeof(self) weakSelf = self;
+
+    // Get the public rooms from the server
+    MXHTTPOperation *newPublicRoomsRequest;
+    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:nil limit:20 since:nextBatch filter:_searchPattern thirdPartyInstanceId:nil includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+
+        if (weakSelf)
         {
-            [publicRoomsRequest cancel];
+            typeof(self) self = weakSelf;
+
+            self->publicRoomsRequest = nil;
+
+            [self->rooms addObjectsFromArray:publicRoomsResponse.chunk];
+            self->nextBatch = publicRoomsResponse.nextBatch;
+
+            if (!self->_searchPattern)
+            {
+                // When there is no search, we can use totalRoomCountEstimate returned by the server
+                self->_roomsCount = publicRoomsResponse.totalRoomCountEstimate;
+                self->_moreThanRoomsCount = NO;
+            }
+            else
+            {
+                // Else we can only display something like ">20 matching rooms"
+                self->_roomsCount = rooms.count;
+                self->_moreThanRoomsCount = nextBatch ? YES : NO;
+            }
+            
+            [self setState:MXKDataSourceStateReady];
         }
 
-        [self setState:MXKDataSourceStatePreparing];
+    } failure:^(NSError *error) {
 
-        lastRefreshDate = [NSDate date];
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
 
-        // Get the public rooms from the server
-        publicRoomsRequest = [self.mxSession.matrixRestClient publicRooms:^(NSArray *rooms) {
+            if (!newPublicRoomsRequest || newPublicRoomsRequest.isCancelled)
+            {
+                // Do not take into account error coming from a cancellation
+                return;
+            }
 
-            // Order rooms by their members count
-            _rooms = [rooms sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
-                      {
-                          MXPublicRoom *firstRoom =  (MXPublicRoom*)a;
-                          MXPublicRoom *secondRoom = (MXPublicRoom*)b;
+            self->publicRoomsRequest = nil;
 
-                          // Compare member count
-                          if (firstRoom.numJoinedMembers < secondRoom.numJoinedMembers)
-                          {
-                              return NSOrderedDescending;
-                          }
-                          else if (firstRoom.numJoinedMembers > secondRoom.numJoinedMembers)
-                          {
-                              return NSOrderedAscending;
-                          }
-                          else
-                          {
-                              // Alphabetic order
-                              return [firstRoom.displayname compare:secondRoom.displayname options:NSCaseInsensitiveSearch];
-                          }
-                      }];
-
-            lastRefreshDate = [NSDate date];
-            publicRoomsRequest = nil;
-
-            [self refreshFilteredPublicRooms];
-
-            [self setState:MXKDataSourceStateReady];
-
-        } failure:^(NSError *error) {
-            
             NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms.");
-            
+
             [self setState:MXKDataSourceStateFailed];
 
-            // Reset the refresh date so that the user can retry the request by changing the search text input content
-            lastRefreshDate = nil;
-            
             // Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
-            
-        }];
-    }
+        }
+    }];
+
+    publicRoomsRequest = newPublicRoomsRequest;
 }
 
 #pragma mark - Private methods
-
-- (void)refreshFilteredPublicRooms
-{
-    // Apply filter if any
-    if (_searchPatternsList)
-    {
-        NSMutableArray *filteredRooms = [NSMutableArray array];
-        for (MXPublicRoom *publicRoom in _rooms)
-        {
-            if ([filteredRooms indexOfObjectIdenticalTo:publicRoom] == NSNotFound)
-            {
-                // Do a AND search
-                BOOL matchAll = YES;
-                for (NSString *pattern in _searchPatternsList)
-                {
-                    if (pattern.length && NO == [publicRoom.displayname localizedCaseInsensitiveContainsString:pattern])
-                    {
-                        matchAll = NO;
-                        break;
-                    }
-                }
-
-                if (matchAll)
-                {
-                    [filteredRooms addObject:publicRoom];
-                }
-            }
-        }
-
-        _filteredRooms = filteredRooms;
-    }
-    else
-    {
-        _filteredRooms = _rooms;
-    }
-}
-
 
 // Update the MXKDataSource state and the delegate
 - (void)setState:(MXKDataSourceState)newState
@@ -198,7 +186,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _filteredRooms.count;
+    return rooms.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -210,7 +198,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         publicRoomCell = [[PublicRoomTableViewCell alloc] init];
     }
 
-    [publicRoomCell render:_filteredRooms[indexPath.row] withMatrixSession:self.mxSession];
+    [publicRoomCell render:rooms[indexPath.row] withMatrixSession:self.mxSession];
 
     return publicRoomCell;
 }

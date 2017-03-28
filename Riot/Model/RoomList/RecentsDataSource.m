@@ -805,7 +805,7 @@
 
     if (_publicRoomsDirectoryDataSource)
     {
-        _publicRoomsDirectoryDataSource.searchPatternsList = patternsList;
+        _publicRoomsDirectoryDataSource.searchPattern = [patternsList componentsJoinedByString:@" "];
     }
 }
 

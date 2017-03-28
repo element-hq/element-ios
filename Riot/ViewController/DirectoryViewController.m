@@ -125,7 +125,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MXPublicRoom *publicRoom = dataSource.filteredRooms[indexPath.row];
+    MXPublicRoom *publicRoom = [dataSource roomAtIndexPath:indexPath];
 
     // Check whether the user has already joined the selected public room
     if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
