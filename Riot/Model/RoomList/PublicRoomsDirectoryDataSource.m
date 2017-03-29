@@ -61,10 +61,23 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
 - (void)setSearchPattern:(NSString *)searchPattern
 {
-    if (![_searchPattern isEqualToString:searchPattern])
+    if (searchPattern)
     {
-        _searchPattern = searchPattern;
-        [self refreshPublicRooms];
+        if (![searchPattern isEqualToString:_searchPattern])
+        {
+            _searchPattern = searchPattern;
+            [self startPagination];
+        }
+    }
+    else
+    {
+        // Refresh if the previous search was not nil
+        // or if it is the first time we make a search
+        if (_searchPattern || rooms.count == 0)
+        {
+            _searchPattern = searchPattern;
+            [self startPagination];
+        }
     }
 }
 
@@ -99,7 +112,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return room;
 }
 
-- (void)refreshPublicRooms
+- (void)startPagination
 {
     // Cancel the previous request
     if (publicRoomsRequest)

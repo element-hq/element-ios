@@ -66,11 +66,6 @@
 @property (nonatomic) NSString *searchPattern;
 
 /**
- Refresh public rooms list (take into account the potential search pattern).
- */
-- (void)refreshPublicRooms;
-
-/**
  Paginate more public rooms from the homeserver.
  
  @param success A block object called when the operation succeeds. It provides the number of got rooms.

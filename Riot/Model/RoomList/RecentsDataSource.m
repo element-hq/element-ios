@@ -206,7 +206,8 @@
         
         if (!_hidePublicRoomsDirectory)
         {
-            [self.publicRoomsDirectoryDataSource refreshPublicRooms];
+            // Start by looking for all public rooms
+            self.publicRoomsDirectoryDataSource.searchPattern = nil;
         }
         
         [self refreshRoomsSectionsAndReload];
