@@ -129,7 +129,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     _moreThanRoomsCount = NO;
     _hasReachedPaginationEnd = NO;
 
-    // And do a single pagination so that we can have a self.roomsCount value
+    // And do a single pagination
     [self paginate:nil failure:nil];
 }
 

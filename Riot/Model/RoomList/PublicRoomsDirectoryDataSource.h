@@ -34,21 +34,23 @@
 @interface PublicRoomsDirectoryDataSource : MXKDataSource <UITableViewDataSource>
 
 /**
- The number of rooms corresponding to the query.
+ The number of public rooms matching `searchPattern`.
  It is accurate only if 'moreThanRoomsCount' is NO.
  */
 @property (nonatomic, readonly) NSUInteger roomsCount;
 
 /**
  In case of search with a lot of matching public rooms, we cannot return an accurate
- value except by paginating the full list of rooms.
+ value except by paginating the full list of rooms, which is not expected.
+
  This flag indicates that we know that there is more matching rooms than we got
  so far.
  */
 @property (nonatomic, readonly) BOOL moreThanRoomsCount;
 
 /**
- The maximum number of public rooms to retrieve during a pagination. Default is 20.
+ The maximum number of public rooms to retrieve during a pagination. 
+ Default is 20.
  */
 @property (nonatomic) NSUInteger paginationLimit;
 
@@ -58,7 +60,10 @@
 @property (nonatomic, readonly) BOOL hasReachedPaginationEnd;
 
 /**
- The filter being applied. Nil if there is no filter.
+ The filter being applied. 
+ 
+ Nil if there is no filter; the data source will get all public rooms.
+ Default is nil.
  
  Setting a new value may trigger a request to the homeserver. So, the data source state
  may change to MXKDataSourceStatePreparing.
@@ -66,7 +71,7 @@
 @property (nonatomic) NSString *searchPattern;
 
 /**
- Paginate more public rooms from the homeserver.
+ Paginate more public rooms matching `from the homeserver.
  
  @param success A block object called when the operation succeeds. It provides the number of got rooms.
  @param failure A block object called when the operation fails.
