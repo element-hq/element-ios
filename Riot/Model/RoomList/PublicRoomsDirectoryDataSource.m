@@ -54,6 +54,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     if (self)
     {
         rooms = [NSMutableArray array];
+        _paginationLimit = 20;
     }
     return self;
 }
@@ -108,16 +109,29 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
     [self setState:MXKDataSourceStatePreparing];
 
+    // Reset all pagination vars
     [rooms removeAllObjects];
     nextBatch = nil;
     _roomsCount = 0;
     _moreThanRoomsCount = NO;
+    _hasReachedPaginationEnd = NO;
+
+    // And do a single pagination so that we can have a self.roomsCount value
+    [self paginate:nil failure:nil];
+}
+
+- (MXHTTPOperation *)paginate:(void (^)(NSUInteger))complete failure:(void (^)(NSError *))failure
+{
+    if (_hasReachedPaginationEnd)
+    {
+        return nil;
+    }
 
     __weak typeof(self) weakSelf = self;
 
     // Get the public rooms from the server
     MXHTTPOperation *newPublicRoomsRequest;
-    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:nil limit:20 since:nextBatch filter:_searchPattern thirdPartyInstanceId:nil includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:nil limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:nil includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
 
         if (weakSelf)
         {
@@ -137,11 +151,22 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
             else
             {
                 // Else we can only display something like ">20 matching rooms"
-                self->_roomsCount = rooms.count;
-                self->_moreThanRoomsCount = nextBatch ? YES : NO;
+                self->_roomsCount = self->rooms.count;
+                self->_moreThanRoomsCount = publicRoomsResponse.nextBatch ? YES : NO;
             }
-            
+
+            // Detect pagination end
+            if (!publicRoomsResponse.nextBatch)
+            {
+                _hasReachedPaginationEnd = YES;
+            }
+
             [self setState:MXKDataSourceStateReady];
+
+            if (complete)
+            {
+                complete(publicRoomsResponse.chunk.count);
+            }
         }
 
     } failure:^(NSError *error) {
@@ -164,10 +189,17 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
             // Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
+
+            if (failure)
+            {
+                failure(error);
+            }
         }
     }];
 
     publicRoomsRequest = newPublicRoomsRequest;
+
+    return publicRoomsRequest;
 }
 
 #pragma mark - Private methods

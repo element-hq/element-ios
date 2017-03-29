@@ -48,17 +48,36 @@
 @property (nonatomic, readonly) BOOL moreThanRoomsCount;
 
 /**
+ The maximum number of public rooms to retrieve during a pagination. Default is 20.
+ */
+@property (nonatomic) NSUInteger paginationLimit;
+
+/**
+ The flag indicating that all rooms has been retrieved from the homeserver.
+ */
+@property (nonatomic, readonly) BOOL hasReachedPaginationEnd;
+
+/**
  The filter being applied. Nil if there is no filter.
  
- Setting a new value may trigger a request to the home server. So, the data source state
+ Setting a new value may trigger a request to the homeserver. So, the data source state
  may change to MXKDataSourceStatePreparing.
  */
 @property (nonatomic) NSString *searchPattern;
 
 /**
- Refresh public rooms list (take into account the potential search pattern list).
+ Refresh public rooms list (take into account the potential search pattern).
  */
 - (void)refreshPublicRooms;
+
+/**
+ Paginate more public rooms from the homeserver.
+ 
+ @param success A block object called when the operation succeeds. It provides the number of got rooms.
+ @param failure A block object called when the operation fails.
+ */
+- (MXHTTPOperation*)paginate:(void (^)(NSUInteger roomsAdded))success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  Get the index path of the cell related to the provided roomId and session.
