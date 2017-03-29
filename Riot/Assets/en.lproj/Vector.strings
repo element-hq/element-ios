@@ -134,6 +134,7 @@
 "directory_cell_description" = "%tu rooms";
 "directory_search_results_title" = "Browse directory results";
 "directory_search_results" = "%tu results found for %@";
+"directory_search_results_more_than" = ">%tu results found for %@";
 "directory_searching_title" = "Searching directory...";
 "directory_search_fail" = "Failed to fetch data";
 
