@@ -57,6 +57,9 @@
     
     // The potential room id or alias typed in search input.
     NSString *roomIdOrAlias;
+
+    // Timer to not refresh publicRoomsDirectoryDataSource on every keystroke.
+    NSTimer *publicRoomsTriggerTimer;
 }
 @end
 
@@ -774,11 +777,27 @@
     }
 }
 
+- (IBAction)onPublicRoomsSearchPatternUpdate:(id)sender
+{
+    if (publicRoomsTriggerTimer)
+    {
+        NSString *searchPattern = publicRoomsTriggerTimer.userInfo;
+
+        [publicRoomsTriggerTimer invalidate];
+        publicRoomsTriggerTimer = nil;
+
+        _publicRoomsDirectoryDataSource.searchPattern = searchPattern;
+    }
+}
+
 #pragma mark - Override MXKDataSource
 
 - (void)destroy
 {
     [super destroy];
+
+    [publicRoomsTriggerTimer invalidate];
+    publicRoomsTriggerTimer = nil;
 }
 
 #pragma mark - Override MXKRecentsDataSource
@@ -805,7 +824,12 @@
 
     if (_publicRoomsDirectoryDataSource)
     {
-        _publicRoomsDirectoryDataSource.searchPattern = [patternsList componentsJoinedByString:@" "];
+        NSString *searchPattern = [patternsList componentsJoinedByString:@" "];
+
+        // Do not send a /publicRooms request for every keystroke
+        // Let user finish typing
+        [publicRoomsTriggerTimer invalidate];
+        publicRoomsTriggerTimer = [NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(onPublicRoomsSearchPatternUpdate:) userInfo:searchPattern repeats:NO];
     }
 }
 
