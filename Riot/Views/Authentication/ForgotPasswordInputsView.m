@@ -258,7 +258,8 @@
                                                    strongSelf->inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage style:MXKAlertStyleAlert];
                                                    strongSelf->inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                                                        strongSelf->inputsAlert = nil;
-                                                       [strongSelf.delegate authInputsViewDidCancelOperation:strongSelf];
+                                                       if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(authInputsViewDidCancelOperation:)])
+                                                           [strongSelf.delegate authInputsViewDidCancelOperation:strongSelf];
                                                    }];
                                                    
                                                    [strongSelf.delegate authInputsView:strongSelf presentMXKAlert:strongSelf->inputsAlert];
