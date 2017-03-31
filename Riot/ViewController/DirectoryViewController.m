@@ -31,6 +31,9 @@
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
+
+    // The animated view displayed at the table view bottom when paginating
+    UIView* footerSpinnerView;
 }
 
 @end
@@ -125,7 +128,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MXPublicRoom *publicRoom = dataSource.filteredRooms[indexPath.row];
+    MXPublicRoom *publicRoom = [dataSource roomAtIndexPath:indexPath];
 
     // Check whether the user has already joined the selected public room
     if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
@@ -156,6 +159,15 @@
             [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
         }
         
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    // Trigger inconspicuous pagination when user scrolls down
+    if ((scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.frame.size.height) < 300)
+    {
+        [self triggerPagination];
     }
 }
 
@@ -198,6 +210,75 @@
         {
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
+    }
+}
+
+- (void)triggerPagination
+{
+    if (dataSource.hasReachedPaginationEnd || footerSpinnerView)
+    {
+        // We got all public rooms or we are already paginating
+        // Do nothing
+        return;
+    }
+
+    [self addSpinnerFooterView];
+
+    [dataSource paginate:^(NSUInteger roomsAdded) {
+
+        if (roomsAdded)
+        {
+            // Notify the table view there are new items at its tail
+            NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:roomsAdded];
+
+            NSUInteger numberOfRowsBefore = [dataSource tableView:self.tableView numberOfRowsInSection:0];
+            numberOfRowsBefore -= roomsAdded;
+
+            for (NSUInteger i = 0; i < roomsAdded; i++)
+            {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(numberOfRowsBefore + i) inSection:0];
+                [indexPaths addObject:indexPath];
+            }
+
+            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+
+        [self removeSpinnerFooterView];
+
+    } failure:^(NSError *error) {
+
+        [self removeSpinnerFooterView];
+    }];
+}
+
+- (void)addSpinnerFooterView
+{
+    if (!footerSpinnerView)
+    {
+        UIActivityIndicatorView* spinner  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        spinner.transform = CGAffineTransformMakeScale(0.75f, 0.75f);
+        CGRect frame = spinner.frame;
+        frame.size.height = 80; // 80 * 0.75 = 60
+        spinner.bounds = frame;
+
+        spinner.color = [UIColor darkGrayColor];
+        spinner.hidesWhenStopped = NO;
+        spinner.backgroundColor = [UIColor clearColor];
+        [spinner startAnimating];
+
+        // No need to manage constraints here, iOS defines them
+        self.tableView.tableFooterView = footerSpinnerView = spinner;
+    }
+}
+
+- (void)removeSpinnerFooterView
+{
+    if (footerSpinnerView)
+    {
+        footerSpinnerView = nil;
+
+        // Hide line separators of empty cells
+        self.tableView.tableFooterView = [[UIView alloc] init];;
     }
 }
 

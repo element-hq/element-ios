@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -33,27 +34,50 @@
 @interface PublicRoomsDirectoryDataSource : MXKDataSource <UITableViewDataSource>
 
 /**
- All public rooms of the directory.
+ The number of public rooms matching `searchPattern`.
+ It is accurate only if 'moreThanRoomsCount' is NO.
  */
-@property (nonatomic, readonly) NSArray<MXPublicRoom*> *rooms;
+@property (nonatomic, readonly) NSUInteger roomsCount;
 
 /**
- The filter being applied. Nil if there is no filter.
- A 'AND' search is made with the strings of the array.
- Setting a new value may trigger a request to the home server. So, the data source state
+ In case of search with a lot of matching public rooms, we cannot return an accurate
+ value except by paginating the full list of rooms, which is not expected.
+
+ This flag indicates that we know that there is more matching rooms than we got
+ so far.
+ */
+@property (nonatomic, readonly) BOOL moreThanRoomsCount;
+
+/**
+ The maximum number of public rooms to retrieve during a pagination. 
+ Default is 20.
+ */
+@property (nonatomic) NSUInteger paginationLimit;
+
+/**
+ The flag indicating that all rooms has been retrieved from the homeserver.
+ */
+@property (nonatomic, readonly) BOOL hasReachedPaginationEnd;
+
+/**
+ The filter being applied. 
+ 
+ Nil if there is no filter; the data source will get all public rooms.
+ Default is nil.
+ 
+ Setting a new value may trigger a request to the homeserver. So, the data source state
  may change to MXKDataSourceStatePreparing.
  */
-@property (nonatomic) NSArray<NSString*> *searchPatternsList;
+@property (nonatomic) NSString *searchPattern;
 
 /**
- Public rooms of the directory that match `searchPatternsList`.
+ Paginate more public rooms matching `from the homeserver.
+ 
+ @param success A block object called when the operation succeeds. It provides the number of got rooms.
+ @param failure A block object called when the operation fails.
  */
-@property (nonatomic, readonly) NSArray<MXPublicRoom*> *filteredRooms;
-
-/**
- Refresh public rooms list (take into account the potential search pattern list).
- */
-- (void)refreshPublicRooms;
+- (MXHTTPOperation*)paginate:(void (^)(NSUInteger roomsAdded))success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  Get the index path of the cell related to the provided roomId and session.
@@ -63,5 +87,13 @@
  @return indexPath the index of the cell (nil if not found or if the related section is shrinked).
  */
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession;
+
+/**
+ Get the public at the given index path.
+ 
+ @param indexPath the position of the room in the table view.
+ @return the public room object.
+ */
+- (MXPublicRoom*)roomAtIndexPath:(NSIndexPath*)indexPath;
 
 @end

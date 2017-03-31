@@ -48,25 +48,25 @@
 
         case MXKDataSourceStateReady:
         {
-            if (publicRoomsDirectoryDataSource.searchPatternsList)
+            if (publicRoomsDirectoryDataSource.searchPattern)
             {
-                // Concatenate all patterns into one string
-                NSString *filter = [publicRoomsDirectoryDataSource.searchPatternsList componentsJoinedByString:@" "];
-                
                 self.titleLabel.text = NSLocalizedStringFromTable(@"directory_search_results_title", @"Vector", nil);
-                self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil),
-                                              publicRoomsDirectoryDataSource.filteredRooms.count,
-                                              filter];
+
+                // Do we need to display like ">20 results found" or "18 results found"?
+                NSString *descriptionLabel = publicRoomsDirectoryDataSource.moreThanRoomsCount ? NSLocalizedStringFromTable(@"directory_search_results_more_than", @"Vector", nil) : NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil);
+
+                self.descriptionLabel.text = [NSString stringWithFormat:descriptionLabel,
+                                              publicRoomsDirectoryDataSource.roomsCount,
+                                              publicRoomsDirectoryDataSource.searchPattern];
             }
             else
             {
                 self.titleLabel.text = NSLocalizedStringFromTable(@"directory_cell_title", @"Vector", nil);
                 self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_cell_description", @"Vector", nil),
-                                              publicRoomsDirectoryDataSource.rooms.count];
+                                              publicRoomsDirectoryDataSource.roomsCount];
             }
-            
 
-            if (publicRoomsDirectoryDataSource.filteredRooms.count)
+            if (publicRoomsDirectoryDataSource.roomsCount)
             {
                 self.userInteractionEnabled = YES;
                 self.chevronImageView.hidden = NO;
