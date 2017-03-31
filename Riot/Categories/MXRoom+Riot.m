@@ -73,7 +73,7 @@
 }
 
 #pragma mark - Room display name
-
+// @TODO: May worth to refactor to use MXRoomSummary
 - (NSString *)riotDisplayname
 {
     // this algo is the one defined in

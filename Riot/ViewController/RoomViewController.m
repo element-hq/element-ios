@@ -2906,7 +2906,7 @@
             if ([self isBubblesTableScrollViewAtTheBottom] == NO)
             {
                 // Retrieve the unread messages count
-                NSUInteger unreadCount = [self.roomDataSource.room localUnreadEventCount];
+                NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
                 
                 if (unreadCount == 0)
                 {

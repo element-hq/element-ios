@@ -100,13 +100,6 @@
 - (MXKSessionRecentsDataSource *)addMatrixSession:(MXSession *)mxSession
 {
     MXKSessionRecentsDataSource *recentsDataSource = [super addMatrixSession:mxSession];
-    
-    if (recentsDataSource)
-    {
-        // Replace default event formatter
-        recentsDataSource.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:mxSession];
-        recentsDataSource.eventFormatter.isForSubtitle = YES;
-    }
 
     // Initialise the public room directory data source
     // Note that it is single matrix session only for now
@@ -537,7 +530,7 @@
         {
             id<MXKRecentCellDataStoring> cellDataStoring = [cellDataArray objectAtIndex:index];
 
-            if ([roomId isEqualToString:cellDataStoring.roomDataSource.roomId] && (matrixSession == cellDataStoring.roomDataSource.mxSession))
+            if ([roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == cellDataStoring.roomSummary.room.mxSession))
             {
                 return index;
             }
@@ -672,7 +665,7 @@
         {
             NSUInteger pos;
             id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-            MXRoom* room = recentCellDataStoring.roomDataSource.room;
+            MXRoom* room = recentCellDataStoring.roomSummary.room;
 
             if ((pos = [sortedFavRooms indexOfObject:room]) != NSNotFound)
             {
