@@ -43,12 +43,12 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used to take photos and videos, make video calls.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>The photo library is used to send photos and videos.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>The microphone is used to take videos, make calls.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>The contact book is used to send room invitation to your contacts with their emails.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The microphone is used to take videos, make calls.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>The photo library is used to send photos and videos.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
