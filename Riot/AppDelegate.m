@@ -1420,10 +1420,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // When there is no call stack, display alerts on call invites
                 [self enableNoVoIPOnMatrixSession:mxSession];
             }
-            
-            // Ignore the room member profile changes during the last message process in each room.
-            mxSession.ignoreProfileChangesDuringLastMessageProcessing = YES;
-            
+                        
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
         }
@@ -1473,6 +1470,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         MXKAccount *account = notif.object;
         if (account)
         {
+            // Replace default room summary updater
+            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
+            eventFormatter.isForSubtitle = YES;
+            account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
+
             // Set the push gateway URL.
             account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
             
@@ -1562,13 +1564,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSArray *mxAccounts = accountManager.accounts;
     if (mxAccounts.count)
     {
-        // The push gateway url is now configurable.
-        // Set this url in the existing accounts when it is undefined.
         for (MXKAccount *account in mxAccounts)
         {
+            // Replace default room summary updater
+            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
+            eventFormatter.isForSubtitle = YES;
+            account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
+
+            // The push gateway url is now configurable.
+            // Set this url in the existing accounts when it is undefined.
             if (!account.pushGatewayURL)
             {
-                // Set the push gateway URL.
                 account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
             }
         }
@@ -1631,6 +1637,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     for (MXKAccount *account in mxAccounts)
     {
         [account reload:clearCache];
+
+        // Replace default room summary updater
+        EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
+        eventFormatter.isForSubtitle = YES;
+        account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)

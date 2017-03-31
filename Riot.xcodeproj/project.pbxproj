@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */; };
+		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
 		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
 		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
 		F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */; };
@@ -216,7 +218,6 @@
 		F083BDE81E7009ED00A9B29C /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDD1E7009EC00A9B29C /* message.mp3 */; };
 		F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		F083BDEA1E7009ED00A9B29C /* ringback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDF1E7009EC00A9B29C /* ringback.mp3 */; };
-		F083BDEB1E7009ED00A9B29C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BBE01E7009EC00A9B29C /* LaunchScreen.xib */; };
 		F083BDEC1E7009ED00A9B29C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F083BBE21E7009EC00A9B29C /* Main.storyboard */; };
 		F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */; };
 		F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
@@ -415,6 +416,8 @@
 
 /* Begin PBXFileReference section */
 		1129C74A281B080432B1A1A1 /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
+		325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenLogo.png; path = Assets/Images/LaunchScreenLogo.png; sourceTree = "<group>"; };
+		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
 		F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchViewController.m; sourceTree = "<group>"; };
@@ -630,7 +633,6 @@
 		F083BBDD1E7009EC00A9B29C /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
 		F083BBDE1E7009EC00A9B29C /* ring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ring.mp3; sourceTree = "<group>"; };
 		F083BBDF1E7009EC00A9B29C /* ringback.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringback.mp3; sourceTree = "<group>"; };
-		F083BBE11E7009EC00A9B29C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F083BBE31E7009EC00A9B29C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F083BBE51E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXKRoomBubbleTableViewCell+Riot.h"; sourceTree = "<group>"; };
 		F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXKRoomBubbleTableViewCell+Riot.m"; sourceTree = "<group>"; };
@@ -992,8 +994,8 @@
 				F083BC571E7009EC00A9B29C /* Views */,
 				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
 				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
-				F083BBE01E7009EC00A9B29C /* LaunchScreen.xib */,
 				F083BBE21E7009EC00A9B29C /* Main.storyboard */,
+				325E1C131E8D03950018D91E /* LaunchScreen.storyboard */,
 				F083BBEF1E7009EC00A9B29C /* Images.xcassets */,
 				F083BC0D1E7009EC00A9B29C /* Riot.entitlements */,
 				F083BEA41E700B2800A9B29C /* Supporting Files */,
@@ -1705,6 +1707,7 @@
 		F083BEA41E700B2800A9B29C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */,
 				F083BBED1E7009EC00A9B29C /* empty.mm */,
 				F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */,
 				F083BBF01E7009EC00A9B29C /* Info.plist */,
@@ -1907,6 +1910,7 @@
 				F083BE7B1E7009ED00A9B29C /* RoomInputToolbarView.xib in Resources */,
 				F083BE751E7009ED00A9B29C /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F083BD261E7009ED00A9B29C /* admin_icon@2x.png in Resources */,
+				325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */,
 				F083BD761E7009ED00A9B29C /* e2e_verified@3x.png in Resources */,
 				F083BE181E7009ED00A9B29C /* MediaPickerViewController.xib in Resources */,
 				F083BDCE1E7009ED00A9B29C /* selection_untick.png in Resources */,
@@ -2005,7 +2009,6 @@
 				F083BDBB1E7009ED00A9B29C /* remove_icon_pink@3x.png in Resources */,
 				F083BD5C1E7009ED00A9B29C /* create_room.png in Resources */,
 				F083BE871E7009ED00A9B29C /* RoomTableViewCell.xib in Resources */,
-				F083BDEB1E7009ED00A9B29C /* LaunchScreen.xib in Resources */,
 				F083BD471E7009ED00A9B29C /* call_video_mute_off_icon@3x.png in Resources */,
 				F083BD941E7009ED00A9B29C /* group@3x.png in Resources */,
 				F083BD591E7009ED00A9B29C /* chevron.png in Resources */,
@@ -2091,6 +2094,7 @@
 				F083BE471E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BDA01E7009ED00A9B29C /* mod_icon@3x.png in Resources */,
 				F083BE491E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
+				325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */,
 				F083BD721E7009ED00A9B29C /* e2e_unencrypted@2x.png in Resources */,
 				F083BD531E7009ED00A9B29C /* camera_switch.png in Resources */,
 				F083BD7C1E7009ED00A9B29C /* edit_icon@3x.png in Resources */,
@@ -2305,6 +2309,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		325E1C131E8D03950018D91E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				325E1C141E8D03950018D91E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		F083BB0F1E7009EC00A9B29C /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2327,14 +2339,6 @@
 				F083BB141E7009EC00A9B29C /* en */,
 			);
 			name = Vector.strings;
-			sourceTree = "<group>";
-		};
-		F083BBE01E7009EC00A9B29C /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F083BBE11E7009EC00A9B29C /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 		F083BBE21E7009EC00A9B29C /* Main.storyboard */ = {

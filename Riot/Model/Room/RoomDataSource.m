@@ -109,10 +109,10 @@
         }
         
         // Set the flag in the right cell data
-        MXEvent *lastMessage = self.lastMessage;
-        if (lastMessage.eventId)
+        NSString *lastMessageEventID = self.room.summary.lastMessageEventId;
+        if (lastMessageEventID)
         {
-            RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:lastMessage.eventId];
+            RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:lastMessageEventID];
             cellData.containsLastMessage = YES;
         }
     }

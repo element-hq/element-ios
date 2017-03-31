@@ -63,7 +63,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 {
     if (self.delegate)
     {
-        MXRoom *room = roomCellData.roomDataSource.room;
+        MXRoom *room = roomCellData.roomSummary.room;
         
         if (room)
         {
@@ -76,7 +76,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 {
     if (self.delegate)
     {
-        MXRoom *room = roomCellData.roomDataSource.room;
+        MXRoom *room = roomCellData.roomSummary.room;
         
         if (room)
         {
