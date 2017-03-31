@@ -128,7 +128,6 @@
         
         self.roomAvatar.backgroundColor = [UIColor clearColor];
 
-        // @TODO
         self.directRoomIcon.hidden = !roomCellData.roomSummary.room.isDirect;
 
         self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.isEncrypted;
