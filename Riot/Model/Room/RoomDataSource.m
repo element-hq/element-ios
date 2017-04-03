@@ -97,22 +97,17 @@
     
     if (count)
     {
-        // Look for the cell data which contains the last message.
-        
-        // Reset first the flag in each cell data
+        // Enable the containsLastMessage flag for the cell data which contains the last message.
         @synchronized(bubbles)
         {
+            // Reset first all cell data
             for (RoomBubbleCellData *cellData in bubbles)
             {
                 cellData.containsLastMessage = NO;
             }
-        }
-        
-        // Set the flag in the right cell data
-        NSString *lastMessageEventID = self.room.summary.lastMessageEventId;
-        if (lastMessageEventID)
-        {
-            RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:lastMessageEventID];
+
+            // The cell containing the last message is the last one
+            RoomBubbleCellData *cellData = bubbles.lastObject;
             cellData.containsLastMessage = YES;
         }
     }
