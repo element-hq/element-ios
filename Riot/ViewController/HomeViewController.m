@@ -923,6 +923,9 @@
     tableViewMaskLayer.hidden = NO;
     self.backgroundImageView.hidden = YES;
 
+    // Reset searches
+    [recentsDataSource searchWithPatterns:nil];
+    
     recentsDataSource.hideRecents = NO;
     recentsDataSource.hidePublicRoomsDirectory = YES;
     
