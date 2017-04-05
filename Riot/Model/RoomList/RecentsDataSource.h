@@ -19,9 +19,41 @@
 @class PublicRoomsDirectoryDataSource;
 
 /**
- 'RecentsDataSource' class inherits from 'MXKInterleavedRecentsDataSource' to define Vector recents source.
+ 'RecentsDataSource' class inherits from 'MXKInterleavedRecentsDataSource' to define Riot recents source.
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
+
+/**
+ Return the header height from the section.
+ */
+- (CGFloat)heightForHeaderInSection:(NSInteger)section;
+
+#pragma mark - Directory handling
+/**
+ The data source used to manage search in public rooms.
+ */
+@property (nonatomic, readonly) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
+
+/**
+ Hide the public rooms directory cell. YES by default.
+ */
+@property (nonatomic) BOOL hidePublicRoomsDirectory;
+
+/**
+ Hide recents. NO by default.
+ */
+@property (nonatomic) BOOL hideRecents;
+
+#pragma mark - Drag & Drop handling
+/**
+ Return true of the cell can be moved from a section to another one.
+ */
+- (BOOL)isDraggableCellAt:(NSIndexPath*)path;
+
+/**
+ Return true of the cell can be moved from a section to another one.
+ */
+- (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath;
 
 /**
  There is a pending drag and drop cell.
@@ -39,36 +71,6 @@
  The movingCellBackgroundImage.
  */
 @property (nonatomic) UIImageView* droppingCellBackGroundView;
-
-/**
- The data source used to manage search in public rooms.
- */
-@property (nonatomic, readonly) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
-
-/**
- Hide the public rooms directory cell. YES by default.
- */
-@property (nonatomic) BOOL hidePublicRoomsDirectory;
-
-/**
- Hide recents. NO by default.
- */
-@property (nonatomic) BOOL hideRecents;
-
-/**
- Return the header height from the section.
- */
-- (CGFloat)heightForHeaderInSection:(NSInteger)section;
-
-/**
- Return true of the cell can be moved from a section to another one.
- */
-- (BOOL)isDraggableCellAt:(NSIndexPath*)path;
-
-/**
- Return true of the cell can be moved from a section to another one.
- */
-- (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath;
 
 /**
  Move a cell from a path to another one.
