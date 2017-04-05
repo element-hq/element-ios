@@ -1249,6 +1249,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
+            profileCell.accessibilityIdentifier=@"SettingsVCProfilPictureStaticText";
             profileCell.mxkLabel.textColor = kRiotTextColorBlack;
             
             // if the user defines a new avatar
