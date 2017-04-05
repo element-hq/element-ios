@@ -71,9 +71,10 @@
     self = [super init];
     if (self)
     {
+        invitesCellDataArray = [[NSMutableArray alloc] init];
         favoriteCellDataArray = [[NSMutableArray alloc] init];
-        conversationCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
+        conversationCellDataArray = [[NSMutableArray alloc] init];
 
         searchedRoomIdOrAliasSection = -1;
         directorySection = -1;
@@ -237,7 +238,7 @@
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        // Only one section is handled by this data source.
+        // Return the last updated number of sections.
         return sectionsCount;
     }
     return 0;
@@ -611,25 +612,12 @@
 
 #pragma mark - MXKDataSourceDelegate
 
-// create an array filled with NSNull and with the same size as sourceArray
-- (NSMutableArray*)createEmptyArray:(NSUInteger)count
-{
-    NSMutableArray* array = [[NSMutableArray alloc] init];
-    
-    for(NSUInteger i = 0; i < count; i++)
-    {
-        [array addObject:[NSNull null]];
-    }
-    
-    return array;
-}
-
 - (void)refreshRoomsSections
 {
-    // FIXME manage multi accounts
-    favoriteCellDataArray = [[NSMutableArray alloc] init];
-    conversationCellDataArray = [[NSMutableArray alloc] init];
-    lowPriorityCellDataArray = [[NSMutableArray alloc] init];
+    [invitesCellDataArray removeAllObjects];
+    [favoriteCellDataArray removeAllObjects];
+    [conversationCellDataArray removeAllObjects];
+    [lowPriorityCellDataArray removeAllObjects];
     
     searchedRoomIdOrAliasSection = directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
@@ -648,45 +636,28 @@
 
     if (!_hideRecents && displayedRecentsDataSourceArray.count > 0)
     {
+        // FIXME manage multi accounts
         MXKSessionRecentsDataSource *recentsDataSource = [displayedRecentsDataSourceArray objectAtIndex:0];
         MXSession* session = recentsDataSource.mxSession;
-        
-        NSArray* sortedInvitesRooms = [session invitedRooms];
-        NSArray* sortedFavRooms = [session roomsWithTag:kMXRoomTagFavourite];
-        NSArray* sortedLowPriorRooms = [session roomsWithTag:kMXRoomTagLowPriority];
-        
-        invitesCellDataArray = [self createEmptyArray:sortedInvitesRooms.count];
-        favoriteCellDataArray = [self createEmptyArray:sortedFavRooms.count];
-        lowPriorityCellDataArray = [self createEmptyArray:sortedLowPriorRooms.count];
         
         NSInteger count = recentsDataSource.numberOfCells;
         
         for(int index = 0; index < count; index++)
         {
-            NSUInteger pos;
             id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
             MXRoom* room = recentCellDataStoring.roomSummary.room;
-
-            if ((pos = [sortedFavRooms indexOfObject:room]) != NSNotFound)
+            
+            if (room.accountData.tags[kMXRoomTagFavourite])
             {
-                if (pos < favoriteCellDataArray.count)
-                {
-                    [favoriteCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
-                }
+                [favoriteCellDataArray addObject:recentCellDataStoring];
             }
-            else  if ((pos = [sortedLowPriorRooms indexOfObject:room]) != NSNotFound)
+            else if (room.accountData.tags[kMXRoomTagLowPriority])
             {
-                if (pos < lowPriorityCellDataArray.count)
-                {
-                    [lowPriorityCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
-                }
+                [lowPriorityCellDataArray addObject:recentCellDataStoring];
             }
-            else  if ((pos = [sortedInvitesRooms indexOfObject:room]) != NSNotFound)
+            else if (room.state.membership == MXMembershipInvite)
             {
-                if (pos < invitesCellDataArray.count)
-                {
-                    [invitesCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
-                }
+                [invitesCellDataArray addObject:recentCellDataStoring];
             }
             else
             {
@@ -694,27 +665,35 @@
             }
         }
 
-        [invitesCellDataArray removeObject:[NSNull null]];
         if (invitesCellDataArray.count > 0)
         {
             invitesSection = sectionsCount++;
         }
         
-        [favoriteCellDataArray removeObject:[NSNull null]];
         if (favoriteCellDataArray.count > 0)
         {
+            // Sort them according to their tag order
+            [favoriteCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                
+                return [session compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
+                
+            }];
             favoritesSection = sectionsCount++;
         }
         
-        [conversationCellDataArray removeObject:[NSNull null]];
         if (conversationCellDataArray.count > 0)
         {
             conversationSection = sectionsCount++;
         }
         
-        [lowPriorityCellDataArray removeObject:[NSNull null]];
         if (lowPriorityCellDataArray.count > 0)
         {
+            // Sort them according to their tag order
+            [lowPriorityCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                
+                return [session compareRoomsByTag:kMXRoomTagLowPriority room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
+                
+            }];
             lowPrioritySection = sectionsCount++;
         }
     }
@@ -830,19 +809,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Invited rooms are not editable.
-    MXRoom* room = [self getRoomAtIndexPath:indexPath];
-    if (room)
-    {
-        NSArray* invitedRooms = room.mxSession.invitedRooms;
-        
-        // Display no action for the invited room
-        if (invitedRooms && ([invitedRooms indexOfObject:room] != NSNotFound))
-        {
-            return NO;
-        }
-    }
-    
-    return YES;
+    return (indexPath.section != invitesSection);
 }
 
 #pragma mark - drag and drop managemenent
