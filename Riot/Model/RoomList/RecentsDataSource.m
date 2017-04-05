@@ -612,19 +612,6 @@
 
 #pragma mark - MXKDataSourceDelegate
 
-// create an array filled with NSNull and with the same size as sourceArray
-- (NSMutableArray*)createEmptyArray:(NSUInteger)count
-{
-    NSMutableArray* array = [[NSMutableArray alloc] init];
-    
-    for(NSUInteger i = 0; i < count; i++)
-    {
-        [array addObject:[NSNull null]];
-    }
-    
-    return array;
-}
-
 - (void)refreshRoomsSections
 {
     [invitesCellDataArray removeAllObjects];
