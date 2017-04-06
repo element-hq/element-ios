@@ -602,8 +602,12 @@
                 id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
                 MXRoom* room = recentCellDataStoring.roomSummary.room;
                 
-                // Keep only the rooms without tag
-                if (!room.accountData.tags.count)
+                // Keep only the invites and the rooms without tag
+                if (room.state.membership == MXMembershipInvite)
+                {
+                    [invitesCellDataArray addObject:recentCellDataStoring];
+                }
+                else if (!room.accountData.tags.count)
                 {
                     [conversationCellDataArray addObject:recentCellDataStoring];
                 }

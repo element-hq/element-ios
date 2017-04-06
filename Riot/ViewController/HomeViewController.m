@@ -37,9 +37,7 @@
     self.view.accessibilityIdentifier = @"HomeVCView";
     self.recentsTableView.accessibilityIdentifier = @"HomeVCTableView";
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
-    
-    // Add room creation button programatically
+    // Add room creation button programmatically
     [self addRoomCreationButton];
     
 //    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -49,6 +47,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {

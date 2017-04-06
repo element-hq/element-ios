@@ -94,8 +94,6 @@
     self.view.accessibilityIdentifier = @"PeopleVCView";
     self.tableView.accessibilityIdentifier = @"PeopleVCTableView";
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
-    
     [self.tableView registerClass:RecentTableViewCell.class forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
     [self.tableView registerClass:InviteRecentTableViewCell.class forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
     
@@ -125,6 +123,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
     
     // Take the lead on the shared data source.
     directRoomsSource.areSectionsShrinkable = NO;

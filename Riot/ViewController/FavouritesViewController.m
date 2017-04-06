@@ -35,13 +35,13 @@
     
     self.view.accessibilityIdentifier = @"FavouritesVCView";
     self.recentsTableView.accessibilityIdentifier = @"FavouritesVCTableView";
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {

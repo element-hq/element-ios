@@ -36,15 +36,15 @@
     self.view.accessibilityIdentifier = @"RoomsVCView";
     self.recentsTableView.accessibilityIdentifier = @"RoomsVCTableView";
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
-    
-    // Add room creation button programatically
+    // Add room creation button programmatically
     [self addRoomCreationButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
