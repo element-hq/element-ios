@@ -10,6 +10,7 @@
 		325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */; };
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
 		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
+		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
 		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
 		F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */; };
 		F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0B1E7009EC00A9B29C /* RageShakeManager.m */; };
@@ -402,6 +403,9 @@
 		F083BEA21E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BD1B1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m */; };
 		F083BEA31E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BD1C1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib */; };
 		F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
+		F0E059FD1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E059FC1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m */; };
+		F0E05A021E963103004B83FB /* FavouritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E059FF1E963103004B83FB /* FavouritesViewController.m */; };
+		F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E05A011E963103004B83FB /* RoomsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -419,6 +423,8 @@
 		325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenLogo.png; path = Assets/Images/LaunchScreenLogo.png; sourceTree = "<group>"; };
 		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
+		F02C1A841E8EB04C0045A404 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
 		F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
 		F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchViewController.m; sourceTree = "<group>"; };
 		F05BD79F1E7C0E4500C69941 /* MasterTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTabBarController.h; sourceTree = "<group>"; };
@@ -926,6 +932,12 @@
 		F083BD1C1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
 		F094A9A21B78D8F000B1FBBF /* Riot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Riot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RiotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0E059FB1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchRecentsDataSource.h; sourceTree = "<group>"; };
+		F0E059FC1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchRecentsDataSource.m; sourceTree = "<group>"; };
+		F0E059FE1E963103004B83FB /* FavouritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouritesViewController.h; sourceTree = "<group>"; };
+		F0E059FF1E963103004B83FB /* FavouritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouritesViewController.m; sourceTree = "<group>"; };
+		F0E05A001E963103004B83FB /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
+		F0E05A011E963103004B83FB /* RoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsViewController.m; sourceTree = "<group>"; };
 		F9D678EF54918C036FDEDBF9 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1302,6 +1314,8 @@
 				F083BC071E7009EC00A9B29C /* RecentCellData.m */,
 				F083BC081E7009EC00A9B29C /* RecentsDataSource.h */,
 				F083BC091E7009EC00A9B29C /* RecentsDataSource.m */,
+				F0E059FB1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.h */,
+				F0E059FC1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m */,
 			);
 			path = RoomList;
 			sourceTree = "<group>";
@@ -1333,6 +1347,12 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0E059FE1E963103004B83FB /* FavouritesViewController.h */,
+				F0E059FF1E963103004B83FB /* FavouritesViewController.m */,
+				F0E05A001E963103004B83FB /* RoomsViewController.h */,
+				F0E05A011E963103004B83FB /* RoomsViewController.m */,
+				F02C1A831E8EB04C0045A404 /* PeopleViewController.h */,
+				F02C1A841E8EB04C0045A404 /* PeopleViewController.m */,
 				F05BD79F1E7C0E4500C69941 /* MasterTabBarController.h */,
 				F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */,
 				F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */,
@@ -2218,6 +2238,7 @@
 				F083BE881E7009ED00A9B29C /* RoomMemberTitleView.m in Sources */,
 				F083BE701E7009ED00A9B29C /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				F083BE7C1E7009ED00A9B29C /* DirectoryRecentTableViewCell.m in Sources */,
+				F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */,
 				F083BE801E7009ED00A9B29C /* PublicRoomTableViewCell.m in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
 				F083BE4A1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
@@ -2238,6 +2259,7 @@
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
 				F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */,
 				F083BE561E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				F083BE151E7009ED00A9B29C /* MediaAlbumContentViewController.m in Sources */,
 				F083BE5C1E7009ED00A9B29C /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
@@ -2271,6 +2293,7 @@
 				F083BE9A1E7009ED00A9B29C /* TableViewCellWithButton.m in Sources */,
 				F083BE8E1E7009ED00A9B29C /* RoomAvatarTitleView.m in Sources */,
 				F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */,
+				F0E059FD1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m in Sources */,
 				F083BE4E1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE6C1E7009ED00A9B29C /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE681E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
@@ -2284,6 +2307,7 @@
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
 				F083BE341E7009ED00A9B29C /* EncryptionInfoView.m in Sources */,
 				F083BE641E7009ED00A9B29C /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				F0E05A021E963103004B83FB /* FavouritesViewController.m in Sources */,
 				F083BE941E7009ED00A9B29C /* FilesSearchTableViewCell.m in Sources */,
 				F083BE921E7009ED00A9B29C /* SimpleRoomTitleView.m in Sources */,
 				F083BE981E7009ED00A9B29C /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,

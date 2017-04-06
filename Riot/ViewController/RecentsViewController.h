@@ -16,13 +16,30 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RecentsViewController : MXKRecentListViewController
+@interface RecentsViewController : MXKRecentListViewController <UIGestureRecognizerDelegate>
+{
+@protected
+    /**
+     The image view of the room creation button.
+     */
+    UIImageView* createNewRoomImageView;
+    
+    /**
+     Current alert (if any).
+     */
+    MXKAlert *currentAlert;
+}
 
 /**
  If YES, the table view will scroll at the top on the next data source refresh.
  It comes back to NO after each refresh.
  */
 @property (nonatomic) BOOL shouldScrollToTopOnRefresh;
+
+/**
+ The Google Analytics Instance screen name (Default is "RecentsScreen").
+ */
+@property (nonatomic) NSString *screenName;
 
 /**
  Refresh the cell selection in the table.
@@ -32,6 +49,24 @@
  @param forceVisible if YES and if the corresponding cell is not visible, scroll the table view to make it visible.
  */
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
+
+
+#pragma mark - Room creation
+/**
+ Add a Room creation button at the right bottom corner of the view.
+ */
+- (void)addRoomCreationButton;
+
+/**
+ Action triggered when the user taps on the Room creation button.
+ Create an empty room by default.
+ */
+- (void)onRoomCreationButtonPressed;
+
+/**
+ Create an empty room.
+ */
+- (void)createAnEmptyRoom;
 
 @end
 

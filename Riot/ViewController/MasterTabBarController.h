@@ -19,6 +19,9 @@
 #import "AuthenticationViewController.h"
 
 #import "HomeViewController.h"
+#import "FavouritesViewController.h"
+#import "PeopleViewController.h"
+#import "RoomsViewController.h"
 
 #import "RoomViewController.h"
 #import "ContactDetailsViewController.h"
@@ -86,11 +89,6 @@
 - (void)releaseSelectedItem;
 
 /**
- Remove the current contact details (if any).
- */
-- (void)hideContactDetails;
-
-/**
  Dismiss the unified search screen (if any).
  */
 - (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion;
@@ -100,6 +98,9 @@
 @property (nonatomic, readonly) AuthenticationViewController *authViewController;
 
 @property (nonatomic, readonly) HomeViewController *homeViewController;
+@property (nonatomic, readonly) FavouritesViewController *favouritesViewController;
+@property (nonatomic, readonly) PeopleViewController *peopleViewController;
+@property (nonatomic, readonly) RoomsViewController *roomsViewController;
 
 // References on the currently selected room and its view controller
 @property (nonatomic, readonly) RoomViewController *currentRoomViewController;

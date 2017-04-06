@@ -78,6 +78,11 @@
 + (instancetype)contactsTableViewController;
 
 /**
+ The Google Analytics Instance screen name (Default is "ContactsTable").
+ */
+@property (nonatomic) NSString *screenName;
+
+/**
  The contacts table view.
  */
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -129,6 +134,8 @@
  The delegate for the view controller.
  */
 @property (nonatomic) id<ContactsTableViewControllerDelegate> contactsTableViewControllerDelegate;
+
+- (IBAction)onCheckBoxTap:(UITapGestureRecognizer*)sender;
 
 @end
 

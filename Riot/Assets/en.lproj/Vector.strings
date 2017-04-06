@@ -17,6 +17,9 @@
 
 // Titles
 "title_home" = "Home";
+"title_favourites" = "Favourites";
+"title_people" = "People";
+"title_rooms" = "Rooms";
 "warning" = "Warning";
 
 // Actions
@@ -120,6 +123,15 @@
 "room_recents_invites" = "INVITES";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
+
+// People tab
+"people_invites_section" = "INVITES (%tu)";
+"people_conversation_section" = "CONVERSATIONS (%tu)";
+"people_address_book_section" = "LOCAL CONTACTS (%tu)";
+"people_address_book_matrix_users_toggle" = "Matrix users only";
+"people_matrix_users_section" = "KNOWN CONTACTS (%tu)";
+"people_matrix_users_default_section" = "KNOWN CONTACTS (-)";
+"people_matrix_users_search_prompt" = "Too many contacts, please use the search field";
 
 // Search
 "search_rooms" = "Rooms";

@@ -17,18 +17,11 @@
 
 #import "RecentsDataSource.h"
 
-#import "EventFormatter.h"
+#import "RecentCellData.h"
 
 #import "RiotDesignValues.h"
 
-#import "RoomIdOrAliasTableViewCell.h"
-#import "DirectoryRecentTableViewCell.h"
-
-#import "PublicRoomsDirectoryDataSource.h"
-
 #import "MXRoom+Riot.h"
-
-#import "RecentCellData.h"
 
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
 #define RECENTSDATASOURCE_SECTION_INVITES       0x02
@@ -42,22 +35,11 @@
     NSMutableArray* favoriteCellDataArray;
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
-
-    NSInteger searchedRoomIdOrAliasSection; // used to display the potential room id or alias typed during search.
-    NSInteger directorySection;
-    NSInteger invitesSection;
-    NSInteger favoritesSection;
-    NSInteger conversationSection;
-    NSInteger lowPrioritySection;
-    NSInteger sectionsCount;
     
     NSInteger shrinkedSectionsBitMask;
     
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
     
-    // The potential room id or alias typed in search input.
-    NSString *roomIdOrAlias;
-
     // Timer to not refresh publicRoomsDirectoryDataSource on every keystroke.
     NSTimer *publicRoomsTriggerTimer;
 }
@@ -71,11 +53,11 @@
     self = [super init];
     if (self)
     {
+        invitesCellDataArray = [[NSMutableArray alloc] init];
         favoriteCellDataArray = [[NSMutableArray alloc] init];
-        conversationCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
+        conversationCellDataArray = [[NSMutableArray alloc] init];
 
-        searchedRoomIdOrAliasSection = -1;
         directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
@@ -83,9 +65,7 @@
         lowPrioritySection = -1;
         sectionsCount = 0;
         
-        _hideRecents = NO;
-        _hidePublicRoomsDirectory = YES;
-        
+        _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -96,6 +76,23 @@
     return self;
 }
 
+#pragma mark -
+
+- (void)setDelegate:(id<MXKDataSourceDelegate>)delegate andRecentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
+{
+    self.delegate = delegate;
+    
+    self.recentsDataSourceMode = recentsDataSourceMode;
+}
+
+- (void)setRecentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
+{
+    _recentsDataSourceMode = recentsDataSourceMode;
+    
+    [self forceRefresh];
+}
+
+#pragma mark -
 
 - (MXKSessionRecentsDataSource *)addMatrixSession:(MXSession *)mxSession
 {
@@ -139,7 +136,7 @@
 {
     if (dataSource == _publicRoomsDirectoryDataSource)
     {
-        [self refreshRoomsSectionsAndReload];
+        [self forceRefresh];
     }
     else
     {
@@ -156,7 +153,7 @@
                                                                     {
                                                                         dispatch_async(dispatch_get_main_queue(), ^{
 
-                                                                            [self refreshRoomsSectionsAndReload];
+                                                                            [self forceRefresh];
 
                                                                         });
                                                                     }
@@ -168,7 +165,7 @@
     }
 }
 
-- (void)refreshRoomsSectionsAndReload
+- (void)forceRefresh
 {
     // Refresh is disabled during drag&drop animation"
     if (!self.droppingCellIndexPath)
@@ -185,87 +182,30 @@
     MXSession *mxSession = notif.object;
     if ([self.mxSessions indexOfObject:mxSession] != NSNotFound)
     {
-        [self refreshRoomsSectionsAndReload];
-    }
-}
-
-#pragma mark - 
-
-- (void)setHidePublicRoomsDirectory:(BOOL)hidePublicRoomsDirectory
-{
-    if (_hidePublicRoomsDirectory != hidePublicRoomsDirectory)
-    {
-        _hidePublicRoomsDirectory = hidePublicRoomsDirectory;
-        
-        if (!_hidePublicRoomsDirectory)
-        {
-            // Start by looking for all public rooms
-            self.publicRoomsDirectoryDataSource.searchPattern = nil;
-        }
-        
-        [self refreshRoomsSectionsAndReload];
-    }
-}
-
-- (void)setHideRecents:(BOOL)hideRecents
-{
-    if (_hideRecents != hideRecents)
-    {
-        _hideRecents = hideRecents;
-        
-        [self refreshRoomsSectionsAndReload];
+        [self forceRefresh];
     }
 }
 
 #pragma mark - UITableViewDataSource
-
-/**
- Return the header height from the section.
- */
-- (CGFloat)heightForHeaderInSection:(NSInteger)section
-{
-    if ((section == directorySection) || (section == invitesSection) || (section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
-    {
-        return 30.0f;
-    }
-    
-    return 0.0f;
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        // Only one section is handled by this data source.
+        // Return the last updated number of sections.
         return sectionsCount;
     }
     return 0;
 }
 
-- (BOOL)isMovingCellSection:(NSInteger)section
-{
-    return self.droppingCellIndexPath && (self.droppingCellIndexPath.section == section);
-}
-
-- (BOOL)isHiddenCellSection:(NSInteger)section
-{
-    return self.hiddenCellIndexPath && (self.hiddenCellIndexPath.section == section);
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSUInteger count = 0;
-
-    if (section == searchedRoomIdOrAliasSection)
-    {
-        count = 1;
-    }
-    else if (section == directorySection)
-    {
-        count = 1;
-    }
-    else if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
+    
+    //TODO: directorySection
+    
+    if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
     {
         count = favoriteCellDataArray.count;
     }
@@ -282,6 +222,7 @@
         count = invitesCellDataArray.count;
     }
     
+    // Adjust this count according to the potential dragged cell.
     if ([self isMovingCellSection:section])
     {
         count++;
@@ -299,35 +240,33 @@
 {
     UIView *sectionHeader = nil;
     
-    if (section < sectionsCount && section != searchedRoomIdOrAliasSection)
+    // TODO header for directorySection
+    
+    if (section < sectionsCount)
     {
         NSString* sectionTitle = @"";
         NSInteger sectionBitwise = 0;
         UIImageView *chevronView;
         
-        if (section == directorySection)
-        {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_directory", @"Vector", nil);
-        }
-        else if (section == favoritesSection)
+        if (section == favoritesSection)
         {
             sectionTitle = NSLocalizedStringFromTable(@"room_recents_favourites", @"Vector", nil);
-            sectionBitwise = RECENTSDATASOURCE_SECTION_FAVORITES;
+            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_FAVORITES : 0;
         }
         else if (section == conversationSection)
         {
             sectionTitle = NSLocalizedStringFromTable(@"room_recents_conversations", @"Vector", nil);
-            sectionBitwise = RECENTSDATASOURCE_SECTION_CONVERSATIONS;
+            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_CONVERSATIONS : 0;
         }
         else if (section == lowPrioritySection)
         {
             sectionTitle = NSLocalizedStringFromTable(@"room_recents_low_priority", @"Vector", nil);
-            sectionBitwise = RECENTSDATASOURCE_SECTION_LOWPRIORITY;
+            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_LOWPRIORITY : 0;
         }
         else if (section == invitesSection)
         {
             sectionTitle = NSLocalizedStringFromTable(@"room_recents_invites", @"Vector", nil);
-            sectionBitwise = RECENTSDATASOURCE_SECTION_INVITES;
+            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_INVITES : 0;
         }
         
         sectionHeader = [[UIView alloc] initWithFrame:frame];
@@ -384,38 +323,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == searchedRoomIdOrAliasSection)
-    {
-        RoomIdOrAliasTableViewCell *roomIdOrAliasCell = [tableView dequeueReusableCellWithIdentifier:RoomIdOrAliasTableViewCell.defaultReuseIdentifier];
-        if (!roomIdOrAliasCell)
-        {
-            roomIdOrAliasCell = [[RoomIdOrAliasTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[RoomIdOrAliasTableViewCell defaultReuseIdentifier]];
-        }
-        
-        [roomIdOrAliasCell render:roomIdOrAlias];
-        
-        return roomIdOrAliasCell;
-    }
-    else if (indexPath.section == directorySection)
-    {
-        // For the cell showing the public rooms directory search result,
-        // skip the MatrixKit mechanism and return directly the UITableViewCell
-        DirectoryRecentTableViewCell *directoryCell = [tableView dequeueReusableCellWithIdentifier:DirectoryRecentTableViewCell.defaultReuseIdentifier];
-        if (!directoryCell)
-        {
-            directoryCell = [[DirectoryRecentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[DirectoryRecentTableViewCell defaultReuseIdentifier]];
-        }
-
-        [directoryCell render:_publicRoomsDirectoryDataSource];
-
-        return directoryCell;
-    }
-
+    // TODO: cell for directorySection
+    
     if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
-        static NSString* cellIdentifier = @"VectorRecentsMovingCell";
+        static NSString* cellIdentifier = @"RiotRecentsMovingCell";
         
-        UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"VectorRecentsMovingCell"];
+        UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RiotRecentsMovingCell"];
         
         // add an imageview of the cell.
         // The image is a shot of the genuine cell.
@@ -492,17 +406,7 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == searchedRoomIdOrAliasSection)
-    {
-        return RoomIdOrAliasTableViewCell.cellHeight;
-    }
-    
-    if (indexPath.section == directorySection)
-    {
-        // For the cell showing the public rooms directory search result,
-        // skip the MatrixKit mechanism and return directly the cell height
-        return DirectoryRecentTableViewCell.cellHeight;
-    }
+    // TODO: cell height for directorySection
 
     if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
@@ -521,6 +425,8 @@
 
     return 0;
 }
+
+#pragma mark -
 
 - (NSInteger)cellIndexPosWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession within:(NSMutableArray*)cellDataArray
 {
@@ -611,110 +517,130 @@
 
 #pragma mark - MXKDataSourceDelegate
 
-// create an array filled with NSNull and with the same size as sourceArray
-- (NSMutableArray*)createEmptyArray:(NSUInteger)count
-{
-    NSMutableArray* array = [[NSMutableArray alloc] init];
-    
-    for(NSUInteger i = 0; i < count; i++)
-    {
-        [array addObject:[NSNull null]];
-    }
-    
-    return array;
-}
-
 - (void)refreshRoomsSections
 {
-    // FIXME manage multi accounts
-    favoriteCellDataArray = [[NSMutableArray alloc] init];
-    conversationCellDataArray = [[NSMutableArray alloc] init];
-    lowPriorityCellDataArray = [[NSMutableArray alloc] init];
+    [invitesCellDataArray removeAllObjects];
+    [favoriteCellDataArray removeAllObjects];
+    [conversationCellDataArray removeAllObjects];
+    [lowPriorityCellDataArray removeAllObjects];
     
-    searchedRoomIdOrAliasSection = directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
+    directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
     
-    if (roomIdOrAlias.length)
+    if (displayedRecentsDataSourceArray.count > 0)
     {
-        // The current search pattern corresponds to a valid room id or room alias
-        searchedRoomIdOrAliasSection = sectionsCount++;
-    }
-    
-    if (!_hidePublicRoomsDirectory)
-    {
-        // The public rooms directory cell is then visible whatever the search activity.
-        directorySection = sectionsCount++;
-    }
-
-    if (!_hideRecents && displayedRecentsDataSourceArray.count > 0)
-    {
+        // FIXME manage multi accounts
         MXKSessionRecentsDataSource *recentsDataSource = [displayedRecentsDataSourceArray objectAtIndex:0];
         MXSession* session = recentsDataSource.mxSession;
         
-        NSArray* sortedInvitesRooms = [session invitedRooms];
-        NSArray* sortedFavRooms = [session roomsWithTag:kMXRoomTagFavourite];
-        NSArray* sortedLowPriorRooms = [session roomsWithTag:kMXRoomTagLowPriority];
-        
-        invitesCellDataArray = [self createEmptyArray:sortedInvitesRooms.count];
-        favoriteCellDataArray = [self createEmptyArray:sortedFavRooms.count];
-        lowPriorityCellDataArray = [self createEmptyArray:sortedLowPriorRooms.count];
-        
         NSInteger count = recentsDataSource.numberOfCells;
         
-        for(int index = 0; index < count; index++)
+        if (_recentsDataSourceMode == RecentsDataSourceModeHome)
         {
-            NSUInteger pos;
-            id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-            MXRoom* room = recentCellDataStoring.roomSummary.room;
-
-            if ((pos = [sortedFavRooms indexOfObject:room]) != NSNotFound)
+            for (int index = 0; index < count; index++)
             {
-                if (pos < favoriteCellDataArray.count)
+                id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
+                MXRoom* room = recentCellDataStoring.roomSummary.room;
+                
+                if (room.accountData.tags[kMXRoomTagFavourite])
                 {
-                    [favoriteCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
+                    [favoriteCellDataArray addObject:recentCellDataStoring];
                 }
-            }
-            else  if ((pos = [sortedLowPriorRooms indexOfObject:room]) != NSNotFound)
-            {
-                if (pos < lowPriorityCellDataArray.count)
+                else if (room.accountData.tags[kMXRoomTagLowPriority])
                 {
-                    [lowPriorityCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
+                    [lowPriorityCellDataArray addObject:recentCellDataStoring];
                 }
-            }
-            else  if ((pos = [sortedInvitesRooms indexOfObject:room]) != NSNotFound)
-            {
-                if (pos < invitesCellDataArray.count)
+                else if (room.state.membership == MXMembershipInvite)
                 {
-                    [invitesCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
+                    [invitesCellDataArray addObject:recentCellDataStoring];
                 }
-            }
-            else
-            {
-                [conversationCellDataArray addObject:recentCellDataStoring];
+                else
+                {
+                    [conversationCellDataArray addObject:recentCellDataStoring];
+                }
             }
         }
-
-        [invitesCellDataArray removeObject:[NSNull null]];
+        else if (_recentsDataSourceMode == RecentsDataSourceModeFavourites)
+        {
+            for (int index = 0; index < count; index++)
+            {
+                id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
+                MXRoom* room = recentCellDataStoring.roomSummary.room;
+                
+                // Keep only the favourites rooms.
+                if (room.accountData.tags[kMXRoomTagFavourite])
+                {
+                    [favoriteCellDataArray addObject:recentCellDataStoring];
+                }
+            }
+        }
+        else if (_recentsDataSourceMode == RecentsDataSourceModePeople)
+        {
+            for (int index = 0; index < count; index++)
+            {
+                id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
+                MXRoom* room = recentCellDataStoring.roomSummary.room;
+                
+                // Keep only the direct rooms.
+                if (room.isDirect)
+                {
+                    if (room.state.membership == MXMembershipInvite)
+                    {
+                        [invitesCellDataArray addObject:recentCellDataStoring];
+                    }
+                    else
+                    {
+                        [conversationCellDataArray addObject:recentCellDataStoring];
+                    }
+                }
+            }
+        }
+        else if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+        {
+            for (int index = 0; index < count; index++)
+            {
+                id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
+                MXRoom* room = recentCellDataStoring.roomSummary.room;
+                
+                // Keep only the rooms without tag
+                if (!room.accountData.tags.count)
+                {
+                    [conversationCellDataArray addObject:recentCellDataStoring];
+                }
+            }
+            
+            // TODO: Add Directory section.
+        }
+        
         if (invitesCellDataArray.count > 0)
         {
             invitesSection = sectionsCount++;
         }
         
-        [favoriteCellDataArray removeObject:[NSNull null]];
         if (favoriteCellDataArray.count > 0)
         {
+            // Sort them according to their tag order
+            [favoriteCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                
+                return [session compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
+                
+            }];
             favoritesSection = sectionsCount++;
         }
         
-        [conversationCellDataArray removeObject:[NSNull null]];
         if (conversationCellDataArray.count > 0)
         {
             conversationSection = sectionsCount++;
         }
         
-        [lowPriorityCellDataArray removeObject:[NSNull null]];
         if (lowPriorityCellDataArray.count > 0)
         {
+            // Sort them according to their tag order
+            [lowPriorityCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                
+                return [session compareRoomsByTag:kMXRoomTagLowPriority room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
+                
+            }];
             lowPrioritySection = sectionsCount++;
         }
     }
@@ -744,6 +670,18 @@
     
     // Call super to keep update readyRecentsDataSourceArray.
     [super dataSource:dataSource didCellChange:changes];
+}
+
+#pragma mark - Drag & Drop handling
+
+- (BOOL)isMovingCellSection:(NSInteger)section
+{
+    return self.droppingCellIndexPath && (self.droppingCellIndexPath.section == section);
+}
+
+- (BOOL)isHiddenCellSection:(NSInteger)section
+{
+    return self.hiddenCellIndexPath && (self.hiddenCellIndexPath.section == section);
 }
 
 #pragma mark - Action
@@ -795,25 +733,9 @@
 }
 
 #pragma mark - Override MXKRecentsDataSource
+
 - (void)searchWithPatterns:(NSArray *)patternsList
 {
-    // Check whether the typed input is a room alias or a room identifier.
-    roomIdOrAlias = nil;
-    if (patternsList.count == 1)
-    {
-        NSString *pattern = patternsList[0];
-        
-        if ([MXTools isMatrixRoomAlias:pattern] || [MXTools isMatrixRoomIdentifier:pattern])
-        {
-            // Display this room id/alias only if it is not already joined by the user
-            MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
-            if (![accountManager accountKnowingRoomWithRoomIdOrAlias:pattern])
-            {
-                roomIdOrAlias = pattern;
-            }
-        }
-    }
-    
     [super searchWithPatterns:patternsList];
 
     if (_publicRoomsDirectoryDataSource)
@@ -830,25 +752,18 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Invited rooms are not editable.
-    MXRoom* room = [self getRoomAtIndexPath:indexPath];
-    if (room)
-    {
-        NSArray* invitedRooms = room.mxSession.invitedRooms;
-        
-        // Display no action for the invited room
-        if (invitedRooms && ([invitedRooms indexOfObject:room] != NSNotFound))
-        {
-            return NO;
-        }
-    }
-    
-    return YES;
+    return (indexPath.section != invitesSection);
 }
 
 #pragma mark - drag and drop managemenent
 
 - (BOOL)isDraggableCellAt:(NSIndexPath*)path
 {
+    if (_recentsDataSourceMode == RecentsDataSourceModePeople || _recentsDataSourceMode == RecentsDataSourceModeRooms)
+    {
+        return NO;
+    }
+    
     return (path && ((path.section == favoritesSection) || (path.section == lowPrioritySection) || (path.section == conversationSection)));
 }
 
@@ -919,7 +834,7 @@
                          moveFailure(error);
                      }
                      
-                     [self refreshRoomsSectionsAndReload];
+                     [self forceRefresh];
                      
                      // Notify MatrixKit user
                      [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -934,7 +849,7 @@
             moveFailure(nil);
         }
         
-        [self refreshRoomsSectionsAndReload];
+        [self forceRefresh];
     }
 }
 

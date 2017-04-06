@@ -36,7 +36,8 @@
     // The parameters to pass to the Authentification view controller.
     NSDictionary *authViewControllerRegistrationParameters;
     
-    RecentsDataSource *homeDataSource;
+    // The recents data source shared between all the view controllers of the tab bar.
+    RecentsDataSource *recentsDataSource;
     
     // The current unified search screen if any
     UnifiedSearchViewController *unifiedSearchViewController;
@@ -54,14 +55,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    // Retrieve the home view controller
+    // Retrieve the all view controllers
     _homeViewController = [self.viewControllers objectAtIndex:TABBAR_HOME_INDEX];
+    _favouritesViewController = [self.viewControllers objectAtIndex:TABBAR_FAVOURITES_INDEX];
+    _peopleViewController = [self.viewControllers objectAtIndex:TABBAR_PEOPLE_INDEX];
+    _roomsViewController = [self.viewControllers objectAtIndex:TABBAR_ROOMS_INDEX];
+    
+    // Sanity check
+    NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController, @"Something wrong in Main.storyboard");
+    
+    self.tabBar.tintColor = kRiotColorGreen;
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
-    
-    // Sanity check
-    NSAssert(_homeViewController, @"Something wrong in Main.storyboard");
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -95,6 +101,9 @@
     mxSessionArray = nil;
     
     _homeViewController = nil;
+    _favouritesViewController = nil;
+    _peopleViewController = nil;
+    _roomsViewController = nil;
     
     if (currentAlert)
     {
@@ -123,8 +132,12 @@
     if (mainSession)
     {
         // Init the recents data source
-        homeDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
-        [_homeViewController displayList:homeDataSource];
+        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
+        
+        [_homeViewController displayList:recentsDataSource];
+        [_favouritesViewController displayList:recentsDataSource];
+        [_peopleViewController displayDirectRooms:recentsDataSource];
+        [_roomsViewController displayList:recentsDataSource];
         
         // Check whether there are others sessions
         NSArray* mxSessions = self.mxSessions;
@@ -135,7 +148,7 @@
                 if (mxSession != mainSession)
                 {
                     // Add the session to the recents data source
-                    [homeDataSource addMatrixSession:mxSession];
+                    [recentsDataSource addMatrixSession:mxSession];
                 }
             }
         }
@@ -148,7 +161,7 @@
     if (_homeViewController)
     {
         // Check whether the data sources have been initialized.
-        if (!homeDataSource)
+        if (!recentsDataSource)
         {
             // Add first the session. The updated sessions list will be used during data sources initialization.
             mxSessionArray = [NSMutableArray array];
@@ -160,8 +173,8 @@
         }
         else
         {
-            // Add the session to the existing home data source
-            [homeDataSource addMatrixSession:mxSession];
+            // Add the session to the existing data sources
+            [recentsDataSource addMatrixSession:mxSession];
         }
     }
     
@@ -174,14 +187,18 @@
 
 - (void)removeMatrixSession:(MXSession *)mxSession
 {
-    [homeDataSource removeMatrixSession:mxSession];
+    [recentsDataSource removeMatrixSession:mxSession];
     
     // Check whether there are others sessions
-    if (!homeDataSource.mxSessions.count)
+    if (!recentsDataSource.mxSessions.count)
     {
         [_homeViewController displayList:nil];
-        [homeDataSource destroy];
-        homeDataSource = nil;
+        [_favouritesViewController displayList:nil];
+        [_peopleViewController displayDirectRooms:nil];
+        [_roomsViewController displayList:nil];
+        
+        [recentsDataSource destroy];
+        recentsDataSource = nil;
     }
     
     [mxSessionArray removeObject:mxSession];

@@ -60,6 +60,17 @@
     self.thumbnailView.clipsToBounds = YES;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    // Restore default values
+    self.contentView.alpha = 1;
+    self.userInteractionEnabled = YES;
+    self.accessoryType = UITableViewCellAccessoryNone;
+    self.accessoryView = nil;
+}
+
 - (void)setShowCustomAccessoryView:(BOOL)show
 {
     _showCustomAccessoryView = show;

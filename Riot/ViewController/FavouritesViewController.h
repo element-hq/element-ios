@@ -1,5 +1,4 @@
 /*
- Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +17,8 @@
 #import "RecentsViewController.h"
 
 /**
- The `HomeViewController` screen is the main app screen.
+ The `FavouritesViewController` screen is the view controller displayed when `Favourites` tab is selected.
  */
-@interface HomeViewController : RecentsViewController <MXKRecentListViewControllerDelegate>
+@interface FavouritesViewController : RecentsViewController <MXKRecentListViewControllerDelegate>
 
 @end

@@ -99,6 +99,8 @@
     shrinkedSectionsBitMask = 0;
     
     hideNonMatrixEnabledContacts = NO;
+    
+    _screenName = @"ContactsTable";
 }
 
 - (void)viewDidLoad
@@ -112,6 +114,8 @@
         // Instantiate view controller objects
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
+    
+    [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -166,7 +170,7 @@
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:@"ContactsTable"];
+        [tracker set:kGAIScreenName value:_screenName];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
     
@@ -196,8 +200,7 @@
         [[MXKContactManager sharedManager] updateMatrixIDsForAllLocalContacts];
     }
     
-    // Scroll to the top the current table content if any
-    [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:NO];
+    [self refreshTableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -548,20 +551,7 @@
     }
     
     // Prepare a contact cell here
-    ContactTableViewCell* contactCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier]];
-    
-    if (!contactCell)
-    {
-        contactCell = [[ContactTableViewCell alloc] init];
-    }
-    else
-    {
-        // Restore default values
-        contactCell.contentView.alpha = 1;
-        contactCell.userInteractionEnabled = YES;
-        contactCell.accessoryType = UITableViewCellAccessoryNone;
-        contactCell.accessoryView = nil;
-    }
+    ContactTableViewCell* contactCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
     
     MXKContact *contact;
     

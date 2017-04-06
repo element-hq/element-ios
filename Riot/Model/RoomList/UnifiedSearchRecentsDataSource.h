@@ -1,5 +1,4 @@
 /*
- Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +14,21 @@
  limitations under the License.
  */
 
-#import "RecentsViewController.h"
+#import <MatrixKit/MatrixKit.h>
+
+#import "RecentsDataSource.h"
 
 /**
- The `HomeViewController` screen is the main app screen.
+ 'UnifiedSearchRecentsDataSource' class inherits from 'RecentsDataSource' to define the Riot recents source
+ used during the unified search on rooms.
  */
-@interface HomeViewController : RecentsViewController <MXKRecentListViewControllerDelegate>
+@interface UnifiedSearchRecentsDataSource : RecentsDataSource
+
+#pragma mark - Directory handling
+
+/**
+ Hide recents. NO by default.
+ */
+@property (nonatomic) BOOL hideRecents;
 
 @end

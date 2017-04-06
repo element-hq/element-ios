@@ -16,7 +16,7 @@
 
 #import "UnifiedSearchViewController.h"
 
-#import "RecentsDataSource.h"
+#import "UnifiedSearchRecentsDataSource.h"
 #import "RecentsViewController.h"
 
 #import "RoomDataSource.h"
@@ -38,7 +38,7 @@
 @interface UnifiedSearchViewController ()
 {
     RecentsViewController *recentsViewController;
-    RecentsDataSource *recentsDataSource;
+    UnifiedSearchRecentsDataSource *recentsDataSource;
 
     HomeMessagesSearchViewController *messagesSearchViewController;
     HomeMessagesSearchDataSource *messagesSearchDataSource;
@@ -71,6 +71,7 @@
 
     [titles addObject: NSLocalizedStringFromTable(@"search_rooms", @"Vector", nil)];
     recentsViewController = [RecentsViewController recentListViewController];
+    recentsViewController.screenName = @"UnifiedSearchRooms";
     recentsViewController.delegate = self;
     [viewControllers addObject:recentsViewController];
 
@@ -193,8 +194,7 @@
     if (mainSession)
     {
         // Init the recents data source
-        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
-        recentsDataSource.hidePublicRoomsDirectory = NO;
+        recentsDataSource = [[UnifiedSearchRecentsDataSource alloc] initWithMatrixSession:mainSession];
         [recentsViewController displayList:recentsDataSource];
         
         // Init the search for messages

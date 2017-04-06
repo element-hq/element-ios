@@ -60,6 +60,11 @@
     
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
     id kMXNotificationCenterDidUpdateRulesObserver;
+    
+    // The gradient view displayed above the screen
+    CAGradientLayer* tableViewMaskLayer;
+    
+    MXHTTPOperation *roomCreationRequest;
 }
 
 @end
@@ -84,6 +89,9 @@
     self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    // Set default screen name
+    _screenName = @"RecentsScreen";
 }
 
 - (void)viewDidLoad
@@ -118,6 +126,12 @@
 {
     [super destroy];
     
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+    
     if (UIApplicationDidEnterBackgroundNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationDidEnterBackgroundNotificationObserver];
@@ -146,7 +160,7 @@
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:@"UnifiedSearchRooms"];
+        [tracker set:kGAIScreenName value:_screenName];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
     
@@ -217,6 +231,17 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    // sanity check
+    if (tableViewMaskLayer)
+    {
+        tableViewMaskLayer.frame = self.recentsTableView.frame;
+    }
 }
 
 #pragma mark -
@@ -353,7 +378,7 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    // Handle here user actions on recents for Vector app
+    // Handle here user actions on recents for Riot app
     if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellPreviewButtonPressed])
     {
         // Retrieve the invited room
@@ -687,7 +712,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
+    return 30.0f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -930,5 +955,159 @@
     }
 }
 
+#pragma mark - Room creation
+
+- (void)addRoomCreationButton
+{
+    // Add blur mask programatically
+    tableViewMaskLayer = [CAGradientLayer layer];
+    
+    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+    
+    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    
+    // display a gradient to the rencents bottom (20% of the bottom of the screen)
+    tableViewMaskLayer.locations = [NSArray arrayWithObjects:
+                                    [NSNumber numberWithFloat:0],
+                                    [NSNumber numberWithFloat:0.85],
+                                    [NSNumber numberWithFloat:1.0], nil];
+    
+    tableViewMaskLayer.frame = self.recentsTableView.frame;
+    tableViewMaskLayer.anchorPoint = CGPointZero;
+    
+    // CAConstraint is not supported on IOS.
+    // it seems only being supported on Mac OS.
+    // so viewDidLayoutSubviews will refresh the layout bounds.
+    [self.view.layer addSublayer:tableViewMaskLayer];
+    
+    // Add room create button
+    createNewRoomImageView = [[UIImageView alloc] init];
+    [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:createNewRoomImageView];
+    
+    createNewRoomImageView.backgroundColor = [UIColor clearColor];
+    createNewRoomImageView.contentMode = UIViewContentModeCenter;
+    createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
+    
+    CGFloat side = 78.0f;
+    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1
+                                                                        constant:side];
+    
+    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1
+                                                                         constant:side];
+    
+    NSLayoutConstraint* trailingConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                          attribute:NSLayoutAttributeTrailing
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeTrailing
+                                                                         multiplier:1
+                                                                           constant:0];
+    
+    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
+                                                                        attribute:NSLayoutAttributeTop
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:createNewRoomImageView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1
+                                                                         constant:9];
+    
+    // Available on iOS 8 and later
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, trailingConstraint, bottomConstraint]];
+    
+    createNewRoomImageView.userInteractionEnabled = YES;
+    
+    // Handle tap gesture
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomCreationButtonPressed)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [createNewRoomImageView addGestureRecognizer:tap];
+}
+
+- (void)onRoomCreationButtonPressed
+{
+    [self createAnEmptyRoom];
+}
+
+- (void)createAnEmptyRoom
+{
+    // Sanity check
+    if (self.mainSession)
+    {
+        // Create one room at time
+        if (!roomCreationRequest)
+        {
+            [self startActivityIndicator];
+            
+            // Create an empty room.
+            roomCreationRequest = [self.mainSession createRoom:nil
+                                                    visibility:kMXRoomDirectoryVisibilityPrivate
+                                                     roomAlias:nil
+                                                         topic:nil
+                                                       success:^(MXRoom *room) {
+                                                           
+                                                           roomCreationRequest = nil;
+                                                           [self stopActivityIndicator];
+                                                           if (currentAlert)
+                                                           {
+                                                               [currentAlert dismiss:NO];
+                                                               currentAlert = nil;
+                                                           }
+                                                           
+                                                           [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:room.state.roomId andEventId:nil inMatrixSession:self.mainSession];
+                                                           
+                                                           // Force the expanded header
+                                                           [AppDelegate theDelegate].masterTabBarController.currentRoomViewController.showExpandedHeader = YES;
+                                                           
+                                                       } failure:^(NSError *error) {
+                                                           
+                                                           roomCreationRequest = nil;
+                                                           [self stopActivityIndicator];
+                                                           if (currentAlert)
+                                                           {
+                                                               [currentAlert dismiss:NO];
+                                                               currentAlert = nil;
+                                                           }
+                                                           
+                                                           NSLog(@"[RecentsViewController] Create new room failed");
+                                                           
+                                                           // Alert user
+                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                           
+                                                       }];
+        }
+        else
+        {
+            // Ask the user to wait
+            __weak __typeof(self) weakSelf = self;
+            currentAlert = [[MXKAlert alloc] initWithTitle:nil
+                                                   message:NSLocalizedStringFromTable(@"room_creation_wait_for_creation", @"Vector", nil)
+                                                     style:MXKAlertStyleAlert];
+            
+            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                        style:MXKAlertActionStyleCancel
+                                                                      handler:^(MXKAlert *alert) {
+                                                                          
+                                                                          __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                          strongSelf->currentAlert = nil;
+                                                                          
+                                                                      }];
+            currentAlert.mxkAccessibilityIdentifier = @"RecentsVCRoomCreationInProgressAlert";
+            [currentAlert showInViewController:self];
+        }
+    }
+}
 
 @end
