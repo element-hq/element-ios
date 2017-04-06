@@ -1180,7 +1180,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.accessoryView = nil;
     }
-    
+    cell.textLabel.accessibilityIdentifier = nil;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     cell.textLabel.textColor = kRiotTextColorBlack;
     
