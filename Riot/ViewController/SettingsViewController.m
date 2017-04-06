@@ -1552,7 +1552,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
         configCell.textLabel.numberOfLines = 0;
-        
+        configCell.textLabel.accessibilityIdentifier=@"SettingsVCConfigStaticText";
         configCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         cell = configCell;
