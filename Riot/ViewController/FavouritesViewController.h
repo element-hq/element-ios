@@ -19,6 +19,6 @@
 /**
  The `FavouritesViewController` screen is the view controller displayed when `Favourites` tab is selected.
  */
-@interface FavouritesViewController : RecentsViewController <MXKRecentListViewControllerDelegate>
+@interface FavouritesViewController : RecentsViewController
 
 @end

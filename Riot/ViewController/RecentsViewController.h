@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RecentsViewController : MXKRecentListViewController <UIGestureRecognizerDelegate>
+@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate>
 {
 @protected
     /**

@@ -27,7 +27,6 @@
     [super finalizeInit];
     
     self.screenName = @"Favourites";
-    self.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -69,14 +68,6 @@
 {
     // Hide the unique header
     return 0.0f;
-}
-
-#pragma mark - MXKRecentListViewControllerDelegate
-
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
-{
-    // Open the room
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
 @end

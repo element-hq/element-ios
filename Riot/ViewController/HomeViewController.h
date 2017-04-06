@@ -20,6 +20,6 @@
 /**
  The `HomeViewController` screen is the main app screen.
  */
-@interface HomeViewController : RecentsViewController <MXKRecentListViewControllerDelegate>
+@interface HomeViewController : RecentsViewController
 
 @end

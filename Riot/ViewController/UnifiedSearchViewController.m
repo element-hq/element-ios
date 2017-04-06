@@ -72,7 +72,6 @@
     [titles addObject: NSLocalizedStringFromTable(@"search_rooms", @"Vector", nil)];
     recentsViewController = [RecentsViewController recentListViewController];
     recentsViewController.screenName = @"UnifiedSearchRooms";
-    recentsViewController.delegate = self;
     [viewControllers addObject:recentsViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"search_messages", @"Vector", nil)];
@@ -518,14 +517,6 @@
         // As the messages/files search is done homeserver-side, launch it only on the "Search" button
         [self updateSearch];
     }
-}
-
-#pragma mark - MXKRecentListViewControllerDelegate
-
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
-{
-    // Open the room
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
 #pragma mark - ContactsTableViewControllerDelegate

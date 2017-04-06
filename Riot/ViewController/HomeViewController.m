@@ -28,7 +28,6 @@
     [super finalizeInit];
     
     self.screenName = @"Home";
-    self.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -231,14 +230,6 @@
 //        [self updateSearch];
 //    }
 //}
-
-#pragma mark - MXKRecentListViewControllerDelegate
-
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
-{
-    // Open the room
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
-}
 
 #pragma mark - Actions
 

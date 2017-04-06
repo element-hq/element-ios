@@ -19,6 +19,6 @@
 /**
  The `RoomsViewController` screen is the view controller displayed when `Rooms` tab is selected.
  */
-@interface RoomsViewController : RecentsViewController <MXKRecentListViewControllerDelegate>
+@interface RoomsViewController : RecentsViewController
 
 @end

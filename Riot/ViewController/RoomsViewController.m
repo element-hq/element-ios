@@ -27,7 +27,6 @@
     [super finalizeInit];
     
     self.screenName = @"Rooms";
-    self.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -64,15 +63,6 @@
 - (void)destroy
 {
     [super destroy];
-}
-
-
-#pragma mark - MXKRecentListViewControllerDelegate
-
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
-{
-    // Open the room
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
 @end

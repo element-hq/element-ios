@@ -23,7 +23,7 @@
 /**
  The `UnifiedSearchViewController` screen is the global search screen.
  */
-@interface UnifiedSearchViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate, ContactsTableViewControllerDelegate>
+@interface UnifiedSearchViewController : SegmentedViewController <UIGestureRecognizerDelegate, ContactsTableViewControllerDelegate>
 
 /**
  Open the public rooms directory page.

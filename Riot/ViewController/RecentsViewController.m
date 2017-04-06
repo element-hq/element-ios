@@ -92,6 +92,9 @@
     
     // Set default screen name
     _screenName = @"RecentsScreen";
+    
+    // Set itself as delegate by default.
+    self.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -384,8 +387,8 @@
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
         
-        // Display room preview by selecting it.
-        [self.delegate recentListViewController:self didSelectRoom:invitedRoom.state.roomId inMatrixSession:invitedRoom.mxSession];
+        // Display the room preview
+        [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:invitedRoom.state.roomId andEventId:nil inMatrixSession:invitedRoom.mxSession];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
     {
@@ -1106,6 +1109,14 @@
             [currentAlert showInViewController:self];
         }
     }
+}
+
+#pragma mark - MXKRecentListViewControllerDelegate
+
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
+{
+    // Open the room
+    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
 @end
