@@ -25,6 +25,8 @@
 
 #import "RageShakeManager.h"
 
+#import "AttachmentsViewController.h"
+
 @implementation RoomFilesViewController
 
 #pragma mark -
@@ -72,6 +74,9 @@
     
     // set the default extra
     [self setRoomActivitiesViewClass:nil];
+    
+    // Custom the attachmnet viewer
+    [self setAttachmentsViewerClass:AttachmentsViewController.class];
     
     // Register first customized cell view classes used to render bubbles
     [self.bubblesTableView registerClass:FilesSearchTableViewCell.class forCellReuseIdentifier:FilesSearchTableViewCell.defaultReuseIdentifier];

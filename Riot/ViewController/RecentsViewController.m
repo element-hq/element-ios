@@ -341,7 +341,7 @@
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (NSNotFound == [cellDataStoring.recentsDataSource.mxSession.invitedRooms indexOfObject:cellDataStoring.roomSummary.room])
+    if (cellDataStoring.roomSummary.room.state.membership != MXMembershipInvite)
     {
         return RecentTableViewCell.class;
     }
@@ -355,7 +355,7 @@
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (NSNotFound == [cellDataStoring.recentsDataSource.mxSession.invitedRooms indexOfObject:cellDataStoring.roomSummary.room])
+    if (cellDataStoring.roomSummary.room.state.membership != MXMembershipInvite)
     {
         return RecentTableViewCell.defaultReuseIdentifier;
     }
@@ -424,10 +424,8 @@
     
     if (room)
     {
-        NSArray* invitedRooms = room.mxSession.invitedRooms;
-        
         // Display no action for the invited room
-        if (invitedRooms && ([invitedRooms indexOfObject:room] != NSNotFound))
+        if (room.state.membership == MXMembershipInvite)
         {
             return actions;
         }
