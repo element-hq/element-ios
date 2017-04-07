@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3205ED7D1E976C8A003D65FA /* DirectoryServerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3205ED7C1E976C8A003D65FA /* DirectoryServerPickerViewController.m */; };
+		3205ED841E97725E003D65FA /* DirectoryServerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3205ED821E97725E003D65FA /* DirectoryServerTableViewCell.m */; };
+		3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */; };
 		325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */; };
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
 		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
@@ -420,6 +423,11 @@
 
 /* Begin PBXFileReference section */
 		1129C74A281B080432B1A1A1 /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
+		3205ED7B1E976C8A003D65FA /* DirectoryServerPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerPickerViewController.h; sourceTree = "<group>"; };
+		3205ED7C1E976C8A003D65FA /* DirectoryServerPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerPickerViewController.m; sourceTree = "<group>"; };
+		3205ED811E97725E003D65FA /* DirectoryServerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerTableViewCell.h; sourceTree = "<group>"; };
+		3205ED821E97725E003D65FA /* DirectoryServerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerTableViewCell.m; sourceTree = "<group>"; };
+		3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerTableViewCell.xib; sourceTree = "<group>"; };
 		325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenLogo.png; path = Assets/Images/LaunchScreenLogo.png; sourceTree = "<group>"; };
 		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -960,6 +968,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3205ED801E97725E003D65FA /* Directory */ = {
+			isa = PBXGroup;
+			children = (
+				3205ED811E97725E003D65FA /* DirectoryServerTableViewCell.h */,
+				3205ED821E97725E003D65FA /* DirectoryServerTableViewCell.m */,
+				3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */,
+			);
+			path = Directory;
+			sourceTree = "<group>";
+		};
 		6567B0BBF3C05D7F7A7F79CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1375,6 +1393,8 @@
 				F083BC291E7009EC00A9B29C /* CountryPickerViewController.m */,
 				F083BC2A1E7009EC00A9B29C /* DirectoryViewController.h */,
 				F083BC2B1E7009EC00A9B29C /* DirectoryViewController.m */,
+				3205ED7B1E976C8A003D65FA /* DirectoryServerPickerViewController.h */,
+				3205ED7C1E976C8A003D65FA /* DirectoryServerPickerViewController.m */,
 				F083BC2C1E7009EC00A9B29C /* HomeFilesSearchViewController.h */,
 				F083BC2D1E7009EC00A9B29C /* HomeFilesSearchViewController.m */,
 				F083BC2E1E7009EC00A9B29C /* HomeMessagesSearchViewController.h */,
@@ -1428,6 +1448,7 @@
 				F083BC581E7009EC00A9B29C /* Authentication */,
 				F083BC5F1E7009EC00A9B29C /* Contact */,
 				F083BC631E7009EC00A9B29C /* Device */,
+				3205ED801E97725E003D65FA /* Directory */,
 				F083BC691E7009EC00A9B29C /* EncryptionInfoView */,
 				F083BC6C1E7009EC00A9B29C /* MediaAlbum */,
 				F083BC701E7009EC00A9B29C /* RoomActivitiesView */,
@@ -1931,6 +1952,7 @@
 				F083BE751E7009ED00A9B29C /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F083BD261E7009ED00A9B29C /* admin_icon@2x.png in Resources */,
 				325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */,
+				3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */,
 				F083BD761E7009ED00A9B29C /* e2e_verified@3x.png in Resources */,
 				F083BE181E7009ED00A9B29C /* MediaPickerViewController.xib in Resources */,
 				F083BDCE1E7009ED00A9B29C /* selection_untick.png in Resources */,
@@ -2205,6 +2227,7 @@
 				F083BE9C1E7009ED00A9B29C /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				F083BDFE1E7009ED00A9B29C /* RecentCellData.m in Sources */,
 				F083BE3A1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
+				3205ED841E97725E003D65FA /* DirectoryServerTableViewCell.m in Sources */,
 				F083BEA21E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 				F083BE0A1E7009ED00A9B29C /* CallViewController.m in Sources */,
 				F083BE111E7009ED00A9B29C /* DirectoryViewController.m in Sources */,
@@ -2237,6 +2260,7 @@
 				F083BE621E7009ED00A9B29C /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE881E7009ED00A9B29C /* RoomMemberTitleView.m in Sources */,
 				F083BE701E7009ED00A9B29C /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
+				3205ED7D1E976C8A003D65FA /* DirectoryServerPickerViewController.m in Sources */,
 				F083BE7C1E7009ED00A9B29C /* DirectoryRecentTableViewCell.m in Sources */,
 				F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */,
 				F083BE801E7009ED00A9B29C /* PublicRoomTableViewCell.m in Sources */,
