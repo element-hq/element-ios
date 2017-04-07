@@ -27,6 +27,8 @@
 
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
+
+    void (^onCompleteBlock)(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver);
 }
 @end
 
@@ -46,6 +48,7 @@
 {
     dataSource.delegate = nil;
     dataSource = nil;
+    onCompleteBlock = nil;
 
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
@@ -108,10 +111,13 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)displayWitDataSource:(MXKDirectoryServersDataSource *)theDataSource
+- (void)displayWithDataSource:(MXKDirectoryServersDataSource*)theDataSource
+                   onComplete:(void (^)(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver))onComplete;
 {
-    // Let the data source provide cells
     dataSource = theDataSource;
+    onCompleteBlock = onComplete;
+
+    // Let the data source provide cells
     self.tableView.dataSource = dataSource;
 
     dataSource.delegate = self;
@@ -157,19 +163,34 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // @TODO
+    id<MXKDirectoryServerCellDataStoring> cellData = [dataSource cellDataAtIndexPath:indexPath];
+
+    if (onCompleteBlock)
+    {
+        if (cellData.thirdPartyProtocolInstance)
+        {
+            onCompleteBlock(cellData.thirdPartyProtocolInstance, nil);
+        }
+// TODO: Manage adding of homeserver URL
+//        else if (cellData.homeserverUrl)
+//        {
+//            onCompleteBlock(nil, cellData.homeserverUrl);
+//        }
+    }
+
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - User actions
 
 - (IBAction)onCancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (onCompleteBlock)
+    {
+        onCompleteBlock(nil, nil);
+    }
 
-//    if (onCompleteBlock)
-//    {
-//        onCompleteBlock(NO);
-//    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
