@@ -75,6 +75,19 @@
 }
 
 #pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeRooms && indexPath.section == 1)
+    {
+        [self openPublicRoomAtIndexPath:indexPath];
+    }
+    else
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeRooms)
@@ -92,6 +105,41 @@
 }
 
 #pragma mark - Private methods
+
+- (void)openPublicRoomAtIndexPath:(NSIndexPath *)indexPath
+{
+    MXPublicRoom *publicRoom = [recentsDataSource.publicRoomsDirectoryDataSource roomAtIndexPath:indexPath];
+
+    // Check whether the user has already joined the selected public room
+    if ([recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
+    {
+        // Open the public room
+        [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:publicRoom.roomId andEventId:nil inMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+    }
+    else
+    {
+        // Preview the public room
+        if (publicRoom.worldReadable)
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+
+            [self startActivityIndicator];
+
+            // Try to get more information about the room before opening its preview
+            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+
+                [self stopActivityIndicator];
+
+                [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+            }];
+        }
+        else
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+            [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+        }
+    }
+}
 
 - (void)triggerDirectoryPagination
 {
