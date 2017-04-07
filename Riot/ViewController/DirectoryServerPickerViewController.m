@@ -18,8 +18,6 @@
 #import "DirectoryServerTableViewCell.h"
 
 #import "AppDelegate.h"
-#import "RiotDesignValues.h"
-#import "RageShakeManager.h"
 
 @interface DirectoryServerPickerViewController ()
 {
