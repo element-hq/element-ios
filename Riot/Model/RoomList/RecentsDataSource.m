@@ -335,7 +335,8 @@
 {
     if (indexPath.section == directorySection)
     {
-        return [_publicRoomsDirectoryDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+        NSIndexPath *indexPathInPublicRooms = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+        return [_publicRoomsDirectoryDataSource tableView:tableView cellForRowAtIndexPath:indexPathInPublicRooms];
     }
     else if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
