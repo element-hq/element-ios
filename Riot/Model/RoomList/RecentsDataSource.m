@@ -48,6 +48,7 @@
 @end
 
 @implementation RecentsDataSource
+@synthesize directorySection, invitesSection, favoritesSection, conversationSection, lowPrioritySection, sectionsCount;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
 - (instancetype)init

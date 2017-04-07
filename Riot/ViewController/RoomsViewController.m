@@ -78,7 +78,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeRooms && indexPath.section == 1)
+    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeRooms && indexPath.section == recentsDataSource.directorySection)
     {
         [self openPublicRoomAtIndexPath:indexPath];
     }
