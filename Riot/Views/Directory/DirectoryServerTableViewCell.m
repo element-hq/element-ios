@@ -37,13 +37,14 @@
     // Round image view
     [self.iconImageView.layer setCornerRadius:self.iconImageView.frame.size.width / 2];
     self.iconImageView.clipsToBounds = YES;
+    self.iconImageView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)render:(id<MXKDirectoryServerCellDataStoring>)cellData
 {
     if (cellData.iconUrl)
     {
-        [self.iconImageView setImageURL:cellData.iconUrl withType:@"image/png" andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
+        [self.iconImageView setImageURL:cellData.iconUrl withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
     }
     else
     {
