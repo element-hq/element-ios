@@ -1184,7 +1184,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.accessoryView = nil;
     }
-    
+    cell.textLabel.accessibilityIdentifier = nil;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     cell.textLabel.textColor = kRiotTextColorBlack;
     
@@ -1253,6 +1253,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
+            profileCell.accessibilityIdentifier=@"SettingsVCProfilPictureStaticText";
             profileCell.mxkLabel.textColor = kRiotTextColorBlack;
             
             // if the user defines a new avatar
@@ -1577,7 +1578,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
         configCell.textLabel.numberOfLines = 0;
-        
+        configCell.textLabel.accessibilityIdentifier=@"SettingsVCConfigStaticText";
         configCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         cell = configCell;

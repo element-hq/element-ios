@@ -41,6 +41,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    self.attachmentsCollection.accessibilityIdentifier =@"AttachmentsVC";
 }
 
 - (void)viewWillAppear:(BOOL)animated
