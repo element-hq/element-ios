@@ -78,7 +78,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeRooms && indexPath.section == recentsDataSource.directorySection)
+    if (indexPath.section == recentsDataSource.directorySection)
     {
         [self openPublicRoomAtIndexPath:indexPath];
     }
@@ -90,17 +90,10 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeRooms)
-    {
         // Trigger inconspicuous pagination on directy when user scrolls down
-        if ((scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.frame.size.height) < 300)
-        {
-            [self triggerDirectoryPagination];
-        }
-    }
-    else
+    if ((scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.frame.size.height) < 300)
     {
-        [super scrollViewDidScroll:scrollView];
+        [self triggerDirectoryPagination];
     }
 }
 
