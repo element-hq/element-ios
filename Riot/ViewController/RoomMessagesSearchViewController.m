@@ -26,10 +26,6 @@
 #import "RoomIncomingAttachmentBubbleCell.h"
 #import "RoomIncomingTextMsgBubbleCell.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 #import "AppDelegate.h"
 
 @interface RoomMessagesSearchViewController ()

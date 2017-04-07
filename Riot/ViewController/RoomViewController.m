@@ -21,10 +21,6 @@
 
 #import "AppDelegate.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 #import "RoomInputToolbarView.h"
 
 #import "RoomActivitiesView.h"
@@ -88,8 +84,6 @@
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
-
-#import "RiotDesignValues.h"
 
 #import "GBDeviceInfo_iOS.h"
 

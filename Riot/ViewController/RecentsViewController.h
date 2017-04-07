@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -44,7 +45,7 @@
 /**
  Refresh the cell selection in the table.
 
- This must be done accordingly to the currently selected room in the parent HomeViewController.
+ This must be done accordingly to the currently selected room in the master tabbar of the application.
 
  @param forceVisible if YES and if the corresponding cell is not visible, scroll the table view to make it visible.
  */

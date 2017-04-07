@@ -21,15 +21,11 @@
 
 #import "UnifiedSearchViewController.h"
 
-#import "RageShakeManager.h"
-
 #import "MXRoom+Riot.h"
 
 #import "NSBundle+MatrixKit.h"
 
 #import "RoomViewController.h"
-
-#import "RiotDesignValues.h"
 
 #import "InviteRecentTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
@@ -418,7 +414,7 @@
     }
 }
 
-#pragma mark - swipe actions
+#pragma mark - Swipe actions
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -960,7 +956,7 @@
 
 - (void)addRoomCreationButton
 {
-    // Add blur mask programatically
+    // Add blur mask programmatically
     tableViewMaskLayer = [CAGradientLayer layer];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;

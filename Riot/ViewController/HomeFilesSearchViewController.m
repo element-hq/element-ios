@@ -26,10 +26,6 @@
 
 #import "EventFormatter.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 @implementation HomeFilesSearchViewController
 
 - (void)finalizeInit

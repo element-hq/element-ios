@@ -147,7 +147,6 @@
             sectionHeader.backgroundColor = kRiotColorLightGrey;
             
             // Add label
-            frame = sectionHeader.frame;
             frame.origin.x = 20;
             frame.origin.y = 5;
             frame.size.width = sectionHeader.frame.size.width - 10;

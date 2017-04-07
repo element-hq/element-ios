@@ -24,10 +24,6 @@
 #import "FilesSearchCellData.h"
 #import "FilesSearchTableViewCell.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 #import "AppDelegate.h"
 
 @interface RoomFilesSearchViewController ()
