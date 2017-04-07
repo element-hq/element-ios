@@ -93,6 +93,12 @@
     _recentsDataSourceMode = recentsDataSourceMode;
     
     [self forceRefresh];
+
+    if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+    {
+        // Make _publicRoomsDirectoryDataSource start loading data
+        _publicRoomsDirectoryDataSource.searchPattern = nil;
+    }
 }
 
 #pragma mark -
@@ -139,7 +145,7 @@
 {
     if (dataSource == _publicRoomsDirectoryDataSource)
     {
-        if (-1 != directorySection)
+        if (-1 != directorySection && !self.droppingCellIndexPath)
         {
             // TODO: We should only update the directory section
             [self.delegate dataSource:self didCellChange:nil];
@@ -220,7 +226,7 @@
     }
     else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
     {
-        count = [_publicRoomsDirectoryDataSource tableView:tableView numberOfRowsInSection:section];
+        count = [_publicRoomsDirectoryDataSource tableView:tableView numberOfRowsInSection:0];
     }
     else if (section == lowPrioritySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
     {
@@ -654,9 +660,6 @@
             {
                 // Add the directory section after "ROOMS"
                 directorySection = sectionsCount++;
-
-                // Make _publicRoomsDirectoryDataSource start loading data
-                _publicRoomsDirectoryDataSource.searchPattern = nil;
             }
         }
         

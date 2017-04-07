@@ -116,12 +116,11 @@
 "room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
 
 // Room recents
-"room_recents_directory" = "DIRECTORY";
+"room_recents_directory" = "ROOM DIRECTORY";
 "room_recents_favourites" = "FAVOURITES";
 "room_recents_conversations" = "ROOMS";
 "room_recents_low_priority" = "LOW PRIORITY";
 "room_recents_invites" = "INVITES";
-"room_recents_directory" = "ROOM DIRECTORY";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
 
