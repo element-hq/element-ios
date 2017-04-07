@@ -121,6 +121,7 @@
 "room_recents_conversations" = "ROOMS";
 "room_recents_low_priority" = "LOW PRIORITY";
 "room_recents_invites" = "INVITES";
+"room_recents_directory" = "ROOM DIRECTORY";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
 
