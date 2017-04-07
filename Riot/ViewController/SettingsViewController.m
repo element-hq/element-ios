@@ -38,6 +38,9 @@
 
 #import "OLMKit/OLMKit.h"
 
+#import "DirectoryServerPickerViewController.h"
+
+
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 enum
@@ -2109,8 +2112,24 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 #pragma mark - actions
 
+
 - (void)onSignout:(id)sender
 {
+    // Get the UsersDevicesViewController from the storyboard
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    DirectoryServerPickerViewController *directoryServerPickerViewController = [storyboard instantiateViewControllerWithIdentifier:@"DirectoryServerPickerViewControllerStoryboardId"];
+
+    MXKDirectoryServersDataSource *dataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:self.mainSession];
+
+    [directoryServerPickerViewController displayWitDataSource:dataSource];
+
+    // Show this screen within a navigation controller
+    UINavigationController *usersDevicesNavigationController = [[UINavigationController alloc] init];
+    [usersDevicesNavigationController pushViewController:directoryServerPickerViewController animated:NO];
+
+    [self presentViewController:usersDevicesNavigationController animated:YES completion:nil];
+
+    /*
     [currentAlert dismiss:NO];
 
     __weak typeof(self) weakSelf = self;
@@ -2164,6 +2183,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
     currentAlert.mxkAccessibilityIdentifier = @"SettingsVCSignoutAlert";
     [currentAlert showInViewController:self];
+     */
 }
 
 - (void)onRemove3PID:(NSIndexPath*)path

@@ -60,13 +60,14 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
+    self.title = NSLocalizedStringFromTable(@"directory_server_picker_title", @"Vector", nil);
 
     self.tableView.delegate = self;
 
     // Register view cell class
     [self.tableView registerClass:DirectoryServerTableViewCell.class forCellReuseIdentifier:DirectoryServerTableViewCell.defaultReuseIdentifier];
 
+    // Add a cancel button
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
     self.navigationItem.leftBarButtonItem.accessibilityIdentifier=@"DirectoryServerPickerVCCancelButton";
 
@@ -93,7 +94,7 @@
 
     }];
 
-    [self.tableView reloadData];
+    [dataSource loadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -130,12 +131,11 @@
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id /* @TODO*/)changes
 {
-    //[self.tableView reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)dataSource:(MXKDataSource*)dataSource2 didStateChange:(MXKDataSourceState)state
 {
-    // MXKSearchDataSource comes back to the `MXKDataSourceStatePreparing` when searching
     if (state == MXKDataSourceStatePreparing)
     {
         [self startActivityIndicator];
@@ -143,7 +143,6 @@
     else
     {
         [self stopActivityIndicator];
-
         [self.tableView reloadData];
     }
 }
