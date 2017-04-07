@@ -18,8 +18,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "MXKDirectoryServersDataSource.h"
-
 @interface DirectoryServerPickerViewController : MXKTableViewController <MXKDataSourceDelegate, UITableViewDelegate>
 
 /**

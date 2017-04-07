@@ -34,8 +34,6 @@
 
 #import "OLMKit/OLMKit.h"
 
-#import "DirectoryServerPickerViewController.h"
-
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
