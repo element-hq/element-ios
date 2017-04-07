@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -11,11 +11,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StartChatViewController">
             <connections>
+                <outlet property="contactsTableView" destination="kNf-Ll-jvH" id="PDi-bW-2CG"/>
                 <outlet property="searchBarHeader" destination="Zm7-AB-ZtE" id="6ee-P0-twi"/>
                 <outlet property="searchBarHeaderBorder" destination="gcy-W7-89G" id="tsy-SP-KaJ"/>
                 <outlet property="searchBarTopConstraint" destination="sUb-hD-qXJ" id="rzi-JJ-nnP"/>
                 <outlet property="searchBarView" destination="bsq-3U-VjV" id="x3M-wX-RW8"/>
-                <outlet property="tableView" destination="kNf-Ll-jvH" id="uzM-uQ-peQ"/>
                 <outlet property="tableViewBottomConstraint" destination="jLY-ml-Psl" id="Q2b-sC-Yqn"/>
                 <outlet property="view" destination="iN0-l3-epB" id="csR-cn-S4h"/>
             </connections>

@@ -15,10 +15,8 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
+#import "ContactsDataSource.h"
 #import "ContactTableViewCell.h"
-#import "RiotDesignValues.h"
 
 @class ContactsTableViewController;
 
@@ -41,24 +39,10 @@
  'ContactsTableViewController' instance is used to display/filter a list of contacts.
  See 'ContactsTableViewController-inherited' object for example of use.
  */
-@interface ContactsTableViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
+@interface ContactsTableViewController : MXKViewController <UITableViewDelegate, MXKDataSourceDelegate>
 {
 @protected
-    // Section indexes
-    NSInteger searchInputSection;
-    NSInteger filteredLocalContactsSection;
-    NSInteger filteredMatrixContactsSection;
-    
-    // The contact used to describe the current user.
-    MXKContact *userContact;
-    
-    // Tell whether the non-matrix-enabled contacts must be hidden or not. NO by default.
-    BOOL hideNonMatrixEnabledContacts;
-    
-    // Search results
-    NSString *currentSearchText;
-    NSMutableArray<MXKContact*> *filteredLocalContacts;
-    NSMutableArray<MXKContact*> *filteredMatrixContacts;
+    ContactsDataSource *contactsDataSource;
 }
 
 /**
@@ -78,64 +62,49 @@
 + (instancetype)contactsTableViewController;
 
 /**
+ The contacts table view.
+ */
+@property (weak, nonatomic) IBOutlet UITableView *contactsTableView;
+
+/**
+ If YES, the table view will scroll at the top on the next data source refresh.
+ It comes back to NO after each refresh.
+ */
+@property (nonatomic) BOOL shouldScrollToTopOnRefresh;
+
+/**
  The Google Analytics Instance screen name (Default is "ContactsTable").
  */
 @property (nonatomic) NSString *screenName;
 
 /**
- The contacts table view.
- */
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-/**
- Tell whether the matrix id should be added by default in the matrix contact display name (NO by default).
- If NO, the matrix id is added only to disambiguate the contact display names which appear several times.
- */
-@property (nonatomic) BOOL forceMatrixIdInDisplayName;
-
-/**
- The type of standard accessory view the contact cells should use
- Default is UITableViewCellAccessoryNone.
- */
-@property (nonatomic) UITableViewCellAccessoryType contactCellAccessoryType;
-
-/**
- An image used to create a custom accessy view on the right side of the contact cells.
- If set, use custom view. ignore accessoryType
- */
-@property (nonatomic) UIImage *contactCellAccessoryImage;
-
-/**
- The dictionary of the ignored local contacts, the keys are their email. Empty by default.
- */
-@property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByEmail;
-
-/**
- The dictionary of the ignored matrix contacts, the keys are their matrix identifier. Empty by default.
- */
-@property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByMatrixId;
-
-/**
- Filter the contacts list, by keeping only the contacts who have the search pattern
- as prefix in their display name, their matrix identifiers and/or their contact methods (emails, phones).
+ Refresh the cell selection in the table.
  
- @param searchText the search pattern (nil to reset filtering).
- @param forceReset tell whether the search request must be applied by ignoring the previous search result if any (use NO by default).
- @param complete a block object called when the operation is complete.
+ This must be done accordingly to the currently selected contact in the master tabbar of the application.
+ 
+ @param forceVisible if YES and if the corresponding cell is not visible, scroll the table view to make it visible.
  */
-- (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceReset complete:(void (^)())complete;
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
+
+/**
+ Display the contacts described in the provided data source.
+ 
+ Note1: The provided data source will replace the current data source if any. The caller
+ should dispose properly this data source if it is not used anymore.
+ 
+ @param listDataSource the data source providing the contacts list.
+ */
+- (void)displayList:(ContactsDataSource*)listDataSource;
 
 /**
  Refresh the contacts table display.
  */
-- (void)refreshTableView;
+- (void)refreshContactsTable;
 
 /**
  The delegate for the view controller.
  */
 @property (nonatomic) id<ContactsTableViewControllerDelegate> contactsTableViewControllerDelegate;
-
-- (IBAction)onCheckBoxTap:(UITapGestureRecognizer*)sender;
 
 @end
 
