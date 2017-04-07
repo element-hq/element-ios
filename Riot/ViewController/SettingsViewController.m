@@ -34,6 +34,7 @@
 
 #import "OLMKit/OLMKit.h"
 
+
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 enum
@@ -2104,6 +2105,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 }
 
 #pragma mark - actions
+
 
 - (void)onSignout:(id)sender
 {

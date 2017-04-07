@@ -407,6 +407,7 @@
 
 // Directory
 "directory_title" = "Directory";
+"directory_server_picker_title" = "Choose an instance";
 
 // Others
 "or" = "or";
