@@ -21,10 +21,6 @@
 
 #import "RoomMemberTitleView.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 #import "AvatarGenerator.h"
 #import "Tools.h"
 

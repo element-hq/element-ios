@@ -18,10 +18,6 @@
 
 #import "AppDelegate.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 @implementation CountryPickerViewController
 
 - (void)finalizeInit

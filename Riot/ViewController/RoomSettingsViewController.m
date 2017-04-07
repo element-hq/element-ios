@@ -22,10 +22,6 @@
 
 #import "SegmentedViewController.h"
 
-#import "RageShakeManager.h"
-
-#import "RiotDesignValues.h"
-
 #import "AvatarGenerator.h"
 #import "Tools.h"
 

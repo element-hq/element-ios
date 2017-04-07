@@ -29,10 +29,6 @@
 
 #import "MediaAlbumTableCell.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;
 

@@ -1,5 +1,6 @@
 /*
  Copyright 2014 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -23,6 +24,10 @@
 #import "GAIDictionaryBuilder.h"
 
 #import "MasterTabBarController.h"
+
+#import "RageShakeManager.h"
+
+#import "RiotDesignValues.h"
 
 #pragma mark - Notifications
 /**

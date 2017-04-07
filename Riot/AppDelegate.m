@@ -28,8 +28,6 @@
 #import "SettingsViewController.h"
 #import "ContactDetailsViewController.h"
 
-#import "RageShakeManager.h"
-
 #import "NSBundle+MatrixKit.h"
 #import "MatrixSDK/MatrixSDK.h"
 
@@ -51,8 +49,6 @@
 #endif
 
 #include <MatrixSDK/MXJingleCallStack.h>
-
-#import "RiotDesignValues.h"
 
 #define CALL_STATUS_BAR_HEIGHT 44
 

@@ -17,11 +17,7 @@
 
 #import "SettingsViewController.h"
 
-#import "RageShakeManager.h"
-
 #import "AppDelegate.h"
-
-#import "RiotDesignValues.h"
 
 #import "AvatarGenerator.h"
 

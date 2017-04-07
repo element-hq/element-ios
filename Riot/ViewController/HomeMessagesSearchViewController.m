@@ -30,10 +30,6 @@
 
 #import "EventFormatter.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 @implementation HomeMessagesSearchViewController
 
 - (void)finalizeInit
