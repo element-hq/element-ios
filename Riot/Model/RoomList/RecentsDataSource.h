@@ -37,16 +37,14 @@ typedef enum : NSUInteger
  shared between all the applications tabs.
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
-{
-@protected
-    NSInteger directorySection;
-    NSInteger invitesSection;
-    NSInteger favoritesSection;
-    NSInteger conversationSection;
-    NSInteger lowPrioritySection;
-    
-    NSInteger sectionsCount;
-}
+
+@property (nonatomic) NSInteger directorySection;
+@property (nonatomic) NSInteger invitesSection;
+@property (nonatomic) NSInteger favoritesSection;
+@property (nonatomic) NSInteger conversationSection;
+@property (nonatomic) NSInteger lowPrioritySection;
+
+@property (nonatomic) NSInteger sectionsCount;
 
 /**
  Set the delegate by specifying the selected display mode.

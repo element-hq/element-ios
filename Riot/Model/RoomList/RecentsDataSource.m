@@ -23,6 +23,8 @@
 
 #import "MXRoom+Riot.h"
 
+#import "DirectoryRecentTableViewCell.h"
+
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
 #define RECENTSDATASOURCE_SECTION_INVITES       0x02
 #define RECENTSDATASOURCE_SECTION_FAVORITES     0x04
@@ -46,6 +48,7 @@
 @end
 
 @implementation RecentsDataSource
+@synthesize directorySection, invitesSection, favoritesSection, conversationSection, lowPrioritySection, sectionsCount;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
 - (instancetype)init
@@ -90,6 +93,12 @@
     _recentsDataSourceMode = recentsDataSourceMode;
     
     [self forceRefresh];
+
+    if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+    {
+        // Make _publicRoomsDirectoryDataSource start loading data
+        _publicRoomsDirectoryDataSource.searchPattern = nil;
+    }
 }
 
 #pragma mark -
@@ -136,7 +145,11 @@
 {
     if (dataSource == _publicRoomsDirectoryDataSource)
     {
-        [self forceRefresh];
+        if (-1 != directorySection && !self.droppingCellIndexPath)
+        {
+            // TODO: We should only update the directory section
+            [self.delegate dataSource:self didCellChange:nil];
+        }
     }
     else
     {
@@ -202,9 +215,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSUInteger count = 0;
-    
-    //TODO: directorySection
-    
+
     if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
     {
         count = favoriteCellDataArray.count;
@@ -212,6 +223,10 @@
     else if (section == conversationSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
     {
         count = conversationCellDataArray.count;
+    }
+    else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        count = [_publicRoomsDirectoryDataSource tableView:tableView numberOfRowsInSection:0];
     }
     else if (section == lowPrioritySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
     {
@@ -240,8 +255,6 @@
 {
     UIView *sectionHeader = nil;
     
-    // TODO header for directorySection
-    
     if (section < sectionsCount)
     {
         NSString* sectionTitle = @"";
@@ -256,6 +269,11 @@
         else if (section == conversationSection)
         {
             sectionTitle = NSLocalizedStringFromTable(@"room_recents_conversations", @"Vector", nil);
+            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_CONVERSATIONS : 0;
+        }
+        else if (section == directorySection)
+        {
+            sectionTitle = NSLocalizedStringFromTable(@"room_recents_directory", @"Vector", nil);
             sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_CONVERSATIONS : 0;
         }
         else if (section == lowPrioritySection)
@@ -322,9 +340,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: cell for directorySection
-    
-    if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
+    if (indexPath.section == directorySection)
+    {
+        NSIndexPath *indexPathInPublicRooms = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+        return [_publicRoomsDirectoryDataSource tableView:tableView cellForRowAtIndexPath:indexPathInPublicRooms];
+    }
+    else if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
         static NSString* cellIdentifier = @"RiotRecentsMovingCell";
         
@@ -405,8 +426,10 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: cell height for directorySection
-
+    if (indexPath.section == directorySection)
+    {
+        return DirectoryRecentTableViewCell.cellHeight;
+    }
     if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
         return self.droppingCellBackGroundView.frame.size.height;
@@ -611,8 +634,6 @@
                     [conversationCellDataArray addObject:recentCellDataStoring];
                 }
             }
-            
-            // TODO: Add Directory section.
         }
         
         if (invitesCellDataArray.count > 0)
@@ -634,6 +655,12 @@
         if (conversationCellDataArray.count > 0)
         {
             conversationSection = sectionsCount++;
+
+            if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+            {
+                // Add the directory section after "ROOMS"
+                directorySection = sectionsCount++;
+            }
         }
         
         if (lowPriorityCellDataArray.count > 0)

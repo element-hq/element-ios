@@ -82,35 +82,35 @@
         }
         
         // The public rooms directory cell is then visible whatever the search activity.
-        directorySection = sectionsOffset++;
+        self.directorySection = sectionsOffset++;
         
         if (_hideRecents)
         {
-            invitesSection = favoritesSection = conversationSection = lowPrioritySection = -1;
-            sectionsCount = 0;
+            self.invitesSection = self.favoritesSection = self.conversationSection = self.lowPrioritySection = -1;
+            self.sectionsCount = 0;
         }
         else
         {
-            if (invitesSection != -1)
+            if (self.invitesSection != -1)
             {
-                invitesSection += sectionsOffset;
+                self.invitesSection += sectionsOffset;
             }
-            if (favoritesSection != -1)
+            if (self.favoritesSection != -1)
             {
-                favoritesSection += sectionsOffset;
+                self.favoritesSection += sectionsOffset;
             }
-            if (conversationSection != -1)
+            if (self.conversationSection != -1)
             {
-                conversationSection += sectionsOffset;
+                self.conversationSection += sectionsOffset;
             }
-            if (lowPrioritySection != -1)
+            if (self.lowPrioritySection != -1)
             {
-                lowPrioritySection += sectionsOffset;
+                self.lowPrioritySection += sectionsOffset;
             }
         }
         
-        sectionsCount += sectionsOffset;
-        return sectionsCount;
+        self.sectionsCount += sectionsOffset;
+        return self.sectionsCount;
     }
     return 0;
 }
@@ -123,7 +123,7 @@
     {
         count = 1;
     }
-    else if (section == directorySection)
+    else if (section == self.directorySection)
     {
         count = 1;
     }
@@ -141,7 +141,7 @@
     
     if (section != searchedRoomIdOrAliasSection)
     {
-        if (section == directorySection)
+        if (section == self.directorySection)
         {
             sectionHeader = [[UIView alloc] initWithFrame:frame];
             sectionHeader.backgroundColor = kRiotColorLightGrey;
@@ -180,7 +180,7 @@
         
         return roomIdOrAliasCell;
     }
-    else if (indexPath.section == directorySection)
+    else if (indexPath.section == self.directorySection)
     {
         // For the cell showing the public rooms directory search result,
         // skip the MatrixKit mechanism and return directly the UITableViewCell
@@ -205,7 +205,7 @@
         return RoomIdOrAliasTableViewCell.cellHeight;
     }
     
-    if (indexPath.section == directorySection)
+    if (indexPath.section == self.directorySection)
     {
         // For the cell showing the public rooms directory search result,
         // skip the MatrixKit mechanism and return directly the cell height
