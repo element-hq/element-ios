@@ -43,10 +43,10 @@ NSInteger const kRiotRoomAdminLevel = 100;
     // Load colors at the app load time for the life of the app
 
     // Colors as defined by the design
-    kRiotColorGreen = [UIColor colorWithRed:(98.0/255.0) green:(206.0/255.0) blue:(156.0/255.0) alpha:1.0];
+    kRiotColorGreen = UIColorFromRGB(0x62CE9C);
     kRiotColorLightGrey = [UIColor colorWithRed:(242.0 / 255.0) green:(242.0 / 255.0) blue:(242.0 / 255.0) alpha:1.0];
-    kRiotColorSilver = [UIColor colorWithRed:(199.0 / 255.0) green:(199.0 / 255.0) blue:(204.0 / 255.0) alpha:1.0];
-    kRiotColorPinkRed = [UIColor colorWithRed:(255.0 / 255.0) green:(0.0 / 255.0) blue:(100.0 / 255.0) alpha:1.0];
+    kRiotColorSilver = UIColorFromRGB(0xC7C7CC);
+    kRiotColorPinkRed = UIColorFromRGB(0xFF0064);
     kRiotColorRed = UIColorFromRGB(0xFF4444);
 
     kRiotTextColorBlack = [UIColor colorWithRed:(60.0 / 255.0) green:(60.0 / 255.0) blue:(60.0 / 255.0) alpha:1.0];
