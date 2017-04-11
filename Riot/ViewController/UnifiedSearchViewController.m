@@ -47,6 +47,7 @@
     MXKSearchDataSource *filesSearchDataSource;
     
     ContactsTableViewController *peopleSearchViewController;
+    ContactsDataSource *peopleSearchDataSource;
     
     // Current alert (if any).
     MXKAlert *currentAlert;
@@ -82,7 +83,6 @@
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
     peopleSearchViewController = [ContactsTableViewController contactsTableViewController];
     peopleSearchViewController.contactsTableViewControllerDelegate = self;
-    peopleSearchViewController.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [viewControllers addObject:peopleSearchViewController];
     
     // add Files tab
@@ -162,6 +162,8 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
+    [self checkAndShowBackgroundImage];
 }
 
 #pragma mark -
@@ -206,6 +208,12 @@
         filesSearchDataSource.shouldShowRoomDisplayName = YES;
         [filesSearchDataSource registerCellDataClass:FilesSearchCellData.class forCellIdentifier:kMXKSearchCellDataIdentifier];
         [filesSearchViewController displaySearch:filesSearchDataSource];
+        
+        // Init the search for people
+        peopleSearchDataSource = [[ContactsDataSource alloc] init];
+        peopleSearchDataSource.displaySearchInputInContactsList = YES;
+        peopleSearchDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [peopleSearchViewController displayList:peopleSearchDataSource];
         
         // Check whether there are others sessions
         NSArray* mxSessions = self.mxSessions;
@@ -332,7 +340,7 @@
     }
     else if (self.selectedViewController == peopleSearchViewController)
     {
-        self.backgroundImageView.hidden = (([peopleSearchViewController.tableView numberOfSections] != 0) || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = (([peopleSearchViewController.contactsTableView numberOfSections] != 0) || (self.keyboardHeight == 0));
     }
     else if (self.selectedViewController == filesSearchViewController)
     {
@@ -382,6 +390,8 @@
 {
     // TODO: Manage other children than recents
     [recentsViewController refreshCurrentSelectedCell:forceVisible];
+    
+    [peopleSearchViewController refreshCurrentSelectedCell:forceVisible];
 }
 
 #pragma mark - Navigation
@@ -440,11 +450,7 @@
         }
         else if (self.selectedViewController == peopleSearchViewController)
         {
-            [peopleSearchViewController searchWithPattern:self.searchBar.text forceReset:NO complete:^{
-                
-                [self checkAndShowBackgroundImage];
-                
-            }];
+            [peopleSearchDataSource searchWithPattern:self.searchBar.text forceReset:NO];
         }
         else if (self.selectedViewController == filesSearchViewController)
         {
@@ -472,11 +478,7 @@
             [messagesSearchDataSource searchMessages:nil force:NO];
         }
         
-        [peopleSearchViewController searchWithPattern:nil forceReset:NO complete:^{
-            
-            [self checkAndShowBackgroundImage];
-            
-        }];
+        [peopleSearchDataSource searchWithPattern:nil forceReset:NO];
         
         if (filesSearchDataSource.searchText.length)
         {

@@ -409,6 +409,7 @@
 		F0E059FD1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E059FC1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m */; };
 		F0E05A021E963103004B83FB /* FavouritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E059FF1E963103004B83FB /* FavouritesViewController.m */; };
 		F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E05A011E963103004B83FB /* RoomsViewController.m */; };
+		F0E05A061E9682E9004B83FB /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E05A051E9682E9004B83FB /* ContactsDataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -946,6 +947,8 @@
 		F0E059FF1E963103004B83FB /* FavouritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouritesViewController.m; sourceTree = "<group>"; };
 		F0E05A001E963103004B83FB /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
 		F0E05A011E963103004B83FB /* RoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsViewController.m; sourceTree = "<group>"; };
+		F0E05A041E9682E9004B83FB /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
+		F0E05A051E9682E9004B83FB /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
 		F9D678EF54918C036FDEDBF9 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1298,6 +1301,8 @@
 		F083BBF31E7009EC00A9B29C /* Contact */ = {
 			isa = PBXGroup;
 			children = (
+				F0E05A041E9682E9004B83FB /* ContactsDataSource.h */,
+				F0E05A051E9682E9004B83FB /* ContactsDataSource.m */,
 				F083BBF41E7009EC00A9B29C /* Contact.h */,
 				F083BBF51E7009EC00A9B29C /* Contact.m */,
 			);
@@ -2287,6 +2292,7 @@
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				F083BE151E7009ED00A9B29C /* MediaAlbumContentViewController.m in Sources */,
 				F083BE5C1E7009ED00A9B29C /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				F0E05A061E9682E9004B83FB /* ContactsDataSource.m in Sources */,
 				F083BE401E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				F083BDFD1E7009ED00A9B29C /* PublicRoomsDirectoryDataSource.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,

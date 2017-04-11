@@ -14,23 +14,13 @@
  limitations under the License.
  */
 
-#import "ContactsTableViewController.h"
-#import "RecentsDataSource.h"
+#import "RecentsViewController.h"
+#import "ContactsDataSource.h"
 
 /**
  'PeopleViewController' instance is used to display/filter the direct rooms and a list of contacts.
  */
-@interface PeopleViewController : ContactsTableViewController <MXKDataSourceDelegate>
-
-/**
- Display the direct rooms from the provided data source.
- 
- Note: The provided data source will replace the current data source if any. The caller
- should dispose properly this data source if it is not used anymore.
- 
- @param directRoomsDataSource the data source providing the direct rooms list.
- */
-- (void)displayDirectRooms:(RecentsDataSource*)directRoomsDataSource;
+@interface PeopleViewController : RecentsViewController <UITableViewDataSource, MXKDataSourceDelegate>
 
 @end
 
