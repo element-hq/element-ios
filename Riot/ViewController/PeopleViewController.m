@@ -81,6 +81,9 @@
     self.view.accessibilityIdentifier = @"PeopleVCView";
     self.recentsTableView.accessibilityIdentifier = @"PeopleVCTableView";
     
+    // Add room creation button programmatically
+    [self addRoomCreationButton];
+    
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
     
@@ -376,6 +379,54 @@
     }
     
     return [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+#pragma mark -
+
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
+    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+    NSIndexPath *currentSelectedCellIndexPath = nil;
+    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
+    if (masterTabBarController.currentContactDetailViewController)
+    {
+        // Look for the rank of this selected contact
+        currentSelectedCellIndexPath = [contactsDataSource cellIndexPathWithContact:masterTabBarController.selectedContact];
+        
+        if (currentSelectedCellIndexPath)
+        {
+            // Select the right row
+            currentSelectedCellIndexPath = [NSIndexPath indexPathForRow:currentSelectedCellIndexPath.row inSection:(directRoomsSectionNumber + currentSelectedCellIndexPath.section)];
+            [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+            
+            if (forceVisible)
+            {
+                // Scroll table view to make the selected row appear at second position
+                NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
+                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
+                [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
+        }
+        else
+        {
+            NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+            if (indexPath)
+            {
+                [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+            }
+        }
+    }
+    else
+    {
+        [super refreshCurrentSelectedCell:forceVisible];
+    }
+}
+
+#pragma mark - Actions
+
+- (void)onRoomCreationButtonPressed
+{
+    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
 }
 
 @end
