@@ -410,6 +410,7 @@
 		F0E05A021E963103004B83FB /* FavouritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E059FF1E963103004B83FB /* FavouritesViewController.m */; };
 		F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E05A011E963103004B83FB /* RoomsViewController.m */; };
 		F0E05A061E9682E9004B83FB /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E05A051E9682E9004B83FB /* ContactsDataSource.m */; };
+		F0E05A0B1E9CCEBF004B83FB /* RecentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A0A1E9CCEBF004B83FB /* RecentsViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -949,6 +950,7 @@
 		F0E05A011E963103004B83FB /* RoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsViewController.m; sourceTree = "<group>"; };
 		F0E05A041E9682E9004B83FB /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		F0E05A051E9682E9004B83FB /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
+		F0E05A0A1E9CCEBF004B83FB /* RecentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentsViewController.xib; sourceTree = "<group>"; };
 		F9D678EF54918C036FDEDBF9 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1414,6 +1416,7 @@
 				F083BC371E7009EC00A9B29C /* MediaPickerViewController.xib */,
 				F083BC381E7009EC00A9B29C /* RecentsViewController.h */,
 				F083BC391E7009EC00A9B29C /* RecentsViewController.m */,
+				F0E05A0A1E9CCEBF004B83FB /* RecentsViewController.xib */,
 				F083BC3A1E7009EC00A9B29C /* RoomFilesSearchViewController.h */,
 				F083BC3B1E7009EC00A9B29C /* RoomFilesSearchViewController.m */,
 				F083BC3C1E7009EC00A9B29C /* RoomFilesViewController.h */,
@@ -1951,6 +1954,7 @@
 				F083BDAF1E7009ED00A9B29C /* plus_icon@3x.png in Resources */,
 				F083BDD91E7009ED00A9B29C /* start_chat@3x.png in Resources */,
 				F083BE411E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
+				F0E05A0B1E9CCEBF004B83FB /* RecentsViewController.xib in Resources */,
 				F083BD5F1E7009ED00A9B29C /* details_icon.png in Resources */,
 				F083BE241E7009ED00A9B29C /* RoomViewController.xib in Resources */,
 				F083BE7B1E7009ED00A9B29C /* RoomInputToolbarView.xib in Resources */,

@@ -31,6 +31,12 @@
     MXKAlert *currentAlert;
 }
 
+@property (weak, nonatomic) IBOutlet UIView *stickyHeadersTopContainer;
+@property (weak, nonatomic) IBOutlet UIView *stickyHeadersBottomContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *stickyHeadersTopContainerHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *stickyHeadersBottomContainerHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *stickyHeadersBottomContainerBottomConstraint;
+
 /**
  If YES, the table view will scroll at the top on the next data source refresh.
  It comes back to NO after each refresh.
@@ -38,9 +44,19 @@
 @property (nonatomic) BOOL shouldScrollToTopOnRefresh;
 
 /**
+ Tell whether the sticky headers are enabled. NO by default.
+ */
+@property (nonatomic) BOOL enableStickyHeaders;
+
+/**
  The Google Analytics Instance screen name (Default is "RecentsScreen").
  */
 @property (nonatomic) NSString *screenName;
+
+/**
+ Refresh the recents table display.
+ */
+- (void)refreshRecentsTable;
 
 /**
  Refresh the cell selection in the table.

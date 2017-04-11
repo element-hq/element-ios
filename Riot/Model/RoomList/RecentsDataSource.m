@@ -48,7 +48,7 @@
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, conversationSection, lowPrioritySection, sectionsCount;
+@synthesize directorySection, invitesSection, favoritesSection, conversationSection, lowPrioritySection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
 - (instancetype)init
@@ -66,7 +66,6 @@
         favoritesSection = -1;
         conversationSection = -1;
         lowPrioritySection = -1;
-        sectionsCount = 0;
         
         _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
@@ -203,13 +202,41 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSInteger sectionsCount = 0;
+    
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        // Return the last updated number of sections.
-        return sectionsCount;
+        directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
+        
+        if (invitesCellDataArray.count > 0)
+        {
+            invitesSection = sectionsCount++;
+        }
+        
+        if (favoriteCellDataArray.count > 0)
+        {
+            favoritesSection = sectionsCount++;
+        }
+        
+        if (conversationCellDataArray.count > 0)
+        {
+            conversationSection = sectionsCount++;
+        }
+        
+        if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+        {
+            // Add the directory section after "ROOMS"
+            directorySection = sectionsCount++;
+        }
+        
+        if (lowPriorityCellDataArray.count > 0)
+        {
+            lowPrioritySection = sectionsCount++;
+        }
     }
-    return 0;
+    
+    return sectionsCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -251,89 +278,173 @@
     return count;
 }
 
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    UIView *sectionHeader = nil;
+    NSString* sectionTitle = nil;
+    NSUInteger count = 0;
     
-    if (section < sectionsCount)
+    if (section == favoritesSection)
     {
-        NSString* sectionTitle = @"";
-        NSInteger sectionBitwise = 0;
-        UIImageView *chevronView;
+        count = favoriteCellDataArray.count;
         
-        if (section == favoritesSection)
+        if (count)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_favourites", @"Vector", nil);
-            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_FAVORITES : 0;
+            sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_recents_favourites_section", @"Vector", nil), count];
         }
-        else if (section == conversationSection)
+        else
         {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_conversations", @"Vector", nil);
-            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_CONVERSATIONS : 0;
+            sectionTitle = NSLocalizedStringFromTable(@"room_recents_favourites_section_default", @"Vector", nil);
         }
-        else if (section == directorySection)
+    }
+    else if (section == conversationSection)
+    {
+        count = conversationCellDataArray.count;
+       
+        if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_directory", @"Vector", nil);
-            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_CONVERSATIONS : 0;
-        }
-        else if (section == lowPrioritySection)
-        {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_low_priority", @"Vector", nil);
-            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_LOWPRIORITY : 0;
-        }
-        else if (section == invitesSection)
-        {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_invites", @"Vector", nil);
-            sectionBitwise = _areSectionsShrinkable ? RECENTSDATASOURCE_SECTION_INVITES : 0;
-        }
-        
-        sectionHeader = [[UIView alloc] initWithFrame:frame];
-        sectionHeader.backgroundColor = kRiotColorLightGrey;
-        
-        if (sectionBitwise)
-        {
-            // Add shrink button
-            UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            frame.origin.x = frame.origin.y = 0;
-            shrinkButton.frame = frame;
-            shrinkButton.backgroundColor = [UIColor clearColor];
-            [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            shrinkButton.tag = sectionBitwise;
-            [sectionHeader addSubview:shrinkButton];
-            sectionHeader.userInteractionEnabled = YES;
-            
-            // Add shrink icon
-            UIImage *chevron;
-            if (shrinkedSectionsBitMask & sectionBitwise)
+            if (count)
             {
-                chevron = [UIImage imageNamed:@"disclosure_icon"];
+                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"people_conversation_section", @"Vector", nil), count];
             }
             else
             {
-                chevron = [UIImage imageNamed:@"shrink_icon"];
+                sectionTitle = NSLocalizedStringFromTable(@"people_conversation_section_default", @"Vector", nil);
             }
-            chevronView = [[UIImageView alloc] initWithImage:chevron];
-            chevronView.contentMode = UIViewContentModeCenter;
-            frame = chevronView.frame;
-            frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
-            frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
-            chevronView.frame = frame;
-            [sectionHeader addSubview:chevronView];
-            chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         }
-        
-        // Add label
-        frame = sectionHeader.frame;
-        frame.origin.x = 20;
-        frame.origin.y = 5;
-        frame.size.width = chevronView ? chevronView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
-        frame.size.height -= 10;
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-        headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        headerLabel.backgroundColor = [UIColor clearColor];
-        headerLabel.text = sectionTitle;
-        [sectionHeader addSubview:headerLabel];
+        else
+        {
+            if (count)
+            {
+                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_recents_conversations_section", @"Vector", nil), count];
+            }
+            else
+            {
+                sectionTitle = NSLocalizedStringFromTable(@"room_recents_conversations_section_default", @"Vector", nil);
+            }
+        }
     }
+    else if (section == directorySection)
+    {
+        sectionTitle = NSLocalizedStringFromTable(@"room_recents_directory_section", @"Vector", nil);
+    }
+    else if (section == lowPrioritySection)
+    {
+        count = lowPriorityCellDataArray.count;
+        
+        if (count)
+        {
+            sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_recents_low_priority_section", @"Vector", nil), count];
+        }
+        else
+        {
+            sectionTitle = NSLocalizedStringFromTable(@"room_recents_low_priority_section_default", @"Vector", nil);
+        }
+    }
+    else if (section == invitesSection)
+    {
+        count = invitesCellDataArray.count;
+        
+        if (_recentsDataSourceMode == RecentsDataSourceModePeople)
+        {
+            if (count)
+            {
+                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"people_invites_section", @"Vector", nil), count];
+            }
+            else
+            {
+                sectionTitle = NSLocalizedStringFromTable(@"people_invites_section_default", @"Vector", nil);
+            }
+        }
+        else
+        {
+            if (count)
+            {
+                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_recents_invites_section", @"Vector", nil), count];
+            }
+            else
+            {
+                sectionTitle = NSLocalizedStringFromTable(@"room_recents_invites_section_default", @"Vector", nil);
+            }
+        }
+    }
+    
+    return sectionTitle;
+}
+
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+{
+    UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
+    sectionHeader.backgroundColor = kRiotColorLightGrey;
+    NSInteger sectionBitwise = 0;
+    UIImageView *chevronView;
+    
+    if (_areSectionsShrinkable)
+    {
+        if (section == favoritesSection)
+        {
+            sectionBitwise =  RECENTSDATASOURCE_SECTION_FAVORITES;
+        }
+        else if (section == conversationSection)
+        {
+            sectionBitwise = RECENTSDATASOURCE_SECTION_CONVERSATIONS;
+        }
+        else if (section == directorySection)
+        {
+            sectionBitwise = RECENTSDATASOURCE_SECTION_CONVERSATIONS;
+        }
+        else if (section == lowPrioritySection)
+        {
+            sectionBitwise = RECENTSDATASOURCE_SECTION_LOWPRIORITY;
+        }
+        else if (section == invitesSection)
+        {
+            sectionBitwise = RECENTSDATASOURCE_SECTION_INVITES;
+        }
+    }
+    
+    if (sectionBitwise)
+    {
+        // Add shrink button
+        UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        frame.origin.x = frame.origin.y = 0;
+        shrinkButton.frame = frame;
+        shrinkButton.backgroundColor = [UIColor clearColor];
+        [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        shrinkButton.tag = sectionBitwise;
+        [sectionHeader addSubview:shrinkButton];
+        sectionHeader.userInteractionEnabled = YES;
+        
+        // Add shrink icon
+        UIImage *chevron;
+        if (shrinkedSectionsBitMask & sectionBitwise)
+        {
+            chevron = [UIImage imageNamed:@"disclosure_icon"];
+        }
+        else
+        {
+            chevron = [UIImage imageNamed:@"shrink_icon"];
+        }
+        chevronView = [[UIImageView alloc] initWithImage:chevron];
+        chevronView.contentMode = UIViewContentModeCenter;
+        frame = chevronView.frame;
+        frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
+        frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
+        chevronView.frame = frame;
+        [sectionHeader addSubview:chevronView];
+        chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+    }
+    
+    // Add label
+    frame = sectionHeader.frame;
+    frame.origin.x = 20;
+    frame.origin.y = 5;
+    frame.size.width = chevronView ? chevronView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
+    frame.size.height -= 10;
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
+    headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.text = [self titleForHeaderInSection:section];
+    [sectionHeader addSubview:headerLabel];
     
     return sectionHeader;
 }
@@ -547,7 +658,6 @@
     [lowPriorityCellDataArray removeAllObjects];
     
     directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
-    sectionsCount = 0;
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -624,21 +734,20 @@
                 id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
                 MXRoom* room = recentCellDataStoring.roomSummary.room;
                 
-                // Keep only the invites and the rooms without tag
-                if (room.state.membership == MXMembershipInvite)
+                // Consider only non direct rooms.
+                if (!room.isDirect)
                 {
-                    [invitesCellDataArray addObject:recentCellDataStoring];
-                }
-                else if (!room.accountData.tags.count)
-                {
-                    [conversationCellDataArray addObject:recentCellDataStoring];
+                    // Keep only the invites and the rooms without tag
+                    if (room.state.membership == MXMembershipInvite)
+                    {
+                        [invitesCellDataArray addObject:recentCellDataStoring];
+                    }
+                    else if (!room.accountData.tags.count)
+                    {
+                        [conversationCellDataArray addObject:recentCellDataStoring];
+                    }
                 }
             }
-        }
-        
-        if (invitesCellDataArray.count > 0)
-        {
-            invitesSection = sectionsCount++;
         }
         
         if (favoriteCellDataArray.count > 0)
@@ -649,18 +758,6 @@
                 return [session compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
                 
             }];
-            favoritesSection = sectionsCount++;
-        }
-        
-        if (conversationCellDataArray.count > 0)
-        {
-            conversationSection = sectionsCount++;
-
-            if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
-            {
-                // Add the directory section after "ROOMS"
-                directorySection = sectionsCount++;
-            }
         }
         
         if (lowPriorityCellDataArray.count > 0)
@@ -671,7 +768,6 @@
                 return [session compareRoomsByTag:kMXRoomTagLowPriority room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
                 
             }];
-            lowPrioritySection = sectionsCount++;
         }
     }
 }

@@ -69,6 +69,7 @@
         
         _forceMatrixIdInDisplayName = NO;
         
+        _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
         
         hideNonMatrixEnabledContacts = NO;
@@ -601,11 +602,47 @@
     return 0;
 }
 
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
+    NSString* sectionTitle = nil;
+    NSUInteger count = 0;
+    
+    if (section == filteredLocalContactsSection)
+    {
+        count = filteredLocalContacts.count;
+        
+        if (count)
+        {
+            sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), count];
+        }
+        else
+        {
+            sectionTitle = NSLocalizedStringFromTable(@"contacts_address_book_section_default", @"Vector", nil);
+        }
+    }
+    else //if (section == filteredMatrixContactsSection)
+    {
+        sectionTitle = NSLocalizedStringFromTable(@"contacts_matrix_users_section_default", @"Vector", nil);
+        
+        if (currentSearchText.length)
+        {
+            count = filteredMatrixContacts.count;
+            
+            if (count)
+            {
+                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil), count];
+            }
+        }
+    }
+    
+    return sectionTitle;
+}
+
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     UIView* sectionHeader;
     
-    NSInteger sectionBitwise = -1;
+    NSInteger sectionBitwise = 0;
     
     sectionHeader = [[UIView alloc] initWithFrame:frame];
     sectionHeader.backgroundColor = kRiotColorLightGrey;
@@ -615,35 +652,31 @@
     frame.size.width = sectionHeader.frame.size.width - 10;
     frame.size.height = 20;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
+    headerLabel.text = [self titleForHeaderInSection:section];
     headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
     headerLabel.backgroundColor = [UIColor clearColor];
     [sectionHeader addSubview:headerLabel];
     
-    if (section == filteredLocalContactsSection)
+    if (_areSectionsShrinkable)
     {
-        headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
-        
-        sectionBitwise = CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE;
-    }
-    else //if (section == filteredMatrixContactsSection)
-    {
-        if (currentSearchText.length)
+        if (section == filteredLocalContactsSection)
         {
-            headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil), filteredMatrixContacts.count];
-            
-            // This section is collapsable only if it is not empty
-            if (filteredMatrixContacts.count)
-            {
-                sectionBitwise = CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE;
-            }
+            sectionBitwise = CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE;
         }
-        else
+        else //if (section == filteredMatrixContactsSection)
         {
-            headerLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_default_section", @"Vector", nil);
+            if (currentSearchText.length)
+            {
+                // This section is collapsable only if it is not empty
+                if (filteredMatrixContacts.count)
+                {
+                    sectionBitwise = CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE;
+                }
+            }
         }
     }
     
-    if (sectionBitwise != -1)
+    if (sectionBitwise)
     {
         // Add shrink button
         UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -876,8 +909,8 @@
             shrinkedSectionsBitMask |= selectedSectionBit;
         }
         
-        // Refresh
-        [self forceRefresh];
+        // Inform the delegate about the update
+        [self.delegate dataSource:self didCellChange:nil];
     }
 }
     

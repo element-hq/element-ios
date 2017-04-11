@@ -77,6 +77,7 @@
     
     // Prepare its data source
     ContactsDataSource *dataSource = [[ContactsDataSource alloc] init];
+    dataSource.areSectionsShrinkable = YES;
     dataSource.displaySearchInputInContactsList = YES;
     dataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell when a search session is in progress,

@@ -67,6 +67,22 @@
 
 @implementation RecentsViewController
 
+#pragma mark - Class methods
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass([RecentsViewController class])
+                          bundle:[NSBundle bundleForClass:[RecentsViewController class]]];
+}
+
++ (instancetype)recentListViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([RecentsViewController class])
+                                          bundle:[NSBundle bundleForClass:[RecentsViewController class]]];
+}
+
+#pragma mark -
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -89,6 +105,8 @@
     // Set default screen name
     _screenName = @"RecentsScreen";
     
+    _enableStickyHeaders = NO;
+    
     // Set itself as delegate by default.
     self.delegate = self;
 }
@@ -97,6 +115,17 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // Adjust Bottom constraint to take into account tabBar.
+    [NSLayoutConstraint deactivateConstraints:@[_stickyHeadersBottomContainerBottomConstraint]];
+    _stickyHeadersBottomContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
+                                                                                 attribute:NSLayoutAttributeTop
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.stickyHeadersBottomContainer
+                                                                                 attribute:NSLayoutAttributeBottom
+                                                                                multiplier:1.0f
+                                                                                  constant:0.0f];
+    [NSLayoutConstraint activateConstraints:@[_stickyHeadersBottomContainerBottomConstraint]];
     
     self.recentsTableView.accessibilityIdentifier = @"RecentsVCTableView";
     
@@ -241,6 +270,25 @@
     {
         tableViewMaskLayer.frame = self.recentsTableView.frame;
     }
+}
+
+#pragma mark - Override MXKRecentListViewController
+
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    // Deduce the bottom constraint for the table view (Don't forget the potential tabBar)
+    CGFloat tableViewBottomConst = keyboardHeight - self.bottomLayoutGuide.length;
+    // Check whether the keyboard is over the tabBar
+    if (tableViewBottomConst < 0)
+    {
+        tableViewBottomConst = 0;
+    }
+    
+    // Update constraints
+    _stickyHeadersBottomContainerBottomConstraint.constant = tableViewBottomConst;
+    
+    // Force layout immediately to take into account new constraint
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark -

@@ -595,6 +595,7 @@
     
     // Prepare its data source
     ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] init];
+    contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.displaySearchInputInContactsList = YES;
     contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.

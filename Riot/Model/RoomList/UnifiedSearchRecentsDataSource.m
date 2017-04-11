@@ -70,9 +70,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSInteger sectionsCount = 0;
+    
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
+        sectionsCount = [super numberOfSectionsInTableView:tableView];
         NSInteger sectionsOffset = 0;
         
         if (roomIdOrAlias.length)
@@ -87,7 +90,7 @@
         if (_hideRecents)
         {
             self.invitesSection = self.favoritesSection = self.conversationSection = self.lowPrioritySection = -1;
-            self.sectionsCount = 0;
+            sectionsCount = sectionsOffset;
         }
         else
         {
@@ -107,12 +110,10 @@
             {
                 self.lowPrioritySection += sectionsOffset;
             }
+            sectionsCount += sectionsOffset;
         }
-        
-        self.sectionsCount += sectionsOffset;
-        return self.sectionsCount;
     }
-    return 0;
+    return sectionsCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -141,26 +142,7 @@
     
     if (section != searchedRoomIdOrAliasSection)
     {
-        if (section == self.directorySection)
-        {
-            sectionHeader = [[UIView alloc] initWithFrame:frame];
-            sectionHeader.backgroundColor = kRiotColorLightGrey;
-            
-            // Add label
-            frame.origin.x = 20;
-            frame.origin.y = 5;
-            frame.size.width = sectionHeader.frame.size.width - 10;
-            frame.size.height -= 10;
-            UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-            headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
-            headerLabel.backgroundColor = [UIColor clearColor];
-            headerLabel.text = NSLocalizedStringFromTable(@"room_recents_directory", @"Vector", nil);
-            [sectionHeader addSubview:headerLabel];
-        }
-        else
-        {
-            sectionHeader = [super viewForHeaderInSection:section withFrame:frame];
-        }
+        sectionHeader = [super viewForHeaderInSection:section withFrame:frame];
     }
     
     return sectionHeader;

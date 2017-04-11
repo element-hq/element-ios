@@ -61,6 +61,14 @@
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
 
 /**
+ Get the title of the header of the specified section.
+ 
+ @param section the section  index.
+ @return the section title.
+ */
+- (NSString *)titleForHeaderInSection:(NSInteger)section;
+
+/**
  Get the section header view.
  
  @param section the section  index
@@ -75,6 +83,10 @@
 - (void)forceRefresh;
 
 #pragma mark - Configuration
+/**
+ Tell whether the sections are shrinkable. NO by default.
+ */
+@property (nonatomic) BOOL areSectionsShrinkable;
 
 /**
  Tell whether the matrix id should be added by default in the matrix contact display name (NO by default).

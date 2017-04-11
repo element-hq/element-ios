@@ -40,24 +40,6 @@
 
 @implementation PeopleViewController
 
-#pragma mark - Class methods
-
-//+ (UINib *)nib
-//{
-//    return [UINib nibWithNibName:NSStringFromClass([PeopleViewController class])
-//                          bundle:[NSBundle bundleForClass:[PeopleViewController class]]];
-//}
-//
-//+ (instancetype)contactsTableViewController
-//{
-//    return [[[self class] alloc] initWithNibName:NSStringFromClass([PeopleViewController class])
-//                                          bundle:[NSBundle bundleForClass:[PeopleViewController class]]];
-//}
-
-#pragma mark -
-
-
-
 - (void)finalizeInit
 {
     [super finalizeInit];
@@ -140,75 +122,8 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
-    // Check whether the data source is the direct rooms data source.
-    if (dataSource == self.dataSource)
-    {
-        // Retrieve the new number of sections related to direct rooms
-        NSInteger sectionNb = [self.dataSource numberOfSectionsInTableView:self.recentsTableView];
-        
-        if (directRoomsSectionNumber == sectionNb)
-        {
-            // Refresh the sections related to the direct rooms in the table view
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, directRoomsSectionNumber)];
-            [self.recentsTableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-        }
-        else if (directRoomsSectionNumber < sectionNb)
-        {
-            // Refresh the sections related to the direct rooms in the table view
-            [self.recentsTableView beginUpdates];
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, directRoomsSectionNumber)];
-            [self.recentsTableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-            indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(directRoomsSectionNumber, (sectionNb - directRoomsSectionNumber))];
-            [self.recentsTableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-            [self.recentsTableView endUpdates];
-        }
-        else
-        {
-            // Refresh the sections related to the direct rooms in the table view
-            [self.recentsTableView beginUpdates];
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, sectionNb)];
-            [self.recentsTableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-            indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(sectionNb, (directRoomsSectionNumber - sectionNb))];
-            [self.recentsTableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-            [self.recentsTableView endUpdates];
-        }
-        
-        directRoomsSectionNumber = sectionNb;
-    }
-    else if (dataSource == contactsDataSource)
-    {
-        // Retrieve the new number of sections related to contacts
-        NSInteger sectionNb = [contactsDataSource numberOfSectionsInTableView:self.recentsTableView];
-        
-        if (contactsSectionNumber == sectionNb)
-        {
-            // Refresh the sections related to the contacts in the table view
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(directRoomsSectionNumber, contactsSectionNumber)];
-            [self.recentsTableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-        }
-        else if (contactsSectionNumber < sectionNb)
-        {
-            // Refresh the sections related to the contacts in the table view
-            [self.recentsTableView beginUpdates];
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(directRoomsSectionNumber, contactsSectionNumber)];
-            [self.recentsTableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-            indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange((directRoomsSectionNumber + contactsSectionNumber), (sectionNb - contactsSectionNumber))];
-            [self.recentsTableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-            [self.recentsTableView endUpdates];
-        }
-        else
-        {
-            // Refresh the sections related to the contacts in the table view
-            [self.recentsTableView beginUpdates];
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(directRoomsSectionNumber, sectionNb)];
-            [self.recentsTableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-            indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange((directRoomsSectionNumber + sectionNb), (contactsSectionNumber - sectionNb))];
-            [self.recentsTableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-            [self.recentsTableView endUpdates];
-        }
-        
-        contactsSectionNumber = sectionNb;
-    }
+    // Refresh the full table
+    [self refreshRecentsTable];
 }
 
 #pragma mark - UITableView data source
@@ -217,6 +132,7 @@
 {
     // Retrieve the current number of sections related to the direct rooms.
     // Sanity check: check whether the recents data source is correctly configured.
+    directRoomsSectionNumber = 0;
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
         RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;

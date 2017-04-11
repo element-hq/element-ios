@@ -44,8 +44,6 @@ typedef enum : NSUInteger
 @property (nonatomic) NSInteger conversationSection;
 @property (nonatomic) NSInteger lowPrioritySection;
 
-@property (nonatomic) NSInteger sectionsCount;
-
 /**
  Set the delegate by specifying the selected display mode.
  */

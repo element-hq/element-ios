@@ -116,22 +116,23 @@
 "room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
 
 // Room recents
-"room_recents_directory" = "ROOM DIRECTORY";
-"room_recents_favourites" = "FAVOURITES";
-"room_recents_conversations" = "ROOMS";
-"room_recents_low_priority" = "LOW PRIORITY";
-"room_recents_invites" = "INVITES";
+"room_recents_directory_section" = "ROOM DIRECTORY";
+"room_recents_favourites_section" = "FAVOURITES (%tu)";
+"room_recents_favourites_section_default" = "FAVOURITES";
+"room_recents_conversations_section" = "ROOMS (%tu)";
+"room_recents_conversations_section_default" = "ROOMS";
+"room_recents_low_priority_section" = "LOW PRIORITY (%tu)";
+"room_recents_low_priority_section_default" = "LOW PRIORITY";
+"room_recents_invites_section" = "INVITES (%tu)";
+"room_recents_invites_section_default" = "INVITES";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
 
 // People tab
 "people_invites_section" = "INVITES (%tu)";
+"people_invites_section_default" = "INVITES";
 "people_conversation_section" = "CONVERSATIONS (%tu)";
-"people_address_book_section" = "LOCAL CONTACTS (%tu)";
-"people_address_book_matrix_users_toggle" = "Matrix users only";
-"people_matrix_users_section" = "KNOWN CONTACTS (%tu)";
-"people_matrix_users_default_section" = "KNOWN CONTACTS (-)";
-"people_matrix_users_search_prompt" = "Too many contacts, please use the search field";
+"people_conversation_section_default" = "CONVERSATIONS";
 
 // Search
 "search_rooms" = "Rooms";
@@ -152,9 +153,10 @@
 
 // Contacts
 "contacts_address_book_section" = "LOCAL CONTACTS (%tu)";
+"contacts_address_book_section_default" = "LOCAL CONTACTS";
 "contacts_address_book_matrix_users_toggle" = "Matrix users only";
 "contacts_matrix_users_section" = "KNOWN CONTACTS (%tu)";
-"contacts_matrix_users_default_section" = "KNOWN CONTACTS (-)";
+"contacts_matrix_users_section_default" = "KNOWN CONTACTS";
 "contacts_matrix_users_search_prompt" = "Too many contacts, please use the search field";
 
 // Chat participants
