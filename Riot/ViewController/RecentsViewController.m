@@ -352,16 +352,14 @@
 
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
 {
-    id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
+    Class class = [self cellViewClassForCellData:cellData];
     
-    if (cellDataStoring.roomSummary.room.state.membership != MXMembershipInvite)
+    if ([class respondsToSelector:@selector(defaultReuseIdentifier)])
     {
-        return RecentTableViewCell.defaultReuseIdentifier;
+        return [class defaultReuseIdentifier];
     }
-    else
-    {
-        return InviteRecentTableViewCell.defaultReuseIdentifier;
-    }
+    
+    return nil;
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes

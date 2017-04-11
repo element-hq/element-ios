@@ -136,7 +136,7 @@
         
         [_homeViewController displayList:recentsDataSource];
         [_favouritesViewController displayList:recentsDataSource];
-        [_peopleViewController displayDirectRooms:recentsDataSource];
+        [_peopleViewController displayList:recentsDataSource];
         [_roomsViewController displayList:recentsDataSource];
         
         // Check whether there are others sessions
@@ -194,7 +194,7 @@
     {
         [_homeViewController displayList:nil];
         [_favouritesViewController displayList:nil];
-        [_peopleViewController displayDirectRooms:nil];
+        [_peopleViewController displayList:nil];
         [_roomsViewController displayList:nil];
         
         [recentsDataSource destroy];

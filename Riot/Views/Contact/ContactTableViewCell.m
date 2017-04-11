@@ -34,7 +34,7 @@
 @end
 
 @implementation ContactTableViewCell
-@synthesize mxRoom;
+@synthesize mxRoom, delegate;
 
 - (void)awakeFromNib
 {

@@ -19,11 +19,11 @@
 
 #import "RiotDesignValues.h"
 
-#define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE 0x01
-#define CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE 0x02
+#define CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE 0x01
+#define CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE 0x02
 
-#define CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT 30.0
-#define CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
+#define CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT 30.0
+#define CONTACTSDATASOURCE_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
 
 @interface ContactsDataSource ()
 {
@@ -393,7 +393,10 @@
     
     if (currentSearchText.length)
     {
-        searchInputSection = count++;
+        if (_displaySearchInputInContactsList)
+        {
+            searchInputSection = count++;
+        }
     }
     else
     {
@@ -419,11 +422,11 @@
     {
         count = 1;
     }
-    else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE))
+    else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE))
     {
         count = filteredLocalContacts.count;
     }
-    else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE))
+    else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE))
     {
         if (currentSearchText.length)
         {
@@ -487,24 +490,39 @@
     
     if (contact)
     {
-        NSString *cellIdentifier = [self.delegate cellReuseIdentifierForCellData:contact];
-        if (cellIdentifier)
+        ContactTableViewCell *contactCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier]];
+        if (!contactCell)
         {
-            UITableViewCell<MXKCellRendering> *contactCell  = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-            
-            // Make the cell display the contact
-            [contactCell render:contact];
-            
-            contactCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            
-            if ([contactCell isKindOfClass:ContactTableViewCell.class])
+            contactCell = [[ContactTableViewCell alloc] init];
+        }
+        
+        // Make the cell display the contact
+        [contactCell render:contact];
+        
+        contactCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        contactCell.showMatrixIdInDisplayName = showMatrixIdInDisplayName;
+        
+        // The search displays contacts to invite.
+        if (indexPath.section == filteredLocalContactsSection || indexPath.section == filteredMatrixContactsSection)
+        {
+            // Add the right accessory view if any
+            contactCell.accessoryType = self.contactCellAccessoryType;
+            if (self.contactCellAccessoryImage)
             {
-                // TODO: Handle this by defining a Contact rendering protocol
-                ((ContactTableViewCell*)contactCell).showMatrixIdInDisplayName = showMatrixIdInDisplayName;
+                contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
             }
             
-            // The search displays contacts to invite.
-            if (indexPath.section == filteredLocalContactsSection || indexPath.section == filteredMatrixContactsSection)
+        }
+        else if (indexPath.section == searchInputSection)
+        {
+            // This is the text entered by the user
+            // Check whether the search input is a valid email or a Matrix user ID before adding the accessory view.
+            if (![MXTools isEmailAddress:currentSearchText] && ![MXTools isMatrixUserIdentifier:currentSearchText])
+            {
+                contactCell.contentView.alpha = 0.5;
+                contactCell.userInteractionEnabled = NO;
+            }
+            else
             {
                 // Add the right accessory view if any
                 contactCell.accessoryType = self.contactCellAccessoryType;
@@ -512,30 +530,10 @@
                 {
                     contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
                 }
-                
             }
-            else if (indexPath.section == searchInputSection)
-            {
-                // This is the text entered by the user
-                // Check whether the search input is a valid email or a Matrix user ID before adding the accessory view.
-                if (![MXTools isEmailAddress:currentSearchText] && ![MXTools isMatrixUserIdentifier:currentSearchText])
-                {
-                    contactCell.contentView.alpha = 0.5;
-                    contactCell.userInteractionEnabled = NO;
-                }
-                else
-                {
-                    // Add the right accessory view if any
-                    contactCell.accessoryType = self.contactCellAccessoryType;
-                    if (self.contactCellAccessoryImage)
-                    {
-                        contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
-                    }
-                }
-            }
-            
-            return contactCell;
-        }        
+        }
+        
+        return contactCell;
     }
     
     return nil;
@@ -593,12 +591,12 @@
 {
     if (section == filteredLocalContactsSection || section == filteredMatrixContactsSection)
     {
-        if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE))
+        if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE))
         {
-            return CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT;
+            return CONTACTSDATASOURCE_LOCALCONTACTS_SECTION_HEADER_HEIGHT;
         }
         
-        return CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT;
+        return CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
     }
     return 0;
 }
@@ -625,7 +623,7 @@
     {
         headerLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), filteredLocalContacts.count];
         
-        sectionBitwise = CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE;
+        sectionBitwise = CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE;
     }
     else //if (section == filteredMatrixContactsSection)
     {
@@ -636,7 +634,7 @@
             // This section is collapsable only if it is not empty
             if (filteredMatrixContacts.count)
             {
-                sectionBitwise = CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE;
+                sectionBitwise = CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE;
             }
         }
         else
@@ -651,7 +649,7 @@
         UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
         frame = sectionHeader.frame;
         frame.origin.x = frame.origin.y = 0;
-        frame.size.height = CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT;
+        frame.size.height = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
         shrinkButton.frame = frame;
         shrinkButton.backgroundColor = [UIColor clearColor];
         [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -679,7 +677,7 @@
         chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
     }
     
-    if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE))
+    if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE))
     {
         NSLayoutConstraint *leadingConstraint, *trailingConstraint, *topConstraint, *bottomConstraint;
         NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint;
@@ -688,7 +686,7 @@
         {
             CGFloat containerWidth = sectionHeader.frame.size.width;
             
-            localContactsCheckboxContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT, containerWidth, sectionHeader.frame.size.height - CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT)];
+            localContactsCheckboxContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT, containerWidth, sectionHeader.frame.size.height - CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT)];
             localContactsCheckboxContainer.backgroundColor = [UIColor clearColor];
             localContactsCheckboxContainer.translatesAutoresizingMaskIntoConstraints = NO;
             
@@ -843,7 +841,7 @@
                                                         toItem:sectionHeader
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1
-                                                      constant:CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT];
+                                                      constant:CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT];
         bottomConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckboxContainer
                                                         attribute:NSLayoutAttributeBottom
                                                         relatedBy:NSLayoutRelationEqual
