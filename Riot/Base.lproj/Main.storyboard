@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -168,7 +168,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="2" systemItem="contacts" id="edr-fK-bgM"/>
+                    <tabBarItem key="tabBarItem" tag="2" image="tab_people.png" selectedImage="tab_people_selected.png" id="edr-fK-bgM"/>
                     <connections>
                         <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="bwO-oZ-2vj"/>
                     </connections>
@@ -190,7 +190,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="1" systemItem="favorites" id="UVh-Xd-zDZ"/>
+                    <tabBarItem key="tabBarItem" tag="1" image="tab_favourites.png" selectedImage="tab_favourites_selected.png" id="UVh-Xd-zDZ"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4qY-qn-l6L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -230,7 +230,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="recents" id="hNI-yH-EXj"/>
+                    <tabBarItem key="tabBarItem" image="tab_home.png" selectedImage="tab_home_selected.png" id="hNI-yH-EXj"/>
                     <navigationItem key="navigationItem" id="rA5-PM-GBU"/>
                     <connections>
                         <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="mhb-l9-pM3"/>
@@ -421,7 +421,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="3" systemItem="bookmarks" id="7eS-Ei-00V"/>
+                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms.png" selectedImage="tab_rooms_selected.png" id="7eS-Ei-00V"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kb9-ek-2v5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -505,11 +505,19 @@
         <image name="logo.png" width="120" height="99"/>
         <image name="search_icon.png" width="22" height="22"/>
         <image name="settings_icon.png" width="24" height="24"/>
+        <image name="tab_favourites.png" width="25" height="25"/>
+        <image name="tab_favourites_selected.png" width="25" height="25"/>
+        <image name="tab_home.png" width="25" height="25"/>
+        <image name="tab_home_selected.png" width="25" height="25"/>
+        <image name="tab_people.png" width="25" height="25"/>
+        <image name="tab_people_selected.png" width="25" height="25"/>
+        <image name="tab_rooms.png" width="25" height="25"/>
+        <image name="tab_rooms_selected.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="mhb-l9-pM3"/>
+        <segue reference="tk8-vF-K4T"/>
         <segue reference="cUw-vU-gJq"/>
         <segue reference="ziz-Xl-QVg"/>
-        <segue reference="tk8-vF-K4T"/>
-        <segue reference="mhb-l9-pM3"/>
     </inferredMetricsTieBreakers>
 </document>
