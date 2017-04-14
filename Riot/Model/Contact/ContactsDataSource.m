@@ -889,6 +889,19 @@
     return sectionHeader;
 }
 
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+{
+    // Return the section header used when the section is shrinked
+    NSInteger savedShrinkedSectionsBitMask = shrinkedSectionsBitMask;
+    shrinkedSectionsBitMask = CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE | CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE;
+    
+    UIView *stickyHeader = [self viewForHeaderInSection:section withFrame:frame];
+    
+    shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
+    
+    return stickyHeader;
+}
+
 #pragma mark - Action
 
 - (IBAction)onButtonPressed:(id)sender

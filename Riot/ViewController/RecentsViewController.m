@@ -107,6 +107,8 @@
     
     _enableStickyHeaders = NO;
     
+    displayedSectionHeaders = [NSMutableArray array];
+    
     // Set itself as delegate by default.
     self.delegate = self;
 }
@@ -209,11 +211,7 @@
     // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
     kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         
-        // Do not refresh if there is a pending recent drag and drop
-        if (!movingCellPath)
-        {
-            [self refreshRecentsTable];
-        }
+        [self refreshRecentsTable];
         
     }];
 }
@@ -268,11 +266,58 @@
     // sanity check
     if (tableViewMaskLayer)
     {
-        tableViewMaskLayer.frame = self.recentsTableView.frame;
+        CGRect frame = self.view.frame;
+        frame.size.height -= self.bottomLayoutGuide.length;
+        tableViewMaskLayer.frame = frame;
     }
 }
 
 #pragma mark - Override MXKRecentListViewController
+
+- (void)refreshRecentsTable
+{
+    // do not refresh if there is a pending recent drag and drop
+    if (movingCellPath)
+    {
+        return;
+    }
+    
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+            isRefreshPending = YES;
+            return;
+        }
+        else
+        {
+            // Cancel the editing mode
+            editedRoomId = nil;
+        }
+    }
+    
+    isRefreshPending = NO;
+    
+    [self.recentsTableView reloadData];
+    
+    if (_shouldScrollToTopOnRefresh)
+    {
+        [self scrollToTop:NO];
+        _shouldScrollToTopOnRefresh = NO;
+    }
+    
+    [self updateStickyHeaders];
+    
+    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
+    // the selected room (if any) is updated and kept visible.
+    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
+    if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
+    {
+        [self refreshCurrentSelectedCell:YES];
+    }
+}
 
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
@@ -327,44 +372,131 @@
     }
 }
 
-#pragma mark - Internal methods
+#pragma mark -
 
-- (void)refreshRecentsTable
+- (void)setEnableStickyHeaders:(BOOL)enableStickyHeaders
 {
-    if (editedRoomId)
+    if (_enableStickyHeaders != enableStickyHeaders)
     {
-        // Check whether the user didn't leave the room
-        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-        if (room)
-        {
-            isRefreshPending = YES;
-            return;
-        }
-        else
-        {
-            // Cancel the editing mode
-            editedRoomId = nil;
-        }
-    }
-    
-    isRefreshPending = NO;
-    
-    [self.recentsTableView reloadData];
-    
-    if (_shouldScrollToTopOnRefresh)
-    {
-        [self scrollToTop:NO];
-        _shouldScrollToTopOnRefresh = NO;
-    }
-    
-    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
-    // the selected room (if any) is updated and kept visible.
-    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
-    if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
-    {
-        [self refreshCurrentSelectedCell:YES];
+        _enableStickyHeaders = enableStickyHeaders;
+        
+        [self refreshRecentsTable];
     }
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
+{
+    // Return the section header by default.
+    return [self tableView:tableView viewForHeaderInSection:section];
+}
+
+- (void)resetStickyHeaders
+{
+    // Release sticky header
+    _stickyHeadersTopContainerHeightConstraint.constant = 0;
+    _stickyHeadersBottomContainerHeightConstraint.constant = 0;
+    
+    for (UIView *view in _stickyHeadersTopContainer.subviews)
+    {
+        [view removeFromSuperview];
+    }
+    for (UIView *view in _stickyHeadersBottomContainer.subviews)
+    {
+        [view removeFromSuperview];
+    }
+    
+    [displayedSectionHeaders removeAllObjects];
+    firstDisplayedSectionHeaderPosY = 0;
+}
+
+- (void)updateStickyHeaders
+{
+    // Force reset existing sticky headers if any
+    [self resetStickyHeaders];
+    
+    NSInteger sectionsCount = self.recentsTableView.numberOfSections;
+    
+    if (self.enableStickyHeaders && sectionsCount)
+    {
+        NSUInteger topContainerOffset = 0;
+        NSUInteger bottomContainerOffset = 0;
+        CGRect frame;
+        
+        UIView *sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:0];
+        sectionHeader.tag = 0;
+        [self.stickyHeadersTopContainer addSubview:sectionHeader];
+        topContainerOffset = sectionHeader.frame.size.height;
+        
+        for (NSUInteger index = 1; index < sectionsCount - 1; index++)
+        {
+            sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
+            sectionHeader.tag = index;
+            frame = sectionHeader.frame;
+            frame.origin.y = topContainerOffset;
+            sectionHeader.frame = frame;
+            [self.stickyHeadersTopContainer addSubview:sectionHeader];
+            topContainerOffset += frame.size.height;
+            
+            sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
+            sectionHeader.tag = index;
+            frame = sectionHeader.frame;
+            frame.origin.y = bottomContainerOffset;
+            sectionHeader.frame = frame;
+            [self.stickyHeadersBottomContainer addSubview:sectionHeader];
+            bottomContainerOffset += frame.size.height;
+        }
+        
+        if (sectionsCount > 1)
+        {
+            sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:sectionsCount - 1];
+            sectionHeader.tag = sectionsCount - 1;
+            frame = sectionHeader.frame;
+            frame.origin.y = bottomContainerOffset;
+            sectionHeader.frame = frame;
+            [self.stickyHeadersBottomContainer addSubview:sectionHeader];
+        }
+        
+        if (displayedSectionHeaders.count)
+        {
+            // Update the layout of the top sticky headers container
+            sectionHeader = displayedSectionHeaders.firstObject;
+            CGFloat containerHeight = 0;
+            for (UIView *header in _stickyHeadersTopContainer.subviews)
+            {
+                if (header.tag < sectionHeader.tag)
+                {
+                    containerHeight += header.frame.size.height;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
+            
+            // Update the layout of the bottom sticky headers container
+            sectionHeader = displayedSectionHeaders.lastObject;
+            containerHeight = 0;
+            CGRect bounds = self.stickyHeadersBottomContainer.frame;
+            for (UIView *header in _stickyHeadersBottomContainer.subviews)
+            {
+                if (header.tag == sectionHeader.tag + 1)
+                {
+                    bounds.origin.y = header.frame.origin.y;
+                    containerHeight = header.frame.size.height;
+                }
+                else if (header.tag > sectionHeader.tag + 1)
+                {
+                    containerHeight += header.frame.size.height;
+                }
+            }
+            self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
+            self.stickyHeadersBottomContainer.bounds = bounds;
+        }
+    }
+}
+
+#pragma mark - Internal methods
 
 - (void)scrollToTop:(BOOL)animated
 {
@@ -408,17 +540,6 @@
     }
     
     return nil;
-}
-
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
-{
-    // do not refresh if there is a pending recent drag and drop
-    if (movingCellPath)
-    {
-        return;
-    }
-    
-    [self refreshRecentsTable];
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
@@ -789,6 +910,168 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if (_enableStickyHeaders)
+    {
+        view.tag = section;
+        
+        UIView *firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
+        
+        if (!firstDisplayedSectionHeader || section < firstDisplayedSectionHeader.tag)
+        {
+            [displayedSectionHeaders insertObject:view atIndex:0];
+            
+            firstDisplayedSectionHeaderPosY = view.frame.origin.y;
+        }
+        else
+        {
+            [displayedSectionHeaders addObject:view];
+            
+            // Update the layout of the bottom sticky headers container
+            CGFloat containerHeight = 0;
+            CGRect bounds = self.stickyHeadersBottomContainer.frame;
+            for (UIView *header in _stickyHeadersBottomContainer.subviews)
+            {
+                if (header.tag > section)
+                {
+                    if (header.tag == section + 1)
+                    {
+                        bounds.origin.y = header.frame.origin.y;
+                    }
+                    
+                    containerHeight += header.frame.size.height;
+                }
+            }
+            self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
+            self.stickyHeadersBottomContainer.bounds = bounds;
+        }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if (_enableStickyHeaders)
+    {
+        UIView *firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
+        if (firstDisplayedSectionHeader)
+        {
+            if (section == firstDisplayedSectionHeader.tag)
+            {
+                [displayedSectionHeaders removeObjectAtIndex:0];
+                
+                firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
+                firstDisplayedSectionHeaderPosY = firstDisplayedSectionHeader.frame.origin.y;
+                
+                // Update the layout of the top sticky headers container
+                CGFloat containerHeight = 0;
+                for (UIView *header in _stickyHeadersTopContainer.subviews)
+                {
+                    if (header.tag <= section)
+                    {
+                        containerHeight += header.frame.size.height;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
+            }
+            else
+            {
+                [displayedSectionHeaders removeLastObject];
+                
+                // Update the layout of the bottom sticky headers container
+                CGFloat containerHeight = 0;
+                CGRect bounds = self.stickyHeadersBottomContainer.frame;
+                for (UIView *header in _stickyHeadersBottomContainer.subviews)
+                {
+                    if (header.tag == section)
+                    {
+                        bounds.origin.y = header.frame.origin.y;
+                        containerHeight = header.frame.size.height;
+                    }
+                    else if (header.tag > section)
+                    {
+                        containerHeight += header.frame.size.height;
+                    }
+                }
+                self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
+                self.stickyHeadersBottomContainer.bounds = bounds;
+            }
+        }
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+//{
+//    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+//}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (_enableStickyHeaders)
+    {
+        UIView *firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
+        
+        //    NSLog(@"RecentsViewController: scrollViewDidScroll first header %tu ", firstDisplayedSectionHeader.tag);
+        //    NSLog(@"RecentsViewController: scrollViewDidScroll contentOffsetY %f (%f)", self.recentsTableView.contentOffset.y, firstDisplayedSectionHeader.frame.origin.y);
+        
+        if (firstDisplayedSectionHeader)
+        {
+            if (firstDisplayedSectionHeader.frame.origin.y == firstDisplayedSectionHeaderPosY)
+            {
+                if (self.recentsTableView.contentOffset.y > firstDisplayedSectionHeader.frame.origin.y)
+                {
+                    CGFloat delta = self.recentsTableView.contentOffset.y - firstDisplayedSectionHeader.frame.origin.y;
+                    
+                    // Update the layout of the top sticky headers container
+                    CGFloat containerHeight = 0;
+                    for (UIView *header in _stickyHeadersTopContainer.subviews)
+                    {
+                        if (header.tag < firstDisplayedSectionHeader.tag)
+                        {
+                            containerHeight += header.frame.size.height;
+                        }
+                        else if (header.tag == firstDisplayedSectionHeader.tag)
+                        {
+                            if (delta < header.frame.size.height)
+                            {
+                                containerHeight += delta;
+                            }
+                            else
+                            {
+                                containerHeight += header.frame.size.height;
+                            }
+                            
+                        }
+                    }
+                    self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
+                }
+            }
+            else
+            {
+                // Update the layout of the top sticky headers container
+                CGFloat containerHeight = 0;
+                for (UIView *header in _stickyHeadersTopContainer.subviews)
+                {
+                    if (header.tag < firstDisplayedSectionHeader.tag)
+                    {
+                        containerHeight += header.frame.size.height;
+                    }
+                }
+                self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
+                firstDisplayedSectionHeaderPosY = firstDisplayedSectionHeader.frame.origin.y;
+            }
+        }
+    }
+    
+    [super scrollViewDidScroll:scrollView];
+}
+
 #pragma mark - recents drag & drop management
 
 - (void)onRecentsDragEnd
@@ -805,7 +1088,7 @@
     [self.activityIndicator stopAnimating];
 }
 
-- (IBAction) onRecentsLongPress:(id)sender
+- (IBAction)onRecentsLongPress:(id)sender
 {
     RecentsDataSource* recentsDataSource = nil;
     
