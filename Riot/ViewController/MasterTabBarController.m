@@ -44,6 +44,9 @@
     
     // Current alert (if any).
     MXKAlert *currentAlert;
+    
+    // Observer kMXKRoomDataSourceMetaDataChanged to keep updated the missed discussion count
+    id kMXKRoomDataSourceMetaDataChangedObserver;
 }
 
 @end
@@ -66,6 +69,13 @@
     
     self.tabBar.tintColor = kRiotColorGreen;
     
+    // Adjust the display of the icons in the tabbar.
+    for (UITabBarItem *tabBarItem in self.tabBar.items)
+    {
+        tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        tabBarItem.badgeColor = kRiotColorPinkRed;
+    }
+    
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
 }
@@ -87,12 +97,31 @@
         {
             [self promptUserBeforeUsingGoogleAnalytics];
         }
+        
+        // Observe missed notifications
+        kMXKRoomDataSourceMetaDataChangedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKRoomDataSourceMetaDataChanged object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            [self refreshHomeTabBadge];
+            
+        }];
+        [self refreshHomeTabBadge];
     }
     
     if (unifiedSearchViewController)
     {
         [unifiedSearchViewController destroy];
         unifiedSearchViewController = nil;
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (kMXKRoomDataSourceMetaDataChangedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXKRoomDataSourceMetaDataChangedObserver];
+        kMXKRoomDataSourceMetaDataChangedObserver = nil;
     }
 }
 
@@ -115,6 +144,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
         authViewControllerObserver = nil;
+    }
+    
+    if (kMXKRoomDataSourceMetaDataChangedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXKRoomDataSourceMetaDataChangedObserver];
+        kMXKRoomDataSourceMetaDataChangedObserver = nil;
     }
 }
 
@@ -483,6 +518,33 @@
     {
         [(id)selectedViewController refreshCurrentSelectedCell:forceVisible];
     }}
+
+#pragma mark -
+
+- (void)refreshHomeTabBadge
+{
+    NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
+    if (count)
+    {
+        NSString *badgeValue;
+        
+        if (count > 1000)
+        {
+            CGFloat value = count / 1000.0;
+            badgeValue = [NSString stringWithFormat:@"%.1f k", value];
+        }
+        else
+        {
+            badgeValue = [NSString stringWithFormat:@"%tu", count];
+        }
+        
+        self.tabBar.items[TABBAR_HOME_INDEX].badgeValue = badgeValue;
+    }
+    else
+    {
+        self.tabBar.items[TABBAR_HOME_INDEX].badgeValue = nil;
+    }
+}
 
 #pragma mark - 
 
