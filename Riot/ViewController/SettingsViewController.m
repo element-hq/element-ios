@@ -244,12 +244,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         [self stopActivityIndicator];
         
-        // Refresh the corresponding table view cells with animation
-        [self.tableView reloadRowsAtIndexPaths:@[
-                                                 [NSIndexPath indexPathForRow:userSettingsProfilePictureIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX],
-                                                 [NSIndexPath indexPathForRow:userSettingsDisplayNameIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
-                                                 ]
-                              withRowAnimation:UITableViewRowAnimationFade];
+        [self refreshSettings];
         
     }];
     
