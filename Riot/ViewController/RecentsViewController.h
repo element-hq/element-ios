@@ -31,9 +31,9 @@
     MXKAlert *currentAlert;
     
     /**
-     The list of the section headers currrently displayed in the recents table.
+     The list of the section headers currently displayed in the recents table.
      */
-    NSMutableArray *displayedSectionHeaders;
+    NSMutableArray<UIView*> *displayedSectionHeaders;
     
     /**
      The current vertical position of the first displayed section header.

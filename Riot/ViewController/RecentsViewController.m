@@ -240,8 +240,8 @@
 {
     [super viewDidAppear:animated];
     
-    // Release the current selected item (if any) except if the second view controller is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed)
+    // Release the current selected item (if any) except if the second view controller is still visible.
+    if (self.splitViewController.isCollapsed)
     {
         // Release the current selected room (if any).
         [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
@@ -312,8 +312,7 @@
     
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
     // the selected room (if any) is updated and kept visible.
-    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
-    if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
+    if (!self.splitViewController.isCollapsed)
     {
         [self refreshCurrentSelectedCell:YES];
     }
