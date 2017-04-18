@@ -54,18 +54,6 @@
     return self;
 }
 
-// Ignore regular notification count if the room is in 'mentions only" mode
-- (NSUInteger)notificationCount
-{
-    if (self.room.isMentionsOnly)
-    {
-        // Only the highlighted missed messages are counted
-        return super.highlightCount;
-    }
-    
-    return super.notificationCount;
-}
-
 - (void)didReceiveReceiptEvent:(MXEvent *)receiptEvent roomState:(MXRoomState *)roomState
 {
     // Override this callback to force rendering of each cell with read receipts information.
@@ -84,8 +72,6 @@
         cellData.hasReadReceipts = YES;
     }
     
-    
-    // Let super handle this receipt
     [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
 }
 

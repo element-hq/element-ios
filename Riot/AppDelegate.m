@@ -998,7 +998,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)refreshApplicationIconBadgeNumber
 {
-    NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
+    // Consider the total number of missed discussions including the invites.
+    NSUInteger count = [self.masterTabBarController missedDiscussionsCount];
+    
     NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = count;
@@ -1623,7 +1625,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)markAllMessagesAsRead
 {
-    [MXKRoomDataSourceManager markAllMessagesAsRead];
+    for (MXSession *session in mxSessionArray)
+    {
+        [session markAllMessagesAsRead];
+    }
 }
 
 - (void)reloadMatrixSessions:(BOOL)clearCache

@@ -93,6 +93,16 @@
  */
 - (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion;
 
+/**
+ The current number of rooms with missed notifications, including the invites.
+ */
+- (NSUInteger)missedDiscussionsCount;
+
+/**
+ The current number of rooms with unread highlighted messages.
+ */
+- (NSUInteger)missedHighlightDiscussionsCount;
+
 
 // Reference to the current auth VC. It is not nil only when the auth screen is displayed.
 @property (nonatomic, readonly) AuthenticationViewController *authViewController;
