@@ -28,6 +28,8 @@
 
 #import "ContactTableViewCell.h"
 
+#define PEOPLE_VC_STICKY_SECTION_HEADER_HEIGHT 30.0
+
 @interface PeopleViewController ()
 {
     NSInteger          directRoomsSectionNumber;
@@ -71,6 +73,8 @@
     
     // Redirect table data source
     self.recentsTableView.dataSource = self;
+    
+    self.enableStickyHeaders = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -118,12 +122,6 @@
     }
     
     return [super cellViewClassForCellData:cellData];
-}
-
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
-{
-    // Refresh the full table
-    [self refreshRecentsTable];
 }
 
 #pragma mark - UITableView data source
@@ -297,7 +295,30 @@
     return [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-#pragma mark -
+#pragma mark - Override RecentsViewController
+
+- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
+{
+    CGRect frame = [tableView rectForHeaderInSection:section];
+    frame.size.height = PEOPLE_VC_STICKY_SECTION_HEADER_HEIGHT;
+    
+    if (section >= directRoomsSectionNumber)
+    {
+        // Let the contact dataSource provide this header.
+        section -= directRoomsSectionNumber;
+        if (section < contactsSectionNumber)
+        {
+            return [contactsDataSource viewForStickyHeaderInSection:section withFrame:frame];
+        }
+    }
+    else if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    {
+        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
+        return [recentsDataSource viewForStickyHeaderInSection:section withFrame:frame];
+    }
+    
+    return nil;
+}
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {

@@ -69,6 +69,15 @@ typedef enum : NSUInteger
  */
 @property (nonatomic) BOOL areSectionsShrinkable;
 
+/**
+ Get the sticky header view for the specified section.
+ 
+ @param section the section  index
+ @param frame the drawing area for the header of the specified section.
+ @return the sticky header view.
+ */
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
+
 #pragma mark - Drag & Drop handling
 /**
  Return true of the cell can be moved from a section to another one.

@@ -100,6 +100,12 @@
     }
 }
 
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+{
+    // Return the actual section header for this frame.
+    return [self viewForHeaderInSection:section withFrame:frame];
+}
+
 #pragma mark -
 
 - (MXKSessionRecentsDataSource *)addMatrixSession:(MXSession *)mxSession

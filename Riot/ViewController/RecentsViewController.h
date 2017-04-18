@@ -29,6 +29,16 @@
      Current alert (if any).
      */
     MXKAlert *currentAlert;
+    
+    /**
+     The list of the section headers currently displayed in the recents table.
+     */
+    NSMutableArray<UIView*> *displayedSectionHeaders;
+    
+    /**
+     The current vertical position of the first displayed section header.
+     */
+    CGFloat firstDisplayedSectionHeaderPosY;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *stickyHeadersTopContainer;
@@ -54,9 +64,23 @@
 @property (nonatomic) NSString *screenName;
 
 /**
- Refresh the recents table display.
+ Return the sticky header for the specified section of the table view
+ 
+ @param tableView the table view object asking for the view object.
+ @param section an index number identifying a section of tableView .
+ @return the sticky header.
  */
-- (void)refreshRecentsTable;
+- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section;
+
+/**
+ Release the resources used to display the sticky headers.
+ */
+- (void)resetStickyHeaders;
+
+/**
+ Update the sticky headers display.
+ */
+- (void)updateStickyHeaders;
 
 /**
  Refresh the cell selection in the table.
