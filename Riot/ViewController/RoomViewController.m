@@ -155,8 +155,8 @@
     id kMXCallManagerConferenceStartedObserver;
     id kMXCallManagerConferenceFinishedObserver;
     
-    // Observer kMXKRoomDataSourceMetaDataChanged to keep updated the missed discussion count
-    id kMXKRoomDataSourceMetaDataChangedObserver;
+    // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
+    id mxRoomSummaryDidChangeObserver;
 }
 
 @end
@@ -472,7 +472,7 @@
     [self refreshActivitiesViewDisplay];
     
     // Observe missed notifications
-    kMXKRoomDataSourceMetaDataChangedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKRoomDataSourceMetaDataChanged object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self refreshMissedDiscussionsCount:NO];
         
@@ -520,10 +520,10 @@
         kAppDelegateNetworkStatusDidChangeNotificationObserver = nil;
     }
     
-    if (kMXKRoomDataSourceMetaDataChangedObserver)
+    if (mxRoomSummaryDidChangeObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXKRoomDataSourceMetaDataChangedObserver];
-        kMXKRoomDataSourceMetaDataChangedObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
+        mxRoomSummaryDidChangeObserver = nil;
     }
 }
 
@@ -937,10 +937,10 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateNetworkStatusDidChangeNotificationObserver];
         kAppDelegateNetworkStatusDidChangeNotificationObserver = nil;
     }
-    if (kMXKRoomDataSourceMetaDataChangedObserver)
+    if (mxRoomSummaryDidChangeObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXKRoomDataSourceMetaDataChangedObserver];
-        kMXKRoomDataSourceMetaDataChangedObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
+        mxRoomSummaryDidChangeObserver = nil;
     }
 
     [self removeCallNotificationsListeners];
@@ -2946,8 +2946,8 @@
     }
     
     NSUInteger highlightCount = 0;
-    NSUInteger missedCount = [MXKRoomDataSourceManager missedDiscussionsCount];
-    if (missedCount && self.roomDataSource.notificationCount)
+    NSUInteger missedCount = [self.mainSession missedDiscussionsCount];
+    if (missedCount && self.roomDataSource.room.summary.notificationCount)
     {
         // Remove the current room from the missed discussion counter
         missedCount--;
@@ -2956,8 +2956,8 @@
     if (missedCount)
     {
         // Compute the missed highlight count
-        highlightCount = [MXKRoomDataSourceManager missedHighlightDiscussionsCount];
-        if (highlightCount && self.roomDataSource.highlightCount)
+        highlightCount = [self.mainSession missedHighlightDiscussionsCount];
+        if (highlightCount && self.roomDataSource.room.summary.highlightCount)
         {
             // Remove the current room from the missed highlight counter
             highlightCount--;
