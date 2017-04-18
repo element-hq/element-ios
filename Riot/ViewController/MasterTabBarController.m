@@ -22,6 +22,8 @@
 
 #import "AppDelegate.h"
 
+#import "MXRoom+Riot.h"
+
 @interface MasterTabBarController ()
 {
     // Array of `MXSession` instances.
@@ -44,6 +46,9 @@
     
     // Current alert (if any).
     MXKAlert *currentAlert;
+    
+    // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
+    id mxRoomSummaryDidChangeObserver;
 }
 
 @end
@@ -66,6 +71,12 @@
     
     self.tabBar.tintColor = kRiotColorGreen;
     
+    // Adjust the display of the icons in the tabbar.
+    for (UITabBarItem *tabBarItem in self.tabBar.items)
+    {
+        tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+    }
+    
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
 }
@@ -87,12 +98,31 @@
         {
             [self promptUserBeforeUsingGoogleAnalytics];
         }
+        
+        // Observe missed notifications
+        mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            [self refreshHomeTabBadge];
+            
+        }];
+        [self refreshHomeTabBadge];
     }
     
     if (unifiedSearchViewController)
     {
         [unifiedSearchViewController destroy];
         unifiedSearchViewController = nil;
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (mxRoomSummaryDidChangeObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
+        mxRoomSummaryDidChangeObserver = nil;
     }
 }
 
@@ -115,6 +145,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
         authViewControllerObserver = nil;
+    }
+    
+    if (mxRoomSummaryDidChangeObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
+        mxRoomSummaryDidChangeObserver = nil;
     }
 }
 
@@ -181,6 +217,9 @@
     if (!mxSessionArray)
     {
         mxSessionArray = [NSMutableArray array];
+        
+        // Add matrix sessions observer on first added session
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixSessionStateDidChange:) name:kMXSessionStateDidChangeNotification object:nil];
     }
     [mxSessionArray addObject:mxSession];
 }
@@ -192,6 +231,9 @@
     // Check whether there are others sessions
     if (!recentsDataSource.mxSessions.count)
     {
+        // Remove matrix sessions observer
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
+        
         [_homeViewController displayList:nil];
         [_favouritesViewController displayList:nil];
         [_peopleViewController displayList:nil];
@@ -202,6 +244,11 @@
     }
     
     [mxSessionArray removeObject:mxSession];
+}
+
+- (void)onMatrixSessionStateDidChange:(NSNotification *)notif
+{
+    [self refreshHomeTabBadge];
 }
 
 - (void)showAuthenticationScreen
@@ -320,6 +367,50 @@
     {
         completion();
     }
+}
+
+- (NSUInteger)missedDiscussionsCount
+{
+    NSUInteger roomCount = 0;
+    
+    // Considering all the current sessions.
+    for (MXSession *session in mxSessionArray)
+    {
+        // Sum all the rooms with missed notifications.
+        for (MXRoomSummary *roomSummary in session.roomsSummaries)
+        {
+            NSUInteger notificationCount = roomSummary.notificationCount;
+            
+            // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
+            if (roomSummary.room.isMentionsOnly)
+            {
+                // Only the highlighted missed messages must be considered here.
+                notificationCount = roomSummary.highlightCount;
+            }
+            
+            if (notificationCount)
+            {
+                roomCount ++;
+            }
+        }
+        
+        // Add the invites count
+        roomCount += [session invitedRooms].count;
+    }
+    
+    return roomCount;
+}
+
+- (NSUInteger)missedHighlightDiscussionsCount
+{
+    NSUInteger roomCount = 0;
+    
+    for (MXSession *session in mxSessionArray)
+    {
+        roomCount += [session missedHighlightDiscussionsCount];
+    }
+    
+    return roomCount;
 }
 
 #pragma mark -
@@ -483,6 +574,42 @@
     {
         [(id)selectedViewController refreshCurrentSelectedCell:forceVisible];
     }}
+
+#pragma mark -
+
+- (void)refreshHomeTabBadge
+{
+    NSUInteger count = [self missedDiscussionsCount];
+    if (count)
+    {
+        NSString *badgeValue;
+        
+        if (count > 1000)
+        {
+            CGFloat value = count / 1000.0;
+            badgeValue = [NSString stringWithFormat:NSLocalizedStringFromTable(@"large_badge_value_k_format", @"Vector", nil), value];
+        }
+        else
+        {
+            badgeValue = [NSString stringWithFormat:@"%tu", count];
+        }
+        
+        self.tabBar.items[TABBAR_HOME_INDEX].badgeValue = badgeValue;
+        
+        if (self.missedHighlightDiscussionsCount)
+        {
+            self.tabBar.items[TABBAR_HOME_INDEX].badgeColor = kRiotColorPinkRed;
+        }
+        else
+        {
+            self.tabBar.items[TABBAR_HOME_INDEX].badgeColor = kRiotColorGreen;
+        }
+    }
+    else
+    {
+        self.tabBar.items[TABBAR_HOME_INDEX].badgeValue = nil;
+    }
+}
 
 #pragma mark - 
 

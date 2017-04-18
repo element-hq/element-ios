@@ -90,6 +90,8 @@
 #import "RoomEncryptedDataBubbleCell.h"
 #import "EncryptionInfoView.h"
 
+#import "MXRoom+Riot.h"
+
 @interface RoomViewController ()
 {
     // The expanded header
@@ -149,8 +151,8 @@
     id kMXCallManagerConferenceStartedObserver;
     id kMXCallManagerConferenceFinishedObserver;
     
-    // Observer kMXKRoomDataSourceMetaDataChanged to keep updated the missed discussion count
-    id kMXKRoomDataSourceMetaDataChangedObserver;
+    // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
+    id mxRoomSummaryDidChangeObserver;
 }
 
 @end
@@ -466,7 +468,7 @@
     [self refreshActivitiesViewDisplay];
     
     // Observe missed notifications
-    kMXKRoomDataSourceMetaDataChangedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKRoomDataSourceMetaDataChanged object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self refreshMissedDiscussionsCount:NO];
         
@@ -514,10 +516,10 @@
         kAppDelegateNetworkStatusDidChangeNotificationObserver = nil;
     }
     
-    if (kMXKRoomDataSourceMetaDataChangedObserver)
+    if (mxRoomSummaryDidChangeObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXKRoomDataSourceMetaDataChangedObserver];
-        kMXKRoomDataSourceMetaDataChangedObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
+        mxRoomSummaryDidChangeObserver = nil;
     }
 }
 
@@ -931,10 +933,10 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateNetworkStatusDidChangeNotificationObserver];
         kAppDelegateNetworkStatusDidChangeNotificationObserver = nil;
     }
-    if (kMXKRoomDataSourceMetaDataChangedObserver)
+    if (mxRoomSummaryDidChangeObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXKRoomDataSourceMetaDataChangedObserver];
-        kMXKRoomDataSourceMetaDataChangedObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
+        mxRoomSummaryDidChangeObserver = nil;
     }
 
     [self removeCallNotificationsListeners];
@@ -2940,18 +2942,27 @@
     }
     
     NSUInteger highlightCount = 0;
-    NSUInteger missedCount = [MXKRoomDataSourceManager missedDiscussionsCount];
-    if (missedCount && self.roomDataSource.notificationCount)
+    NSUInteger missedCount = [[AppDelegate theDelegate].masterTabBarController missedDiscussionsCount];
+    
+    // Compute the missed notifications count of the current room by considering its notification mode in Riot.
+    NSUInteger roomNotificationCount = self.roomDataSource.room.summary.notificationCount;
+    if (self.roomDataSource.room.isMentionsOnly)
     {
-        // Remove the current room from the missed discussion counter
+        // Only the highlighted missed messages must be considered here.
+        roomNotificationCount = self.roomDataSource.room.summary.highlightCount;
+    }
+    
+    // Remove the current room from the missed discussion counter.
+    if (missedCount && roomNotificationCount)
+    {
         missedCount--;
     }
     
     if (missedCount)
     {
         // Compute the missed highlight count
-        highlightCount = [MXKRoomDataSourceManager missedHighlightDiscussionsCount];
-        if (highlightCount && self.roomDataSource.highlightCount)
+        highlightCount = [[AppDelegate theDelegate].masterTabBarController missedHighlightDiscussionsCount];
+        if (highlightCount && self.roomDataSource.room.summary.highlightCount)
         {
             // Remove the current room from the missed highlight counter
             highlightCount--;

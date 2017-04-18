@@ -24,6 +24,18 @@
 // self.roomDisplayname returns this value instead of the mother class.
 @synthesize roomDisplayname;
 
+- (NSUInteger)notificationCount
+{
+    // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
+    if (self.roomSummary.room.isMentionsOnly)
+    {
+        // Only the highlighted missed messages must be considered here.
+        return self.roomSummary.highlightCount;
+    }
+    
+    return self.roomSummary.notificationCount;
+}
+
 - (void)update
 {
     [super update];
