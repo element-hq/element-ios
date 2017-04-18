@@ -47,6 +47,8 @@
     
     // Add room creation button programmatically
     [self addRoomCreationButton];
+    
+    self.enableStickyHeaders = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -95,6 +97,8 @@
     {
         [self triggerDirectoryPagination];
     }
+    
+    [super scrollViewDidScroll:scrollView];
 }
 
 #pragma mark - Private methods

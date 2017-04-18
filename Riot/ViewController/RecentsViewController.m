@@ -454,44 +454,6 @@
             sectionHeader.frame = frame;
             [self.stickyHeadersBottomContainer addSubview:sectionHeader];
         }
-        
-        if (displayedSectionHeaders.count)
-        {
-            // Update the layout of the top sticky headers container
-            sectionHeader = displayedSectionHeaders.firstObject;
-            CGFloat containerHeight = 0;
-            for (UIView *header in _stickyHeadersTopContainer.subviews)
-            {
-                if (header.tag < sectionHeader.tag)
-                {
-                    containerHeight += header.frame.size.height;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
-            
-            // Update the layout of the bottom sticky headers container
-            sectionHeader = displayedSectionHeaders.lastObject;
-            containerHeight = 0;
-            CGRect bounds = self.stickyHeadersBottomContainer.frame;
-            for (UIView *header in _stickyHeadersBottomContainer.subviews)
-            {
-                if (header.tag == sectionHeader.tag + 1)
-                {
-                    bounds.origin.y = header.frame.origin.y;
-                    containerHeight = header.frame.size.height;
-                }
-                else if (header.tag > sectionHeader.tag + 1)
-                {
-                    containerHeight += header.frame.size.height;
-                }
-            }
-            self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
-            self.stickyHeadersBottomContainer.bounds = bounds;
-        }
     }
 }
 
