@@ -596,13 +596,16 @@
         
         self.tabBar.items[TABBAR_HOME_INDEX].badgeValue = badgeValue;
         
-        if (self.missedHighlightDiscussionsCount)
+        if ([UITabBarItem instancesRespondToSelector:@selector(setBadgeColor:)])
         {
-            self.tabBar.items[TABBAR_HOME_INDEX].badgeColor = kRiotColorPinkRed;
-        }
-        else
-        {
-            self.tabBar.items[TABBAR_HOME_INDEX].badgeColor = kRiotColorGreen;
+            if (self.missedHighlightDiscussionsCount)
+            {
+                self.tabBar.items[TABBAR_HOME_INDEX].badgeColor = kRiotColorPinkRed;
+            }
+            else
+            {
+                self.tabBar.items[TABBAR_HOME_INDEX].badgeColor = kRiotColorGreen;
+            }
         }
     }
     else
