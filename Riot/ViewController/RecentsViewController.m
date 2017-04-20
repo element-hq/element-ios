@@ -449,8 +449,16 @@
         frame = sectionHeader.frame;
         frame.origin.y = 0;
         sectionHeader.frame = frame;
+        sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.stickyHeadersTopContainer addSubview:sectionHeader];
         topContainerOffset = sectionHeader.frame.size.height;
+        
+        // Handle tap gesture
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [sectionHeader addGestureRecognizer:tap];
         
         for (NSUInteger index = 1; index < sectionsCount; index++)
         {
@@ -459,20 +467,42 @@
             frame = sectionHeader.frame;
             frame.origin.y = topContainerOffset;
             sectionHeader.frame = frame;
+            sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             [self.stickyHeadersTopContainer addSubview:sectionHeader];
             topContainerOffset += frame.size.height;
+            
+            // Handle tap gesture
+            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+            [tap setNumberOfTouchesRequired:1];
+            [tap setNumberOfTapsRequired:1];
+            [tap setDelegate:self];
+            [sectionHeader addGestureRecognizer:tap];
             
             sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
             sectionHeader.tag = index;
             frame = sectionHeader.frame;
             frame.origin.y = bottomContainerOffset;
             sectionHeader.frame = frame;
+            sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             [self.stickyHeadersBottomContainer addSubview:sectionHeader];
             bottomContainerOffset += frame.size.height;
+            
+            // Handle tap gesture
+            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+            [tap setNumberOfTouchesRequired:1];
+            [tap setNumberOfTapsRequired:1];
+            [tap setDelegate:self];
+            [sectionHeader addGestureRecognizer:tap];
         }
         
         [self refreshStickyHeadersContainersHeight];
     }
+}
+
+- (void)onStickyHeaderTap:(UIGestureRecognizer*)gestureRecognizer
+{
+    UIView *view = gestureRecognizer.view;
+    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:view.tag] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)refreshStickyHeadersContainersHeight
