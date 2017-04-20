@@ -28,8 +28,6 @@
 
 #import "ContactTableViewCell.h"
 
-#define PEOPLE_VC_STICKY_SECTION_HEADER_HEIGHT 30.0
-
 @interface PeopleViewController ()
 {
     NSInteger          directRoomsSectionNumber;
@@ -300,7 +298,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
 {
     CGRect frame = [tableView rectForHeaderInSection:section];
-    frame.size.height = PEOPLE_VC_STICKY_SECTION_HEADER_HEIGHT;
+    frame.size.height = self.stickyHeaderHeight;
     
     if (section >= directRoomsSectionNumber)
     {

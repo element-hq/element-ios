@@ -59,6 +59,11 @@
 @property (nonatomic) BOOL enableStickyHeaders;
 
 /**
+ Define the height of each sticky headers (30.0 by default).
+ */
+@property (nonatomic) CGFloat stickyHeaderHeight;
+
+/**
  The Google Analytics Instance screen name (Default is "RecentsScreen").
  */
 @property (nonatomic) NSString *screenName;
