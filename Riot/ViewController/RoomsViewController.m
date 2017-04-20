@@ -76,6 +76,16 @@
     [super destroy];
 }
 
+#pragma mark - Override RecentsViewController
+
+- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
+{
+    CGRect frame = [tableView rectForHeaderInSection:section];
+    frame.size.height = self.stickyHeaderHeight;
+    
+    return [recentsDataSource viewForHeaderInSection:section withFrame:frame];
+}
+
 #pragma mark - UITableView delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
