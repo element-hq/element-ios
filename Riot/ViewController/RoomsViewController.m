@@ -20,6 +20,8 @@
 
 #import "RecentsDataSource.h"
 
+#import "DirectoryServerPickerViewController.h"
+
 @interface RoomsViewController ()
 {
     RecentsDataSource *recentsDataSource;
@@ -86,7 +88,71 @@
     return [recentsDataSource viewForHeaderInSection:section withFrame:frame];
 }
 
+- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
+{
+    if ([actionIdentifier isEqualToString:kRecentsDataSourceTapOnDirectoryServerChange])
+    {
+        // Show the directory server picker
+        [self performSegueWithIdentifier:@"presentDirectoryServerPicker" sender:self];
+    }
+    else
+    {
+        [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+    }
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+
+    UIViewController *pushedViewController = [segue destinationViewController];
+
+    if ([[segue identifier] isEqualToString:@"presentDirectoryServerPicker"])
+    {
+        UINavigationController *pushedNavigationViewController = (UINavigationController*)pushedViewController;
+        DirectoryServerPickerViewController* directoryServerPickerViewController = (DirectoryServerPickerViewController*)pushedNavigationViewController.viewControllers.firstObject;
+
+        MXKDirectoryServersDataSource *directoryServersDataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+        [directoryServersDataSource finalizeInitialization];
+
+        [directoryServerPickerViewController displayWithDataSource:directoryServersDataSource onComplete:^(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver) {
+
+            // Use the selected directory server
+            if (thirdpartyProtocolInstance)
+            {
+                recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = thirdpartyProtocolInstance;
+            }
+            else if (homeserver)
+            {
+                recentsDataSource.publicRoomsDirectoryDataSource.homeserver = homeserver;
+            }
+            else
+            {
+                // Reset any previously selected directory server
+                recentsDataSource.publicRoomsDirectoryDataSource.homeserver = nil;
+                recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = nil;
+            }
+        }];
+
+        // Hide back button title
+        pushedViewController.navigationController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    }
+}
+
 #pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == recentsDataSource.directorySection)
+    {
+        // Let the recents dataSource provide the height of this section header
+        return [recentsDataSource heightForHeaderInSection:section];
+    }
+
+    return [super tableView:tableView heightForHeaderInSection:section];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

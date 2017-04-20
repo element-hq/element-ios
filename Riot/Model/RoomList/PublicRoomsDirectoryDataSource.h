@@ -37,7 +37,7 @@
  The homeserver to list public rooms from.
  Default is nil. In this case, the user's homeserver is used.
  */
-@property (nonatomic, readonly) NSString *homeserver;
+@property (nonatomic) NSString *homeserver;
 
 /**
  List public rooms from a third party protocol.
