@@ -611,8 +611,7 @@
         }
         
         // Handle here the case where no header is currently displayed.
-        // Consider this case only when the sticky headers have been reseted (the height of each container is then nil).
-        if (!firstDisplayedSectionHeader && self.stickyHeadersTopContainerHeightConstraint.constant == 0 && self.stickyHeadersBottomContainerHeightConstraint.constant == 0)
+        if (!firstDisplayedSectionHeader)
         {
             // No section header is displayed in the table, no more than one section is displayed.
             NSIndexPath *firstCellIndexPath = [self.recentsTableView indexPathForRowAtPoint:CGPointMake(0, self.recentsTableView.contentOffset.y)];
