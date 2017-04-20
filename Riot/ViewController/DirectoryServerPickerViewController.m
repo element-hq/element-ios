@@ -176,7 +176,7 @@
 //        }
     }
 
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - User actions
@@ -188,7 +188,7 @@
         onCompleteBlock(nil, nil);
     }
 
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

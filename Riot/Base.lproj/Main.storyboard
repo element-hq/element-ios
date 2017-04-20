@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -346,6 +346,22 @@
             </objects>
             <point key="canvasLocation" x="1223" y="-3899"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="TbB-77-7oK">
+            <objects>
+                <navigationController id="qAW-wR-KyU" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r5V-3P-3Lg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="mRq-hp-dod" kind="relationship" relationship="rootViewController" id="fqQ-aW-08c"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T7q-ez-UVO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3326" y="-2050"/>
+        </scene>
         <!--Contact Details View Controller-->
         <scene sceneID="grY-bt-CcD">
             <objects>
@@ -362,7 +378,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="01q-h6-40E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4334" y="-2203"/>
+            <point key="canvasLocation" x="3326" y="-420"/>
         </scene>
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
@@ -422,6 +438,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" tag="3" image="tab_rooms.png" selectedImage="tab_rooms_selected.png" id="7eS-Ei-00V"/>
+                    <connections>
+                        <segue destination="qAW-wR-KyU" kind="presentation" identifier="presentDirectoryServerPicker" id="1mb-Wk-zpt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kb9-ek-2v5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -495,10 +514,11 @@
                             <outlet property="delegate" destination="mRq-hp-dod" id="0Nu-Wt-eJD"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="6vB-s9-qMc"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q9W-8f-BvC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2150" y="-4705"/>
+            <point key="canvasLocation" x="4174" y="-2050"/>
         </scene>
     </scenes>
     <resources>
@@ -515,9 +535,9 @@
         <image name="tab_rooms_selected.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mhb-l9-pM3"/>
-        <segue reference="tk8-vF-K4T"/>
-        <segue reference="cUw-vU-gJq"/>
+        <segue reference="fNQ-S3-DbZ"/>
         <segue reference="ziz-Xl-QVg"/>
+        <segue reference="tk8-vF-K4T"/>
+        <segue reference="mhb-l9-pM3"/>
     </inferredMetricsTieBreakers>
 </document>
