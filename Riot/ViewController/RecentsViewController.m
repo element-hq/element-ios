@@ -452,7 +452,7 @@
         [self.stickyHeadersTopContainer addSubview:sectionHeader];
         topContainerOffset = sectionHeader.frame.size.height;
         
-        for (NSUInteger index = 1; index < sectionsCount - 1; index++)
+        for (NSUInteger index = 1; index < sectionsCount; index++)
         {
             sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
             sectionHeader.tag = index;
@@ -469,16 +469,6 @@
             sectionHeader.frame = frame;
             [self.stickyHeadersBottomContainer addSubview:sectionHeader];
             bottomContainerOffset += frame.size.height;
-        }
-        
-        if (sectionsCount > 1)
-        {
-            sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:sectionsCount - 1];
-            sectionHeader.tag = sectionsCount - 1;
-            frame = sectionHeader.frame;
-            frame.origin.y = bottomContainerOffset;
-            sectionHeader.frame = frame;
-            [self.stickyHeadersBottomContainer addSubview:sectionHeader];
         }
         
         [self refreshStickyHeadersContainersHeight];
