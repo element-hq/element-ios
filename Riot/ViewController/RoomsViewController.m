@@ -61,10 +61,19 @@
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
+        BOOL isFirstTime = !recentsDataSource;
+
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
+
+        if (isFirstTime)
+        {
+            // The first time the screen is displayed, make publicRoomsDirectoryDataSource
+            // start loading data
+            [recentsDataSource.publicRoomsDirectoryDataSource paginate:nil failure:nil];
+        }
     }
 }
 
@@ -130,6 +139,19 @@
                     recentsDataSource.publicRoomsDirectoryDataSource.includeAllNetworks = cellData.includeAllNetworks;
                     recentsDataSource.publicRoomsDirectoryDataSource.homeserver = cellData.homeserver;
                 }
+
+                // Refresh data
+                [self addSpinnerFooterView];
+
+                [recentsDataSource.publicRoomsDirectoryDataSource paginate:^(NSUInteger roomsAdded) {
+
+                    // The table view is automatically filled
+                    [self removeSpinnerFooterView];
+                    
+                } failure:^(NSError *error) {
+                    
+                    [self removeSpinnerFooterView];
+                }];
             }
         }];
 

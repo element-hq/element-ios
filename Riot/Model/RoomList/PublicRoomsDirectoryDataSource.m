@@ -86,14 +86,26 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         // The CS API does not like we pass the user's HS as parameter
         homeserver = nil;
     }
-    
+
+     _thirdpartyProtocolInstance = nil;
+
     if (homeserver != _homeserver)
     {
         _homeserver = homeserver;
-        _thirdpartyProtocolInstance = nil;
 
         // Reset data
-        [self startPagination];
+        [self resetPagination];
+    }
+}
+
+- (void)setIncludeAllNetworks:(BOOL)includeAllNetworks
+{
+    if (includeAllNetworks != _includeAllNetworks)
+    {
+        _includeAllNetworks = includeAllNetworks;
+        
+        // Reset data
+        [self resetPagination];
     }
 }
 
@@ -106,7 +118,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         _thirdpartyProtocolInstance = thirdpartyProtocolInstance;
 
         // Reset data
-        [self startPagination];
+        [self resetPagination];
     }
 }
 
@@ -117,7 +129,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (![searchPattern isEqualToString:_searchPattern])
         {
             _searchPattern = searchPattern;
-            [self startPagination];
+            [self resetPagination];
         }
     }
     else
@@ -127,7 +139,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (_searchPattern || rooms.count == 0)
         {
             _searchPattern = searchPattern;
-            [self startPagination];
+            [self resetPagination];
         }
     }
 }
@@ -163,7 +175,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return room;
 }
 
-- (void)startPagination
+- (void)resetPagination
 {
     // Cancel the previous request
     if (publicRoomsRequest)
@@ -171,17 +183,12 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         [publicRoomsRequest cancel];
     }
 
-    [self setState:MXKDataSourceStatePreparing];
-
     // Reset all pagination vars
     [rooms removeAllObjects];
     nextBatch = nil;
     _roomsCount = 0;
     _moreThanRoomsCount = NO;
     _hasReachedPaginationEnd = NO;
-
-    // And do a single pagination
-    [self paginate:nil failure:nil];
 }
 
 - (MXHTTPOperation *)paginate:(void (^)(NSUInteger))complete failure:(void (^)(NSError *))failure
@@ -190,6 +197,8 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     {
         return nil;
     }
+
+    [self setState:MXKDataSourceStatePreparing];
 
     __weak typeof(self) weakSelf = self;
 
