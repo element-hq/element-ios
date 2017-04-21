@@ -117,22 +117,19 @@
         MXKDirectoryServersDataSource *directoryServersDataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
         [directoryServersDataSource finalizeInitialization];
 
-        [directoryServerPickerViewController displayWithDataSource:directoryServersDataSource onComplete:^(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver) {
-
-            // Use the selected directory server
-            if (thirdpartyProtocolInstance)
+        [directoryServerPickerViewController displayWithDataSource:directoryServersDataSource onComplete:^(id<MXKDirectoryServerCellDataStoring> cellData) {
+            if (cellData)
             {
-                recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = thirdpartyProtocolInstance;
-            }
-            else if (homeserver)
-            {
-                recentsDataSource.publicRoomsDirectoryDataSource.homeserver = homeserver;
-            }
-            else
-            {
-                // Reset any previously selected directory server
-                recentsDataSource.publicRoomsDirectoryDataSource.homeserver = nil;
-                recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = nil;
+                // Use the selected directory server
+                if (cellData.thirdPartyProtocolInstance)
+                {
+                    recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance;
+                }
+                else if (cellData.homeserver)
+                {
+                    recentsDataSource.publicRoomsDirectoryDataSource.includeAllNetworks = cellData.includeAllNetworks;
+                    recentsDataSource.publicRoomsDirectoryDataSource.homeserver = cellData.homeserver;
+                }
             }
         }];
 

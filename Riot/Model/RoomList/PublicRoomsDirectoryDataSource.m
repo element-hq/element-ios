@@ -81,6 +81,12 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
 - (void)setHomeserver:(NSString *)homeserver
 {
+    if ([homeserver isEqualToString:self.mxSession.matrixRestClient.credentials.homeServerName])
+    {
+        // The CS API does not like we pass the user's HS as parameter
+        homeserver = nil;
+    }
+    
     if (homeserver != _homeserver)
     {
         _homeserver = homeserver;
@@ -96,6 +102,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     if (thirdpartyProtocolInstance != _thirdpartyProtocolInstance)
     {
         _homeserver = nil;
+        _includeAllNetworks = NO;
         _thirdpartyProtocolInstance = thirdpartyProtocolInstance;
 
         // Reset data
@@ -186,18 +193,9 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
     __weak typeof(self) weakSelf = self;
 
-
-    BOOL includeAllNetworks = NO;
-    if (!_homeserver && _thirdpartyProtocolInstance)
-    {
-        // TODO: property?
-        // Include all networks when listing public rooms from the user's HS
-        includeAllNetworks = YES;
-    }
-
     // Get the public rooms from the server
     MXHTTPOperation *newPublicRoomsRequest;
-    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:includeAllNetworks success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:_includeAllNetworks success:^(MXPublicRoomsResponse *publicRoomsResponse) {
 
         if (weakSelf)
         {

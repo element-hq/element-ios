@@ -24,12 +24,12 @@
  Display data managed by the passed `MXKDirectoryServersDataSource`.
 
  @param dataSource the data source serving the data.
- @param onComplete a block called when the picker disappears. It provides either the selected
-                   protocol instance or a new homeserver URL.
+ @param onComplete a block called when the picker disappears. It provides data about
+                   the selected protocol instance or homeserver.
                    Both nil means the user cancelled the picker.
  */
 - (void)displayWithDataSource:(MXKDirectoryServersDataSource*)dataSource
-                   onComplete:(void (^)(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver))onComplete;
+                   onComplete:(void (^)(id<MXKDirectoryServerCellDataStoring> cellData))onComplete;
 
 @end
 
