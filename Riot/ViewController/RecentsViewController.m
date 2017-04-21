@@ -271,6 +271,8 @@
         frame.size.height -= self.bottomLayoutGuide.length;
         tableViewMaskLayer.frame = frame;
     }
+        
+    [self refreshStickyHeadersContainersHeight];
 }
 
 #pragma mark - Override MXKRecentListViewController
@@ -449,62 +451,108 @@
         frame = sectionHeader.frame;
         frame.origin.y = 0;
         sectionHeader.frame = frame;
+        sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.stickyHeadersTopContainer addSubview:sectionHeader];
         topContainerOffset = sectionHeader.frame.size.height;
         
-        for (NSUInteger index = 1; index < sectionsCount - 1; index++)
+        // Handle tap gesture
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [sectionHeader addGestureRecognizer:tap];
+        
+        for (NSUInteger index = 1; index < sectionsCount; index++)
         {
             sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
             sectionHeader.tag = index;
             frame = sectionHeader.frame;
             frame.origin.y = topContainerOffset;
             sectionHeader.frame = frame;
+            sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             [self.stickyHeadersTopContainer addSubview:sectionHeader];
             topContainerOffset += frame.size.height;
+            
+            // Handle tap gesture
+            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+            [tap setNumberOfTouchesRequired:1];
+            [tap setNumberOfTapsRequired:1];
+            [tap setDelegate:self];
+            [sectionHeader addGestureRecognizer:tap];
             
             sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
             sectionHeader.tag = index;
             frame = sectionHeader.frame;
             frame.origin.y = bottomContainerOffset;
             sectionHeader.frame = frame;
+            sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             [self.stickyHeadersBottomContainer addSubview:sectionHeader];
             bottomContainerOffset += frame.size.height;
-        }
-        
-        if (sectionsCount > 1)
-        {
-            sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:sectionsCount - 1];
-            sectionHeader.tag = sectionsCount - 1;
-            frame = sectionHeader.frame;
-            frame.origin.y = bottomContainerOffset;
-            sectionHeader.frame = frame;
-            [self.stickyHeadersBottomContainer addSubview:sectionHeader];
+            
+            // Handle tap gesture
+            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+            [tap setNumberOfTouchesRequired:1];
+            [tap setNumberOfTapsRequired:1];
+            [tap setDelegate:self];
+            [sectionHeader addGestureRecognizer:tap];
         }
         
         [self refreshStickyHeadersContainersHeight];
     }
 }
 
+- (void)onStickyHeaderTap:(UIGestureRecognizer*)gestureRecognizer
+{
+    UIView *view = gestureRecognizer.view;
+    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:view.tag] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
 - (void)refreshStickyHeadersContainersHeight
 {
     if (_enableStickyHeaders)
     {
-        UIView *firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
+        // Retrieve the first and the last headers actually visible in the recents table view.
+        // Caution: In some cases like the screen rotation, some displayed section headers are temporarily not visible.
+        UIView *firstDisplayedSectionHeader, *lastDisplayedSectionHeader;
         CGFloat containerHeight;
+        CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + (self.recentsTableView.frame.size.height - self.recentsTableView.contentInset.bottom);
+        
+        for (UIView *header in displayedSectionHeaders)
+        {
+            if (!firstDisplayedSectionHeader)
+            {
+                if (header.frame.origin.y + header.frame.size.height > self.recentsTableView.contentOffset.y)
+                {
+                    firstDisplayedSectionHeader = lastDisplayedSectionHeader = header;
+                }
+            }
+            else
+            {
+                if (header.frame.origin.y < maxVisiblePosY)
+                {
+                    lastDisplayedSectionHeader = header;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
         
         if (firstDisplayedSectionHeader)
         {
-            // Check whether the header positon is not floating
+            // Consider the first visible section header to update the height of the top container of the sticky headers.
+            // Check whether the header positon is not floating.
             if (firstDisplayedSectionHeader.frame.origin.y == firstDisplayedSectionHeaderPosY)
             {
-                // Compute the height of the hidden part
+                // Compute the height of the hidden part.
                 CGFloat delta = self.recentsTableView.contentOffset.y - firstDisplayedSectionHeader.frame.origin.y;
                 if (delta < 0)
                 {
                     delta = 0;
                 }
                 
-                // Update the layout of the top container of the sticky headers.
+                // Compute the top container height.
                 containerHeight = 0;
                 for (UIView *header in _stickyHeadersTopContainer.subviews)
                 {
@@ -546,15 +594,11 @@
                 
                 self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
             }
-        }
-        
-        UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
-        if (lastDisplayedSectionHeader)
-        {
-            // Update the layout of the bottom container of the sticky headers.
+            
+            // Consider the last visible section header to update the height of the bottom container of the sticky headers.
             containerHeight = 0;
             CGRect bounds = self.stickyHeadersBottomContainer.frame;
-            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + (self.recentsTableView.frame.size.height - self.recentsTableView.contentInset.bottom);
+            
             for (UIView *header in _stickyHeadersBottomContainer.subviews)
             {
                 if (header.tag == lastDisplayedSectionHeader.tag)
@@ -589,12 +633,10 @@
                 self.stickyHeadersBottomContainer.bounds = bounds;
             }
         }
-        
-        // Handle here the case where no header is currently displayed.
-        // Consider this case only when the sticky headers have been reseted (the height of each container is then nil).
-        if (!firstDisplayedSectionHeader && self.stickyHeadersTopContainerHeightConstraint.constant == 0 && self.stickyHeadersBottomContainerHeightConstraint.constant == 0)
+        else
         {
-            // No section header is displayed in the table, no more than one section is displayed.
+            // Handle here the case where no section header is currently displayed in the table.
+            // No more than one section is then displayed, we retrieve this section by checking the first visible cell.
             NSIndexPath *firstCellIndexPath = [self.recentsTableView indexPathForRowAtPoint:CGPointMake(0, self.recentsTableView.contentOffset.y)];
             if (firstCellIndexPath)
             {
@@ -1084,13 +1126,21 @@
                 // Update first displayed section position
                 firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
                 firstDisplayedSectionHeaderPosY = firstDisplayedSectionHeader.frame.origin.y;
+                
+                [self refreshStickyHeadersContainersHeight];
             }
             else
             {
-                [displayedSectionHeaders removeLastObject];
+                // This section header is the last displayed one.
+                // Add a sanity check in case of the header has been already removed.
+                UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
+                if (section == lastDisplayedSectionHeader.tag)
+                {
+                    [displayedSectionHeaders removeLastObject];
+                    
+                    [self refreshStickyHeadersContainersHeight];
+                }
             }
-            
-            [self refreshStickyHeadersContainersHeight];
         }
     }
 }
