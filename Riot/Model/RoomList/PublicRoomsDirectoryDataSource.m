@@ -286,8 +286,12 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     {
         publicRoomCell = [[PublicRoomTableViewCell alloc] init];
     }
-
-    [publicRoomCell render:rooms[indexPath.row] withMatrixSession:self.mxSession];
+    
+    // Sanity check
+    if (indexPath.row < rooms.count)
+    {
+        [publicRoomCell render:rooms[indexPath.row] withMatrixSession:self.mxSession];
+    }
 
     return publicRoomCell;
 }
