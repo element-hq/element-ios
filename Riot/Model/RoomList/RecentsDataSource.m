@@ -495,7 +495,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
 
             // Add label and chevron
-            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, containerWidth - 64, 30)];
+            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, containerWidth - 32, 30)];
             directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
             directoryServerLabel.textColor = kRiotTextColorGray;
             directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
@@ -541,7 +541,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                                                                  toItem:directorySectionContainer
                                                               attribute:NSLayoutAttributeTrailing
                                                              multiplier:1
-                                                               constant:-64];
+                                                               constant:-32];
 
             [NSLayoutConstraint activateConstraints:@[topConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
 
