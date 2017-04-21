@@ -73,7 +73,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     }
     else
     {
-        directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServer;
+        directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServerName;
     }
 
     return directoryServerDisplayname;
@@ -186,9 +186,18 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
     __weak typeof(self) weakSelf = self;
 
+
+    BOOL includeAllNetworks = NO;
+    if (!_homeserver && _thirdpartyProtocolInstance)
+    {
+        // TODO: property?
+        // Include all networks when listing public rooms from the user's HS
+        includeAllNetworks = YES;
+    }
+
     // Get the public rooms from the server
     MXHTTPOperation *newPublicRoomsRequest;
-    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:includeAllNetworks success:^(MXPublicRoomsResponse *publicRoomsResponse) {
 
         if (weakSelf)
         {

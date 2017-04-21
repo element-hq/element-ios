@@ -35,22 +35,27 @@
     [super layoutSubviews];
     
     // Round image view
-    [self.iconImageView.layer setCornerRadius:self.iconImageView.frame.size.width / 2];
     self.iconImageView.clipsToBounds = YES;
     self.iconImageView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)render:(id<MXKDirectoryServerCellDataStoring>)cellData
 {
-    if (cellData.iconUrl)
+    self.iconImageView.hidden = NO;
+
+    if (cellData.icon)
     {
-        [self.iconImageView setImageURL:cellData.iconUrl withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
+        self.iconImageView.image = cellData.icon;
+    }
+    else  if (cellData.thirdPartyProtocolInstance.icon)
+    {
+        [self.iconImageView setImageURL:cellData.thirdPartyProtocolInstance.icon withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
     }
     else
     {
-        self.iconImageView.image = [UIImage imageNamed:@"placeholder"];
+        self.iconImageView.hidden = YES;
     }
-    
+
     self.descLabel.text = cellData.desc;
 }
 
