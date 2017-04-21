@@ -59,6 +59,50 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return self;
 }
 
+- (NSString *)directoryServerDisplayname
+{
+    NSString *directoryServerDisplayname;
+
+    if (_homeserver)
+    {
+        directoryServerDisplayname = _homeserver;
+    }
+    else if (_thirdpartyProtocolInstance)
+    {
+        directoryServerDisplayname = _thirdpartyProtocolInstance.desc;
+    }
+    else
+    {
+        directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServer;
+    }
+
+    return directoryServerDisplayname;
+}
+
+- (void)setHomeserver:(NSString *)homeserver
+{
+    if (homeserver != _homeserver)
+    {
+        _homeserver = homeserver;
+        _thirdpartyProtocolInstance = nil;
+
+        // Reset data
+        [self startPagination];
+    }
+}
+
+- (void)setThirdpartyProtocolInstance:(MXThirdPartyProtocolInstance *)thirdpartyProtocolInstance
+{
+    if (thirdpartyProtocolInstance != _thirdpartyProtocolInstance)
+    {
+        _homeserver = nil;
+        _thirdpartyProtocolInstance = thirdpartyProtocolInstance;
+
+        // Reset data
+        [self startPagination];
+    }
+}
+
 - (void)setSearchPattern:(NSString *)searchPattern
 {
     if (searchPattern)
@@ -144,7 +188,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
     // Get the public rooms from the server
     MXHTTPOperation *newPublicRoomsRequest;
-    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:nil limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:nil includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
 
         if (weakSelf)
         {

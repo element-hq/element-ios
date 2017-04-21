@@ -31,6 +31,11 @@
 #define RECENTSDATASOURCE_SECTION_CONVERSATIONS 0x08
 #define RECENTSDATASOURCE_SECTION_LOWPRIORITY   0x10
 
+#define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
+#define RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT   65.0
+
+NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
+
 @interface RecentsDataSource()
 {
     NSMutableArray* invitesCellDataArray;
@@ -39,7 +44,10 @@
     NSMutableArray* lowPriorityCellDataArray;
     
     NSInteger shrinkedSectionsBitMask;
-    
+
+    UIView *directorySectionContainer;
+    UILabel *directoryServerLabel;
+
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
     
     // Timer to not refresh publicRoomsDirectoryDataSource on every keystroke.
@@ -102,8 +110,20 @@
 
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
-    // Return the actual section header for this frame.
-    return [self viewForHeaderInSection:section withFrame:frame];
+    UIView *stickyHeader;
+
+    NSInteger savedShrinkedSectionsBitMask = shrinkedSectionsBitMask;
+    if (section == directorySection)
+    {
+        // Return the section header used when the section is shrinked
+        shrinkedSectionsBitMask = RECENTSDATASOURCE_SECTION_DIRECTORY;
+    }
+
+    stickyHeader = [self viewForHeaderInSection:section withFrame:frame];
+
+    shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
+
+    return stickyHeader;
 }
 
 #pragma mark -
@@ -284,6 +304,16 @@
     return count;
 }
 
+- (CGFloat)heightForHeaderInSection:(NSInteger)section
+{
+    if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
+    }
+
+    return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
+}
+
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     NSString* sectionTitle = nil;
@@ -445,13 +475,149 @@
     frame.origin.x = 20;
     frame.origin.y = 5;
     frame.size.width = chevronView ? chevronView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
-    frame.size.height -= 10;
+    frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
     headerLabel.backgroundColor = [UIColor clearColor];
     headerLabel.text = [self titleForHeaderInSection:section];
     [sectionHeader addSubview:headerLabel];
-    
+
+    if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        NSLayoutConstraint *leadingConstraint, *trailingConstraint, *topConstraint, *bottomConstraint;
+        NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint;
+
+        if (!directorySectionContainer)
+        {
+            CGFloat containerWidth = sectionHeader.frame.size.width;
+
+            directorySectionContainer = [[UIView alloc] initWithFrame:CGRectMake(0, RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT, containerWidth, sectionHeader.frame.size.height - RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT)];
+            directorySectionContainer.backgroundColor = [UIColor clearColor];
+            directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
+
+            // Add label and chevron
+            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, containerWidth - 32, 30)];
+            directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            directoryServerLabel.textColor = kRiotTextColorGray;
+            directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
+            [directorySectionContainer addSubview:directoryServerLabel];
+
+            UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(containerWidth - 26, 5, 6, 12)];
+            chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
+            chevronImageView.translatesAutoresizingMaskIntoConstraints = NO;
+            [directorySectionContainer addSubview:chevronImageView];
+
+            // Set a tap listener on all the container
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDirectoryServerPickerTap:)];
+            [tapGesture setNumberOfTouchesRequired:1];
+            [tapGesture setNumberOfTapsRequired:1];
+            [directorySectionContainer addGestureRecognizer:tapGesture];
+
+            // Add Label constraints
+            topConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:directorySectionContainer
+                                                         attribute:NSLayoutAttributeTop
+                                                        multiplier:1
+                                                          constant:0];
+
+            heightConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                            attribute:NSLayoutAttributeHeight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1
+                                                             constant:30];
+            leadingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                             attribute:NSLayoutAttributeLeading
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directorySectionContainer
+                                                             attribute:NSLayoutAttributeLeading
+                                                            multiplier:1
+                                                              constant:20];
+            trailingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                              attribute:NSLayoutAttributeTrailing
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:directorySectionContainer
+                                                              attribute:NSLayoutAttributeTrailing
+                                                             multiplier:1
+                                                               constant:-32];
+
+            [NSLayoutConstraint activateConstraints:@[topConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
+
+            // Add chevron constraints
+            trailingConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
+                                                              attribute:NSLayoutAttributeTrailing
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:directorySectionContainer
+                                                              attribute:NSLayoutAttributeTrailing
+                                                             multiplier:1
+                                                               constant:-20];
+
+            centerYConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
+                                                             attribute:NSLayoutAttributeCenterY
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directoryServerLabel
+                                                             attribute:NSLayoutAttributeCenterY
+                                                            multiplier:1
+                                                              constant:0.0f];
+
+            widthConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
+                                                           attribute:NSLayoutAttributeWidth
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:nil
+                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                          multiplier:1
+                                                            constant:6];
+            heightConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
+                                                            attribute:NSLayoutAttributeHeight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1
+                                                             constant:12];
+
+            [NSLayoutConstraint activateConstraints:@[trailingConstraint, centerYConstraint, widthConstraint, heightConstraint]];
+        }
+
+        // Set the current directory server name
+        directoryServerLabel.text = _publicRoomsDirectoryDataSource.directoryServerDisplayname;
+
+        // Add the check box container
+        [sectionHeader addSubview:directorySectionContainer];
+        leadingConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
+                                                         attribute:NSLayoutAttributeLeading
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:sectionHeader
+                                                         attribute:NSLayoutAttributeLeading
+                                                        multiplier:1
+                                                          constant:0];
+        widthConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
+                                                       attribute:NSLayoutAttributeWidth
+                                                       relatedBy:NSLayoutRelationEqual
+                                                          toItem:sectionHeader
+                                                       attribute:NSLayoutAttributeWidth
+                                                      multiplier:1
+                                                        constant:0];
+        topConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
+                                                     attribute:NSLayoutAttributeTop
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:sectionHeader
+                                                     attribute:NSLayoutAttributeTop
+                                                    multiplier:1
+                                                      constant:RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT];
+        bottomConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
+                                                        attribute:NSLayoutAttributeBottom
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:sectionHeader
+                                                        attribute:NSLayoutAttributeBottom
+                                                       multiplier:1
+                                                         constant:0];
+
+        [NSLayoutConstraint activateConstraints:@[leadingConstraint, widthConstraint, topConstraint, bottomConstraint]];
+    }
+
     return sectionHeader;
 }
 
@@ -852,6 +1018,13 @@
 
         _publicRoomsDirectoryDataSource.searchPattern = searchPattern;
     }
+}
+
+#pragma mark - Action
+
+- (IBAction)onDirectoryServerPickerTap:(UITapGestureRecognizer*)sender
+{
+    [self.delegate dataSource:self didRecognizeAction:kRecentsDataSourceTapOnDirectoryServerChange inCell:nil userInfo:nil];
 }
 
 #pragma mark - Override MXKDataSource

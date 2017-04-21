@@ -32,6 +32,14 @@ typedef enum : NSUInteger
     
 } RecentsDataSourceMode;
 
+
+/**
+ Action identifier used when the user tapped on the directory change button.
+
+ The `userInfo` is nil.
+ */
+extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
+
 /**
  'RecentsDataSource' class inherits from 'MXKInterleavedRecentsDataSource' to define the Riot recents source
  shared between all the applications tabs.
@@ -77,6 +85,14 @@ typedef enum : NSUInteger
  @return the sticky header view.
  */
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
+
+/**
+ Get the height of the section header view.
+
+ @param section the section  index
+ @return the header height.
+ */
+- (CGFloat)heightForHeaderInSection:(NSInteger)section;
 
 #pragma mark - Drag & Drop handling
 /**

@@ -650,7 +650,7 @@
     frame.origin.x = 20;
     frame.origin.y = 5;
     frame.size.width = sectionHeader.frame.size.width - 10;
-    frame.size.height = 20;
+    frame.size.height = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT -10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.text = [self titleForHeaderInSection:section];
     headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
