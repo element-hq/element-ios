@@ -125,6 +125,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
     return stickyHeader;
 }
+
 #pragma mark -
 
 - (MXKSessionRecentsDataSource *)addMatrixSession:(MXSession *)mxSession

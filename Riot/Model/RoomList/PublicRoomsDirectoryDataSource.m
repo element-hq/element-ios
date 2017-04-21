@@ -79,7 +79,6 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return directoryServerDisplayname;
 }
 
-
 - (void)setHomeserver:(NSString *)homeserver
 {
     if (homeserver != _homeserver)
