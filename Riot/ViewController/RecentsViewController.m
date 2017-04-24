@@ -525,7 +525,12 @@
 - (void)didTapStickyHeader:(UIGestureRecognizer*)gestureRecognizer
 {
     UIView *view = gestureRecognizer.view;
-    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:view.tag] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    NSInteger section = view.tag;
+
+    if ([self.recentsTableView numberOfRowsInSection:section] > 0)
+    {
+         [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:view.tag] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
 }
 
 - (void)refreshStickyHeadersContainersHeight
