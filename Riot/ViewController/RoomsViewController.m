@@ -147,9 +147,12 @@
 
                     // The table view is automatically filled
                     [self removeSpinnerFooterView];
-                    
+
+                    // Make the directory section appear full-page
+                    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:recentsDataSource.directorySection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+
                 } failure:^(NSError *error) {
-                    
+
                     [self removeSpinnerFooterView];
                 }];
             }
