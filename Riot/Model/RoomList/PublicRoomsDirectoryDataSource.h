@@ -40,6 +40,12 @@
 @property (nonatomic) NSString *homeserver;
 
 /**
+ Flag to indicate to list all public rooms from all networks of `homeserver`.
+ NO will list only pure Matrix rooms.
+ */
+@property (nonatomic) BOOL includeAllNetworks;
+
+/**
  List public rooms from a third party protocol.
  Default is nil.
  */

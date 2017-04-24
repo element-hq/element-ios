@@ -61,10 +61,19 @@
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
+        BOOL isFirstTime = !recentsDataSource;
+
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
+
+        if (isFirstTime)
+        {
+            // The first time the screen is displayed, make publicRoomsDirectoryDataSource
+            // start loading data
+            [recentsDataSource.publicRoomsDirectoryDataSource paginate:nil failure:nil];
+        }
     }
 }
 
@@ -117,22 +126,39 @@
         MXKDirectoryServersDataSource *directoryServersDataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
         [directoryServersDataSource finalizeInitialization];
 
-        [directoryServerPickerViewController displayWithDataSource:directoryServersDataSource onComplete:^(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver) {
+        // Add directory servers from the app settings plist
+        NSArray<NSString*> *roomDirectoryServers = [[NSUserDefaults standardUserDefaults] objectForKey:@"roomDirectoryServers"];
+        directoryServersDataSource.roomDirectoryServers = roomDirectoryServers;
 
-            // Use the selected directory server
-            if (thirdpartyProtocolInstance)
+        [directoryServerPickerViewController displayWithDataSource:directoryServersDataSource onComplete:^(id<MXKDirectoryServerCellDataStoring> cellData) {
+            if (cellData)
             {
-                recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = thirdpartyProtocolInstance;
-            }
-            else if (homeserver)
-            {
-                recentsDataSource.publicRoomsDirectoryDataSource.homeserver = homeserver;
-            }
-            else
-            {
-                // Reset any previously selected directory server
-                recentsDataSource.publicRoomsDirectoryDataSource.homeserver = nil;
-                recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = nil;
+                // Use the selected directory server
+                if (cellData.thirdPartyProtocolInstance)
+                {
+                    recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance;
+                }
+                else if (cellData.homeserver)
+                {
+                    recentsDataSource.publicRoomsDirectoryDataSource.includeAllNetworks = cellData.includeAllNetworks;
+                    recentsDataSource.publicRoomsDirectoryDataSource.homeserver = cellData.homeserver;
+                }
+
+                // Refresh data
+                [self addSpinnerFooterView];
+
+                [recentsDataSource.publicRoomsDirectoryDataSource paginate:^(NSUInteger roomsAdded) {
+
+                    // The table view is automatically filled
+                    [self removeSpinnerFooterView];
+
+                    // Make the directory section appear full-page
+                    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:recentsDataSource.directorySection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+
+                } failure:^(NSError *error) {
+
+                    [self removeSpinnerFooterView];
+                }];
             }
         }];
 

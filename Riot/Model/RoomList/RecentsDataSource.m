@@ -100,12 +100,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _recentsDataSourceMode = recentsDataSourceMode;
     
     [self forceRefresh];
-
-    if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
-    {
-        // Make _publicRoomsDirectoryDataSource start loading data
-        _publicRoomsDirectoryDataSource.searchPattern = nil;
-    }
 }
 
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
@@ -1017,6 +1011,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         publicRoomsTriggerTimer = nil;
 
         _publicRoomsDirectoryDataSource.searchPattern = searchPattern;
+        [_publicRoomsDirectoryDataSource paginate:nil failure:nil];
     }
 }
 

@@ -26,7 +26,7 @@
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
 
-    void (^onCompleteBlock)(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver);
+    void (^onCompleteBlock)(id<MXKDirectoryServerCellDataStoring> cellData);
 }
 @end
 
@@ -110,7 +110,7 @@
 }
 
 - (void)displayWithDataSource:(MXKDirectoryServersDataSource*)theDataSource
-                   onComplete:(void (^)(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver))onComplete;
+                   onComplete:(void (^)(id<MXKDirectoryServerCellDataStoring> cellData))onComplete;
 {
     dataSource = theDataSource;
     onCompleteBlock = onComplete;
@@ -165,15 +165,7 @@
 
     if (onCompleteBlock)
     {
-        if (cellData.thirdPartyProtocolInstance)
-        {
-            onCompleteBlock(cellData.thirdPartyProtocolInstance, nil);
-        }
-// TODO: Manage adding of homeserver URL
-//        else if (cellData.homeserverUrl)
-//        {
-//            onCompleteBlock(nil, cellData.homeserverUrl);
-//        }
+        onCompleteBlock(cellData);
     }
 
     [self withdrawViewControllerAnimated:YES completion:nil];
@@ -185,7 +177,7 @@
 {
     if (onCompleteBlock)
     {
-        onCompleteBlock(nil, nil);
+        onCompleteBlock(nil);
     }
 
     [self withdrawViewControllerAnimated:YES completion:nil];

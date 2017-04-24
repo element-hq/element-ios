@@ -73,7 +73,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     }
     else
     {
-        directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServer;
+        directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServerName;
     }
 
     return directoryServerDisplayname;
@@ -81,13 +81,31 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
 - (void)setHomeserver:(NSString *)homeserver
 {
+    if ([homeserver isEqualToString:self.mxSession.matrixRestClient.credentials.homeServerName])
+    {
+        // The CS API does not like we pass the user's HS as parameter
+        homeserver = nil;
+    }
+
+     _thirdpartyProtocolInstance = nil;
+
     if (homeserver != _homeserver)
     {
         _homeserver = homeserver;
-        _thirdpartyProtocolInstance = nil;
 
         // Reset data
-        [self startPagination];
+        [self resetPagination];
+    }
+}
+
+- (void)setIncludeAllNetworks:(BOOL)includeAllNetworks
+{
+    if (includeAllNetworks != _includeAllNetworks)
+    {
+        _includeAllNetworks = includeAllNetworks;
+        
+        // Reset data
+        [self resetPagination];
     }
 }
 
@@ -96,10 +114,11 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     if (thirdpartyProtocolInstance != _thirdpartyProtocolInstance)
     {
         _homeserver = nil;
+        _includeAllNetworks = NO;
         _thirdpartyProtocolInstance = thirdpartyProtocolInstance;
 
         // Reset data
-        [self startPagination];
+        [self resetPagination];
     }
 }
 
@@ -110,7 +129,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (![searchPattern isEqualToString:_searchPattern])
         {
             _searchPattern = searchPattern;
-            [self startPagination];
+            [self resetPagination];
         }
     }
     else
@@ -120,7 +139,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (_searchPattern || rooms.count == 0)
         {
             _searchPattern = searchPattern;
-            [self startPagination];
+            [self resetPagination];
         }
     }
 }
@@ -156,7 +175,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return room;
 }
 
-- (void)startPagination
+- (void)resetPagination
 {
     // Cancel the previous request
     if (publicRoomsRequest)
@@ -164,17 +183,12 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         [publicRoomsRequest cancel];
     }
 
-    [self setState:MXKDataSourceStatePreparing];
-
     // Reset all pagination vars
     [rooms removeAllObjects];
     nextBatch = nil;
     _roomsCount = 0;
     _moreThanRoomsCount = NO;
     _hasReachedPaginationEnd = NO;
-
-    // And do a single pagination
-    [self paginate:nil failure:nil];
 }
 
 - (MXHTTPOperation *)paginate:(void (^)(NSUInteger))complete failure:(void (^)(NSError *))failure
@@ -184,11 +198,13 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         return nil;
     }
 
+    [self setState:MXKDataSourceStatePreparing];
+
     __weak typeof(self) weakSelf = self;
 
     // Get the public rooms from the server
     MXHTTPOperation *newPublicRoomsRequest;
-    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:_includeAllNetworks success:^(MXPublicRoomsResponse *publicRoomsResponse) {
 
         if (weakSelf)
         {

@@ -53,7 +53,7 @@
     [super setPublicRoomsDirectoryDataSource:publicRoomsDirectoryDataSource];
     
     // Start by looking for all public rooms
-    self.publicRoomsDirectoryDataSource.searchPattern = nil;
+    [self.publicRoomsDirectoryDataSource paginate:nil failure:nil];
 }
 
 - (void)setHideRecents:(BOOL)hideRecents
