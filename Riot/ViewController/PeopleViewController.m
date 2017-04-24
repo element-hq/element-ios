@@ -357,6 +357,24 @@
     }
 }
 
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    // Apply filter on contact source
+    [contactsDataSource searchWithPattern:searchText forceReset:NO];
+    
+    [super searchBar:searchBar textDidChange:searchText];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    // Reset filtering
+    [contactsDataSource searchWithPattern:nil forceReset:NO];
+    
+    [super searchBarCancelButtonClicked:searchBar];
+}
+
 #pragma mark - Actions
 
 - (void)onRoomCreationButtonPressed
