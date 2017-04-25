@@ -69,7 +69,7 @@
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
     
-    // Redirect table data source
+    // Change the table data source. It must be the people view controller itself.
     self.recentsTableView.dataSource = self;
     
     self.enableStickyHeaders = YES;
@@ -108,6 +108,16 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+}
+
+#pragma mark - 
+
+- (void)displayList:(MXKRecentsDataSource *)listDataSource
+{
+    [super displayList:listDataSource];
+    
+    // Change the table data source. It must be the people view controller itself.
+    self.recentsTableView.dataSource = self;
 }
 
 #pragma mark - MXKDataSourceDelegate
