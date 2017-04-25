@@ -34,6 +34,29 @@
 @interface PublicRoomsDirectoryDataSource : MXKDataSource <UITableViewDataSource>
 
 /**
+ The homeserver to list public rooms from.
+ Default is nil. In this case, the user's homeserver is used.
+ */
+@property (nonatomic) NSString *homeserver;
+
+/**
+ Flag to indicate to list all public rooms from all networks of `homeserver`.
+ NO will list only pure Matrix rooms.
+ */
+@property (nonatomic) BOOL includeAllNetworks;
+
+/**
+ List public rooms from a third party protocol.
+ Default is nil.
+ */
+@property (nonatomic) MXThirdPartyProtocolInstance *thirdpartyProtocolInstance;
+
+/**
+ The display name of the current directory server.
+ */
+@property (nonatomic, readonly) NSString *directoryServerDisplayname;
+
+/**
  The number of public rooms matching `searchPattern`.
  It is accurate only if 'moreThanRoomsCount' is NO.
  */

@@ -20,6 +20,8 @@
 
 #import "RecentsDataSource.h"
 
+#import "DirectoryServerPickerViewController.h"
+
 @interface RoomsViewController ()
 {
     RecentsDataSource *recentsDataSource;
@@ -59,10 +61,19 @@
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
+        BOOL isFirstTime = !recentsDataSource;
+
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
+
+        if (isFirstTime)
+        {
+            // The first time the screen is displayed, make publicRoomsDirectoryDataSource
+            // start loading data
+            [recentsDataSource.publicRoomsDirectoryDataSource paginate:nil failure:nil];
+        }
     }
 }
 
@@ -86,7 +97,88 @@
     return [recentsDataSource viewForHeaderInSection:section withFrame:frame];
 }
 
+- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
+{
+    if ([actionIdentifier isEqualToString:kRecentsDataSourceTapOnDirectoryServerChange])
+    {
+        // Show the directory server picker
+        [self performSegueWithIdentifier:@"presentDirectoryServerPicker" sender:self];
+    }
+    else
+    {
+        [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+    }
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+
+    UIViewController *pushedViewController = [segue destinationViewController];
+
+    if ([[segue identifier] isEqualToString:@"presentDirectoryServerPicker"])
+    {
+        UINavigationController *pushedNavigationViewController = (UINavigationController*)pushedViewController;
+        DirectoryServerPickerViewController* directoryServerPickerViewController = (DirectoryServerPickerViewController*)pushedNavigationViewController.viewControllers.firstObject;
+
+        MXKDirectoryServersDataSource *directoryServersDataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+        [directoryServersDataSource finalizeInitialization];
+
+        // Add directory servers from the app settings plist
+        NSArray<NSString*> *roomDirectoryServers = [[NSUserDefaults standardUserDefaults] objectForKey:@"roomDirectoryServers"];
+        directoryServersDataSource.roomDirectoryServers = roomDirectoryServers;
+
+        [directoryServerPickerViewController displayWithDataSource:directoryServersDataSource onComplete:^(id<MXKDirectoryServerCellDataStoring> cellData) {
+            if (cellData)
+            {
+                // Use the selected directory server
+                if (cellData.thirdPartyProtocolInstance)
+                {
+                    recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance;
+                }
+                else if (cellData.homeserver)
+                {
+                    recentsDataSource.publicRoomsDirectoryDataSource.includeAllNetworks = cellData.includeAllNetworks;
+                    recentsDataSource.publicRoomsDirectoryDataSource.homeserver = cellData.homeserver;
+                }
+
+                // Refresh data
+                [self addSpinnerFooterView];
+
+                [recentsDataSource.publicRoomsDirectoryDataSource paginate:^(NSUInteger roomsAdded) {
+
+                    // The table view is automatically filled
+                    [self removeSpinnerFooterView];
+
+                    // Make the directory section appear full-page
+                    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:recentsDataSource.directorySection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+
+                } failure:^(NSError *error) {
+
+                    [self removeSpinnerFooterView];
+                }];
+            }
+        }];
+
+        // Hide back button title
+        pushedViewController.navigationController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    }
+}
+
 #pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == recentsDataSource.directorySection)
+    {
+        // Let the recents dataSource provide the height of this section header
+        return [recentsDataSource heightForHeaderInSection:section];
+    }
+
+    return [super tableView:tableView heightForHeaderInSection:section];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -26,7 +26,13 @@
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
 
-    void (^onCompleteBlock)(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver);
+    void (^onCompleteBlock)(id<MXKDirectoryServerCellDataStoring> cellData);
+
+    // Current alert (if any).
+    MXKAlert *currentAlert;
+
+    // Current request in progress.
+    MXHTTPOperation *mxCurrentOperation;
 }
 @end
 
@@ -54,6 +60,19 @@
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
 
+    // Close any pending actionsheet
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+
+    if (mxCurrentOperation)
+    {
+        [mxCurrentOperation cancel];
+        mxCurrentOperation = nil;
+    }
+
     [super destroy];
 }
 
@@ -70,7 +89,11 @@
 
     // Add a cancel button
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier=@"DirectoryServerPickerVCCancelButton";
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"DirectoryServerPickerVCCancelButton";
+
+    // Add a + button
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onAdd:)];
+    self.navigationItem.rightBarButtonItem.accessibilityIdentifier = @"DirectoryServerPickerVCAddButton";
 
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -110,7 +133,7 @@
 }
 
 - (void)displayWithDataSource:(MXKDirectoryServersDataSource*)theDataSource
-                   onComplete:(void (^)(MXThirdPartyProtocolInstance *thirdpartyProtocolInstance, NSString *homeserver))onComplete;
+                   onComplete:(void (^)(id<MXKDirectoryServerCellDataStoring> cellData))onComplete;
 {
     dataSource = theDataSource;
     onCompleteBlock = onComplete;
@@ -165,18 +188,10 @@
 
     if (onCompleteBlock)
     {
-        if (cellData.thirdPartyProtocolInstance)
-        {
-            onCompleteBlock(cellData.thirdPartyProtocolInstance, nil);
-        }
-// TODO: Manage adding of homeserver URL
-//        else if (cellData.homeserverUrl)
-//        {
-//            onCompleteBlock(nil, cellData.homeserverUrl);
-//        }
+        onCompleteBlock(cellData);
     }
 
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - User actions
@@ -185,10 +200,90 @@
 {
     if (onCompleteBlock)
     {
-        onCompleteBlock(nil, nil);
+        onCompleteBlock(nil);
     }
 
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self withdrawViewControllerAnimated:YES completion:nil];
 }
+
+- (IBAction)onAdd:(id)sender
+{
+    __weak typeof(self) weakSelf = self;
+
+    [currentAlert dismiss:NO];
+
+    // Prompt the user to enter a homeserver
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"directory_server_type_homeserver", @"Vector", nil) style:MXKAlertStyleAlert];
+
+    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+
+        textField.secureTextEntry = NO;
+        textField.placeholder = NSLocalizedStringFromTable(@"directory_server_placeholder", @"Vector", nil);
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+        }
+
+    }];
+
+    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        if (weakSelf)
+        {
+            UITextField *textField = [alert textFieldAtIndex:0];
+
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+
+            NSString *homeserver = textField.text;
+            if (homeserver.length)
+            {
+                // Test if the homeserver exists
+                [self.activityIndicator startAnimating];
+
+                self->mxCurrentOperation = [self->dataSource.mxSession.matrixRestClient publicRoomsOnServer:homeserver limit:20 since:nil filter:nil thirdPartyInstanceId:nil includeAllNetworks:YES success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+
+                    if (weakSelf && self->mxCurrentOperation)
+                    {
+                        // The homeserver is valid
+                        self->mxCurrentOperation = nil;
+                        [self.activityIndicator stopAnimating];
+
+                        if (self->onCompleteBlock)
+                        {
+                            // Prepare response argument
+                            MXKDirectoryServerCellData *cellData = [[MXKDirectoryServerCellData alloc] initWithHomeserver:homeserver includeAllNetworks:YES];
+
+                            self->onCompleteBlock(cellData);
+                        }
+
+                        [self withdrawViewControllerAnimated:YES completion:nil];
+                    }
+
+                } failure:^(NSError *error) {
+
+                    if (weakSelf && self->mxCurrentOperation)
+                    {
+                        // The homeserver is not valid
+                        self->mxCurrentOperation = nil;
+                        [self.activityIndicator stopAnimating];
+
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }
+
+                }];
+            }
+        }
+    }];
+
+    [currentAlert showInViewController:self];
+}
+
 
 @end

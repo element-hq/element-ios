@@ -119,6 +119,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    // Remove search option from the navigation bar
+    self.enableSearch = NO;
+    
     // Adjust Bottom constraint to take into account tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_stickyHeadersBottomContainerBottomConstraint]];
     _stickyHeadersBottomContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
@@ -456,11 +459,17 @@
         topContainerOffset = sectionHeader.frame.size.height;
         
         // Handle tap gesture
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
         [tap setNumberOfTouchesRequired:1];
         [tap setNumberOfTapsRequired:1];
         [tap setDelegate:self];
         [sectionHeader addGestureRecognizer:tap];
+        
+        // Handle vertical swipe gesture
+        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
+        [swipe setNumberOfTouchesRequired:1];
+        [swipe setDirection:UISwipeGestureRecognizerDirectionDown];
+        [sectionHeader addGestureRecognizer:swipe];
         
         for (NSUInteger index = 1; index < sectionsCount; index++)
         {
@@ -474,11 +483,17 @@
             topContainerOffset += frame.size.height;
             
             // Handle tap gesture
-            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
             [tap setNumberOfTouchesRequired:1];
             [tap setNumberOfTapsRequired:1];
             [tap setDelegate:self];
             [sectionHeader addGestureRecognizer:tap];
+            
+            // Handle vertical swipe gesture
+            swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
+            [swipe setNumberOfTouchesRequired:1];
+            [swipe setDirection:UISwipeGestureRecognizerDirectionDown];
+            [sectionHeader addGestureRecognizer:swipe];
             
             sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
             sectionHeader.tag = index;
@@ -490,21 +505,32 @@
             bottomContainerOffset += frame.size.height;
             
             // Handle tap gesture
-            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStickyHeaderTap:)];
+            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
             [tap setNumberOfTouchesRequired:1];
             [tap setNumberOfTapsRequired:1];
             [tap setDelegate:self];
             [sectionHeader addGestureRecognizer:tap];
+            
+            // Handle vertical swipe gesture
+            swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
+            [swipe setNumberOfTouchesRequired:1];
+            [swipe setDirection:UISwipeGestureRecognizerDirectionUp];
+            [sectionHeader addGestureRecognizer:swipe];
         }
         
         [self refreshStickyHeadersContainersHeight];
     }
 }
 
-- (void)onStickyHeaderTap:(UIGestureRecognizer*)gestureRecognizer
+- (void)didTapStickyHeader:(UIGestureRecognizer*)gestureRecognizer
 {
     UIView *view = gestureRecognizer.view;
-    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:view.tag] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    NSInteger section = view.tag;
+
+    if ([self.recentsTableView numberOfRowsInSection:section] > 0)
+    {
+         [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:view.tag] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
 }
 
 - (void)refreshStickyHeadersContainersHeight
@@ -607,7 +633,7 @@
             // Consider the last visible section header to update the height of the bottom container of the sticky headers.
             containerHeight = 0;
             CGRect bounds = self.stickyHeadersBottomContainer.frame;
-            
+            bounds.origin.y = 0;
             for (UIView *header in _stickyHeadersBottomContainer.subviews)
             {
                 if (header.tag == lastDisplayedSectionHeader.tag)
@@ -1156,11 +1182,28 @@
 
 #pragma mark - UIScrollViewDelegate
 
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+    
+    if (targetContentOffset->y + scrollView.contentInset.top <= 0 && scrollView.contentSize.height)
+    {
+        // Show the search bar
+        [self hideSearchBar:NO];
+    }
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self refreshStickyHeadersContainersHeight];
     
     [super scrollViewDidScroll:scrollView];
+    
+    if (!self.recentsSearchBar.isHidden && !self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.contentInset.top > self.recentsSearchBar.frame.size.height))
+    {
+        // Hide the search bar
+        [self hideSearchBar:YES];
+    }
 }
 
 #pragma mark - recents drag & drop management
@@ -1533,6 +1576,22 @@
 {
     // Open the room
     [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
+        
+    });
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
 }
 
 @end

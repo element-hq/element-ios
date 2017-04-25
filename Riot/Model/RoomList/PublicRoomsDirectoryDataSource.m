@@ -59,6 +59,69 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return self;
 }
 
+- (NSString *)directoryServerDisplayname
+{
+    NSString *directoryServerDisplayname;
+
+    if (_homeserver)
+    {
+        directoryServerDisplayname = _homeserver;
+    }
+    else if (_thirdpartyProtocolInstance)
+    {
+        directoryServerDisplayname = _thirdpartyProtocolInstance.desc;
+    }
+    else
+    {
+        directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServerName;
+    }
+
+    return directoryServerDisplayname;
+}
+
+- (void)setHomeserver:(NSString *)homeserver
+{
+    if ([homeserver isEqualToString:self.mxSession.matrixRestClient.credentials.homeServerName])
+    {
+        // The CS API does not like we pass the user's HS as parameter
+        homeserver = nil;
+    }
+
+     _thirdpartyProtocolInstance = nil;
+
+    if (homeserver != _homeserver)
+    {
+        _homeserver = homeserver;
+
+        // Reset data
+        [self resetPagination];
+    }
+}
+
+- (void)setIncludeAllNetworks:(BOOL)includeAllNetworks
+{
+    if (includeAllNetworks != _includeAllNetworks)
+    {
+        _includeAllNetworks = includeAllNetworks;
+        
+        // Reset data
+        [self resetPagination];
+    }
+}
+
+- (void)setThirdpartyProtocolInstance:(MXThirdPartyProtocolInstance *)thirdpartyProtocolInstance
+{
+    if (thirdpartyProtocolInstance != _thirdpartyProtocolInstance)
+    {
+        _homeserver = nil;
+        _includeAllNetworks = NO;
+        _thirdpartyProtocolInstance = thirdpartyProtocolInstance;
+
+        // Reset data
+        [self resetPagination];
+    }
+}
+
 - (void)setSearchPattern:(NSString *)searchPattern
 {
     if (searchPattern)
@@ -66,7 +129,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (![searchPattern isEqualToString:_searchPattern])
         {
             _searchPattern = searchPattern;
-            [self startPagination];
+            [self resetPagination];
         }
     }
     else
@@ -76,7 +139,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (_searchPattern || rooms.count == 0)
         {
             _searchPattern = searchPattern;
-            [self startPagination];
+            [self resetPagination];
         }
     }
 }
@@ -112,7 +175,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return room;
 }
 
-- (void)startPagination
+- (void)resetPagination
 {
     // Cancel the previous request
     if (publicRoomsRequest)
@@ -120,17 +183,12 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         [publicRoomsRequest cancel];
     }
 
-    [self setState:MXKDataSourceStatePreparing];
-
     // Reset all pagination vars
     [rooms removeAllObjects];
     nextBatch = nil;
     _roomsCount = 0;
     _moreThanRoomsCount = NO;
     _hasReachedPaginationEnd = NO;
-
-    // And do a single pagination
-    [self paginate:nil failure:nil];
 }
 
 - (MXHTTPOperation *)paginate:(void (^)(NSUInteger))complete failure:(void (^)(NSError *))failure
@@ -140,11 +198,13 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         return nil;
     }
 
+    [self setState:MXKDataSourceStatePreparing];
+
     __weak typeof(self) weakSelf = self;
 
     // Get the public rooms from the server
     MXHTTPOperation *newPublicRoomsRequest;
-    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:nil limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:nil includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:_includeAllNetworks success:^(MXPublicRoomsResponse *publicRoomsResponse) {
 
         if (weakSelf)
         {
@@ -242,8 +302,12 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     {
         publicRoomCell = [[PublicRoomTableViewCell alloc] init];
     }
-
-    [publicRoomCell render:rooms[indexPath.row] withMatrixSession:self.mxSession];
+    
+    // Sanity check
+    if (indexPath.row < rooms.count)
+    {
+        [publicRoomCell render:rooms[indexPath.row] withMatrixSession:self.mxSession];
+    }
 
     return publicRoomCell;
 }

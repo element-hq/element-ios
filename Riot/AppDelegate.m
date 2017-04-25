@@ -308,7 +308,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // to avoid empty room View Controller in portrait orientation
     // else, the user cannot select a room
     // shouldHideViewController delegate method is also implemented
-    if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
+    if ([(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
     {
         splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     }
@@ -2559,7 +2559,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         return topViewController;
     }
     
-    // Else return the default empty details view controller from the storyboard
+    // Else return the default empty details view controller from the storyboard.
+    // Be sure that the primary is then visible too.
+    if (splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryHidden)
+    {
+        splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+    }
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     return [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
 }
