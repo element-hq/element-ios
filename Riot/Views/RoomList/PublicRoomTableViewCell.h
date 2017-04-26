@@ -27,4 +27,11 @@
 
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 
+/**
+ Get the cell height.
+ 
+ @return the cell height.
+ */
++ (CGFloat)cellHeight;
+
 @end

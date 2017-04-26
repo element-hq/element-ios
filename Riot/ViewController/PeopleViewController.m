@@ -263,8 +263,13 @@
         section -= directRoomsSectionNumber;
         if (section < contactsSectionNumber)
         {
-            // Return the default height of the contact cell
-            return 74.0;
+            if ([contactsDataSource contactAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:section]])
+            {
+                // Return the default height of the contact cell
+                return 74.0;
+            }
+            
+            return 50;
         }
         else
         {

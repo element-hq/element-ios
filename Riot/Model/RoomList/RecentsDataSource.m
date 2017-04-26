@@ -23,8 +23,6 @@
 
 #import "MXRoom+Riot.h"
 
-#import "DirectoryRecentTableViewCell.h"
-
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
 #define RECENTSDATASOURCE_SECTION_INVITES       0x02
 #define RECENTSDATASOURCE_SECTION_FAVORITES     0x04
@@ -239,7 +237,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             favoritesSection = sectionsCount++;
         }
         
-        if (conversationCellDataArray.count > 0)
+        if (conversationCellDataArray.count > 0 || (_recentsDataSourceMode == RecentsDataSourceModePeople) || (_recentsDataSourceMode == RecentsDataSourceModeRooms))
         {
             conversationSection = sectionsCount++;
         }
@@ -269,7 +267,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (section == conversationSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
     {
-        count = conversationCellDataArray.count;
+        count = conversationCellDataArray.count ? conversationCellDataArray.count : 1;
     }
     else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
     {
@@ -649,6 +647,33 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         return cell;
     }
+    else if (indexPath.section == conversationSection && !conversationCellDataArray.count)
+    {
+        MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!tableViewCell)
+        {
+            tableViewCell = [[MXKTableViewCell alloc] init];
+            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
+            tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        // Check whether a search session is in progress
+        if (searchPatternsList)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+        }
+        else if (_recentsDataSourceMode == RecentsDataSourceModePeople)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"people_no_conversation", @"Vector", nil);
+        }
+        else
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_recents_no_conversation", @"Vector", nil);
+        }
+        
+        return tableViewCell;
+    }
     
     return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 }
@@ -705,11 +730,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     if (indexPath.section == directorySection)
     {
-        return DirectoryRecentTableViewCell.cellHeight;
+        return [_publicRoomsDirectoryDataSource cellHeightAtIndexPath:indexPath];
     }
     if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
         return self.droppingCellBackGroundView.frame.size.height;
+    }
+    if (indexPath.section == conversationSection && !conversationCellDataArray.count)
+    {
+        return 50.0;
     }
     
     // Override this method here to use our own cellDataAtIndexPath

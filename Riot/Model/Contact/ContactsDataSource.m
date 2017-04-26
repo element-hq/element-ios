@@ -425,13 +425,15 @@
     }
     else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE))
     {
-        count = filteredLocalContacts.count;
+        // Display a default cell when no local contacts is available.
+        count = filteredLocalContacts.count ? filteredLocalContacts.count : 1;
     }
     else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE))
     {
         if (currentSearchText.length)
         {
-            count = filteredMatrixContacts.count;
+            // Display a default cell when no contacts is available.
+            count = filteredMatrixContacts.count ? filteredMatrixContacts.count : 1;
         }
         else
         {
@@ -535,6 +537,28 @@
         }
         
         return contactCell;
+    }
+    else
+    {
+        MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!tableViewCell)
+        {
+            tableViewCell = [[MXKTableViewCell alloc] init];
+            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
+            tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        // Check whether a search session is in progress
+        if (currentSearchText.length)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+        }
+        else if (indexPath.section == filteredLocalContactsSection)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+        }
+        return tableViewCell;
     }
     
     return nil;
