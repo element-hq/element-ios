@@ -119,4 +119,12 @@
  */
 - (MXPublicRoom*)roomAtIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ Get the height of the cell at the given index path.
+ 
+ @param indexPath the index of the cell
+ @return the cell height
+ */
+- (CGFloat)cellHeightAtIndexPath:(NSIndexPath*)indexPath;
+
 @end

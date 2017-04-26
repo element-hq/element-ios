@@ -175,6 +175,16 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return room;
 }
 
+- (CGFloat)cellHeightAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (indexPath.row < rooms.count)
+    {
+        return PublicRoomTableViewCell.cellHeight;
+    }
+    
+    return 50.0;
+}
+
 - (void)resetPagination
 {
     // Cancel the previous request
@@ -291,25 +301,46 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return rooms.count;
+    // Display a default cell when no rooms is available.
+    return rooms.count ? rooms.count : 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // For now reuse MatrixKit cells
-    PublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[PublicRoomTableViewCell defaultReuseIdentifier]];
-    if (!publicRoomCell)
-    {
-        publicRoomCell = [[PublicRoomTableViewCell alloc] init];
-    }
-    
     // Sanity check
     if (indexPath.row < rooms.count)
     {
+        PublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[PublicRoomTableViewCell defaultReuseIdentifier]];
+        if (!publicRoomCell)
+        {
+            publicRoomCell = [[PublicRoomTableViewCell alloc] init];
+        }
+        
         [publicRoomCell render:rooms[indexPath.row] withMatrixSession:self.mxSession];
+        return publicRoomCell;
     }
-
-    return publicRoomCell;
+    else
+    {
+        MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!tableViewCell)
+        {
+            tableViewCell = [[MXKTableViewCell alloc] init];
+            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
+            tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        if (_searchPattern.length)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+        }
+        else
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_directory_no_public_room", @"Vector", nil);
+        }
+        
+        return tableViewCell;
+    }
 }
 
 @end

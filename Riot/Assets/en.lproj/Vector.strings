@@ -121,6 +121,7 @@
 "room_recents_favourites_section_default" = "FAVOURITES";
 "room_recents_conversations_section" = "ROOMS (%tu)";
 "room_recents_conversations_section_default" = "ROOMS";
+"room_recents_no_conversation" = "No rooms";
 "room_recents_low_priority_section" = "LOW PRIORITY (%tu)";
 "room_recents_low_priority_section_default" = "LOW PRIORITY";
 "room_recents_invites_section" = "INVITES (%tu)";
@@ -133,6 +134,10 @@
 "people_invites_section_default" = "INVITES";
 "people_conversation_section" = "CONVERSATIONS (%tu)";
 "people_conversation_section_default" = "CONVERSATIONS";
+"people_no_conversation" = "No conversations";
+
+// Rooms tab
+"room_directory_no_public_room" = "No public rooms available";
 
 // Search
 "search_rooms" = "Rooms";
@@ -141,6 +146,7 @@
 "search_files" = "Files";
 "search_default_placeholder" = "Search...";
 "search_people_placeholder" = "Search by User ID, Name or email";
+"search_no_result" = "No results";
 
 // Directory
 "directory_cell_title" = "Browse directory";
@@ -155,6 +161,7 @@
 "contacts_address_book_section" = "LOCAL CONTACTS (%tu)";
 "contacts_address_book_section_default" = "LOCAL CONTACTS";
 "contacts_address_book_matrix_users_toggle" = "Matrix users only";
+"contacts_address_book_no_contact" = "No local contacts";
 "contacts_matrix_users_section" = "KNOWN CONTACTS (%tu)";
 "contacts_matrix_users_section_default" = "KNOWN CONTACTS";
 "contacts_matrix_users_search_prompt" = "Too many contacts, please use the search field";
