@@ -535,13 +535,22 @@
 
 - (void)refreshStickyHeadersContainersHeight
 {
+    // Check whether the full table content is visible.
+    if (self.recentsTableView.contentSize.height + self.recentsTableView.contentInset.top + self.recentsTableView.contentInset.bottom <= self.recentsTableView.frame.size.height )
+    {
+        // No sticky header is required. Hide them to prevent from flickering in case of vertical bounces.
+        self.stickyHeadersTopContainerHeightConstraint.constant = 0;
+        self.stickyHeadersBottomContainerHeightConstraint.constant = 0;
+        return;
+    }
+    
     if (_enableStickyHeaders)
     {
         // Retrieve the first and the last headers actually visible in the recents table view.
         // Caution: In some cases like the screen rotation, some displayed section headers are temporarily not visible.
         UIView *firstDisplayedSectionHeader, *lastDisplayedSectionHeader;
         CGFloat containerHeight;
-        CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + (self.recentsTableView.frame.size.height - self.recentsTableView.contentInset.bottom);
+        CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.contentInset.bottom;
         
         for (UIView *header in displayedSectionHeaders)
         {
