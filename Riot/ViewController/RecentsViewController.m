@@ -449,87 +449,96 @@
         NSUInteger bottomContainerOffset = 0;
         CGRect frame;
         
-        UIView *sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:0];
-        sectionHeader.tag = 0;
-        frame = sectionHeader.frame;
-        frame.origin.y = 0;
-        sectionHeader.frame = frame;
-        sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [self.stickyHeadersTopContainer addSubview:sectionHeader];
-        topContainerOffset = sectionHeader.frame.size.height;
-        
-        // Handle tap gesture
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
-        [tap setNumberOfTouchesRequired:1];
-        [tap setNumberOfTapsRequired:1];
-        [tap setDelegate:self];
-        [sectionHeader addGestureRecognizer:tap];
-        
-        // Handle vertical swipe gesture
-        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
-        [swipe setNumberOfTouchesRequired:1];
-        [swipe setDirection:UISwipeGestureRecognizerDirectionDown];
-        [sectionHeader addGestureRecognizer:swipe];
+        UIView *stickyHeader = [self viewForStickyHeaderInSection:0 withSwipeGestureRecognizerInDirection:UISwipeGestureRecognizerDirectionDown];
+        frame = stickyHeader.frame;
+        frame.origin.y = topContainerOffset;
+        stickyHeader.frame = frame;
+        [self.stickyHeadersTopContainer addSubview:stickyHeader];
+        topContainerOffset = stickyHeader.frame.size.height;
         
         for (NSUInteger index = 1; index < sectionsCount; index++)
         {
-            sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
-            sectionHeader.tag = index;
-            frame = sectionHeader.frame;
+            stickyHeader = [self viewForStickyHeaderInSection:index withSwipeGestureRecognizerInDirection:UISwipeGestureRecognizerDirectionDown];
+            frame = stickyHeader.frame;
             frame.origin.y = topContainerOffset;
-            sectionHeader.frame = frame;
-            sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-            [self.stickyHeadersTopContainer addSubview:sectionHeader];
+            stickyHeader.frame = frame;
+            [self.stickyHeadersTopContainer addSubview:stickyHeader];
             topContainerOffset += frame.size.height;
             
-            // Handle tap gesture
-            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
-            [tap setNumberOfTouchesRequired:1];
-            [tap setNumberOfTapsRequired:1];
-            [tap setDelegate:self];
-            [sectionHeader addGestureRecognizer:tap];
-            
-            // Handle vertical swipe gesture
-            swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
-            [swipe setNumberOfTouchesRequired:1];
-            [swipe setDirection:UISwipeGestureRecognizerDirectionDown];
-            [sectionHeader addGestureRecognizer:swipe];
-            
-            sectionHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:index];
-            sectionHeader.tag = index;
-            frame = sectionHeader.frame;
+            stickyHeader = [self viewForStickyHeaderInSection:index withSwipeGestureRecognizerInDirection:UISwipeGestureRecognizerDirectionUp];
+            frame = stickyHeader.frame;
             frame.origin.y = bottomContainerOffset;
-            sectionHeader.frame = frame;
-            sectionHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-            [self.stickyHeadersBottomContainer addSubview:sectionHeader];
+            stickyHeader.frame = frame;
+            [self.stickyHeadersBottomContainer addSubview:stickyHeader];
             bottomContainerOffset += frame.size.height;
-            
-            // Handle tap gesture
-            tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
-            [tap setNumberOfTouchesRequired:1];
-            [tap setNumberOfTapsRequired:1];
-            [tap setDelegate:self];
-            [sectionHeader addGestureRecognizer:tap];
-            
-            // Handle vertical swipe gesture
-            swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didTapStickyHeader:)];
-            [swipe setNumberOfTouchesRequired:1];
-            [swipe setDirection:UISwipeGestureRecognizerDirectionUp];
-            [sectionHeader addGestureRecognizer:swipe];
         }
         
         [self refreshStickyHeadersContainersHeight];
     }
 }
 
-- (void)didTapStickyHeader:(UIGestureRecognizer*)gestureRecognizer
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withSwipeGestureRecognizerInDirection:(UISwipeGestureRecognizerDirection)swipeDirection
+{
+    UIView *stickyHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:section];
+    stickyHeader.tag = section;
+    stickyHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    // Remove existing gesture recognizers
+    while (stickyHeader.gestureRecognizers.count)
+    {
+        UIGestureRecognizer *gestureRecognizer = stickyHeader.gestureRecognizers.lastObject;
+        [stickyHeader removeGestureRecognizer:gestureRecognizer];
+    }
+    
+    // Handle tap gesture, the section is moved up on the tap.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSectionHeader:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [stickyHeader addGestureRecognizer:tap];
+    
+    // Handle vertical swipe gesture with the provided direction, by default the section will be moved up on this swipe.
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipeOnSectionHeader:)];
+    [swipe setNumberOfTouchesRequired:1];
+    [swipe setDirection:swipeDirection];
+    [stickyHeader addGestureRecognizer:swipe];
+    
+    return stickyHeader;
+}
+
+- (void)didTapOnSectionHeader:(UIGestureRecognizer*)gestureRecognizer
 {
     UIView *view = gestureRecognizer.view;
     NSInteger section = view.tag;
 
+    // Scroll to the top of this section
     if ([self.recentsTableView numberOfRowsInSection:section] > 0)
     {
-         [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:view.tag] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+}
+
+- (void)didSwipeOnSectionHeader:(UISwipeGestureRecognizer*)gestureRecognizer
+{
+    UIView *view = gestureRecognizer.view;
+    NSInteger section = view.tag;
+    
+    if ([self.recentsTableView numberOfRowsInSection:section] > 0)
+    {
+        // Check whether the first cell of this section is already visible.
+        UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+        if (firstSectionCell)
+        {
+            // Scroll to the top of the previous section (if any)
+            if ([self.recentsTableView numberOfRowsInSection:(section - 1)] > 0)
+            {
+                [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:(section - 1)] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+        }
+        else
+        {
+            // Scroll to the top of this section
+            [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
     }
 }
 
@@ -1092,6 +1101,29 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 30.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *sectionHeader = [super tableView:tableView viewForHeaderInSection:section];
+    sectionHeader.tag = section;
+    
+    if (_enableStickyHeaders)
+    {
+        while (sectionHeader.gestureRecognizers.count)
+        {
+            UIGestureRecognizer *gestureRecognizer = sectionHeader.gestureRecognizers.lastObject;
+            [sectionHeader removeGestureRecognizer:gestureRecognizer];
+        }
+        
+        // Handle tap gesture
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSectionHeader:)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [sectionHeader addGestureRecognizer:tap];
+    }
+    
+    return sectionHeader;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

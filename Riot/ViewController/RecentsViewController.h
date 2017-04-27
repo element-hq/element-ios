@@ -17,7 +17,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate>
+@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate>
 {
 @protected
     /**
@@ -113,6 +113,11 @@
  Create an empty room.
  */
 - (void)createAnEmptyRoom;
+
+#pragma mark - Actions
+
+- (void)didTapOnSectionHeader:(UIGestureRecognizer*)gestureRecognizer;
+- (void)didSwipeOnSectionHeader:(UISwipeGestureRecognizer*)gestureRecognizer;
 
 @end
 
