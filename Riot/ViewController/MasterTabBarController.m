@@ -51,6 +51,8 @@
     id mxRoomSummaryDidChangeObserver;
 }
 
+@property(nonatomic,getter=isHidden) BOOL hidden;
+
 @end
 
 @implementation MasterTabBarController
@@ -79,6 +81,14 @@
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Show the tab bar view controller content only when a user is logged in.
+    self.hidden = ([MXKAccountManager sharedManager].accounts.count == 0);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -573,7 +583,17 @@
     if ([selectedViewController respondsToSelector:@selector(refreshCurrentSelectedCell:)])
     {
         [(id)selectedViewController refreshCurrentSelectedCell:forceVisible];
-    }}
+    }
+}
+
+- (void)setHidden:(BOOL)hidden
+{
+    _hidden = hidden;
+    
+    [self.view superview].backgroundColor = [UIColor whiteColor];
+    self.view.hidden = hidden;
+    self.navigationController.navigationBar.hidden = hidden;
+}
 
 #pragma mark -
 
