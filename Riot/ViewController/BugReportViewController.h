@@ -36,6 +36,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *sendScreenshotLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *sendScreenshotButtonImage;
 
+@property (weak, nonatomic) IBOutlet UIView *sendingContainer;
+@property (weak, nonatomic) IBOutlet UILabel *sendingLabel;
+@property (weak, nonatomic) IBOutlet UIProgressView *sendingProgress;
 
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;

@@ -64,6 +64,8 @@
 
     _sendButton.enabled = NO;
 
+    _sendingContainer.hidden = YES;
+
     // TODO: Screenshot is not yet supported by the bug report API
     _sendScreenshotContainer.hidden = YES;
     _sendScreenshotContainerHeightConstraint.constant = 0;
@@ -100,10 +102,11 @@
 - (IBAction)onSendButtonPress:(id)sender
 {
     _sendButton.hidden = YES;
-    _bugDescriptionContainer.hidden = YES;
+    _sendingContainer.hidden = NO;
 
     // Setup data to send
-    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.2.9:9110"];
+    //bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.2.9:9110"];
+    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.0.4:9110"];
 
     // App info
     bugReportRestClient.appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]; // NO ?
@@ -117,7 +120,21 @@
     // Submit
     [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:YES progress:^(MXBugReportState state, NSProgress *progress) {
 
+        switch (state)
+        {
+            case MXBugReportStateProgressZipping:
+                _sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_zipping", @"Vector", nil);
+                break;
 
+            case MXBugReportStateProgressUploading:
+                _sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_uploading", @"Vector", nil);
+                break;
+
+            default:
+                break;
+        }
+
+        _sendingProgress.progress = progress.fractionCompleted;
 
     } success:^{
 
@@ -131,7 +148,7 @@
         [[AppDelegate theDelegate] showErrorAsAlert:error];
 
         _sendButton.hidden = NO;
-        _bugDescriptionContainer.hidden = NO;
+        _sendingContainer.hidden = YES;
     }];
 }
 
@@ -145,7 +162,7 @@
         bugReportRestClient = nil;
 
         _sendButton.hidden = NO;
-        _bugDescriptionContainer.hidden = NO;
+        _sendingContainer.hidden = YES;
     }
     else
     {

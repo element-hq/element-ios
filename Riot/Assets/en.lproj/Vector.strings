@@ -461,3 +461,5 @@
 "bug_report_logs_description" = "In order to diagnose problems, logs from this client will be sent with this bug report. If you would prefer to only send the text above, please untick:";
 "bug_report_send_logs" = "Send logs";
 "bug_report_send_screenshot" = "Send screenshot";
+"bug_report_progress_zipping" = "Collecting logs";
+"bug_report_progress_uploading" = "Uploading report";

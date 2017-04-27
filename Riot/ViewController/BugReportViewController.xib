@@ -25,6 +25,9 @@
                 <outlet property="sendScreenshotContainer" destination="O0J-dD-1k5" id="qYW-VV-Acy"/>
                 <outlet property="sendScreenshotContainerHeightConstraint" destination="2ja-aa-DAG" id="Kz2-Pb-Pxw"/>
                 <outlet property="sendScreenshotLabel" destination="oYv-cW-Kbe" id="twI-Ot-LUs"/>
+                <outlet property="sendingContainer" destination="Ftc-3U-5Bi" id="1mN-tF-cGX"/>
+                <outlet property="sendingLabel" destination="oVw-Hc-PwM" id="5vt-NR-vTP"/>
+                <outlet property="sendingProgress" destination="XR1-55-d7w" id="7Xd-fH-GcZ"/>
                 <outlet property="titleLabel" destination="aeH-ET-APV" id="LQk-iL-iwu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -155,6 +158,29 @@
                                 <constraint firstAttribute="trailing" secondItem="OeD-Fm-kQQ" secondAttribute="trailing" id="yXS-nF-rVD"/>
                             </constraints>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ftc-3U-5Bi">
+                            <rect key="frame" x="20" y="49" width="260" height="333"/>
+                            <subviews>
+                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XR1-55-d7w">
+                                    <rect key="frame" x="20" y="165" width="220" height="2"/>
+                                </progressView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uploading report" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVw-Hc-PwM">
+                                    <rect key="frame" x="65" y="136" width="130" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="XR1-55-d7w" secondAttribute="trailing" constant="20" symbolic="YES" id="VJE-my-FmD"/>
+                                <constraint firstItem="XR1-55-d7w" firstAttribute="leading" secondItem="Ftc-3U-5Bi" secondAttribute="leading" constant="20" symbolic="YES" id="eEz-9N-1QK"/>
+                                <constraint firstItem="XR1-55-d7w" firstAttribute="centerX" secondItem="Ftc-3U-5Bi" secondAttribute="centerX" id="kWL-ws-LXJ"/>
+                                <constraint firstItem="XR1-55-d7w" firstAttribute="top" secondItem="oVw-Hc-PwM" secondAttribute="bottom" constant="8" symbolic="YES" id="n6h-8U-gaU"/>
+                                <constraint firstItem="oVw-Hc-PwM" firstAttribute="centerX" secondItem="Ftc-3U-5Bi" secondAttribute="centerX" id="qpC-jh-jCm"/>
+                                <constraint firstItem="XR1-55-d7w" firstAttribute="centerY" secondItem="Ftc-3U-5Bi" secondAttribute="centerY" id="yZ6-YD-qrm"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -162,12 +188,16 @@
                         <constraint firstAttribute="height" priority="750" constant="440" id="4qF-pj-Ry2"/>
                         <constraint firstAttribute="trailing" secondItem="XWq-Hj-PBz" secondAttribute="trailing" constant="20" symbolic="YES" id="GRz-YM-emU"/>
                         <constraint firstAttribute="bottom" secondItem="l42-MQ-X7i" secondAttribute="bottom" constant="20" symbolic="YES" id="MnD-EC-UXD"/>
+                        <constraint firstItem="Ftc-3U-5Bi" firstAttribute="top" secondItem="aeH-ET-APV" secondAttribute="bottom" constant="8" symbolic="YES" id="Pug-ig-nJZ"/>
                         <constraint firstItem="Ear-my-jEG" firstAttribute="top" secondItem="XWq-Hj-PBz" secondAttribute="bottom" constant="8" symbolic="YES" id="bJe-fF-lRc"/>
                         <constraint firstAttribute="trailing" secondItem="aeH-ET-APV" secondAttribute="trailing" constant="20" symbolic="YES" id="bvu-lf-bZ5"/>
                         <constraint firstItem="aeH-ET-APV" firstAttribute="centerX" secondItem="WRr-MN-c4Y" secondAttribute="centerX" id="dC9-eE-KdD"/>
+                        <constraint firstItem="Ftc-3U-5Bi" firstAttribute="leading" secondItem="WRr-MN-c4Y" secondAttribute="leading" constant="20" symbolic="YES" id="eAO-X4-qpb"/>
                         <constraint firstItem="aeH-ET-APV" firstAttribute="leading" secondItem="WRr-MN-c4Y" secondAttribute="leading" constant="20" symbolic="YES" id="egz-mI-fYb"/>
+                        <constraint firstItem="Ear-my-jEG" firstAttribute="top" secondItem="Ftc-3U-5Bi" secondAttribute="bottom" constant="8" symbolic="YES" id="hbv-bS-Jnz"/>
                         <constraint firstItem="aeH-ET-APV" firstAttribute="top" secondItem="WRr-MN-c4Y" secondAttribute="top" constant="20" symbolic="YES" id="iht-fN-8hN"/>
                         <constraint firstItem="XWq-Hj-PBz" firstAttribute="top" secondItem="aeH-ET-APV" secondAttribute="bottom" constant="8" symbolic="YES" id="ivV-Ea-O4F"/>
+                        <constraint firstAttribute="trailing" secondItem="Ftc-3U-5Bi" secondAttribute="trailing" constant="20" symbolic="YES" id="qii-d8-oR3"/>
                         <constraint firstItem="XWq-Hj-PBz" firstAttribute="leading" secondItem="WRr-MN-c4Y" secondAttribute="leading" constant="20" symbolic="YES" id="s4R-V2-UIN"/>
                         <constraint firstAttribute="trailing" secondItem="l42-MQ-X7i" secondAttribute="trailing" constant="20" symbolic="YES" id="uFF-XE-dI4"/>
                         <constraint firstItem="Ear-my-jEG" firstAttribute="leading" secondItem="WRr-MN-c4Y" secondAttribute="leading" constant="20" symbolic="YES" id="wN4-H3-Mhl"/>
