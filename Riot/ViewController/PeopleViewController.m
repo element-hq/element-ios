@@ -244,7 +244,25 @@
         section -= directRoomsSectionNumber;
         if (section < contactsSectionNumber)
         {
-            return [contactsDataSource viewForHeaderInSection:section withFrame:frame];
+            UIView *sectionHeader = [contactsDataSource viewForHeaderInSection:section withFrame:frame];
+            sectionHeader.tag = section + directRoomsSectionNumber;
+            
+            if (self.enableStickyHeaders)
+            {
+                while (sectionHeader.gestureRecognizers.count)
+                {
+                    UIGestureRecognizer *gestureRecognizer = sectionHeader.gestureRecognizers.lastObject;
+                    [sectionHeader removeGestureRecognizer:gestureRecognizer];
+                }
+                
+                // Handle tap gesture
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSectionHeader:)];
+                [tap setNumberOfTouchesRequired:1];
+                [tap setNumberOfTapsRequired:1];
+                [sectionHeader addGestureRecognizer:tap];
+            }
+            
+            return sectionHeader;
         }
         else
         {
