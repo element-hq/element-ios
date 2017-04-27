@@ -25,6 +25,9 @@
     MXBugReportRestClient *bugReportRestClient;
 }
 
+@property (nonatomic) BOOL sendLogs;
+@property (nonatomic) BOOL sendScreenshot;
+
 @end
 
 @implementation BugReportViewController
@@ -44,6 +47,15 @@
 }
 
 #pragma mark -
+
+- (void)showInViewController:(UIViewController *)viewController
+{
+    self.providesPresentationContextTransitionStyle = YES;
+    self.definesPresentationContext = YES;
+    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+
+    [viewController presentViewController:self animated:YES completion:nil];
+}
 
 - (void)viewDidLoad
 {
@@ -66,9 +78,24 @@
 
     _sendingContainer.hidden = YES;
 
+    self.sendLogs = YES;
+    self.sendScreenshot = YES;
+
     // TODO: Screenshot is not yet supported by the bug report API
     _sendScreenshotContainer.hidden = YES;
     _sendScreenshotContainerHeightConstraint.constant = 0;
+
+    // Listen to sendLogs tap
+    UITapGestureRecognizer *sendLogsTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSendLogsTap:)];
+    [sendLogsTapGesture setNumberOfTouchesRequired:1];
+    [_sendLogsContainer addGestureRecognizer:sendLogsTapGesture];
+    _sendLogsContainer.userInteractionEnabled = YES;
+
+    // Listen to sendScreenshot tap
+    UITapGestureRecognizer *sendScreenshotTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSendScreenshotTap:)];
+    [sendScreenshotTapGesture setNumberOfTouchesRequired:1];
+    [_sendScreenshotContainer addGestureRecognizer:sendScreenshotTapGesture];
+    _sendScreenshotContainer.userInteractionEnabled = YES;
 
     // Show a Done button to hide the keyboard
     UIToolbar *viewForDoneButtonOnKeyboard = [[UIToolbar alloc] init];
@@ -81,13 +108,30 @@
     _bugReportDescriptionTextView.inputAccessoryView = viewForDoneButtonOnKeyboard;
 }
 
-- (void)showInViewController:(UIViewController *)viewController
+- (void)setSendLogs:(BOOL)sendLogs
 {
-    self.providesPresentationContextTransitionStyle = YES;
-    self.definesPresentationContext = YES;
-    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    _sendLogs = sendLogs;
+    if (_sendLogs)
+    {
+        _sendLogsButtonImage.image = [UIImage imageNamed:@"selection_tick"];
+    }
+    else
+    {
+        _sendLogsButtonImage.image = [UIImage imageNamed:@"selection_untick"];
+    }
+}
 
-    [viewController presentViewController:self animated:YES completion:nil];
+- (void)setSendScreenshot:(BOOL)sendScreenshot
+{
+    _sendScreenshot = sendScreenshot;
+    if (_sendScreenshot)
+    {
+        _sendScreenshotButtonImage.image = [UIImage imageNamed:@"selection_tick"];
+    }
+    else
+    {
+        _sendScreenshotButtonImage.image = [UIImage imageNamed:@"selection_untick"];
+    }
 }
 
 #pragma mark - UITextViewDelegate
@@ -118,7 +162,7 @@
     bugReportRestClient.deviceOS = [NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
 
     // Submit
-    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:YES progress:^(MXBugReportState state, NSProgress *progress) {
+    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs progress:^(MXBugReportState state, NSProgress *progress) {
 
         switch (state)
         {
@@ -169,6 +213,16 @@
         // Else, lease the bug report screen
         [self dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+- (IBAction)onSendLogsTap:(id)sender
+{
+    self.sendLogs = !self.sendLogs;
+}
+
+- (IBAction)onSendScreenshotTap:(id)sender
+{
+    self.sendScreenshot = !self.sendScreenshot;
 }
 
 - (IBAction)onKeyboardDoneButtonPressed:(id)sender
