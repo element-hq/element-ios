@@ -11,13 +11,20 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BugReportViewController">
             <connections>
+                <outlet property="bugDescriptionContainer" destination="XWq-Hj-PBz" id="t8T-0q-lta"/>
                 <outlet property="bugReportDescriptionTextView" destination="W1D-op-cUh" id="BeE-WE-BQg"/>
                 <outlet property="cancelButton" destination="Ear-my-jEG" id="H49-2S-0TU"/>
                 <outlet property="containerView" destination="WRr-MN-c4Y" id="Vgi-XL-fAx"/>
                 <outlet property="descriptionLabel" destination="4k3-oW-KkF" id="FNo-HL-1tQ"/>
                 <outlet property="logsDescriptionLabel" destination="34I-Xh-ZaX" id="6o5-VS-HlH"/>
                 <outlet property="sendButton" destination="l42-MQ-X7i" id="QAM-Kf-Vr2"/>
+                <outlet property="sendLogsButtonImage" destination="QcZ-TV-XAD" id="Jl9-o9-Pis"/>
+                <outlet property="sendLogsContainer" destination="OeD-Fm-kQQ" id="6B0-H3-6uj"/>
                 <outlet property="sendLogsLabel" destination="cVE-WC-3iA" id="f9I-nN-fUi"/>
+                <outlet property="sendScreenshotButtonImage" destination="MU0-e7-M5l" id="4ju-I9-23f"/>
+                <outlet property="sendScreenshotContainer" destination="O0J-dD-1k5" id="qYW-VV-Acy"/>
+                <outlet property="sendScreenshotContainerHeightConstraint" destination="2ja-aa-DAG" id="Kz2-Pb-Pxw"/>
+                <outlet property="sendScreenshotLabel" destination="oYv-cW-Kbe" id="twI-Ot-LUs"/>
                 <outlet property="titleLabel" destination="aeH-ET-APV" id="LQk-iL-iwu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
