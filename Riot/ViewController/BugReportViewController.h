@@ -47,4 +47,9 @@
 
 - (void)showInViewController:(UIViewController*)viewController;
 
+/**
+ The screenshot to send with the bug report.
+ */
+@property (nonatomic) UIImage *screenshot;
+
 @end

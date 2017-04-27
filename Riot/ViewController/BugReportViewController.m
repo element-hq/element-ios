@@ -61,6 +61,8 @@
 {
     [super viewDidLoad];
 
+    NSLog(@"%@", _screenshot);
+
     _titleLabel.text = NSLocalizedStringFromTable(@"bug_report_title", @"Vector", nil);
     _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_description", @"Vector", nil);
     _logsDescriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_logs_description", @"Vector", nil);
@@ -81,9 +83,12 @@
     self.sendLogs = YES;
     self.sendScreenshot = YES;
 
-    // TODO: Screenshot is not yet supported by the bug report API
-    _sendScreenshotContainer.hidden = YES;
-    _sendScreenshotContainerHeightConstraint.constant = 0;
+    // Hide the screenshot button if there is no screenshot
+    // if (!_screenshot)    // TODO: always hide it becayse screenshot is not yet supported by the bug report API
+    {
+        _sendScreenshotContainer.hidden = YES;
+        _sendScreenshotContainerHeightConstraint.constant = 0;
+    }
 
     // Listen to sendLogs tap
     UITapGestureRecognizer *sendLogsTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSendLogsTap:)];
