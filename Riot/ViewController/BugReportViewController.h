@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BugReportViewController : UIViewController
+@interface BugReportViewController : UIViewController <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;

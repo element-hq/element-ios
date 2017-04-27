@@ -16,7 +16,14 @@
 
 #import "BugReportViewController.h"
 
+#import "AppDelegate.h"
+
+#import "GBDeviceInfo_iOS.h"
+
 @interface BugReportViewController ()
+{
+    MXBugReportRestClient *bugReportRestClient;
+}
 
 @end
 
@@ -45,7 +52,25 @@
     _containerView.layer.cornerRadius = 20;
 
     _bugReportDescriptionTextView.layer.borderWidth = 1.0f;
-    _bugReportDescriptionTextView.layer.borderColor = [UIColor redColor].CGColor;
+    _bugReportDescriptionTextView.layer.borderColor = kRiotColorLightGrey.CGColor;
+    _bugReportDescriptionTextView.text = nil;
+    _bugReportDescriptionTextView.delegate = self;
+
+    _sendButton.enabled = NO;
+
+    // TODO: Screenshot is not yet supported by the bug report API
+    _sendScreenshotContainer.hidden = YES;
+    _sendScreenshotContainerHeightConstraint.constant = 0;
+
+    // Show a Done button to hide the keyboard
+    UIToolbar *viewForDoneButtonOnKeyboard = [[UIToolbar alloc] init];
+    [viewForDoneButtonOnKeyboard sizeToFit];
+
+    UIBarButtonItem *btnDoneOnKeyboard = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(onKeyboardDoneButtonPressed:)];
+
+    viewForDoneButtonOnKeyboard.items = @[btnDoneOnKeyboard];
+
+    _bugReportDescriptionTextView.inputAccessoryView = viewForDoneButtonOnKeyboard;
 }
 
 - (void)showInViewController:(UIViewController *)viewController
@@ -57,16 +82,75 @@
     [viewController presentViewController:self animated:YES completion:nil];
 }
 
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    _sendButton.enabled = (_bugReportDescriptionTextView.text.length != 0);
+}
+
 #pragma mark - User actions
 
 - (IBAction)onSendButtonPress:(id)sender
 {
+    _sendButton.hidden = YES;
+    _bugDescriptionContainer.hidden = YES;
 
+    // Setup data to send
+    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.2.9:9110"];
+
+    // App info
+    bugReportRestClient.appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]; // NO ?
+    bugReportRestClient.version = [AppDelegate theDelegate].appVersion;
+    bugReportRestClient.build = [AppDelegate theDelegate].build;
+
+    // Device info
+    bugReportRestClient.deviceModel = [GBDeviceInfo deviceInfo].modelString;
+    bugReportRestClient.deviceOS = [NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
+
+    // Submit
+    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:YES progress:^(MXBugReportState state, NSProgress *progress) {
+
+
+
+    } success:^{
+
+        bugReportRestClient = nil;
+        [self dismissViewControllerAnimated:YES completion:nil];
+
+    } failure:^(NSError *error) {
+
+        bugReportRestClient = nil;
+
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+
+        _sendButton.hidden = NO;
+        _bugDescriptionContainer.hidden = NO;
+    }];
 }
 
 - (IBAction)onCancelButtonPressed:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (bugReportRestClient)
+    {
+        // If the submission is in progress, cancel the sending and come back
+        // to the bug report screen
+        [bugReportRestClient cancel];
+        bugReportRestClient = nil;
+
+        _sendButton.hidden = NO;
+        _bugDescriptionContainer.hidden = NO;
+    }
+    else
+    {
+        // Else, lease the bug report screen
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (IBAction)onKeyboardDoneButtonPressed:(id)sender
+{
+    [_bugReportDescriptionTextView resignFirstResponder];
 }
 
 @end
