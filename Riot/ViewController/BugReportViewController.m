@@ -49,6 +49,12 @@
 {
     [super viewDidLoad];
 
+    _titleLabel.text = NSLocalizedStringFromTable(@"bug_report_title", @"Vector", nil);
+    _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_description", @"Vector", nil);
+    _logsDescriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_logs_description", @"Vector", nil);
+    _sendLogsLabel.text = NSLocalizedStringFromTable(@"bug_report_send_logs", @"Vector", nil);
+    _sendScreenshotLabel.text = NSLocalizedStringFromTable(@"bug_report_send_screenshot", @"Vector", nil);
+
     _containerView.layer.cornerRadius = 20;
 
     _bugReportDescriptionTextView.layer.borderWidth = 1.0f;
