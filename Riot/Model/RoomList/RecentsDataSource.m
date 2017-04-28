@@ -852,6 +852,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [conversationCellDataArray removeAllObjects];
     [lowPriorityCellDataArray removeAllObjects];
     
+    _missedFavouriteDiscussionsCount = _missedHighlightFavouriteDiscussionsCount = 0;
+    _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
+    _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
+    
     directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     
     if (displayedRecentsDataSourceArray.count > 0)
@@ -862,13 +866,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         NSInteger count = recentsDataSource.numberOfCells;
         
-        if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+        for (int index = 0; index < count; index++)
         {
-            for (int index = 0; index < count; index++)
+            id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
+            MXRoom* room = recentCellDataStoring.roomSummary.room;
+            
+            if (_recentsDataSourceMode == RecentsDataSourceModeHome)
             {
-                id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-                MXRoom* room = recentCellDataStoring.roomSummary.room;
-                
                 if (room.accountData.tags[kMXRoomTagFavourite])
                 {
                     [favoriteCellDataArray addObject:recentCellDataStoring];
@@ -886,28 +890,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                     [conversationCellDataArray addObject:recentCellDataStoring];
                 }
             }
-        }
-        else if (_recentsDataSourceMode == RecentsDataSourceModeFavourites)
-        {
-            for (int index = 0; index < count; index++)
+            else if (_recentsDataSourceMode == RecentsDataSourceModeFavourites)
             {
-                id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-                MXRoom* room = recentCellDataStoring.roomSummary.room;
-                
                 // Keep only the favourites rooms.
                 if (room.accountData.tags[kMXRoomTagFavourite])
                 {
                     [favoriteCellDataArray addObject:recentCellDataStoring];
                 }
             }
-        }
-        else if (_recentsDataSourceMode == RecentsDataSourceModePeople)
-        {
-            for (int index = 0; index < count; index++)
+            else if (_recentsDataSourceMode == RecentsDataSourceModePeople)
             {
-                id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-                MXRoom* room = recentCellDataStoring.roomSummary.room;
-                
                 // Keep only the direct rooms.
                 if (room.isDirect)
                 {
@@ -921,14 +913,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                     }
                 }
             }
-        }
-        else if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
-        {
-            for (int index = 0; index < count; index++)
+            else if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
             {
-                id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-                MXRoom* room = recentCellDataStoring.roomSummary.room;
-                
                 // Consider only non direct rooms.
                 if (!room.isDirect)
                 {
@@ -943,8 +929,62 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                     }
                 }
             }
+            
+            // Update missed conversations counts
+            NSUInteger notificationCount = recentCellDataStoring.roomSummary.notificationCount;
+            
+            // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
+            if (room.isMentionsOnly)
+            {
+                // Only the highlighted missed messages must be considered here.
+                notificationCount = recentCellDataStoring.roomSummary.highlightCount;
+            }
+            
+            if (notificationCount)
+            {
+                if (room.accountData.tags[kMXRoomTagFavourite])
+                {
+                    _missedFavouriteDiscussionsCount ++;
+                    
+                    if (recentCellDataStoring.roomSummary.highlightCount)
+                    {
+                        _missedHighlightFavouriteDiscussionsCount ++;
+                    }
+                }
+                
+                if (room.isDirect)
+                {
+                    _missedDirectDiscussionsCount ++;
+                    
+                    if (recentCellDataStoring.roomSummary.highlightCount)
+                    {
+                        _missedHighlightDirectDiscussionsCount ++;
+                    }
+                }
+                else
+                {
+                    _missedGroupDiscussionsCount ++;
+                    
+                    if (recentCellDataStoring.roomSummary.highlightCount)
+                    {
+                        _missedHighlightGroupDiscussionsCount ++;
+                    }
+                }
+            }
+            else if (room.state.membership == MXMembershipInvite)
+            {
+                if (room.isDirect)
+                {
+                    _missedDirectDiscussionsCount ++;
+                }
+                else
+                {
+                    _missedGroupDiscussionsCount ++;
+                }
+            }
+            
         }
-        
+
         if (favoriteCellDataArray.count > 0)
         {
             // Sort them according to their tag order

@@ -282,6 +282,9 @@
 
 - (void)refreshRecentsTable
 {
+    // Refresh the tabBar icon badges
+    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    
     // do not refresh if there is a pending recent drag and drop
     if (movingCellPath)
     {
