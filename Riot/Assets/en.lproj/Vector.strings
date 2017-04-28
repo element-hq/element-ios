@@ -458,6 +458,8 @@
 // Bug report
 "bug_report_title" = "Bug Report";
 "bug_report_description" = "Please describe the bug. What did you do? What did you expect to happen? What actually happened?";
+"bug_crash_report_title" = "Crash Report";
+"bug_crash_report_description" = "Please describe what you did before the crash:";
 "bug_report_logs_description" = "In order to diagnose problems, logs from this client will be sent with this bug report. If you would prefer to only send the text above, please untick:";
 "bug_report_send_logs" = "Send logs";
 "bug_report_send_screenshot" = "Send screenshot";

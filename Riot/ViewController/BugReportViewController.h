@@ -54,4 +54,10 @@
  */
 @property (nonatomic) UIImage *screenshot;
 
+/**
+ Option to report a crash.
+ The crash log will sent in the report.
+ */
+@property (nonatomic) BOOL reportCrash;
+
 @end

@@ -63,8 +63,6 @@
 
     NSLog(@"%@", _screenshot);
 
-    _titleLabel.text = NSLocalizedStringFromTable(@"bug_report_title", @"Vector", nil);
-    _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_description", @"Vector", nil);
     _logsDescriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_logs_description", @"Vector", nil);
     _sendLogsLabel.text = NSLocalizedStringFromTable(@"bug_report_send_logs", @"Vector", nil);
     _sendScreenshotLabel.text = NSLocalizedStringFromTable(@"bug_report_send_screenshot", @"Vector", nil);
@@ -76,7 +74,19 @@
     _bugReportDescriptionTextView.text = nil;
     _bugReportDescriptionTextView.delegate = self;
 
-    _sendButton.enabled = NO;
+    if (_reportCrash)
+    {
+        _titleLabel.text = NSLocalizedStringFromTable(@"bug_crash_report_title", @"Vector", nil);
+        _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_crash_report_description", @"Vector", nil);
+    }
+    else
+    {
+        _titleLabel.text = NSLocalizedStringFromTable(@"bug_report_title", @"Vector", nil);
+        _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_description", @"Vector", nil);
+
+        // Allow to send empty description for crash report but not for bug report
+        _sendButton.enabled = NO;
+    }
 
     _sendingContainer.hidden = YES;
 
@@ -145,7 +155,9 @@
 
     // Setup data to send
     //bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.2.9:9110"];
-    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.0.4:9110"];
+    //bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.0.4:9110"];
+    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://172.20.10.2:9110"];
+
 
     // App info
     bugReportRestClient.appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]; // NO ?
@@ -157,7 +169,7 @@
     bugReportRestClient.deviceOS = [NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
 
     // Submit
-    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs progress:^(MXBugReportState state, NSProgress *progress) {
+    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs sendCrashLog:_reportCrash progress:^(MXBugReportState state, NSProgress *progress) {
 
         switch (state)
         {
@@ -178,6 +190,13 @@
     } success:^{
 
         bugReportRestClient = nil;
+
+        if (_reportCrash)
+        {
+            // Erase the crash log
+            [MXLogger deleteCrashLog];
+        }
+
         [self dismissViewControllerAnimated:YES completion:nil];
 
     } failure:^(NSError *error) {
@@ -205,6 +224,12 @@
     }
     else
     {
+        if (_reportCrash)
+        {
+            // Erase the crash log
+            [MXLogger deleteCrashLog];
+        }
+
         // Else, lease the bug report screen
         [self dismissViewControllerAnimated:YES completion:nil];
     }

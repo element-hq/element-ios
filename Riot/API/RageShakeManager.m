@@ -79,8 +79,9 @@ static RageShakeManager* sharedInstance = nil;
             typeof(self) self = weakSelf;
             self->confirmationAlert = nil;
 
-            // TODO
-            //[self sendEmail:viewController withSnapshot:NO];
+            BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
+            bugReportViewController.reportCrash = YES;
+            [bugReportViewController showInViewController:viewController];
         }];
         
         [confirmationAlert showInViewController:viewController];
