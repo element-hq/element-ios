@@ -40,6 +40,15 @@
     // Add room creation button programmatically
     [self addRoomCreationButton];
     
+    // TODO: Implement the new home screen.
+    // Hide the table view FTM.
+    self.recentsTableView.hidden = YES;
+    UIImageView *sheltieWaiting = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sheltie-waiting-porch.jpg"]];
+    sheltieWaiting.frame = self.view.frame;
+    sheltieWaiting.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
+    sheltieWaiting.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:sheltieWaiting];
+    
 //    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
 //    self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
 }

@@ -13,6 +13,7 @@
 		325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */; };
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
 		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
+		F013D1851EB382120023AAA7 /* sheltie-waiting-porch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F013D1841EB382120023AAA7 /* sheltie-waiting-porch.jpg */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
 		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
 		F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */; };
@@ -457,6 +458,7 @@
 		325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenLogo.png; path = Assets/Images/LaunchScreenLogo.png; sourceTree = "<group>"; };
 		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F013D1841EB382120023AAA7 /* sheltie-waiting-porch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sheltie-waiting-porch.jpg"; sourceTree = "<group>"; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		F02C1A841E8EB04C0045A404 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
 		F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
@@ -1110,6 +1112,7 @@
 		F083BB151E7009EC00A9B29C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F013D1841EB382120023AAA7 /* sheltie-waiting-porch.jpg */,
 				F0E05A181EA0F9EB004B83FB /* tab_favourites_selected.png */,
 				F0E05A191EA0F9EB004B83FB /* tab_favourites_selected@2x.png */,
 				F0E05A1A1EA0F9EB004B83FB /* tab_favourites_selected@3x.png */,
@@ -2073,6 +2076,7 @@
 				F083BD661E7009ED00A9B29C /* directChatOff@2x.png in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
 				F083BD751E7009ED00A9B29C /* e2e_verified@2x.png in Resources */,
+				F013D1851EB382120023AAA7 /* sheltie-waiting-porch.jpg in Resources */,
 				F083BDCD1E7009ED00A9B29C /* selection_tick@3x.png in Resources */,
 				F0E05A311EA0F9EB004B83FB /* tab_favourites_selected@2x.png in Resources */,
 				F083BD741E7009ED00A9B29C /* e2e_verified.png in Resources */,
