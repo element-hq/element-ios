@@ -154,13 +154,11 @@
     _sendingContainer.hidden = NO;
 
     // Setup data to send
-    //bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.2.9:9110"];
-    //bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://192.168.0.4:9110"];
-    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:@"http://172.20.10.2:9110"];
-
+    NSString *url = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportEndpointUrl"];
+    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:url];
 
     // App info
-    bugReportRestClient.appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]; // NO ?
+    bugReportRestClient.appName = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportApp"]; // Use the name allocated by the bug report server
     bugReportRestClient.version = [AppDelegate theDelegate].appVersion;
     bugReportRestClient.build = [AppDelegate theDelegate].build;
 
