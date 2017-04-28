@@ -46,9 +46,6 @@
     
     // Current alert (if any).
     MXKAlert *currentAlert;
-    
-    // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
-    id mxRoomSummaryDidChangeObserver;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -109,13 +106,7 @@
             [self promptUserBeforeUsingGoogleAnalytics];
         }
         
-        // Observe missed notifications
-        mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            [self refreshHomeTabBadge];
-            
-        }];
-        [self refreshHomeTabBadge];
+        [self refreshTabBarBadges];
     }
     
     if (unifiedSearchViewController)
@@ -128,12 +119,6 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
-    if (mxRoomSummaryDidChangeObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
-        mxRoomSummaryDidChangeObserver = nil;
-    }
 }
 
 - (void)dealloc
@@ -155,12 +140,6 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
         authViewControllerObserver = nil;
-    }
-    
-    if (mxRoomSummaryDidChangeObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
-        mxRoomSummaryDidChangeObserver = nil;
     }
 }
 
@@ -258,7 +237,7 @@
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
 {
-    [self refreshHomeTabBadge];
+    [self refreshTabBarBadges];
 }
 
 - (void)showAuthenticationScreen
@@ -597,44 +576,52 @@
 
 #pragma mark -
 
-- (void)refreshHomeTabBadge
+- (void)refreshTabBarBadges
 {
-    NSUInteger count = [self missedDiscussionsCount];
+    [self setMissedDiscussionsCount:[self missedDiscussionsCount] onTabBarItem:TABBAR_HOME_INDEX withBadgeColor:(self.missedHighlightDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
+    
+    [self setMissedDiscussionsCount:recentsDataSource.missedFavouriteDiscussionsCount onTabBarItem:TABBAR_FAVOURITES_INDEX withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
+    [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount onTabBarItem:TABBAR_PEOPLE_INDEX withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
+    [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount onTabBarItem:TABBAR_ROOMS_INDEX withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
+}
+
+- (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
+{
     if (count)
     {
-        NSString *badgeValue;
+        NSString *badgeValue = [self tabBarBadgeStringValue:count];
         
-        if (count > 1000)
-        {
-            CGFloat value = count / 1000.0;
-            badgeValue = [NSString stringWithFormat:NSLocalizedStringFromTable(@"large_badge_value_k_format", @"Vector", nil), value];
-        }
-        else
-        {
-            badgeValue = [NSString stringWithFormat:@"%tu", count];
-        }
-        
-        self.tabBar.items[TABBAR_HOME_INDEX].badgeValue = badgeValue;
+        self.tabBar.items[index].badgeValue = badgeValue;
         
         if ([UITabBarItem instancesRespondToSelector:@selector(setBadgeColor:)])
         {
-            if (self.missedHighlightDiscussionsCount)
-            {
-                self.tabBar.items[TABBAR_HOME_INDEX].badgeColor = kRiotColorPinkRed;
-            }
-            else
-            {
-                self.tabBar.items[TABBAR_HOME_INDEX].badgeColor = kRiotColorGreen;
-            }
+            self.tabBar.items[index].badgeColor = badgeColor;
         }
     }
     else
     {
-        self.tabBar.items[TABBAR_HOME_INDEX].badgeValue = nil;
+        self.tabBar.items[index].badgeValue = nil;
     }
 }
 
-#pragma mark - 
+- (NSString*)tabBarBadgeStringValue:(NSUInteger)count
+{
+    NSString *badgeValue;
+    
+    if (count > 1000)
+    {
+        CGFloat value = count / 1000.0;
+        badgeValue = [NSString stringWithFormat:NSLocalizedStringFromTable(@"large_badge_value_k_format", @"Vector", nil), value];
+    }
+    else
+    {
+        badgeValue = [NSString stringWithFormat:@"%tu", count];
+    }
+    
+    return badgeValue;
+}
+
+#pragma mark -
 
 - (void)promptUserBeforeUsingGoogleAnalytics
 {

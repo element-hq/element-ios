@@ -128,4 +128,34 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  */
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure;
 
+/**
+ The current number of the favourite rooms with missed notifications.
+ */
+@property (nonatomic, readonly) NSUInteger missedFavouriteDiscussionsCount;
+
+/**
+ The current number of the favourite rooms with unread highlighted messages.
+ */
+@property (nonatomic, readonly) NSUInteger missedHighlightFavouriteDiscussionsCount;
+
+/**
+ The current number of the direct chats with missed notifications, including the invites.
+ */
+@property (nonatomic, readonly) NSUInteger missedDirectDiscussionsCount;
+
+/**
+ The current number of the direct chats with unread highlighted messages.
+ */
+@property (nonatomic, readonly) NSUInteger missedHighlightDirectDiscussionsCount;
+
+/**
+ The current number of the group chats with missed notifications, including the invites.
+ */
+@property (nonatomic, readonly) NSUInteger missedGroupDiscussionsCount;
+
+/**
+ The current number of the group chats with unread highlighted messages.
+ */
+@property (nonatomic, readonly) NSUInteger missedHighlightGroupDiscussionsCount;
+
 @end
