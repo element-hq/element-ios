@@ -18,6 +18,8 @@
 
 @interface BugReportViewController : UIViewController <UITextViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 

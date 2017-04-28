@@ -101,16 +101,6 @@
     [sendScreenshotTapGesture setNumberOfTouchesRequired:1];
     [_sendScreenshotContainer addGestureRecognizer:sendScreenshotTapGesture];
     _sendScreenshotContainer.userInteractionEnabled = YES;
-
-    // Show a Done button to hide the keyboard
-    UIToolbar *viewForDoneButtonOnKeyboard = [[UIToolbar alloc] init];
-    [viewForDoneButtonOnKeyboard sizeToFit];
-
-    UIBarButtonItem *btnDoneOnKeyboard = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(onKeyboardDoneButtonPressed:)];
-
-    viewForDoneButtonOnKeyboard.items = @[btnDoneOnKeyboard];
-
-    _bugReportDescriptionTextView.inputAccessoryView = viewForDoneButtonOnKeyboard;
 }
 
 - (void)setSendLogs:(BOOL)sendLogs
@@ -228,11 +218,6 @@
 - (IBAction)onSendScreenshotTap:(id)sender
 {
     self.sendScreenshot = !self.sendScreenshot;
-}
-
-- (IBAction)onKeyboardDoneButtonPressed:(id)sender
-{
-    [_bugReportDescriptionTextView resignFirstResponder];
 }
 
 @end
