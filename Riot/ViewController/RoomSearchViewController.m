@@ -288,6 +288,8 @@
             
             [roomViewController displayRoom:roomDataSource];
             roomViewController.hasRoomDataSourceOwnership = YES;
+            
+            roomViewController.navigationItem.leftItemsSupplementBackButton = YES;
         }
         
         // Hide back button title
