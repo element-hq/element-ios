@@ -19,7 +19,7 @@
 
 #import <MatrixKit/MXKResponderRageShaking.h>
 
-@interface RageShakeManager : NSObject <MXKResponderRageShaking, MFMailComposeViewControllerDelegate>
+@interface RageShakeManager : NSObject <MXKResponderRageShaking>
 
 + (id)sharedManager;
 

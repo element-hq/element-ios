@@ -26,6 +26,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "MXKEncryptionKeysExportView.h"
+#import "BugReportViewController.h"
 
 #import "CountryPickerViewController.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
@@ -76,6 +77,7 @@ enum
     OTHER_CRASH_REPORT_INDEX,
     OTHER_MARK_ALL_AS_READ_INDEX,
     OTHER_CLEAR_CACHE_INDEX,
+    OTHER_REPORT_BUG_INDEX,
     OTHER_COUNT
 };
 
@@ -1692,6 +1694,26 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = clearCacheBtnCell;
         }
+        else if (row == OTHER_REPORT_BUG_INDEX)
+        {
+            MXKTableViewCellWithButton *reportBugBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+            if (!reportBugBtnCell)
+            {
+                reportBugBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+
+            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
+            [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+            [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            [reportBugBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            reportBugBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+
+            [reportBugBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [reportBugBtnCell.mxkButton addTarget:self action:@selector(reportBug:) forControlEvents:UIControlEventTouchUpInside];
+            reportBugBtnCell.mxkButton.accessibilityIdentifier = nil;
+
+            cell = reportBugBtnCell;
+        }
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
@@ -2494,6 +2516,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     });
 }
 
+- (void)reportBug:(id)sender
+{
+    BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
+    [bugReportViewController showInViewController:self];
+}
+
 - (void)selectPhoneNumberCountry:(id)sender
 {
     newPhoneNumberCountryPicker = [CountryPickerViewController countryPickerViewController];
@@ -2542,7 +2570,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 //    }
 //}
 
-//
+
 - (void)onSave:(id)sender
 {
     // sanity check
