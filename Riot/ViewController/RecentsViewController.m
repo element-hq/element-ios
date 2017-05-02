@@ -1652,7 +1652,7 @@
 
             self->currentRequest = [self.mainSession joinRoom:textField.text success:^(MXRoom *room) {
 
-                currentRequest = nil;
+                self->currentRequest = nil;
                 [self.activityIndicator stopAnimating];
 
                 // Show the room
@@ -1660,11 +1660,12 @@
 
             } failure:^(NSError *error) {
 
-                currentRequest = nil;
+                NSLog(@"[RecentsViewController] Join joinARoom (%@) failed", roomAliasOrId);
+
+                self->currentRequest = nil;
                 [self.activityIndicator stopAnimating];
 
-                NSLog(@"[Vector RoomVC] Join joinARoom (%@) failed", roomAliasOrId);
-                //Alert user
+                // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
         }
