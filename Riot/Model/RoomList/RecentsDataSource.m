@@ -918,12 +918,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Consider only non direct rooms.
                 if (!room.isDirect)
                 {
-                    // Keep only the invites and the rooms without tag
+                    // Keep only the invites, the favourites and the rooms without tag
                     if (room.state.membership == MXMembershipInvite)
                     {
                         [invitesCellDataArray addObject:recentCellDataStoring];
                     }
-                    else if (!room.accountData.tags.count)
+                    else if (!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite])
                     {
                         [conversationCellDataArray addObject:recentCellDataStoring];
                     }
@@ -961,7 +961,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                         _missedHighlightDirectDiscussionsCount ++;
                     }
                 }
-                else
+                else if (!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite])
                 {
                     _missedGroupDiscussionsCount ++;
                     
