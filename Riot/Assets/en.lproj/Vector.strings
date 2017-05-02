@@ -128,6 +128,9 @@
 "room_recents_invites_section_default" = "INVITES";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
+"room_recents_join_room" = "Join room";
+"room_recents_join_room_title" = "Join a room";
+"room_recents_join_room_prompt" = "Type a room id or a room alias";
 
 // People tab
 "people_invites_section" = "INVITES (%tu)";

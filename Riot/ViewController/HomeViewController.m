@@ -37,9 +37,6 @@
     self.view.accessibilityIdentifier = @"HomeVCView";
     self.recentsTableView.accessibilityIdentifier = @"HomeVCTableView";
     
-    // Add room creation button programmatically
-    [self addRoomCreationButton];
-    
     // TODO: Implement the new home screen.
     // Hide the table view FTM.
     self.recentsTableView.hidden = YES;
@@ -48,7 +45,10 @@
     sheltieWaiting.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
     sheltieWaiting.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:sheltieWaiting];
-    
+
+    // Add room creation button programmatically
+    [self addRoomCreationButton];
+
 //    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
 //    self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
 }
@@ -265,7 +265,15 @@
         
         [strongSelf createAnEmptyRoom];
     }];
-    
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+
+        [strongSelf joinARoom];
+    }];
+
     currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;

@@ -114,6 +114,11 @@
  */
 - (void)createAnEmptyRoom;
 
+/**
+ Join a room by alias or id.
+ */
+- (void)joinARoom;
+
 #pragma mark - Actions
 
 - (void)didTapOnSectionHeader:(UIGestureRecognizer*)gestureRecognizer;
