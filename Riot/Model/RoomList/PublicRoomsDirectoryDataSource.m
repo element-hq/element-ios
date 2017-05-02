@@ -73,7 +73,16 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     }
     else
     {
-        directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServerName;
+        if (_includeAllNetworks)
+        {
+            // We display all rooms, included bridged ones, of the user's HS
+            directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServerName;
+        }
+        else
+        {
+            // We display only Matrix rooms of the user's HS
+            directoryServerDisplayname = [NSBundle mxk_localizedStringForKey:@"matrix"];
+        }
     }
 
     return directoryServerDisplayname;
