@@ -61,7 +61,7 @@
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
-        BOOL isFirstTime = !recentsDataSource;
+        BOOL isFirstTime = (recentsDataSource != self.dataSource);
 
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
