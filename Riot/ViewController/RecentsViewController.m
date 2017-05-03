@@ -83,16 +83,6 @@
 
 #pragma mark -
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-    {
-        self.preferredContentSize = CGSizeMake(320.0, 600.0);
-    }
-}
-
 - (void)finalizeInit
 {
     [super finalizeInit];
@@ -142,8 +132,6 @@
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
     [self.recentsTableView addGestureRecognizer:longPress];
 
-    self.recentsTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
     
@@ -154,6 +142,9 @@
         [self setEditing:NO];
         
     }];
+    
+    self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
 }
 
 - (void)destroy
@@ -386,7 +377,7 @@
     }
 }
 
-#pragma mark -
+#pragma mark - Sticky Headers
 
 - (void)setEnableStickyHeaders:(BOOL)enableStickyHeaders
 {
@@ -1533,7 +1524,6 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomCreationButtonPressed)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
     [createNewRoomImageView addGestureRecognizer:tap];
 }
 

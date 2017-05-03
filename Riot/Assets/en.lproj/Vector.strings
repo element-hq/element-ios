@@ -147,7 +147,7 @@
 "search_messages" = "Messages";
 "search_people" = "People";
 "search_files" = "Files";
-"search_default_placeholder" = "Search...";
+"search_default_placeholder" = "Search";
 "search_people_placeholder" = "Search by User ID, Name or email";
 "search_no_result" = "No results";
 

@@ -48,9 +48,6 @@
 
     // Add room creation button programmatically
     [self addRoomCreationButton];
-
-//    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-//    self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
 }
 
 - (void)viewWillAppear:(BOOL)animated
