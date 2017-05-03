@@ -12,6 +12,8 @@
 		3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */; };
 		325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */; };
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
+		32D392181EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */; };
+		32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */; };
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
 		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
@@ -459,6 +461,9 @@
 		3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerTableViewCell.xib; sourceTree = "<group>"; };
 		325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenLogo.png; path = Assets/Images/LaunchScreenLogo.png; sourceTree = "<group>"; };
 		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		32D392151EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerDetailTableViewCell.h; sourceTree = "<group>"; };
+		32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerDetailTableViewCell.m; sourceTree = "<group>"; };
+		32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerDetailTableViewCell.xib; sourceTree = "<group>"; };
 		32FD0A3A1EB0CD9B0072B066 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
@@ -1031,6 +1036,9 @@
 		3205ED801E97725E003D65FA /* Directory */ = {
 			isa = PBXGroup;
 			children = (
+				32D392151EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.h */,
+				32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */,
+				32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */,
 				3205ED811E97725E003D65FA /* DirectoryServerTableViewCell.h */,
 				3205ED821E97725E003D65FA /* DirectoryServerTableViewCell.m */,
 				3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */,
@@ -2172,6 +2180,7 @@
 				F083BE6F1E7009ED00A9B29C /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BEA31E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
 				32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */,
+				32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */,
 				F0E05A3E1EA0F9EB004B83FB /* tab_people_selected@3x.png in Resources */,
 				F083BE5D1E7009ED00A9B29C /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				F083BD2B1E7009ED00A9B29C /* animatedLogo-3.png in Resources */,
@@ -2342,6 +2351,7 @@
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
 				F083BEA01E7009ED00A9B29C /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				F083BE1A1E7009ED00A9B29C /* RoomFilesSearchViewController.m in Sources */,
+				32D392181EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m in Sources */,
 				F083BE9C1E7009ED00A9B29C /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				F083BDFE1E7009ED00A9B29C /* RecentCellData.m in Sources */,
 				F083BE3A1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
