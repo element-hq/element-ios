@@ -60,7 +60,7 @@
     // The gradient view displayed above the screen
     CAGradientLayer* tableViewMaskLayer;
     
-    MXHTTPOperation *roomCreationRequest;
+    MXHTTPOperation *currentRequest;
 }
 
 @end
@@ -159,7 +159,13 @@
 - (void)destroy
 {
     [super destroy];
-    
+
+    if (currentRequest)
+    {
+        [currentRequest cancel];
+        currentRequest = nil;
+    }
+
     if (currentAlert)
     {
         [currentAlert dismiss:NO];
@@ -1542,18 +1548,18 @@
     if (self.mainSession)
     {
         // Create one room at time
-        if (!roomCreationRequest)
+        if (!currentRequest)
         {
             [self startActivityIndicator];
             
             // Create an empty room.
-            roomCreationRequest = [self.mainSession createRoom:nil
+            currentRequest = [self.mainSession createRoom:nil
                                                     visibility:kMXRoomDirectoryVisibilityPrivate
                                                      roomAlias:nil
                                                          topic:nil
                                                        success:^(MXRoom *room) {
                                                            
-                                                           roomCreationRequest = nil;
+                                                           currentRequest = nil;
                                                            [self stopActivityIndicator];
                                                            if (currentAlert)
                                                            {
@@ -1568,7 +1574,7 @@
                                                            
                                                        } failure:^(NSError *error) {
                                                            
-                                                           roomCreationRequest = nil;
+                                                           currentRequest = nil;
                                                            [self stopActivityIndicator];
                                                            if (currentAlert)
                                                            {
@@ -1603,6 +1609,70 @@
             [currentAlert showInViewController:self];
         }
     }
+}
+
+- (void)joinARoom
+{
+    [currentAlert dismiss:NO];
+
+    __weak typeof(self) weakSelf = self;
+
+    // Prompt the user to type a room id or room alias
+    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room_title", @"Vector", nil)
+                                           message:NSLocalizedStringFromTable(@"room_recents_join_room_prompt", @"Vector", nil)
+                                             style:MXKAlertStyleAlert];
+
+    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+        }
+    }];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        if (weakSelf)
+        {
+            UITextField *textField = [alert textFieldAtIndex:0];
+            NSString *roomAliasOrId = textField.text;
+
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+
+            [self.activityIndicator startAnimating];
+
+            self->currentRequest = [self.mainSession joinRoom:textField.text success:^(MXRoom *room) {
+
+                self->currentRequest = nil;
+                [self.activityIndicator stopAnimating];
+
+                // Show the room
+                [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
+
+            } failure:^(NSError *error) {
+
+                NSLog(@"[RecentsViewController] Join joinARoom (%@) failed", roomAliasOrId);
+
+                self->currentRequest = nil;
+                [self.activityIndicator stopAnimating];
+
+                // Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        }
+    }];
+
+    currentAlert.mxkAccessibilityIdentifier = @"RecentsVCJoinARoomAlert";
+    [currentAlert showInViewController:self];
 }
 
 #pragma mark - MXKRecentListViewControllerDelegate
