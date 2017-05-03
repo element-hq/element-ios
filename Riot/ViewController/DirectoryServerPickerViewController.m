@@ -85,9 +85,9 @@
 
     self.tableView.delegate = self;
 
-    // Register view cell class
+    // Register view cell classes
     [self.tableView registerClass:DirectoryServerTableViewCell.class forCellReuseIdentifier:DirectoryServerTableViewCell.defaultReuseIdentifier];
-        [self.tableView registerClass:DirectoryServerDetailTableViewCell.class forCellReuseIdentifier:DirectoryServerDetailTableViewCell.defaultReuseIdentifier];
+    [self.tableView registerClass:DirectoryServerDetailTableViewCell.class forCellReuseIdentifier:DirectoryServerDetailTableViewCell.defaultReuseIdentifier];
 
     // Add a cancel button
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
