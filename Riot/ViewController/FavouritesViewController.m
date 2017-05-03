@@ -62,6 +62,23 @@
     [super destroy];
 }
 
+#pragma mark - Override RecentsViewController
+
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
+    // Check whether the recents data source is correctly configured.
+    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    {
+        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
+        if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeFavourites)
+        {
+            return;
+        }
+    }
+    
+    [super refreshCurrentSelectedCell:forceVisible];
+}
+
 #pragma mark - UITableView delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
