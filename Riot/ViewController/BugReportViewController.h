@@ -16,9 +16,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BugReportViewController : UIViewController <UITextViewDelegate>
+#import <MatrixKit/MatrixKit.h>
+
+@interface BugReportViewController : MXKViewController <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scrollViewBottomConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;

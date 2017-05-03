@@ -52,7 +52,8 @@
 {
     self.providesPresentationContextTransitionStyle = YES;
     self.definesPresentationContext = YES;
-    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    self.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 
     [viewController presentViewController:self animated:YES completion:nil];
 }
@@ -111,6 +112,14 @@
     [sendScreenshotTapGesture setNumberOfTouchesRequired:1];
     [_sendScreenshotContainer addGestureRecognizer:sendScreenshotTapGesture];
     _sendScreenshotContainer.userInteractionEnabled = YES;
+
+    // Add an accessory view in order to retrieve keyboard view
+    _bugReportDescriptionTextView.inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (void)dealloc
+{
+    _bugReportDescriptionTextView.inputAccessoryView = nil;
 }
 
 - (void)setSendLogs:(BOOL)sendLogs
@@ -137,6 +146,30 @@
     {
         _sendScreenshotButtonImage.image = [UIImage imageNamed:@"selection_untick"];
     }
+}
+
+#pragma mark - MXKViewController
+- (void)onKeyboardShowAnimationComplete
+{
+    self.keyboardView = _bugReportDescriptionTextView.inputAccessoryView.superview;
+}
+
+-(void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    // In portrait in 6/7 and 6+/7+, make the height of the popup smaller to be able to
+    // display Cancel and Send buttons.
+    // Do nothing in landscape or in 5 in portrait and in landscape. There will be not enough
+    // room to display bugReportDescriptionTextView.
+    if (self.view.frame.size.height > 568)
+    {
+        self.scrollViewBottomConstraint.constant = keyboardHeight;
+    }
+    else
+    {
+        self.scrollViewBottomConstraint.constant = 0;
+    }
+
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - UITextViewDelegate
