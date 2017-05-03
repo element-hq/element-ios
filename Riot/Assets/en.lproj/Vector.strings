@@ -421,6 +421,8 @@
 // Directory
 "directory_title" = "Directory";
 "directory_server_picker_title" = "Select a directory";
+"directory_server_all_rooms" = "All rooms on %@ server";
+"directory_server_all_native_rooms" = "All native Matrix rooms";
 "directory_server_type_homeserver" = "Type a homeserver to list public rooms from";
 "directory_server_placeholder" = "matrix.org";
 

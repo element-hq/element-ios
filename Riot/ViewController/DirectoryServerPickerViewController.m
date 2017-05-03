@@ -16,6 +16,7 @@
 
 #import "DirectoryServerPickerViewController.h"
 #import "DirectoryServerTableViewCell.h"
+#import "DirectoryServerDetailTableViewCell.h"
 
 #import "AppDelegate.h"
 
@@ -84,8 +85,9 @@
 
     self.tableView.delegate = self;
 
-    // Register view cell class
+    // Register view cell classes
     [self.tableView registerClass:DirectoryServerTableViewCell.class forCellReuseIdentifier:DirectoryServerTableViewCell.defaultReuseIdentifier];
+    [self.tableView registerClass:DirectoryServerDetailTableViewCell.class forCellReuseIdentifier:DirectoryServerDetailTableViewCell.defaultReuseIdentifier];
 
     // Add a cancel button
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
@@ -148,11 +150,23 @@
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
+    id<MXKDirectoryServerCellDataStoring> directoryCellData = (id<MXKDirectoryServerCellDataStoring>)cellData;
+
+    if (directoryCellData.homeserver)
+    {
+        return DirectoryServerDetailTableViewCell.class;
+    }
     return DirectoryServerTableViewCell.class;
 }
 
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
 {
+    id<MXKDirectoryServerCellDataStoring> directoryCellData = (id<MXKDirectoryServerCellDataStoring>)cellData;
+
+    if (directoryCellData.homeserver)
+    {
+        return DirectoryServerDetailTableViewCell.defaultReuseIdentifier;
+    }
     return DirectoryServerTableViewCell.defaultReuseIdentifier;
 }
 
