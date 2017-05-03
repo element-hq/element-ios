@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,6 +18,7 @@
                 <outlet property="descriptionLabel" destination="Q2l-Yi-SlQ" id="VPO-0N-huQ"/>
                 <outlet property="logsDescriptionLabel" destination="ggt-kq-Zy9" id="3Nl-m3-1EE"/>
                 <outlet property="scrollView" destination="4fS-3N-tbW" id="Dsn-gw-VuW"/>
+                <outlet property="scrollViewBottomConstraint" destination="fnt-1e-ZW4" id="W1B-1m-h13"/>
                 <outlet property="sendButton" destination="z8A-7B-jAi" id="VSX-a9-yfs"/>
                 <outlet property="sendLogsButtonImage" destination="hcc-ve-8OC" id="GcJ-Dq-6pz"/>
                 <outlet property="sendLogsContainer" destination="OVa-m0-Ygk" id="Il5-fW-fKU"/>
@@ -35,24 +36,24 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CXZ-fI-kPd">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="4fS-3N-tbW">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6kv-1a-Lhr">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7U4-br-xRl">
-                                    <rect key="frame" x="10" y="113.5" width="355" height="440"/>
+                                    <rect key="frame" x="10" y="148" width="394" height="440"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8A-7B-jAi">
-                                            <rect key="frame" x="299" y="390" width="36" height="30"/>
+                                            <rect key="frame" x="338" y="390" width="36" height="30"/>
                                             <state key="normal" title="Send"/>
                                             <connections>
                                                 <action selector="onSendButtonPress:" destination="-1" eventType="touchUpInside" id="nL7-1U-dd6"/>
@@ -66,37 +67,37 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bug Report" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQK-Os-GcK">
-                                            <rect key="frame" x="132.5" y="20" width="91" height="21"/>
+                                            <rect key="frame" x="152" y="20" width="91" height="21"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M04-Ch-cFF">
-                                            <rect key="frame" x="0.0" y="48.5" width="355" height="333"/>
+                                            <rect key="frame" x="0.0" y="48.666666666666657" width="394" height="333"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pop up explanation" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q2l-Yi-SlQ">
-                                                    <rect key="frame" x="20" y="0.0" width="315" height="16"/>
+                                                    <rect key="frame" x="20" y="0.0" width="354" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" text="bug description" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ssD-te-07G">
-                                                    <rect key="frame" x="20" y="24" width="315" height="221"/>
+                                                    <rect key="frame" x="20" y="23.999999999999986" width="354" height="221"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="log bla bla" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggt-kq-Zy9">
-                                                    <rect key="frame" x="20" y="253" width="315" height="16"/>
+                                                    <rect key="frame" x="20" y="253" width="354" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OVa-m0-Ygk">
-                                                    <rect key="frame" x="20" y="277" width="315" height="24"/>
+                                                    <rect key="frame" x="20" y="277" width="354" height="24"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send logs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcH-7V-sfZ">
-                                                            <rect key="frame" x="50" y="4" width="245" height="16"/>
+                                                            <rect key="frame" x="50" y="4" width="284" height="16"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -116,16 +117,16 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6VA-Ng-S8R">
-                                                    <rect key="frame" x="20" y="309" width="315" height="24"/>
+                                                    <rect key="frame" x="20" y="309" width="354" height="23.999999999999943"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send screenshot" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jnv-xY-Byx">
-                                                            <rect key="frame" x="50" y="4" width="245" height="16"/>
+                                                            <rect key="frame" x="50" y="4" width="284" height="15.999999999999943"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="imageView:hcc-ve-8OC:image" translatesAutoresizingMaskIntoConstraints="NO" id="wmW-9T-6xp">
-                                                            <rect key="frame" x="20" y="1" width="22" height="22"/>
+                                                            <rect key="frame" x="20" y="1" width="22" height="21.999999999999943"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -160,16 +161,16 @@
                                             </constraints>
                                         </view>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LNe-Lp-3ex">
-                                            <rect key="frame" x="0.0" y="49" width="355" height="333"/>
+                                            <rect key="frame" x="0.0" y="49" width="394" height="333"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uploading report" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yBc-B9-RaA">
-                                                    <rect key="frame" x="112" y="135.5" width="130" height="21"/>
+                                                    <rect key="frame" x="131.66666666666669" y="135.66666666666669" width="130.00000000000006" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cEm-mn-WCS">
-                                                    <rect key="frame" x="20" y="165" width="315" height="2"/>
+                                                    <rect key="frame" x="20" y="165" width="354" height="2"/>
                                                 </progressView>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -231,16 +232,12 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="CXZ-fI-kPd" secondAttribute="bottom" id="CGb-38-bKL"/>
-                <constraint firstItem="4fS-3N-tbW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="RSi-BG-VzX"/>
                 <constraint firstItem="4fS-3N-tbW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YGg-YG-HLZ"/>
                 <constraint firstItem="CXZ-fI-kPd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bb7-tN-Ddn"/>
-                <constraint firstItem="4fS-3N-tbW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="d0E-Yl-TVf"/>
                 <constraint firstAttribute="bottom" secondItem="4fS-3N-tbW" secondAttribute="bottom" id="fnt-1e-ZW4"/>
                 <constraint firstAttribute="trailing" secondItem="4fS-3N-tbW" secondAttribute="trailing" id="hu9-zv-wuB"/>
                 <constraint firstItem="CXZ-fI-kPd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iUc-fm-Ppk"/>
                 <constraint firstItem="4fS-3N-tbW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="nn7-gx-g9q"/>
-                <constraint firstItem="4fS-3N-tbW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="pTK-28-yiy"/>
-                <constraint firstItem="4fS-3N-tbW" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="qZg-rc-Ll7"/>
                 <constraint firstAttribute="trailing" secondItem="CXZ-fI-kPd" secondAttribute="trailing" id="yzo-vl-3Ep"/>
             </constraints>
         </view>
