@@ -353,6 +353,16 @@
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
+    // Check whether the recents data source is correctly configured.
+    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    {
+        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
+        if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModePeople)
+        {
+            return;
+        }
+    }
+            
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
     MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;

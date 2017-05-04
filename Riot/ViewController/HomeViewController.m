@@ -75,169 +75,22 @@
     [super destroy];
 }
 
-//#pragma mark - Search
-//
-//- (void)showSearch:(BOOL)animated
-//{
-//    [super showSearch:animated];
-//    
-//    // Reset searches
-//    [recentsDataSource searchWithPatterns:nil];
-//
-//    createNewRoomImageView.hidden = YES;
-//    tableViewMaskLayer.hidden = YES;
-//
-//    [self updateSearch];
-//    
-//    // Screen tracking (via Google Analytics)
-//    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-//    if (tracker)
-//    {
-//        [tracker set:kGAIScreenName value:@"RoomsGlobalSearch"];
-//        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-//    }
-//}
-//
-//- (void)hideSearch:(BOOL)animated
-//{
-//    [super hideSearch:animated];
-//
-//    createNewRoomImageView.hidden = self.isHidden;
-//    tableViewMaskLayer.hidden = NO;
-//    self.backgroundImageView.hidden = YES;
-//
-//    [recentsDataSource searchWithPatterns:nil];
-//
-//    recentsDataSource.hideRecents = NO;
-//    recentsDataSource.hidePublicRoomsDirectory = YES;
-//    
-//    // Screen tracking (via Google Analytics)
-//    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-//    if (tracker)
-//    {
-//        NSString *currentScreenName = [tracker get:kGAIScreenName];
-//        if (!currentScreenName || ![currentScreenName isEqualToString:@"RoomsList"])
-//        {
-//            [tracker set:kGAIScreenName value:@"RoomsList"];
-//            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-//        }
-//    }
-//}
-//
-//// Update search results under the currently selected tab
-//- (void)updateSearch
-//{
-//    if (self.searchBar.text.length)
-//    {
-//        recentsDataSource.hideRecents = NO;
-//        recentsDataSource.hidePublicRoomsDirectory = NO;
-//        self.backgroundImageView.hidden = YES;
-//
-//        // Forward the search request to the data source
-//        if (self.selectedViewController == recentsViewController)
-//        {
-//            // Do a AND search on words separated by a space
-//            NSArray *patterns = [self.searchBar.text componentsSeparatedByString:@" "];
-//
-//            [recentsDataSource searchWithPatterns:patterns];
-//            recentsViewController.shouldScrollToTopOnRefresh = YES;
-//        }
-//        else if (self.selectedViewController == messagesSearchViewController)
-//        {
-//            // Launch the search only if the keyboard is no more visible
-//            if (!self.searchBar.isFirstResponder)
-//            {
-//                // Do it asynchronously to give time to messagesSearchViewController to be set up
-//                // so that it can display its loading wheel
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
-//                    messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
-//                });
-//            }
-//        }
-//        else if (self.selectedViewController == peopleSearchViewController)
-//        {
-//            [peopleSearchViewController searchWithPattern:self.searchBar.text forceReset:NO complete:^{
-//                
-//                [self checkAndShowBackgroundImage];
-//                
-//            }];
-//        }
-//        else if (self.selectedViewController == filesSearchViewController)
-//        {
-//            // Launch the search only if the keyboard is no more visible
-//            if (!self.searchBar.isFirstResponder)
-//            {
-//                // Do it asynchronously to give time to filesSearchViewController to be set up
-//                // so that it can display its loading wheel
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [filesSearchDataSource searchMessages:self.searchBar.text force:NO];
-//                    filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
-//                });
-//            }
-//        }
-//    }
-//    else
-//    {
-//        // Nothing to search, show only the public dictionary
-//        recentsDataSource.hideRecents = YES;
-//        recentsDataSource.hidePublicRoomsDirectory = NO;
-//        
-//        // Reset search result (if any)
-//        [recentsDataSource searchWithPatterns:nil];
-//        if (messagesSearchDataSource.searchText.length)
-//        {
-//            [messagesSearchDataSource searchMessages:nil force:NO];
-//        }
-//        
-//        [peopleSearchViewController searchWithPattern:nil forceReset:NO complete:^{
-//            
-//            [self checkAndShowBackgroundImage];
-//            
-//        }];
-//        
-//        if (filesSearchDataSource.searchText.length)
-//        {
-//            [filesSearchDataSource searchMessages:nil force:NO];
-//        }
-//    }
-//    
-//    [self checkAndShowBackgroundImage];
-//}
-//
-//#pragma mark - UISearchBarDelegate
-//
-//- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-//{
-//    if (self.selectedViewController == recentsViewController)
-//    {
-//        // As the public room search is local, it can be updated on each text change
-//        [self updateSearch];
-//    }
-//    else if (self.selectedViewController == peopleSearchViewController)
-//    {
-//        // As the contact search is local, it can be updated on each text change
-//        [self updateSearch];
-//    }
-//    else if (!self.searchBar.text.length)
-//    {
-//        // Reset message search if any
-//        [self updateSearch];
-//    }
-//}
-//
-//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-//{
-//    [searchBar resignFirstResponder];
-//    
-//    if (self.selectedViewController == messagesSearchViewController || self.selectedViewController == filesSearchViewController)
-//    {
-//        // As the messages/files search is done homeserver-side, launch it only on the "Search" button
-//        [self updateSearch];
-//    }
-//}
+#pragma mark - Override RecentsViewController
 
-#pragma mark - Actions
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
+    // Check whether the recents data source is correctly configured.
+    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    {
+        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
+        if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
+        {
+            return;
+        }
+    }
+    
+    [super refreshCurrentSelectedCell:forceVisible];
+}
 
 - (void)onRoomCreationButtonPressed
 {

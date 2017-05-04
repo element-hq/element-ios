@@ -89,6 +89,17 @@
 
 #pragma mark - Override RecentsViewController
 
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
+    // Check whether the recents data source is correctly configured.
+    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeRooms)
+    {
+        return;
+    }
+    
+    [super refreshCurrentSelectedCell:forceVisible];
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
 {
     CGRect frame = [tableView rectForHeaderInSection:section];
