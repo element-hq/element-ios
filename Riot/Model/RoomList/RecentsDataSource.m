@@ -487,13 +487,23 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             directorySectionContainer.backgroundColor = [UIColor clearColor];
             directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
 
-            // Add label and chevron
-            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, containerWidth - 32, 30)];
+            // Add the "Network" label at the left
+            UILabel *networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
+            networkLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            networkLabel.textColor = kRiotTextColorBlack;
+            networkLabel.font = [UIFont systemFontOfSize:16.0];
+            networkLabel.text = NSLocalizedStringFromTable(@"room_recents_directory_section_network", @"Vector", nil);
+            [directorySectionContainer addSubview:networkLabel];
+
+            // Add label for selected directory server
+            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, containerWidth - 32, 30)];
             directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
             directoryServerLabel.textColor = kRiotTextColorGray;
             directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
+            directoryServerLabel.textAlignment = NSTextAlignmentRight;
             [directorySectionContainer addSubview:directoryServerLabel];
 
+            // Chevron
             UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(containerWidth - 26, 5, 6, 12)];
             chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
             chevronImageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -505,14 +515,47 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             [tapGesture setNumberOfTapsRequired:1];
             [directorySectionContainer addGestureRecognizer:tapGesture];
 
-            // Add Label constraints
-            topConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:directorySectionContainer
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1
-                                                          constant:0];
+            // Add networkLabel constraints
+            centerYConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
+                                                             attribute:NSLayoutAttributeCenterY
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directorySectionContainer
+                                                             attribute:NSLayoutAttributeCenterY
+                                                            multiplier:1
+                                                              constant:0.0f];
+
+            heightConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
+                                                            attribute:NSLayoutAttributeHeight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1
+                                                             constant:30];
+            leadingConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
+                                                             attribute:NSLayoutAttributeLeading
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directorySectionContainer
+                                                             attribute:NSLayoutAttributeLeading
+                                                            multiplier:1
+                                                              constant:20];
+            widthConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
+                                                              attribute:NSLayoutAttributeWidth
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:nil
+                                                              attribute:NSLayoutAttributeNotAnAttribute
+                                                             multiplier:1
+                                                               constant:100];
+
+            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, widthConstraint]];
+
+            // Add directoryServerLabel constraints
+            centerYConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                             attribute:NSLayoutAttributeCenterY
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directorySectionContainer
+                                                             attribute:NSLayoutAttributeCenterY
+                                                            multiplier:1
+                                                              constant:0.0f];
 
             heightConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
                                                             attribute:NSLayoutAttributeHeight
@@ -524,19 +567,19 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             leadingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
                                                              attribute:NSLayoutAttributeLeading
                                                              relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeLeading
+                                                                toItem:networkLabel
+                                                             attribute:NSLayoutAttributeTrailing
                                                             multiplier:1
                                                               constant:20];
             trailingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
                                                               attribute:NSLayoutAttributeTrailing
                                                               relatedBy:NSLayoutRelationEqual
-                                                                 toItem:directorySectionContainer
-                                                              attribute:NSLayoutAttributeTrailing
+                                                                 toItem:chevronImageView
+                                                              attribute:NSLayoutAttributeLeading
                                                              multiplier:1
-                                                               constant:-32];
+                                                               constant:-8];
 
-            [NSLayoutConstraint activateConstraints:@[topConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
+            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
 
             // Add chevron constraints
             trailingConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
@@ -550,7 +593,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             centerYConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
                                                              attribute:NSLayoutAttributeCenterY
                                                              relatedBy:NSLayoutRelationEqual
-                                                                toItem:directoryServerLabel
+                                                                toItem:directorySectionContainer
                                                              attribute:NSLayoutAttributeCenterY
                                                             multiplier:1
                                                               constant:0.0f];
