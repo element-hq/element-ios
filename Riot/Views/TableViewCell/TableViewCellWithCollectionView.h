@@ -1,13 +1,12 @@
 /*
- Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
-
+ 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
-
+ 
  http://www.apache.org/licenses/LICENSE-2.0
-
+ 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,11 +14,10 @@
  limitations under the License.
  */
 
-#import "RecentsViewController.h"
+#import <MatrixKit/MatrixKit.h>
 
-/**
- The `HomeViewController` screen is the main app screen.
- */
-@interface HomeViewController : RecentsViewController <UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface TableViewCellWithCollectionView : MXKTableViewCell
+
+@property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end

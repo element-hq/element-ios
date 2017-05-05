@@ -21,6 +21,15 @@
 
 #import "RecentsDataSource.h"
 
+#import "TableViewCellWithCollectionView.h"
+#import "RoomCollectionViewCell.h"
+
+@interface HomeViewController ()
+{
+    RecentsDataSource *recentsDataSource;
+}
+@end
+
 @implementation HomeViewController
 
 - (void)finalizeInit
@@ -37,17 +46,14 @@
     self.view.accessibilityIdentifier = @"HomeVCView";
     self.recentsTableView.accessibilityIdentifier = @"HomeVCTableView";
     
-    // TODO: Implement the new home screen.
-    // Hide the table view FTM.
-    self.recentsTableView.hidden = YES;
-    UIImageView *sheltieWaiting = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sheltie-waiting-porch.jpg"]];
-    sheltieWaiting.frame = self.view.frame;
-    sheltieWaiting.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
-    sheltieWaiting.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:sheltieWaiting];
-
     // Add room creation button programmatically
     [self addRoomCreationButton];
+    
+    // Register table view cell used for rooms collection.
+    [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
+    
+    // Change the table data source. It must be the home view controller itself.
+    self.recentsTableView.dataSource = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -56,11 +62,10 @@
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
     
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    if (recentsDataSource)
     {
         // Take the lead on the shared data source.
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-        recentsDataSource.areSectionsShrinkable = YES;
+        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
     }
 }
@@ -77,19 +82,30 @@
 
 #pragma mark - Override RecentsViewController
 
+- (void)displayList:(MXKRecentsDataSource *)listDataSource
+{
+    [super displayList:listDataSource];
+    
+    // Change the table data source. It must be the home view controller itself.
+    self.recentsTableView.dataSource = self;
+    
+    // Keep a ref on the recents data source
+    if ([listDataSource isKindOfClass:RecentsDataSource.class])
+    {
+        recentsDataSource = (RecentsDataSource*)listDataSource;
+    }
+}
+
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
     // Check whether the recents data source is correctly configured.
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
     {
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-        if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeHome)
-        {
-            return;
-        }
+        return;
     }
     
-    [super refreshCurrentSelectedCell:forceVisible];
+    // TODO: refreshCurrentSelectedCell
+    //[super refreshCurrentSelectedCell:forceVisible];
 }
 
 - (void)onRoomCreationButtonPressed
@@ -134,6 +150,143 @@
     
     currentAlert.mxkAccessibilityIdentifier = @"HomeVCCreateRoomAlert";
     [currentAlert showInViewController:self];
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the actual number of sections prepared in recents dataSource.
+    return [recentsDataSource numberOfSectionsInTableView:tableView];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Each rooms section is represented by only one collection view.
+    return 1;
+}
+
+- (CGFloat)heightForHeaderInSection:(NSInteger)section
+{
+    // Keep the recents data source informations on the section headers.
+    return [recentsDataSource heightForHeaderInSection:section];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
+    // Keep the recents data source informations on the section headers.
+    return [recentsDataSource titleForHeaderInSection:section];
+}
+
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+{
+    // Keep the recents data source informations on the section headers.
+    return [recentsDataSource viewForHeaderInSection:section withFrame:frame];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
+    {
+        MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!tableViewCell)
+        {
+            tableViewCell = [[MXKTableViewCell alloc] init];
+            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
+            tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        // Check whether a search session is in progress
+        if (recentsDataSource.searchPatternsList)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+        }
+        else
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_recents_no_conversation", @"Vector", nil);
+        }
+        
+        return tableViewCell;
+    }
+    
+    TableViewCellWithCollectionView *collectionViewCell = [tableView dequeueReusableCellWithIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier forIndexPath:indexPath];
+    collectionViewCell.collectionView.tag = indexPath.section;
+    [collectionViewCell.collectionView registerClass:RoomCollectionViewCell.class forCellWithReuseIdentifier:RoomCollectionViewCell.defaultReuseIdentifier];
+    collectionViewCell.collectionView.delegate = self;
+    collectionViewCell.collectionView.dataSource = self;
+    collectionViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return collectionViewCell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
+
+#pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
+    {
+        return 50.0;
+    }
+    
+    // Return the fixed height of the collection view cell used to display a room.
+    return [RoomCollectionViewCell defaultCellSize].height;
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [recentsDataSource tableView:self.recentsTableView numberOfRowsInSection:collectionView.tag];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    RoomCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:RoomCollectionViewCell.defaultReuseIdentifier
+                                                                                 forIndexPath:indexPath];
+    
+    id<MXKRecentCellDataStoring> cellData = [recentsDataSource cellDataAtIndexPath:[NSIndexPath indexPathForRow:indexPath.item inSection:collectionView.tag]];
+    
+    if (cellData)
+    {
+        [cell render:cellData];
+        cell.tag = indexPath.item;
+        
+        //TODO: add long tap gesture recognizer.
+//        UILongPressGestureRecognizer *cellLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onCollectionViewCellLongPress:)];
+//        [cell addGestureRecognizer:cellLongPressGesture];
+    }
+    
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.delegate)
+    {
+        id<MXKRecentCellDataStoring> cellData = [recentsDataSource cellDataAtIndexPath:[NSIndexPath indexPathForRow:indexPath.item inSection:collectionView.tag]];
+        
+        [self.delegate recentListViewController:self didSelectRoom:cellData.roomSummary.roomId inMatrixSession:cellData.roomSummary.room.mxSession];
+    }
+    
+    // Hide the keyboard when user select a room
+    // do not hide the searchBar until the view controller disappear
+    // on tablets / iphone 6+, the user could expect to search again while looking at a room
+    [self.recentsSearchBar resignFirstResponder];
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [RoomCollectionViewCell defaultCellSize];
 }
 
 @end
