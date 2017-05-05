@@ -515,7 +515,7 @@
     // Scroll to the top of this section
     if ([self.recentsTableView numberOfRowsInSection:section] > 0)
     {
-        [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
 }
 
@@ -527,19 +527,19 @@
     if ([self.recentsTableView numberOfRowsInSection:section] > 0)
     {
         // Check whether the first cell of this section is already visible.
-        UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+        UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
         if (firstSectionCell)
         {
             // Scroll to the top of the previous section (if any)
             if ([self.recentsTableView numberOfRowsInSection:(section - 1)] > 0)
             {
-                [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:(section - 1)] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:(section - 1)] atScrollPosition:UITableViewScrollPositionTop animated:YES];
             }
         }
         else
         {
             // Scroll to the top of this section
-            [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }
     }
 }
@@ -1110,20 +1110,17 @@
     UIView *sectionHeader = [super tableView:tableView viewForHeaderInSection:section];
     sectionHeader.tag = section;
     
-    if (_enableStickyHeaders)
+    while (sectionHeader.gestureRecognizers.count)
     {
-        while (sectionHeader.gestureRecognizers.count)
-        {
-            UIGestureRecognizer *gestureRecognizer = sectionHeader.gestureRecognizers.lastObject;
-            [sectionHeader removeGestureRecognizer:gestureRecognizer];
-        }
-        
-        // Handle tap gesture
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSectionHeader:)];
-        [tap setNumberOfTouchesRequired:1];
-        [tap setNumberOfTapsRequired:1];
-        [sectionHeader addGestureRecognizer:tap];
+        UIGestureRecognizer *gestureRecognizer = sectionHeader.gestureRecognizers.lastObject;
+        [sectionHeader removeGestureRecognizer:gestureRecognizer];
     }
+    
+    // Handle tap gesture
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSectionHeader:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [sectionHeader addGestureRecognizer:tap];
     
     return sectionHeader;
 }
@@ -1471,43 +1468,21 @@
     }
 }
 
-#pragma mark - Room creation
+#pragma mark - Room handling
 
-- (void)addRoomCreationButton
+- (void)addPlusButton
 {
-    // Add blur mask programmatically
-    tableViewMaskLayer = [CAGradientLayer layer];
+    // Add room options button
+    plusButtonImageView = [[UIImageView alloc] init];
+    [plusButtonImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:plusButtonImageView];
     
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
-    
-    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
-    
-    // display a gradient to the rencents bottom (20% of the bottom of the screen)
-    tableViewMaskLayer.locations = [NSArray arrayWithObjects:
-                                    [NSNumber numberWithFloat:0],
-                                    [NSNumber numberWithFloat:0.85],
-                                    [NSNumber numberWithFloat:1.0], nil];
-    
-    tableViewMaskLayer.frame = self.recentsTableView.frame;
-    tableViewMaskLayer.anchorPoint = CGPointZero;
-    
-    // CAConstraint is not supported on IOS.
-    // it seems only being supported on Mac OS.
-    // so viewDidLayoutSubviews will refresh the layout bounds.
-    [self.view.layer addSublayer:tableViewMaskLayer];
-    
-    // Add room create button
-    createNewRoomImageView = [[UIImageView alloc] init];
-    [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:createNewRoomImageView];
-    
-    createNewRoomImageView.backgroundColor = [UIColor clearColor];
-    createNewRoomImageView.contentMode = UIViewContentModeCenter;
-    createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
+    plusButtonImageView.backgroundColor = [UIColor clearColor];
+    plusButtonImageView.contentMode = UIViewContentModeCenter;
+    plusButtonImageView.image = [UIImage imageNamed:@"create_room"];
     
     CGFloat side = 78.0f;
-    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
                                                                        attribute:NSLayoutAttributeWidth
                                                                        relatedBy:NSLayoutRelationEqual
                                                                           toItem:nil
@@ -1515,7 +1490,7 @@
                                                                       multiplier:1
                                                                         constant:side];
     
-    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
                                                                         attribute:NSLayoutAttributeHeight
                                                                         relatedBy:NSLayoutRelationEqual
                                                                            toItem:nil
@@ -1523,7 +1498,7 @@
                                                                        multiplier:1
                                                                          constant:side];
     
-    NSLayoutConstraint* trailingConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+    NSLayoutConstraint* trailingConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
                                                                           attribute:NSLayoutAttributeTrailing
                                                                           relatedBy:NSLayoutRelationEqual
                                                                              toItem:self.view
@@ -1534,24 +1509,23 @@
     NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
                                                                         attribute:NSLayoutAttributeTop
                                                                         relatedBy:NSLayoutRelationEqual
-                                                                           toItem:createNewRoomImageView
+                                                                           toItem:plusButtonImageView
                                                                         attribute:NSLayoutAttributeBottom
                                                                        multiplier:1
                                                                          constant:9];
     
-    // Available on iOS 8 and later
     [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, trailingConstraint, bottomConstraint]];
     
-    createNewRoomImageView.userInteractionEnabled = YES;
+    plusButtonImageView.userInteractionEnabled = YES;
     
     // Handle tap gesture
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomCreationButtonPressed)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onPlusButtonPressed)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
-    [createNewRoomImageView addGestureRecognizer:tap];
+    [plusButtonImageView addGestureRecognizer:tap];
 }
 
-- (void)onRoomCreationButtonPressed
+- (void)onPlusButtonPressed
 {
     [self createAnEmptyRoom];
 }
