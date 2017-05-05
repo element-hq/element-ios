@@ -23,6 +23,9 @@
 @interface BugReportViewController ()
 {
     MXBugReportRestClient *bugReportRestClient;
+
+    // The temporary file used to store the screenshot
+    NSURL *screenShotFile;
 }
 
 @property (nonatomic) BOOL sendLogs;
@@ -62,8 +65,6 @@
 {
     [super viewDidLoad];
 
-    NSLog(@"%@", _screenshot);
-
     _logsDescriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_logs_description", @"Vector", nil);
     _sendLogsLabel.text = NSLocalizedStringFromTable(@"bug_report_send_logs", @"Vector", nil);
     _sendScreenshotLabel.text = NSLocalizedStringFromTable(@"bug_report_send_screenshot", @"Vector", nil);
@@ -95,7 +96,7 @@
     self.sendScreenshot = YES;
 
     // Hide the screenshot button if there is no screenshot
-    // if (!_screenshot)    // TODO: always hide it becayse screenshot is not yet supported by the bug report API
+    if (!_screenshot)
     {
         _sendScreenshotContainer.hidden = YES;
         _sendScreenshotContainerHeightConstraint.constant = 0;
@@ -120,6 +121,17 @@
 - (void)dealloc
 {
     _bugReportDescriptionTextView.inputAccessoryView = nil;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    if (screenShotFile)
+    {
+        [[NSFileManager defaultManager] removeItemAtURL:screenShotFile error:nil];
+        screenShotFile = nil;
+    }
 }
 
 - (void)setSendLogs:(BOOL)sendLogs
@@ -199,8 +211,50 @@
     bugReportRestClient.deviceModel = [GBDeviceInfo deviceInfo].modelString;
     bugReportRestClient.deviceOS = [NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
 
+    // Screenshot
+    NSArray<NSURL*> *files;
+    if (_screenshot && _sendScreenshot)
+    {
+        // Store the screenshot into a temporary file
+        NSData *screenShotData = UIImagePNGRepresentation(_screenshot);
+        screenShotFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"screenshot.png"]];
+        [screenShotData writeToURL:screenShotFile atomically:YES];
+
+        files = @[screenShotFile];
+    }
+
+    // Prepare labels to attach to the GitHub issue
+    NSMutableArray<NSString*> *gitHubLabels = [NSMutableArray array];
+    if (_reportCrash)
+    {
+        // Label the GH issue as "crash"
+        [gitHubLabels addObject:@"crash"];
+    }
+
+    // Add a Github label giving information about the version
+    if (bugReportRestClient.version && bugReportRestClient.build)
+    {
+        NSString *build = bugReportRestClient.build;
+        NSString *versionLabel = bugReportRestClient.version;
+
+        // If this is not the app store version, be more accurate on the build origin
+        if ([build isEqualToString:NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil)])
+        {
+            // This is a debug session from Xcode
+            versionLabel = [versionLabel stringByAppendingString:@"-debug"];
+        }
+        else if (build && ![build containsString:@"master"])
+        {
+            // This is a Jenkins build. Add the branch and the build number
+            NSString *buildString = [build stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+            versionLabel = [[versionLabel stringByAppendingString:@"-"] stringByAppendingString:buildString];
+        }
+
+        [gitHubLabels addObject:versionLabel];
+    }
+
     // Submit
-    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs sendCrashLog:_reportCrash progress:^(MXBugReportState state, NSProgress *progress) {
+    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files attachGitHubLabels:gitHubLabels progress:^(MXBugReportState state, NSProgress *progress) {
 
         switch (state)
         {
