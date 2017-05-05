@@ -626,37 +626,45 @@
     return 0;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
+- (NSAttributedString *)titleForHeaderInSection:(NSInteger)section
 {
-    NSString* sectionTitle = nil;
+    NSAttributedString *sectionTitle;
+    NSString* title;
     NSUInteger count = 0;
     
     if (section == filteredLocalContactsSection)
     {
         count = filteredLocalContacts.count;
-        
-        if (count)
-        {
-            sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil), count];
-        }
-        else
-        {
-            sectionTitle = NSLocalizedStringFromTable(@"contacts_address_book_section_default", @"Vector", nil);
-        }
+        title = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
     }
     else //if (section == filteredMatrixContactsSection)
     {
-        sectionTitle = NSLocalizedStringFromTable(@"contacts_matrix_users_section_default", @"Vector", nil);
+        title = NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil);
         
         if (currentSearchText.length)
         {
             count = filteredMatrixContacts.count;
-            
-            if (count)
-            {
-                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil), count];
-            }
         }
+    }
+    
+    if (count)
+    {
+        NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
+        
+        NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
+        [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
+                                                                                    attributes:@{NSForegroundColorAttributeName : kRiotColorSilver,
+                                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
+        
+        sectionTitle = mutableSectionTitle;
+    }
+    else if (title)
+    {
+        sectionTitle = [[NSAttributedString alloc] initWithString:title
+                                               attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                            NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
     }
     
     return sectionTitle;
@@ -676,8 +684,7 @@
     frame.size.width = sectionHeader.frame.size.width - 10;
     frame.size.height = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT -10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-    headerLabel.text = [self titleForHeaderInSection:section];
-    headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    headerLabel.attributedText = [self titleForHeaderInSection:section];
     headerLabel.backgroundColor = [UIColor clearColor];
     [sectionHeader addSubview:headerLabel];
     
