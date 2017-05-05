@@ -118,15 +118,11 @@
 // Room recents
 "room_recents_directory_section" = "ROOM DIRECTORY";
 "room_recents_directory_section_network" = "Network";
-"room_recents_favourites_section" = "FAVOURITES (%tu)";
-"room_recents_favourites_section_default" = "FAVOURITES";
-"room_recents_conversations_section" = "ROOMS (%tu)";
-"room_recents_conversations_section_default" = "ROOMS";
+"room_recents_favourites_section" = "FAVOURITES";
+"room_recents_conversations_section" = "ROOMS";
 "room_recents_no_conversation" = "No rooms";
-"room_recents_low_priority_section" = "LOW PRIORITY (%tu)";
-"room_recents_low_priority_section_default" = "LOW PRIORITY";
-"room_recents_invites_section" = "INVITES (%tu)";
-"room_recents_invites_section_default" = "INVITES";
+"room_recents_low_priority_section" = "LOW PRIORITY";
+"room_recents_invites_section" = "INVITES";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
 "room_recents_join_room" = "Join room";
@@ -134,10 +130,8 @@
 "room_recents_join_room_prompt" = "Type a room id or a room alias";
 
 // People tab
-"people_invites_section" = "INVITES (%tu)";
-"people_invites_section_default" = "INVITES";
-"people_conversation_section" = "CONVERSATIONS (%tu)";
-"people_conversation_section_default" = "CONVERSATIONS";
+"people_invites_section" = "INVITES";
+"people_conversation_section" = "CONVERSATIONS";
 "people_no_conversation" = "No conversations";
 
 // Rooms tab
@@ -162,12 +156,10 @@
 "directory_search_fail" = "Failed to fetch data";
 
 // Contacts
-"contacts_address_book_section" = "LOCAL CONTACTS (%tu)";
-"contacts_address_book_section_default" = "LOCAL CONTACTS";
+"contacts_address_book_section" = "LOCAL CONTACTS";
 "contacts_address_book_matrix_users_toggle" = "Matrix users only";
 "contacts_address_book_no_contact" = "No local contacts";
-"contacts_matrix_users_section" = "KNOWN CONTACTS (%tu)";
-"contacts_matrix_users_section_default" = "KNOWN CONTACTS";
+"contacts_matrix_users_section" = "KNOWN CONTACTS";
 "contacts_matrix_users_search_prompt" = "Too many contacts, please use the search field";
 
 // Chat participants

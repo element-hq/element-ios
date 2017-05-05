@@ -308,67 +308,38 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
+- (NSAttributedString *)titleForHeaderInSection:(NSInteger)section
 {
-    NSString* sectionTitle = nil;
+    NSAttributedString *sectionTitle;
+    NSString *title;
     NSUInteger count = 0;
     
     if (section == favoritesSection)
     {
         count = favoriteCellDataArray.count;
-        
-        if (count)
-        {
-            sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_recents_favourites_section", @"Vector", nil), count];
-        }
-        else
-        {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_favourites_section_default", @"Vector", nil);
-        }
+        title = NSLocalizedStringFromTable(@"room_recents_favourites_section", @"Vector", nil);
     }
     else if (section == conversationSection)
     {
         count = conversationCellDataArray.count;
-       
+        
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
-            if (count)
-            {
-                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"people_conversation_section", @"Vector", nil), count];
-            }
-            else
-            {
-                sectionTitle = NSLocalizedStringFromTable(@"people_conversation_section_default", @"Vector", nil);
-            }
+            title = NSLocalizedStringFromTable(@"people_conversation_section", @"Vector", nil);
         }
         else
         {
-            if (count)
-            {
-                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_recents_conversations_section", @"Vector", nil), count];
-            }
-            else
-            {
-                sectionTitle = NSLocalizedStringFromTable(@"room_recents_conversations_section_default", @"Vector", nil);
-            }
+            title = NSLocalizedStringFromTable(@"room_recents_conversations_section", @"Vector", nil);
         }
     }
     else if (section == directorySection)
     {
-        sectionTitle = NSLocalizedStringFromTable(@"room_recents_directory_section", @"Vector", nil);
+        title = NSLocalizedStringFromTable(@"room_recents_directory_section", @"Vector", nil);
     }
     else if (section == lowPrioritySection)
     {
         count = lowPriorityCellDataArray.count;
-        
-        if (count)
-        {
-            sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_recents_low_priority_section", @"Vector", nil), count];
-        }
-        else
-        {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_low_priority_section_default", @"Vector", nil);
-        }
+        title = NSLocalizedStringFromTable(@"room_recents_low_priority_section", @"Vector", nil);
     }
     else if (section == invitesSection)
     {
@@ -376,26 +347,32 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
-            if (count)
-            {
-                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"people_invites_section", @"Vector", nil), count];
-            }
-            else
-            {
-                sectionTitle = NSLocalizedStringFromTable(@"people_invites_section_default", @"Vector", nil);
-            }
+            title = NSLocalizedStringFromTable(@"people_invites_section", @"Vector", nil);
         }
         else
         {
-            if (count)
-            {
-                sectionTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_recents_invites_section", @"Vector", nil), count];
-            }
-            else
-            {
-                sectionTitle = NSLocalizedStringFromTable(@"room_recents_invites_section_default", @"Vector", nil);
-            }
+            title = NSLocalizedStringFromTable(@"room_recents_invites_section", @"Vector", nil);
         }
+    }
+    
+    if (count)
+    {
+        NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
+        
+        NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
+        [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
+                                                                                    attributes:@{NSForegroundColorAttributeName : kRiotColorSilver,
+                                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
+        
+        sectionTitle = mutableSectionTitle;
+    }
+    else if (title)
+    {
+        sectionTitle = [[NSAttributedString alloc] initWithString:title
+                                               attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                            NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
     }
     
     return sectionTitle;
@@ -471,9 +448,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     frame.size.width = chevronView ? chevronView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
     frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-    headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
     headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.text = [self titleForHeaderInSection:section];
+    headerLabel.attributedText = [self titleForHeaderInSection:section];
     [sectionHeader addSubview:headerLabel];
 
     if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
