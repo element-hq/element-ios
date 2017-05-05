@@ -63,8 +63,8 @@
     self.view.accessibilityIdentifier = @"PeopleVCView";
     self.recentsTableView.accessibilityIdentifier = @"PeopleVCTableView";
     
-    // Add room creation button programmatically
-    [self addRoomCreationButton];
+    // Add the (+) button programmatically
+    [self addPlusButton];
     
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
@@ -420,7 +420,7 @@
 
 #pragma mark - Actions
 
-- (void)onRoomCreationButtonPressed
+- (void)onPlusButtonPressed
 {
     [self performSegueWithIdentifier:@"presentStartChat" sender:self];
 }

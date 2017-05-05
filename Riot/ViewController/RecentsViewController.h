@@ -21,9 +21,9 @@
 {
 @protected
     /**
-     The image view of the room creation button.
+     The image view of the (+) button.
      */
-    UIImageView* createNewRoomImageView;
+    UIImageView* plusButtonImageView;
     
     /**
      Current alert (if any).
@@ -103,17 +103,17 @@
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
 
 
-#pragma mark - Room creation
+#pragma mark - Room handling
 /**
- Add a Room creation button at the right bottom corner of the view.
+ Add the (+) button at the right bottom corner of the view.
  */
-- (void)addRoomCreationButton;
+- (void)addPlusButton;
 
 /**
- Action triggered when the user taps on the Room creation button.
+ Action triggered when the user taps on the (+) button.
  Create an empty room by default.
  */
-- (void)onRoomCreationButtonPressed;
+- (void)onPlusButtonPressed;
 
 /**
  Create an empty room.

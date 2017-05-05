@@ -46,8 +46,8 @@
     self.view.accessibilityIdentifier = @"HomeVCView";
     self.recentsTableView.accessibilityIdentifier = @"HomeVCTableView";
     
-    // Add room creation button programmatically
-    [self addRoomCreationButton];
+    // Add the (+) button programmatically
+    [self addPlusButton];
     
     // Register table view cell used for rooms collection.
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
@@ -108,7 +108,25 @@
     //[super refreshCurrentSelectedCell:forceVisible];
 }
 
-- (void)onRoomCreationButtonPressed
+- (void)didTapOnSectionHeader:(UIGestureRecognizer*)gestureRecognizer
+{
+    UIView *view = gestureRecognizer.view;
+    NSInteger section = view.tag;
+    
+    // Scroll to the beginning the corresponding rooms collection.
+    UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+    if (firstSectionCell && [firstSectionCell isKindOfClass:TableViewCellWithCollectionView.class])
+    {
+        TableViewCellWithCollectionView *tableViewCell = (TableViewCellWithCollectionView*)firstSectionCell;
+        
+        if ([tableViewCell.collectionView numberOfItemsInSection:0] > 0)
+        {
+            [tableViewCell.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+        }
+    }
+}
+
+- (void)onPlusButtonPressed
 {
     __weak typeof(self) weakSelf = self;
     
@@ -146,7 +164,7 @@
         strongSelf->currentAlert = nil;
     }];
     
-    currentAlert.sourceView = createNewRoomImageView;
+    currentAlert.sourceView = plusButtonImageView;
     
     currentAlert.mxkAccessibilityIdentifier = @"HomeVCCreateRoomAlert";
     [currentAlert showInViewController:self];
@@ -178,12 +196,6 @@
     return [recentsDataSource titleForHeaderInSection:section];
 }
 
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
-{
-    // Keep the recents data source informations on the section headers.
-    return [recentsDataSource viewForHeaderInSection:section withFrame:frame];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
@@ -210,14 +222,14 @@
         return tableViewCell;
     }
     
-    TableViewCellWithCollectionView *collectionViewCell = [tableView dequeueReusableCellWithIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier forIndexPath:indexPath];
-    collectionViewCell.collectionView.tag = indexPath.section;
-    [collectionViewCell.collectionView registerClass:RoomCollectionViewCell.class forCellWithReuseIdentifier:RoomCollectionViewCell.defaultReuseIdentifier];
-    collectionViewCell.collectionView.delegate = self;
-    collectionViewCell.collectionView.dataSource = self;
-    collectionViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier forIndexPath:indexPath];
+    tableViewCell.collectionView.tag = indexPath.section;
+    [tableViewCell.collectionView registerClass:RoomCollectionViewCell.class forCellWithReuseIdentifier:RoomCollectionViewCell.defaultReuseIdentifier];
+    tableViewCell.collectionView.delegate = self;
+    tableViewCell.collectionView.dataSource = self;
+    tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    return collectionViewCell;
+    return tableViewCell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

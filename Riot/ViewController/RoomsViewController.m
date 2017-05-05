@@ -47,8 +47,8 @@
     self.view.accessibilityIdentifier = @"RoomsVCView";
     self.recentsTableView.accessibilityIdentifier = @"RoomsVCTableView";
     
-    // Add room creation button programmatically
-    [self addRoomCreationButton];
+    // Add the (+) button programmatically
+    [self addPlusButton];
     
     self.enableStickyHeaders = YES;
 }
@@ -164,7 +164,7 @@
                     [self removeSpinnerFooterView];
 
                     // Make the directory section appear full-page
-                    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:recentsDataSource.directorySection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:recentsDataSource.directorySection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 
                 } failure:^(NSError *error) {
 
