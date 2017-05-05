@@ -223,8 +223,38 @@
         files = @[screenShotFile];
     }
 
+    // Prepare labels to attach to the GitHub issue
+    NSMutableArray<NSString*> *gitHubLabels = [NSMutableArray array];
+    if (_reportCrash)
+    {
+        // Label the GH issue as "crash"
+        [gitHubLabels addObject:@"crash"];
+    }
+
+    // Add a Github label giving information about the version
+    if (bugReportRestClient.version && bugReportRestClient.build)
+    {
+        NSString *build = bugReportRestClient.build;
+        NSString *versionLabel = bugReportRestClient.version;
+
+        // If this is not the app store version, be more accurate on the build origin
+        if ([build isEqualToString:NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil)])
+        {
+            // This is a debug session from Xcode
+            versionLabel = [versionLabel stringByAppendingString:@"-debug"];
+        }
+        else if (build && ![build containsString:@"master"])
+        {
+            // This is a Jenkins build. Add the branch and the build number
+            NSString *buildString = [build stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+            versionLabel = [[versionLabel stringByAppendingString:@"-"] stringByAppendingString:buildString];
+        }
+
+        [gitHubLabels addObject:versionLabel];
+    }
+
     // Submit
-    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files progress:^(MXBugReportState state, NSProgress *progress) {
+    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files attachGitHubLabels:gitHubLabels progress:^(MXBugReportState state, NSProgress *progress) {
 
         switch (state)
         {
