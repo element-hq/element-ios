@@ -117,6 +117,7 @@
 
 // Room recents
 "room_recents_directory_section" = "ROOM DIRECTORY";
+"room_recents_directory_section_network" = "Network";
 "room_recents_favourites_section" = "FAVOURITES (%tu)";
 "room_recents_favourites_section_default" = "FAVOURITES";
 "room_recents_conversations_section" = "ROOMS (%tu)";
