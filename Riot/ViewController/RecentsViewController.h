@@ -54,6 +54,12 @@
 @property (nonatomic) BOOL shouldScrollToTopOnRefresh;
 
 /**
+ Tell whether the drag and drop option are enabled. NO by default.
+ This option is used to move a room from a section to another.
+ */
+@property (nonatomic) BOOL enableDragging;
+
+/**
  Tell whether the sticky headers are enabled. NO by default.
  */
 @property (nonatomic) BOOL enableStickyHeaders;

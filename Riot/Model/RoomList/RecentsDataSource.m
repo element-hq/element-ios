@@ -56,6 +56,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @implementation RecentsDataSource
 @synthesize directorySection, invitesSection, favoritesSection, conversationSection, lowPrioritySection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
+@synthesize invitesCellDataArray, favoriteCellDataArray, conversationCellDataArray, lowPriorityCellDataArray;
 
 - (instancetype)init
 {
@@ -237,7 +238,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             favoritesSection = sectionsCount++;
         }
         
-        if (conversationCellDataArray.count > 0 || (_recentsDataSourceMode == RecentsDataSourceModePeople) || (_recentsDataSourceMode == RecentsDataSourceModeRooms))
+        // Keep visible the main rooms section even if it is empty, except on favourites screen.
+        if (_recentsDataSourceMode != RecentsDataSourceModeFavourites)
         {
             conversationSection = sectionsCount++;
         }
@@ -702,7 +704,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
         
         // Check whether a search session is in progress
-        if (searchPatternsList)
+        if (self.searchPatternsList)
         {
             tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
         }

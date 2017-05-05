@@ -41,7 +41,8 @@
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
     
-    // recents drag and drop management
+    // Recents drag and drop management
+    UILongPressGestureRecognizer *longPressGestureRecognizer;
     UIImageView *cellSnapshot;
     NSIndexPath* movingCellPath;
     MXRoom* movingRoom;
@@ -95,6 +96,8 @@
     // Set default screen name
     _screenName = @"RecentsScreen";
     
+    _enableDragging = NO;
+    
     _enableStickyHeaders = NO;
     _stickyHeaderHeight = 30.0;
     
@@ -128,9 +131,6 @@
     // Register here the customized cell view class used to render recents
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
     [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
-    
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
-    [self.recentsTableView addGestureRecognizer:longPress];
 
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
@@ -150,6 +150,8 @@
 - (void)destroy
 {
     [super destroy];
+    
+    longPressGestureRecognizer = nil;
 
     if (currentRequest)
     {
@@ -1238,7 +1240,25 @@
     }
 }
 
-#pragma mark - recents drag & drop management
+#pragma mark - Recents drag & drop management
+
+- (void)setEnableDragging:(BOOL)enableDragging
+{
+    if (_enableDragging != enableDragging)
+    {
+        _enableDragging = enableDragging;
+        
+        if (_enableDragging)
+        {
+            longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
+            [self.recentsTableView addGestureRecognizer:longPressGestureRecognizer];
+        }
+        else if (longPressGestureRecognizer)
+        {
+            [self.recentsTableView removeGestureRecognizer:longPressGestureRecognizer];
+        }
+    }
+}
 
 - (void)onRecentsDragEnd
 {
@@ -1256,6 +1276,11 @@
 
 - (IBAction)onRecentsLongPress:(id)sender
 {
+    if (sender != longPressGestureRecognizer)
+    {
+        return;
+    }
+    
     RecentsDataSource* recentsDataSource = nil;
     
     if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
@@ -1269,8 +1294,7 @@
         return;
     }
     
-    UILongPressGestureRecognizer *longPress = (UILongPressGestureRecognizer *)sender;
-    UIGestureRecognizerState state = longPress.state;
+    UIGestureRecognizerState state = longPressGestureRecognizer.state;
     
     // check if there is a moving cell during the long press managemnt
     if ((state != UIGestureRecognizerStateBegan) && !movingCellPath)
@@ -1278,7 +1302,7 @@
         return;
     }
     
-    CGPoint location = [longPress locationInView:self.recentsTableView];
+    CGPoint location = [longPressGestureRecognizer locationInView:self.recentsTableView];
     
     switch (state)
     {

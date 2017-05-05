@@ -52,6 +52,11 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) NSInteger conversationSection;
 @property (nonatomic) NSInteger lowPrioritySection;
 
+@property (nonatomic, readonly) NSArray* invitesCellDataArray;
+@property (nonatomic, readonly) NSArray* favoriteCellDataArray;
+@property (nonatomic, readonly) NSArray* conversationCellDataArray;
+@property (nonatomic, readonly) NSArray* lowPriorityCellDataArray;
+
 /**
  Set the delegate by specifying the selected display mode.
  */
