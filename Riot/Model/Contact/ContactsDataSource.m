@@ -398,6 +398,10 @@
         {
             searchInputSection = count++;
         }
+        
+        // Keep visible the header for the both contact sections, even if their are empty.
+        filteredLocalContactsSection = count++;
+        filteredMatrixContactsSection = count++;
     }
     else
     {
@@ -406,11 +410,12 @@
         {
             filteredLocalContacts = [self unfilteredLocalContactsArray];
         }
+        
+        // Keep visible the local contact header, even if the section is empty.
+        filteredLocalContactsSection = count++;
     }
     
-    // Keep visible the header for the both contact sections, even if their are empty.
-    filteredLocalContactsSection = count++;
-    filteredMatrixContactsSection = count++;
+    
     
     return count;
 }
@@ -430,16 +435,8 @@
     }
     else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE))
     {
-        if (currentSearchText.length)
-        {
-            // Display a default cell when no contacts is available.
-            count = filteredMatrixContacts.count ? filteredMatrixContacts.count : 1;
-        }
-        else
-        {
-            // Display a message to invite the user to use the search field.
-            count = 1;
-        }
+        // Display a default cell when no contacts is available.
+        count = filteredMatrixContacts.count ? filteredMatrixContacts.count : 1;
     }
     
     return count;
@@ -447,23 +444,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Consider first the case of the known contacts section when no search is in progress.
-    if (!currentSearchText.length && indexPath.section == filteredMatrixContactsSection && indexPath.row == 0)
-    {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"defaultKnownContactCell"];
-        if (!cell)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"defaultKnownContactCell"];
-        }
-        
-        cell.textLabel.text = NSLocalizedStringFromTable(@"contacts_matrix_users_search_prompt", @"Vector", nil);
-        cell.textLabel.numberOfLines = 2;
-        cell.textLabel.textColor = kRiotTextColorGray;
-        cell.textLabel.font = [UIFont systemFontOfSize:15.0];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }
-    
     // Prepare a contact cell here
     MXKContact *contact;
     BOOL showMatrixIdInDisplayName = NO;
