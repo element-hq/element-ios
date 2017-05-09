@@ -626,7 +626,7 @@
     return 0;
 }
 
-- (NSAttributedString *)titleForHeaderInSection:(NSInteger)section
+- (NSAttributedString *)attributedStringForHeaderTitleInSection:(NSInteger)section
 {
     NSAttributedString *sectionTitle;
     NSString* title;
@@ -684,7 +684,7 @@
     frame.size.width = sectionHeader.frame.size.width - 10;
     frame.size.height = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT -10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-    headerLabel.attributedText = [self titleForHeaderInSection:section];
+    headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     headerLabel.backgroundColor = [UIColor clearColor];
     [sectionHeader addSubview:headerLabel];
     

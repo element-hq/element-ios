@@ -184,18 +184,6 @@
     return 1;
 }
 
-- (CGFloat)heightForHeaderInSection:(NSInteger)section
-{
-    // Keep the recents data source informations on the section headers.
-    return [recentsDataSource heightForHeaderInSection:section];
-}
-
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
-    // Keep the recents data source informations on the section headers.
-    return [recentsDataSource titleForHeaderInSection:section];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)

@@ -61,12 +61,12 @@
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
 
 /**
- Get the title of the header of the specified section.
+ Get the attributed string for the header title of the specified section.
  
  @param section the section  index.
  @return the section title.
  */
-- (NSString *)titleForHeaderInSection:(NSInteger)section;
+- (NSAttributedString *)attributedStringForHeaderTitleInSection:(NSInteger)section;
 
 /**
  Get the section header view.

@@ -308,7 +308,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
 }
 
-- (NSAttributedString *)titleForHeaderInSection:(NSInteger)section
+- (NSAttributedString *)attributedStringForHeaderTitleInSection:(NSInteger)section
 {
     NSAttributedString *sectionTitle;
     NSString *title;
@@ -449,7 +449,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.attributedText = [self titleForHeaderInSection:section];
+    headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     [sectionHeader addSubview:headerLabel];
 
     if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
