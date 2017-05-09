@@ -160,7 +160,6 @@
 "contacts_address_book_matrix_users_toggle" = "Matrix users only";
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_matrix_users_section" = "KNOWN CONTACTS";
-"contacts_matrix_users_search_prompt" = "Too many contacts, please use the search field";
 
 // Chat participants
 "room_participants_title" = "Participants";
