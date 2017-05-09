@@ -36,8 +36,6 @@
 
 #import "NBPhoneNumberUtil.h"
 
-#import "OLMKit/OLMKit.h"
-
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 enum
@@ -71,7 +69,6 @@ enum
 enum
 {
     OTHER_VERSION_INDEX = 0,
-    OTHER_OLM_VERSION_INDEX,
     OTHER_COPYRIGHT_INDEX,
     OTHER_TERM_CONDITIONS_INDEX,
     OTHER_PRIVACY_INDEX,
@@ -89,7 +86,8 @@ enum
 };
 
 enum {
-    CRYPTOGRAPHY_INFO_INDEX = 0,
+    CRYPTOGRAPHY_OLM_VERSION_INDEX = 0,
+    CRYPTOGRAPHY_INFO_INDEX,
     CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX,
     CRYPTOGRAPHY_EXPORT_INDEX,
     CRYPTOGRAPHY_COUNT
@@ -1593,16 +1591,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = versionCell;
         }
-        else if (row == OTHER_OLM_VERSION_INDEX)
-        {
-            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
-            
-            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), [OLMKit versionString]];
-            
-            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = versionCell;
-        }
         else if (row == OTHER_TERM_CONDITIONS_INDEX)
         {
             MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
@@ -1750,6 +1738,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cryptoCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
             cell = cryptoCell;
+        }
+        else if (row == CRYPTOGRAPHY_OLM_VERSION_INDEX)
+        {
+            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
+
+            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), account.mxSession.crypto.olmVersion];
+
+            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            cell = versionCell;
         }
         else if (row == CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX)
         {
