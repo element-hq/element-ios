@@ -211,6 +211,19 @@
     bugReportRestClient.deviceModel = [GBDeviceInfo deviceInfo].modelString;
     bugReportRestClient.deviceOS = [NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
 
+    // User info (TODO: handle multi-account and find a way to expose them in rageshake API)
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    MXKAccount *mainAccount = [MXKAccountManager sharedManager].accounts.firstObject;
+    if (mainAccount.mxSession.myUser.userId)
+    {
+        userInfo[@"user_id"] = mainAccount.mxSession.myUser.userId;
+    }
+    if (mainAccount.mxSession.matrixRestClient.credentials.deviceId)
+    {
+        userInfo[@"device_id"] = mainAccount.mxSession.matrixRestClient.credentials.deviceId;
+    }
+    bugReportRestClient.others = userInfo;
+
     // Screenshot
     NSArray<NSURL*> *files;
     if (_screenshot && _sendScreenshot)
