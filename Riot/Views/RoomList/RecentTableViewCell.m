@@ -91,7 +91,7 @@
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;
                 
-                self.missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", roomCellData.notificationCount];
+                self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
                 
                 self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;

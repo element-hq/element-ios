@@ -30,6 +30,10 @@
 {
     [super awakeFromNib];
     
+    // Round room image view
+    [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
+    _roomAvatar.clipsToBounds = YES;
+    
     // Initialize unread count badge
     [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
@@ -37,10 +41,11 @@
     self.roomTitle.textColor = kRiotTextColorBlack;
     self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
     
-    self.directRoomBorderView.backgroundColor = kRiotColorGreen;
-    self.directRoomBorderView.alpha = 0.75;
+    // Prepare direct room border
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
+    self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
+    self.directRoomBorderView.layer.borderWidth = 5;
     
     // Disable the user interaction on the room avatar.
     self.roomAvatar.userInteractionEnabled = NO;
@@ -50,9 +55,7 @@
 {
     [super layoutSubviews];
     
-    // Round image view
-    [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
-    _roomAvatar.clipsToBounds = YES;
+    
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -75,7 +78,7 @@
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? kRiotColorPinkRed : kRiotColorGreen;
                 
-                self.missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", roomCellData.notificationCount];
+                self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
                 
                 self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
@@ -117,12 +120,12 @@
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
-    return 110;
+    return 100;
 }
 
 + (CGSize)defaultCellSize
 {
-    return CGSizeMake(90, 110);
+    return CGSizeMake(80, 100);
 }
 
 - (void)prepareForReuse
