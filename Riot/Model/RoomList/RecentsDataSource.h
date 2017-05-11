@@ -49,11 +49,13 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) NSInteger directorySection;
 @property (nonatomic) NSInteger invitesSection;
 @property (nonatomic) NSInteger favoritesSection;
+@property (nonatomic) NSInteger peopleSection;
 @property (nonatomic) NSInteger conversationSection;
 @property (nonatomic) NSInteger lowPrioritySection;
 
 @property (nonatomic, readonly) NSArray* invitesCellDataArray;
 @property (nonatomic, readonly) NSArray* favoriteCellDataArray;
+@property (nonatomic, readonly) NSArray* peopleCellDataArray;
 @property (nonatomic, readonly) NSArray* conversationCellDataArray;
 @property (nonatomic, readonly) NSArray* lowPriorityCellDataArray;
 

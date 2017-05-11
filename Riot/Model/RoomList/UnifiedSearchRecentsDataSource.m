@@ -89,7 +89,7 @@
         
         if (_hideRecents)
         {
-            self.invitesSection = self.favoritesSection = self.conversationSection = self.lowPrioritySection = -1;
+            self.invitesSection = self.favoritesSection = self.peopleSection = self.conversationSection = self.lowPrioritySection = -1;
             sectionsCount = sectionsOffset;
         }
         else
@@ -101,6 +101,10 @@
             if (self.favoritesSection != -1)
             {
                 self.favoritesSection += sectionsOffset;
+            }
+            if (self.peopleSection != -1)
+            {
+                self.peopleSection += sectionsOffset;
             }
             if (self.conversationSection != -1)
             {

@@ -119,6 +119,7 @@
 "room_recents_directory_section" = "ROOM DIRECTORY";
 "room_recents_directory_section_network" = "Network";
 "room_recents_favourites_section" = "FAVOURITES";
+"room_recents_people_section" = "PEOPLE";
 "room_recents_conversations_section" = "ROOMS";
 "room_recents_no_conversation" = "No rooms";
 "room_recents_low_priority_section" = "LOW PRIORITY";

@@ -96,6 +96,10 @@
     // Set default screen name
     _screenName = @"RecentsScreen";
     
+    // Enable the search bar in the recents table, and remove the search option from the navigation bar.
+    _enableSearchBar = YES;
+    self.enableBarButtonSearch = NO;
+    
     _enableDragging = NO;
     
     _enableStickyHeaders = NO;
@@ -112,8 +116,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // Remove search option from the navigation bar
-    self.enableSearch = NO;
+    
     
     // Adjust Bottom constraint to take into account tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_stickyHeadersBottomContainerBottomConstraint]];
@@ -1217,7 +1220,7 @@
 {
     [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
     
-    if (targetContentOffset->y + scrollView.contentInset.top <= 0 && scrollView.contentSize.height)
+    if (_enableSearchBar && targetContentOffset->y + scrollView.contentInset.top <= 0 && scrollView.contentSize.height)
     {
         // Show the search bar
         [self hideSearchBar:NO];

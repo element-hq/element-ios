@@ -72,6 +72,7 @@
 
     [titles addObject: NSLocalizedStringFromTable(@"search_rooms", @"Vector", nil)];
     recentsViewController = [RecentsViewController recentListViewController];
+    recentsViewController.enableSearchBar = NO;
     recentsViewController.screenName = @"UnifiedSearchRooms";
     [viewControllers addObject:recentsViewController];
 
