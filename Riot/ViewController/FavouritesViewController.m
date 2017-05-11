@@ -42,6 +42,8 @@
     [super viewWillAppear:animated];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorIndigo;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorIndigo;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
@@ -49,6 +51,18 @@
         RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeFavourites];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ([AppDelegate theDelegate].masterTabBarController.tabBar.tintColor == kRiotColorIndigo)
+    {
+        // Restore default tintColor
+        [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;
+        [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
     }
 }
 

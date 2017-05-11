@@ -36,7 +36,7 @@ static UILabel* backgroundLabel = nil;
         colorsList = [[NSMutableArray alloc] init];
         [colorsList addObject:kRiotColorGreen];
         [colorsList addObject:kRiotColorLightGreen];
-        [colorsList addObject:kRiotColorOrange];
+        [colorsList addObject:kRiotColorLightOrange];
     }
 }
 
