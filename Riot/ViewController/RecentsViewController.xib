@@ -45,6 +45,7 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JJC-Bw-6sa">
                     <rect key="frame" x="0.0" y="44" width="375" height="0.0"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RecentsVCStickyHeadersTopContainer"/>
                     <constraints>
                         <constraint firstAttribute="height" id="xT1-rL-nCC"/>
                     </constraints>
@@ -52,6 +53,7 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXH-mK-0eB">
                     <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RecentsVCStickyHeadersBottomContainer"/>
                     <constraints>
                         <constraint firstAttribute="height" id="SNq-Js-N7s"/>
                     </constraints>
