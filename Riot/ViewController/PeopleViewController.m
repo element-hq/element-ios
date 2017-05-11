@@ -66,6 +66,9 @@
     // Add the (+) button programmatically
     [self addPlusButton];
     
+    // Apply tintColor on the (+) button
+    plusButtonImageView.image = [UIImage imageNamed:@"create_direct_chat"];
+    
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
     
@@ -95,6 +98,8 @@
     [super viewWillAppear:animated];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorOrange;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorOrange;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
@@ -108,6 +113,13 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    if ([AppDelegate theDelegate].masterTabBarController.tabBar.tintColor == kRiotColorOrange)
+    {
+        // Restore default tintColor
+        [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;
+        [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
+    }
 }
 
 #pragma mark - 

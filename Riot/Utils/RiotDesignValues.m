@@ -20,10 +20,12 @@
 UIColor *kRiotColorGreen;
 UIColor *kRiotColorLightGreen;
 UIColor *kRiotColorLightGrey;
+UIColor *kRiotColorLightOrange;
 UIColor *kRiotColorSilver;
-UIColor *kRiotColorOrange;
 UIColor *kRiotColorPinkRed;
 UIColor *kRiotColorRed;
+UIColor *kRiotColorIndigo;
+UIColor *kRiotColorOrange;
 
 UIColor *kRiotTextColorBlack;
 UIColor *kRiotTextColorDarkGray;
@@ -48,6 +50,8 @@ NSInteger const kRiotRoomAdminLevel = 100;
     kRiotColorSilver = UIColorFromRGB(0xC7C7CC);
     kRiotColorPinkRed = UIColorFromRGB(0xFF0064);
     kRiotColorRed = UIColorFromRGB(0xFF4444);
+    kRiotColorIndigo = UIColorFromRGB(0xBD79CC);
+    kRiotColorOrange = UIColorFromRGB(0xF8A15F);
 
     kRiotTextColorBlack = [UIColor colorWithRed:(60.0 / 255.0) green:(60.0 / 255.0) blue:(60.0 / 255.0) alpha:1.0];
     kRiotTextColorDarkGray = [UIColor colorWithRed:(74.0 / 255.0) green:(74.0 / 255.0) blue:(74.0 / 255.0) alpha:1.0];
@@ -57,7 +61,7 @@ NSInteger const kRiotRoomAdminLevel = 100;
 
     // Colors copied from Vector web
     kRiotColorLightGreen = UIColorFromRGB(0x50e2c2);
-    kRiotColorOrange = UIColorFromRGB(0xf4c371);
+    kRiotColorLightOrange = UIColorFromRGB(0xf4c371);
 }
 
 @end
