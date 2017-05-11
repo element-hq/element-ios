@@ -54,6 +54,11 @@
 @property (nonatomic) BOOL shouldScrollToTopOnRefresh;
 
 /**
+ Tell whether the search bar at the top of the recents table is enabled. YES by default.
+ */
+@property (nonatomic) BOOL enableSearchBar;
+
+/**
  Tell whether the drag and drop option are enabled. NO by default.
  This option is used to move a room from a section to another.
  */

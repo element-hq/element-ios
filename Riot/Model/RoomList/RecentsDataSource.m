@@ -23,11 +23,14 @@
 
 #import "MXRoom+Riot.h"
 
+#import "AppDelegate.h"
+
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
 #define RECENTSDATASOURCE_SECTION_INVITES       0x02
 #define RECENTSDATASOURCE_SECTION_FAVORITES     0x04
 #define RECENTSDATASOURCE_SECTION_CONVERSATIONS 0x08
 #define RECENTSDATASOURCE_SECTION_LOWPRIORITY   0x10
+#define RECENTSDATASOURCE_SECTION_PEOPLE        0x20
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
 #define RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT   65.0
@@ -38,6 +41,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
+    NSMutableArray* peopleCellDataArray;
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
     
@@ -54,9 +58,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, conversationSection, lowPrioritySection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
-@synthesize invitesCellDataArray, favoriteCellDataArray, conversationCellDataArray, lowPriorityCellDataArray;
+@synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray;
 
 - (instancetype)init
 {
@@ -65,12 +69,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         invitesCellDataArray = [[NSMutableArray alloc] init];
         favoriteCellDataArray = [[NSMutableArray alloc] init];
+        peopleCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
 
         directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
+        peopleSection = -1;
         conversationSection = -1;
         lowPrioritySection = -1;
         
@@ -226,7 +232,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
+        directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
         
         if (invitesCellDataArray.count > 0)
         {
@@ -236,6 +242,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (favoriteCellDataArray.count > 0)
         {
             favoritesSection = sectionsCount++;
+        }
+        
+        if (peopleCellDataArray.count > 0)
+        {
+            peopleSection = sectionsCount++;
         }
         
         // Keep visible the main rooms section even if it is empty, except on favourites screen.
@@ -266,6 +277,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
     {
         count = favoriteCellDataArray.count;
+    }
+    else if (section == peopleSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE))
+    {
+        count = peopleCellDataArray.count ? peopleCellDataArray.count : 1;
     }
     else if (section == conversationSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
     {
@@ -318,6 +333,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         count = favoriteCellDataArray.count;
         title = NSLocalizedStringFromTable(@"room_recents_favourites_section", @"Vector", nil);
+    }
+    else if (section == peopleSection)
+    {
+        count = peopleCellDataArray.count;
+        title = NSLocalizedStringFromTable(@"room_recents_people_section", @"Vector", nil);
     }
     else if (section == conversationSection)
     {
@@ -390,6 +410,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (section == favoritesSection)
         {
             sectionBitwise =  RECENTSDATASOURCE_SECTION_FAVORITES;
+        }
+        else if (section == peopleSection)
+        {
+            sectionBitwise =  RECENTSDATASOURCE_SECTION_PEOPLE;
         }
         else if (section == conversationSection)
         {
@@ -668,7 +692,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         return cell;
     }
-    else if (indexPath.section == conversationSection && !conversationCellDataArray.count)
+    else if ((indexPath.section == conversationSection && !conversationCellDataArray.count)
+             || (indexPath.section == peopleSection && !peopleCellDataArray.count))
     {
         MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
         if (!tableViewCell)
@@ -684,7 +709,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
         }
-        else if (_recentsDataSourceMode == RecentsDataSourceModePeople)
+        else if (_recentsDataSourceMode == RecentsDataSourceModePeople || indexPath.section == peopleSection)
         {
             tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"people_no_conversation", @"Vector", nil);
         }
@@ -720,6 +745,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (cellDataIndex < favoriteCellDataArray.count)
         {
             cellData = [favoriteCellDataArray objectAtIndex:cellDataIndex];
+        }
+    }
+    else if (tableSection == peopleSection)
+    {
+        if (cellDataIndex < peopleCellDataArray.count)
+        {
+            cellData = [peopleCellDataArray objectAtIndex:cellDataIndex];
         }
     }
     else if (tableSection== conversationSection)
@@ -830,6 +862,21 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
     }
     
+    if (!indexPath && (peopleSection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:peopleCellDataArray];
+        
+        if (index != NSNotFound)
+        {
+            // Check whether the favorites are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE)
+            {
+                return nil;
+            }
+            indexPath = [NSIndexPath indexPathForRow:index inSection:peopleSection];
+        }
+    }
+    
     if (!indexPath && (conversationSection >= 0))
     {
         index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:conversationCellDataArray];
@@ -870,6 +917,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     [invitesCellDataArray removeAllObjects];
     [favoriteCellDataArray removeAllObjects];
+    [peopleCellDataArray removeAllObjects];
     [conversationCellDataArray removeAllObjects];
     [lowPriorityCellDataArray removeAllObjects];
     
@@ -877,7 +925,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
     
-    directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
+    directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -905,6 +953,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 else if (room.state.membership == MXMembershipInvite)
                 {
                     [invitesCellDataArray addObject:recentCellDataStoring];
+                }
+                else if (room.isDirect)
+                {
+                    [peopleCellDataArray addObject:recentCellDataStoring];
                 }
                 else
                 {
@@ -1006,7 +1058,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             
         }
 
-        if (favoriteCellDataArray.count > 0)
+        if (favoriteCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeFavourites)
         {
             // Sort them according to their tag order
             [favoriteCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
@@ -1154,7 +1206,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return NO;
     }
     
-    return (path && ((path.section == favoritesSection) || (path.section == lowPrioritySection) || (path.section == conversationSection)));
+    return (path && ((path.section == favoritesSection) || (path.section == peopleSection) || (path.section == lowPrioritySection) || (path.section == conversationSection)));
 }
 
 - (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath
@@ -1193,42 +1245,65 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if ([self canCellMoveFrom:oldPath to:newPath] && ![newPath isEqual:oldPath])
     {
-        NSString* oldRoomTag = [self roomTagAt:oldPath];
-        NSString* dstRoomTag = [self roomTagAt:newPath];
-        NSUInteger oldPos = (oldPath.section == newPath.section) ? oldPath.row : NSNotFound;
-        
-        NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
-        
-        NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.riotDisplayname, oldRoomTag, dstRoomTag, tagOrder);
-        
-        [room replaceTag:oldRoomTag
-                   byTag:dstRoomTag
-               withOrder:tagOrder
-                 success: ^{
-                     
-                     NSLog(@"[RecentsDataSource] move is done");
-                     
-                     if (moveSuccess)
-                     {
-                         moveSuccess();
-                     }
-
-                     // wait the server echo to reload the tableview.
-                     
-                 } failure:^(NSError *error) {
-                     
-                     NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@)", dstRoomTag, room.state.roomId);
-                     
-                     if (moveFailure)
-                     {
-                         moveFailure(error);
-                     }
-                     
-                     [self forceRefresh];
-                     
-                     // Notify MatrixKit user
-                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
-                 }];
+        if (newPath.section == peopleSection)
+        {
+            [room setIsDirect:YES
+                   withUserId:nil
+                      success:moveSuccess
+                      failure:^(NSError *error) {
+                          
+                          NSLog(@"[RecentsDataSource] Failed to mark as direct");
+                          
+                          if (moveFailure)
+                          {
+                              moveFailure(error);
+                          }
+                          
+                          [self forceRefresh];
+                          
+                          // Notify user
+                          [[AppDelegate theDelegate] showErrorAsAlert:error];
+                      }];
+        }
+        else
+        {
+            NSString* oldRoomTag = [self roomTagAt:oldPath];
+            NSString* dstRoomTag = [self roomTagAt:newPath];
+            NSUInteger oldPos = (oldPath.section == newPath.section) ? oldPath.row : NSNotFound;
+            
+            NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
+            
+            NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.riotDisplayname, oldRoomTag, dstRoomTag, tagOrder);
+            
+            [room replaceTag:oldRoomTag
+                       byTag:dstRoomTag
+                   withOrder:tagOrder
+                     success: ^{
+                         
+                         NSLog(@"[RecentsDataSource] move is done");
+                         
+                         if (moveSuccess)
+                         {
+                             moveSuccess();
+                         }
+                         
+                         // wait the server echo to reload the tableview.
+                         
+                     } failure:^(NSError *error) {
+                         
+                         NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@)", dstRoomTag, room.state.roomId);
+                         
+                         if (moveFailure)
+                         {
+                             moveFailure(error);
+                         }
+                         
+                         [self forceRefresh];
+                         
+                         // Notify user
+                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                     }];
+        }
     }
     else
     {
