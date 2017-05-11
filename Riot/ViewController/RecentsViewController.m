@@ -138,6 +138,9 @@
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
     
+    // Apply dragging settings
+    self.enableDragging = _enableDragging;
+    
     // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -1244,19 +1247,17 @@
 
 - (void)setEnableDragging:(BOOL)enableDragging
 {
-    if (_enableDragging != enableDragging)
+    _enableDragging = enableDragging;
+    
+    if (_enableDragging && !longPressGestureRecognizer && self.recentsTableView)
     {
-        _enableDragging = enableDragging;
-        
-        if (_enableDragging)
-        {
-            longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
-            [self.recentsTableView addGestureRecognizer:longPressGestureRecognizer];
-        }
-        else if (longPressGestureRecognizer)
-        {
-            [self.recentsTableView removeGestureRecognizer:longPressGestureRecognizer];
-        }
+        longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
+        [self.recentsTableView addGestureRecognizer:longPressGestureRecognizer];
+    }
+    else if (longPressGestureRecognizer)
+    {
+        [self.recentsTableView removeGestureRecognizer:longPressGestureRecognizer];
+        longPressGestureRecognizer = nil;
     }
 }
 
@@ -1483,6 +1484,8 @@
     plusButtonImageView.backgroundColor = [UIColor clearColor];
     plusButtonImageView.contentMode = UIViewContentModeCenter;
     plusButtonImageView.image = [UIImage imageNamed:@"create_room"];
+    plusButtonImageView.layer.shadowOpacity = 0.8;
+    plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
     
     CGFloat side = 78.0f;
     NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
