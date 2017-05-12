@@ -58,10 +58,15 @@
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
     id kMXNotificationCenterDidUpdateRulesObserver;
     
-    // The gradient view displayed above the screen
-    CAGradientLayer* tableViewMaskLayer;
-    
     MXHTTPOperation *currentRequest;
+    
+    // The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
+    // when the user selects it.
+    UISearchBar *tableSearchBar;
+    
+    // The fake table header view used when at least one sticky header is displayed at the top.
+    UIView *headerView;
+
 }
 
 @end
@@ -105,6 +110,17 @@
     _enableStickyHeaders = NO;
     _stickyHeaderHeight = 30.0;
     
+    // Create the fake search bar
+    tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
+    tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    tableSearchBar.showsCancelButton = NO;
+    tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    tableSearchBar.delegate = self;
+    
+    // Create the fake table header view
+    headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, self.stickyHeaderHeight)];
+    headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
     displayedSectionHeaders = [NSMutableArray array];
     
     // Set itself as delegate by default.
@@ -116,7 +132,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    
+    // Add the search bar by hidding it by default.
+    self.recentsTableView.tableHeaderView = tableSearchBar;
+    self.recentsTableView.contentOffset = CGPointMake(0, tableSearchBar.frame.size.height);
     
     // Adjust Bottom constraint to take into account tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_stickyHeadersBottomContainerBottomConstraint]];
@@ -271,14 +289,6 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    
-    // sanity check
-    if (tableViewMaskLayer)
-    {
-        CGRect frame = self.view.frame;
-        frame.size.height -= self.bottomLayoutGuide.length;
-        tableViewMaskLayer.frame = frame;
-    }
         
     [self refreshStickyHeadersContainersHeight];
 }
@@ -314,12 +324,18 @@
     
     isRefreshPending = NO;
     
+    CGPoint contentOffset = self.recentsTableView.contentOffset;
+    
     [self.recentsTableView reloadData];
     
     if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop:NO];
         _shouldScrollToTopOnRefresh = NO;
+    }
+    else
+    {
+        self.recentsTableView.contentOffset = contentOffset;
     }
     
     [self updateStickyHeaders];
@@ -347,6 +363,24 @@
     
     // Force layout immediately to take into account new constraint
     [self.view layoutIfNeeded];
+}
+
+- (void)hideSearchBar:(BOOL)hidden
+{
+    [super hideSearchBar:hidden];
+    
+    if (!hidden)
+    {
+        // Remove the fake table header view
+        self.recentsTableView.tableHeaderView = nil;
+        self.recentsTableView.contentInset = UIEdgeInsetsZero;
+    }
+    else if (!_enableStickyHeaders && self.recentsTableView.tableHeaderView != tableSearchBar)
+    {
+        // Add the search bar by hidding it by default.
+        self.recentsTableView.tableHeaderView = tableSearchBar;
+        self.recentsTableView.contentOffset = CGPointMake(0, tableSearchBar.frame.size.height);
+    }
 }
 
 #pragma mark -
@@ -390,20 +424,6 @@
 - (void)setEnableStickyHeaders:(BOOL)enableStickyHeaders
 {
     _enableStickyHeaders = enableStickyHeaders;
-    
-    if (enableStickyHeaders)
-    {
-        // Add a table header view in order to hide the current section header stuck in floating mode at the top of the table.
-        // This section header is handled then by a sticky header.
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.recentsTableView.bounds.size.width, self.stickyHeaderHeight)];
-        self.recentsTableView.tableHeaderView = headerView;
-        self.recentsTableView.contentInset = UIEdgeInsetsMake(-self.stickyHeaderHeight, 0, 0, 0);
-    }
-    else
-    {
-        self.recentsTableView.tableHeaderView = nil;
-        self.recentsTableView.contentInset = UIEdgeInsetsZero;
-    }
     
     [self refreshRecentsTable];
 }
@@ -552,17 +572,26 @@
 
 - (void)refreshStickyHeadersContainersHeight
 {
-    // Check whether the full table content is visible.
-    if (self.recentsTableView.contentSize.height + self.recentsTableView.contentInset.top + self.recentsTableView.contentInset.bottom <= self.recentsTableView.frame.size.height )
-    {
-        // No sticky header is required. Hide them to prevent from flickering in case of vertical bounces.
-        self.stickyHeadersTopContainerHeightConstraint.constant = 0;
-        self.stickyHeadersBottomContainerHeightConstraint.constant = 0;
-        return;
-    }
-    
     if (_enableStickyHeaders)
     {
+        // Check whether the full table content is visible.
+        if (self.recentsTableView.contentSize.height + self.recentsTableView.contentInset.top + self.recentsTableView.contentInset.bottom <= self.recentsTableView.frame.size.height )
+        {
+            // No sticky header is required. Hide them to prevent from flickering in case of vertical bounces.
+            self.stickyHeadersTopContainerHeightConstraint.constant = 0;
+            self.stickyHeadersBottomContainerHeightConstraint.constant = 0;
+            
+            if (self.recentsSearchBar.hidden && self.recentsTableView.tableHeaderView != tableSearchBar)
+            {
+                // Add the search bar by hidding it by default.
+                self.recentsTableView.tableHeaderView = tableSearchBar;
+                self.recentsTableView.contentInset = UIEdgeInsetsZero;
+                self.recentsTableView.contentOffset = CGPointMake(0, tableSearchBar.frame.size.height);
+            }
+            
+            return;
+        }
+        
         // Retrieve the first and the last headers actually visible in the recents table view.
         // Caution: In some cases like the screen rotation, some displayed section headers are temporarily not visible.
         UIView *firstDisplayedSectionHeader, *lastDisplayedSectionHeader;
@@ -724,6 +753,23 @@
                 self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
                 self.stickyHeadersBottomContainer.bounds = bounds;
             }
+        }
+        
+        // Adjust here the table header view according to the displayed sticky headers at the top.
+        if (self.stickyHeadersTopContainerHeightConstraint.constant == 0)
+        {
+            if (self.recentsSearchBar.hidden && self.recentsTableView.tableHeaderView != tableSearchBar)
+            {
+                self.recentsTableView.tableHeaderView = tableSearchBar;
+                self.recentsTableView.contentInset = UIEdgeInsetsZero;
+            }
+        }
+        else if (self.recentsTableView.tableHeaderView != headerView)
+        {
+            // Add a table header view in order to hide the current section header stuck in floating mode at the top of the table.
+            // This section header is handled then by a sticky header.
+            self.recentsTableView.tableHeaderView = headerView;
+            self.recentsTableView.contentInset = UIEdgeInsetsMake(-self.stickyHeaderHeight, 0, 0, 0);
         }
     }
 }
@@ -1219,27 +1265,22 @@
 
 #pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-    
-    if (_enableSearchBar && targetContentOffset->y + scrollView.contentInset.top <= 0 && scrollView.contentSize.height)
-    {
-        // Show the search bar
-        [self hideSearchBar:NO];
-    }
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self refreshStickyHeadersContainersHeight];
     
     [super scrollViewDidScroll:scrollView];
     
-    if (!self.recentsSearchBar.isHidden && !self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.contentInset.top > self.recentsSearchBar.frame.size.height))
+    if (scrollView == self.recentsTableView)
     {
-        // Hide the search bar
-        [self hideSearchBar:YES];
+        if (!self.recentsSearchBar.isHidden)
+        {
+            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.contentInset.top > self.recentsSearchBar.frame.size.height))
+            {
+                // Hide the search bar
+                [self hideSearchBar:YES];
+            }
+        }
     }
 }
 
@@ -1679,18 +1720,17 @@
 
 #pragma mark - UISearchBarDelegate
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
-        
-    });
-}
+    if (searchBar == tableSearchBar)
+    {
+        [self hideSearchBar:NO];
+        [self.recentsSearchBar becomeFirstResponder];
+        return NO;
+    }
+    
+    return YES;
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-{
-    [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
 }
 
 @end
