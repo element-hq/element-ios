@@ -244,7 +244,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             favoritesSection = sectionsCount++;
         }
         
-        if (peopleCellDataArray.count > 0)
+        if (_recentsDataSourceMode == RecentsDataSourceModeHome)
         {
             peopleSection = sectionsCount++;
         }
@@ -789,7 +789,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         return self.droppingCellBackGroundView.frame.size.height;
     }
-    if (indexPath.section == conversationSection && !conversationCellDataArray.count)
+    if ((indexPath.section == conversationSection && !conversationCellDataArray.count)
+         || (indexPath.section == peopleSection && !peopleCellDataArray.count))
     {
         return 50.0;
     }

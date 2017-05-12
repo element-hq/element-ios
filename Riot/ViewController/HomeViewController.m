@@ -192,28 +192,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
+    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
+        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count))
     {
-        MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
-        if (!tableViewCell)
-        {
-            tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotTextColorGray;
-            tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
-            tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        // Check whether a search session is in progress
-        if (recentsDataSource.searchPatternsList)
-        {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
-        }
-        else
-        {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_recents_no_conversation", @"Vector", nil);
-        }
-        
-        return tableViewCell;
+        return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
     
     TableViewCellWithCollectionView *tableViewCell = [tableView dequeueReusableCellWithIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier forIndexPath:indexPath];
@@ -235,9 +217,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
+    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
+        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count))
     {
-        return 50.0;
+        return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
     
     // Return the fixed height of the collection view cell used to display a room.

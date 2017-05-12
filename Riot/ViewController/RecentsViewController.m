@@ -132,10 +132,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // Add the search bar by hidding it by default.
-    self.recentsTableView.tableHeaderView = tableSearchBar;
-    self.recentsTableView.contentOffset = CGPointMake(0, tableSearchBar.frame.size.height);
-    
     // Adjust Bottom constraint to take into account tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_stickyHeadersBottomContainerBottomConstraint]];
     _stickyHeadersBottomContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
@@ -324,18 +320,19 @@
     
     isRefreshPending = NO;
     
-    CGPoint contentOffset = self.recentsTableView.contentOffset;
-    
     [self.recentsTableView reloadData];
+    
+    if (!_enableStickyHeaders && self.recentsTableView.tableHeaderView != tableSearchBar)
+    {
+        // Add the search bar by hiding it by default.
+        self.recentsTableView.tableHeaderView = tableSearchBar;
+        self.recentsTableView.contentOffset = CGPointMake(0, self.recentsTableView.contentOffset.y + tableSearchBar.frame.size.height);
+    }
     
     if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop:NO];
         _shouldScrollToTopOnRefresh = NO;
-    }
-    else
-    {
-        self.recentsTableView.contentOffset = contentOffset;
     }
     
     [self updateStickyHeaders];
@@ -374,12 +371,6 @@
         // Remove the fake table header view
         self.recentsTableView.tableHeaderView = nil;
         self.recentsTableView.contentInset = UIEdgeInsetsZero;
-    }
-    else if (!_enableStickyHeaders && self.recentsTableView.tableHeaderView != tableSearchBar)
-    {
-        // Add the search bar by hidding it by default.
-        self.recentsTableView.tableHeaderView = tableSearchBar;
-        self.recentsTableView.contentOffset = CGPointMake(0, tableSearchBar.frame.size.height);
     }
 }
 
@@ -583,7 +574,7 @@
             
             if (self.recentsSearchBar.hidden && self.recentsTableView.tableHeaderView != tableSearchBar)
             {
-                // Add the search bar by hidding it by default.
+                // Add the search bar by hiding it by default.
                 self.recentsTableView.tableHeaderView = tableSearchBar;
                 self.recentsTableView.contentInset = UIEdgeInsetsZero;
                 self.recentsTableView.contentOffset = CGPointMake(0, tableSearchBar.frame.size.height);
