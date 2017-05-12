@@ -113,6 +113,12 @@
     UIView *view = gestureRecognizer.view;
     NSInteger section = view.tag;
     
+    // Scroll to the top this section
+    if ([self.recentsTableView numberOfRowsInSection:section] > 0)
+    {
+        [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+    
     // Scroll to the beginning the corresponding rooms collection.
     UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
     if (firstSectionCell && [firstSectionCell isKindOfClass:TableViewCellWithCollectionView.class])
