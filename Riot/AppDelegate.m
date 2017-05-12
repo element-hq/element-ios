@@ -1812,7 +1812,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 break;
             case MXSessionStateStoreDataReady:
             case MXSessionStateSyncInProgress:
-                isLaunching = (mainSession.rooms.count == 0);
+                // Stay in launching during the first server sync if the store is empty.
+                isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
             default:
                 break;
         }
