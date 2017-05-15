@@ -1499,7 +1499,7 @@
     plusButtonImageView.backgroundColor = [UIColor clearColor];
     plusButtonImageView.contentMode = UIViewContentModeCenter;
     plusButtonImageView.image = [UIImage imageNamed:@"create_room"];
-    plusButtonImageView.layer.shadowOpacity = 0.8;
+    plusButtonImageView.layer.shadowOpacity = 0.3;
     plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
     
     CGFloat side = 78.0f;
