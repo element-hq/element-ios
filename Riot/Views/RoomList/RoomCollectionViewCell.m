@@ -45,7 +45,7 @@
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
     self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
-    self.directRoomBorderView.layer.borderWidth = 5;
+    self.directRoomBorderView.layer.borderWidth = 3;
     
     // Disable the user interaction on the room avatar.
     self.roomAvatar.userInteractionEnabled = NO;
