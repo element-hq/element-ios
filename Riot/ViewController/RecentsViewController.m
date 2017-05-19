@@ -314,7 +314,8 @@
     
     [self.recentsTableView reloadData];
     
-    if (_enableSearchBar && !_enableStickyHeaders && self.recentsTableView.tableHeaderView != tableSearchBar)
+    // Check conditions to display the fake search bar into the table header
+    if (_enableSearchBar && !_enableStickyHeaders && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView != tableSearchBar)
     {
         // Add the search bar by hiding it by default.
         self.recentsTableView.tableHeaderView = tableSearchBar;
