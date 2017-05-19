@@ -47,6 +47,10 @@
     self.view.accessibilityIdentifier = @"RoomsVCView";
     self.recentsTableView.accessibilityIdentifier = @"RoomsVCTableView";
     
+    // Tag the recents table with the its recents data source mode.
+    // This will be used by the shared RecentsDataSource instance for sanity checks (see UITableViewDataSource methods).
+    self.recentsTableView.tag = RecentsDataSourceModeRooms;
+    
     // Add the (+) button programmatically
     [self addPlusButton];
     
