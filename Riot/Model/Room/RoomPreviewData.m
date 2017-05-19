@@ -58,6 +58,12 @@
         _roomTopic = publicRoom.topic;
         _roomAliases = publicRoom.aliases;
         _numJoinedMembers = publicRoom.numJoinedMembers;
+        
+        if (!_roomName.length)
+        {
+            // Consider the room aliases to define a default room name.
+            _roomName = _roomAliases.firstObject;
+        }
     }
     return self;
 }
