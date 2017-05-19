@@ -227,6 +227,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    // Sanity check
+    if (tableView.tag != self.recentsDataSourceMode)
+    {
+        // The view controller of this table view is not the current selected one in the tab bar controller.
+        return 0;
+    }
+    
     NSInteger sectionsCount = 0;
     
     // Check whether all data sources are ready before rendering recents
@@ -272,6 +279,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    // Sanity check
+    if (tableView.tag != self.recentsDataSourceMode)
+    {
+        // The view controller of this table view is not the current selected one in the tab bar controller.
+        return 0;
+    }
+    
     NSUInteger count = 0;
 
     if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
@@ -660,6 +674,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Sanity check
+    if (tableView.tag != self.recentsDataSourceMode)
+    {
+        // The view controller of this table view is not the current selected one in the tab bar controller.
+        // Return a fake cell to prevent app from crashing
+        return [[UITableViewCell alloc] init];
+    }
+    
     if (indexPath.section == directorySection)
     {
         NSIndexPath *indexPathInPublicRooms = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
@@ -806,6 +828,19 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 
     return 0;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Sanity check
+    if (tableView.tag != self.recentsDataSourceMode)
+    {
+        // The view controller of this table view is not the current selected one in the tab bar controller.
+        return NO;
+    }
+    
+    // Invited rooms are not editable.
+    return (indexPath.section != invitesSection);
 }
 
 #pragma mark -
@@ -1190,12 +1225,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [publicRoomsTriggerTimer invalidate];
         publicRoomsTriggerTimer = [NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(onPublicRoomsSearchPatternUpdate:) userInfo:searchPattern repeats:NO];
     }
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Invited rooms are not editable.
-    return (indexPath.section != invitesSection);
 }
 
 #pragma mark - drag and drop managemenent
