@@ -558,7 +558,7 @@
         if (firstSectionCell)
         {
             // Scroll to the top of the previous section (if any)
-            if ([self.recentsTableView numberOfRowsInSection:(section - 1)] > 0)
+            if (section && [self.recentsTableView numberOfRowsInSection:(section - 1)] > 0)
             {
                 [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:(section - 1)] atScrollPosition:UITableViewScrollPositionTop animated:YES];
             }
