@@ -124,17 +124,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // Adjust Bottom constraint to take into account tabBar.
-    [NSLayoutConstraint deactivateConstraints:@[_stickyHeadersBottomContainerBottomConstraint]];
-    _stickyHeadersBottomContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
-                                                                                 attribute:NSLayoutAttributeTop
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self.stickyHeadersBottomContainer
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:0.0f];
-    [NSLayoutConstraint activateConstraints:@[_stickyHeadersBottomContainerBottomConstraint]];
-    
     self.recentsTableView.accessibilityIdentifier = @"RecentsVCTableView";
     
     // Register here the customized cell view class used to render recents
@@ -277,8 +266,12 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
         
-    [self refreshStickyHeadersContainersHeight];
+        [self refreshStickyHeadersContainersHeight];
+        
+    });
 }
 
 #pragma mark - Override MXKRecentListViewController
@@ -312,10 +305,13 @@
     
     isRefreshPending = NO;
     
+    // Force reset existing sticky headers if any
+    [self resetStickyHeaders];
+    
     [self.recentsTableView reloadData];
     
     // Check conditions to display the fake search bar into the table header
-    if (_enableSearchBar && !_enableStickyHeaders && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView != tableSearchBar)
+    if (_enableSearchBar && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
     {
         // Add the search bar by hiding it by default.
         self.recentsTableView.tableHeaderView = tableSearchBar;
@@ -328,7 +324,7 @@
         _shouldScrollToTopOnRefresh = NO;
     }
     
-    [self updateStickyHeaders];
+    [self prepareStickyHeaders];
     
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
     // the selected room (if any) is updated and kept visible.
@@ -338,30 +334,13 @@
     }
 }
 
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
-{
-    // Deduce the bottom constraint for the table view (Don't forget the potential tabBar)
-    CGFloat tableViewBottomConst = keyboardHeight - self.bottomLayoutGuide.length;
-    // Check whether the keyboard is over the tabBar
-    if (tableViewBottomConst < 0)
-    {
-        tableViewBottomConst = 0;
-    }
-    
-    // Update constraints
-    _stickyHeadersBottomContainerBottomConstraint.constant = tableViewBottomConst;
-    
-    // Force layout immediately to take into account new constraint
-    [self.view layoutIfNeeded];
-}
-
 - (void)hideSearchBar:(BOOL)hidden
 {
     [super hideSearchBar:hidden];
     
-    if (!hidden && !_enableStickyHeaders)
+    if (!hidden)
     {
-        // Remove the fake table header view
+        // Remove the fake table header view if any
         self.recentsTableView.tableHeaderView = nil;
         self.recentsTableView.contentInset = UIEdgeInsetsZero;
     }
@@ -409,24 +388,11 @@
 {
     _enableStickyHeaders = enableStickyHeaders;
     
-    if (enableStickyHeaders)
+    // Refresh the table display if it is already rendered.
+    if (self.recentsTableView.contentSize.height)
     {
-        // Add a table header view in order to hide the current section header stuck in floating mode at the top of the table.
-        // This section header is handled then by a sticky header.
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.recentsTableView.bounds.size.width, self.stickyHeaderHeight)];
-        self.recentsTableView.tableHeaderView = headerView;
-        self.recentsTableView.contentInset = UIEdgeInsetsMake(-self.stickyHeaderHeight, 0, 0, 0);
-        
-        [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+        [self refreshRecentsTable];
     }
-    else
-    {
-        self.recentsTableView.tableHeaderView = nil;
-        self.recentsTableView.contentInset = UIEdgeInsetsZero;
-    }
-
-    
-    [self refreshRecentsTable];
 }
 
 - (void)setStickyHeaderHeight:(CGFloat)stickyHeaderHeight
@@ -462,13 +428,13 @@
     }
     
     [displayedSectionHeaders removeAllObjects];
-    firstDisplayedSectionHeaderPosY = 0;
+    
+    self.recentsTableView.contentInset = UIEdgeInsetsZero;
 }
 
-- (void)updateStickyHeaders
+- (void)prepareStickyHeaders
 {
-    // Force reset existing sticky headers if any
-    [self resetStickyHeaders];
+    // We suppose here [resetStickyHeaders] has been already called if need.
     
     NSInteger sectionsCount = self.recentsTableView.numberOfSections;
     
@@ -575,135 +541,84 @@
 {
     if (_enableStickyHeaders)
     {
-        // Check whether the full table content is visible.
-        if (self.recentsTableView.contentSize.height + self.recentsTableView.contentInset.top + self.recentsTableView.contentInset.bottom <= self.recentsTableView.frame.size.height )
-        {
-            // No sticky header is required. Hide them to prevent from flickering in case of vertical bounces.
-            self.stickyHeadersTopContainerHeightConstraint.constant = 0;
-            self.stickyHeadersBottomContainerHeightConstraint.constant = 0;
-            return;
-        }
-        
-        // Retrieve the first and the last headers actually visible in the recents table view.
-        // Caution: In some cases like the screen rotation, some displayed section headers are temporarily not visible.
-        UIView *firstDisplayedSectionHeader, *lastDisplayedSectionHeader;
+        NSUInteger lowestSectionInBottomStickyHeader = NSNotFound;
         CGFloat containerHeight;
-        CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.contentInset.bottom;
         
+        // Retrieve the first header actually visible in the recents table view.
+        // Caution: In some cases like the screen rotation, some displayed section headers are temporarily not visible.
+        UIView *firstDisplayedSectionHeader;
         for (UIView *header in displayedSectionHeaders)
         {
-            if (!firstDisplayedSectionHeader)
+            if (header.frame.origin.y + header.frame.size.height > self.recentsTableView.contentOffset.y)
             {
-                if (header.frame.origin.y + header.frame.size.height > self.recentsTableView.contentOffset.y)
-                {
-                    firstDisplayedSectionHeader = lastDisplayedSectionHeader = header;
-                }
-            }
-            else
-            {
-                if (header.frame.origin.y < maxVisiblePosY)
-                {
-                    lastDisplayedSectionHeader = header;
-                }
-                else
-                {
-                    break;
-                }
+                firstDisplayedSectionHeader = header;
+                break;
             }
         }
         
         if (firstDisplayedSectionHeader)
         {
-            // Consider the first visible section header to update the height of the top container of the sticky headers.
-            // Check whether the header positon is not floating.
-            if (firstDisplayedSectionHeader.frame.origin.y == firstDisplayedSectionHeaderPosY)
+            // Initialize the top container height by considering the headers which are before the first visible section header.
+            containerHeight = 0;
+            for (UIView *header in _stickyHeadersTopContainer.subviews)
+            {
+                if (header.tag < firstDisplayedSectionHeader.tag)
+                {
+                    containerHeight += self.stickyHeaderHeight;
+                }
+            }
+            
+            // Check whether the first visible section header is partially hidden.
+            if (firstDisplayedSectionHeader.frame.origin.y < self.recentsTableView.contentOffset.y)
             {
                 // Compute the height of the hidden part.
                 CGFloat delta = self.recentsTableView.contentOffset.y - firstDisplayedSectionHeader.frame.origin.y;
-                if (delta < 0)
-                {
-                    delta = 0;
-                }
                 
-                // Compute the top container height.
-                containerHeight = 0;
-                for (UIView *header in _stickyHeadersTopContainer.subviews)
+                if (delta < self.stickyHeaderHeight)
                 {
-                    if (header.tag < firstDisplayedSectionHeader.tag)
-                    {
-                        containerHeight += header.frame.size.height;
-                    }
-                    else if (header.tag == firstDisplayedSectionHeader.tag)
-                    {
-                        if (delta < header.frame.size.height)
-                        {
-                            containerHeight += delta;
-                        }
-                        else
-                        {
-                            containerHeight += header.frame.size.height;
-                        }
-                    }
+                    containerHeight += delta;
                 }
-                
+                else
+                {
+                    containerHeight += self.stickyHeaderHeight;
+                }
+            }
+            
+            if (containerHeight)
+            {
                 self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
+                self.recentsTableView.contentInset = UIEdgeInsetsMake(-self.stickyHeaderHeight, 0, 0, 0);
             }
             else
             {
-                // Update the first displayed header position.
-                firstDisplayedSectionHeaderPosY = firstDisplayedSectionHeader.frame.origin.y;
-                
-                // The first displayed header position is floating, that means the header is stuck at the top of the table.
-                // We hide its higher part with the sticky header. The lower part of the header is still visible if its height
-                // is higher than self.stickyHeaderHeight.
-                containerHeight = 0;
-                for (UIView *header in _stickyHeadersTopContainer.subviews)
-                {
-                    if (header.tag <= firstDisplayedSectionHeader.tag)
-                    {
-                        containerHeight += header.frame.size.height;
-                    }
-                }
-                
-                self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
+                self.stickyHeadersTopContainerHeightConstraint.constant = 0;
+                self.recentsTableView.contentInset = UIEdgeInsetsZero;
             }
             
-            // Consider the last visible section header to update the height of the bottom container of the sticky headers.
-            containerHeight = 0;
-            CGRect bounds = self.stickyHeadersBottomContainer.frame;
-            bounds.origin.y = 0;
+            // Look for the lowest section index visible in the bottom sticky headers.
+            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.contentInset.bottom;
+            UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
+            
             for (UIView *header in _stickyHeadersBottomContainer.subviews)
             {
-                if (header.tag == lastDisplayedSectionHeader.tag)
+                if (header.tag > lastDisplayedSectionHeader.tag)
                 {
-                    // Compute the height of the hidden part
-                    CGFloat delta = (lastDisplayedSectionHeader.frame.origin.y + header.frame.size.height) - maxVisiblePosY;
-                    if (delta < 0)
-                    {
-                        delta = 0;
-                    }
-                    
-                    if (delta < header.frame.size.height)
-                    {
-                        bounds.origin.y = header.frame.origin.y + header.frame.size.height - delta;
-                        containerHeight += delta;
-                    }
-                    else
-                    {
-                        bounds.origin.y = header.frame.origin.y;
-                        containerHeight += header.frame.size.height;
-                    }
-                }
-                else if (header.tag > lastDisplayedSectionHeader.tag)
-                {
-                    containerHeight += header.frame.size.height;
+                    maxVisiblePosY -= self.stickyHeaderHeight;
                 }
             }
             
-            if (self.stickyHeadersBottomContainerHeightConstraint.constant != containerHeight)
+            for (NSInteger index = displayedSectionHeaders.count; index > 0;)
             {
-                self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
-                self.stickyHeadersBottomContainer.bounds = bounds;
+                lastDisplayedSectionHeader = displayedSectionHeaders[--index];
+                if (lastDisplayedSectionHeader.frame.origin.y + self.stickyHeaderHeight > maxVisiblePosY)
+                {
+                    maxVisiblePosY -= self.stickyHeaderHeight;
+                }
+                else
+                {
+                    lowestSectionInBottomStickyHeader = lastDisplayedSectionHeader.tag + 1;
+                    break;
+                }
             }
         }
         else
@@ -726,25 +641,42 @@
                 }
                 
                 self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
-                
-                // Update the bottom container of the sticky headers.
-                containerHeight = 0;
-                CGRect bounds = self.stickyHeadersBottomContainer.frame;
-                for (UIView *header in _stickyHeadersBottomContainer.subviews)
+                if (containerHeight)
                 {
-                    if (header.tag > section)
-                    {
-                        if (header.tag == section + 1)
-                        {
-                            bounds.origin.y = header.frame.origin.y;
-                        }
-                        
-                        containerHeight += header.frame.size.height;
-                    }
+                    self.recentsTableView.contentInset = UIEdgeInsetsMake(-self.stickyHeaderHeight, 0, 0, 0);
                 }
-                self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
-                self.stickyHeadersBottomContainer.bounds = bounds;
+                else
+                {
+                    self.recentsTableView.contentInset = UIEdgeInsetsZero;
+                }
+                
+                // Set the lowest section index visible in the bottom sticky headers.
+                lowestSectionInBottomStickyHeader = section + 1;
             }
+        }
+        
+        // Update here the height of the bottom container of the sticky headers thanks to lowestSectionInBottomStickyHeader.
+        containerHeight = 0;
+        CGRect bounds = _stickyHeadersBottomContainer.frame;
+        bounds.origin.y = 0;
+        
+        for (UIView *header in _stickyHeadersBottomContainer.subviews)
+        {
+            if (header.tag > lowestSectionInBottomStickyHeader)
+            {
+                containerHeight += self.stickyHeaderHeight;
+            }
+            else if (header.tag == lowestSectionInBottomStickyHeader)
+            {
+                containerHeight += self.stickyHeaderHeight;
+                bounds.origin.y = header.frame.origin.y;
+            }
+        }
+        
+        if (self.stickyHeadersBottomContainerHeightConstraint.constant != containerHeight)
+        {
+            self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
+            self.stickyHeadersBottomContainer.bounds = bounds;
         }
     }
 }
@@ -1194,7 +1126,6 @@
         if (!firstDisplayedSectionHeader || section < firstDisplayedSectionHeader.tag)
         {
             [displayedSectionHeaders insertObject:view atIndex:0];
-            firstDisplayedSectionHeaderPosY = view.frame.origin.y;
         }
         else
         {
@@ -1215,10 +1146,6 @@
             if (section == firstDisplayedSectionHeader.tag)
             {
                 [displayedSectionHeaders removeObjectAtIndex:0];
-                
-                // Update first displayed section position
-                firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
-                firstDisplayedSectionHeaderPosY = firstDisplayedSectionHeader.frame.origin.y;
                 
                 [self refreshStickyHeadersContainersHeight];
             }
@@ -1242,7 +1169,11 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [self refreshStickyHeadersContainersHeight];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self refreshStickyHeadersContainersHeight];
+        
+    });
     
     [super scrollViewDidScroll:scrollView];
     
@@ -1254,6 +1185,9 @@
             {
                 // Hide the search bar
                 [self hideSearchBar:YES];
+                
+                // Refresh display
+                [self refreshRecentsTable];
             }
         }
     }
@@ -1698,12 +1632,6 @@
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
     [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-    
-    if (_enableStickyHeaders && _enableSearchBar && targetContentOffset->y + scrollView.contentInset.top <= 0 && scrollView.contentSize.height)
-    {
-        // Show the search bar
-        [self hideSearchBar:NO];
-    }
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar

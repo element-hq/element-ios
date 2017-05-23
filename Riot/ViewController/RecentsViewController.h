@@ -45,7 +45,6 @@
 @property (weak, nonatomic) IBOutlet UIView *stickyHeadersBottomContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *stickyHeadersTopContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *stickyHeadersBottomContainerHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *stickyHeadersBottomContainerBottomConstraint;
 
 /**
  If YES, the table view will scroll at the top on the next data source refresh.
@@ -94,9 +93,9 @@
 - (void)resetStickyHeaders;
 
 /**
- Update the sticky headers display.
+ Prepare the sticky headers display.
  */
-- (void)updateStickyHeaders;
+- (void)prepareStickyHeaders;
 
 /**
  Refresh the cell selection in the table.
