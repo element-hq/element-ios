@@ -208,6 +208,7 @@
 "room_participants_action_mention" = "Mention";
 
 // Chat
+"room_jump_to_first_unread" = "Jump to first unread message";
 "room_new_message_notification" = "%d new message";
 "room_new_messages_notification" = "%d new messages";
 "room_one_user_is_typing" = "%@ is typing...";

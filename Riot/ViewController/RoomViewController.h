@@ -35,6 +35,13 @@
 @property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
 
+// The jump to last unread banner
+@property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *jumpToLastUnreadBannerContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *jumpToLastUnreadButton;
+@property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
+@property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
+
 /**
  Force the display of the expanded header.
  The default value is NO: this expanded header is hidden on new instantiated RoomViewController object.
@@ -56,6 +63,11 @@
  @param roomPreviewData the data for the room preview.
  */
 - (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
+
+/**
+ Action used to handle some buttons.
+ */
+- (IBAction)onButtonPressed:(id)sender;
 
 @end
 

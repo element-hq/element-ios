@@ -18,6 +18,7 @@
 #import "RoomViewController.h"
 
 #import "RoomDataSource.h"
+#import "RoomBubbleCellData.h"
 
 #import "AppDelegate.h"
 
@@ -153,6 +154,12 @@
     
     // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
     id mxRoomSummaryDidChangeObserver;
+    
+    // The table view cell in which the read marker is displayed (nil by default).
+    MXKRoomBubbleTableViewCell *readMarkerTableViewCell;
+    
+    // Tell whether the view controller is appeared or not.
+    BOOL isAppeared;
 }
 
 @end
@@ -261,6 +268,19 @@
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+    
+    // Prepare jump to last unread banner
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
+    
+    [NSLayoutConstraint deactivateConstraints:@[_jumpToLastUnreadBannerContainerTopConstraint]];
+    _jumpToLastUnreadBannerContainerTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.jumpToLastUnreadBannerContainer
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    [NSLayoutConstraint activateConstraints:@[_jumpToLastUnreadBannerContainerTopConstraint]];
     
     // Prepare expanded header
     self.expandedHeaderContainer.backgroundColor = kRiotColorLightGrey;
@@ -412,6 +432,9 @@
         [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.contentInset.left, -self.bubblesTableView.contentInset.top) animated:YES];
         
     }];
+    
+    isAppeared = YES;
+    [self checkReadMarkerVisibility];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -447,6 +470,11 @@
     }
 
     [self removeCallNotificationsListeners];
+    
+    // Re-enable the read marker display, and disable its update.
+    self.roomDataSource.showReadMarker = YES;
+    self.updateRoomReadMarker = NO;
+    isAppeared = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -466,6 +494,7 @@
         
     }];
     [self refreshActivitiesViewDisplay];
+    [self refreshJumpToLastUnreadBannerDisplay];
     
     // Observe missed notifications
     mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -590,6 +619,7 @@
         self.expandedHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
         self.bubblesTableViewTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant;
     }
     // Check whether the preview header is visible
     else if (previewHeader)
@@ -616,6 +646,11 @@
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
         self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
+    }
+    else
+    {
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = 0;
     }
     
     [self refreshMissedDiscussionsCount:YES];
@@ -690,6 +725,15 @@
 
 #pragma mark - Override MXKRoomViewController
 
+- (void)onMatrixSessionChange
+{
+    [super onMatrixSessionChange];
+    
+    // Re-enable the read marker display, and disable its update.
+    self.roomDataSource.showReadMarker = YES;
+    self.updateRoomReadMarker = NO;
+}
+
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
 {
     // Remove potential preview Data
@@ -705,6 +749,10 @@
     
     if (self.roomDataSource)
     {
+        // Enable the read marker display, and disable its update.
+        self.roomDataSource.showReadMarker = YES;
+        self.updateRoomReadMarker = NO;
+        
         // Set room title view
         [self refreshRoomTitle];
         
@@ -1189,6 +1237,8 @@
                          animations:^{
                              
                              self.bubblesTableViewTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top : 0);
+                             // TODO: shall we update self.jumpToLastUnreadBannerContainerTopConstraint
+//                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : 0);
                              
                              if (roomAvatarView)
                              {
@@ -1303,6 +1353,8 @@
                              animations:^{
                                  
                                  self.bubblesTableViewTopConstraint.constant = 0;
+                                 // TODO: shall we update self.jumpToLastUnreadBannerContainerTopConstraint
+//                                 self.jumpToLastUnreadBannerContainerTopConstraint.constant = 0;
                                  
                                  // Force to render the view
                                  [self forceLayoutRefresh];
@@ -1394,6 +1446,7 @@
                          animations:^{
                              
                              self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
                              
                              if (roomAvatarView)
                              {
@@ -1545,6 +1598,7 @@
     [super dataSource:dataSource didCellChange:changes];
     
     [self refreshActivitiesViewDisplay];
+    [self refreshJumpToLastUnreadBannerDisplay];
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
@@ -2430,9 +2484,50 @@
     {
         [self performSegueWithIdentifier:@"showRoomSearch" sender:self];
     }
+    else if (sender == self.jumpToLastUnreadButton)
+    {
+        // TODO: Support jump to last unread message
+        currentAlert = [[MXKAlert alloc] initWithTitle:@"Not supported yet" message:nil style:MXKAlertStyleAlert];
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            currentAlert = nil;
+        }];
+        [currentAlert showInViewController:self];
+    }
+    else if (sender == self.resetReadMarkerButton)
+    {
+        // Move the read marker to the current read receipt position.
+        [self.roomDataSource.room forgetReadMarker];
+        
+        [self refreshJumpToLastUnreadBannerDisplay];
+    }
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    {
+        MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+        if (roomBubbleTableViewCell.readMarkerView)
+        {
+            readMarkerTableViewCell = roomBubbleTableViewCell;
+            
+            [self checkReadMarkerVisibility];
+        }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (cell == readMarkerTableViewCell)
+    {
+        readMarkerTableViewCell = nil;
+    }
+    
+    [super tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -2440,6 +2535,13 @@
 }
 
 #pragma mark -
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    
+    [self checkReadMarkerVisibility];
+}
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
@@ -2476,6 +2578,7 @@
         [self onScrollViewDidEndScrolling:scrollView];
         
         [self refreshActivitiesViewDisplay];
+        [self refreshJumpToLastUnreadBannerDisplay];
     }
     else
     {
@@ -2497,6 +2600,7 @@
     }
     
     [self refreshActivitiesViewDisplay];
+    [self refreshJumpToLastUnreadBannerDisplay];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
@@ -2507,6 +2611,7 @@
     }
     
     [self refreshActivitiesViewDisplay];
+    [self refreshJumpToLastUnreadBannerDisplay];
 }
 
 - (void)onScrollViewDidEndScrolling:(UIScrollView *)scrollView
@@ -3317,6 +3422,114 @@
                                                          multiplier:1.0f
                                                            constant:10.0f]];
     [self.view setNeedsUpdateConstraints];
+}
+
+
+
+#pragma mark - Read marker handling
+
+- (void)checkReadMarkerVisibility
+{
+    if (readMarkerTableViewCell && isAppeared)
+    {
+        // Check whether the read marker is visible
+        CGFloat contentTopOffsetY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
+        if (contentTopOffsetY <= readMarkerTableViewCell.frame.origin.y + readMarkerTableViewCell.readMarkerView.frame.origin.y)
+        {
+            // Launch animation
+            [self animateReadMarkerView];
+            
+            // Disable the read marker display when it has been rendered once.
+            self.roomDataSource.showReadMarker = NO;
+            [self refreshJumpToLastUnreadBannerDisplay];
+            
+            // Update the read marker position according the events acknowledgement in this view controller.
+            self.updateRoomReadMarker = YES;
+        }
+    }
+}
+
+- (void)animateReadMarkerView
+{
+    // Check whether the cell with the read marker is known and if the marker is not animated yet.
+    if (readMarkerTableViewCell && readMarkerTableViewCell.readMarkerView.isHidden)
+    {
+        RoomBubbleCellData *cellData = (RoomBubbleCellData*)readMarkerTableViewCell.bubbleData;
+        
+        // Do not display the marker if this is the last message.
+        if (cellData.containsLastMessage && readMarkerTableViewCell.readMarkerView.tag == cellData.mostRecentComponentIndex)
+        {
+            readMarkerTableViewCell.readMarkerView.hidden = YES;
+            readMarkerTableViewCell = nil;
+        }
+        else
+        {
+            readMarkerTableViewCell.readMarkerView.hidden = NO;
+            
+            // Animate the layout to hide the read marker
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [UIView animateWithDuration:1.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                                 animations:^{
+                                     
+                                     readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
+                                     readMarkerTableViewCell.readMarkerView.alpha = 0;
+                                     
+                                     // Force to render the view
+                                     [readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
+                                     
+                                 }
+                                 completion:^(BOOL finished){
+                                     
+                                     readMarkerTableViewCell.readMarkerView.hidden = YES;
+                                     readMarkerTableViewCell.readMarkerView.alpha = 1;
+                                     
+                                     readMarkerTableViewCell = nil;
+                                 }];
+                
+            });
+        }
+    }
+}
+
+- (void)refreshJumpToLastUnreadBannerDisplay
+{
+    // Check whether the read marker has not been rendered yet.
+    if (self.roomDataSource.showReadMarker)
+    {
+        UITableViewCell *cell = [self.bubblesTableView visibleCells].firstObject;
+        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+        {
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+            // Check whether the read marker is inside the first displayed cell.
+            if (roomBubbleTableViewCell.readMarkerView)
+            {
+                // The read marker display is still enabled (see roomDataSource.showReadMarker flag), this means the read marker has not been visible yet.
+                // We keep visible the banner.
+                self.jumpToLastUnreadBannerContainer.hidden = NO;
+            }
+            else
+            {
+                // Check whether the read marker event is anterior to the last event displayed in the first rendered cell.
+                MXKRoomBubbleComponent *component = roomBubbleTableViewCell.bubbleData.bubbleComponents.lastObject;
+                MXEvent *lastDisplayedEvent = component.event;
+                MXEvent *currentReadMarkerEvent = [self.roomDataSource.mxSession.store eventWithEventId:self.roomDataSource.room.accountData.readMarkerEventId inRoom:self.roomDataSource.roomId];
+                
+                if (!currentReadMarkerEvent || (currentReadMarkerEvent.originServerTs < lastDisplayedEvent.originServerTs))
+                {
+                    self.jumpToLastUnreadBannerContainer.hidden = NO;
+                }
+                else
+                {
+                    self.jumpToLastUnreadBannerContainer.hidden = YES;
+                }
+            }
+        }
+    }
+    else
+    {
+        self.jumpToLastUnreadBannerContainer.hidden = YES;
+    }
 }
 
 @end
