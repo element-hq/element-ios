@@ -17,10 +17,15 @@
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
 		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
-		F013D1851EB382120023AAA7 /* sheltie-waiting-porch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F013D1841EB382120023AAA7 /* sheltie-waiting-porch.jpg */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
 		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
 		F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */; };
+		F0614A0D1EDDCCE700F5DC9A /* jump_to_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A0A1EDDCCE700F5DC9A /* jump_to_unread.png */; };
+		F0614A0E1EDDCCE700F5DC9A /* jump_to_unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A0B1EDDCCE700F5DC9A /* jump_to_unread@2x.png */; };
+		F0614A0F1EDDCCE700F5DC9A /* jump_to_unread@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A0C1EDDCCE700F5DC9A /* jump_to_unread@3x.png */; };
+		F0614A131EDEE65000F5DC9A /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
+		F0614A141EDEE65000F5DC9A /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
+		F0614A151EDEE65000F5DC9A /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		F075BED61EBB169C00A7B68A /* RoomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F075BED41EBB169C00A7B68A /* RoomCollectionViewCell.m */; };
 		F075BED71EBB169C00A7B68A /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F075BED51EBB169C00A7B68A /* RoomCollectionViewCell.xib */; };
 		F075BEDB1EBB26F100A7B68A /* TableViewCellWithCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F075BED91EBB26F100A7B68A /* TableViewCellWithCollectionView.m */; };
@@ -475,13 +480,18 @@
 		32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F013D1841EB382120023AAA7 /* sheltie-waiting-porch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sheltie-waiting-porch.jpg"; sourceTree = "<group>"; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		F02C1A841E8EB04C0045A404 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
 		F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
 		F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchViewController.m; sourceTree = "<group>"; };
 		F05BD79F1E7C0E4500C69941 /* MasterTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTabBarController.h; sourceTree = "<group>"; };
 		F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterTabBarController.m; sourceTree = "<group>"; };
+		F0614A0A1EDDCCE700F5DC9A /* jump_to_unread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jump_to_unread.png; sourceTree = "<group>"; };
+		F0614A0B1EDDCCE700F5DC9A /* jump_to_unread@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jump_to_unread@2x.png"; sourceTree = "<group>"; };
+		F0614A0C1EDDCCE700F5DC9A /* jump_to_unread@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jump_to_unread@3x.png"; sourceTree = "<group>"; };
+		F0614A101EDEE65000F5DC9A /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
+		F0614A111EDEE65000F5DC9A /* cancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel@2x.png"; sourceTree = "<group>"; };
+		F0614A121EDEE65000F5DC9A /* cancel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel@3x.png"; sourceTree = "<group>"; };
 		F075BED31EBB169C00A7B68A /* RoomCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomCollectionViewCell.h; sourceTree = "<group>"; };
 		F075BED41EBB169C00A7B68A /* RoomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomCollectionViewCell.m; sourceTree = "<group>"; };
 		F075BED51EBB169C00A7B68A /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -1141,10 +1151,15 @@
 		F083BB151E7009EC00A9B29C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F0614A101EDEE65000F5DC9A /* cancel.png */,
+				F0614A111EDEE65000F5DC9A /* cancel@2x.png */,
+				F0614A121EDEE65000F5DC9A /* cancel@3x.png */,
+				F0614A0A1EDDCCE700F5DC9A /* jump_to_unread.png */,
+				F0614A0B1EDDCCE700F5DC9A /* jump_to_unread@2x.png */,
+				F0614A0C1EDDCCE700F5DC9A /* jump_to_unread@3x.png */,
 				F0D869E81EC455A100BB0A2B /* create_direct_chat.png */,
 				F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */,
 				F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */,
-				F013D1841EB382120023AAA7 /* sheltie-waiting-porch.jpg */,
 				F0E05A181EA0F9EB004B83FB /* tab_favourites_selected.png */,
 				F0E05A191EA0F9EB004B83FB /* tab_favourites_selected@2x.png */,
 				F0E05A1A1EA0F9EB004B83FB /* tab_favourites_selected@3x.png */,
@@ -2017,6 +2032,7 @@
 				F083BE261E7009ED00A9B29C /* SegmentedViewController.xib in Resources */,
 				F083BE161E7009ED00A9B29C /* MediaAlbumContentViewController.xib in Resources */,
 				F083BD441E7009ED00A9B29C /* call_speaker_on_icon@3x.png in Resources */,
+				F0614A0F1EDDCCE700F5DC9A /* jump_to_unread@3x.png in Resources */,
 				F083BE511E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				F083BDAE1E7009ED00A9B29C /* plus_icon@2x.png in Resources */,
 				F0E05A401EA0F9EB004B83FB /* tab_people@2x.png in Resources */,
@@ -2073,6 +2089,7 @@
 				F083BD7B1E7009ED00A9B29C /* edit_icon@2x.png in Resources */,
 				F083BDAF1E7009ED00A9B29C /* plus_icon@3x.png in Resources */,
 				F083BDD91E7009ED00A9B29C /* start_chat@3x.png in Resources */,
+				F0614A141EDEE65000F5DC9A /* cancel@2x.png in Resources */,
 				F083BE411E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				F0E05A0B1E9CCEBF004B83FB /* RecentsViewController.xib in Resources */,
 				F083BD5F1E7009ED00A9B29C /* details_icon.png in Resources */,
@@ -2118,7 +2135,6 @@
 				F083BD661E7009ED00A9B29C /* directChatOff@2x.png in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
 				F083BD751E7009ED00A9B29C /* e2e_verified@2x.png in Resources */,
-				F013D1851EB382120023AAA7 /* sheltie-waiting-porch.jpg in Resources */,
 				F083BDCD1E7009ED00A9B29C /* selection_tick@3x.png in Resources */,
 				F0E05A311EA0F9EB004B83FB /* tab_favourites_selected@2x.png in Resources */,
 				F083BD741E7009ED00A9B29C /* e2e_verified.png in Resources */,
@@ -2151,6 +2167,7 @@
 				F083BD4E1E7009ED00A9B29C /* camera_play.png in Resources */,
 				F0E05A3B1EA0F9EB004B83FB /* tab_home@3x.png in Resources */,
 				F083BDB61E7009ED00A9B29C /* remove_icon.png in Resources */,
+				F0614A131EDEE65000F5DC9A /* cancel.png in Resources */,
 				F083BD281E7009ED00A9B29C /* animatedLogo-0.png in Resources */,
 				F083BDB31E7009ED00A9B29C /* priorityLow.png in Resources */,
 				F083BDA81E7009ED00A9B29C /* notificationsOff@2x.png in Resources */,
@@ -2164,6 +2181,7 @@
 				F0E05A321EA0F9EB004B83FB /* tab_favourites_selected@3x.png in Resources */,
 				F083BD4D1E7009ED00A9B29C /* camera_capture@3x.png in Resources */,
 				F083BDB11E7009ED00A9B29C /* priorityHigh@2x.png in Resources */,
+				F0614A0E1EDDCCE700F5DC9A /* jump_to_unread@2x.png in Resources */,
 				F083BDC21E7009ED00A9B29C /* scrollup.png in Resources */,
 				F083BD521E7009ED00A9B29C /* camera_stop@2x.png in Resources */,
 				F0E05A381EA0F9EB004B83FB /* tab_home_selected@3x.png in Resources */,
@@ -2210,6 +2228,7 @@
 				F083BEA31E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
 				32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */,
 				32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */,
+				F0614A151EDEE65000F5DC9A /* cancel@3x.png in Resources */,
 				F0E05A3E1EA0F9EB004B83FB /* tab_people_selected@3x.png in Resources */,
 				F083BE5D1E7009ED00A9B29C /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				F083BD2B1E7009ED00A9B29C /* animatedLogo-3.png in Resources */,
@@ -2243,6 +2262,7 @@
 				F083BD251E7009ED00A9B29C /* admin_icon.png in Resources */,
 				F083BDBE1E7009ED00A9B29C /* riot_icon@3x.png in Resources */,
 				F083BD931E7009ED00A9B29C /* group@2x.png in Resources */,
+				F0614A0D1EDDCCE700F5DC9A /* jump_to_unread.png in Resources */,
 				F083BDC11E7009ED00A9B29C /* scrolldown@3x.png in Resources */,
 				F083BD321E7009ED00A9B29C /* bubbles_bg_landscape@3x.png in Resources */,
 				F083BE7F1E7009ED00A9B29C /* InviteRecentTableViewCell.xib in Resources */,
@@ -2364,7 +2384,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
