@@ -272,16 +272,6 @@
     // Prepare jump to last unread banner
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
     
-    [NSLayoutConstraint deactivateConstraints:@[_jumpToLastUnreadBannerContainerTopConstraint]];
-    _jumpToLastUnreadBannerContainerTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self.jumpToLastUnreadBannerContainer
-                                                                  attribute:NSLayoutAttributeTop
-                                                                 multiplier:1.0f
-                                                                   constant:0.0f];
-    [NSLayoutConstraint activateConstraints:@[_jumpToLastUnreadBannerContainerTopConstraint]];
-    
     // Prepare expanded header
     self.expandedHeaderContainer.backgroundColor = kRiotColorLightGrey;
     
@@ -650,7 +640,7 @@
     }
     else
     {
-        self.jumpToLastUnreadBannerContainerTopConstraint.constant = 0;
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.contentInset.top;
     }
     
     [self refreshMissedDiscussionsCount:YES];
@@ -1237,8 +1227,7 @@
                          animations:^{
                              
                              self.bubblesTableViewTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top : 0);
-                             // TODO: shall we update self.jumpToLastUnreadBannerContainerTopConstraint
-//                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : 0);
+                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : self.bubblesTableView.contentInset.top);
                              
                              if (roomAvatarView)
                              {
@@ -1353,8 +1342,7 @@
                              animations:^{
                                  
                                  self.bubblesTableViewTopConstraint.constant = 0;
-                                 // TODO: shall we update self.jumpToLastUnreadBannerContainerTopConstraint
-//                                 self.jumpToLastUnreadBannerContainerTopConstraint.constant = 0;
+                                 self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.contentInset.top;
                                  
                                  // Force to render the view
                                  [self forceLayoutRefresh];
