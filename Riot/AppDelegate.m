@@ -2261,6 +2261,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             _incomingCallNotification = nil;
             
             // Release properly
+            [currentCallViewController destroy];
             currentCallViewController.mxCall.delegate = nil;
             currentCallViewController.delegate = nil;
             currentCallViewController = nil;
@@ -2310,6 +2311,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 [self removeCallStatusBar];
                 
                 // Release properly
+                [currentCallViewController destroy];
                 currentCallViewController.mxCall.delegate = nil;
                 currentCallViewController.delegate = nil;
                 currentCallViewController = nil;
