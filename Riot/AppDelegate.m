@@ -2262,8 +2262,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Release properly
             [currentCallViewController destroy];
-            currentCallViewController.mxCall.delegate = nil;
-            currentCallViewController.delegate = nil;
             currentCallViewController = nil;
             
             if (completion)
@@ -2312,8 +2310,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
                 // Release properly
                 [currentCallViewController destroy];
-                currentCallViewController.mxCall.delegate = nil;
-                currentCallViewController.delegate = nil;
                 currentCallViewController = nil;
             }
         }
