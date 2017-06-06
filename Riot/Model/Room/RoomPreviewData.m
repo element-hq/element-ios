@@ -86,6 +86,7 @@
         // Create the room data source
         _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
         [_roomDataSource finalizeInitialization];
+        _roomDataSource.markTimelineInitialEvent = YES;
 
         _roomName = peekingRoom.riotDisplayname;
         _roomAvatarUrl = peekingRoom.state.avatar;

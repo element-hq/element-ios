@@ -51,6 +51,8 @@
         
         // Set bubble pagination
         self.bubblesPagination = MXKRoomDataSourceBubblesPaginationPerDay;
+        
+        self.markTimelineInitialEvent = NO;
     }
     return self;
 }
@@ -293,7 +295,7 @@
         }
 
         // Manage initial event (case of permalink or search result)
-        if (self.timeline.initialEventId)
+        if (self.timeline.initialEventId && self.markTimelineInitialEvent)
         {
             // Check if the cell contains this initial event
             for (NSUInteger index = 0; index < bubbleComponents.count; index++)
