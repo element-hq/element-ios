@@ -2444,15 +2444,13 @@
                 completion (finished);
             }
 
-            // Here the placeholder may have been defined temporarily to display IRC command usage.
-            // The original placeholder (savedInputToolbarPlaceholder) will be restored during the handling of the next typing notification 
+            // Consider here the saved placeholder only if no new placeholder has been defined during the height animation.
             if (!toolbarView.placeholder)
             {
                 // Restore the placeholder if any
                 toolbarView.placeholder =  savedInputToolbarPlaceholder.length ? savedInputToolbarPlaceholder : nil;
-                savedInputToolbarPlaceholder = nil;
             }
-
+            savedInputToolbarPlaceholder = nil;
         }];
     }
 }

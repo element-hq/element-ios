@@ -153,7 +153,7 @@
 "directory_search_results_title" = "Browse directory results";
 "directory_search_results" = "%tu results found for %@";
 "directory_search_results_more_than" = ">%tu results found for %@";
-"directory_searching_title" = "Searching directory...";
+"directory_searching_title" = "Searching directory…";
 "directory_search_fail" = "Failed to fetch data";
 
 // Contacts
@@ -211,10 +211,12 @@
 "room_jump_to_first_unread" = "Jump to first unread message";
 "room_new_message_notification" = "%d new message";
 "room_new_messages_notification" = "%d new messages";
-"room_one_user_is_typing" = "%@ is typing...";
-"room_two_users_are_typing" = "%@ & %@ are typing...";
-"room_many_users_are_typing" = "%@, %@ & others are typing...";
-"room_message_placeholder" = "Type a message...";
+"room_one_user_is_typing" = "%@ is typing…";
+"room_two_users_are_typing" = "%@ & %@ are typing…";
+"room_many_users_are_typing" = "%@, %@ & others are typing…";
+"room_message_placeholder" = "Send a message (unencrypted)…";
+"encrypted_room_message_placeholder" = "Send an encrypted message…";
+"room_message_short_placeholder" = "Send a message…";
 "room_offline_notification" = "Connectivity to the server has been lost.";
 "room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
 "room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present. %@ or %@ now?";
@@ -247,7 +249,7 @@
 "unknown_devices_send_anyway" = "Send Anyway";
 "unknown_devices_call_anyway" = "Call Anyway";
 "unknown_devices_answer_anyway" = "Answer Anyway";
-"unknown_devices_verify" = "Verify...";
+"unknown_devices_verify" = "Verify…";
 "unknown_devices_title" = "Unknown devices";
 
 // Room Title

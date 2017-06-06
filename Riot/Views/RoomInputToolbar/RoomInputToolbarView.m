@@ -19,6 +19,8 @@
 
 #import "RiotDesignValues.h"
 
+#import "GBDeviceInfo_iOS.h"
+
 #import "UINavigationController+Riot.h"
 
 #import <MediaPlayer/MediaPlayer.h>
@@ -82,7 +84,7 @@
     growingTextView.textColor = kRiotTextColorBlack;
     growingTextView.tintColor = kRiotColorGreen;
     
-    self.placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+    self.isEncryptionEnabled = _isEncryptionEnabled;
 }
 
 - (void)setSupportCallOption:(BOOL)supportCallOption
@@ -106,16 +108,34 @@
 
 - (void)setIsEncryptionEnabled:(BOOL)isEncryptionEnabled
 {
-    if (isEncryptionEnabled)
+    _isEncryptionEnabled = isEncryptionEnabled;
+    
+    // Consider the default placeholder
+    NSString *placeholder= NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+    
+    if (_isEncryptionEnabled)
     {
         self.encryptedRoomIcon.image = [UIImage imageNamed:@"e2e_verified"];
+        
+        // Check the device screen size before using large placeholder
+        if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch)
+        {
+            placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+        }
     }
     else
     {
         self.encryptedRoomIcon.image = [UIImage imageNamed:@"e2e_unencrypted"];
+        
+        // Check the device screen size before using large placeholder
+        if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch)
+        {
+            placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+        }
     }
     
-    _isEncryptionEnabled = isEncryptionEnabled;
+    
+    self.placeholder = placeholder;
 }
 
 - (void)setActiveCall:(BOOL)activeCall
