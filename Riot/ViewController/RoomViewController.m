@@ -422,9 +422,6 @@
         [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.contentInset.left, -self.bubblesTableView.contentInset.top) animated:YES];
         
     }];
-    
-    isAppeared = YES;
-    [self checkReadMarkerVisibility];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -470,6 +467,9 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    isAppeared = YES;
+    [self checkReadMarkerVisibility];
     
     if (self.roomDataSource)
     {
