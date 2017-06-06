@@ -29,6 +29,8 @@
 
 #import "MediaAlbumTableCell.h"
 
+#import "MXKPieChartView.h"
+
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;
 

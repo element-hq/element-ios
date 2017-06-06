@@ -24,6 +24,8 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
+#import "NBPhoneNumberUtil.h"
+
 @interface ContactTableViewCell()
 {
     /**
