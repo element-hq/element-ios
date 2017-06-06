@@ -1112,27 +1112,29 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)tearDownAVCapture
 {
-    frontCameraInput = nil;
-    backCameraInput = nil;
-    captureSession = nil;
-    
-    if (movieFileOutput)
-    {
-        [movieFileOutput removeObserver:self forKeyPath:@"recording" context:RecordingContext];
-        movieFileOutput = nil;
-    }
-    
-    if (stillImageOutput)
-    {
-        [stillImageOutput removeObserver:self forKeyPath:@"capturingStillImage" context:CapturingStillImageContext];
-        stillImageOutput = nil;
-    }
-    
-    currentCameraInput = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionRuntimeErrorNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionDidStartRunningNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionDidStopRunningNotification object:nil];
+    dispatch_sync(cameraQueue, ^{
+        frontCameraInput = nil;
+        backCameraInput = nil;
+        captureSession = nil;
+
+        if (movieFileOutput)
+        {
+            [movieFileOutput removeObserver:self forKeyPath:@"recording" context:RecordingContext];
+            movieFileOutput = nil;
+        }
+
+        if (stillImageOutput)
+        {
+            [stillImageOutput removeObserver:self forKeyPath:@"capturingStillImage" context:CapturingStillImageContext];
+            stillImageOutput = nil;
+        }
+
+        currentCameraInput = nil;
+
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionRuntimeErrorNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionDidStartRunningNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionDidStopRunningNotification object:nil];
+    });
 }
 
 - (void)caughtAVRuntimeError:(NSNotification*)note
