@@ -285,6 +285,7 @@
             RoomViewController *roomViewController = segue.destinationViewController;
             RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
             [roomDataSource finalizeInitialization];
+            roomDataSource.markTimelineInitialEvent = YES;
             
             [roomViewController displayRoom:roomDataSource];
             roomViewController.hasRoomDataSourceOwnership = YES;

@@ -463,6 +463,8 @@
                         roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
                         [roomDataSource finalizeInitialization];
                         
+                        ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
+                        
                         // Give the data source ownership to the room view controller.
                         _currentRoomViewController.hasRoomDataSourceOwnership = YES;
                     }
@@ -472,6 +474,8 @@
                     // Search result: Create a temp timeline from the selected event
                     roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
                     [roomDataSource finalizeInitialization];
+                    
+                    ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
                     
                     // Give the data source ownership to the room view controller.
                     _currentRoomViewController.hasRoomDataSourceOwnership = YES;

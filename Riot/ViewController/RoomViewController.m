@@ -733,16 +733,16 @@
         [self removeMatrixSession:self.mainSession];
     }
     
+    // Enable the read marker display, and disable its update.
+    dataSource.showReadMarker = YES;
+    self.updateRoomReadMarker = NO;
+    
     [super displayRoom:dataSource];
     
     customizedRoomDataSource = nil;
     
     if (self.roomDataSource)
     {
-        // Enable the read marker display, and disable its update.
-        self.roomDataSource.showReadMarker = YES;
-        self.updateRoomReadMarker = NO;
-        
         // Set room title view
         [self refreshRoomTitle];
         
@@ -2474,13 +2474,15 @@
     }
     else if (sender == self.jumpToLastUnreadButton)
     {
-        // TODO: Support jump to last unread message
-        currentAlert = [[MXKAlert alloc] initWithTitle:@"Not supported yet" message:nil style:MXKAlertStyleAlert];
-        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            
-            currentAlert = nil;
-        }];
-        [currentAlert showInViewController:self];
+        MXKRoomDataSource *roomDataSource;
+        // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
+        roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession];
+        [roomDataSource finalizeInitialization];
+        
+        [self displayRoom:roomDataSource];
+        
+        // Give the data source ownership to the room view controller.
+        self.hasRoomDataSourceOwnership = YES;
     }
     else if (sender == self.resetReadMarkerButton)
     {
@@ -2716,10 +2718,11 @@
                     {
                         RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession];
                         [roomDataSource finalizeInitialization];
-                        
-                        self.hasRoomDataSourceOwnership = YES;
+                        roomDataSource.markTimelineInitialEvent = YES;
                         
                         [self displayRoom:roomDataSource];
+                        
+                        self.hasRoomDataSourceOwnership = YES;
                     }
                     else
                     {
@@ -2991,8 +2994,9 @@
         }
         else if ([self checkUnsentMessages] == NO)
         {
-            // Show "scroll to bottom" icon when the most recent message is not visible
-            if ([self isBubblesTableScrollViewAtTheBottom] == NO)
+            // Show "scroll to bottom" icon when the most recent message is not visible,
+            // or when the timelime is not live (this icon is used to go back to live).
+            if (!self.roomDataSource.isLive || [self isBubblesTableScrollViewAtTheBottom] == NO)
             {
                 // Retrieve the unread messages count
                 NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
@@ -3006,7 +3010,27 @@
                 
                 [roomActivitiesView displayScrollToBottomIcon:unreadCount onIconTapGesture:^{
                     
-                    [self scrollBubblesTableViewToBottomAnimated:YES];
+                    if (self.roomDataSource.isLive)
+                    {
+                        [self scrollBubblesTableViewToBottomAnimated:YES];
+                    }
+                    else
+                    {
+                        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+                        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+                        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES];
+                        
+                        // Scroll to bottom the bubble history on the display refresh.
+                        shouldScrollToBottomOnTableRefresh = YES;
+                        
+                        [self displayRoom:roomDataSource];
+                        
+                        // The room view controller do not have here the data source ownership.
+                        self.hasRoomDataSourceOwnership = NO;
+                        
+                        [self refreshActivitiesViewDisplay];
+                        [self refreshJumpToLastUnreadBannerDisplay];
+                    }
                     
                 }];
             }
@@ -3482,8 +3506,8 @@
 
 - (void)refreshJumpToLastUnreadBannerDisplay
 {
-    // Check whether the read marker has not been rendered yet.
-    if (self.roomDataSource.showReadMarker)
+    // Check whether the read marker exists and has not been rendered yet.
+    if (self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId)
     {
         UITableViewCell *cell = [self.bubblesTableView visibleCells].firstObject;
         if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
