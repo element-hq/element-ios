@@ -1483,7 +1483,46 @@
 
 - (void)onPlusButtonPressed
 {
-    [self createAnEmptyRoom];
+    __weak typeof(self) weakSelf = self;
+
+    [currentAlert dismiss:NO];
+
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_start_chat_with", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+
+        [strongSelf performSegueWithIdentifier:@"presentStartChat" sender:strongSelf];
+    }];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_create_empty_room", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+
+        [strongSelf createAnEmptyRoom];
+    }];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+
+        [strongSelf joinARoom];
+    }];
+
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+    }];
+
+    currentAlert.sourceView = plusButtonImageView;
+
+    currentAlert.mxkAccessibilityIdentifier = @"RecentsVCCreateRoomAlert";
+    [currentAlert showInViewController:self];
 }
 
 - (void)createAnEmptyRoom
