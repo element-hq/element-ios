@@ -81,15 +81,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
         
-        // Check whether the access to the local contacts has not been already asked.
-        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
-        {
-            // Allow by default the local contacts sync in order to discover matrix users.
-            // This setting change will trigger the loading of the local contacts, which will automatically
-            // ask user permission to access their local contacts.
-            [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-        }
-        else
+        // Refresh the matrix identifiers for all the local contacts.
+        if (ABAddressBookGetAuthorizationStatus() != kABAuthorizationStatusNotDetermined)
         {
             // Refresh the matrix identifiers for all the local contacts.
             [[MXKContactManager sharedManager] updateMatrixIDsForAllLocalContacts];
