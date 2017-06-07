@@ -19,10 +19,6 @@
 
 #import "AppDelegate.h"
 
-#import "RageShakeManager.h"
-
-#import "RiotDesignValues.h"
-
 @implementation AttachmentsViewController
 
 #pragma mark -

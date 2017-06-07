@@ -19,7 +19,7 @@
 /**
  'StartChatViewController' instance is used to prepare new room creation.
  */
-@interface StartChatViewController : ContactsTableViewController <UISearchBarDelegate, ContactsTableViewControllerDelegate>
+@interface StartChatViewController : ContactsTableViewController <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;

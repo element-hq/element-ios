@@ -30,10 +30,12 @@
 extern UIColor *kRiotColorGreen;
 extern UIColor *kRiotColorLightGreen;
 extern UIColor *kRiotColorLightGrey;
+extern UIColor *kRiotColorLightOrange;
 extern UIColor *kRiotColorSilver;
-extern UIColor *kRiotColorOrange;
 extern UIColor *kRiotColorPinkRed;
 extern UIColor *kRiotColorRed;
+extern UIColor *kRiotColorIndigo;
+extern UIColor *kRiotColorOrange;
 
 #pragma mark - Riot Text Colors
 extern UIColor *kRiotTextColorBlack;

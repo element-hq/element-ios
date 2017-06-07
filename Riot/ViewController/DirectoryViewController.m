@@ -21,10 +21,6 @@
 
 #import "AppDelegate.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 @interface DirectoryViewController ()
 {
     PublicRoomsDirectoryDataSource *dataSource;
@@ -88,10 +84,10 @@
 {
     [super viewDidAppear:animated];
 
-    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+    // Release the current selected item (room/contact...) except if the second view controller is still visible (see splitViewController.isCollapsed condition)
     if (self.splitViewController && self.splitViewController.isCollapsed)
     {
-        [[AppDelegate theDelegate].homeViewController closeSelectedRoom];
+        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
     }
     else
     {
@@ -150,13 +146,13 @@
                 
                 [self stopActivityIndicator];
                 
-                [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
+                [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
             }];
         }
         else
         {
             RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
-            [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
+            [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
         }
         
     }
@@ -175,19 +171,19 @@
 
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {
-    [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
+    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
-    HomeViewController *homeViewController = [AppDelegate theDelegate].homeViewController;
+    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
 
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
-    if (homeViewController.currentRoomViewController)
+    if (masterTabBarController.currentRoomViewController)
     {
         // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [dataSource cellIndexPathWithRoomId:homeViewController.selectedRoomId andMatrixSession:homeViewController.selectedRoomSession];
+        currentSelectedCellIndexPath = [dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
     }
 
     if (currentSelectedCellIndexPath)

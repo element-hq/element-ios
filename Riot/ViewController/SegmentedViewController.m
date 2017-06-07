@@ -17,9 +17,7 @@
 
 #import "SegmentedViewController.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
+#import "AppDelegate.h"
 
 @interface SegmentedViewController ()
 {

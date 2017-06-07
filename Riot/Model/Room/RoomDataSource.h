@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -25,5 +26,10 @@
  The event id of the current selected event if any. Default is nil.
  */
 @property(nonatomic) NSString *selectedEventId;
+
+/**
+ Tell whether the initial event of the timeline (if any) must be marked. Default is NO.
+ */
+@property(nonatomic) BOOL markTimelineInitialEvent;
 
 @end

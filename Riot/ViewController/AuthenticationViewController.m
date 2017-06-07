@@ -22,10 +22,6 @@
 #import "AuthInputsView.h"
 #import "ForgotPasswordInputsView.h"
 
-#import "RageShakeManager.h"
-
-#import "RiotDesignValues.h"
-
 @interface AuthenticationViewController ()
 {
     /**

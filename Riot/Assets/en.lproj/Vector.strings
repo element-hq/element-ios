@@ -16,7 +16,10 @@
  */
 
 // Titles
-"title_recents" = "Messages";
+"title_home" = "Home";
+"title_favourites" = "Favourites";
+"title_people" = "People";
+"title_rooms" = "Rooms";
 "warning" = "Warning";
 
 // Actions
@@ -113,21 +116,36 @@
 "room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
 
 // Room recents
-"room_recents_directory" = "DIRECTORY";
-"room_recents_favourites" = "FAVOURITES";
-"room_recents_conversations" = "ROOMS";
-"room_recents_low_priority" = "LOW PRIORITY";
-"room_recents_invites" = "INVITES";
+"room_recents_directory_section" = "ROOM DIRECTORY";
+"room_recents_directory_section_network" = "Network";
+"room_recents_favourites_section" = "FAVOURITES";
+"room_recents_people_section" = "PEOPLE";
+"room_recents_conversations_section" = "ROOMS";
+"room_recents_no_conversation" = "No rooms";
+"room_recents_low_priority_section" = "LOW PRIORITY";
+"room_recents_invites_section" = "INVITES";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
+"room_recents_join_room" = "Join room";
+"room_recents_join_room_title" = "Join a room";
+"room_recents_join_room_prompt" = "Type a room id or a room alias";
+
+// People tab
+"people_invites_section" = "INVITES";
+"people_conversation_section" = "CONVERSATIONS";
+"people_no_conversation" = "No conversations";
+
+// Rooms tab
+"room_directory_no_public_room" = "No public rooms available";
 
 // Search
 "search_rooms" = "Rooms";
 "search_messages" = "Messages";
 "search_people" = "People";
 "search_files" = "Files";
-"search_default_placeholder" = "Search...";
+"search_default_placeholder" = "Search";
 "search_people_placeholder" = "Search by User ID, Name or email";
+"search_no_result" = "No results";
 
 // Directory
 "directory_cell_title" = "Browse directory";
@@ -135,15 +153,14 @@
 "directory_search_results_title" = "Browse directory results";
 "directory_search_results" = "%tu results found for %@";
 "directory_search_results_more_than" = ">%tu results found for %@";
-"directory_searching_title" = "Searching directory...";
+"directory_searching_title" = "Searching directory…";
 "directory_search_fail" = "Failed to fetch data";
 
 // Contacts
-"contacts_address_book_section" = "LOCAL CONTACTS (%tu)";
+"contacts_address_book_section" = "LOCAL CONTACTS";
 "contacts_address_book_matrix_users_toggle" = "Matrix users only";
-"contacts_matrix_users_section" = "KNOWN CONTACTS (%tu)";
-"contacts_matrix_users_default_section" = "KNOWN CONTACTS (-)";
-"contacts_matrix_users_search_prompt" = "Too many contacts, please use the search field";
+"contacts_address_book_no_contact" = "No local contacts";
+"contacts_matrix_users_section" = "KNOWN CONTACTS";
 
 // Chat participants
 "room_participants_title" = "Participants";
@@ -191,12 +208,15 @@
 "room_participants_action_mention" = "Mention";
 
 // Chat
+"room_jump_to_first_unread" = "Jump to first unread message";
 "room_new_message_notification" = "%d new message";
 "room_new_messages_notification" = "%d new messages";
-"room_one_user_is_typing" = "%@ is typing...";
-"room_two_users_are_typing" = "%@ & %@ are typing...";
-"room_many_users_are_typing" = "%@, %@ & others are typing...";
-"room_message_placeholder" = "Type a message...";
+"room_one_user_is_typing" = "%@ is typing…";
+"room_two_users_are_typing" = "%@ & %@ are typing…";
+"room_many_users_are_typing" = "%@, %@ & others are typing…";
+"room_message_placeholder" = "Send a message (unencrypted)…";
+"encrypted_room_message_placeholder" = "Send an encrypted message…";
+"room_message_short_placeholder" = "Send a message…";
 "room_offline_notification" = "Connectivity to the server has been lost.";
 "room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
 "room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present. %@ or %@ now?";
@@ -229,7 +249,7 @@
 "unknown_devices_send_anyway" = "Send Anyway";
 "unknown_devices_call_anyway" = "Call Anyway";
 "unknown_devices_answer_anyway" = "Answer Anyway";
-"unknown_devices_verify" = "Verify...";
+"unknown_devices_verify" = "Verify…";
 "unknown_devices_title" = "Unknown devices";
 
 // Room Title
@@ -253,6 +273,7 @@
 
 "settings_config_no_build_info" = "No build info";
 "settings_mark_all_as_read" = "Mark all messages as read";
+"settings_report_bug" = "Report bug";
 "settings_clear_cache" = "Clear cache";
 "settings_config_home_server" = "Home server is %@";
 "settings_config_identity_server" = "Identity server is %@";
@@ -395,6 +416,11 @@
 
 // Directory
 "directory_title" = "Directory";
+"directory_server_picker_title" = "Select a directory";
+"directory_server_all_rooms" = "All rooms on %@ server";
+"directory_server_all_native_rooms" = "All native Matrix rooms";
+"directory_server_type_homeserver" = "Type a homeserver to list public rooms from";
+"directory_server_placeholder" = "matrix.org";
 
 // Others
 "or" = "or";
@@ -406,6 +432,7 @@
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
 "camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
+"large_badge_value_k_format" = "%.1fK";
 
 // room display name
 "room_displayname_invite_from" = "Invite from %@";
@@ -429,3 +456,13 @@
 "e2e_enabling_on_app_update" = "Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
 "e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this device and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
 
+// Bug report
+"bug_report_title" = "Bug Report";
+"bug_report_description" = "Please describe the bug. What did you do? What did you expect to happen? What actually happened?";
+"bug_crash_report_title" = "Crash Report";
+"bug_crash_report_description" = "Please describe what you did before the crash:";
+"bug_report_logs_description" = "In order to diagnose problems, logs from this client will be sent with this bug report. If you would prefer to only send the text above, please untick:";
+"bug_report_send_logs" = "Send logs";
+"bug_report_send_screenshot" = "Send screenshot";
+"bug_report_progress_zipping" = "Collecting logs";
+"bug_report_progress_uploading" = "Uploading report";

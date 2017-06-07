@@ -38,6 +38,13 @@
         // Title is here the file name stored in event body
         title = [event.content[@"body"] isKindOfClass:[NSString class]] ? event.content[@"body"] : nil;
         
+        // Check attachment if any
+        if ([searchDataSource.eventFormatter isSupportedAttachment:event])
+        {
+            // Note: event.eventType is equal here to MXEventTypeRoomMessage
+            attachment = [[MXKAttachment alloc] initWithEvent:event andMatrixSession:searchDataSource.mxSession];
+        }
+        
         // Append the file size if any
         if (attachment.contentInfo[@"size"])
         {

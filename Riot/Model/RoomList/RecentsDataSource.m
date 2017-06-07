@@ -17,54 +17,50 @@
 
 #import "RecentsDataSource.h"
 
-#import "EventFormatter.h"
+#import "RecentCellData.h"
 
 #import "RiotDesignValues.h"
 
-#import "RoomIdOrAliasTableViewCell.h"
-#import "DirectoryRecentTableViewCell.h"
-
-#import "PublicRoomsDirectoryDataSource.h"
-
 #import "MXRoom+Riot.h"
 
-#import "RecentCellData.h"
+#import "AppDelegate.h"
 
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
 #define RECENTSDATASOURCE_SECTION_INVITES       0x02
 #define RECENTSDATASOURCE_SECTION_FAVORITES     0x04
 #define RECENTSDATASOURCE_SECTION_CONVERSATIONS 0x08
 #define RECENTSDATASOURCE_SECTION_LOWPRIORITY   0x10
+#define RECENTSDATASOURCE_SECTION_PEOPLE        0x20
+
+#define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
+#define RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT   65.0
+
+NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
 @interface RecentsDataSource()
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
+    NSMutableArray* peopleCellDataArray;
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
-
-    NSInteger searchedRoomIdOrAliasSection; // used to display the potential room id or alias typed during search.
-    NSInteger directorySection;
-    NSInteger invitesSection;
-    NSInteger favoritesSection;
-    NSInteger conversationSection;
-    NSInteger lowPrioritySection;
-    NSInteger sectionsCount;
     
     NSInteger shrinkedSectionsBitMask;
-    
+
+    UIView *directorySectionContainer;
+    UILabel *directoryServerLabel;
+
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
     
-    // The potential room id or alias typed in search input.
-    NSString *roomIdOrAlias;
-
     // Timer to not refresh publicRoomsDirectoryDataSource on every keystroke.
     NSTimer *publicRoomsTriggerTimer;
 }
 @end
 
 @implementation RecentsDataSource
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
+@synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray;
 
 - (instancetype)init
 {
@@ -73,20 +69,18 @@
     {
         invitesCellDataArray = [[NSMutableArray alloc] init];
         favoriteCellDataArray = [[NSMutableArray alloc] init];
+        peopleCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
 
-        searchedRoomIdOrAliasSection = -1;
         directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
+        peopleSection = -1;
         conversationSection = -1;
         lowPrioritySection = -1;
-        sectionsCount = 0;
         
-        _hideRecents = NO;
-        _hidePublicRoomsDirectory = YES;
-        
+        _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -97,6 +91,41 @@
     return self;
 }
 
+#pragma mark -
+
+- (void)setDelegate:(id<MXKDataSourceDelegate>)delegate andRecentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
+{
+    self.delegate = delegate;
+    
+    self.recentsDataSourceMode = recentsDataSourceMode;
+}
+
+- (void)setRecentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
+{
+    _recentsDataSourceMode = recentsDataSourceMode;
+    
+    [self forceRefresh];
+}
+
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+{
+    UIView *stickyHeader;
+
+    NSInteger savedShrinkedSectionsBitMask = shrinkedSectionsBitMask;
+    if (section == directorySection)
+    {
+        // Return the section header used when the section is shrinked
+        shrinkedSectionsBitMask = RECENTSDATASOURCE_SECTION_DIRECTORY;
+    }
+
+    stickyHeader = [self viewForHeaderInSection:section withFrame:frame];
+
+    shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
+
+    return stickyHeader;
+}
+
+#pragma mark -
 
 - (MXKSessionRecentsDataSource *)addMatrixSession:(MXSession *)mxSession
 {
@@ -140,7 +169,11 @@
 {
     if (dataSource == _publicRoomsDirectoryDataSource)
     {
-        [self refreshRoomsSectionsAndReload];
+        if (-1 != directorySection && !self.droppingCellIndexPath)
+        {
+            // TODO: We should only update the directory section
+            [self.delegate dataSource:self didCellChange:nil];
+        }
     }
     else
     {
@@ -157,7 +190,7 @@
                                                                     {
                                                                         dispatch_async(dispatch_get_main_queue(), ^{
 
-                                                                            [self refreshRoomsSectionsAndReload];
+                                                                            [self forceRefresh];
 
                                                                         });
                                                                     }
@@ -169,7 +202,7 @@
     }
 }
 
-- (void)refreshRoomsSectionsAndReload
+- (void)forceRefresh
 {
     // Refresh is disabled during drag&drop animation"
     if (!self.droppingCellIndexPath)
@@ -186,93 +219,90 @@
     MXSession *mxSession = notif.object;
     if ([self.mxSessions indexOfObject:mxSession] != NSNotFound)
     {
-        [self refreshRoomsSectionsAndReload];
-    }
-}
-
-#pragma mark - 
-
-- (void)setHidePublicRoomsDirectory:(BOOL)hidePublicRoomsDirectory
-{
-    if (_hidePublicRoomsDirectory != hidePublicRoomsDirectory)
-    {
-        _hidePublicRoomsDirectory = hidePublicRoomsDirectory;
-        
-        if (!_hidePublicRoomsDirectory)
-        {
-            // Start by looking for all public rooms
-            self.publicRoomsDirectoryDataSource.searchPattern = nil;
-        }
-        
-        [self refreshRoomsSectionsAndReload];
-    }
-}
-
-- (void)setHideRecents:(BOOL)hideRecents
-{
-    if (_hideRecents != hideRecents)
-    {
-        _hideRecents = hideRecents;
-        
-        [self refreshRoomsSectionsAndReload];
+        [self forceRefresh];
     }
 }
 
 #pragma mark - UITableViewDataSource
 
-/**
- Return the header height from the section.
- */
-- (CGFloat)heightForHeaderInSection:(NSInteger)section
-{
-    if ((section == directorySection) || (section == invitesSection) || (section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
-    {
-        return 30.0f;
-    }
-    
-    return 0.0f;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    // Sanity check
+    if (tableView.tag != self.recentsDataSourceMode)
+    {
+        // The view controller of this table view is not the current selected one in the tab bar controller.
+        return 0;
+    }
+    
+    NSInteger sectionsCount = 0;
+    
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        // Return the last updated number of sections.
-        return sectionsCount;
+        directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
+        
+        if (invitesCellDataArray.count > 0)
+        {
+            invitesSection = sectionsCount++;
+        }
+        
+        if (favoriteCellDataArray.count > 0)
+        {
+            favoritesSection = sectionsCount++;
+        }
+        
+        if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+        {
+            peopleSection = sectionsCount++;
+        }
+        
+        // Keep visible the main rooms section even if it is empty, except on favourites screen.
+        if (_recentsDataSourceMode != RecentsDataSourceModeFavourites)
+        {
+            conversationSection = sectionsCount++;
+        }
+        
+        if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+        {
+            // Add the directory section after "ROOMS"
+            directorySection = sectionsCount++;
+        }
+        
+        if (lowPriorityCellDataArray.count > 0)
+        {
+            lowPrioritySection = sectionsCount++;
+        }
     }
-    return 0;
-}
-
-- (BOOL)isMovingCellSection:(NSInteger)section
-{
-    return self.droppingCellIndexPath && (self.droppingCellIndexPath.section == section);
-}
-
-- (BOOL)isHiddenCellSection:(NSInteger)section
-{
-    return self.hiddenCellIndexPath && (self.hiddenCellIndexPath.section == section);
+    
+    return sectionsCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    // Sanity check
+    if (tableView.tag != self.recentsDataSourceMode)
+    {
+        // The view controller of this table view is not the current selected one in the tab bar controller.
+        return 0;
+    }
+    
     NSUInteger count = 0;
 
-    if (section == searchedRoomIdOrAliasSection)
-    {
-        count = 1;
-    }
-    else if (section == directorySection)
-    {
-        count = 1;
-    }
-    else if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
+    if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
     {
         count = favoriteCellDataArray.count;
     }
+    else if (section == peopleSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE))
+    {
+        count = peopleCellDataArray.count ? peopleCellDataArray.count : 1;
+    }
     else if (section == conversationSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
     {
-        count = conversationCellDataArray.count;
+        count = conversationCellDataArray.count ? conversationCellDataArray.count : 1;
+    }
+    else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        count = [_publicRoomsDirectoryDataSource tableView:tableView numberOfRowsInSection:0];
     }
     else if (section == lowPrioritySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
     {
@@ -283,6 +313,7 @@
         count = invitesCellDataArray.count;
     }
     
+    // Adjust this count according to the potential dragged cell.
     if ([self isMovingCellSection:section])
     {
         count++;
@@ -296,127 +327,371 @@
     return count;
 }
 
+- (CGFloat)heightForHeaderInSection:(NSInteger)section
+{
+    if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
+    }
+
+    return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
+}
+
+- (NSAttributedString *)attributedStringForHeaderTitleInSection:(NSInteger)section
+{
+    NSAttributedString *sectionTitle;
+    NSString *title;
+    NSUInteger count = 0;
+    
+    if (section == favoritesSection)
+    {
+        count = favoriteCellDataArray.count;
+        title = NSLocalizedStringFromTable(@"room_recents_favourites_section", @"Vector", nil);
+    }
+    else if (section == peopleSection)
+    {
+        count = peopleCellDataArray.count;
+        title = NSLocalizedStringFromTable(@"room_recents_people_section", @"Vector", nil);
+    }
+    else if (section == conversationSection)
+    {
+        count = conversationCellDataArray.count;
+        
+        if (_recentsDataSourceMode == RecentsDataSourceModePeople)
+        {
+            title = NSLocalizedStringFromTable(@"people_conversation_section", @"Vector", nil);
+        }
+        else
+        {
+            title = NSLocalizedStringFromTable(@"room_recents_conversations_section", @"Vector", nil);
+        }
+    }
+    else if (section == directorySection)
+    {
+        title = NSLocalizedStringFromTable(@"room_recents_directory_section", @"Vector", nil);
+    }
+    else if (section == lowPrioritySection)
+    {
+        count = lowPriorityCellDataArray.count;
+        title = NSLocalizedStringFromTable(@"room_recents_low_priority_section", @"Vector", nil);
+    }
+    else if (section == invitesSection)
+    {
+        count = invitesCellDataArray.count;
+        
+        if (_recentsDataSourceMode == RecentsDataSourceModePeople)
+        {
+            title = NSLocalizedStringFromTable(@"people_invites_section", @"Vector", nil);
+        }
+        else
+        {
+            title = NSLocalizedStringFromTable(@"room_recents_invites_section", @"Vector", nil);
+        }
+    }
+    
+    if (count)
+    {
+        NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
+        
+        NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
+        [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
+                                                                                    attributes:@{NSForegroundColorAttributeName : kRiotColorSilver,
+                                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
+        
+        sectionTitle = mutableSectionTitle;
+    }
+    else if (title)
+    {
+        sectionTitle = [[NSAttributedString alloc] initWithString:title
+                                               attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                            NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
+    }
+    
+    return sectionTitle;
+}
+
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
-    UIView *sectionHeader = nil;
+    UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
+    sectionHeader.backgroundColor = kRiotColorLightGrey;
+    NSInteger sectionBitwise = 0;
+    UIImageView *chevronView;
     
-    if (section < sectionsCount && section != searchedRoomIdOrAliasSection)
+    if (_areSectionsShrinkable)
     {
-        NSString* sectionTitle = @"";
-        NSInteger sectionBitwise = 0;
-        UIImageView *chevronView;
-        
-        if (section == directorySection)
+        if (section == favoritesSection)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_directory", @"Vector", nil);
+            sectionBitwise =  RECENTSDATASOURCE_SECTION_FAVORITES;
         }
-        else if (section == favoritesSection)
+        else if (section == peopleSection)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_favourites", @"Vector", nil);
-            sectionBitwise = RECENTSDATASOURCE_SECTION_FAVORITES;
+            sectionBitwise =  RECENTSDATASOURCE_SECTION_PEOPLE;
         }
         else if (section == conversationSection)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_conversations", @"Vector", nil);
+            sectionBitwise = RECENTSDATASOURCE_SECTION_CONVERSATIONS;
+        }
+        else if (section == directorySection)
+        {
             sectionBitwise = RECENTSDATASOURCE_SECTION_CONVERSATIONS;
         }
         else if (section == lowPrioritySection)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_low_priority", @"Vector", nil);
             sectionBitwise = RECENTSDATASOURCE_SECTION_LOWPRIORITY;
         }
         else if (section == invitesSection)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"room_recents_invites", @"Vector", nil);
             sectionBitwise = RECENTSDATASOURCE_SECTION_INVITES;
         }
-        
-        sectionHeader = [[UIView alloc] initWithFrame:frame];
-        sectionHeader.backgroundColor = kRiotColorLightGrey;
-        
-        if (sectionBitwise)
-        {
-            // Add shrink button
-            UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            CGRect frame = sectionHeader.frame;
-            frame.origin.x = frame.origin.y = 0;
-            shrinkButton.frame = frame;
-            shrinkButton.backgroundColor = [UIColor clearColor];
-            [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            shrinkButton.tag = sectionBitwise;
-            [sectionHeader addSubview:shrinkButton];
-            sectionHeader.userInteractionEnabled = YES;
-            
-            // Add shrink icon
-            UIImage *chevron;
-            if (shrinkedSectionsBitMask & sectionBitwise)
-            {
-                chevron = [UIImage imageNamed:@"disclosure_icon"];
-            }
-            else
-            {
-                chevron = [UIImage imageNamed:@"shrink_icon"];
-            }
-            chevronView = [[UIImageView alloc] initWithImage:chevron];
-            chevronView.contentMode = UIViewContentModeCenter;
-            frame = chevronView.frame;
-            frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
-            frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
-            chevronView.frame = frame;
-            [sectionHeader addSubview:chevronView];
-            chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
-        }
-        
-        // Add label
-        frame = sectionHeader.frame;
-        frame.origin.x = 20;
-        frame.origin.y = 5;
-        frame.size.width = chevronView ? chevronView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
-        frame.size.height -= 10;
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-        headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        headerLabel.backgroundColor = [UIColor clearColor];
-        headerLabel.text = sectionTitle;
-        [sectionHeader addSubview:headerLabel];
     }
     
+    if (sectionBitwise)
+    {
+        // Add shrink button
+        UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        frame.origin.x = frame.origin.y = 0;
+        shrinkButton.frame = frame;
+        shrinkButton.backgroundColor = [UIColor clearColor];
+        [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        shrinkButton.tag = sectionBitwise;
+        [sectionHeader addSubview:shrinkButton];
+        sectionHeader.userInteractionEnabled = YES;
+        
+        // Add shrink icon
+        UIImage *chevron;
+        if (shrinkedSectionsBitMask & sectionBitwise)
+        {
+            chevron = [UIImage imageNamed:@"disclosure_icon"];
+        }
+        else
+        {
+            chevron = [UIImage imageNamed:@"shrink_icon"];
+        }
+        chevronView = [[UIImageView alloc] initWithImage:chevron];
+        chevronView.contentMode = UIViewContentModeCenter;
+        frame = chevronView.frame;
+        frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
+        frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
+        chevronView.frame = frame;
+        [sectionHeader addSubview:chevronView];
+        chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+    }
+    
+    // Add label
+    frame = sectionHeader.frame;
+    frame.origin.x = 20;
+    frame.origin.y = 5;
+    frame.size.width = chevronView ? chevronView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
+    frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
+    [sectionHeader addSubview:headerLabel];
+
+    if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        NSLayoutConstraint *leadingConstraint, *trailingConstraint, *topConstraint, *bottomConstraint;
+        NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint;
+
+        if (!directorySectionContainer)
+        {
+            CGFloat containerWidth = sectionHeader.frame.size.width;
+
+            directorySectionContainer = [[UIView alloc] initWithFrame:CGRectMake(0, RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT, containerWidth, sectionHeader.frame.size.height - RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT)];
+            directorySectionContainer.backgroundColor = [UIColor clearColor];
+            directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
+
+            // Add the "Network" label at the left
+            UILabel *networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
+            networkLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            networkLabel.textColor = kRiotTextColorBlack;
+            networkLabel.font = [UIFont systemFontOfSize:16.0];
+            networkLabel.text = NSLocalizedStringFromTable(@"room_recents_directory_section_network", @"Vector", nil);
+            [directorySectionContainer addSubview:networkLabel];
+
+            // Add label for selected directory server
+            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, containerWidth - 32, 30)];
+            directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            directoryServerLabel.textColor = kRiotTextColorGray;
+            directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
+            directoryServerLabel.textAlignment = NSTextAlignmentRight;
+            [directorySectionContainer addSubview:directoryServerLabel];
+
+            // Chevron
+            UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(containerWidth - 26, 5, 6, 12)];
+            chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
+            chevronImageView.translatesAutoresizingMaskIntoConstraints = NO;
+            [directorySectionContainer addSubview:chevronImageView];
+
+            // Set a tap listener on all the container
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDirectoryServerPickerTap:)];
+            [tapGesture setNumberOfTouchesRequired:1];
+            [tapGesture setNumberOfTapsRequired:1];
+            [directorySectionContainer addGestureRecognizer:tapGesture];
+
+            // Add networkLabel constraints
+            centerYConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
+                                                             attribute:NSLayoutAttributeCenterY
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directorySectionContainer
+                                                             attribute:NSLayoutAttributeCenterY
+                                                            multiplier:1
+                                                              constant:0.0f];
+
+            heightConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
+                                                            attribute:NSLayoutAttributeHeight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1
+                                                             constant:30];
+            leadingConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
+                                                             attribute:NSLayoutAttributeLeading
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directorySectionContainer
+                                                             attribute:NSLayoutAttributeLeading
+                                                            multiplier:1
+                                                              constant:20];
+            widthConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
+                                                              attribute:NSLayoutAttributeWidth
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:nil
+                                                              attribute:NSLayoutAttributeNotAnAttribute
+                                                             multiplier:1
+                                                               constant:100];
+
+            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, widthConstraint]];
+
+            // Add directoryServerLabel constraints
+            centerYConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                             attribute:NSLayoutAttributeCenterY
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directorySectionContainer
+                                                             attribute:NSLayoutAttributeCenterY
+                                                            multiplier:1
+                                                              constant:0.0f];
+
+            heightConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                            attribute:NSLayoutAttributeHeight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1
+                                                             constant:30];
+            leadingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                             attribute:NSLayoutAttributeLeading
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:networkLabel
+                                                             attribute:NSLayoutAttributeTrailing
+                                                            multiplier:1
+                                                              constant:20];
+            trailingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
+                                                              attribute:NSLayoutAttributeTrailing
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:chevronImageView
+                                                              attribute:NSLayoutAttributeLeading
+                                                             multiplier:1
+                                                               constant:-8];
+
+            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
+
+            // Add chevron constraints
+            trailingConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
+                                                              attribute:NSLayoutAttributeTrailing
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:directorySectionContainer
+                                                              attribute:NSLayoutAttributeTrailing
+                                                             multiplier:1
+                                                               constant:-20];
+
+            centerYConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
+                                                             attribute:NSLayoutAttributeCenterY
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:directorySectionContainer
+                                                             attribute:NSLayoutAttributeCenterY
+                                                            multiplier:1
+                                                              constant:0.0f];
+
+            widthConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
+                                                           attribute:NSLayoutAttributeWidth
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:nil
+                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                          multiplier:1
+                                                            constant:6];
+            heightConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
+                                                            attribute:NSLayoutAttributeHeight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1
+                                                             constant:12];
+
+            [NSLayoutConstraint activateConstraints:@[trailingConstraint, centerYConstraint, widthConstraint, heightConstraint]];
+        }
+
+        // Set the current directory server name
+        directoryServerLabel.text = _publicRoomsDirectoryDataSource.directoryServerDisplayname;
+
+        // Add the check box container
+        [sectionHeader addSubview:directorySectionContainer];
+        leadingConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
+                                                         attribute:NSLayoutAttributeLeading
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:sectionHeader
+                                                         attribute:NSLayoutAttributeLeading
+                                                        multiplier:1
+                                                          constant:0];
+        widthConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
+                                                       attribute:NSLayoutAttributeWidth
+                                                       relatedBy:NSLayoutRelationEqual
+                                                          toItem:sectionHeader
+                                                       attribute:NSLayoutAttributeWidth
+                                                      multiplier:1
+                                                        constant:0];
+        topConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
+                                                     attribute:NSLayoutAttributeTop
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:sectionHeader
+                                                     attribute:NSLayoutAttributeTop
+                                                    multiplier:1
+                                                      constant:RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT];
+        bottomConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
+                                                        attribute:NSLayoutAttributeBottom
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:sectionHeader
+                                                        attribute:NSLayoutAttributeBottom
+                                                       multiplier:1
+                                                         constant:0];
+
+        [NSLayoutConstraint activateConstraints:@[leadingConstraint, widthConstraint, topConstraint, bottomConstraint]];
+    }
+
     return sectionHeader;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == searchedRoomIdOrAliasSection)
+    // Sanity check
+    if (tableView.tag != self.recentsDataSourceMode)
     {
-        RoomIdOrAliasTableViewCell *roomIdOrAliasCell = [tableView dequeueReusableCellWithIdentifier:RoomIdOrAliasTableViewCell.defaultReuseIdentifier];
-        if (!roomIdOrAliasCell)
-        {
-            roomIdOrAliasCell = [[RoomIdOrAliasTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[RoomIdOrAliasTableViewCell defaultReuseIdentifier]];
-        }
-        
-        [roomIdOrAliasCell render:roomIdOrAlias];
-        
-        return roomIdOrAliasCell;
+        // The view controller of this table view is not the current selected one in the tab bar controller.
+        // Return a fake cell to prevent app from crashing
+        return [[UITableViewCell alloc] init];
     }
-    else if (indexPath.section == directorySection)
+    
+    if (indexPath.section == directorySection)
     {
-        // For the cell showing the public rooms directory search result,
-        // skip the MatrixKit mechanism and return directly the UITableViewCell
-        DirectoryRecentTableViewCell *directoryCell = [tableView dequeueReusableCellWithIdentifier:DirectoryRecentTableViewCell.defaultReuseIdentifier];
-        if (!directoryCell)
-        {
-            directoryCell = [[DirectoryRecentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[DirectoryRecentTableViewCell defaultReuseIdentifier]];
-        }
-
-        [directoryCell render:_publicRoomsDirectoryDataSource];
-
-        return directoryCell;
+        NSIndexPath *indexPathInPublicRooms = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+        return [_publicRoomsDirectoryDataSource tableView:tableView cellForRowAtIndexPath:indexPathInPublicRooms];
     }
-
-    if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
+    else if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
-        static NSString* cellIdentifier = @"VectorRecentsMovingCell";
+        static NSString* cellIdentifier = @"RiotRecentsMovingCell";
         
-        UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"VectorRecentsMovingCell"];
+        UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RiotRecentsMovingCell"];
         
         // add an imageview of the cell.
         // The image is a shot of the genuine cell.
@@ -438,6 +713,34 @@
         cell.backgroundColor = [UIColor clearColor];
         
         return cell;
+    }
+    else if ((indexPath.section == conversationSection && !conversationCellDataArray.count)
+             || (indexPath.section == peopleSection && !peopleCellDataArray.count))
+    {
+        MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!tableViewCell)
+        {
+            tableViewCell = [[MXKTableViewCell alloc] init];
+            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
+            tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        // Check whether a search session is in progress
+        if (self.searchPatternsList)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+        }
+        else if (_recentsDataSourceMode == RecentsDataSourceModePeople || indexPath.section == peopleSection)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"people_no_conversation", @"Vector", nil);
+        }
+        else
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_recents_no_conversation", @"Vector", nil);
+        }
+        
+        return tableViewCell;
     }
     
     return [super tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -464,6 +767,13 @@
         if (cellDataIndex < favoriteCellDataArray.count)
         {
             cellData = [favoriteCellDataArray objectAtIndex:cellDataIndex];
+        }
+    }
+    else if (tableSection == peopleSection)
+    {
+        if (cellDataIndex < peopleCellDataArray.count)
+        {
+            cellData = [peopleCellDataArray objectAtIndex:cellDataIndex];
         }
     }
     else if (tableSection== conversationSection)
@@ -493,21 +803,18 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == searchedRoomIdOrAliasSection)
-    {
-        return RoomIdOrAliasTableViewCell.cellHeight;
-    }
-    
     if (indexPath.section == directorySection)
     {
-        // For the cell showing the public rooms directory search result,
-        // skip the MatrixKit mechanism and return directly the cell height
-        return DirectoryRecentTableViewCell.cellHeight;
+        return [_publicRoomsDirectoryDataSource cellHeightAtIndexPath:indexPath];
     }
-
     if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
         return self.droppingCellBackGroundView.frame.size.height;
+    }
+    if ((indexPath.section == conversationSection && !conversationCellDataArray.count)
+         || (indexPath.section == peopleSection && !peopleCellDataArray.count))
+    {
+        return 50.0;
     }
     
     // Override this method here to use our own cellDataAtIndexPath
@@ -522,6 +829,21 @@
 
     return 0;
 }
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Sanity check
+    if (tableView.tag != self.recentsDataSourceMode)
+    {
+        // The view controller of this table view is not the current selected one in the tab bar controller.
+        return NO;
+    }
+    
+    // Invited rooms are not editable.
+    return (indexPath.section != invitesSection);
+}
+
+#pragma mark -
 
 - (NSInteger)cellIndexPosWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession within:(NSMutableArray*)cellDataArray
 {
@@ -576,6 +898,21 @@
         }
     }
     
+    if (!indexPath && (peopleSection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:peopleCellDataArray];
+        
+        if (index != NSNotFound)
+        {
+            // Check whether the favorites are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE)
+            {
+                return nil;
+            }
+            indexPath = [NSIndexPath indexPathForRow:index inSection:peopleSection];
+        }
+    }
+    
     if (!indexPath && (conversationSection >= 0))
     {
         index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:conversationCellDataArray];
@@ -616,25 +953,17 @@
 {
     [invitesCellDataArray removeAllObjects];
     [favoriteCellDataArray removeAllObjects];
+    [peopleCellDataArray removeAllObjects];
     [conversationCellDataArray removeAllObjects];
     [lowPriorityCellDataArray removeAllObjects];
     
-    searchedRoomIdOrAliasSection = directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
-    sectionsCount = 0;
+    _missedFavouriteDiscussionsCount = _missedHighlightFavouriteDiscussionsCount = 0;
+    _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
+    _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
     
-    if (roomIdOrAlias.length)
-    {
-        // The current search pattern corresponds to a valid room id or room alias
-        searchedRoomIdOrAliasSection = sectionsCount++;
-    }
+    directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
     
-    if (!_hidePublicRoomsDirectory)
-    {
-        // The public rooms directory cell is then visible whatever the search activity.
-        directorySection = sectionsCount++;
-    }
-
-    if (!_hideRecents && displayedRecentsDataSourceArray.count > 0)
+    if (displayedRecentsDataSourceArray.count > 0)
     {
         // FIXME manage multi accounts
         MXKSessionRecentsDataSource *recentsDataSource = [displayedRecentsDataSourceArray objectAtIndex:0];
@@ -642,35 +971,130 @@
         
         NSInteger count = recentsDataSource.numberOfCells;
         
-        for(int index = 0; index < count; index++)
+        for (int index = 0; index < count; index++)
         {
             id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
             MXRoom* room = recentCellDataStoring.roomSummary.room;
             
-            if (room.accountData.tags[kMXRoomTagFavourite])
+            if (_recentsDataSourceMode == RecentsDataSourceModeHome)
             {
-                [favoriteCellDataArray addObject:recentCellDataStoring];
+                if (room.accountData.tags[kMXRoomTagFavourite])
+                {
+                    [favoriteCellDataArray addObject:recentCellDataStoring];
+                }
+                else if (room.accountData.tags[kMXRoomTagLowPriority])
+                {
+                    [lowPriorityCellDataArray addObject:recentCellDataStoring];
+                }
+                else if (room.state.membership == MXMembershipInvite)
+                {
+                    [invitesCellDataArray addObject:recentCellDataStoring];
+                }
+                else if (room.isDirect)
+                {
+                    [peopleCellDataArray addObject:recentCellDataStoring];
+                }
+                else
+                {
+                    [conversationCellDataArray addObject:recentCellDataStoring];
+                }
             }
-            else if (room.accountData.tags[kMXRoomTagLowPriority])
+            else if (_recentsDataSourceMode == RecentsDataSourceModeFavourites)
             {
-                [lowPriorityCellDataArray addObject:recentCellDataStoring];
+                // Keep only the favourites rooms.
+                if (room.accountData.tags[kMXRoomTagFavourite])
+                {
+                    [favoriteCellDataArray addObject:recentCellDataStoring];
+                }
+            }
+            else if (_recentsDataSourceMode == RecentsDataSourceModePeople)
+            {
+                // Keep only the direct rooms.
+                if (room.isDirect)
+                {
+                    if (room.state.membership == MXMembershipInvite)
+                    {
+                        [invitesCellDataArray addObject:recentCellDataStoring];
+                    }
+                    else
+                    {
+                        [conversationCellDataArray addObject:recentCellDataStoring];
+                    }
+                }
+            }
+            else if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+            {
+                // Consider only non direct rooms.
+                if (!room.isDirect)
+                {
+                    // Keep only the invites, the favourites and the rooms without tag
+                    if (room.state.membership == MXMembershipInvite)
+                    {
+                        [invitesCellDataArray addObject:recentCellDataStoring];
+                    }
+                    else if (!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite])
+                    {
+                        [conversationCellDataArray addObject:recentCellDataStoring];
+                    }
+                }
+            }
+            
+            // Update missed conversations counts
+            NSUInteger notificationCount = recentCellDataStoring.roomSummary.notificationCount;
+            
+            // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
+            if (room.isMentionsOnly)
+            {
+                // Only the highlighted missed messages must be considered here.
+                notificationCount = recentCellDataStoring.roomSummary.highlightCount;
+            }
+            
+            if (notificationCount)
+            {
+                if (room.accountData.tags[kMXRoomTagFavourite])
+                {
+                    _missedFavouriteDiscussionsCount ++;
+                    
+                    if (recentCellDataStoring.roomSummary.highlightCount)
+                    {
+                        _missedHighlightFavouriteDiscussionsCount ++;
+                    }
+                }
+                
+                if (room.isDirect)
+                {
+                    _missedDirectDiscussionsCount ++;
+                    
+                    if (recentCellDataStoring.roomSummary.highlightCount)
+                    {
+                        _missedHighlightDirectDiscussionsCount ++;
+                    }
+                }
+                else if (!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite])
+                {
+                    _missedGroupDiscussionsCount ++;
+                    
+                    if (recentCellDataStoring.roomSummary.highlightCount)
+                    {
+                        _missedHighlightGroupDiscussionsCount ++;
+                    }
+                }
             }
             else if (room.state.membership == MXMembershipInvite)
             {
-                [invitesCellDataArray addObject:recentCellDataStoring];
+                if (room.isDirect)
+                {
+                    _missedDirectDiscussionsCount ++;
+                }
+                else
+                {
+                    _missedGroupDiscussionsCount ++;
+                }
             }
-            else
-            {
-                [conversationCellDataArray addObject:recentCellDataStoring];
-            }
+            
         }
 
-        if (invitesCellDataArray.count > 0)
-        {
-            invitesSection = sectionsCount++;
-        }
-        
-        if (favoriteCellDataArray.count > 0)
+        if (favoriteCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeFavourites)
         {
             // Sort them according to their tag order
             [favoriteCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
@@ -678,12 +1102,6 @@
                 return [session compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
                 
             }];
-            favoritesSection = sectionsCount++;
-        }
-        
-        if (conversationCellDataArray.count > 0)
-        {
-            conversationSection = sectionsCount++;
         }
         
         if (lowPriorityCellDataArray.count > 0)
@@ -694,7 +1112,6 @@
                 return [session compareRoomsByTag:kMXRoomTagLowPriority room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
                 
             }];
-            lowPrioritySection = sectionsCount++;
         }
     }
 }
@@ -723,6 +1140,18 @@
     
     // Call super to keep update readyRecentsDataSourceArray.
     [super dataSource:dataSource didCellChange:changes];
+}
+
+#pragma mark - Drag & Drop handling
+
+- (BOOL)isMovingCellSection:(NSInteger)section
+{
+    return self.droppingCellIndexPath && (self.droppingCellIndexPath.section == section);
+}
+
+- (BOOL)isHiddenCellSection:(NSInteger)section
+{
+    return self.hiddenCellIndexPath && (self.hiddenCellIndexPath.section == section);
 }
 
 #pragma mark - Action
@@ -760,7 +1189,15 @@
         publicRoomsTriggerTimer = nil;
 
         _publicRoomsDirectoryDataSource.searchPattern = searchPattern;
+        [_publicRoomsDirectoryDataSource paginate:nil failure:nil];
     }
+}
+
+#pragma mark - Action
+
+- (IBAction)onDirectoryServerPickerTap:(UITapGestureRecognizer*)sender
+{
+    [self.delegate dataSource:self didRecognizeAction:kRecentsDataSourceTapOnDirectoryServerChange inCell:nil userInfo:nil];
 }
 
 #pragma mark - Override MXKDataSource
@@ -774,25 +1211,9 @@
 }
 
 #pragma mark - Override MXKRecentsDataSource
+
 - (void)searchWithPatterns:(NSArray *)patternsList
 {
-    // Check whether the typed input is a room alias or a room identifier.
-    roomIdOrAlias = nil;
-    if (patternsList.count == 1)
-    {
-        NSString *pattern = patternsList[0];
-        
-        if ([MXTools isMatrixRoomAlias:pattern] || [MXTools isMatrixRoomIdentifier:pattern])
-        {
-            // Display this room id/alias only if it is not already joined by the user
-            MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
-            if (![accountManager accountKnowingRoomWithRoomIdOrAlias:pattern])
-            {
-                roomIdOrAlias = pattern;
-            }
-        }
-    }
-    
     [super searchWithPatterns:patternsList];
 
     if (_publicRoomsDirectoryDataSource)
@@ -806,17 +1227,16 @@
     }
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Invited rooms are not editable.
-    return (indexPath.section != invitesSection);
-}
-
 #pragma mark - drag and drop managemenent
 
 - (BOOL)isDraggableCellAt:(NSIndexPath*)path
 {
-    return (path && ((path.section == favoritesSection) || (path.section == lowPrioritySection) || (path.section == conversationSection)));
+    if (_recentsDataSourceMode == RecentsDataSourceModePeople || _recentsDataSourceMode == RecentsDataSourceModeRooms)
+    {
+        return NO;
+    }
+    
+    return (path && ((path.section == favoritesSection) || (path.section == peopleSection) || (path.section == lowPrioritySection) || (path.section == conversationSection)));
 }
 
 - (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath
@@ -855,42 +1275,65 @@
     
     if ([self canCellMoveFrom:oldPath to:newPath] && ![newPath isEqual:oldPath])
     {
-        NSString* oldRoomTag = [self roomTagAt:oldPath];
-        NSString* dstRoomTag = [self roomTagAt:newPath];
-        NSUInteger oldPos = (oldPath.section == newPath.section) ? oldPath.row : NSNotFound;
-        
-        NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
-        
-        NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.riotDisplayname, oldRoomTag, dstRoomTag, tagOrder);
-        
-        [room replaceTag:oldRoomTag
-                   byTag:dstRoomTag
-               withOrder:tagOrder
-                 success: ^{
-                     
-                     NSLog(@"[RecentsDataSource] move is done");
-                     
-                     if (moveSuccess)
-                     {
-                         moveSuccess();
-                     }
-
-                     // wait the server echo to reload the tableview.
-                     
-                 } failure:^(NSError *error) {
-                     
-                     NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@)", dstRoomTag, room.state.roomId);
-                     
-                     if (moveFailure)
-                     {
-                         moveFailure(error);
-                     }
-                     
-                     [self refreshRoomsSectionsAndReload];
-                     
-                     // Notify MatrixKit user
-                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
-                 }];
+        if (newPath.section == peopleSection)
+        {
+            [room setIsDirect:YES
+                   withUserId:nil
+                      success:moveSuccess
+                      failure:^(NSError *error) {
+                          
+                          NSLog(@"[RecentsDataSource] Failed to mark as direct");
+                          
+                          if (moveFailure)
+                          {
+                              moveFailure(error);
+                          }
+                          
+                          [self forceRefresh];
+                          
+                          // Notify user
+                          [[AppDelegate theDelegate] showErrorAsAlert:error];
+                      }];
+        }
+        else
+        {
+            NSString* oldRoomTag = [self roomTagAt:oldPath];
+            NSString* dstRoomTag = [self roomTagAt:newPath];
+            NSUInteger oldPos = (oldPath.section == newPath.section) ? oldPath.row : NSNotFound;
+            
+            NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
+            
+            NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.riotDisplayname, oldRoomTag, dstRoomTag, tagOrder);
+            
+            [room replaceTag:oldRoomTag
+                       byTag:dstRoomTag
+                   withOrder:tagOrder
+                     success: ^{
+                         
+                         NSLog(@"[RecentsDataSource] move is done");
+                         
+                         if (moveSuccess)
+                         {
+                             moveSuccess();
+                         }
+                         
+                         // wait the server echo to reload the tableview.
+                         
+                     } failure:^(NSError *error) {
+                         
+                         NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@)", dstRoomTag, room.state.roomId);
+                         
+                         if (moveFailure)
+                         {
+                             moveFailure(error);
+                         }
+                         
+                         [self forceRefresh];
+                         
+                         // Notify user
+                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                     }];
+        }
     }
     else
     {
@@ -901,7 +1344,7 @@
             moveFailure(nil);
         }
         
-        [self refreshRoomsSectionsAndReload];
+        [self forceRefresh];
     }
 }
 

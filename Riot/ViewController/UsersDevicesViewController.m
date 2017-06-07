@@ -18,9 +18,6 @@
 #import "UsersDevicesViewController.h"
 
 #import "AppDelegate.h"
-#import "RageShakeManager.h"
-
-#import "RiotDesignValues.h"
 
 @interface UsersDevicesViewController ()
 {

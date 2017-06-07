@@ -64,4 +64,9 @@
     _roomAvatar.contentMode = UIViewContentModeScaleAspectFill;
 }
 
++ (CGFloat)cellHeight
+{
+    return 74;
+}
+
 @end

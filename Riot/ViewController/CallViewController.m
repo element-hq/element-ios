@@ -19,10 +19,7 @@
 
 #import "AppDelegate.h"
 
-#import "RageShakeManager.h"
-
 #import "AvatarGenerator.h"
-#import "RiotDesignValues.h"
 
 #import "MXRoom+Riot.h"
 

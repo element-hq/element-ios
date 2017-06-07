@@ -22,6 +22,7 @@
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 #import "AvatarGenerator.h"
+#import "RiotDesignValues.h"
 
 #import "MXRoom+Riot.h"
 
@@ -50,6 +51,8 @@
         
         // Set bubble pagination
         self.bubblesPagination = MXKRoomDataSourceBubblesPaginationPerDay;
+        
+        self.markTimelineInitialEvent = NO;
     }
     return self;
 }
@@ -72,8 +75,6 @@
         cellData.hasReadReceipts = YES;
     }
     
-    
-    // Let super handle this receipt
     [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
 }
 
@@ -112,6 +113,7 @@
     {
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
+        NSArray *bubbleComponents = cellData.bubbleComponents;
         
         // Display timestamp of the last message
         if (cellData.containsLastMessage)
@@ -119,8 +121,8 @@
             [bubbleCell addTimestampLabelForComponent:cellData.mostRecentComponentIndex];
         }
         
-        // Handle read receipts display.
-        if (cellData.hasReadReceipts && self.showBubbleReceipts)
+        // Handle read receipts and read marker display.
+        if ((self.showBubbleReceipts && cellData.hasReadReceipts) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the overlay container.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -129,7 +131,6 @@
             bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
             bubbleCell.bubbleOverlayContainer.hidden = NO;
             
-            NSArray *bubbleComponents = cellData.bubbleComponents;
             NSInteger index = bubbleComponents.count;
             CGFloat bottomPositionY = bubbleCell.frame.size.height;
             while (index--)
@@ -215,6 +216,56 @@
                         // Available on iOS 8 and later
                         [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, trailingConstraint]];
                     }
+                    
+                    // Check whether the read marker must be displayed here.
+                    if (self.showReadMarker)
+                    {
+                        if ([component.event.eventId isEqualToString:self.room.accountData.readMarkerEventId])
+                        {
+                            bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - 2, bubbleCell.bubbleOverlayContainer.frame.size.width, 2)];
+                            bubbleCell.readMarkerView.backgroundColor = kRiotColorGreen;
+                            // Hide by default the marker, it will be shown and animated when the cell will be rendered.
+                            bubbleCell.readMarkerView.hidden = YES;
+                            bubbleCell.readMarkerView.tag = index;
+                            
+                            bubbleCell.readMarkerView.translatesAutoresizingMaskIntoConstraints = NO;
+                            bubbleCell.readMarkerView.accessibilityIdentifier = @"readMarker";
+                            [bubbleCell.bubbleOverlayContainer addSubview:bubbleCell.readMarkerView];
+                            
+                            // Force read marker constraints
+                            bubbleCell.readMarkerViewTopConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
+                                                                                             attribute:NSLayoutAttributeTop
+                                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                                toItem:bubbleCell.bubbleOverlayContainer
+                                                                                             attribute:NSLayoutAttributeTop
+                                                                                            multiplier:1.0
+                                                                                              constant:bottomPositionY - 2];
+                            bubbleCell.readMarkerViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
+                                                                                                 attribute:NSLayoutAttributeLeading
+                                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                                    toItem:bubbleCell.bubbleOverlayContainer
+                                                                                                 attribute:NSLayoutAttributeLeading
+                                                                                                multiplier:1.0
+                                                                                                  constant:0];
+                            bubbleCell.readMarkerViewTrailingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.bubbleOverlayContainer
+                                                                                                  attribute:NSLayoutAttributeTrailing
+                                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                                     toItem:bubbleCell.readMarkerView
+                                                                                                  attribute:NSLayoutAttributeTrailing
+                                                                                                 multiplier:1.0
+                                                                                                   constant:0];
+                            
+                            bubbleCell.readMarkerViewHeightConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
+                                                                                                attribute:NSLayoutAttributeHeight
+                                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                                   toItem:nil
+                                                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                                                               multiplier:1.0
+                                                                                                 constant:2];
+                            
+                            [NSLayoutConstraint activateConstraints:@[bubbleCell.readMarkerViewTopConstraint, bubbleCell.readMarkerViewLeadingConstraint, bubbleCell.readMarkerViewTrailingConstraint, bubbleCell.readMarkerViewHeightConstraint]];
+                        }
+                    }
                 }
                 
                 // Prepare the bottom position for the next read receipt container (if any)
@@ -244,10 +295,8 @@
         }
 
         // Manage initial event (case of permalink or search result)
-        if (self.timeline.initialEventId)
+        if (self.timeline.initialEventId && self.markTimelineInitialEvent)
         {
-            NSArray *bubbleComponents = cellData.bubbleComponents;
-            
             // Check if the cell contains this initial event
             for (NSUInteger index = 0; index < bubbleComponents.count; index++)
             {
