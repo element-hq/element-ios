@@ -3443,18 +3443,24 @@
     if (readMarkerTableViewCell && isAppeared)
     {
         // Check whether the read marker is visible
-        CGFloat contentTopOffsetY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
-        if (contentTopOffsetY <= readMarkerTableViewCell.frame.origin.y + readMarkerTableViewCell.readMarkerView.frame.origin.y)
+        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
+        CGFloat readMarkerViewPosY = readMarkerTableViewCell.frame.origin.y + readMarkerTableViewCell.readMarkerView.frame.origin.y;
+        if (contentTopPosY <= readMarkerViewPosY)
         {
-            // Launch animation
-            [self animateReadMarkerView];
-            
-            // Disable the read marker display when it has been rendered once.
-            self.roomDataSource.showReadMarker = NO;
-            [self refreshJumpToLastUnreadBannerDisplay];
-            
-            // Update the read marker position according the events acknowledgement in this view controller.
-            self.updateRoomReadMarker = YES;
+            // Compute the max vertical position visible according to contentOffset
+            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.contentInset.bottom;
+            if (readMarkerViewPosY <= contentBottomPosY)
+            {
+                // Launch animation
+                [self animateReadMarkerView];
+                
+                // Disable the read marker display when it has been rendered once.
+                self.roomDataSource.showReadMarker = NO;
+                [self refreshJumpToLastUnreadBannerDisplay];
+                
+                // Update the read marker position according the events acknowledgement in this view controller.
+                self.updateRoomReadMarker = YES;
+            }
         }
     }
 }
