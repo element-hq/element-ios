@@ -160,6 +160,8 @@
 "contacts_address_book_section" = "LOCAL CONTACTS";
 "contacts_address_book_matrix_users_toggle" = "Matrix users only";
 "contacts_address_book_no_contact" = "No local contacts";
+"contacts_address_book_permission_required" = "Permission required to access local contacts";
+"contacts_address_book_permission_denied" = "You didn't allow Riot to access your local contacts";
 "contacts_matrix_users_section" = "KNOWN CONTACTS";
 
 // Chat participants
