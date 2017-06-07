@@ -582,8 +582,6 @@
 
 - (void)refreshTabBarBadges
 {
-    [self setMissedDiscussionsCount:[self missedDiscussionsCount] onTabBarItem:TABBAR_HOME_INDEX withBadgeColor:(self.missedHighlightDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
-    
     [self setMissedDiscussionsCount:recentsDataSource.missedFavouriteDiscussionsCount onTabBarItem:TABBAR_FAVOURITES_INDEX withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
     [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount onTabBarItem:TABBAR_PEOPLE_INDEX withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
     [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount onTabBarItem:TABBAR_ROOMS_INDEX withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
