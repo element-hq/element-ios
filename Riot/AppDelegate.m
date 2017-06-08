@@ -745,10 +745,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         // Release the current selected item (room/contact/...).
         [_masterTabBarController releaseSelectedItem];
-        
-        // Select the Home tab
-        _masterTabBarController.selectedIndex = TABBAR_HOME_INDEX;
-        
+
         if (popToHomeViewControllerCompletion)
         {
             void (^popToHomeViewControllerCompletion2)() = popToHomeViewControllerCompletion;
