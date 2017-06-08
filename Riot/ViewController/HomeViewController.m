@@ -72,6 +72,8 @@
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
     }
+
+    [self moveAllCollectionsToLeft];
 }
 
 - (void)dealloc
@@ -82,6 +84,24 @@
 - (void)destroy
 {
     [super destroy];
+}
+
+- (void)moveAllCollectionsToLeft
+{
+    // Scroll all rooms collections to their beginning
+    for (NSInteger section = 0; section < [self numberOfSectionsInTableView:self.recentsTableView]; section++)
+    {
+        UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+        if (firstSectionCell && [firstSectionCell isKindOfClass:TableViewCellWithCollectionView.class])
+        {
+            TableViewCellWithCollectionView *tableViewCell = (TableViewCellWithCollectionView*)firstSectionCell;
+
+            if ([tableViewCell.collectionView numberOfItemsInSection:0] > 0)
+            {
+                [tableViewCell.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+            }
+        }
+    }
 }
 
 #pragma mark - Override RecentsViewController
