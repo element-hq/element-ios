@@ -3545,6 +3545,13 @@
     else
     {
         self.jumpToLastUnreadBannerContainer.hidden = YES;
+        
+        // Initialize the read marker if it does not exist yet
+        if (!self.roomDataSource.room.accountData.readMarkerEventId)
+        {
+            // Move the read marker to the current read receipt position by default.
+            [self.roomDataSource.room forgetReadMarker];
+        }
     }
 }
 
