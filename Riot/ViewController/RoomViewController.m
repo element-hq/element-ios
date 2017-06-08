@@ -930,6 +930,12 @@
             
         });
     }
+
+    // Make the activity indicator follow the keyboard
+    // At runtime, this creates a smooth animation
+    CGPoint activityIndicatorCenter = self.activityIndicator.center;
+    activityIndicatorCenter.y = self.view.center.y - keyboardHeight / 2;
+    self.activityIndicator.center = activityIndicatorCenter;
 }
 
 - (void)dismissTemporarySubViews
