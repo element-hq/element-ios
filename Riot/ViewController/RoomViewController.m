@@ -2477,6 +2477,8 @@
         roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession];
         [roomDataSource finalizeInitialization];
         
+        // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
+        self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
         [self displayRoom:roomDataSource];
         
         // Give the data source ownership to the room view controller.
