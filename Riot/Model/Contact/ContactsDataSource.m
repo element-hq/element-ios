@@ -81,15 +81,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
         
-        // Check whether the access to the local contacts has not been already asked.
-        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
-        {
-            // Allow by default the local contacts sync in order to discover matrix users.
-            // This setting change will trigger the loading of the local contacts, which will automatically
-            // ask user permission to access their local contacts.
-            [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-        }
-        else
+        // Refresh the matrix identifiers for all the local contacts.
+        if (ABAddressBookGetAuthorizationStatus() != kABAuthorizationStatusNotDetermined)
         {
             // Refresh the matrix identifiers for all the local contacts.
             [[MXKContactManager sharedManager] updateMatrixIDsForAllLocalContacts];
@@ -536,7 +529,29 @@
         }
         else if (indexPath.section == filteredLocalContactsSection)
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+            tableViewCell.textLabel.numberOfLines = 0;
+
+            // Indicate to the user why there is no contacts
+            switch (ABAddressBookGetAuthorizationStatus())
+            {
+                case kABAuthorizationStatusAuthorized:
+                    // Because there is no contacts on the device
+                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+                    break;
+
+                case kABAuthorizationStatusNotDetermined:
+                    // Because the user have not granted the permission yet
+                    // (The permission request popup is displayed at the same time)
+                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_required", @"Vector", nil);
+                    break;
+
+                default:
+                {
+                    // Because the user didn't allow the app to access local contacts
+                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_denied", @"Vector", nil);
+                    break;
+                }
+            }
         }
         return tableViewCell;
     }

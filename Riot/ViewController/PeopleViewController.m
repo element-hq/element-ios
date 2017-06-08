@@ -100,7 +100,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+    // Check whether the access to the local contacts has not been already asked.
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    {
+        // Allow by default the local contacts sync in order to discover matrix users.
+        // This setting change will trigger the loading of the local contacts, which will automatically
+        // ask user permission to access their local contacts.
+        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+    }
+
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
     [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorOrange;
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorOrange;
