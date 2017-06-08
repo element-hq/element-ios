@@ -1009,16 +1009,19 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             }
             else if (_recentsDataSourceMode == RecentsDataSourceModePeople)
             {
-                // Keep only the direct rooms.
+                // Keep only the direct rooms which are not low priority
                 if (room.isDirect)
                 {
-                    if (room.state.membership == MXMembershipInvite)
+                    if (!recentCellDataStoring.roomSummary.room.accountData.tags[kMXRoomTagLowPriority])
                     {
-                        [invitesCellDataArray addObject:recentCellDataStoring];
-                    }
-                    else
-                    {
-                        [conversationCellDataArray addObject:recentCellDataStoring];
+                        if (room.state.membership == MXMembershipInvite)
+                        {
+                            [invitesCellDataArray addObject:recentCellDataStoring];
+                        }
+                        else
+                        {
+                            [conversationCellDataArray addObject:recentCellDataStoring];
+                        }
                     }
                 }
             }
