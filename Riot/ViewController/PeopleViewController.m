@@ -434,11 +434,4 @@
     [super searchBarCancelButtonClicked:searchBar];
 }
 
-#pragma mark - Actions
-
-- (void)onPlusButtonPressed
-{
-    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
-}
-
 @end
