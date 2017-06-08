@@ -2996,7 +2996,7 @@
         {
             // Show "scroll to bottom" icon when the most recent message is not visible,
             // or when the timelime is not live (this icon is used to go back to live).
-            if (!self.roomDataSource.isLive || [self isBubblesTableScrollViewAtTheBottom] == NO)
+            if (!self.roomDataSource.isLive || (!self.bubblesTableView.isHidden && [self isBubblesTableScrollViewAtTheBottom] == NO))
             {
                 // Retrieve the unread messages count
                 NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
