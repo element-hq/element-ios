@@ -1010,7 +1010,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             else if (_recentsDataSourceMode == RecentsDataSourceModePeople)
             {
                 // Keep only the direct rooms which are not low priority
-                if (room.isDirect && room.accountData.tags[kMXRoomTagLowPriority])
+                if (room.isDirect && !room.accountData.tags[kMXRoomTagLowPriority])
                 {
                     if (room.state.membership == MXMembershipInvite)
                     {
