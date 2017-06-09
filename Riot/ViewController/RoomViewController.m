@@ -951,6 +951,16 @@
     }
 }
 
+- (void)setBubbleTableViewDisplayInTransition:(BOOL)bubbleTableViewDisplayInTransition
+{
+    if (self.isBubbleTableViewDisplayInTransition != bubbleTableViewDisplayInTransition)
+    {
+        [super setBubbleTableViewDisplayInTransition:bubbleTableViewDisplayInTransition];
+        
+        [self checkReadMarkerVisibility];
+    }
+}
+
 - (void)destroy
 {
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -3022,6 +3032,10 @@
                     
                     if (self.roomDataSource.isLive)
                     {
+                        // Enable the read marker display, and disable its update (in order to not mark as read all the new messages by default).
+                        self.roomDataSource.showReadMarker = YES;
+                        self.updateRoomReadMarker = NO;
+                        
                         [self scrollBubblesTableViewToBottomAnimated:YES];
                     }
                     else
@@ -3452,7 +3466,7 @@
 
 - (void)checkReadMarkerVisibility
 {
-    if (readMarkerTableViewCell && isAppeared)
+    if (readMarkerTableViewCell && isAppeared && !self.isBubbleTableViewDisplayInTransition)
     {
         // Check whether the read marker is visible
         CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
@@ -3472,6 +3486,12 @@
                 
                 // Update the read marker position according the events acknowledgement in this view controller.
                 self.updateRoomReadMarker = YES;
+                
+                if (self.roomDataSource.isLive)
+                {
+                    // Move the read marker to the current read receipt position.
+                    [self.roomDataSource.room forgetReadMarker];
+                }
             }
         }
     }
@@ -3532,9 +3552,12 @@
             // Check whether the read marker is inside the first displayed cell.
             if (roomBubbleTableViewCell.readMarkerView)
             {
-                // The read marker display is still enabled (see roomDataSource.showReadMarker flag), this means the read marker has not been visible yet.
-                // We keep visible the banner.
-                self.jumpToLastUnreadBannerContainer.hidden = NO;
+                // The read marker display is still enabled (see roomDataSource.showReadMarker flag),
+                // this means the read marker was not been visible yet.
+                // We show the banner if the marker is located in the top hidden part of the cell.
+                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
+                CGFloat readMarkerViewPosY = roomBubbleTableViewCell.frame.origin.y + roomBubbleTableViewCell.readMarkerView.frame.origin.y;
+                self.jumpToLastUnreadBannerContainer.hidden = (contentTopPosY < readMarkerViewPosY);
             }
             else
             {
