@@ -220,30 +220,42 @@
 
     [self addSpinnerFooterView];
 
+    __weak __typeof(self) weakSelf = self;
+
     [dataSource paginate:^(NSUInteger roomsAdded) {
 
-        if (roomsAdded)
+        if (weakSelf)
         {
-            // Notify the table view there are new items at its tail
-            NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:roomsAdded];
+            __strong __typeof(weakSelf) self = weakSelf;
 
-            NSUInteger numberOfRowsBefore = [dataSource tableView:self.tableView numberOfRowsInSection:0];
-            numberOfRowsBefore -= roomsAdded;
-
-            for (NSUInteger i = 0; i < roomsAdded; i++)
+            if (roomsAdded)
             {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(numberOfRowsBefore + i) inSection:0];
-                [indexPaths addObject:indexPath];
+                // Notify the table view there are new items at its tail
+                NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:roomsAdded];
+
+                NSUInteger numberOfRowsBefore = [self->dataSource tableView:self.tableView numberOfRowsInSection:0];
+                numberOfRowsBefore -= roomsAdded;
+
+                for (NSUInteger i = 0; i < roomsAdded; i++)
+                {
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(numberOfRowsBefore + i) inSection:0];
+                    [indexPaths addObject:indexPath];
+                }
+
+                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
             }
-
-            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+            [self removeSpinnerFooterView];
         }
-
-        [self removeSpinnerFooterView];
 
     } failure:^(NSError *error) {
 
-        [self removeSpinnerFooterView];
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf) self = weakSelf;
+
+            [self removeSpinnerFooterView];
+        }
     }];
 }
 
