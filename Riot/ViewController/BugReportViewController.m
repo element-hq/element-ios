@@ -222,6 +222,10 @@
     {
         userInfo[@"device_id"] = mainAccount.mxSession.matrixRestClient.credentials.deviceId;
     }
+
+    userInfo[@"locale"] = [NSLocale preferredLanguages][0];
+    userInfo[@"app_language"] = [[NSBundle mainBundle] preferredLocalizations][0];
+
     bugReportRestClient.others = userInfo;
 
     // Screenshot
