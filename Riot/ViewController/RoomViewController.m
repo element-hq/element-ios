@@ -743,6 +743,8 @@
     
     if (self.roomDataSource)
     {
+        self.eventsAcknowledgementEnabled = YES;
+        
         // Set room title view
         [self refreshRoomTitle];
         
@@ -1459,6 +1461,8 @@
     
     if (previewData)
     {
+        self.eventsAcknowledgementEnabled = NO;
+        
         [self addMatrixSession:previewData.mxSession];
         
         roomPreviewData = previewData;
@@ -3548,8 +3552,8 @@
     {
         self.jumpToLastUnreadBannerContainer.hidden = YES;
         
-        // Initialize the read marker if it does not exist yet
-        if (!self.roomDataSource.room.accountData.readMarkerEventId)
+        // Initialize the read marker if it does not exist yet, except for the room preview.
+        if (!self.roomDataSource.room.accountData.readMarkerEventId && !self.isRoomPreview)
         {
             // Move the read marker to the current read receipt position by default.
             [self.roomDataSource.room forgetReadMarker];
