@@ -2492,6 +2492,9 @@
     }
     else if (sender == self.jumpToLastUnreadButton)
     {
+        // Hide expanded header to restore navigation bar settings
+        [self showExpandedHeader:NO];
+        
         MXKRoomDataSource *roomDataSource;
         // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
         roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession];
