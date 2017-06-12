@@ -106,6 +106,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Do cell data customization that needs to be done before [MXKRoomBubbleTableViewCell render]
+    RoomBubbleCellData *roomBubbleCellData = [self cellDataAtIndex:indexPath.row];
+
+    // Use the Riot style placeholder
+    if (!roomBubbleCellData.senderAvatarPlaceholder)
+    {
+        roomBubbleCellData.senderAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomBubbleCellData.senderId withDisplayName:roomBubbleCellData.senderDisplayName];
+    }
+
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     // Finalize cell view customization here
