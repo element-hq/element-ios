@@ -27,12 +27,12 @@ pod 'GBDeviceInfo', '~> 4.2.2'
 pod 'GoogleAnalytics'
 
 # The Google WebRTC stack
-pod 'WebRTC', '56.10.15101'
+pod 'WebRTC', '58.17.16937'
 
 # OLMKit for crypto
 pod 'OLMKit'
 #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
-pod 'Realm', '~> 2.1.1'
+pod 'Realm', '~> 2.8.0'
 
 end
 
