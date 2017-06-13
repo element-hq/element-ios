@@ -3564,12 +3564,12 @@
             }
             else
             {
-                // Check whether the read marker event is anterior to the last event displayed in the first rendered cell.
-                MXKRoomBubbleComponent *component = roomBubbleTableViewCell.bubbleData.bubbleComponents.lastObject;
-                MXEvent *lastDisplayedEvent = component.event;
+                // Check whether the read marker event is anterior to the first event displayed in the first rendered cell.
+                MXKRoomBubbleComponent *component = roomBubbleTableViewCell.bubbleData.bubbleComponents.firstObject;
+                MXEvent *firstDisplayedEvent = component.event;
                 MXEvent *currentReadMarkerEvent = [self.roomDataSource.mxSession.store eventWithEventId:self.roomDataSource.room.accountData.readMarkerEventId inRoom:self.roomDataSource.roomId];
                 
-                if (!currentReadMarkerEvent || (currentReadMarkerEvent.originServerTs < lastDisplayedEvent.originServerTs))
+                if (!currentReadMarkerEvent || (currentReadMarkerEvent.originServerTs < firstDisplayedEvent.originServerTs))
                 {
                     self.jumpToLastUnreadBannerContainer.hidden = NO;
                 }
