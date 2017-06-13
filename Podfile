@@ -22,17 +22,17 @@ pod 'MatrixKit', '0.4.11'
 #pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
 #pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
-pod 'GBDeviceInfo', '~> 4.2.2'
+pod 'GBDeviceInfo', '~> 4.3.0'
 
 pod 'GoogleAnalytics'
 
 # The Google WebRTC stack
-pod 'WebRTC', '56.10.15101'
+pod 'WebRTC', '58.17.16937'
 
 # OLMKit for crypto
 pod 'OLMKit'
 #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
-pod 'Realm', '~> 2.1.1'
+pod 'Realm', '~> 2.8.1'
 
 end
 
