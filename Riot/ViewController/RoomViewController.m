@@ -45,6 +45,8 @@
 
 #import "UsersDevicesViewController.h"
 
+#import "RoomEmptyBubbleCell.h"
+
 #import "RoomIncomingTextMsgBubbleCell.h"
 #import "RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
 #import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
@@ -268,6 +270,8 @@
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
@@ -1504,8 +1508,12 @@
     {
         id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
         
-        // Select the suitable table view cell class
-        if (bubbleData.isIncoming)
+        // Select the suitable table view cell class, by considering first the empty bubble cell.
+        if (!bubbleData.attributedTextMessage)
+        {
+            cellViewClass = RoomEmptyBubbleCell.class;
+        }
+        else if (bubbleData.isIncoming)
         {
             if (bubbleData.isAttachmentWithThumbnail)
             {
@@ -2512,7 +2520,8 @@
         // Move the read marker to the current read receipt position.
         [self.roomDataSource.room forgetReadMarker];
         
-        [self refreshJumpToLastUnreadBannerDisplay];
+        // Hide the banner
+        self.jumpToLastUnreadBannerContainer.hidden = YES;
     }
 }
 

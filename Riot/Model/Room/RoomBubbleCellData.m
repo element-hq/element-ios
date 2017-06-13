@@ -109,99 +109,92 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     // Refresh the receipt flag during this process
     _hasReadReceipts = NO;
     
-    MXKRoomBubbleComponent *component = [bubbleComponents firstObject];
-    NSAttributedString *componentString = component.attributedTextMessage;
-    
-#ifndef DEBUG
-    // Sanity check: we observed some app crashes due to a nil string in a component.
-    // According to the implementation this case should not happen because the components are removed as soon as their string is nil.
-    // We patch here this issue by adding some logs in order to investigate it in the future.
-    if (!componentString)
-    {
-        NSLog(@"[RoomBubbleCellData] WARNING: refreshAttributedTextMessage: unexpected empty component (0/%tu), %@", bubbleComponents.count, component.event.eventId);
-        componentString = [[NSAttributedString alloc] initWithString:@""];
-    }
-#endif
-    
     NSInteger selectedComponentIndex = self.selectedComponentIndex;
     NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
     
-    // Check whether another component than the first one is selected
-    // Note: When a component is selected, it is highlighted by applying an alpha on other components.
-    if (selectedComponentIndex != NSNotFound && selectedComponentIndex != 0)
+    MXKRoomBubbleComponent *component;
+    NSAttributedString *componentString;
+    NSUInteger index = 0;
+    for (; index < bubbleComponents.count; index++)
     {
-        // Apply alpha to blur this component
-        NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
-        UIColor *color = [componentString attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:nil];
-        color = [color colorWithAlphaComponent:0.2];
-        
-        [customComponentString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, customComponentString.length)];
-        componentString = customComponentString;
-    }
-    
-    // Check whether the timestamp is displayed for this first component, and check whether a vertical whitespace is required
-    if ((selectedComponentIndex == 0 || lastMessageIndex == 0) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
-    {
-        currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
-        [currentAttributedTextMsg appendAttributedString:componentString];
-    }
-    else
-    {
-        // Init attributed string with the first text component
-        currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
-    }
-    
-    // Vertical whitespace is added in case of read receipts
-    if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
-    {
-        _hasReadReceipts = YES;
-        [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
-    }
-    
-    for (NSUInteger index = 1; index < bubbleComponents.count; index++)
-    {
-        [currentAttributedTextMsg appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
-        
         component = bubbleComponents[index];
         componentString = component.attributedTextMessage;
         
-#ifndef DEBUG
-        // Sanity check: we observed some app crashes due to a nil string in a component.
-        // According to the implementation this case should not happen because the components are removed as soon as their string is nil.
-        // We patch here this issue by adding some logs in order to investigate it in the future.
-        if (!componentString)
+        if (componentString)
         {
-            NSLog(@"[RoomBubbleCellData] refreshAttributedTextMessage: WARNING: unexpected empty component (%tu/%tu), %@", index, bubbleComponents.count, component.event.eventId);
-            componentString = [[NSAttributedString alloc] initWithString:@""];
-        }
-#endif
-        
-        // Check whether another component than this one is selected
-        if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index)
-        {
-            // Apply alpha to blur this component
-            NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
-            UIColor *color = [componentString attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:nil];
-            color = [color colorWithAlphaComponent:0.2];
+            // Check whether another component than this one is selected
+            // Note: When a component is selected, it is highlighted by applying an alpha on other components.
+            if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index)
+            {
+                // Apply alpha to blur this component
+                NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
+                UIColor *color = [componentString attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:nil];
+                color = [color colorWithAlphaComponent:0.2];
+                
+                [customComponentString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, customComponentString.length)];
+                componentString = customComponentString;
+            }
             
-            [customComponentString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, customComponentString.length)];
-            componentString = customComponentString;
+            // Check whether the timestamp is displayed for this component, and check whether a vertical whitespace is required
+            if ((selectedComponentIndex == index || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
+            {
+                currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
+                [currentAttributedTextMsg appendAttributedString:componentString];
+            }
+            else
+            {
+                // Init attributed string with the first text component
+                currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
+            }
+            
+            // Vertical whitespace is added in case of read receipts
+            if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
+            {
+                _hasReadReceipts = YES;
+                [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
+            }
+            
+            // The first non empty component has been handled.
+            break;
         }
+    }
+    
+    for (index++; index < bubbleComponents.count; index++)
+    {
+        component = bubbleComponents[index];
+        componentString = component.attributedTextMessage;
         
-        // Check whether the timestamp is displayed
-        if (selectedComponentIndex == index || lastMessageIndex == index)
+        if (componentString)
         {
-            [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
-        }
-        
-        // Append attributed text
-        [currentAttributedTextMsg appendAttributedString:componentString];
-        
-        // Add vertical whitespace in case of read receipts
-        if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
-        {
-            _hasReadReceipts = YES;
-            [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
+            [currentAttributedTextMsg appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
+            
+            // Check whether another component than this one is selected
+            if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index)
+            {
+                // Apply alpha to blur this component
+                NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
+                UIColor *color = [componentString attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:nil];
+                color = [color colorWithAlphaComponent:0.2];
+                
+                [customComponentString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, customComponentString.length)];
+                componentString = customComponentString;
+            }
+            
+            // Check whether the timestamp is displayed
+            if (selectedComponentIndex == index || lastMessageIndex == index)
+            {
+                [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
+            }
+            
+            // Append attributed text
+            [currentAttributedTextMsg appendAttributedString:componentString];
+            
+            // Add vertical whitespace in case of read receipts
+            if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
+            {
+                _hasReadReceipts = YES;
+                [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
+            }
         }
     }
     
@@ -221,22 +214,32 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         if (bubbleComponents.count)
         {
             // Set position of the first component
-            MXKRoomBubbleComponent *component = [bubbleComponents firstObject];
-            
             CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
-            component.position = CGPointMake(0, positionY);
-            
-            _hasReadReceipts = ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO] != nil);
+            MXKRoomBubbleComponent *component;
+            NSUInteger index = 0;
+            for (; index < bubbleComponents.count; index++)
+            {
+                // Compute the vertical position for next component
+                component = [bubbleComponents objectAtIndex:index];
+                
+                component.position = CGPointMake(0, positionY);
+                
+                if (component.attributedTextMessage)
+                {
+                    _hasReadReceipts = ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO] != nil);
+                    break;
+                }
+            }
             
             // Check whether the position of other components need to be refreshed
-            if (!self.attachment && bubbleComponents.count > 1)
+            if (!self.attachment && index < bubbleComponents.count)
             {
                 NSMutableAttributedString *attributedString;
                 NSInteger selectedComponentIndex = self.selectedComponentIndex;
                 NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
                 
                 // Check whether the timestamp is displayed for this first component, and check whether a vertical whitespace is required
-                if ((selectedComponentIndex == 0 || lastMessageIndex == 0) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
+                if ((selectedComponentIndex == index || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
                 {
                     attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
                     [attributedString appendAttributedString:component.attributedTextMessage];
@@ -255,44 +258,51 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 
                 [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
                 
-                for (NSUInteger index = 1; index < bubbleComponents.count; index++)
+                for (index++; index < bubbleComponents.count; index++)
                 {
                     // Compute the vertical position for next component
                     component = [bubbleComponents objectAtIndex:index];
                     
-                    // Prepare its attributed string by considering potential vertical margin required to display timestamp.
-                    NSAttributedString *componentString;
-                    if (selectedComponentIndex == index || lastMessageIndex == index)
+                    if (component.attributedTextMessage)
                     {
-                        NSMutableAttributedString *componentAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
-                        [componentAttributedString appendAttributedString:component.attributedTextMessage];
+                        // Prepare its attributed string by considering potential vertical margin required to display timestamp.
+                        NSAttributedString *componentString;
+                        if (selectedComponentIndex == index || lastMessageIndex == index)
+                        {
+                            NSMutableAttributedString *componentAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
+                            [componentAttributedString appendAttributedString:component.attributedTextMessage];
+                            
+                            componentString = componentAttributedString;
+                        }
+                        else
+                        {
+                            componentString = component.attributedTextMessage;
+                        }
                         
-                        componentString = componentAttributedString;
+                        // Append this attributed string.
+                        [attributedString appendAttributedString:componentString];
+                        
+                        // Compute the height of the resulting string.
+                        CGFloat cumulatedHeight = [self rawTextHeight:attributedString];
+                        
+                        // Deduce the position of the beginning of this component.
+                        positionY = MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET + (cumulatedHeight - [self rawTextHeight:componentString]);
+                        
+                        component.position = CGPointMake(0, positionY);
+                        
+                        // Add vertical whitespace in case of read receipts.
+                        if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
+                        {
+                            _hasReadReceipts = YES;
+                            [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
+                        }
+                        
+                        [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
                     }
                     else
                     {
-                        componentString = component.attributedTextMessage;
+                        component.position = CGPointMake(0, positionY);
                     }
-                    
-                    // Append this attributed string.
-                    [attributedString appendAttributedString:componentString];
-                    
-                    // Compute the height of the resulting string.
-                    CGFloat cumulatedHeight = [self rawTextHeight:attributedString];
-                    
-                    // Deduce the position of the beginning of this component.
-                    CGFloat positionY = MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET + (cumulatedHeight - [self rawTextHeight:componentString]);
-                    
-                    component.position = CGPointMake(0, positionY);
-                    
-                    // Add vertical whitespace in case of read receipts.
-                    if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
-                    {
-                        _hasReadReceipts = YES;
-                        [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
-                    }
-                    
-                    [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
                 }
             }
         }
@@ -348,7 +358,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     while (index--)
     {
         MXKRoomBubbleComponent *component = components[index];
-        if (component.date)
+        if (component.attributedTextMessage && component.date)
         {
             mostRecentComponentIndex = index;
             break;
