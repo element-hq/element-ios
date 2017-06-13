@@ -74,7 +74,7 @@
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
         // Ignore the read receipts on the events without an actual display.
-        cellData.hasReadReceipts = (cellData.attributedTextMessage != nil);
+        cellData.hasReadReceipts = !cellData.hasNoDisplay;
     }
     
     [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
