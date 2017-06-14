@@ -1093,23 +1093,72 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             }
             
         }
-
-        if (favoriteCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeFavourites)
+        
+        if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+        {
+            // Sort each rooms collection by considering first the rooms with some missed notifs, the rooms with unread, then the others.
+            NSComparator comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                
+                if (recentCellData1.highlightCount)
+                {
+                    if (recentCellData2.highlightCount)
+                    {
+                        return NSOrderedSame;
+                    }
+                    else
+                    {
+                        return NSOrderedAscending;
+                    }
+                }
+                else if (recentCellData2.highlightCount)
+                {
+                    return NSOrderedDescending;
+                }
+                else if (recentCellData1.notificationCount)
+                {
+                    if (recentCellData2.notificationCount)
+                    {
+                        return NSOrderedSame;
+                    }
+                    else
+                    {
+                        return NSOrderedAscending;
+                    }
+                }
+                else if (recentCellData2.notificationCount)
+                {
+                    return NSOrderedDescending;
+                }
+                else if (recentCellData1.hasUnread)
+                {
+                    if (recentCellData2.hasUnread)
+                    {
+                        return NSOrderedSame;
+                    }
+                    else
+                    {
+                        return NSOrderedAscending;
+                    }
+                }
+                else if (recentCellData2.hasUnread)
+                {
+                    return NSOrderedDescending;
+                }
+                return NSOrderedSame;
+            };
+            
+            // Sort the rooms collections
+            [favoriteCellDataArray sortUsingComparator:comparator];
+            [peopleCellDataArray sortUsingComparator:comparator];
+            [conversationCellDataArray sortUsingComparator:comparator];
+            [lowPriorityCellDataArray sortUsingComparator:comparator];
+        }
+        else if (favoriteCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeFavourites)
         {
             // Sort them according to their tag order
             [favoriteCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
                 
                 return [session compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
-                
-            }];
-        }
-        
-        if (lowPriorityCellDataArray.count > 0)
-        {
-            // Sort them according to their tag order
-            [lowPriorityCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
-                
-                return [session compareRoomsByTag:kMXRoomTagLowPriority room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
                 
             }];
         }
