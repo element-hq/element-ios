@@ -50,6 +50,8 @@
 
 #include <MatrixSDK/MXJingleCallStack.h>
 
+#include <MatrixSDK/MXDefaultBackgroundModeHandler.h>
+
 #define CALL_STATUS_BAR_HEIGHT 44
 
 #define MAKE_STRING(x) #x
@@ -1357,18 +1359,23 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)initMatrixSessions
 {
     NSLog(@"[AppDelegate] initMatrixSessions");
+
+    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     
     // Define the media cache version
-    [MXSDKOptions sharedInstance].mediaCacheAppVersion = 0;
+    sdkOptions.mediaCacheAppVersion = 0;
     
     // Enable e2e encryption for newly created MXSession
-    [MXSDKOptions sharedInstance].enableCryptoWhenStartingMXSession = YES;
+    sdkOptions.enableCryptoWhenStartingMXSession = YES;
 
     // Disable identicon use
-    [MXSDKOptions sharedInstance].disableIdenticonUseForUserAvatar = YES;
+    sdkOptions.disableIdenticonUseForUserAvatar = YES;
 
     // Enable SDK stats upload to GA
-    [MXSDKOptions sharedInstance].enableGoogleAnalytics = YES;
+    sdkOptions.enableGoogleAnalytics = YES;
+
+    // Use UIKit BackgroundTask for handling background tasks in the SDK
+    sdkOptions.backgroundModeHandler = [[MXDefaultBackgroundModeHandler alloc] init];
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
