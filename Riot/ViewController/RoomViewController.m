@@ -3554,8 +3554,9 @@
 
 - (void)refreshJumpToLastUnreadBannerDisplay
 {
+    // This banner is only displayed when the room timeline is in live (and no peeking).
     // Check whether the read marker exists and has not been rendered yet.
-    if (self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId)
+    if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking && self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId)
     {
         UITableViewCell *cell = [self.bubblesTableView visibleCells].firstObject;
         if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
@@ -3593,8 +3594,8 @@
     {
         self.jumpToLastUnreadBannerContainer.hidden = YES;
         
-        // Initialize the read marker if it does not exist yet, except for the room preview.
-        if (!self.roomDataSource.room.accountData.readMarkerEventId && !self.isRoomPreview)
+        // Initialize the read marker if it does not exist yet, only in case of live timeline.
+        if (!self.roomDataSource.room.accountData.readMarkerEventId && self.roomDataSource.isLive && !self.roomDataSource.isPeeking)
         {
             // Move the read marker to the current read receipt position by default.
             [self.roomDataSource.room forgetReadMarker];
