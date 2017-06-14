@@ -95,9 +95,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)setDelegate:(id<MXKDataSourceDelegate>)delegate andRecentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
 {
-    self.delegate = delegate;
-    
-    self.recentsDataSourceMode = recentsDataSourceMode;
+    if (self.delegate != delegate || _recentsDataSourceMode != recentsDataSourceMode)
+    {
+        // Update the configuration, the recentsDataSourceMode setter will force a refresh.
+        self.delegate = delegate;
+        self.recentsDataSourceMode = recentsDataSourceMode;
+    }
 }
 
 - (void)setRecentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode

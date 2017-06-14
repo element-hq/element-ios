@@ -156,6 +156,8 @@
     
     if (mainSession)
     {
+        NSLog(@"[MasterTabBarController] initializeDataSources");
+        
         // Init the recents data source
         recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
         
@@ -163,6 +165,31 @@
         [_favouritesViewController displayList:recentsDataSource];
         [_peopleViewController displayList:recentsDataSource];
         [_roomsViewController displayList:recentsDataSource];
+        
+        // Restore the right delegate of the shared recent data source.
+        id<MXKDataSourceDelegate> recentsDataSourceDelegate = _homeViewController;
+        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeHome;
+        switch (self.selectedIndex)
+        {
+            case TABBAR_HOME_INDEX:
+                break;
+            case TABBAR_FAVOURITES_INDEX:
+                recentsDataSourceDelegate = _favouritesViewController;
+                recentsDataSourceMode = RecentsDataSourceModeFavourites;
+                break;
+            case TABBAR_PEOPLE_INDEX:
+                recentsDataSourceDelegate = _peopleViewController;
+                recentsDataSourceMode = RecentsDataSourceModePeople;
+                break;
+            case TABBAR_ROOMS_INDEX:
+                recentsDataSourceDelegate = _roomsViewController;
+                recentsDataSourceMode = RecentsDataSourceModeRooms;
+                break;
+                
+            default:
+                break;
+        }
+        [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
         
         // Check whether there are others sessions
         NSArray* mxSessions = self.mxSessions;
