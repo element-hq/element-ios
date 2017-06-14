@@ -582,7 +582,10 @@
 
 - (void)refreshTabBarBadges
 {
-    [self setMissedDiscussionsCount:recentsDataSource.missedFavouriteDiscussionsCount onTabBarItem:TABBAR_FAVOURITES_INDEX withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
+    // Use a middle dot to signal missed notif in favourites
+    [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil) onTabBarItem:TABBAR_FAVOURITES_INDEX withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
+    
+    // Update the badge on People and Rooms tabs
     [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount onTabBarItem:TABBAR_PEOPLE_INDEX withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
     [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount onTabBarItem:TABBAR_ROOMS_INDEX withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
 }
@@ -594,6 +597,23 @@
         NSString *badgeValue = [self tabBarBadgeStringValue:count];
         
         self.tabBar.items[index].badgeValue = badgeValue;
+        
+        if ([UITabBarItem instancesRespondToSelector:@selector(setBadgeColor:)])
+        {
+            self.tabBar.items[index].badgeColor = badgeColor;
+        }
+    }
+    else
+    {
+        self.tabBar.items[index].badgeValue = nil;
+    }
+}
+
+- (void)setMissedDiscussionsMark:(NSString*)mark onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
+{
+    if (mark)
+    {
+        self.tabBar.items[index].badgeValue = mark;
         
         if ([UITabBarItem instancesRespondToSelector:@selector(setBadgeColor:)])
         {
