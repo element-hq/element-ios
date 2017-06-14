@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, "7.0"
+platform :ios, "8.0"
 
 source 'https://github.com/CocoaPods/Specs.git'
 
@@ -33,6 +33,11 @@ pod 'WebRTC', '58.17.16937'
 pod 'OLMKit'
 #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
 pod 'Realm', '~> 2.8.1'
+
+# Remove warnings from "bad" pods
+pod 'OLMKit', :inhibit_warnings => true
+pod 'cmark', :inhibit_warnings => true
+pod 'DTCoreText', :inhibit_warnings => true
 
 end
 
