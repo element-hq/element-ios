@@ -674,4 +674,15 @@
     [currentAlert showInViewController:self];
 }
 
+#pragma mark - UITabBarDelegate
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+{
+    if (item.tag == TABBAR_ROOMS_INDEX && self.selectedIndex == TABBAR_ROOMS_INDEX)
+    {
+        // Scroll to the next room with missed notifications.
+        [self.roomsViewController scrollToNextRoomWithMissedNotifications];
+    }
+}
+
 @end
