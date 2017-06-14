@@ -412,12 +412,95 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return sectionTitle;
 }
 
+- (UIView *)badgeViewForHeaderTitleInHomeSection:(NSInteger)section
+{
+    // Prepare a badge to display the total of missed notifications in this section.
+    NSUInteger count = 0;
+    NSArray *sectionArray;
+    UIView *missedNotifAndUnreadBadgeBgView = nil;
+    UIColor *bgColor = kRiotColorGreen;
+    
+    if (section == favoritesSection)
+    {
+        sectionArray = favoriteCellDataArray;
+    }
+    else if (section == peopleSection)
+    {
+        sectionArray = peopleCellDataArray;
+    }
+    else if (section == conversationSection)
+    {
+        sectionArray = conversationCellDataArray;
+    }
+    else if (section == lowPrioritySection)
+    {
+        sectionArray = lowPriorityCellDataArray;
+    }
+    
+    for (id<MXKRecentCellDataStoring> cellData in sectionArray)
+    {
+        count += cellData.notificationCount;
+        
+        if (cellData.highlightCount)
+        {
+            bgColor = kRiotColorPinkRed;
+        }
+    }
+    
+    if (count)
+    {
+        UILabel *missedNotifAndUnreadBadgeLabel = [[UILabel alloc] init];
+        missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
+        missedNotifAndUnreadBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
+        if (count > 1000)
+        {
+            CGFloat value = count / 1000.0;
+            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"large_badge_value_k_format", @"Vector", nil), value];
+        }
+        else
+        {
+            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", count];
+        }
+        
+        [missedNotifAndUnreadBadgeLabel sizeToFit];
+        
+        CGFloat bgViewWidth = missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
+        
+        missedNotifAndUnreadBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bgViewWidth, 20)];
+        [missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
+        missedNotifAndUnreadBadgeBgView.backgroundColor = bgColor;
+        
+        [missedNotifAndUnreadBadgeBgView addSubview:missedNotifAndUnreadBadgeLabel];
+        missedNotifAndUnreadBadgeLabel.center = missedNotifAndUnreadBadgeBgView.center;
+        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:missedNotifAndUnreadBadgeLabel
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:missedNotifAndUnreadBadgeBgView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1
+                                                                              constant:0.0f];
+        NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:missedNotifAndUnreadBadgeLabel
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:missedNotifAndUnreadBadgeBgView
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                            multiplier:1
+                                                                              constant:0.0f];
+        
+        [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
+        
+    }
+    
+    return missedNotifAndUnreadBadgeBgView;
+}
+
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
     sectionHeader.backgroundColor = kRiotColorLightGrey;
     NSInteger sectionBitwise = 0;
     UIImageView *chevronView;
+    UIView *accessoryView;
     
     if (_areSectionsShrinkable)
     {
@@ -477,13 +560,30 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         chevronView.frame = frame;
         [sectionHeader addSubview:chevronView];
         chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        
+        accessoryView = chevronView;
+    }
+    else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+    {
+        // Add a badge to display the total of missed notifications by section.
+        accessoryView = [self badgeViewForHeaderTitleInHomeSection:section];
+        
+        if (accessoryView)
+        {
+            frame = accessoryView.frame;
+            frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
+            frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
+            accessoryView.frame = frame;
+            [sectionHeader addSubview:accessoryView];
+            accessoryView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        }
     }
     
     // Add label
     frame = sectionHeader.frame;
     frame.origin.x = 20;
     frame.origin.y = 5;
-    frame.size.width = chevronView ? chevronView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
+    frame.size.width = accessoryView ? accessoryView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
     frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.backgroundColor = [UIColor clearColor];
