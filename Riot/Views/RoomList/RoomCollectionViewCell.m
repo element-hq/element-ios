@@ -94,6 +94,26 @@
                 self.roomTitle.font = [UIFont boldSystemFontOfSize:15];
             }
         }
+        else if (roomCellData.roomSummary.room.state.membership == MXMembershipInvite)
+        {
+            self.missedNotifAndUnreadBadgeBgView.hidden = NO;
+            self.missedNotifAndUnreadBadgeBgView.backgroundColor = kRiotColorPinkRed;
+            
+            self.missedNotifAndUnreadBadgeLabel.text = @"!";
+            [self.missedNotifAndUnreadBadgeLabel sizeToFit];
+            
+            self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
+            
+            // Use bold font for the room title
+            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+            {
+                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
+            }
+            else
+            {
+                self.roomTitle.font = [UIFont boldSystemFontOfSize:15];
+            }
+        }
         else
         {
             // The room title is not bold anymore
