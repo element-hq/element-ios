@@ -2502,8 +2502,10 @@
     }
     else if (sender == self.jumpToLastUnreadButton)
     {
-        // Hide expanded header to restore navigation bar settings
+        // Hide expanded header to restore navigation bar settings.
         [self showExpandedHeader:NO];
+        // Dismiss potential keyboard.
+        [self dismissKeyboard];
         
         MXKRoomDataSource *roomDataSource;
         // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
@@ -3068,6 +3070,12 @@
                         
                         [self refreshActivitiesViewDisplay];
                         [self refreshJumpToLastUnreadBannerDisplay];
+                        
+                        if (self.saveProgressTextInput)
+                        {
+                            // Restore the potential message partially typed before jump to last unread messages.
+                            self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+                        }
                     }
                     
                 }];
