@@ -719,6 +719,16 @@
 
 #pragma mark - Override MXKRoomViewController
 
+- (BOOL)reloadBubblesTable:(BOOL)useBottomAnchor
+{
+    BOOL hasScrolledToTheBottom = [super reloadBubblesTable:useBottomAnchor];
+    
+    [self refreshActivitiesViewDisplay];
+    [self refreshJumpToLastUnreadBannerDisplay];
+    
+    return hasScrolledToTheBottom;
+}
+
 - (void)onMatrixSessionChange
 {
     [super onMatrixSessionChange];
@@ -1608,14 +1618,6 @@
 }
 
 #pragma mark - MXKDataSource delegate
-
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
-{
-    [super dataSource:dataSource didCellChange:changes];
-    
-    [self refreshActivitiesViewDisplay];
-    [self refreshJumpToLastUnreadBannerDisplay];
-}
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
