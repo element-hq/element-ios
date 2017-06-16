@@ -50,7 +50,7 @@
 
 #include <MatrixSDK/MXJingleCallStack.h>
 
-#include <MatrixSDK/MXDefaultBackgroundModeHandler.h>
+#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 
 #define CALL_STATUS_BAR_HEIGHT 44
 
@@ -1375,7 +1375,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     sdkOptions.enableGoogleAnalytics = YES;
 
     // Use UIKit BackgroundTask for handling background tasks in the SDK
-    sdkOptions.backgroundModeHandler = [[MXDefaultBackgroundModeHandler alloc] init];
+    sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
