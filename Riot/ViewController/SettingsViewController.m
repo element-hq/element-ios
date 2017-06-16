@@ -57,6 +57,8 @@ enum
 {
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
+    NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
+    NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
     //NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX,
     //NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX,
     //NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX,
@@ -1514,6 +1516,30 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = globalInfoCell;
         }
+        else if (row == NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithMissedNotif"];
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithUnread"];
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
@@ -2483,6 +2509,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     account.mxSession.crypto.globalBlacklistUnverifiedDevices = switchButton.on;
 
     [self.tableView reloadData];
+}
+
+- (void)togglePinRoomsWithMissedNotif:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    
+    [[NSUserDefaults standardUserDefaults] setBool:switchButton.on forKey:@"pinRoomsWithMissedNotif"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)togglePinRoomsWithUnread:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    
+    [[NSUserDefaults standardUserDefaults] setBool:switchButton.on forKey:@"pinRoomsWithUnread"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)markAllAsRead:(id)sender
