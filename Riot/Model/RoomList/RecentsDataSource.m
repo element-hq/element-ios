@@ -418,7 +418,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     NSUInteger count = 0;
     NSArray *sectionArray;
     UIView *missedNotifAndUnreadBadgeBgView = nil;
-    UIColor *bgColor = kRiotColorGreen;
     
     if (section == favoritesSection)
     {
@@ -440,11 +439,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     for (id<MXKRecentCellDataStoring> cellData in sectionArray)
     {
         count += cellData.notificationCount;
-        
-        if (cellData.highlightCount)
-        {
-            bgColor = kRiotColorPinkRed;
-        }
     }
     
     if (count)
@@ -468,7 +462,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         missedNotifAndUnreadBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bgViewWidth, 20)];
         [missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
-        missedNotifAndUnreadBadgeBgView.backgroundColor = bgColor;
+        missedNotifAndUnreadBadgeBgView.backgroundColor = kRiotColorSilver;
         
         [missedNotifAndUnreadBadgeBgView addSubview:missedNotifAndUnreadBadgeLabel];
         missedNotifAndUnreadBadgeLabel.center = missedNotifAndUnreadBadgeBgView.center;
