@@ -24,6 +24,36 @@
 // self.roomDisplayname returns this value instead of the mother class.
 @synthesize roomDisplayname;
 
+- (NSString*)notificationCountStringValue
+{
+    NSString *stringValue;
+    NSUInteger notificationCount = self.notificationCount;
+    
+    if (notificationCount > 1000)
+    {
+        CGFloat value = notificationCount / 1000.0;
+        stringValue = [NSString stringWithFormat:NSLocalizedStringFromTable(@"large_badge_value_k_format", @"Vector", nil), value];
+    }
+    else
+    {
+        stringValue = [NSString stringWithFormat:@"%tu", notificationCount];
+    }
+    
+    return stringValue;
+}
+
+- (NSUInteger)notificationCount
+{
+    // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
+    if (self.roomSummary.room.isMentionsOnly)
+    {
+        // Only the highlighted missed messages must be considered here.
+        return self.roomSummary.highlightCount;
+    }
+    
+    return self.roomSummary.notificationCount;
+}
+
 - (void)update
 {
     [super update];

@@ -21,10 +21,6 @@
 
 #import "AppDelegate.h"
 
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
-
 #import "AttachmentsViewController.h"
 
 @implementation RoomFilesViewController

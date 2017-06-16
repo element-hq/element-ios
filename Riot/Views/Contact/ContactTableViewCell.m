@@ -24,6 +24,8 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
+#import "NBPhoneNumberUtil.h"
+
 @interface ContactTableViewCell()
 {
     /**
@@ -34,7 +36,7 @@
 @end
 
 @implementation ContactTableViewCell
-@synthesize mxRoom;
+@synthesize mxRoom, delegate;
 
 - (void)awakeFromNib
 {
@@ -58,6 +60,17 @@
     // Round image view
     self.thumbnailView.layer.cornerRadius = self.thumbnailView.frame.size.width / 2;
     self.thumbnailView.clipsToBounds = YES;
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    // Restore default values
+    self.contentView.alpha = 1;
+    self.userInteractionEnabled = YES;
+    self.accessoryType = UITableViewCellAccessoryNone;
+    self.accessoryView = nil;
 }
 
 - (void)setShowCustomAccessoryView:(BOOL)show

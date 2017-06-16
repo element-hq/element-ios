@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2L-l5-wPx" id="aXz-IR-jj5">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="73"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7r-zL-9bw" userLabel="Bing indicator">
@@ -34,6 +34,14 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="7Ys-gS-ja8"/>
                             <constraint firstAttribute="height" constant="42" id="WPC-tL-hnM"/>
+                        </constraints>
+                    </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8CY-Ku-0qh">
+                        <rect key="frame" x="13" y="15" width="42" height="42"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="42" id="ize-F0-OeQ"/>
+                            <constraint firstAttribute="width" constant="42" id="t6V-Zm-EM3"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
@@ -85,14 +93,6 @@
                             <constraint firstItem="mbn-A1-1Yw" firstAttribute="centerX" secondItem="OeZ-wN-eil" secondAttribute="centerX" id="ugY-V1-Ooo"/>
                         </constraints>
                     </view>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="direct_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZNW-8U-7ma">
-                        <rect key="frame" x="50" y="18" width="11" height="13"/>
-                        <accessibility key="accessibilityConfiguration" identifier="DirectRoomIcon"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="13" id="4Re-7i-8kN"/>
-                            <constraint firstAttribute="width" constant="11" id="aip-1x-C5a"/>
-                        </constraints>
-                    </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="NAZ-zd-MHS">
                         <rect key="frame" x="50" y="42" width="11" height="13"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
@@ -103,7 +103,7 @@
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="ZNW-8U-7ma" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="18" id="6vJ-61-kfl"/>
+                    <constraint firstItem="8CY-Ku-0qh" firstAttribute="centerX" secondItem="RX5-eD-c3c" secondAttribute="centerX" id="FVh-1h-VkB"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="leading" secondItem="OeZ-wN-eil" secondAttribute="trailing" constant="8" id="KuE-8m-e9A"/>
                     <constraint firstItem="e7r-zL-9bw" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="PUW-if-ewh"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
@@ -113,20 +113,20 @@
                     <constraint firstItem="360-Go-RcG" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="16" id="XyO-tl-6SX"/>
                     <constraint firstAttribute="trailing" secondItem="360-Go-RcG" secondAttribute="trailing" constant="10" id="YqC-WC-Wqe"/>
                     <constraint firstItem="NAZ-zd-MHS" firstAttribute="centerY" secondItem="dQt-mN-T6b" secondAttribute="centerY" id="c6L-cn-sJL"/>
-                    <constraint firstItem="ZNW-8U-7ma" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="50" id="dDX-2k-zd9"/>
                     <constraint firstItem="OeZ-wN-eil" firstAttribute="centerY" secondItem="360-Go-RcG" secondAttribute="centerY" id="fYc-th-Nay"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="iaT-57-GOs"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="15" id="mga-fG-I0L"/>
+                    <constraint firstItem="NAZ-zd-MHS" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="50" id="ofi-HP-uke"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" constant="10" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>
-                    <constraint firstItem="NAZ-zd-MHS" firstAttribute="leading" secondItem="ZNW-8U-7ma" secondAttribute="leading" id="yN6-va-ibo"/>
+                    <constraint firstItem="8CY-Ku-0qh" firstAttribute="centerY" secondItem="RX5-eD-c3c" secondAttribute="centerY" id="ukJ-yz-Kit"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RecentTableViewCell"/>
             <connections>
-                <outlet property="directRoomIcon" destination="ZNW-8U-7ma" id="e2n-1R-mbc"/>
+                <outlet property="directRoomBorderView" destination="8CY-Ku-0qh" id="vKk-ZO-TQq"/>
                 <outlet property="encryptedRoomIcon" destination="NAZ-zd-MHS" id="ZsH-Zr-Q4K"/>
                 <outlet property="lastEventDate" destination="360-Go-RcG" id="Y0L-Dj-ZVn"/>
                 <outlet property="lastEventDescription" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
@@ -140,7 +140,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="direct_icon.png" width="11" height="13"/>
         <image name="e2e_verified.png" width="10" height="12"/>
     </resources>
 </document>

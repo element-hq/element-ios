@@ -1,5 +1,6 @@
 /*
  Copyright 2014 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -22,7 +23,11 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
-#import "HomeViewController.h"
+#import "MasterTabBarController.h"
+
+#import "RageShakeManager.h"
+
+#import "RiotDesignValues.h"
 
 #pragma mark - Notifications
 /**
@@ -46,7 +51,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 /**
  Application main view controller
  */
-@property (nonatomic, readonly) HomeViewController *homeViewController;
+@property (nonatomic, readonly) MasterTabBarController *masterTabBarController;
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -61,7 +66,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 /**
  The navigation controller of the master view controller of the main split view controller.
  */
-@property (nonatomic, readonly) UINavigationController *homeNavigationController;
+@property (nonatomic, readonly) UINavigationController *masterNavigationController;
 /**
  The navigation controller of the detail view controller of the main split view controller (may be nil).
  */

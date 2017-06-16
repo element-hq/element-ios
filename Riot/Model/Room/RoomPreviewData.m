@@ -58,6 +58,12 @@
         _roomTopic = publicRoom.topic;
         _roomAliases = publicRoom.aliases;
         _numJoinedMembers = publicRoom.numJoinedMembers;
+        
+        if (!_roomName.length)
+        {
+            // Consider the room aliases to define a default room name.
+            _roomName = _roomAliases.firstObject;
+        }
     }
     return self;
 }
@@ -80,6 +86,7 @@
         // Create the room data source
         _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
         [_roomDataSource finalizeInitialization];
+        _roomDataSource.markTimelineInitialEvent = YES;
 
         _roomName = peekingRoom.riotDisplayname;
         _roomAvatarUrl = peekingRoom.state.avatar;

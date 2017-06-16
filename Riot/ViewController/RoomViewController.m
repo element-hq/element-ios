@@ -18,12 +18,9 @@
 #import "RoomViewController.h"
 
 #import "RoomDataSource.h"
+#import "RoomBubbleCellData.h"
 
 #import "AppDelegate.h"
-
-#import "RiotDesignValues.h"
-
-#import "RageShakeManager.h"
 
 #import "RoomInputToolbarView.h"
 
@@ -47,6 +44,8 @@
 #import "RoomSearchViewController.h"
 
 #import "UsersDevicesViewController.h"
+
+#import "RoomEmptyBubbleCell.h"
 
 #import "RoomIncomingTextMsgBubbleCell.h"
 #import "RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
@@ -89,12 +88,12 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
-#import "RiotDesignValues.h"
-
 #import "GBDeviceInfo_iOS.h"
 
 #import "RoomEncryptedDataBubbleCell.h"
 #import "EncryptionInfoView.h"
+
+#import "MXRoom+Riot.h"
 
 @interface RoomViewController ()
 {
@@ -157,6 +156,12 @@
     
     // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
     id mxRoomSummaryDidChangeObserver;
+    
+    // The table view cell in which the read marker is displayed (nil by default).
+    MXKRoomBubbleTableViewCell *readMarkerTableViewCell;
+    
+    // Tell whether the view controller is appeared or not.
+    BOOL isAppeared;
 }
 
 @end
@@ -265,6 +270,11 @@
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
+    
+    // Prepare jump to last unread banner
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
     
     // Prepare expanded header
     self.expandedHeaderContainer.backgroundColor = kRiotColorLightGrey;
@@ -451,11 +461,19 @@
     }
 
     [self removeCallNotificationsListeners];
+    
+    // Re-enable the read marker display, and disable its update.
+    self.roomDataSource.showReadMarker = YES;
+    self.updateRoomReadMarker = NO;
+    isAppeared = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    isAppeared = YES;
+    [self checkReadMarkerVisibility];
     
     if (self.roomDataSource)
     {
@@ -470,6 +488,7 @@
         
     }];
     [self refreshActivitiesViewDisplay];
+    [self refreshJumpToLastUnreadBannerDisplay];
     
     // Observe missed notifications
     mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -594,6 +613,7 @@
         self.expandedHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
         self.bubblesTableViewTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant;
     }
     // Check whether the preview header is visible
     else if (previewHeader)
@@ -620,6 +640,11 @@
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
         self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
+    }
+    else
+    {
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.contentInset.top;
     }
     
     [self refreshMissedDiscussionsCount:YES];
@@ -694,6 +719,15 @@
 
 #pragma mark - Override MXKRoomViewController
 
+- (void)onMatrixSessionChange
+{
+    [super onMatrixSessionChange];
+    
+    // Re-enable the read marker display, and disable its update.
+    self.roomDataSource.showReadMarker = YES;
+    self.updateRoomReadMarker = NO;
+}
+
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
 {
     // Remove potential preview Data
@@ -703,12 +737,18 @@
         [self removeMatrixSession:self.mainSession];
     }
     
+    // Enable the read marker display, and disable its update.
+    dataSource.showReadMarker = YES;
+    self.updateRoomReadMarker = NO;
+    
     [super displayRoom:dataSource];
     
     customizedRoomDataSource = nil;
     
     if (self.roomDataSource)
     {
+        self.eventsAcknowledgementEnabled = YES;
+        
         // Set room title view
         [self refreshRoomTitle];
         
@@ -896,6 +936,12 @@
             
         });
     }
+
+    // Make the activity indicator follow the keyboard
+    // At runtime, this creates a smooth animation
+    CGPoint activityIndicatorCenter = self.activityIndicator.center;
+    activityIndicatorCenter.y = self.view.center.y - keyboardHeight / 2;
+    self.activityIndicator.center = activityIndicatorCenter;
 }
 
 - (void)dismissTemporarySubViews
@@ -906,6 +952,19 @@
     {
         [encryptionInfoView removeFromSuperview];
         encryptionInfoView = nil;
+    }
+}
+
+- (void)setBubbleTableViewDisplayInTransition:(BOOL)bubbleTableViewDisplayInTransition
+{
+    if (self.isBubbleTableViewDisplayInTransition != bubbleTableViewDisplayInTransition)
+    {
+        [super setBubbleTableViewDisplayInTransition:bubbleTableViewDisplayInTransition];
+        
+        [self refreshActivitiesViewDisplay];
+        
+        [self checkReadMarkerVisibility];
+        [self refreshJumpToLastUnreadBannerDisplay];
     }
 }
 
@@ -1193,6 +1252,7 @@
                          animations:^{
                              
                              self.bubblesTableViewTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top : 0);
+                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : self.bubblesTableView.contentInset.top);
                              
                              if (roomAvatarView)
                              {
@@ -1307,6 +1367,7 @@
                              animations:^{
                                  
                                  self.bubblesTableViewTopConstraint.constant = 0;
+                                 self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.contentInset.top;
                                  
                                  // Force to render the view
                                  [self forceLayoutRefresh];
@@ -1398,6 +1459,7 @@
                          animations:^{
                              
                              self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
                              
                              if (roomAvatarView)
                              {
@@ -1422,6 +1484,8 @@
     
     if (previewData)
     {
+        self.eventsAcknowledgementEnabled = NO;
+        
         [self addMatrixSession:previewData.mxSession];
         
         roomPreviewData = previewData;
@@ -1447,8 +1511,12 @@
     {
         id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
         
-        // Select the suitable table view cell class
-        if (bubbleData.isIncoming)
+        // Select the suitable table view cell class, by considering first the empty bubble cell.
+        if (!bubbleData.attributedTextMessage)
+        {
+            cellViewClass = RoomEmptyBubbleCell.class;
+        }
+        else if (bubbleData.isIncoming)
         {
             if (bubbleData.isAttachmentWithThumbnail)
             {
@@ -1543,13 +1611,6 @@
 }
 
 #pragma mark - MXKDataSource delegate
-
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
-{
-    [super dataSource:dataSource didCellChange:changes];
-    
-    [self refreshActivitiesViewDisplay];
-}
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
@@ -2394,15 +2455,13 @@
                 completion (finished);
             }
 
-            // Here the placeholder may have been defined temporarily to display IRC command usage.
-            // The original placeholder (savedInputToolbarPlaceholder) will be restored during the handling of the next typing notification 
+            // Consider here the saved placeholder only if no new placeholder has been defined during the height animation.
             if (!toolbarView.placeholder)
             {
                 // Restore the placeholder if any
                 toolbarView.placeholder =  savedInputToolbarPlaceholder.length ? savedInputToolbarPlaceholder : nil;
-                savedInputToolbarPlaceholder = nil;
             }
-
+            savedInputToolbarPlaceholder = nil;
         }];
     }
 }
@@ -2434,9 +2493,60 @@
     {
         [self performSegueWithIdentifier:@"showRoomSearch" sender:self];
     }
+    else if (sender == self.jumpToLastUnreadButton)
+    {
+        // Hide expanded header to restore navigation bar settings.
+        [self showExpandedHeader:NO];
+        // Dismiss potential keyboard.
+        [self dismissKeyboard];
+        
+        MXKRoomDataSource *roomDataSource;
+        // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
+        roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession];
+        [roomDataSource finalizeInitialization];
+        
+        // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
+        self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
+        [self displayRoom:roomDataSource];
+        
+        // Give the data source ownership to the room view controller.
+        self.hasRoomDataSourceOwnership = YES;
+    }
+    else if (sender == self.resetReadMarkerButton)
+    {
+        // Move the read marker to the current read receipt position.
+        [self.roomDataSource.room forgetReadMarker];
+        
+        // Hide the banner
+        self.jumpToLastUnreadBannerContainer.hidden = YES;
+    }
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    {
+        MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+        if (roomBubbleTableViewCell.readMarkerView)
+        {
+            readMarkerTableViewCell = roomBubbleTableViewCell;
+            
+            [self checkReadMarkerVisibility];
+        }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (cell == readMarkerTableViewCell)
+    {
+        readMarkerTableViewCell = nil;
+    }
+    
+    [super tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -2444,6 +2554,13 @@
 }
 
 #pragma mark -
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    
+    [self checkReadMarkerVisibility];
+}
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
@@ -2480,6 +2597,7 @@
         [self onScrollViewDidEndScrolling:scrollView];
         
         [self refreshActivitiesViewDisplay];
+        [self refreshJumpToLastUnreadBannerDisplay];
     }
     else
     {
@@ -2501,6 +2619,7 @@
     }
     
     [self refreshActivitiesViewDisplay];
+    [self refreshJumpToLastUnreadBannerDisplay];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
@@ -2511,6 +2630,7 @@
     }
     
     [self refreshActivitiesViewDisplay];
+    [self refreshJumpToLastUnreadBannerDisplay];
 }
 
 - (void)onScrollViewDidEndScrolling:(UIScrollView *)scrollView
@@ -2627,10 +2747,11 @@
                     {
                         RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession];
                         [roomDataSource finalizeInitialization];
-                        
-                        self.hasRoomDataSourceOwnership = YES;
+                        roomDataSource.markTimelineInitialEvent = YES;
                         
                         [self displayRoom:roomDataSource];
+                        
+                        self.hasRoomDataSourceOwnership = YES;
                     }
                     else
                     {
@@ -2902,8 +3023,9 @@
         }
         else if ([self checkUnsentMessages] == NO)
         {
-            // Show "scroll to bottom" icon when the most recent message is not visible
-            if ([self isBubblesTableScrollViewAtTheBottom] == NO)
+            // Show "scroll to bottom" icon when the most recent message is not visible,
+            // or when the timelime is not live (this icon is used to go back to live).
+            if (!self.roomDataSource.isLive || (!self.bubblesTableView.isHidden && [self isBubblesTableScrollViewAtTheBottom] == NO))
             {
                 // Retrieve the unread messages count
                 NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
@@ -2917,7 +3039,37 @@
                 
                 [roomActivitiesView displayScrollToBottomIcon:unreadCount onIconTapGesture:^{
                     
-                    [self scrollBubblesTableViewToBottomAnimated:YES];
+                    if (self.roomDataSource.isLive)
+                    {
+                        // Enable the read marker display, and disable its update (in order to not mark as read all the new messages by default).
+                        self.roomDataSource.showReadMarker = YES;
+                        self.updateRoomReadMarker = NO;
+                        
+                        [self scrollBubblesTableViewToBottomAnimated:YES];
+                    }
+                    else
+                    {
+                        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+                        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+                        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES];
+                        
+                        // Scroll to bottom the bubble history on the display refresh.
+                        shouldScrollToBottomOnTableRefresh = YES;
+                        
+                        [self displayRoom:roomDataSource];
+                        
+                        // The room view controller do not have here the data source ownership.
+                        self.hasRoomDataSourceOwnership = NO;
+                        
+                        [self refreshActivitiesViewDisplay];
+                        [self refreshJumpToLastUnreadBannerDisplay];
+                        
+                        if (self.saveProgressTextInput)
+                        {
+                            // Restore the potential message partially typed before jump to last unread messages.
+                            self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+                        }
+                    }
                     
                 }];
             }
@@ -2946,17 +3098,26 @@
     }
     
     NSUInteger highlightCount = 0;
-    NSUInteger missedCount = [self.mainSession missedDiscussionsCount];
-    if (missedCount && self.roomDataSource.room.summary.notificationCount)
+    NSUInteger missedCount = [[AppDelegate theDelegate].masterTabBarController missedDiscussionsCount];
+    
+    // Compute the missed notifications count of the current room by considering its notification mode in Riot.
+    NSUInteger roomNotificationCount = self.roomDataSource.room.summary.notificationCount;
+    if (self.roomDataSource.room.isMentionsOnly)
     {
-        // Remove the current room from the missed discussion counter
+        // Only the highlighted missed messages must be considered here.
+        roomNotificationCount = self.roomDataSource.room.summary.highlightCount;
+    }
+    
+    // Remove the current room from the missed discussion counter.
+    if (missedCount && roomNotificationCount)
+    {
         missedCount--;
     }
     
     if (missedCount)
     {
         // Compute the missed highlight count
-        highlightCount = [self.mainSession missedHighlightDiscussionsCount];
+        highlightCount = [[AppDelegate theDelegate].masterTabBarController missedHighlightDiscussionsCount];
         if (highlightCount && self.roomDataSource.room.summary.highlightCount)
         {
             // Remove the current room from the missed highlight counter
@@ -3312,6 +3473,137 @@
                                                          multiplier:1.0f
                                                            constant:10.0f]];
     [self.view setNeedsUpdateConstraints];
+}
+
+
+
+#pragma mark - Read marker handling
+
+- (void)checkReadMarkerVisibility
+{
+    if (readMarkerTableViewCell && isAppeared && !self.isBubbleTableViewDisplayInTransition)
+    {
+        // Check whether the read marker is visible
+        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
+        CGFloat readMarkerViewPosY = readMarkerTableViewCell.frame.origin.y + readMarkerTableViewCell.readMarkerView.frame.origin.y;
+        if (contentTopPosY <= readMarkerViewPosY)
+        {
+            // Compute the max vertical position visible according to contentOffset
+            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.contentInset.bottom;
+            if (readMarkerViewPosY <= contentBottomPosY)
+            {
+                // Launch animation
+                [self animateReadMarkerView];
+                
+                // Disable the read marker display when it has been rendered once.
+                self.roomDataSource.showReadMarker = NO;
+                [self refreshJumpToLastUnreadBannerDisplay];
+                
+                // Update the read marker position according the events acknowledgement in this view controller.
+                self.updateRoomReadMarker = YES;
+                
+                if (self.roomDataSource.isLive)
+                {
+                    // Move the read marker to the current read receipt position.
+                    [self.roomDataSource.room forgetReadMarker];
+                }
+            }
+        }
+    }
+}
+
+- (void)animateReadMarkerView
+{
+    // Check whether the cell with the read marker is known and if the marker is not animated yet.
+    if (readMarkerTableViewCell && readMarkerTableViewCell.readMarkerView.isHidden)
+    {
+        RoomBubbleCellData *cellData = (RoomBubbleCellData*)readMarkerTableViewCell.bubbleData;
+        
+        // Do not display the marker if this is the last message.
+        if (cellData.containsLastMessage && readMarkerTableViewCell.readMarkerView.tag == cellData.mostRecentComponentIndex)
+        {
+            readMarkerTableViewCell.readMarkerView.hidden = YES;
+            readMarkerTableViewCell = nil;
+        }
+        else
+        {
+            readMarkerTableViewCell.readMarkerView.hidden = NO;
+            
+            // Animate the layout to hide the read marker
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [UIView animateWithDuration:1.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                                 animations:^{
+                                     
+                                     readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
+                                     readMarkerTableViewCell.readMarkerView.alpha = 0;
+                                     
+                                     // Force to render the view
+                                     [readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
+                                     
+                                 }
+                                 completion:^(BOOL finished){
+                                     
+                                     readMarkerTableViewCell.readMarkerView.hidden = YES;
+                                     readMarkerTableViewCell.readMarkerView.alpha = 1;
+                                     
+                                     readMarkerTableViewCell = nil;
+                                 }];
+                
+            });
+        }
+    }
+}
+
+- (void)refreshJumpToLastUnreadBannerDisplay
+{
+    // This banner is only displayed when the room timeline is in live (and no peeking).
+    // Check whether the read marker exists and has not been rendered yet.
+    if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking && self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId)
+    {
+        UITableViewCell *cell = [self.bubblesTableView visibleCells].firstObject;
+        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+        {
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+            // Check whether the read marker is inside the first displayed cell.
+            if (roomBubbleTableViewCell.readMarkerView)
+            {
+                // The read marker display is still enabled (see roomDataSource.showReadMarker flag),
+                // this means the read marker was not been visible yet.
+                // We show the banner if the marker is located in the top hidden part of the cell.
+                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
+                CGFloat readMarkerViewPosY = roomBubbleTableViewCell.frame.origin.y + roomBubbleTableViewCell.readMarkerView.frame.origin.y;
+                self.jumpToLastUnreadBannerContainer.hidden = (contentTopPosY < readMarkerViewPosY);
+            }
+            else
+            {
+                // Check whether the read marker event is anterior to the first event displayed in the first rendered cell.
+                MXKRoomBubbleComponent *component = roomBubbleTableViewCell.bubbleData.bubbleComponents.firstObject;
+                MXEvent *firstDisplayedEvent = component.event;
+                MXEvent *currentReadMarkerEvent = [self.roomDataSource.mxSession.store eventWithEventId:self.roomDataSource.room.accountData.readMarkerEventId inRoom:self.roomDataSource.roomId];
+                
+                if (!currentReadMarkerEvent || (currentReadMarkerEvent.originServerTs < firstDisplayedEvent.originServerTs))
+                {
+                    self.jumpToLastUnreadBannerContainer.hidden = NO;
+                }
+                else
+                {
+                    self.jumpToLastUnreadBannerContainer.hidden = YES;
+                }
+            }
+        }
+    }
+    else
+    {
+        self.jumpToLastUnreadBannerContainer.hidden = YES;
+        
+        // Initialize the read marker if it does not exist yet, only in case of live timeline.
+        if (!self.roomDataSource.room.accountData.readMarkerEventId && self.roomDataSource.isLive && !self.roomDataSource.isPeeking)
+        {
+            // Move the read marker to the current read receipt position by default.
+            [self.roomDataSource.room forgetReadMarker];
+        }
+    }
 }
 
 @end

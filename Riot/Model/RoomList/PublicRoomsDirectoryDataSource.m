@@ -59,6 +59,78 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return self;
 }
 
+- (NSString *)directoryServerDisplayname
+{
+    NSString *directoryServerDisplayname;
+
+    if (_homeserver)
+    {
+        directoryServerDisplayname = _homeserver;
+    }
+    else if (_thirdpartyProtocolInstance)
+    {
+        directoryServerDisplayname = _thirdpartyProtocolInstance.desc;
+    }
+    else
+    {
+        if (_includeAllNetworks)
+        {
+            // We display all rooms, included bridged ones, of the user's HS
+            directoryServerDisplayname = self.mxSession.matrixRestClient.credentials.homeServerName;
+        }
+        else
+        {
+            // We display only Matrix rooms of the user's HS
+            directoryServerDisplayname = [NSBundle mxk_localizedStringForKey:@"matrix"];
+        }
+    }
+
+    return directoryServerDisplayname;
+}
+
+- (void)setHomeserver:(NSString *)homeserver
+{
+    if ([homeserver isEqualToString:self.mxSession.matrixRestClient.credentials.homeServerName])
+    {
+        // The CS API does not like we pass the user's HS as parameter
+        homeserver = nil;
+    }
+
+     _thirdpartyProtocolInstance = nil;
+
+    if (homeserver != _homeserver)
+    {
+        _homeserver = homeserver;
+
+        // Reset data
+        [self resetPagination];
+    }
+}
+
+- (void)setIncludeAllNetworks:(BOOL)includeAllNetworks
+{
+    if (includeAllNetworks != _includeAllNetworks)
+    {
+        _includeAllNetworks = includeAllNetworks;
+        
+        // Reset data
+        [self resetPagination];
+    }
+}
+
+- (void)setThirdpartyProtocolInstance:(MXThirdPartyProtocolInstance *)thirdpartyProtocolInstance
+{
+    if (thirdpartyProtocolInstance != _thirdpartyProtocolInstance)
+    {
+        _homeserver = nil;
+        _includeAllNetworks = NO;
+        _thirdpartyProtocolInstance = thirdpartyProtocolInstance;
+
+        // Reset data
+        [self resetPagination];
+    }
+}
+
 - (void)setSearchPattern:(NSString *)searchPattern
 {
     if (searchPattern)
@@ -66,7 +138,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (![searchPattern isEqualToString:_searchPattern])
         {
             _searchPattern = searchPattern;
-            [self startPagination];
+            [self resetPagination];
         }
     }
     else
@@ -76,7 +148,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (_searchPattern || rooms.count == 0)
         {
             _searchPattern = searchPattern;
-            [self startPagination];
+            [self resetPagination];
         }
     }
 }
@@ -112,7 +184,17 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     return room;
 }
 
-- (void)startPagination
+- (CGFloat)cellHeightAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (indexPath.row < rooms.count)
+    {
+        return PublicRoomTableViewCell.cellHeight;
+    }
+    
+    return 50.0;
+}
+
+- (void)resetPagination
 {
     // Cancel the previous request
     if (publicRoomsRequest)
@@ -120,17 +202,12 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         [publicRoomsRequest cancel];
     }
 
-    [self setState:MXKDataSourceStatePreparing];
-
     // Reset all pagination vars
     [rooms removeAllObjects];
     nextBatch = nil;
     _roomsCount = 0;
     _moreThanRoomsCount = NO;
     _hasReachedPaginationEnd = NO;
-
-    // And do a single pagination
-    [self paginate:nil failure:nil];
 }
 
 - (MXHTTPOperation *)paginate:(void (^)(NSUInteger))complete failure:(void (^)(NSError *))failure
@@ -140,11 +217,13 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         return nil;
     }
 
+    [self setState:MXKDataSourceStatePreparing];
+
     __weak typeof(self) weakSelf = self;
 
     // Get the public rooms from the server
     MXHTTPOperation *newPublicRoomsRequest;
-    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:nil limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:nil includeAllNetworks:NO success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+    newPublicRoomsRequest = [self.mxSession.matrixRestClient publicRoomsOnServer:_homeserver limit:_paginationLimit since:nextBatch filter:_searchPattern thirdPartyInstanceId:_thirdpartyProtocolInstance.instanceId includeAllNetworks:_includeAllNetworks success:^(MXPublicRoomsResponse *publicRoomsResponse) {
 
         if (weakSelf)
         {
@@ -231,21 +310,46 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return rooms.count;
+    // Display a default cell when no rooms is available.
+    return rooms.count ? rooms.count : 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // For now reuse MatrixKit cells
-    PublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[PublicRoomTableViewCell defaultReuseIdentifier]];
-    if (!publicRoomCell)
+    // Sanity check
+    if (indexPath.row < rooms.count)
     {
-        publicRoomCell = [[PublicRoomTableViewCell alloc] init];
+        PublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[PublicRoomTableViewCell defaultReuseIdentifier]];
+        if (!publicRoomCell)
+        {
+            publicRoomCell = [[PublicRoomTableViewCell alloc] init];
+        }
+        
+        [publicRoomCell render:rooms[indexPath.row] withMatrixSession:self.mxSession];
+        return publicRoomCell;
     }
-
-    [publicRoomCell render:rooms[indexPath.row] withMatrixSession:self.mxSession];
-
-    return publicRoomCell;
+    else
+    {
+        MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!tableViewCell)
+        {
+            tableViewCell = [[MXKTableViewCell alloc] init];
+            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
+            tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        if (_searchPattern.length)
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+        }
+        else
+        {
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_directory_no_public_room", @"Vector", nil);
+        }
+        
+        return tableViewCell;
+    }
 }
 
 @end

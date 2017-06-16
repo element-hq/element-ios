@@ -143,7 +143,7 @@
     
     [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
     
-    // Add room creation button programatically
+    // Add room creation button programmatically
     [self addAddParticipantButton];
 }
 
@@ -508,7 +508,7 @@
 
 - (void)addAddParticipantButton
 {
-    // Add blur mask programatically
+    // Add blur mask programmatically
     tableViewMaskLayer = [CAGradientLayer layer];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
@@ -592,30 +592,34 @@
     
     // Set delegate to handle action on member (start chat, mention)
     contactsPickerViewController.contactsTableViewControllerDelegate = self;
-    contactsPickerViewController.forceMatrixIdInDisplayName = YES;
+    
+    // Prepare its data source
+    ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] init];
+    contactsDataSource.areSectionsShrinkable = YES;
+    contactsDataSource.displaySearchInputInContactsList = YES;
+    contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsPickerViewController.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
+    contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
     
     // List all the participants by their matrix user id, or a room 3pid invite token to ignore them during the contacts search.
-    [contactsPickerViewController.ignoredContactsByMatrixId removeAllObjects];
     for (Contact *contact in actualParticipants)
     {
-        [contactsPickerViewController.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
+        [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
     }
     for (Contact *contact in invitedParticipants)
     {
         if (contact.mxMember)
         {
-            [contactsPickerViewController.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
+            [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
         }
         else if (contact.mxThirdPartyInvite)
         {
-            [contactsPickerViewController.ignoredContactsByMatrixId setObject:contact forKey:contact.mxThirdPartyInvite.token];
+            [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxThirdPartyInvite.token];
         }
     }
     if (userParticipant)
     {
-        [contactsPickerViewController.ignoredContactsByMatrixId setObject:userParticipant forKey:userParticipant.mxMember.userId];
+        [contactsDataSource.ignoredContactsByMatrixId setObject:userParticipant forKey:userParticipant.mxMember.userId];
     }
     
     [contactsPickerViewController showSearch:YES];
@@ -625,8 +629,10 @@
     if (currentSearchText)
     {
         contactsPickerViewController.searchBar.text = currentSearchText;
-        [contactsPickerViewController searchWithPattern:currentSearchText forceReset:YES complete:nil];
+        [contactsDataSource searchWithPattern:currentSearchText forceReset:YES];
     }
+    
+    [contactsPickerViewController displayList:contactsDataSource];
     
     [self pushViewController:contactsPickerViewController];
 }
@@ -1275,7 +1281,7 @@
             currentAlert = nil;
         }
         
-        if (section == participantsSection && userParticipant && (0 == row))
+        if (section == participantsSection && userParticipant && (0 == row) && !currentSearchText.length)
         {
             // Leave ?
             currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
@@ -1323,16 +1329,30 @@
             
             if (section == participantsSection)
             {
-                participants = actualParticipants;
-                
-                if (userParticipant)
+                if (currentSearchText.length)
                 {
-                    row --;
+                    participants = filteredActualParticipants;
+                }
+                else
+                {
+                    participants = actualParticipants;
+                    
+                    if (userParticipant)
+                    {
+                        row --;
+                    }
                 }
             }
             else
             {
-                participants = invitedParticipants;
+                if (currentSearchText.length)
+                {
+                    participants = filteredInvitedParticipants;
+                }
+                else
+                {
+                    participants = invitedParticipants;
+                }
             }
             
             if (row < participants.count)

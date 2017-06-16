@@ -41,6 +41,12 @@
     self.lastEventDescription.textColor = kRiotTextColorGray;
     self.lastEventDate.textColor = kRiotTextColorGray;
     self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
+    
+    // Prepare direct room border
+    [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
+    self.directRoomBorderView.clipsToBounds = YES;
+    self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
+    self.directRoomBorderView.layer.borderWidth = 3;
 }
 
 - (void)layoutSubviews
@@ -91,7 +97,7 @@
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;
                 
-                self.missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", roomCellData.notificationCount];
+                self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
                 
                 self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
@@ -127,8 +133,8 @@
         }
         
         self.roomAvatar.backgroundColor = [UIColor clearColor];
-
-        self.directRoomIcon.hidden = !roomCellData.roomSummary.room.isDirect;
+        
+        self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
 
         self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.isEncrypted;
 

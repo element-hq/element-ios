@@ -25,6 +25,7 @@
 
 #import "AppDelegate.h"
 #import "AvatarGenerator.h"
+#import "BugReportViewController.h"
 #import "CountryPickerViewController.h"
 #import "MXKEncryptionKeysExportView.h"
 #import "NBPhoneNumberUtil.h"
@@ -54,6 +55,8 @@ enum
 {
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
+    NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
+    NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
     //NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX,
     //NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX,
     //NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX,
@@ -81,6 +84,7 @@ enum
     OTHER_CRASH_REPORT_INDEX,
     OTHER_MARK_ALL_AS_READ_INDEX,
     OTHER_CLEAR_CACHE_INDEX,
+    OTHER_REPORT_BUG_INDEX,
     OTHER_COUNT
 };
 
@@ -1524,6 +1528,30 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = globalInfoCell;
         }
+        else if (row == NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithMissedNotif"];
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithUnread"];
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
@@ -1726,6 +1754,26 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             clearCacheBtnCell.mxkButton.accessibilityIdentifier = nil;
             
             cell = clearCacheBtnCell;
+        }
+        else if (row == OTHER_REPORT_BUG_INDEX)
+        {
+            MXKTableViewCellWithButton *reportBugBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+            if (!reportBugBtnCell)
+            {
+                reportBugBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+
+            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
+            [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+            [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            [reportBugBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            reportBugBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+
+            [reportBugBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [reportBugBtnCell.mxkButton addTarget:self action:@selector(reportBug:) forControlEvents:UIControlEventTouchUpInside];
+            reportBugBtnCell.mxkButton.accessibilityIdentifier = nil;
+
+            cell = reportBugBtnCell;
         }
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
@@ -2158,6 +2206,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 #pragma mark - actions
 
+
 - (void)onSignout:(id)sender
 {
     [currentAlert dismiss:NO];
@@ -2524,6 +2573,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView reloadData];
 }
 
+- (void)togglePinRoomsWithMissedNotif:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    
+    [[NSUserDefaults standardUserDefaults] setBool:switchButton.on forKey:@"pinRoomsWithMissedNotif"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)togglePinRoomsWithUnread:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    
+    [[NSUserDefaults standardUserDefaults] setBool:switchButton.on forKey:@"pinRoomsWithUnread"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)markAllAsRead:(id)sender
 {
     // Feedback: disable button and run activity indicator
@@ -2553,6 +2618,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[AppDelegate theDelegate] reloadMatrixSessions:YES];
         
     });
+}
+
+- (void)reportBug:(id)sender
+{
+    BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
+    [bugReportViewController showInViewController:self];
 }
 
 - (void)selectPhoneNumberCountry:(id)sender
@@ -2603,7 +2674,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 //    }
 //}
 
-//
+
 - (void)onSave:(id)sender
 {
     // sanity check

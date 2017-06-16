@@ -19,16 +19,13 @@
 #import "RecentsDataSource.h"
 #import "RecentTableViewCell.h"
 
-#import "RageShakeManager.h"
+#import "UnifiedSearchViewController.h"
 
 #import "MXRoom+Riot.h"
 
 #import "NSBundle+MatrixKit.h"
 
-#import "HomeViewController.h"
 #import "RoomViewController.h"
-
-#import "RiotDesignValues.h"
 
 #import "InviteRecentTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
@@ -38,16 +35,14 @@
 
 @interface RecentsViewController ()
 {
-    // The "parent" segmented view controller
-    HomeViewController *homeViewController;
-    
     // The room identifier related to the cell which is in editing mode (if any).
     NSString *editedRoomId;
     
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
     
-    // recents drag and drop management
+    // Recents drag and drop management
+    UILongPressGestureRecognizer *longPressGestureRecognizer;
     UIImageView *cellSnapshot;
     NSIndexPath* movingCellPath;
     MXRoom* movingRoom;
@@ -62,23 +57,33 @@
     
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
     id kMXNotificationCenterDidUpdateRulesObserver;
+    
+    MXHTTPOperation *currentRequest;
+    
+    // The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
+    // when the user selects it.
+    UISearchBar *tableSearchBar;
 }
 
 @end
 
 @implementation RecentsViewController
 
-- (void)awakeFromNib
+#pragma mark - Class methods
+
++ (UINib *)nib
 {
-    [super awakeFromNib];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-    {
-        self.preferredContentSize = CGSizeMake(320.0, 600.0);
-    }
-    
-    self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
+    return [UINib nibWithNibName:NSStringFromClass([RecentsViewController class])
+                          bundle:[NSBundle bundleForClass:[RecentsViewController class]]];
 }
+
++ (instancetype)recentListViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([RecentsViewController class])
+                                          bundle:[NSBundle bundleForClass:[RecentsViewController class]]];
+}
+
+#pragma mark -
 
 - (void)finalizeInit
 {
@@ -88,6 +93,30 @@
     self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    // Set default screen name
+    _screenName = @"RecentsScreen";
+    
+    // Enable the search bar in the recents table, and remove the search option from the navigation bar.
+    _enableSearchBar = YES;
+    self.enableBarButtonSearch = NO;
+    
+    _enableDragging = NO;
+    
+    _enableStickyHeaders = NO;
+    _stickyHeaderHeight = 30.0;
+    
+    // Create the fake search bar
+    tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
+    tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    tableSearchBar.showsCancelButton = NO;
+    tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    tableSearchBar.delegate = self;
+    
+    displayedSectionHeaders = [NSMutableArray array];
+    
+    // Set itself as delegate by default.
+    self.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -100,14 +129,12 @@
     // Register here the customized cell view class used to render recents
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
     [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
-    
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
-    [self.recentsTableView addGestureRecognizer:longPress];
-
-    self.recentsTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
+    
+    // Apply dragging settings
+    self.enableDragging = _enableDragging;
     
     // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -116,11 +143,28 @@
         [self setEditing:NO];
         
     }];
+    
+    self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
 }
 
 - (void)destroy
 {
     [super destroy];
+    
+    longPressGestureRecognizer = nil;
+
+    if (currentRequest)
+    {
+        [currentRequest cancel];
+        currentRequest = nil;
+    }
+
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
     
     if (UIApplicationDidEnterBackgroundNotificationObserver)
     {
@@ -146,48 +190,34 @@
 {
     [super viewWillAppear:animated];
     
-    // Check whether the view controller is displayed in its "parent" segmented view controller.
-    if (homeViewController)
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
     {
-        // Screen tracking (via Google Analytics)
-        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-        if (tracker)
-        {
-            NSString *screenName = homeViewController.searchBarHidden ? @"RoomsList" : @"RoomsGlobalSearch";
-            NSString *currentScreenName = [tracker get:kGAIScreenName];
-            
-            if (!currentScreenName || ![currentScreenName isEqualToString:screenName])
-            {
-                [tracker set:kGAIScreenName value:screenName];
-                [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-            }
-        }
-        
-        // Deselect the current selected row, it will be restored on viewDidAppear (if any)
-        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-        if (indexPath)
-        {
-            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
-        
-        // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-        kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            [self scrollToTop:YES];
-            
-        }];
-        
-        // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
-        kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-            
-            // Do not refresh if there is a pending recent drag and drop
-            if (!movingCellPath)
-            {
-                [self refreshRecentsTable];
-            }
-            
-        }];
+        [tracker set:kGAIScreenName value:_screenName];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
+    
+    // Deselect the current selected row, it will be restored on viewDidAppear (if any)
+    NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+    if (indexPath)
+    {
+        [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self scrollToTop:YES];
+        
+    }];
+    
+    // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
+    kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        
+        [self refreshRecentsTable];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -214,11 +244,11 @@
 {
     [super viewDidAppear:animated];
     
-    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed)
+    // Release the current selected item (if any) except if the second view controller is still visible.
+    if (self.splitViewController.isCollapsed)
     {
         // Release the current selected room (if any).
-        [homeViewController closeSelectedRoom];
+        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
     }
     else
     {
@@ -233,18 +263,30 @@
     [super viewDidDisappear:animated];
 }
 
-#pragma mark -
-
-- (void)displayList:(MXKRecentsDataSource*)listDataSource fromHomeViewController:(HomeViewController*)homeViewController2
+- (void)viewDidLayoutSubviews
 {
-    [super displayList:listDataSource];
-    homeViewController = homeViewController2;
+    [super viewDidLayoutSubviews];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self refreshStickyHeadersContainersHeight];
+        
+    });
 }
 
-#pragma mark - Internal methods
+#pragma mark - Override MXKRecentListViewController
 
 - (void)refreshRecentsTable
 {
+    // Refresh the tabBar icon badges
+    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    
+    // do not refresh if there is a pending recent drag and drop
+    if (movingCellPath)
+    {
+        return;
+    }
+    
     if (editedRoomId)
     {
         // Check whether the user didn't leave the room
@@ -263,7 +305,18 @@
     
     isRefreshPending = NO;
     
+    // Force reset existing sticky headers if any
+    [self resetStickyHeaders];
+    
     [self.recentsTableView reloadData];
+    
+    // Check conditions to display the fake search bar into the table header
+    if (_enableSearchBar && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
+    {
+        // Add the search bar by hiding it by default.
+        self.recentsTableView.tableHeaderView = tableSearchBar;
+        self.recentsTableView.contentOffset = CGPointMake(0, self.recentsTableView.contentOffset.y + tableSearchBar.frame.size.height);
+    }
     
     if (_shouldScrollToTopOnRefresh)
     {
@@ -271,44 +324,41 @@
         _shouldScrollToTopOnRefresh = NO;
     }
     
+    [self prepareStickyHeaders];
+    
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
     // the selected room (if any) is updated and kept visible.
-    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
-    if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
+    if (!self.splitViewController.isCollapsed)
     {
         [self refreshCurrentSelectedCell:YES];
     }
+}
+
+- (void)hideSearchBar:(BOOL)hidden
+{
+    [super hideSearchBar:hidden];
     
-    if (self.dataSource.mxSession.state == MXSessionStateRunning)
+    if (!hidden)
     {
-        // The Directory cell is displayed when the recents list is empty
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-        if (recentsDataSource.hidePublicRoomsDirectory)
-        {
-            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections != 0);
-        }
-        else if (homeViewController.searchBarHidden)
-        {
-            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections > 1);
-        }
+        // Remove the fake table header view if any
+        self.recentsTableView.tableHeaderView = nil;
+        self.recentsTableView.contentInset = UIEdgeInsetsZero;
     }
 }
 
-- (void)scrollToTop:(BOOL)animated
-{
-    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top) animated:animated];
-}
+#pragma mark -
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
-    if (homeViewController.currentRoomViewController)
+    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
+    if (masterTabBarController.currentRoomViewController)
     {
         // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:homeViewController.selectedRoomId andMatrixSession:homeViewController.selectedRoomSession];
+        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
     }
-
+    
     if (currentSelectedCellIndexPath)
     {
         // Select the right row
@@ -332,6 +382,323 @@
     }
 }
 
+#pragma mark - Sticky Headers
+
+- (void)setEnableStickyHeaders:(BOOL)enableStickyHeaders
+{
+    _enableStickyHeaders = enableStickyHeaders;
+    
+    // Refresh the table display if it is already rendered.
+    if (self.recentsTableView.contentSize.height)
+    {
+        [self refreshRecentsTable];
+    }
+}
+
+- (void)setStickyHeaderHeight:(CGFloat)stickyHeaderHeight
+{
+    if (_stickyHeaderHeight != stickyHeaderHeight)
+    {
+        _stickyHeaderHeight = stickyHeaderHeight;
+        
+        // Force a sticky headers refresh
+        self.enableStickyHeaders = _enableStickyHeaders;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
+{
+    // Return the section header by default.
+    return [self tableView:tableView viewForHeaderInSection:section];
+}
+
+- (void)resetStickyHeaders
+{
+    // Release sticky header
+    _stickyHeadersTopContainerHeightConstraint.constant = 0;
+    _stickyHeadersBottomContainerHeightConstraint.constant = 0;
+    
+    for (UIView *view in _stickyHeadersTopContainer.subviews)
+    {
+        [view removeFromSuperview];
+    }
+    for (UIView *view in _stickyHeadersBottomContainer.subviews)
+    {
+        [view removeFromSuperview];
+    }
+    
+    [displayedSectionHeaders removeAllObjects];
+    
+    self.recentsTableView.contentInset = UIEdgeInsetsZero;
+}
+
+- (void)prepareStickyHeaders
+{
+    // We suppose here [resetStickyHeaders] has been already called if need.
+    
+    NSInteger sectionsCount = self.recentsTableView.numberOfSections;
+    
+    if (self.enableStickyHeaders && sectionsCount)
+    {
+        NSUInteger topContainerOffset = 0;
+        NSUInteger bottomContainerOffset = 0;
+        CGRect frame;
+        
+        UIView *stickyHeader = [self viewForStickyHeaderInSection:0 withSwipeGestureRecognizerInDirection:UISwipeGestureRecognizerDirectionDown];
+        frame = stickyHeader.frame;
+        frame.origin.y = topContainerOffset;
+        stickyHeader.frame = frame;
+        [self.stickyHeadersTopContainer addSubview:stickyHeader];
+        topContainerOffset = stickyHeader.frame.size.height;
+        
+        for (NSUInteger index = 1; index < sectionsCount; index++)
+        {
+            stickyHeader = [self viewForStickyHeaderInSection:index withSwipeGestureRecognizerInDirection:UISwipeGestureRecognizerDirectionDown];
+            frame = stickyHeader.frame;
+            frame.origin.y = topContainerOffset;
+            stickyHeader.frame = frame;
+            [self.stickyHeadersTopContainer addSubview:stickyHeader];
+            topContainerOffset += frame.size.height;
+            
+            stickyHeader = [self viewForStickyHeaderInSection:index withSwipeGestureRecognizerInDirection:UISwipeGestureRecognizerDirectionUp];
+            frame = stickyHeader.frame;
+            frame.origin.y = bottomContainerOffset;
+            stickyHeader.frame = frame;
+            [self.stickyHeadersBottomContainer addSubview:stickyHeader];
+            bottomContainerOffset += frame.size.height;
+        }
+        
+        [self refreshStickyHeadersContainersHeight];
+    }
+}
+
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withSwipeGestureRecognizerInDirection:(UISwipeGestureRecognizerDirection)swipeDirection
+{
+    UIView *stickyHeader = [self tableView:self.recentsTableView viewForStickyHeaderInSection:section];
+    stickyHeader.tag = section;
+    stickyHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    // Remove existing gesture recognizers
+    while (stickyHeader.gestureRecognizers.count)
+    {
+        UIGestureRecognizer *gestureRecognizer = stickyHeader.gestureRecognizers.lastObject;
+        [stickyHeader removeGestureRecognizer:gestureRecognizer];
+    }
+    
+    // Handle tap gesture, the section is moved up on the tap.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSectionHeader:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [stickyHeader addGestureRecognizer:tap];
+    
+    // Handle vertical swipe gesture with the provided direction, by default the section will be moved up on this swipe.
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipeOnSectionHeader:)];
+    [swipe setNumberOfTouchesRequired:1];
+    [swipe setDirection:swipeDirection];
+    [stickyHeader addGestureRecognizer:swipe];
+    
+    return stickyHeader;
+}
+
+- (void)didTapOnSectionHeader:(UIGestureRecognizer*)gestureRecognizer
+{
+    UIView *view = gestureRecognizer.view;
+    NSInteger section = view.tag;
+
+    // Scroll to the top of this section
+    if ([self.recentsTableView numberOfRowsInSection:section] > 0)
+    {
+        [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+}
+
+- (void)didSwipeOnSectionHeader:(UISwipeGestureRecognizer*)gestureRecognizer
+{
+    UIView *view = gestureRecognizer.view;
+    NSInteger section = view.tag;
+    
+    if ([self.recentsTableView numberOfRowsInSection:section] > 0)
+    {
+        // Check whether the first cell of this section is already visible.
+        UITableViewCell *firstSectionCell = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+        if (firstSectionCell)
+        {
+            // Scroll to the top of the previous section (if any)
+            if (section && [self.recentsTableView numberOfRowsInSection:(section - 1)] > 0)
+            {
+                [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:(section - 1)] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+        }
+        else
+        {
+            // Scroll to the top of this section
+            [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+    }
+}
+
+- (void)refreshStickyHeadersContainersHeight
+{
+    if (_enableStickyHeaders)
+    {
+        NSUInteger lowestSectionInBottomStickyHeader = NSNotFound;
+        CGFloat containerHeight;
+        
+        // Retrieve the first header actually visible in the recents table view.
+        // Caution: In some cases like the screen rotation, some displayed section headers are temporarily not visible.
+        UIView *firstDisplayedSectionHeader;
+        for (UIView *header in displayedSectionHeaders)
+        {
+            if (header.frame.origin.y + header.frame.size.height > self.recentsTableView.contentOffset.y)
+            {
+                firstDisplayedSectionHeader = header;
+                break;
+            }
+        }
+        
+        if (firstDisplayedSectionHeader)
+        {
+            // Initialize the top container height by considering the headers which are before the first visible section header.
+            containerHeight = 0;
+            for (UIView *header in _stickyHeadersTopContainer.subviews)
+            {
+                if (header.tag < firstDisplayedSectionHeader.tag)
+                {
+                    containerHeight += self.stickyHeaderHeight;
+                }
+            }
+            
+            // Check whether the first visible section header is partially hidden.
+            if (firstDisplayedSectionHeader.frame.origin.y < self.recentsTableView.contentOffset.y)
+            {
+                // Compute the height of the hidden part.
+                CGFloat delta = self.recentsTableView.contentOffset.y - firstDisplayedSectionHeader.frame.origin.y;
+                
+                if (delta < self.stickyHeaderHeight)
+                {
+                    containerHeight += delta;
+                }
+                else
+                {
+                    containerHeight += self.stickyHeaderHeight;
+                }
+            }
+            
+            if (containerHeight)
+            {
+                self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
+                self.recentsTableView.contentInset = UIEdgeInsetsMake(-self.stickyHeaderHeight, 0, 0, 0);
+            }
+            else
+            {
+                self.stickyHeadersTopContainerHeightConstraint.constant = 0;
+                self.recentsTableView.contentInset = UIEdgeInsetsZero;
+            }
+            
+            // Look for the lowest section index visible in the bottom sticky headers.
+            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.contentInset.bottom;
+            UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
+            
+            for (UIView *header in _stickyHeadersBottomContainer.subviews)
+            {
+                if (header.tag > lastDisplayedSectionHeader.tag)
+                {
+                    maxVisiblePosY -= self.stickyHeaderHeight;
+                }
+            }
+            
+            for (NSInteger index = displayedSectionHeaders.count; index > 0;)
+            {
+                lastDisplayedSectionHeader = displayedSectionHeaders[--index];
+                if (lastDisplayedSectionHeader.frame.origin.y + self.stickyHeaderHeight > maxVisiblePosY)
+                {
+                    maxVisiblePosY -= self.stickyHeaderHeight;
+                }
+                else
+                {
+                    lowestSectionInBottomStickyHeader = lastDisplayedSectionHeader.tag + 1;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            // Handle here the case where no section header is currently displayed in the table.
+            // No more than one section is then displayed, we retrieve this section by checking the first visible cell.
+            NSIndexPath *firstCellIndexPath = [self.recentsTableView indexPathForRowAtPoint:CGPointMake(0, self.recentsTableView.contentOffset.y)];
+            if (firstCellIndexPath)
+            {
+                NSInteger section = firstCellIndexPath.section;
+                
+                // Refresh top container of the sticky headers
+                CGFloat containerHeight = 0;
+                for (UIView *header in _stickyHeadersTopContainer.subviews)
+                {
+                    if (header.tag <= section)
+                    {
+                        containerHeight += header.frame.size.height;
+                    }
+                }
+                
+                self.stickyHeadersTopContainerHeightConstraint.constant = containerHeight;
+                if (containerHeight)
+                {
+                    self.recentsTableView.contentInset = UIEdgeInsetsMake(-self.stickyHeaderHeight, 0, 0, 0);
+                }
+                else
+                {
+                    self.recentsTableView.contentInset = UIEdgeInsetsZero;
+                }
+                
+                // Set the lowest section index visible in the bottom sticky headers.
+                lowestSectionInBottomStickyHeader = section + 1;
+            }
+        }
+        
+        // Update here the height of the bottom container of the sticky headers thanks to lowestSectionInBottomStickyHeader.
+        containerHeight = 0;
+        CGRect bounds = _stickyHeadersBottomContainer.frame;
+        bounds.origin.y = 0;
+        
+        for (UIView *header in _stickyHeadersBottomContainer.subviews)
+        {
+            if (header.tag > lowestSectionInBottomStickyHeader)
+            {
+                containerHeight += self.stickyHeaderHeight;
+            }
+            else if (header.tag == lowestSectionInBottomStickyHeader)
+            {
+                containerHeight += self.stickyHeaderHeight;
+                bounds.origin.y = header.frame.origin.y;
+            }
+        }
+        
+        if (self.stickyHeadersBottomContainerHeightConstraint.constant != containerHeight)
+        {
+            self.stickyHeadersBottomContainerHeightConstraint.constant = containerHeight;
+            self.stickyHeadersBottomContainer.bounds = bounds;
+        }
+    }
+}
+
+#pragma mark - Internal methods
+
+- (void)scrollToTop:(BOOL)animated
+{
+    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top) animated:animated];
+}
+
+-(void)showPublicRoomsDirectory
+{
+    // Here the recents view controller is displayed inside a unified search view controller.
+    // Sanity check
+    if (self.parentViewController && [self.parentViewController isKindOfClass:UnifiedSearchViewController.class])
+    {
+        // Show the directory screen
+        [((UnifiedSearchViewController*)self.parentViewController) showPublicRoomsDirectory];
+    }
+}
+
 #pragma mark - MXKDataSourceDelegate
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
@@ -350,39 +717,26 @@
 
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
 {
-    id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
+    Class class = [self cellViewClassForCellData:cellData];
     
-    if (cellDataStoring.roomSummary.room.state.membership != MXMembershipInvite)
+    if ([class respondsToSelector:@selector(defaultReuseIdentifier)])
     {
-        return RecentTableViewCell.defaultReuseIdentifier;
-    }
-    else
-    {
-        return InviteRecentTableViewCell.defaultReuseIdentifier;
-    }
-}
-
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
-{
-    // do not refresh if there is a pending recent drag and drop
-    if (movingCellPath)
-    {
-        return;
+        return [class defaultReuseIdentifier];
     }
     
-    [self refreshRecentsTable];
+    return nil;
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    // Handle here user actions on recents for Vector app
+    // Handle here user actions on recents for Riot app
     if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellPreviewButtonPressed])
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
         
-        // Display room preview by selecting it.
-        [self.delegate recentListViewController:self didSelectRoom:invitedRoom.state.roomId inMatrixSession:invitedRoom.mxSession];
+        // Display the room preview
+        [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:invitedRoom.state.roomId andEventId:nil inMatrixSession:invitedRoom.mxSession];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
     {
@@ -412,7 +766,7 @@
     }
 }
 
-#pragma mark - swipe actions
+#pragma mark - Swipe actions
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -707,7 +1061,27 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
+    return 30.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *sectionHeader = [super tableView:tableView viewForHeaderInSection:section];
+    sectionHeader.tag = section;
+    
+    while (sectionHeader.gestureRecognizers.count)
+    {
+        UIGestureRecognizer *gestureRecognizer = sectionHeader.gestureRecognizers.lastObject;
+        [sectionHeader removeGestureRecognizer:gestureRecognizer];
+    }
+    
+    // Handle tap gesture
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSectionHeader:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [sectionHeader addGestureRecognizer:tap];
+    
+    return sectionHeader;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -721,8 +1095,7 @@
     }
     else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
     {
-        // Show the directory screen
-        [homeViewController showPublicRoomsDirectory];
+        [self showPublicRoomsDirectory];
     }
     else if ([cell isKindOfClass:[RoomIdOrAliasTableViewCell class]])
     {
@@ -742,7 +1115,101 @@
     }
 }
 
-#pragma mark - recents drag & drop management
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if (_enableStickyHeaders)
+    {
+        view.tag = section;
+        
+        UIView *firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
+        
+        if (!firstDisplayedSectionHeader || section < firstDisplayedSectionHeader.tag)
+        {
+            [displayedSectionHeaders insertObject:view atIndex:0];
+        }
+        else
+        {
+            [displayedSectionHeaders addObject:view];
+        }
+        
+        [self refreshStickyHeadersContainersHeight];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if (_enableStickyHeaders)
+    {
+        UIView *firstDisplayedSectionHeader = displayedSectionHeaders.firstObject;
+        if (firstDisplayedSectionHeader)
+        {
+            if (section == firstDisplayedSectionHeader.tag)
+            {
+                [displayedSectionHeaders removeObjectAtIndex:0];
+                
+                [self refreshStickyHeadersContainersHeight];
+            }
+            else
+            {
+                // This section header is the last displayed one.
+                // Add a sanity check in case of the header has been already removed.
+                UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
+                if (section == lastDisplayedSectionHeader.tag)
+                {
+                    [displayedSectionHeaders removeLastObject];
+                    
+                    [self refreshStickyHeadersContainersHeight];
+                }
+            }
+        }
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self refreshStickyHeadersContainersHeight];
+        
+    });
+    
+    [super scrollViewDidScroll:scrollView];
+    
+    if (scrollView == self.recentsTableView)
+    {
+        if (!self.recentsSearchBar.isHidden)
+        {
+            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.contentInset.top > self.recentsSearchBar.frame.size.height))
+            {
+                // Hide the search bar
+                [self hideSearchBar:YES];
+                
+                // Refresh display
+                [self refreshRecentsTable];
+            }
+        }
+    }
+}
+
+#pragma mark - Recents drag & drop management
+
+- (void)setEnableDragging:(BOOL)enableDragging
+{
+    _enableDragging = enableDragging;
+    
+    if (_enableDragging && !longPressGestureRecognizer && self.recentsTableView)
+    {
+        longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
+        [self.recentsTableView addGestureRecognizer:longPressGestureRecognizer];
+    }
+    else if (longPressGestureRecognizer)
+    {
+        [self.recentsTableView removeGestureRecognizer:longPressGestureRecognizer];
+        longPressGestureRecognizer = nil;
+    }
+}
 
 - (void)onRecentsDragEnd
 {
@@ -758,8 +1225,13 @@
     [self.activityIndicator stopAnimating];
 }
 
-- (IBAction) onRecentsLongPress:(id)sender
+- (IBAction)onRecentsLongPress:(id)sender
 {
+    if (sender != longPressGestureRecognizer)
+    {
+        return;
+    }
+    
     RecentsDataSource* recentsDataSource = nil;
     
     if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
@@ -773,8 +1245,7 @@
         return;
     }
     
-    UILongPressGestureRecognizer *longPress = (UILongPressGestureRecognizer *)sender;
-    UIGestureRecognizerState state = longPress.state;
+    UIGestureRecognizerState state = longPressGestureRecognizer.state;
     
     // check if there is a moving cell during the long press managemnt
     if ((state != UIGestureRecognizerStateBegan) && !movingCellPath)
@@ -782,7 +1253,7 @@
         return;
     }
     
-    CGPoint location = [longPress locationInView:self.recentsTableView];
+    CGPoint location = [longPressGestureRecognizer locationInView:self.recentsTableView];
     
     switch (state)
     {
@@ -951,5 +1422,317 @@
     }
 }
 
+#pragma mark - Room handling
+
+- (void)addPlusButton
+{
+    // Add room options button
+    plusButtonImageView = [[UIImageView alloc] init];
+    [plusButtonImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:plusButtonImageView];
+    
+    plusButtonImageView.backgroundColor = [UIColor clearColor];
+    plusButtonImageView.contentMode = UIViewContentModeCenter;
+    plusButtonImageView.image = [UIImage imageNamed:@"create_room"];
+    plusButtonImageView.layer.shadowOpacity = 0.3;
+    plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
+    
+    CGFloat side = 78.0f;
+    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1
+                                                                        constant:side];
+    
+    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1
+                                                                         constant:side];
+    
+    NSLayoutConstraint* trailingConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
+                                                                          attribute:NSLayoutAttributeTrailing
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeTrailing
+                                                                         multiplier:1
+                                                                           constant:0];
+    
+    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
+                                                                        attribute:NSLayoutAttributeTop
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:plusButtonImageView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1
+                                                                         constant:9];
+    
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, trailingConstraint, bottomConstraint]];
+    
+    plusButtonImageView.userInteractionEnabled = YES;
+    
+    // Handle tap gesture
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onPlusButtonPressed)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [plusButtonImageView addGestureRecognizer:tap];
+}
+
+- (void)onPlusButtonPressed
+{
+    __weak typeof(self) weakSelf = self;
+
+    [currentAlert dismiss:NO];
+
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_start_chat_with", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+
+        [strongSelf performSegueWithIdentifier:@"presentStartChat" sender:strongSelf];
+    }];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_create_empty_room", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+
+        [strongSelf createAnEmptyRoom];
+    }];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+
+        [strongSelf joinARoom];
+    }];
+
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+    }];
+
+    currentAlert.sourceView = plusButtonImageView;
+
+    currentAlert.mxkAccessibilityIdentifier = @"RecentsVCCreateRoomAlert";
+    [currentAlert showInViewController:self];
+}
+
+- (void)createAnEmptyRoom
+{
+    // Sanity check
+    if (self.mainSession)
+    {
+        // Create one room at time
+        if (!currentRequest)
+        {
+            [self startActivityIndicator];
+            
+            // Create an empty room.
+            currentRequest = [self.mainSession createRoom:nil
+                                                    visibility:kMXRoomDirectoryVisibilityPrivate
+                                                     roomAlias:nil
+                                                         topic:nil
+                                                       success:^(MXRoom *room) {
+                                                           
+                                                           currentRequest = nil;
+                                                           [self stopActivityIndicator];
+                                                           if (currentAlert)
+                                                           {
+                                                               [currentAlert dismiss:NO];
+                                                               currentAlert = nil;
+                                                           }
+                                                           
+                                                           [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:room.state.roomId andEventId:nil inMatrixSession:self.mainSession];
+                                                           
+                                                           // Force the expanded header
+                                                           [AppDelegate theDelegate].masterTabBarController.currentRoomViewController.showExpandedHeader = YES;
+                                                           
+                                                       } failure:^(NSError *error) {
+                                                           
+                                                           currentRequest = nil;
+                                                           [self stopActivityIndicator];
+                                                           if (currentAlert)
+                                                           {
+                                                               [currentAlert dismiss:NO];
+                                                               currentAlert = nil;
+                                                           }
+                                                           
+                                                           NSLog(@"[RecentsViewController] Create new room failed");
+                                                           
+                                                           // Alert user
+                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                           
+                                                       }];
+        }
+        else
+        {
+            // Ask the user to wait
+            __weak __typeof(self) weakSelf = self;
+            currentAlert = [[MXKAlert alloc] initWithTitle:nil
+                                                   message:NSLocalizedStringFromTable(@"room_creation_wait_for_creation", @"Vector", nil)
+                                                     style:MXKAlertStyleAlert];
+            
+            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                        style:MXKAlertActionStyleCancel
+                                                                      handler:^(MXKAlert *alert) {
+                                                                          
+                                                                          __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                          strongSelf->currentAlert = nil;
+                                                                          
+                                                                      }];
+            currentAlert.mxkAccessibilityIdentifier = @"RecentsVCRoomCreationInProgressAlert";
+            [currentAlert showInViewController:self];
+        }
+    }
+}
+
+- (void)joinARoom
+{
+    [currentAlert dismiss:NO];
+
+    __weak typeof(self) weakSelf = self;
+
+    // Prompt the user to type a room id or room alias
+    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room_title", @"Vector", nil)
+                                           message:NSLocalizedStringFromTable(@"room_recents_join_room_prompt", @"Vector", nil)
+                                             style:MXKAlertStyleAlert];
+
+    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+        }
+    }];
+
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        if (weakSelf)
+        {
+            UITextField *textField = [alert textFieldAtIndex:0];
+            NSString *roomAliasOrId = textField.text;
+
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+
+            [self.activityIndicator startAnimating];
+
+            self->currentRequest = [self.mainSession joinRoom:textField.text success:^(MXRoom *room) {
+
+                self->currentRequest = nil;
+                [self.activityIndicator stopAnimating];
+
+                // Show the room
+                [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
+
+            } failure:^(NSError *error) {
+
+                NSLog(@"[RecentsViewController] Join joinARoom (%@) failed", roomAliasOrId);
+
+                self->currentRequest = nil;
+                [self.activityIndicator stopAnimating];
+
+                // Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        }
+    }];
+
+    currentAlert.mxkAccessibilityIdentifier = @"RecentsVCJoinARoomAlert";
+    [currentAlert showInViewController:self];
+}
+
+#pragma mark - Table view scroll handling
+
+- (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
+{
+    UITableViewCell *firstVisibleCell = self.recentsTableView.visibleCells.firstObject;
+    if (firstVisibleCell)
+    {
+        NSIndexPath *firstVisibleCellIndexPath = [self.recentsTableView indexPathForCell:firstVisibleCell];
+        NSInteger nextCellRow = (firstVisibleCellIndexPath.section == section) ? firstVisibleCellIndexPath.row + 1 : 0;
+        
+        // Look for the next room with missed notifications.
+        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:nextCellRow inSection:section];
+        nextCellRow++;
+        id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:nextIndexPath];
+        
+        while (cellData)
+        {
+            if (cellData.notificationCount)
+            {
+                [self.recentsTableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                break;
+            }
+            nextIndexPath = [NSIndexPath indexPathForRow:nextCellRow inSection:section];
+            nextCellRow++;
+            cellData = [self.dataSource cellDataAtIndexPath:nextIndexPath];
+        }
+        
+        if (!cellData && [self.recentsTableView numberOfRowsInSection:section] > 0)
+        {
+            // Scroll back to the top.
+            [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+    }
+}
+
+#pragma mark - MXKRecentListViewControllerDelegate
+
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
+{
+    // Open the room
+    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    if (searchBar == tableSearchBar)
+    {
+        [self hideSearchBar:NO];
+        [self.recentsSearchBar becomeFirstResponder];
+        return NO;
+    }
+    
+    return YES;
+
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
+    
+    });
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+}
 
 @end
