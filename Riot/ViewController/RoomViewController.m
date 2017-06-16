@@ -719,16 +719,6 @@
 
 #pragma mark - Override MXKRoomViewController
 
-- (BOOL)reloadBubblesTable:(BOOL)useBottomAnchor
-{
-    BOOL hasScrolledToTheBottom = [super reloadBubblesTable:useBottomAnchor];
-    
-    [self refreshActivitiesViewDisplay];
-    [self refreshJumpToLastUnreadBannerDisplay];
-    
-    return hasScrolledToTheBottom;
-}
-
 - (void)onMatrixSessionChange
 {
     [super onMatrixSessionChange];
@@ -971,7 +961,10 @@
     {
         [super setBubbleTableViewDisplayInTransition:bubbleTableViewDisplayInTransition];
         
+        [self refreshActivitiesViewDisplay];
+        
         [self checkReadMarkerVisibility];
+        [self refreshJumpToLastUnreadBannerDisplay];
     }
 }
 
