@@ -20,6 +20,13 @@
 
 #import "RecentsDataSource.h"
 
+@interface FavouritesViewController ()
+{    
+    RecentsDataSource *recentsDataSource;
+}
+
+@end
+
 @implementation FavouritesViewController
 
 - (void)finalizeInit
@@ -51,10 +58,9 @@
     [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorIndigo;
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorIndigo;
     
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    if (recentsDataSource)
     {
         // Take the lead on the shared data source.
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeFavourites];
     }
@@ -82,21 +88,41 @@
     [super destroy];
 }
 
+#pragma mark -
+
+- (void)displayList:(MXKRecentsDataSource *)listDataSource
+{
+    [super displayList:listDataSource];
+    
+    // Keep a ref on the recents data source
+    if ([listDataSource isKindOfClass:RecentsDataSource.class])
+    {
+        recentsDataSource = (RecentsDataSource*)listDataSource;
+    }
+}
+
 #pragma mark - Override RecentsViewController
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
     // Check whether the recents data source is correctly configured.
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeFavourites)
     {
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-        if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeFavourites)
-        {
-            return;
-        }
+        return;
     }
     
     [super refreshCurrentSelectedCell:forceVisible];
+}
+
+#pragma mark -
+
+- (void)scrollToNextRoomWithMissedNotifications
+{
+    // Check whether the recents data source is correctly configured.
+    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeFavourites)
+    {
+        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.favoritesSection];
+    }
 }
 
 #pragma mark - UITableView delegate

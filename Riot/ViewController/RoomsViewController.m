@@ -130,34 +130,9 @@
 - (void)scrollToNextRoomWithMissedNotifications
 {
     // Check whether the recents data source is correctly configured.
-    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModeRooms)
+    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModeRooms)
     {
-        return;
-    }
-    
-    NSIndexPath *lastVisibleIndexPath = self.recentsTableView.indexPathsForVisibleRows.lastObject;
-    if (lastVisibleIndexPath.section == recentsDataSource.conversationSection)
-    {
-        // Look for the next room with missed notifications.
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:lastVisibleIndexPath.row + 1 inSection:recentsDataSource.conversationSection];
-        id<MXKRecentCellDataStoring> cellData = [recentsDataSource cellDataAtIndexPath:nextIndexPath];
-        
-        while (cellData)
-        {
-            if (cellData.notificationCount)
-            {
-                [self.recentsTableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                break;
-            }
-            nextIndexPath = [NSIndexPath indexPathForRow:nextIndexPath.row + 1 inSection:recentsDataSource.conversationSection];
-            cellData = [recentsDataSource cellDataAtIndexPath:nextIndexPath];
-        }
-        
-        if (!cellData)
-        {
-            // Scroll back to the top.
-            [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:recentsDataSource.conversationSection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
+        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.conversationSection];
     }
 }
 

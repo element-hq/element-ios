@@ -725,10 +725,22 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    if (item.tag == TABBAR_ROOMS_INDEX && self.selectedIndex == TABBAR_ROOMS_INDEX)
+    // Detect multi-tap on the current selected tab.
+    if (item.tag == self.selectedIndex)
     {
         // Scroll to the next room with missed notifications.
-        [self.roomsViewController scrollToNextRoomWithMissedNotifications];
+        if (item.tag == TABBAR_ROOMS_INDEX)
+        {
+            [self.roomsViewController scrollToNextRoomWithMissedNotifications];
+        }
+        else if (item.tag == TABBAR_PEOPLE_INDEX)
+        {
+            [self.peopleViewController scrollToNextRoomWithMissedNotifications];
+        }
+        else if (item.tag == TABBAR_FAVOURITES_INDEX)
+        {
+            [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
+        }
     }
 }
 

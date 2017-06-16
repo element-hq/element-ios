@@ -22,7 +22,7 @@
 @interface RoomsViewController : RecentsViewController
 
 /**
- Scroll to the potential room with missed notifications which is not visible yet.
+ Scroll the next room with missed notifications to the top.
  */
 - (void)scrollToNextRoomWithMissedNotifications;
 

@@ -21,4 +21,9 @@
  */
 @interface FavouritesViewController : RecentsViewController
 
+/**
+ Scroll the next room with missed notifications to the top.
+ */
+- (void)scrollToNextRoomWithMissedNotifications;
+
 @end
