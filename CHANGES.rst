@@ -1,3 +1,26 @@
+Changes in 0.4 (2017-06-)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.5.0).
+ * Full UX rework.
+ * Add read markers synchronisation across matrix clients.
+ * Add a new popup dialog for reporting bugs and crashes
+ * Add a picker to select a server directory.
+ * Add an option to join room by id or alias.
+ * Pods: Update Cocoapods and reduce Riot/OLM coupling, thanks to @hberenger (PR #1220).
+ 
+Bug fixes:
+ * Files search: display the attachment thumbnail (#1135).
+ * Chevron to exit roomview after clicking through from search results can disappear (#841).
+ * Public rooms: Fix the infinite loading of the public rooms list after logging out & in.
+ * iOS should have 'Send a message (encrypted)' in placeholder (#1231).
+ * Fix dangling in the memory CallViewController, thanks to @morozkin (#1248).
+ * Fix crash in MediaPickerViewController (#1252).
+ * Fix crash in global search (https://github.com/matrix-org/riot-ios-rageshakes#32).
+ * Fix crash in [MXKContactManager localContactsSplitByContactMethod] (https://github.com/matrix-org/riot-ios-rageshakes#36).
+ * Fix App crashes on [AvatarGenerator imageFromText:withBackgroundColor:] (#657).
+
 Changes in 0.3.13 (2017-03-23)
 ===============================================
 
