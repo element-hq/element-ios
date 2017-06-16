@@ -1658,6 +1658,41 @@
     [currentAlert showInViewController:self];
 }
 
+#pragma mark - Table view scroll handling
+
+- (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
+{
+    UITableViewCell *firstVisibleCell = self.recentsTableView.visibleCells.firstObject;
+    if (firstVisibleCell)
+    {
+        NSIndexPath *firstVisibleCellIndexPath = [self.recentsTableView indexPathForCell:firstVisibleCell];
+        NSInteger nextCellRow = (firstVisibleCellIndexPath.section == section) ? firstVisibleCellIndexPath.row + 1 : 0;
+        
+        // Look for the next room with missed notifications.
+        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:nextCellRow inSection:section];
+        nextCellRow++;
+        id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:nextIndexPath];
+        
+        while (cellData)
+        {
+            if (cellData.notificationCount)
+            {
+                [self.recentsTableView scrollToRowAtIndexPath:nextIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                break;
+            }
+            nextIndexPath = [NSIndexPath indexPathForRow:nextCellRow inSection:section];
+            nextCellRow++;
+            cellData = [self.dataSource cellDataAtIndexPath:nextIndexPath];
+        }
+        
+        if (!cellData && [self.recentsTableView numberOfRowsInSection:section] > 0)
+        {
+            // Scroll back to the top.
+            [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+    }
+}
+
 #pragma mark - MXKRecentListViewControllerDelegate
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession

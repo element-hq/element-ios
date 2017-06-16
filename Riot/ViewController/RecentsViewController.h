@@ -129,6 +129,13 @@
  */
 - (void)joinARoom;
 
+/**
+ Scroll the next room with missed notifications to the top.
+ 
+ @param section the table section in which the operation must be applied.
+ */
+- (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section;
+
 #pragma mark - Actions
 
 - (void)didTapOnSectionHeader:(UIGestureRecognizer*)gestureRecognizer;

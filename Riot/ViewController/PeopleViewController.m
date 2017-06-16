@@ -34,6 +34,8 @@
     
     ContactsDataSource *contactsDataSource;
     NSInteger          contactsSectionNumber;
+    
+    RecentsDataSource *recentsDataSource;
 }
 
 @end
@@ -114,10 +116,9 @@
     [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorOrange;
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorOrange;
     
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    if (recentsDataSource)
     {
         // Take the lead on the shared data source.
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModePeople];
     }
@@ -143,6 +144,13 @@
     
     // Change the table data source. It must be the people view controller itself.
     self.recentsTableView.dataSource = self;
+    
+    // Keep a ref on the recents data source
+    if ([listDataSource isKindOfClass:RecentsDataSource.class])
+    {
+        recentsDataSource = (RecentsDataSource*)listDataSource;
+    }
+
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -164,13 +172,10 @@
     // Retrieve the current number of sections related to the direct rooms.
     // Sanity check: check whether the recents data source is correctly configured.
     directRoomsSectionNumber = 0;
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    
+    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
     {
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-        if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
-        {
-            directRoomsSectionNumber = [self.dataSource numberOfSectionsInTableView:self.recentsTableView];
-        }
+        directRoomsSectionNumber = [self.dataSource numberOfSectionsInTableView:self.recentsTableView];
     }
     
     // Retrieve the current number of sections related to the contacts
@@ -367,9 +372,8 @@
             return [contactsDataSource viewForStickyHeaderInSection:section withFrame:frame];
         }
     }
-    else if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    else if (recentsDataSource)
     {
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
         return [recentsDataSource viewForStickyHeaderInSection:section withFrame:frame];
     }
     
@@ -379,15 +383,11 @@
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
     // Check whether the recents data source is correctly configured.
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModePeople)
     {
-        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-        if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModePeople)
-        {
-            return;
-        }
+        return;
     }
-            
+    
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
     MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
@@ -422,6 +422,17 @@
     else
     {
         [super refreshCurrentSelectedCell:forceVisible];
+    }
+}
+
+#pragma mark -
+
+- (void)scrollToNextRoomWithMissedNotifications
+{
+    // Check whether the recents data source is correctly configured.
+    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
+    {
+        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.conversationSection];
     }
 }
 
