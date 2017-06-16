@@ -260,6 +260,7 @@
 
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_calls_settings" = "CALLS";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "LOCAL CONTACTS";
 "settings_advanced" = "ADVANCED";
@@ -297,6 +298,9 @@
 //"settings_invited_to_room" = "When i'm invited to a room";
 //"settings_join_leave_rooms" = "When people join or leave rooms";
 //"settings_call_invitations" = "Call invitations";
+
+"settings_enable_callkit" = "Integrated calling";
+"settings_callkit_info" = "Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
 
 "settings_unignore_user" = "Show all messages from %@?";
 

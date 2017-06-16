@@ -17,34 +17,29 @@
 
 #import "SettingsViewController.h"
 
-#import "RageShakeManager.h"
-
-#import "AppDelegate.h"
-
-#import "RiotDesignValues.h"
-
-#import "AvatarGenerator.h"
-
-#import <Photos/Photos.h>
+#import <MatrixSDK/MXCallKitAdapter.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <OLMKit/OLMKit.h>
+#import <Photos/Photos.h>
 
-#import "MXKEncryptionKeysExportView.h"
-
+#import "AppDelegate.h"
+#import "AvatarGenerator.h"
 #import "CountryPickerViewController.h"
+#import "MXKEncryptionKeysExportView.h"
+#import "NBPhoneNumberUtil.h"
+#import "RageShakeManager.h"
+#import "RiotDesignValues.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
 
-#import "NBPhoneNumberUtil.h"
-
-#import "OLMKit/OLMKit.h"
-
-NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
+static NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 enum
 {
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
+    SETTINGS_SECTION_CALLS_INDEX,
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_ADVANCED_INDEX,
@@ -66,6 +61,13 @@ enum
     //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
     //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
     NOTIFICATION_SETTINGS_COUNT
+};
+
+enum
+{
+    CALLS_ENABLE_CALLKIT_INDEX = 0,
+    CALLS_DESCRIPTION_INDEX,
+    CALLS_COUNT
 };
 
 enum
@@ -1075,6 +1077,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if ([MXCallKitAdapter callKitAvailable])
+        {
+            count = CALLS_COUNT;
+        }
+    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
@@ -1516,6 +1525,29 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = globalInfoCell;
         }
     }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if (row == CALLS_ENABLE_CALLKIT_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == CALLS_DESCRIPTION_INDEX)
+        {
+            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
+            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
+            globalInfoCell.textLabel.numberOfLines = 0;
+            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell = globalInfoCell;
+        }
+    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         MXKTableViewCell *ignoredUserCell = [self getDefaultTableViewCell:tableView];
@@ -1798,6 +1830,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if ([MXCallKitAdapter callKitAvailable])
+        {
+            return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
+        }
+    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         // Check whether this section is visible
@@ -1892,6 +1931,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
         }
     }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if (![MXCallKitAdapter callKitAvailable])
+        {
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
+    }
     
     return 24;
 }
@@ -1908,6 +1954,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 // Hide this section
                 return SECTION_TITLE_PADDING_WHEN_HIDDEN;
             }
+        }
+    }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if (![MXCallKitAdapter callKitAvailable])
+        {
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
 
@@ -2309,6 +2362,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         // toggle the pushes
         [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
     }
+}
+
+- (void)toggleCallKit:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    [MXKAppSettings standardAppSettings].enableCallKit = switchButton.isOn;
 }
 
 - (void)toggleLocalContactsSync:(id)sender
