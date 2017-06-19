@@ -2560,6 +2560,16 @@
     [super scrollViewDidScroll:scrollView];
     
     [self checkReadMarkerVisibility];
+    
+    // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
+    if (!self.roomDataSource.isLive)
+    {
+        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.contentInset.bottom;
+        if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
+        {
+            [self goBackToLive];
+        }
+    }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -3039,37 +3049,7 @@
                 
                 [roomActivitiesView displayScrollToBottomIcon:unreadCount onIconTapGesture:^{
                     
-                    if (self.roomDataSource.isLive)
-                    {
-                        // Enable the read marker display, and disable its update (in order to not mark as read all the new messages by default).
-                        self.roomDataSource.showReadMarker = YES;
-                        self.updateRoomReadMarker = NO;
-                        
-                        [self scrollBubblesTableViewToBottomAnimated:YES];
-                    }
-                    else
-                    {
-                        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
-                        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-                        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES];
-                        
-                        // Scroll to bottom the bubble history on the display refresh.
-                        shouldScrollToBottomOnTableRefresh = YES;
-                        
-                        [self displayRoom:roomDataSource];
-                        
-                        // The room view controller do not have here the data source ownership.
-                        self.hasRoomDataSourceOwnership = NO;
-                        
-                        [self refreshActivitiesViewDisplay];
-                        [self refreshJumpToLastUnreadBannerDisplay];
-                        
-                        if (self.saveProgressTextInput)
-                        {
-                            // Restore the potential message partially typed before jump to last unread messages.
-                            self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
-                        }
-                    }
+                    [self goBackToLive];
                     
                 }];
             }
@@ -3084,6 +3064,41 @@
         [swipe setNumberOfTouchesRequired:1];
         [swipe setDirection:UISwipeGestureRecognizerDirectionDown];
         [roomActivitiesView addGestureRecognizer:swipe];
+    }
+}
+
+- (void)goBackToLive
+{
+    if (self.roomDataSource.isLive)
+    {
+        // Enable the read marker display, and disable its update (in order to not mark as read all the new messages by default).
+        self.roomDataSource.showReadMarker = YES;
+        self.updateRoomReadMarker = NO;
+        
+        [self scrollBubblesTableViewToBottomAnimated:YES];
+    }
+    else
+    {
+        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES];
+        
+        // Scroll to bottom the bubble history on the display refresh.
+        shouldScrollToBottomOnTableRefresh = YES;
+        
+        [self displayRoom:roomDataSource];
+        
+        // The room view controller do not have here the data source ownership.
+        self.hasRoomDataSourceOwnership = NO;
+        
+        [self refreshActivitiesViewDisplay];
+        [self refreshJumpToLastUnreadBannerDisplay];
+        
+        if (self.saveProgressTextInput)
+        {
+            // Restore the potential message partially typed before jump to last unread messages.
+            self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+        }
     }
 }
 
