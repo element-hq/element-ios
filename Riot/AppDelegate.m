@@ -1747,13 +1747,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             currentCallViewController.mxCall = mxCall;
             currentCallViewController.delegate = self;
             
-            if (mxCall.isIncoming)
+            if (mxCall.isIncoming && !isCallKitAvailable)
             {
-                if (isCallKitAvailable)
-                {
-                    return;
-                }
-                
                 // Prompt user before presenting the call view controller
                 NSString *callPromptFormat = mxCall.isVideoCall ? NSLocalizedStringFromTable(@"call_incoming_video_prompt", @"Vector", nil) : NSLocalizedStringFromTable(@"call_incoming_voice_prompt", @"Vector", nil);
                 NSString *callerName = currentCallViewController.peer.displayname;
