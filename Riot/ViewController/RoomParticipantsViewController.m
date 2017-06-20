@@ -601,7 +601,7 @@
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
     contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
     
-    // List all the participants by their matrix user id, or a room 3pid invite token to ignore them during the contacts search.
+    // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
     {
         [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
@@ -611,10 +611,6 @@
         if (contact.mxMember)
         {
             [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
-        }
-        else if (contact.mxThirdPartyInvite)
-        {
-            [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxThirdPartyInvite.token];
         }
     }
     if (userParticipant)
@@ -905,7 +901,7 @@
 - (void)pushViewController:(UIViewController*)viewController
 {
     // Check whether the view controller is displayed inside a segmented one.
-    if (self.parentViewController)
+    if (self.parentViewController.navigationController)
     {
         // Hide back button title
         self.parentViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];

@@ -45,6 +45,7 @@
                         <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="cUw-vU-gJq"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" action="showDetailViewController:sender:" id="f5u-Y1-7nt"/>
                         <segue destination="ZZb-IS-a1F" kind="presentation" identifier="showUnknownDevices" id="wUx-4y-ybn"/>
+                        <segue destination="udm-55-AMb" kind="show" identifier="showContactPicker" id="Q6y-9M-Ugl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94y-cU-qQD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -524,6 +525,24 @@
             </objects>
             <point key="canvasLocation" x="1385" y="180"/>
         </scene>
+        <!--Contacts Table View Controller-->
+        <scene sceneID="2zi-xJ-RQo">
+            <objects>
+                <viewController id="udm-55-AMb" customClass="ContactsTableViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Jch-ZS-1Mm"/>
+                        <viewControllerLayoutGuide type="bottom" id="7q1-ig-sPp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6G9-nj-ktC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uv3-zI-b3q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="374" y="449"/>
+        </scene>
         <!--Directory Server Picker View Controller-->
         <scene sceneID="t8d-GX-ntZ">
             <objects>
@@ -558,9 +577,9 @@
         <image name="tab_rooms_selected.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0ws-cL-0tk"/>
+        <segue reference="f5u-Y1-7nt"/>
+        <segue reference="cUw-vU-gJq"/>
         <segue reference="Tfl-tq-LQp"/>
-        <segue reference="ziz-Xl-QVg"/>
-        <segue reference="fNQ-S3-DbZ"/>
+        <segue reference="0ws-cL-0tk"/>
     </inferredMetricsTieBreakers>
 </document>
