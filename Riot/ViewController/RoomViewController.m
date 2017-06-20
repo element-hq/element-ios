@@ -3688,14 +3688,23 @@
                                                                 style:MXKAlertActionStyleCancel
                                                               handler:^(MXKAlert *alert) {
                                                                   
-                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                                                  strongSelf->currentAlert = nil;
+                                                                  if (weakSelf)
+                                                                  {
+                                                                      __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                      strongSelf->currentAlert = nil;
+                                                                  }
                                                                   
                                                               }];
     
     [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"invite", @"Vector", nil)
                                style:MXKAlertActionStyleDefault
                              handler:^(MXKAlert *alert) {
+                                 
+                                 // Sanity check
+                                 if (!weakSelf)
+                                 {
+                                     return;
+                                 }
                                  
                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
                                  strongSelf->currentAlert = nil;
