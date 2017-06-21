@@ -37,6 +37,14 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+
+// Calls
+#import "CallViewController.h"
+
+#import <MatrixSDK/MXCallKitAdapter.h>
+#import <MatrixSDK/MXCallKitConfiguration.h>
+
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -46,15 +54,10 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
-#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
-
-// Calls
-#import "CallViewController.h"
-
-#import <MatrixSDK/MXCallKitAdapter.h>
-#import <MatrixSDK/MXCallKitConfiguration.h>
+#ifdef MX_CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
 #import <MatrixSDK/MXJingleCallAudioSessionConfigurator.h>
+#endif
 
 #define CALL_STATUS_BAR_HEIGHT 44
 
@@ -1733,7 +1736,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
     }
     
-    void (^handleNotification)(NSNotification *) = ^(NSNotification *notif) {
+    // Register call observer in order to handle new opened session
+    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall
+                                                                           object:nil
+                                                                            queue:[NSOperationQueue mainQueue]
+                                                                       usingBlock:^(NSNotification *notif)
+    {
         // Ignore the call if a call is already in progress
         if (!currentCallViewController)
         {
@@ -1767,39 +1775,33 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
                 _incomingCallNotification.cancelButtonIndex = 0;
                 
-                // Decline action
-                void (^declineAction)(MXKAlert *) = ^(MXKAlert *alert) {
-                    // Reject the call.
-                    // Note: Do not reset the incoming call notification before this operation, because it is used to release properly the dismissed call view controller.
-                    if (currentCallViewController)
-                    {
-                        [currentCallViewController onButtonPressed:currentCallViewController.rejectCallButton];
-                        currentCallViewController = nil;
-                    }
-                    
-                    _incomingCallNotification = nil;
-                    
-                    mxCall.delegate = nil;
-                };
-                
                 [_incomingCallNotification addActionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
                                                         style:MXKAlertActionStyleDefault
-                                                      handler:declineAction];
-                
-                // Accept action
-                void (^acceptAction)(MXKAlert *) = ^(MXKAlert *alert) {
-                    _incomingCallNotification = nil;
-                    
-                    if (currentCallViewController)
-                    {
-                        [currentCallViewController onButtonPressed:currentCallViewController.answerCallButton];
-                        [self presentCallViewController:nil];
-                    }
-                };
+                                                      handler:^(MXKAlert *alert) {
+                                                          // Reject the call.
+                                                          // Note: Do not reset the incoming call notification before this operation, because it is used to release properly the dismissed call view controller.
+                                                          if (currentCallViewController)
+                                                          {
+                                                              [currentCallViewController onButtonPressed:currentCallViewController.rejectCallButton];
+                                                              currentCallViewController = nil;
+                                                          }
+                                                          
+                                                          _incomingCallNotification = nil;
+                                                          
+                                                          mxCall.delegate = nil;
+                                                      }];
                 
                 [_incomingCallNotification addActionWithTitle:NSLocalizedStringFromTable(@"accept", @"Vector", nil)
                                                         style:MXKAlertActionStyleDefault
-                                                      handler:acceptAction];
+                                                      handler:^(MXKAlert *alert) {
+                                                          _incomingCallNotification = nil;
+                                                          
+                                                          if (currentCallViewController)
+                                                          {
+                                                              [currentCallViewController onButtonPressed:currentCallViewController.answerCallButton];
+                                                              [self presentCallViewController:nil];
+                                                          }
+                                                      }];
                 
                 _incomingCallNotification.mxkAccessibilityIdentifier = @"AppDelegateIncomingCallAlert";
                 [self showNotificationAlert:_incomingCallNotification];
@@ -1809,13 +1811,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 [self presentCallViewController:nil];
             }
         }
-    };
-    
-    // Register call observer in order to handle new opened session
-    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall
-                                                                           object:nil
-                                                                            queue:[NSOperationQueue mainQueue]
-                                                                       usingBlock:handleNotification];
+     }];
 }
 
 - (void)handleLaunchAnimation
