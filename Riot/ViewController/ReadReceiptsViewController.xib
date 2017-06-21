@@ -28,7 +28,7 @@
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kg4-Yk-K6b" userLabel="Master Container View">
-                    <rect key="frame" x="10" y="113.5" width="355" height="440"/>
+                    <rect key="frame" x="10" y="58.5" width="355" height="550"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YD2-h3-4xX" userLabel="Title Container View">
                             <rect key="frame" x="0.0" y="0.0" width="355" height="40"/>
@@ -48,7 +48,7 @@
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9qg-nd-kFU">
-                            <rect key="frame" x="0.0" y="40" width="355" height="400"/>
+                            <rect key="frame" x="0.0" y="40" width="355" height="510"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </tableView>
                     </subviews>
@@ -59,10 +59,10 @@
                         <constraint firstItem="YD2-h3-4xX" firstAttribute="leading" secondItem="kg4-Yk-K6b" secondAttribute="leading" id="X5O-8F-CyO"/>
                         <constraint firstAttribute="trailing" secondItem="YD2-h3-4xX" secondAttribute="trailing" id="aUL-jB-exK"/>
                         <constraint firstItem="YD2-h3-4xX" firstAttribute="top" secondItem="kg4-Yk-K6b" secondAttribute="top" id="aUc-NR-Suw"/>
-                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="548" id="j5U-sf-HMF"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="550" id="j5U-sf-HMF"/>
                         <constraint firstItem="9qg-nd-kFU" firstAttribute="leading" secondItem="kg4-Yk-K6b" secondAttribute="leading" id="p5C-BH-56n"/>
                         <constraint firstItem="9qg-nd-kFU" firstAttribute="top" secondItem="YD2-h3-4xX" secondAttribute="bottom" id="thD-Si-NzK"/>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="440" id="wln-eD-ner"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="550" id="wln-eD-ner"/>
                     </constraints>
                 </view>
             </subviews>

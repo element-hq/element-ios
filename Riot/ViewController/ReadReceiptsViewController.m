@@ -17,7 +17,7 @@
 #import "ReadReceiptsViewController.h"
 #import <MatrixKit/MatrixKit.h>
 
-@interface ReadReceiptsViewController () <UITableViewDataSource>
+@interface ReadReceiptsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) MXRestClient* restClient;
 
@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIView *overlayView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (nonatomic) IBOutlet UITableView *receiptsTableView;
+@property (weak, nonatomic) IBOutlet UITableView *receiptsTableView;
 
 @end
 
@@ -71,20 +71,24 @@
 
 #pragma mark - Views
 
-- (void)configureViews {
+- (void)configureViews
+{
     self.containerView.layer.cornerRadius = 20;
     self.titleLabel.text = @"Read Receipts List";
 }
 
-- (void)configureReceiptsTableView {
+- (void)configureReceiptsTableView
+{
     self.receiptsTableView.dataSource = self;
-    [self.receiptsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"id"];
+    self.receiptsTableView.delegate = self;
+    self.receiptsTableView.showsVerticalScrollIndicator = NO;
+    self.receiptsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    //[self.receiptsTableView registerNib:[MXKReadReceiptTableview nib] forCellReuseIdentifier:@"s"];
-    
+    [self.receiptsTableView registerNib:[MXKReadReceiptTableViewCell nib] forCellReuseIdentifier:[MXKReadReceiptTableViewCell defaultReuseIdentifier]];
 }
 
-- (void)addOverlayViewGesture {
+- (void)addOverlayViewGesture
+{
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(overlayTap)];
     [tapRecognizer setNumberOfTapsRequired:1];
     [tapRecognizer setNumberOfTouchesRequired:1];
@@ -111,26 +115,41 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"id" forIndexPath:indexPath];
+    MXKReadReceiptTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[MXKReadReceiptTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
     
-    //configure cell
-    //add custom cell later
     if (indexPath.row < self.roomMembers.count)
     {
-        cell.textLabel.text = self.roomMembers[indexPath.row].displayname;
+        NSString *name = self.roomMembers[indexPath.row].displayname;
+        if (name.length == 0) {
+            name = self.roomMembers[indexPath.row].userId;
+        }
+        cell.displayNameLabel.text = name;
     }
     if (indexPath.row < self.placeholders.count)
     {
-        [cell.imageView setImage:self.placeholders[indexPath.row]];
+        NSString *avatarUrl = self.roomMembers[indexPath.row].avatarUrl;
+        if (self.restClient && avatarUrl)
+        {
+            CGFloat side = CGRectGetWidth(cell.imageView.frame);
+            avatarUrl = [self.restClient urlOfContentThumbnail:avatarUrl toFitViewSize:CGSizeMake(side, side) withMethod:MXThumbnailingMethodCrop];
+        }
+        [cell.avatarImageView setImageURL:avatarUrl withType:nil andImageOrientation:UIImageOrientationUp previewImage:self.placeholders[indexPath.row]];
     }
     if (indexPath.row < self.recieptDescriptions.count)
     {
-        cell.detailTextLabel.text = self.recieptDescriptions[indexPath.row];
+        cell.receiptDescriptionLabel.text = self.recieptDescriptions[indexPath.row];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 70;
 }
 
 
