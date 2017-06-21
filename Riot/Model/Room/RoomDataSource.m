@@ -17,6 +17,7 @@
 
 #import "RoomDataSource.h"
 
+#import "AppDelegate.h"
 #import "EventFormatter.h"
 #import "RoomBubbleCellData.h"
 
@@ -148,7 +149,7 @@
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
             bubbleCell.bubbleOverlayContainer.backgroundColor = [UIColor clearColor];
             bubbleCell.bubbleOverlayContainer.alpha = 1;
-            bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
+            bubbleCell.bubbleOverlayContainer.userInteractionEnabled = YES;
             bubbleCell.bubbleOverlayContainer.hidden = NO;
             
             NSInteger index = bubbleComponents.count;
@@ -166,6 +167,7 @@
                         NSArray* receipts = [self.room getEventReceipts:component.event.eventId sorted:YES];
                         NSMutableArray *roomMembers;
                         NSMutableArray *placeholders;
+                        NSMutableArray *receiptDescriptions;
                         
                         // Check whether some receipts are found
                         if (receipts.count)
@@ -173,6 +175,9 @@
                             // Retrieve the corresponding room members
                             roomMembers = [[NSMutableArray alloc] initWithCapacity:receipts.count];
                             placeholders = [[NSMutableArray alloc] initWithCapacity:receipts.count];
+                            receiptDescriptions = [[NSMutableArray alloc] initWithCapacity:receipts.count];
+                            
+                            MXKEventFormatter *formatter = (MXKEventFormatter*)self.mxSession.roomSummaryUpdateDelegate;
                             
                             for (MXReceiptData* data in receipts)
                             {
@@ -181,6 +186,7 @@
                                 {
                                     [roomMembers addObject:roomMember];
                                     [placeholders addObject:[AvatarGenerator generateAvatarForMatrixItem:roomMember.userId withDisplayName:roomMember.displayname]];
+                                    [receiptDescriptions addObject:[formatter dateStringFromTimestamp:data.ts withTime:YES]];
                                 }
                             }
                         }
@@ -190,6 +196,7 @@
                         {
                             // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
                             MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 13, 150, 12) andRestClient:self.mxSession.matrixRestClient];
+                            avatarsContainer.delegate = [AppDelegate theDelegate].masterTabBarController.currentRoomViewController;
                             
                             // Custom avatar display
                             avatarsContainer.maxDisplayedAvatars = 5;
@@ -199,6 +206,7 @@
                             avatarsContainer.tag = index;
                             
                             [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
+                            avatarsContainer.recieptDescriptions = receiptDescriptions;
                             
                             avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";

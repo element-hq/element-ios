@@ -45,6 +45,8 @@
 
 #import "UsersDevicesViewController.h"
 
+#import "ReadReceiptsViewController.h"
+
 #import "RoomEmptyBubbleCell.h"
 
 #import "RoomIncomingTextMsgBubbleCell.h"
@@ -2815,6 +2817,13 @@
             }];
         }
     }
+}
+
+#pragma mark - MXKRecieptSendersContainerDelegate
+
+- (void)didTapReceiptsContainerWithRestClient:(MXRestClient *)restClient RoomMembers:(NSArray *)roomMembers avatars:(NSArray *)avatars recieptDescriptions:(NSArray *)recieptDescriptions {
+    NSLog(@"!!! SHOW RR DETAILS !!!");
+    [ReadReceiptsViewController openInViewController:self withRestClient:restClient withRoomMembers:roomMembers placeholders:avatars receiptDescriptions:recieptDescriptions];
 }
 
 #pragma mark - Typing management
