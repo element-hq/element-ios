@@ -37,7 +37,13 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+
+// Calls
 #import "CallViewController.h"
+
+#import <MatrixSDK/MXCallKitAdapter.h>
+#import <MatrixSDK/MXCallKitConfiguration.h>
 
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
@@ -48,9 +54,10 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
-#include <MatrixSDK/MXJingleCallStack.h>
-
-#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+#ifdef MX_CALL_STACK_JINGLE
+#import <MatrixSDK/MXJingleCallStack.h>
+#import <MatrixSDK/MXJingleCallAudioSessionConfigurator.h>
+#endif
 
 #define CALL_STATUS_BAR_HEIGHT 44
 
@@ -1416,6 +1423,19 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (callStack)
             {
                 [mxSession enableVoIPWithCallStack:callStack];
+
+                // Setup CallKit
+                if ([MXCallKitAdapter callKitAvailable])
+                {
+                    BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+                    [self enableCallKit:isCallKitEnabled forCallManager:mxSession.callManager];
+                    
+                    // Register for changes performed by the user
+                    [[MXKAppSettings standardAppSettings] addObserver:self
+                                                           forKeyPath:@"enableCallKit"
+                                                              options:NSKeyValueObservingOptionNew
+                                                              context:NULL];
+                }
             }
             else
             {
@@ -1701,6 +1721,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [self enableInAppNotificationsForAccount:(MXKAccount*)object];
     }
+    else if (object == [MXKAppSettings standardAppSettings] && [keyPath isEqualToString:@"enableCallKit"])
+    {
+        BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+        MXCallManager *callManager = [[[[[MXKAccountManager sharedManager] activeAccounts] firstObject] mxSession] callManager];
+        [self enableCallKit:isCallKitEnabled forCallManager:callManager];
+    }
 }
 
 - (void)addMatrixCallObserver
@@ -1711,19 +1737,25 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     // Register call observer in order to handle new opened session
-    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
+    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall
+                                                                           object:nil
+                                                                            queue:[NSOperationQueue mainQueue]
+                                                                       usingBlock:^(NSNotification *notif)
     {
-        
         // Ignore the call if a call is already in progress
         if (!currentCallViewController)
         {
             MXCall *mxCall = (MXCall*)notif.object;
             
+            BOOL isCallKitAvailable = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
+            
             // Prepare the call view controller
-            currentCallViewController = [CallViewController callViewController:mxCall];
+            currentCallViewController = [CallViewController callViewController:nil];
+            currentCallViewController.playRingtone = !isCallKitAvailable;
+            currentCallViewController.mxCall = mxCall;
             currentCallViewController.delegate = self;
             
-            if (mxCall.isIncoming)
+            if (mxCall.isIncoming && !isCallKitAvailable)
             {
                 // Prompt user before presenting the call view controller
                 NSString *callPromptFormat = mxCall.isVideoCall ? NSLocalizedStringFromTable(@"call_incoming_video_prompt", @"Vector", nil) : NSLocalizedStringFromTable(@"call_incoming_voice_prompt", @"Vector", nil);
@@ -1734,57 +1766,40 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 }
                 NSString *callPrompt = [NSString stringWithFormat:callPromptFormat, callerName];
                 
-                __weak typeof(self) weakSelf = self;
-                
                 // Removing existing notification (if any)
                 [_incomingCallNotification dismiss:NO];
-                
-                
                 
                 _incomingCallNotification = [[MXKAlert alloc] initWithTitle:callPrompt
                                                                     message:nil
                                                                       style:MXKAlertStyleAlert];
                 
-                _incomingCallNotification.cancelButtonIndex = [_incomingCallNotification addActionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
-                                                                                                      style:MXKAlertActionStyleDefault
-                                                                                                    handler:^(MXKAlert *alert) {
-                                                                                                        
-                                                                                                        if (weakSelf)
-                                                                                                        {
-                                                                                                            typeof(self) self = weakSelf;
-
-                                                                                                            // Reject the call.
-                                                                                                            // Note: Do not reset the incoming call notification before this operation, because it is used to release properly the dismissed call view controller.
-                                                                                                            if (self->currentCallViewController)
-                                                                                                            {
-                                                                                                                [self->currentCallViewController onButtonPressed:self->currentCallViewController.rejectCallButton];
-
-                                                                                                                currentCallViewController = nil;
-                                                                                                            }
-                                                                                                            
-                                                                                                            self.incomingCallNotification = nil;
-                                                                                                            
-                                                                                                            mxCall.delegate = nil;
-                                                                                                        }
-                                                                                                        
-                                                                                                    }];
+                _incomingCallNotification.cancelButtonIndex = 0;
+                
+                [_incomingCallNotification addActionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
+                                                        style:MXKAlertActionStyleDefault
+                                                      handler:^(MXKAlert *alert) {
+                                                          // Reject the call.
+                                                          // Note: Do not reset the incoming call notification before this operation, because it is used to release properly the dismissed call view controller.
+                                                          if (currentCallViewController)
+                                                          {
+                                                              [currentCallViewController onButtonPressed:currentCallViewController.rejectCallButton];
+                                                              currentCallViewController = nil;
+                                                          }
+                                                          
+                                                          _incomingCallNotification = nil;
+                                                          
+                                                          mxCall.delegate = nil;
+                                                      }];
                 
                 [_incomingCallNotification addActionWithTitle:NSLocalizedStringFromTable(@"accept", @"Vector", nil)
                                                         style:MXKAlertActionStyleDefault
                                                       handler:^(MXKAlert *alert) {
-                                                          if (weakSelf)
+                                                          _incomingCallNotification = nil;
+                                                          
+                                                          if (currentCallViewController)
                                                           {
-                                                              typeof(self) self = weakSelf;
-                                                              
-                                                              self.incomingCallNotification = nil;
-
-                                                              if (self->currentCallViewController)
-                                                              {
-                                                                  [self->currentCallViewController onButtonPressed:self->currentCallViewController.answerCallButton];
-
-                                                                  [self presentCallViewController:nil];
-                                                              }
-                                                              
+                                                              [currentCallViewController onButtonPressed:currentCallViewController.answerCallButton];
+                                                              [self presentCallViewController:nil];
                                                           }
                                                       }];
                 
@@ -1796,8 +1811,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 [self presentCallViewController:nil];
             }
         }
-        
-    }];
+     }];
 }
 
 - (void)handleLaunchAnimation
@@ -1953,6 +1967,29 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         [launchAnimationContainerView removeFromSuperview];
         launchAnimationContainerView = nil;
+    }
+}
+
+- (void)enableCallKit:(BOOL)enable forCallManager:(MXCallManager *)callManager
+{
+    if (enable)
+    {
+        // Create adapter with default configuration for a while
+        MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] init];
+        
+        id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
+        
+#ifdef MX_CALL_STACK_JINGLE
+        audioSessionConfigurator = [[MXJingleCallAudioSessionConfigurator alloc] init];
+#endif
+        
+        callKitAdapter.audioSessionConfigurator = audioSessionConfigurator;
+        
+        callManager.callKitAdapter = callKitAdapter;
+    }
+    else
+    {
+        callManager.callKitAdapter = nil;
     }
 }
 
