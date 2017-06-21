@@ -327,10 +327,10 @@
     [self prepareStickyHeaders];
     
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
-    // the selected room (if any) is updated and kept visible.
+    // the selected room (if any) is updated.
     if (!self.splitViewController.isCollapsed)
     {
-        [self refreshCurrentSelectedCell:YES];
+        [self refreshCurrentSelectedCell:NO];
     }
 }
 
@@ -1662,10 +1662,27 @@
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
 {
-    UITableViewCell *firstVisibleCell = self.recentsTableView.visibleCells.firstObject;
+    UITableViewCell *firstVisibleCell;
+    NSIndexPath *firstVisibleCellIndexPath;
+    
+    UIView *firstSectionHeader = displayedSectionHeaders.firstObject;
+    
+    if (firstSectionHeader && firstSectionHeader.frame.origin.y <= self.recentsTableView.contentOffset.y)
+    {
+        // Compute the height of the hidden part of the section header.
+        CGFloat hiddenPart = self.recentsTableView.contentOffset.y - firstSectionHeader.frame.origin.y;
+        CGFloat firstVisibleCellPosY = self.recentsTableView.contentOffset.y + (firstSectionHeader.frame.size.height - hiddenPart);
+        firstVisibleCellIndexPath = [self.recentsTableView indexPathForRowAtPoint:CGPointMake(0, firstVisibleCellPosY)];
+        firstVisibleCell = [self.recentsTableView cellForRowAtIndexPath:firstVisibleCellIndexPath];
+    }
+    else
+    {
+        firstVisibleCell = self.recentsTableView.visibleCells.firstObject;
+        firstVisibleCellIndexPath = [self.recentsTableView indexPathForCell:firstVisibleCell];
+    }
+    
     if (firstVisibleCell)
     {
-        NSIndexPath *firstVisibleCellIndexPath = [self.recentsTableView indexPathForCell:firstVisibleCell];
         NSInteger nextCellRow = (firstVisibleCellIndexPath.section == section) ? firstVisibleCellIndexPath.row + 1 : 0;
         
         // Look for the next room with missed notifications.

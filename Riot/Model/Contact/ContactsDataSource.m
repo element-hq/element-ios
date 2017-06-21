@@ -148,14 +148,13 @@
 {
     // Update search results.
     searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSMutableArray<MXKContact*> *unfilteredLocalContacts;
+    NSMutableArray<MXKContact*> *unfilteredMatrixContacts;
     
     searchProcessingCount++;
 
     if (!searchText.length)
     {
-        searchProcessingLocalContacts = nil;
-        searchProcessingMatrixContacts = nil;
-
         // Disclose by default the sections if a search was in progress.
         if (searchProcessingText.length)
         {
@@ -164,18 +163,28 @@
     }
     else if (forceRefresh || !searchProcessingText.length || [searchText hasPrefix:searchProcessingText] == NO)
     {
-        // Retrieve all the local contacts
-        searchProcessingLocalContacts = [self unfilteredLocalContactsArray];
-
-        // Retrieve all known matrix users
-        searchProcessingMatrixContacts = [self unfilteredMatrixContactsArray];
+        // Prepare on the main thread the arrays used to initialize the search on the processing queue.
+        unfilteredLocalContacts = [self unfilteredLocalContactsArray];
+        unfilteredMatrixContacts = [self unfilteredMatrixContactsArray];
 
         // Disclose the sections
         shrinkedSectionsBitMask = 0;
     }
 
     dispatch_async(searchProcessingQueue, ^{
-
+        
+        // Reset the current arrays if it is required
+        if (!searchText.length)
+        {
+            searchProcessingLocalContacts = nil;
+            searchProcessingMatrixContacts = nil;
+        }
+        else if (unfilteredLocalContacts)
+        {
+            searchProcessingLocalContacts = unfilteredLocalContacts;
+            searchProcessingMatrixContacts = unfilteredMatrixContacts;
+        }
+        
         for (NSUInteger index = 0; index < searchProcessingLocalContacts.count;)
         {
             MXKContact* contact = searchProcessingLocalContacts[index];

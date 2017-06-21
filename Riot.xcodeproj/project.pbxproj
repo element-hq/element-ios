@@ -422,6 +422,9 @@
 		F083BEA21E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BD1B1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m */; };
 		F083BEA31E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BD1C1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib */; };
 		F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
+		F0A4A1671EF7CB66003630DB /* members_list_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1641EF7CB66003630DB /* members_list_icon.png */; };
+		F0A4A1681EF7CB66003630DB /* members_list_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1651EF7CB66003630DB /* members_list_icon@2x.png */; };
+		F0A4A1691EF7CB66003630DB /* members_list_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
 		F0D869ED1EC455A100BB0A2B /* create_direct_chat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */; };
@@ -1006,6 +1009,9 @@
 		F083BD1C1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
 		F094A9A21B78D8F000B1FBBF /* Riot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Riot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RiotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0A4A1641EF7CB66003630DB /* members_list_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = members_list_icon.png; sourceTree = "<group>"; };
+		F0A4A1651EF7CB66003630DB /* members_list_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "members_list_icon@2x.png"; sourceTree = "<group>"; };
+		F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "members_list_icon@3x.png"; sourceTree = "<group>"; };
 		F0D869E81EC455A100BB0A2B /* create_direct_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_direct_chat.png; sourceTree = "<group>"; };
 		F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@2x.png"; sourceTree = "<group>"; };
 		F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@3x.png"; sourceTree = "<group>"; };
@@ -1156,6 +1162,9 @@
 		F083BB151E7009EC00A9B29C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F0A4A1641EF7CB66003630DB /* members_list_icon.png */,
+				F0A4A1651EF7CB66003630DB /* members_list_icon@2x.png */,
+				F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */,
 				F0614A101EDEE65000F5DC9A /* cancel.png */,
 				F0614A111EDEE65000F5DC9A /* cancel@2x.png */,
 				F0614A121EDEE65000F5DC9A /* cancel@3x.png */,
@@ -2130,6 +2139,7 @@
 				F083BD891E7009ED00A9B29C /* file_music_icon.png in Resources */,
 				F083BDD11E7009ED00A9B29C /* settings_icon.png in Resources */,
 				F083BD811E7009ED00A9B29C /* favourite@2x.png in Resources */,
+				F0A4A1681EF7CB66003630DB /* members_list_icon@2x.png in Resources */,
 				F083BD9F1E7009ED00A9B29C /* mod_icon@2x.png in Resources */,
 				F083BD801E7009ED00A9B29C /* favourite.png in Resources */,
 				F083BD4B1E7009ED00A9B29C /* camera_capture.png in Resources */,
@@ -2266,6 +2276,7 @@
 				F083BD631E7009ED00A9B29C /* direct_icon@2x.png in Resources */,
 				F083BE991E7009ED00A9B29C /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				F083BD711E7009ED00A9B29C /* e2e_unencrypted.png in Resources */,
+				F0A4A1671EF7CB66003630DB /* members_list_icon.png in Resources */,
 				F083BE731E7009ED00A9B29C /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F083BD251E7009ED00A9B29C /* admin_icon.png in Resources */,
 				F083BDBE1E7009ED00A9B29C /* riot_icon@3x.png in Resources */,
@@ -2328,6 +2339,7 @@
 				F083BDE01E7009ED00A9B29C /* video_icon.png in Resources */,
 				F083BD601E7009ED00A9B29C /* details_icon@2x.png in Resources */,
 				F083BE5F1E7009ED00A9B29C /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				F0A4A1691EF7CB66003630DB /* members_list_icon@3x.png in Resources */,
 				F083BE8D1E7009ED00A9B29C /* PreviewRoomTitleView.xib in Resources */,
 				F083BD561E7009ED00A9B29C /* camera_video_capture.png in Resources */,
 				F083BD651E7009ED00A9B29C /* directChatOff.png in Resources */,
