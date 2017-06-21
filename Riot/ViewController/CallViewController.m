@@ -40,37 +40,6 @@
 
 @implementation CallViewController
 
-#pragma mark - Class methods
-
-+ (UINib *)nib
-{
-    return [UINib nibWithNibName:NSStringFromClass(self.class)
-                          bundle:[NSBundle bundleForClass:self.class]];
-}
-
-+ (instancetype)callViewController:(MXCall*)call
-{
-    CallViewController* instance = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
-                                                                     bundle:[NSBundle bundleForClass:self.class]];
-    
-    // Load the view controller's view now (buttons and views will then be available).
-    if ([instance respondsToSelector:@selector(loadViewIfNeeded)])
-    {
-        // iOS 9 and later
-        [instance loadViewIfNeeded];
-    }
-    else if (instance.view)
-    {
-        // Patch: on iOS < 9.0, we load the view by calling its getter.
-    }
-    
-    instance.mxCall = call;
-    
-    return instance;
-}
-
-#pragma mark -
-
 - (void)finalizeInit
 {
     [super finalizeInit];
