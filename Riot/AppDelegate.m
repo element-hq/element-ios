@@ -2314,7 +2314,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Release properly
             [currentCallViewController destroy];
-            currentCallViewController = nil;
             
             if (completion)
             {

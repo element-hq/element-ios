@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -102,7 +102,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="imageView:hcc-ve-8OC:image" translatesAutoresizingMaskIntoConstraints="NO" id="hcc-ve-8OC">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="selection_tick.png" translatesAutoresizingMaskIntoConstraints="NO" id="hcc-ve-8OC">
                                                             <rect key="frame" x="20" y="1" width="22" height="22"/>
                                                         </imageView>
                                                     </subviews>
@@ -125,7 +125,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="imageView:hcc-ve-8OC:image" translatesAutoresizingMaskIntoConstraints="NO" id="wmW-9T-6xp">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="selection_tick.png" translatesAutoresizingMaskIntoConstraints="NO" id="wmW-9T-6xp">
                                                             <rect key="frame" x="20" y="1" width="22" height="21.999999999999943"/>
                                                         </imageView>
                                                     </subviews>
@@ -243,88 +243,6 @@
         </view>
     </objects>
     <resources>
-        <image name="imageView:hcc-ve-8OC:image" width="22" height="22">
-            <mutableData key="keyedArchiveRepresentation">
-YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
-GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
-c1dOU0NvbG9ygAKADRIgwAAAgAOAC1h7MjIsIDIyfdIVChYYWk5TLm9iamVjdHOhF4AEgArSFQoaHaIb
-HIAFgAaACRAA0iAKISJfEBROU1RJRkZSZXByZXNlbnRhdGlvboAHgAhPERAuTU0AKgAAB5gAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAADiEXLCliRX8/mGnGTbh97E22fuw/mGnGKWJFfw4hFywAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASLR87OIlfr1C+hPJWzY//VcmM
-/1TIi/9UyIv/VcmM/1bNj/9QvoTyOIlfrxItHzsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAEEAgYoYkR/UcKH9ljPkP9VyYv/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VcmL/1jPkP9Rwof2KGJE
-fwEEAgYAAAAAAAAAAAAAAAAAAAAAAAAAAAEEAgYyeFOcV8+Q/1XJjP9Uxor/VMaK/1TGiv9Uxor/VMaK
-/1TGiv9Uxor/VMaK/1TGiv9Uxor/VcmM/1fPkP8yeFOcAQQCBgAAAAAAAAAAAAAAAAAAAAAoYkR/V8+Q
-/1TIi/9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9UyIv/V8+Q
-/yhiRH8AAAAAAAAAAAAAAAASLR46UsOH91XJjP9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK
-/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1XJjP9Sw4f3Ei0eOgAAAAABAgIEOYlfslfPkP9Uxor/VMaK
-/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1PGif9Uxor/UsWJ/1TGiv9Uxor/V8+Q
-/zmJX7IBAgIEDSAWK1C/hfRVyYv/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK
-/1LFif9XyIz/uenQ/5XfuP9Txon/VMaK/1XJi/9Qv4X0DSAWKyhiRX9WzY//VMaK/1TGiv9Uxor/VMaK
-/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1LFif9Xxoz/vOrT///////i9uz/X8uS/1PGif9Uxor/Vs2P
-/yhiRX8/mGnGVcmM/1TGiv9Uxor/VMaK/1TGiv9Uxor/U8aJ/1TGiv9Uxor/VMaK/1LFif9XyIz/vOrT
-///////p+PH/ctKg/1HFiP9Uxor/VMaK/1XJjP8/mGnGTrd+7VTIiv9Uxor/VMaK/1TGiv9Uxor/U8aK
-/1nJj/9RxYn/VMaK/1LFif9XyIz/vOrT///////p+PD/cdGf/0/Eh/9Uxor/VMaK/1TGiv9UyIr/Trd+
-7U22fuxUyIr/VMaK/1TGiv9Uxor/U8aJ/57hv//X8+X/Zs2X/07Ehv9XyIz/wOvV///////n+O//b8+e
-/0/Eh/9Uxor/VMaK/1TGiv9Uxor/VMiK/022fuw/mmnGVcmM/1TGiv9Uxor/U8aK/1fIjP/K79z/////
-/9nz5v9s0Jz/uurR///////m9+//b9Ge/0/Eh/9Uxor/VMaK/1TGiv9Uxor/VMaK/1XJjP8/mmnGKGJF
-f1bNj/9Uxor/VMaK/1TGiv9SxYn/X8qT/8zw3///////9fv3///////n+O//b9Ge/0/Eh/9Uxor/VMaK
-/1TGiv9Uxor/VMaK/1TGiv9WzY//KGJFfw0gFitQv4X0VcmL/1TGiv9Uxor/VMaK/1HFiP9eypL/zPDf
-///////o+PD/b9Ge/0/Eh/9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9VyYv/UL+F9A0gFisBAgIEOohf
-sVfPkP9Uxor/VMaK/1TGiv9Uxor/UcWI/2DLk/+76tH/ddOj/0/Fh/9Uxor/VMaK/1TGiv9Uxor/VMaK
-/1TGiv9Uxor/V8+Q/zqIX7EBAgIEAAAAABItHjpSw4f3VcmM/1TGiv9Uxor/VMaK/1TGiv9SxYn/UsWI
-/1LFiP9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VcmM/1LDh/cSLR46AAAAAAAAAAAAAAAAKGJE
-f1fPkP9UyIv/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9Uxor/VMiL
-/1fPkP8oYkR/AAAAAAAAAAAAAAAAAAAAAAEEAgYyeFOcV8+Q/1XJjP9Uxor/VMaK/1TGiv9Uxor/VMaK
-/1TGiv9Uxor/VMaK/1TGiv9Uxor/VcmM/1fPkP8yeFOcAQQCBgAAAAAAAAAAAAAAAAAAAAAAAAAAAQQC
-BihiRH9Rwof2WM+Q/1XJi/9Uxor/VMaK/1TGiv9Uxor/VMaK/1TGiv9VyYv/WM+Q/1HCh/YoYkR/AQQC
-BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEi0fOzqJX69Qv4TzVs2P/1XJjP9UyIv/VMiL
-/1XJjP9WzY//UL+E8zqJX68SLR87AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAADiEXLCliRX8/mGnGTbh97E24few/mGnGKWJFfw4hFywAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAA4BAAADAAAAAQAWAAABAQADAAAAAQAWAAABAgADAAAABAAACEYBAwADAAAAAQABAAAB
-BgADAAAAAQACAAABEQAEAAAAAQAAAAgBEgADAAAAAQABAAABFQADAAAAAQAEAAABFgADAAAAAQAWAAAB
-FwAEAAAAAQAAB5ABHAADAAAAAQABAAABUgADAAAAAQABAAABUwADAAAABAAACE6HcwAHAAAH2AAACFYA
-AAAAAAgACAAIAAgAAQABAAEAAQAAB9hhcHBsAiAAAG1udHJSR0IgWFlaIAfZAAIAGQALABoAC2Fjc3BB
-UFBMAAAAAGFwcGwAAAAAAAAAAAAAAAAAAAAAAAD21gABAAAAANMtYXBwbAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC2Rlc2MAAAEIAAAAb2RzY20AAAF4AAAFnGNwcnQA
-AAcUAAAAOHd0cHQAAAdMAAAAFHJYWVoAAAdgAAAAFGdYWVoAAAd0AAAAFGJYWVoAAAeIAAAAFHJUUkMA
-AAecAAAADmNoYWQAAAesAAAALGJUUkMAAAecAAAADmdUUkMAAAecAAAADmRlc2MAAAAAAAAAFEdlbmVy
-aWMgUkdCIFByb2ZpbGUAAAAAAAAAAAAAABRHZW5lcmljIFJHQiBQcm9maWxlAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABtbHVjAAAAAAAAAB8AAAAMc2tTSwAAACgA
-AAGEZGFESwAAAC4AAAGsY2FFUwAAACQAAAHadmlWTgAAACQAAAH+cHRCUgAAACYAAAIidWtVQQAAACoA
-AAJIZnJGVQAAACgAAAJyaHVIVQAAACgAAAKaemhUVwAAABYAAALCbmJOTwAAACYAAALYY3NDWgAAACIA
-AAL+aGVJTAAAAB4AAAMgaXRJVAAAACgAAAM+cm9STwAAACQAAANmZGVERQAAACwAAAOKa29LUgAAABYA
-AAO2c3ZTRQAAACYAAALYemhDTgAAABYAAAPMamFKUAAAABoAAAPiZWxHUgAAACIAAAP8cHRQTwAAACYA
-AAQebmxOTAAAACgAAAREZXNFUwAAACYAAAQedGhUSAAAACQAAARsdHJUUgAAACIAAASQZmlGSQAAACgA
-AASyaHJIUgAAACgAAATacGxQTAAAACwAAAUCcnVSVQAAACIAAAUuYXJFRwAAACYAAAVQZW5VUwAAACYA
-AAV2AFYBYQBlAG8AYgBlAGMAbgD9ACAAUgBHAEIAIABwAHIAbwBmAGkAbABHAGUAbgBlAHIAZQBsACAA
-UgBHAEIALQBiAGUAcwBrAHIAaQB2AGUAbABzAGUAUABlAHIAZgBpAGwAIABSAEcAQgAgAGcAZQBuAOgA
-cgBpAGMAQx6lAHUAIABoAOwAbgBoACAAUgBHAEIAIABDAGgAdQBuAGcAUABlAHIAZgBpAGwAIABSAEcA
-QgAgAEcAZQBuAOkAcgBpAGMAbwQXBDAEMwQwBDsETAQ9BDgEOQAgBD8EQAQ+BEQEMAQ5BDsAIABSAEcA
-QgBQAHIAbwBmAGkAbAAgAGcA6QBuAOkAcgBpAHEAdQBlACAAUgBWAEIAwQBsAHQAYQBsAOEAbgBvAHMA
-IABSAEcAQgAgAHAAcgBvAGYAaQBskBp1KAAgAFIARwBCACCCcl9pY8+P8ABHAGUAbgBlAHIAaQBzAGsA
-IABSAEcAQgAtAHAAcgBvAGYAaQBsAE8AYgBlAGMAbgD9ACAAUgBHAEIAIABwAHIAbwBmAGkAbAXkBegF
-1QXkBdkF3AAgAFIARwBCACAF2wXcBdwF2QBQAHIAbwBmAGkAbABvACAAUgBHAEIAIABnAGUAbgBlAHIA
-aQBjAG8AUAByAG8AZgBpAGwAIABSAEcAQgAgAGcAZQBuAGUAcgBpAGMAQQBsAGwAZwBlAG0AZQBpAG4A
-ZQBzACAAUgBHAEIALQBQAHIAbwBmAGkAbMd8vBgAIABSAEcAQgAg1QS4XNMMx3xmbpAaACAAUgBHAEIA
-IGPPj/Blh072TgCCLAAgAFIARwBCACAw1zDtMNUwoTCkMOsDkwO1A70DuQO6A8wAIAPAA8EDvwPGA68D
-uwAgAFIARwBCAFAAZQByAGYAaQBsACAAUgBHAEIAIABnAGUAbgDpAHIAaQBjAG8AQQBsAGcAZQBtAGUA
-ZQBuACAAUgBHAEIALQBwAHIAbwBmAGkAZQBsDkIOGw4jDkQOHw4lDkwAIABSAEcAQgAgDhcOMQ5IDicO
-RA4bAEcAZQBuAGUAbAAgAFIARwBCACAAUAByAG8AZgBpAGwAaQBZAGwAZQBpAG4AZQBuACAAUgBHAEIA
-LQBwAHIAbwBmAGkAaQBsAGkARwBlAG4AZQByAGkBDQBrAGkAIABSAEcAQgAgAHAAcgBvAGYAaQBsAFUA
-bgBpAHcAZQByAHMAYQBsAG4AeQAgAHAAcgBvAGYAaQBsACAAUgBHAEIEHgQxBEkEOAQ5ACAEPwRABD4E
-RAQ4BDsETAAgAFIARwBCBkUGRAZBACAGKgY5BjEGSgZBACAAUgBHAEIAIAYnBkQGOQYnBkUARwBlAG4A
-ZQByAGkAYwAgAFIARwBCACAAUAByAG8AZgBpAGwAZXRleHQAAAAAQ29weXJpZ2h0IDIwMDcgQXBwbGUg
-SW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC4AWFlaIAAAAAAAAPNSAAEAAAABFs9YWVogAAAAAAAAdE0A
-AD3uAAAD0FhZWiAAAAAAAABadQAArHMAABc0WFlaIAAAAAAAACgaAAAVnwAAuDZjdXJ2AAAAAAAAAAEB
-zQAAc2YzMgAAAAAAAQxCAAAF3v//8yYAAAeSAAD9kf//+6L///2jAAAD3AAAwGzSJSYnKFokY2xhc3Nu
-YW1lWCRjbGFzc2VzXxAQTlNCaXRtYXBJbWFnZVJlcKMnKSpaTlNJbWFnZVJlcFhOU09iamVjdNIlJiwt
-V05TQXJyYXmiLCrSJSYvMF5OU011dGFibGVBcnJheaMvLCrTMjMKNDU2V05TV2hpdGVcTlNDb2xvclNw
-YWNlRDAgMAAQA4AM0iUmODlXTlNDb2xvcqI4KtIlJjs8V05TSW1hZ2WiOypfEA9OU0tleWVkQXJjaGl2
-ZXLRP0BUcm9vdIABAAgAEQAaACMALQAyADcARgBMAFcAXgBlAHIAeQCBAIMAhQCKAIwAjgCXAJwApwCp
-AKsArQCyALUAtwC5ALsAvQDCANkA2wDdEQ8RFBEfESgROxE/EUoRUxFYEWARYxFoEXcRexGCEYoRlxGc
-EZ4RoBGlEa0RsBG1Eb0RwBHSEdUR2gAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABHcA
-</mutableData>
-        </image>
+        <image name="selection_tick.png" width="22" height="22"/>
     </resources>
 </document>

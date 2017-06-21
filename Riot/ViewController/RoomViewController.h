@@ -23,9 +23,11 @@
 
 #import "RoomParticipantsViewController.h"
 
+#import "ContactsTableViewController.h"
+
 #import "UIViewController+RiotSearch.h"
 
-@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, MXKRecieptSendersContainerDelegate>
+@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXKRecieptSendersContainerDelegate>
 
 // The expanded header
 @property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;
