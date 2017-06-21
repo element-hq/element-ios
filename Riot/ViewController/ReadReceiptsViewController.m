@@ -97,7 +97,8 @@
 
 #pragma mark - Actions
 
-- (void)overlayTap {
+- (void)overlayTap
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
