@@ -210,7 +210,12 @@
 {
     if (indexPath.section == recentsDataSource.directorySection)
     {
-        [self openPublicRoomAtIndexPath:indexPath];
+        // Sanity check
+        MXPublicRoom *publicRoom = [recentsDataSource.publicRoomsDirectoryDataSource roomAtIndexPath:indexPath];
+        if (publicRoom)
+        {
+            [self openPublicRoomAtIndexPath:indexPath];
+        }
     }
     else
     {
