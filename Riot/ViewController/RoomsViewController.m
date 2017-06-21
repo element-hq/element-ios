@@ -268,9 +268,9 @@
 
 - (void)triggerDirectoryPagination
 {
-    if (recentsDataSource.publicRoomsDirectoryDataSource.hasReachedPaginationEnd || footerSpinnerView)
+    if (!recentsDataSource || recentsDataSource.publicRoomsDirectoryDataSource.hasReachedPaginationEnd || footerSpinnerView)
     {
-        // We got all public rooms or we are already paginating
+        // We are not yet ready or we got all public rooms or we are already paginating
         // Do nothing
         return;
     }
