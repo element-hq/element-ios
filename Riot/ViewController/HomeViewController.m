@@ -240,11 +240,9 @@
 {
     if (self.delegate)
     {
-        RoomCollectionViewCell *roomCollectionViewCell = (RoomCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+        id<MXKRecentCellDataStoring> cellData = [recentsDataSource cellDataAtIndexPath:[NSIndexPath indexPathForRow:indexPath.item inSection:collectionView.tag]];
         
-        id<MXKRecentCellDataStoring> renderedCellData = (id<MXKRecentCellDataStoring>)roomCollectionViewCell.renderedCellData;
-        
-        [self.delegate recentListViewController:self didSelectRoom:renderedCellData.roomSummary.roomId inMatrixSession:renderedCellData.roomSummary.room.mxSession];
+        [self.delegate recentListViewController:self didSelectRoom:cellData.roomSummary.roomId inMatrixSession:cellData.roomSummary.room.mxSession];
     }
     
     // Hide the keyboard when user select a room
