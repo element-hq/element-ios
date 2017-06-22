@@ -162,6 +162,9 @@
     
     // Tell whether the view controller is appeared or not.
     BOOL isAppeared;
+    
+    // The search bar buttom item back up.
+    UIBarButtonItem *searchBarButtonItem;
 }
 
 @end
@@ -970,6 +973,7 @@
 
 - (void)destroy
 {
+    searchBarButtonItem = nil;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     if (currentAlert)
@@ -1067,6 +1071,12 @@
 
 - (void)refreshRoomTitle
 {
+    if (searchBarButtonItem && !self.navigationItem.rightBarButtonItem)
+    {
+        // Restore by default the search bar button.
+        self.navigationItem.rightBarButtonItem = searchBarButtonItem;
+    }
+    
     // Set the right room title view
     if (self.isRoomPreview)
     {
@@ -1101,7 +1111,8 @@
         }
         else
         {
-            // Hide the search button
+            // Remove the search button temporarily
+            searchBarButtonItem = self.navigationItem.rightBarButtonItem;
             self.navigationItem.rightBarButtonItem = nil;
             
             [self setRoomTitleViewClass:SimpleRoomTitleView.class];
