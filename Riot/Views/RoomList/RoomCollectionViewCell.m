@@ -54,8 +54,6 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -135,6 +133,11 @@
         
         [roomCellData.roomSummary.room setRoomAvatarImageIn:self.roomAvatar];
     }
+}
+
+- (MXKCellData*)renderedCellData
+{
+    return roomCellData;
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
