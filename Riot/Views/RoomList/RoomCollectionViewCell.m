@@ -161,6 +161,8 @@
         [self removeGestureRecognizer:self.gestureRecognizers[0]];
     }
     self.tag = -1;
+    
+    roomCellData = nil;
 }
 
 @end
