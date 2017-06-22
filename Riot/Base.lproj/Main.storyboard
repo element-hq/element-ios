@@ -87,6 +87,7 @@
                         <outlet property="roomTitleViewContainer" destination="djN-zB-Vni" id="VQG-Mp-hSa"/>
                         <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="fNQ-S3-DbZ"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="ziz-Xl-QVg"/>
+                        <segue destination="e7G-NU-7ck" kind="show" identifier="showRoomDetails" id="mFs-HA-7Oo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yjg-uP-Hcy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -154,7 +155,7 @@
                 <tableViewController id="e7G-NU-7ck" customClass="SegmentedViewController" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXh-hO-Zgf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2558" y="-546"/>
+            <point key="canvasLocation" x="3326" y="-442"/>
         </scene>
         <!--People View Controller-->
         <scene sceneID="Qba-PP-lco">
@@ -397,7 +398,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="01q-h6-40E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3326" y="-420"/>
+            <point key="canvasLocation" x="5046" y="-711"/>
         </scene>
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
@@ -577,9 +578,10 @@
         <image name="tab_rooms_selected.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="f5u-Y1-7nt"/>
-        <segue reference="cUw-vU-gJq"/>
+        <segue reference="tk8-vF-K4T"/>
         <segue reference="Tfl-tq-LQp"/>
-        <segue reference="0ws-cL-0tk"/>
+        <segue reference="ziz-Xl-QVg"/>
+        <segue reference="mFs-HA-7Oo"/>
+        <segue reference="fNQ-S3-DbZ"/>
     </inferredMetricsTieBreakers>
 </document>
