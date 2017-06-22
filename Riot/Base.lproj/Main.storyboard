@@ -81,7 +81,6 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" image="search_icon.png" id="Koy-mU-PTG" userLabel="Menu Bar Button Item"/>
                     </navigationItem>
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="djN-zB-Vni" id="VQG-Mp-hSa"/>
