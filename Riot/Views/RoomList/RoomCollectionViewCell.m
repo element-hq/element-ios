@@ -54,8 +54,6 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -137,6 +135,11 @@
     }
 }
 
+- (MXKCellData*)renderedCellData
+{
+    return roomCellData;
+}
+
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
@@ -158,6 +161,8 @@
         [self removeGestureRecognizer:self.gestureRecognizers[0]];
     }
     self.tag = -1;
+    
+    roomCellData = nil;
 }
 
 @end
