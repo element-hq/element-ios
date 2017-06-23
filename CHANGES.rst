@@ -1,3 +1,24 @@
+Changes in 0.4.1 (2017-06-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.5.1).
+ 
+Bug fixes:
+ * Room Chat: Scrolling manually to the bottom of the no live timeline doesn't flip it to read/write view (#1312).
+ * Enhancement - UX Rework: Update the buttons of the room expanded header (vector-im/riot-meta#76).
+ * Contact search: Unexpected empty search result.
+ * tap-on-tab should include the top-of-page location in its cycle of options (#1316).
+ * Fix crash on decline button, thanks to @morozkin (#1330).
+ * Room directory: stuck after the 20 first items (#1329).
+ * Room directory: "No public rooms available" is displayed while loading (#1336).
+ * Room directory: Clicking on "No public rooms available" make the app crash.
+ * Crash when hitting a room header after some special steps (#1340).
+ * Chat screen: the search icon is missing after switching in live from a non live timeline (#1344).
+ * Crash when hitting room from unified search/browse directory (#1342).
+ * tapping on an unread room on home page takes you to the wrong room (#1304).
+ * Read marker: when being kicked, the "Jump to first unread message" shouldn't be displayed (#1338).
+
 Changes in 0.4.0 (2017-06-16)
 ===============================================
 
