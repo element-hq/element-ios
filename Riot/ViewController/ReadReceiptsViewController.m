@@ -20,10 +20,11 @@
 @interface ReadReceiptsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) MXRestClient* restClient;
+@property (nonatomic) MXSession *session;
 
 @property (nonatomic) NSArray <MXRoomMember *> *roomMembers;
 @property (nonatomic) NSArray <UIImage *> *placeholders;
-@property (nonatomic) NSArray <NSString *> *recieptDescriptions;
+@property (nonatomic) NSArray <MXReceiptData *> *receipts;
 
 @property (weak, nonatomic) IBOutlet UIView *overlayView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -36,13 +37,15 @@
 
 #pragma mark - Public
 
-+ (void)openInViewController:(UIViewController *)viewController withRestClient:(MXRestClient *)restClient withRoomMembers:(NSArray <MXRoomMember *> *)roomMembers placeholders:(NSArray <UIImage *> *)placeholders receiptDescriptions:(NSArray <NSString *> *)receiptDescriptions
++ (void)openInViewController:(UIViewController *)viewController withRestClient:(MXRestClient *)restClient session:(MXSession *)session withRoomMembers:(NSArray <MXRoomMember *> *)roomMembers placeholders:(NSArray <UIImage *> *)placeholders receipts:(NSArray <MXReceiptData *> *)receipts
 {
     ReadReceiptsViewController *receiptsController = [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
     receiptsController.restClient = restClient;
+    receiptsController.session = session;
+    
     receiptsController.roomMembers = roomMembers;
     receiptsController.placeholders = placeholders;
-    receiptsController.recieptDescriptions = receiptDescriptions;
+    receiptsController.receipts = receipts;
     
     receiptsController.providesPresentationContextTransitionStyle = YES;
     receiptsController.definesPresentationContext = YES;
@@ -136,9 +139,10 @@
         }
         [cell.avatarImageView setImageURL:avatarUrl withType:nil andImageOrientation:UIImageOrientationUp previewImage:self.placeholders[indexPath.row]];
     }
-    if (indexPath.row < self.recieptDescriptions.count)
+    if (indexPath.row < self.receipts.count)
     {
-        cell.receiptDescriptionLabel.text = self.recieptDescriptions[indexPath.row];
+        NSString *receiptDescription = [(MXKEventFormatter*)self.session.roomSummaryUpdateDelegate dateStringFromTimestamp:self.receipts[indexPath.row].ts withTime:YES];
+        cell.receiptDescriptionLabel.text = receiptDescription;
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

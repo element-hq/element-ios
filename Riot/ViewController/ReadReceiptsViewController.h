@@ -19,6 +19,6 @@
 
 @interface ReadReceiptsViewController : UIViewController
 
-+ (void)openInViewController:(UIViewController *)viewController withRestClient:(MXRestClient *)restClient withRoomMembers:(NSArray <MXRoomMember *> *)roomMembers placeholders:(NSArray <UIImage *> *)placeholders receiptDescriptions:(NSArray <NSString *> *)receiptDescriptions;
++ (void)openInViewController:(UIViewController *)viewController withRestClient:(MXRestClient *)restClient session:(MXSession *)session withRoomMembers:(NSArray <MXRoomMember *> *)roomMembers placeholders:(NSArray <UIImage *> *)placeholders receipts:(NSArray <MXReceiptData *> *)receipts;
 
 @end

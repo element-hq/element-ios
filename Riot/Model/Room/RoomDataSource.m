@@ -167,7 +167,6 @@
                         NSArray* receipts = [self.room getEventReceipts:component.event.eventId sorted:YES];
                         NSMutableArray *roomMembers;
                         NSMutableArray *placeholders;
-                        NSMutableArray *receiptDescriptions;
                         
                         // Check whether some receipts are found
                         if (receipts.count)
@@ -175,9 +174,6 @@
                             // Retrieve the corresponding room members
                             roomMembers = [[NSMutableArray alloc] initWithCapacity:receipts.count];
                             placeholders = [[NSMutableArray alloc] initWithCapacity:receipts.count];
-                            receiptDescriptions = [[NSMutableArray alloc] initWithCapacity:receipts.count];
-                            
-                            MXKEventFormatter *formatter = (MXKEventFormatter*)self.mxSession.roomSummaryUpdateDelegate;
                             
                             for (MXReceiptData* data in receipts)
                             {
@@ -186,7 +182,6 @@
                                 {
                                     [roomMembers addObject:roomMember];
                                     [placeholders addObject:[AvatarGenerator generateAvatarForMatrixItem:roomMember.userId withDisplayName:roomMember.displayname]];
-                                    [receiptDescriptions addObject:[formatter dateStringFromTimestamp:data.ts withTime:YES]];
                                 }
                             }
                         }
@@ -206,7 +201,8 @@
                             avatarsContainer.tag = index;
                             
                             [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
-                            avatarsContainer.recieptDescriptions = receiptDescriptions;
+                            avatarsContainer.mxSession = self.mxSession;
+                            avatarsContainer.readReceipts = receipts;
                             
                             avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";

@@ -2874,11 +2874,11 @@
     }
 }
 
-#pragma mark - MXKRecieptSendersContainerDelegate
+#pragma mark - MXKReceiptSendersContainerDelegate
 
-- (void)didTapReceiptsContainerWithRestClient:(MXRestClient *)restClient RoomMembers:(NSArray *)roomMembers avatars:(NSArray *)avatars recieptDescriptions:(NSArray *)recieptDescriptions
+- (void)didTapReceiptsContainerWithRestClient:(MXRestClient *)restClient session:(MXSession *)session roomMembers:(NSArray *)roomMembers avatars:(NSArray *)avatars receipts:(NSArray *)readReceipts
 {
-    [ReadReceiptsViewController openInViewController:self withRestClient:restClient withRoomMembers:roomMembers placeholders:avatars receiptDescriptions:recieptDescriptions];
+    [ReadReceiptsViewController openInViewController:self withRestClient:restClient session:session withRoomMembers:roomMembers placeholders:avatars receipts:readReceipts];
 }
 
 #pragma mark - Typing management
