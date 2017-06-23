@@ -856,6 +856,14 @@
 {
     [self showExpandedHeader:NO];
     
+    // Force a simple title view initialised with the current room before leaving actually the room.
+    [self setRoomTitleViewClass:SimpleRoomTitleView.class];
+    self.titleView.editable = NO;
+    self.titleView.mxRoom = self.roomDataSource.room;
+    
+    // Hide the potential read marker banner.
+    self.jumpToLastUnreadBannerContainer.hidden = YES;
+    
     [super leaveRoomOnEvent:event];
 }
 
