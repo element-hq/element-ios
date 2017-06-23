@@ -273,9 +273,12 @@
 
 - (void)triggerDirectoryPagination
 {
-    if (!recentsDataSource || recentsDataSource.publicRoomsDirectoryDataSource.hasReachedPaginationEnd || footerSpinnerView)
+    if (!recentsDataSource
+        || recentsDataSource.state == MXKDataSourceStateUnknown
+        || recentsDataSource.publicRoomsDirectoryDataSource.hasReachedPaginationEnd
+        || footerSpinnerView)
     {
-        // We are not yet ready or we got all public rooms or we are already paginating
+        // We are not yet ready or being killed or we got all public rooms or we are already paginating
         // Do nothing
         return;
     }
