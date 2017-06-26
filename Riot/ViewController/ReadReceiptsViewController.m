@@ -134,7 +134,7 @@
         NSString *avatarUrl = self.roomMembers[indexPath.row].avatarUrl;
         if (self.restClient && avatarUrl)
         {
-            CGFloat side = CGRectGetWidth(cell.imageView.frame);
+            CGFloat side = CGRectGetWidth(cell.avatarImageView.frame);
             avatarUrl = [self.restClient urlOfContentThumbnail:avatarUrl toFitViewSize:CGSizeMake(side, side) withMethod:MXThumbnailingMethodCrop];
         }
         [cell.avatarImageView setImageURL:avatarUrl withType:nil andImageOrientation:UIImageOrientationUp previewImage:self.placeholders[indexPath.row]];
