@@ -230,19 +230,7 @@
 
             if (roomsAdded)
             {
-                // Notify the table view there are new items at its tail
-                NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:roomsAdded];
-
-                NSUInteger numberOfRowsBefore = [self->dataSource tableView:self.tableView numberOfRowsInSection:0];
-                numberOfRowsBefore -= roomsAdded;
-
-                for (NSUInteger i = 0; i < roomsAdded; i++)
-                {
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(numberOfRowsBefore + i) inSection:0];
-                    [indexPaths addObject:indexPath];
-                }
-
-                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView reloadData];
             }
             
             [self removeSpinnerFooterView];
