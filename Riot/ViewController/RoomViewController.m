@@ -1688,6 +1688,11 @@
                 [self showEncryptionInformation:tappedEvent];
             }
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnReceiptsContainer])
+        {
+            MXKReceiptSendersContainer *container = userInfo[kMXKRoomBubbleCellReceiptsContainerKey];
+            [ReadReceiptsViewController openInViewController:self withRestClient:container.restClient session:self.mainSession withRoomMembers:container.roomMembers placeholders:container.placeholders receipts:container.readReceipts];
+        }
         else
         {
             // Keep default implementation for other actions
@@ -2872,13 +2877,6 @@
             }];
         }
     }
-}
-
-#pragma mark - MXKReceiptSendersContainerDelegate
-
-- (void)didTapReceiptsContainerWithRestClient:(MXRestClient *)restClient session:(MXSession *)session roomMembers:(NSArray *)roomMembers avatars:(NSArray *)avatars receipts:(NSArray *)readReceipts
-{
-    [ReadReceiptsViewController openInViewController:self withRestClient:restClient session:session withRoomMembers:roomMembers placeholders:avatars receipts:readReceipts];
 }
 
 #pragma mark - Typing management

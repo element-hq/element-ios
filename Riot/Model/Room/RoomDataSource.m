@@ -191,7 +191,6 @@
                         {
                             // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
                             MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 13, 150, 12) andRestClient:self.mxSession.matrixRestClient];
-                            avatarsContainer.delegate = [AppDelegate theDelegate].masterTabBarController.currentRoomViewController;
                             
                             // Custom avatar display
                             avatarsContainer.maxDisplayedAvatars = 5;
@@ -201,8 +200,12 @@
                             avatarsContainer.tag = index;
                             
                             [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
-                            avatarsContainer.mxSession = self.mxSession;
                             avatarsContainer.readReceipts = receipts;
+                            UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(onReceiptContainerTap:)];
+                            [tapRecognizer setNumberOfTapsRequired:1];
+                            [tapRecognizer setNumberOfTouchesRequired:1];
+                            [avatarsContainer addGestureRecognizer:tapRecognizer];
+                            avatarsContainer.userInteractionEnabled = YES;
                             
                             avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";

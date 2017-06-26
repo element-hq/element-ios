@@ -388,6 +388,14 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
     }
 }
 
+- (IBAction)onReceiptContainerTap:(UITapGestureRecognizer *)sender
+{
+    if (self.delegate)
+    {
+        [self.delegate cell:self didRecognizeAction:kMXKRoomBubbleCellTapOnReceiptsContainer userInfo:@{kMXKRoomBubbleCellReceiptsContainerKey : sender.view}];
+    }
+}
+
 #pragma mark - Internals
 
 - (void)addEditButtonForComponent:(NSUInteger)componentIndex completion:(void (^ __nullable)(BOOL finished))completion
