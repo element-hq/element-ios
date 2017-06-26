@@ -29,6 +29,7 @@
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH 4
 
 NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRiotEditButtonPressed";
+NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellTapOnReceiptsContainer";
 
 @implementation MXKRoomBubbleTableViewCell (Riot)
 
