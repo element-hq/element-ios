@@ -147,7 +147,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         
         // Retrieve the read receipts container related to the selected component (if any)
         // Blur the others
-        for (UIView* view in self.bubbleOverlayContainer.subviews)
+        for (UIView* view in self.tmpSubviews)
         {
             // Note read receipt container tag is equal to the index of the related component.
             if (view.tag != componentIndex)
@@ -306,11 +306,14 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         self.bubbleOverlayContainer.alpha = 0.8;
         self.bubbleOverlayContainer.userInteractionEnabled = YES;
         
-        // Blur read receipts if any
+        // Blur subviews if any
         for (UIView* view in self.bubbleOverlayContainer.subviews)
         {
             view.alpha = 0.2;
         }
+        
+        // Move this view in front
+        [self.contentView bringSubviewToFront:self.bubbleOverlayContainer];
     }
     else
     {
@@ -321,7 +324,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
             self.bubbleOverlayContainer.alpha = 1;
             self.bubbleOverlayContainer.userInteractionEnabled = NO;
             
-            // Restore read receipts display
+            // Restore subviews display
             for (UIView* view in self.bubbleOverlayContainer.subviews)
             {
                 view.alpha = 1;
