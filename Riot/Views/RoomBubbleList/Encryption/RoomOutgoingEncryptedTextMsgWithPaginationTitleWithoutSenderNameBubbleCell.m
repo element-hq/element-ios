@@ -18,6 +18,8 @@
 
 #import "RoomEncryptedDataBubbleCell.h"
 
+#import "RoomBubbleCellData.h"
+
 @implementation RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell
 
 - (void)awakeFromNib
@@ -64,15 +66,27 @@
         // Check which bubble component is displayed in front of the tapped line.
         NSArray *bubbleComponents = bubbleData.bubbleComponents;
         
-        // Consider by default the first component
-        MXKRoomBubbleComponent *tappedComponent = bubbleComponents.firstObject;
+        // Consider by default the first display component
+        NSInteger firstComponentIndex = 0;
+        if ([bubbleData isKindOfClass:RoomBubbleCellData.class])
+        {
+            firstComponentIndex = ((RoomBubbleCellData*)bubbleData).oldestComponentIndex;
+        }
+        MXKRoomBubbleComponent *tappedComponent = bubbleComponents[firstComponentIndex++];
         
         CGPoint tapPoint = [sender locationInView:self.messageTextView];
         
-        for (NSInteger index = 1; index < bubbleComponents.count; index++)
+        for (NSInteger index = firstComponentIndex; index < bubbleComponents.count; index++)
         {
             // Here the bubble is composed by multiple text messages
             MXKRoomBubbleComponent *component = bubbleComponents[index];
+            
+            // Ignore components without display.
+            if (!component.attributedTextMessage)
+            {
+                continue;
+            }
+            
             if (tapPoint.y < component.position.y)
             {
                 break;
