@@ -38,6 +38,11 @@
 @property(nonatomic) NSString *selectedEventId;
 
 /**
+ The index of the oldest component (component with a timestamp, and an actual display). NSNotFound by default.
+ */
+@property(nonatomic, readonly) NSInteger oldestComponentIndex;
+
+/**
  The index of the most recent component (component with a timestamp, and an actual display). NSNotFound by default.
  */
 @property(nonatomic, readonly) NSInteger mostRecentComponentIndex;

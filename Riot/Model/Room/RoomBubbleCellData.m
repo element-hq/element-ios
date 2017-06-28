@@ -348,6 +348,27 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     }
 }
 
+- (NSInteger)oldestComponentIndex
+{
+    // Update the related component index
+    NSInteger oldestComponentIndex = NSNotFound;
+    
+    NSArray *components = self.bubbleComponents;
+    NSInteger index = 0;
+    while (index < components.count)
+    {
+        MXKRoomBubbleComponent *component = components[index];
+        if (component.attributedTextMessage && component.date)
+        {
+            oldestComponentIndex = index;
+            break;
+        }
+        index++;
+    }
+    
+    return oldestComponentIndex;
+}
+
 - (NSInteger)mostRecentComponentIndex
 {
     // Update the related component index
