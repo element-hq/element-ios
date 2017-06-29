@@ -144,13 +144,8 @@
         // Ignore the read receipts on the bubble without actual display.
         if ((self.showBubbleReceipts && cellData.hasReadReceipts) || self.showReadMarker)
         {
-            // Read receipts container are inserted here on the right side into the overlay container.
+            // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
-            bubbleCell.bubbleOverlayContainer.backgroundColor = [UIColor clearColor];
-            bubbleCell.bubbleOverlayContainer.alpha = 1;
-            bubbleCell.bubbleOverlayContainer.userInteractionEnabled = YES;
-            bubbleCell.bubbleOverlayContainer.hidden = NO;
-            
             NSInteger index = bubbleComponents.count;
             CGFloat bottomPositionY = bubbleCell.frame.size.height;
             while (index--)
@@ -208,7 +203,17 @@
                             
                             avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";
-                            [bubbleCell.bubbleOverlayContainer addSubview:avatarsContainer];
+                            
+                            // Add this read receipts container in the content view
+                            if (!bubbleCell.tmpSubviews)
+                            {
+                                bubbleCell.tmpSubviews = [NSMutableArray arrayWithArray:@[avatarsContainer]];
+                            }
+                            else
+                            {
+                                [bubbleCell.tmpSubviews addObject:avatarsContainer];
+                            }
+                            [bubbleCell.contentView addSubview:avatarsContainer];
                             
                             // Force receipts container size
                             NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
@@ -230,14 +235,14 @@
                             NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
                                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                                     toItem:bubbleCell.bubbleOverlayContainer
+                                                                                                     toItem:avatarsContainer.superview
                                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                                  multiplier:1.0
                                                                                                    constant:-6];
                             NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
                                                                                              attribute:NSLayoutAttributeTop
                                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                                toItem:bubbleCell.bubbleOverlayContainer
+                                                                                                toItem:avatarsContainer.superview
                                                                                              attribute:NSLayoutAttributeTop
                                                                                             multiplier:1.0
                                                                                               constant:bottomPositionY - 13];
@@ -250,6 +255,13 @@
                     // Check whether the read marker must be displayed here.
                     if (self.showReadMarker)
                     {
+                        // The read marker is added into the overlay container.
+                        // CAUTION: Keep disabled the user interaction on this container to not disturb tap gesture handling.
+                        bubbleCell.bubbleOverlayContainer.backgroundColor = [UIColor clearColor];
+                        bubbleCell.bubbleOverlayContainer.alpha = 1;
+                        bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
+                        bubbleCell.bubbleOverlayContainer.hidden = NO;
+                        
                         if ([component.event.eventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
                             bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - 2, bubbleCell.bubbleOverlayContainer.frame.size.width, 2)];
