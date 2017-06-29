@@ -16,6 +16,7 @@
 
 #import "ReadReceiptsViewController.h"
 #import <MatrixKit/MatrixKit.h>
+#import "RiotDesignValues.h"
 
 @interface ReadReceiptsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -77,7 +78,7 @@
 - (void)configureViews
 {
     self.containerView.layer.cornerRadius = 20;
-    self.titleLabel.text = @"Read Receipts List";
+    self.titleLabel.text = NSLocalizedStringFromTable(@"read_receipts_list", @"Vector", nil);
 }
 
 - (void)configureReceiptsTableView
@@ -141,8 +142,15 @@
     }
     if (indexPath.row < self.receipts.count)
     {
-        NSString *receiptDescription = [(MXKEventFormatter*)self.session.roomSummaryUpdateDelegate dateStringFromTimestamp:self.receipts[indexPath.row].ts withTime:YES];
-        cell.receiptDescriptionLabel.text = receiptDescription;
+        NSString *receiptReadText = [NSBundle mxk_localizedStringForKey:@"receipt_status_read"];
+        NSString *receiptTimeText = [(MXKEventFormatter*)self.session.roomSummaryUpdateDelegate dateStringFromTimestamp:self.receipts[indexPath.row].ts withTime:YES];
+        cell.receiptDescriptionLabel.text = receiptTimeText;
+        
+        NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : kRiotTextColorGray, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];
+        
+        [receiptDescription appendAttributedString:[[NSAttributedString alloc] initWithString:receiptTimeText attributes:@{NSForegroundColorAttributeName : kRiotTextColorGray, NSFontAttributeName : [UIFont  systemFontOfSize:15]}]];
+        
+        cell.receiptDescriptionLabel.attributedText = receiptDescription;
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

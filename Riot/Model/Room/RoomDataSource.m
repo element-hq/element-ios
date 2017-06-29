@@ -17,7 +17,6 @@
 
 #import "RoomDataSource.h"
 
-#import "AppDelegate.h"
 #import "EventFormatter.h"
 #import "RoomBubbleCellData.h"
 
