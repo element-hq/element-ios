@@ -38,15 +38,15 @@
 
 #pragma mark - Public
 
-+ (void)openInViewController:(UIViewController *)viewController withRestClient:(MXRestClient *)restClient session:(MXSession *)session withRoomMembers:(NSArray <MXRoomMember *> *)roomMembers placeholders:(NSArray <UIImage *> *)placeholders receipts:(NSArray <MXReceiptData *> *)receipts
++ (void)openInViewController:(UIViewController *)viewController fromContainer:(MXKReceiptSendersContainer *)receiptSendersContainer withsession:(MXSession *)session
 {
     ReadReceiptsViewController *receiptsController = [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
-    receiptsController.restClient = restClient;
+    receiptsController.restClient = receiptSendersContainer.restClient;
     receiptsController.session = session;
     
-    receiptsController.roomMembers = roomMembers;
-    receiptsController.placeholders = placeholders;
-    receiptsController.receipts = receipts;
+    receiptsController.roomMembers = receiptSendersContainer.roomMembers;
+    receiptsController.placeholders = receiptSendersContainer.placeholders;
+    receiptsController.receipts = receiptSendersContainer.readReceipts;
     
     receiptsController.providesPresentationContextTransitionStyle = YES;
     receiptsController.definesPresentationContext = YES;

@@ -19,6 +19,6 @@
 
 @interface ReadReceiptsViewController : MXKViewController
 
-+ (void)openInViewController:(UIViewController *)viewController withRestClient:(MXRestClient *)restClient session:(MXSession *)session withRoomMembers:(NSArray <MXRoomMember *> *)roomMembers placeholders:(NSArray <UIImage *> *)placeholders receipts:(NSArray <MXReceiptData *> *)receipts;
++ (void)openInViewController:(UIViewController *)viewController fromContainer:(MXKReceiptSendersContainer *)receiptSendersContainer withsession:(MXSession *)session;
 
 @end
