@@ -127,6 +127,8 @@
 {
     [super viewWillDisappear:animated];
 
+    [self dismissKeyboard];
+
     if (screenShotFile)
     {
         [[NSFileManager defaultManager] removeItemAtURL:screenShotFile error:nil];
@@ -161,6 +163,12 @@
 }
 
 #pragma mark - MXKViewController
+- (void)dismissKeyboard
+{
+    // Hide the keyboard
+    [_bugReportDescriptionTextView resignFirstResponder];
+}
+
 - (void)onKeyboardShowAnimationComplete
 {
     self.keyboardView = _bugReportDescriptionTextView.inputAccessoryView.superview;
