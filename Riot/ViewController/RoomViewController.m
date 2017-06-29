@@ -972,10 +972,14 @@
     {
         [super setBubbleTableViewDisplayInTransition:bubbleTableViewDisplayInTransition];
         
-        [self refreshActivitiesViewDisplay];
-        
-        [self checkReadMarkerVisibility];
-        [self refreshJumpToLastUnreadBannerDisplay];
+        // Refresh additional displays when the table is ready.
+        if (!bubbleTableViewDisplayInTransition && !self.bubblesTableView.isHidden)
+        {
+            [self refreshActivitiesViewDisplay];
+            
+            [self checkReadMarkerVisibility];
+            [self refreshJumpToLastUnreadBannerDisplay];
+        }
     }
 }
 
@@ -3099,7 +3103,8 @@
         {
             // Show "scroll to bottom" icon when the most recent message is not visible,
             // or when the timelime is not live (this icon is used to go back to live).
-            if (!self.roomDataSource.isLive || (!self.bubblesTableView.isHidden && [self isBubblesTableScrollViewAtTheBottom] == NO))
+            // Note: we check if `currentEventIdAtTableBottom` is set to know whether the table has been rendered at least once.
+            if (!self.roomDataSource.isLive || (currentEventIdAtTableBottom && [self isBubblesTableScrollViewAtTheBottom] == NO))
             {
                 // Retrieve the unread messages count
                 NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
