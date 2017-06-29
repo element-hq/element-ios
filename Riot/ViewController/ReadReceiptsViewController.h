@@ -19,6 +19,6 @@
 
 @interface ReadReceiptsViewController : MXKViewController
 
-+ (void)openInViewController:(UIViewController *)viewController fromContainer:(MXKReceiptSendersContainer *)receiptSendersContainer withsession:(MXSession *)session;
++ (void)openInViewController:(UIViewController *)viewController fromContainer:(MXKReceiptSendersContainer *)receiptSendersContainer withSession:(MXSession *)session;
 
 @end

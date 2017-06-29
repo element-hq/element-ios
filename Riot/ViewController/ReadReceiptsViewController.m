@@ -38,7 +38,7 @@
 
 #pragma mark - Public
 
-+ (void)openInViewController:(UIViewController *)viewController fromContainer:(MXKReceiptSendersContainer *)receiptSendersContainer withsession:(MXSession *)session
++ (void)openInViewController:(UIViewController *)viewController fromContainer:(MXKReceiptSendersContainer *)receiptSendersContainer withSession:(MXSession *)session
 {
     ReadReceiptsViewController *receiptsController = [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
     receiptsController.restClient = receiptSendersContainer.restClient;
@@ -142,9 +142,8 @@
     }
     if (indexPath.row < self.receipts.count)
     {
-        NSString *receiptReadText = [NSBundle mxk_localizedStringForKey:@"receipt_status_read"];
+        NSString *receiptReadText = NSLocalizedStringFromTable(@"receipt_status_read", @"Vector", nil);
         NSString *receiptTimeText = [(MXKEventFormatter*)self.session.roomSummaryUpdateDelegate dateStringFromTimestamp:self.receipts[indexPath.row].ts withTime:YES];
-        cell.receiptDescriptionLabel.text = receiptTimeText;
         
         NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : kRiotTextColorGray, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];
         

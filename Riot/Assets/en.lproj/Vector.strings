@@ -414,6 +414,10 @@
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
 
+// Read Receipts
+"read_receipts_list" = "Read Receipts List";
+"receipt_status_read" = "Read: ";
+
 // Media picker
 "media_picker_library" = "Library";
 "media_picker_select" = "Select";
@@ -437,7 +441,6 @@
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
 "camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
 "large_badge_value_k_format" = "%.1fK";
-"read_receipts_list" = "Read Receipts List";
 
 // room display name
 "room_displayname_invite_from" = "Invite from %@";

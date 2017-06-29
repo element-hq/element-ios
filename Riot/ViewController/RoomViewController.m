@@ -1691,7 +1691,7 @@
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnReceiptsContainer])
         {
             MXKReceiptSendersContainer *container = userInfo[kMXKRoomBubbleCellReceiptsContainerKey];
-            [ReadReceiptsViewController openInViewController:self fromContainer:container withsession:self.mainSession];
+            [ReadReceiptsViewController openInViewController:self fromContainer:container withSession:self.mainSession];
         }
         else
         {
