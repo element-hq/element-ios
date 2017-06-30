@@ -29,6 +29,8 @@
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *roomTitle;
+@property (weak, nonatomic) IBOutlet UILabel *roomTitle1;
+@property (weak, nonatomic) IBOutlet UILabel *roomTitle2;
 
 @property (weak, nonatomic) IBOutlet UIView *directRoomBorderView;
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
