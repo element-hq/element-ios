@@ -41,6 +41,8 @@
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
     
     self.roomTitle.textColor = kRiotTextColorBlack;
+    self.roomTitle1.textColor = kRiotTextColorBlack;
+    self.roomTitle2.textColor = kRiotTextColorBlack;
     self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
     
     // Prepare direct room border
@@ -104,11 +106,11 @@
             // Use bold font for the room title
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
             }
             else
             {
-                self.roomTitle.font = [UIFont boldSystemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
             }
         }
         else if (roomCellData.roomSummary.room.state.membership == MXMembershipInvite)
@@ -124,11 +126,11 @@
             // Use bold font for the room title
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
             }
             else
             {
-                self.roomTitle.font = [UIFont boldSystemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
             }
         }
         else
@@ -136,11 +138,11 @@
             // The room title is not bold anymore
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
             }
             else
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13];
             }
         }
         
@@ -162,12 +164,12 @@
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
-    return 120;
+    return 115;
 }
 
 + (CGSize)defaultCellSize
 {
-    return CGSizeMake(80, 120);
+    return CGSizeMake(80, 115);
 }
 
 - (void)prepareForReuse
