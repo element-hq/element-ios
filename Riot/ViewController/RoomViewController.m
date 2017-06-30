@@ -45,6 +45,8 @@
 
 #import "UsersDevicesViewController.h"
 
+#import "ReadReceiptsViewController.h"
+
 #import "RoomEmptyBubbleCell.h"
 
 #import "RoomIncomingTextMsgBubbleCell.h"
@@ -1708,6 +1710,11 @@
             {
                 [self showEncryptionInformation:tappedEvent];
             }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnReceiptsContainer])
+        {
+            MXKReceiptSendersContainer *container = userInfo[kMXKRoomBubbleCellReceiptsContainerKey];
+            [ReadReceiptsViewController openInViewController:self fromContainer:container withSession:self.mainSession];
         }
         else
         {
