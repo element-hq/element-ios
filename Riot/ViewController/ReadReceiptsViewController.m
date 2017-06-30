@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UITableView *receiptsTableView;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 
 @end
 
@@ -79,6 +80,9 @@
 {
     self.containerView.layer.cornerRadius = 20;
     self.titleLabel.text = NSLocalizedStringFromTable(@"read_receipts_list", @"Vector", nil);
+    
+    [_closeButton setTitle:[NSBundle mxk_localizedStringForKey:@"close"] forState:UIControlStateNormal];
+    [_closeButton setTitle:[NSBundle mxk_localizedStringForKey:@"close"] forState:UIControlStateHighlighted];
 }
 
 - (void)configureReceiptsTableView
@@ -102,6 +106,11 @@
 #pragma mark - Actions
 
 - (void)overlayTap
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)onCloseButtonPress:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }

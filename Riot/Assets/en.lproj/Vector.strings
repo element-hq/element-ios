@@ -474,3 +474,5 @@
 "bug_report_send_screenshot" = "Send screenshot";
 "bug_report_progress_zipping" = "Collecting logs";
 "bug_report_progress_uploading" = "Uploading report";
+"bug_report_send" = "Send";
+
