@@ -1,3 +1,21 @@
+Changes in 0.4.2 (2017-06-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.5.2).
+ * Chat: Expand read receipts when user taps on it #59, thanks to @aramsargsyan (#1341).
+ * GA: Disable GA in debug as it pollutes stats and crashes.
+ * Home: Display room name on 2 lines.
+ 
+Bug fixes:
+ * Fix: Crash when scrolling in the public rooms from Unified Search (#1355).
+ * Chat screen: the message overlaps its timestamp.
+ * Chat screen: several encryption icons are displayed on the same event.
+ * Blank pages with random "unread msgs" bars whilst they load.
+ * Fix a crash when rotating + debackgrounding the app (#1362).
+ * Bug report: Remove the old requirement for an existing email account.
+ * Crash report: Do not loose what the user typed when debackgrounding the app.
+
 Changes in 0.4.1 (2017-06-23)
 ===============================================
 
