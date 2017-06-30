@@ -792,6 +792,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Set Google Analytics dispatch interval to e.g. 20 seconds.
             gai.dispatchInterval = 20;
+
+#ifdef DEBUG
+            // Disable GAI in debug as it pollutes stats and crashes in GA
+            gai.dryRun = YES;
+#endif
         }
         else
         {
