@@ -43,7 +43,7 @@
 "camera" = "Camera";
 "voice" = "Spraak";
 "video" = "Video";
-"active_call" = "Active Call";
+"active_call" = "Actief Gesprek";
 "active_call_details" = "Actief gesprek (%@)";
 "later" = "Later";
 "rename" = "Herbenoemen";
@@ -66,7 +66,6 @@
 "auth_repeat_password_placeholder" = "Wachtwoord herhalen";
 "auth_repeat_new_password_placeholder" = "Bevestig je nieuwe wachtwoord";
 "auth_invalid_login_param" = "Incorrecte gebruikersnaam en/of wachtwoord";
-"auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
 "auth_invalid_user_name" = "Gebruikersnamen mogen alleen letters, cijfers, punten, afbreekstreepjes en lage streepjes bevatten";
 "auth_invalid_password" = "Het wachtwoord is te kort (min 6)";
 "auth_invalid_email" = "Dit ziet er niet uit als een geldig e-mailadres";
@@ -91,13 +90,11 @@
 "auth_reset_password_message" = "Om je wachtwoord te herstellen, voer het e-mailadres dat met je account verbonden is in:";
 "auth_reset_password_missing_email" = "Het e-mailadres dat met je account verbonden is moet ingevoerd worden.";
 "auth_reset_password_missing_password" = "Een nieuw wachtwoord moet ingevoerd worden.";
-"auth_reset_password_email_validation_message" = "An email has been sent to %@. Once you've followed the link it contains, click below.";
 "auth_reset_password_email_validation_message" = "Een e-mail is naar %@ gestuurd. Zodra je de link die het bevat hebt gevolgd, klik hieronder.";
 "auth_reset_password_next_step_button" = "I heb mijn e-mailadres geverifieerd.";
 "auth_reset_password_error_unauthorized" = "Het is niet gelukt om het e-mailadres te verifiëren: wees er zeker van dat je op de link in de e-mail hebt geklikt.";
 "auth_reset_password_error_not_found" = "Het ziet er niet naar uit dat het e-mailadres met het Matrix ID op deze Homeserver is verbonden.";
 "auth_reset_password_success_message" = "Je wachtwoord is opnieuw ingesteld.\n\nJe bent op alle apparaten uitgelogd en je zal geen notificaties meer ontvangen. Om notificaties weer in te schakelen, log op elk apparaat opnieuw in.";
-"auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
 "auth_add_email_and_phone_warning" = "Registratie met e-mail en telefoonnummer tegelijkertijd wordt nog niet ondersteund totdat de api bestaat. Alleen het telefoonnummer zal worden gebruikt. Je kan je e-mailadres later aan je profiel in de instellingen toevoegen.";
 
 // Chat creation
@@ -459,7 +456,7 @@
 "google_analytics_use_prompt" = "Wil je helpen met het verbeteren van %@ bij het automatisch rapporteren van crash rapporten en data van gebruik?";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Riot ondersteund nu eind-tot-eind sleuteling maar je moet opnieuw inloggen om het aan te zetten.\n\nJe kan het nu of later doen vanaf de applicatie instellingen.";
+"e2e_enabling_on_app_update" = "Riot ondersteunt nu eind-tot-eind sleuteling maar je moet opnieuw inloggen om het aan te zetten.\n\nJe kan het nu of later doen vanaf de applicatie instellingen.";
 "e2e_need_log_in_again" = "Je moet opnieuw inloggen om eind-tot-eind versleuteling sleutels te genereren voor dit apparaat en om de publieke sleutel naar de thuisserver te sturen.\nDit is eenmalig; excuses voor het ongemak.";
 
 // Bug report
