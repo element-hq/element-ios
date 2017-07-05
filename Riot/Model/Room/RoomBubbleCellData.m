@@ -447,6 +447,16 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     return readReceiptVerticalWhitespace;
 }
 
+- (BOOL)hasSameSenderAsBubbleCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData
+{
+    if (self.tag == RoomBubbleCellDataTagMembership || bubbleCellData.tag == RoomBubbleCellDataTagMembership)
+    {
+        // We do not want to merge membership event cells with other cell types
+        return NO;
+    }
+
+    return [super hasSameSenderAsBubbleCellData:bubbleCellData];
+}
 
 - (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState
 {
