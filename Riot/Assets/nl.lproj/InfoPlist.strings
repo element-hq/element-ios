@@ -1,0 +1,21 @@
+/*
+ Copyright 2017 Vector Creations Ltd
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+// Permissions usage explanations
+"NSCameraUsageDescription" = "De camera wordt gebruikt om foto's te schieten, video's te maken en voor videogesprekken.";
+"NSPhotoLibraryUsageDescription" = "De fotogalerij wordt gebruikt om foto's en video's te versturen.";
+"NSMicrophoneUsageDescription" = "De microffon wordt gebruikt om video's te maken en voor spraakoproepen.";
+"NSContactsUsageDescription" = "De contactenlijst wordt gebruikt om naar gebruikers te zoeken door middel van een e-mailadres of telefoonnummer op Riot.";
