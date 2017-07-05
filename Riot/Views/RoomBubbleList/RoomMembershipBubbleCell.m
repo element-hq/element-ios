@@ -18,6 +18,10 @@
 
 #import "RiotDesignValues.h"
 
+#import "RoomBubbleCellData.h"
+
+static CGFloat xibPictureViewTopConstraintConstant;
+
 @implementation RoomMembershipBubbleCell
 
 - (void)awakeFromNib
@@ -25,6 +29,32 @@
     [super awakeFromNib];
 
     self.messageTextView.tintColor = kRiotColorGreen;
+
+    // Get original xib value once
+    if (xibPictureViewTopConstraintConstant == 0)
+    {
+        xibPictureViewTopConstraintConstant = self.pictureViewTopConstraint.constant;
+    }
 }
 
+- (void)prepareForReuse
+{
+    if (self.pictureViewTopConstraint.constant != xibPictureViewTopConstraintConstant)
+    {
+        self.pictureViewTopConstraint.constant = xibPictureViewTopConstraintConstant;
+    }
+}
+
+- (void)render:(MXKCellData *)cellData
+{
+    [super render:cellData];
+
+    RoomBubbleCellData *data = (RoomBubbleCellData*)cellData;
+
+    // If the text was moved down, do the same for the icon
+    if (data.selectedComponentIndex != NSNotFound && [data.attributedTextMessage.string hasPrefix:@"\n"])
+    {
+        self.pictureViewTopConstraint.constant = xibPictureViewTopConstraintConstant + 14;
+    }
+}
 @end

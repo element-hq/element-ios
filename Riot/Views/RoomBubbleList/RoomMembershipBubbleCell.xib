@@ -84,6 +84,7 @@
                 <outlet property="msgTextViewTrailingConstraint" destination="Shz-6S-kGd" id="5ib-m6-Lna"/>
                 <outlet property="msgTextViewWidthConstraint" destination="OX6-NK-oti" id="Ptq-cZ-07y"/>
                 <outlet property="pictureView" destination="hgp-Z5-rAj" id="rKM-QG-RJN"/>
+                <outlet property="pictureViewTopConstraint" destination="2Ih-ga-N9s" id="rpQ-bN-moE"/>
             </connections>
         </tableViewCell>
     </objects>

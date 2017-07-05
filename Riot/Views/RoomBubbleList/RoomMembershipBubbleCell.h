@@ -21,4 +21,6 @@
  */
 @interface RoomMembershipBubbleCell : RoomIncomingTextMsgBubbleCell
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pictureViewTopConstraint;
+
 @end
