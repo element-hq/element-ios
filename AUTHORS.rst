@@ -26,6 +26,4 @@ Denis Morozov <dmorozkn at gmail.com>
  
 Aram Sargsyan <aram.sargsyan.1997 at gmail.com>
  * PR #1341: Read receipts details
-
-Nathan van Beelen <nathan at vanbeelen.org>
- * PR #1317: Dutch translation of the strings
+ 
