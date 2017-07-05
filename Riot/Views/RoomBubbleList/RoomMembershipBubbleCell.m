@@ -52,10 +52,12 @@
 
     RoomBubbleCellData *data = (RoomBubbleCellData*)cellData;
 
-    // If the text was moved down, do the same for the icon
-    if (data.selectedComponentIndex != NSNotFound && [data.attributedTextMessage.string hasPrefix:@"\n"])
+    // If the text was moved down (selected cell or last event), do the same for the icon
+    if ((data.containsLastMessage || data.selectedComponentIndex != NSNotFound)
+        && [data.attributedTextMessage.string hasPrefix:@"\n"])
     {
         self.pictureViewTopConstraint.constant = xibPictureViewTopConstraintConstant + 14;
     }
 }
+
 @end
