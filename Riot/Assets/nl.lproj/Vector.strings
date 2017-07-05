@@ -195,8 +195,8 @@
 
 "room_participants_action_invite" = "Nodig uit";
 "room_participants_action_leave" = "Deze ruimte verlaten";
-"room_participants_action_remove" = "Verwijder van deze ruimte;
-"room_participants_action_ban" = "Verban uit deze ruimte;
+"room_participants_action_remove" = "Verwijder van deze ruimte";
+"room_participants_action_ban" = "Verban uit deze ruimte";
 "room_participants_action_unban" = "Ontban";
 "room_participants_action_ignore" = "Verberg alle berichten van deze gebruiker";
 "room_participants_action_unignore" = "Toon alle berichten van deze gebruiker";
@@ -249,7 +249,7 @@
 "unknown_devices_alert" = "Deze ruimte bevat onbekende apparaten die niet geen geverifieerd.\nDit betekent dat er geen garantie is dat de apparaten bij de gebruikers horen waar het beweert dat het bij hoort.\nWe raden je aan om bij elk apparaat door het verificatieprocces heen te gaan voordat je doorgaat, maar je kan het bericht opnieuw versturen zonder te verifiëren als je dat prefereert.";
 "unknown_devices_send_anyway" = "Alsnog versturen";
 "unknown_devices_call_anyway" = "Alsnog bellen";
-"unknown_devices_answer_anyway" = "Alsnog beantwoorden;
+"unknown_devices_answer_anyway" = "Alsnog beantwoorden";
 "unknown_devices_verify" = "Verifiëren…";
 "unknown_devices_title" = "Onbekende apparaten";
 
