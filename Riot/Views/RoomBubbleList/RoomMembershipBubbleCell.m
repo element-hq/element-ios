@@ -20,7 +20,11 @@
 
 #import "RoomBubbleCellData.h"
 
-static CGFloat xibPictureViewTopConstraintConstant;
+@interface RoomMembershipBubbleCell ()
+{
+    CGFloat xibPictureViewTopConstraintConstant;
+}
+@end
 
 @implementation RoomMembershipBubbleCell
 
@@ -30,11 +34,8 @@ static CGFloat xibPictureViewTopConstraintConstant;
 
     self.messageTextView.tintColor = kRiotColorGreen;
 
-    // Get original xib value once
-    if (xibPictureViewTopConstraintConstant == 0)
-    {
-        xibPictureViewTopConstraintConstant = self.pictureViewTopConstraint.constant;
-    }
+    // Get original xib values
+    xibPictureViewTopConstraintConstant = self.pictureViewTopConstraint.constant;
 }
 
 - (void)prepareForReuse

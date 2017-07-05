@@ -14,13 +14,15 @@
  limitations under the License.
  */
 
-#import "RoomIncomingTextMsgBubbleCell.h"
+#import "RoomMembershipBubbleCell.h"
 
 /**
- `RoomMembershipBubbleCell` displays a membership event.
+ `RoomMembershipBubbleCellWithPaginationTitleBubbleCell` displays a membership event with a pagination title.
  */
-@interface RoomMembershipBubbleCell : RoomIncomingTextMsgBubbleCell
+@interface RoomMembershipBubbleCellWithPaginationTitleBubbleCell : RoomMembershipBubbleCell
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pictureViewTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *paginationTitleView;
+@property (weak, nonatomic) IBOutlet UILabel *paginationLabel;
+@property (weak, nonatomic) IBOutlet UIView *paginationSeparatorView;
 
 @end
