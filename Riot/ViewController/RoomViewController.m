@@ -1545,8 +1545,7 @@
         {
             cellViewClass = RoomEmptyBubbleCell.class;
         }
-        else if (bubbleData.events.count == 1
-                 && bubbleData.events[0].eventType == MXEventTypeRoomMember)
+        else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
             cellViewClass = RoomMembershipBubbleCell.class;
         }
