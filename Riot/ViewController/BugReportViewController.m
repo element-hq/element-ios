@@ -89,6 +89,11 @@
         // Allow to send empty description for crash report but not for bug report
         _sendButton.enabled = NO;
     }
+    
+    [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateNormal];
+    [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateHighlighted];
+    [_sendButton setTitle:NSLocalizedStringFromTable(@"bug_report_send", @"Vector", nil) forState:UIControlStateNormal];
+    [_sendButton setTitle:NSLocalizedStringFromTable(@"bug_report_send", @"Vector", nil) forState:UIControlStateHighlighted];
 
     _sendingContainer.hidden = YES;
 
@@ -127,6 +132,8 @@
 {
     [super viewWillDisappear:animated];
 
+    [self dismissKeyboard];
+
     if (screenShotFile)
     {
         [[NSFileManager defaultManager] removeItemAtURL:screenShotFile error:nil];
@@ -161,6 +168,12 @@
 }
 
 #pragma mark - MXKViewController
+- (void)dismissKeyboard
+{
+    // Hide the keyboard
+    [_bugReportDescriptionTextView resignFirstResponder];
+}
+
 - (void)onKeyboardShowAnimationComplete
 {
     self.keyboardView = _bugReportDescriptionTextView.inputAccessoryView.superview;

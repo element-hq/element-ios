@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
- 
+ Copyright 2017 Vector Creations Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -61,9 +62,10 @@ static RageShakeManager* sharedInstance = nil;
     return self;
 }
 
-- (void)promptCrashReportInViewController:(UIViewController*)viewController {
-    if ([MXLogger crashLog] && [MFMailComposeViewController canSendMail]) {
-        
+- (void)promptCrashReportInViewController:(UIViewController*)viewController
+{
+    if ([MXLogger crashLog])
+    {
         confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"Vector", nil)  message:nil style:MXKAlertStyleAlert];
         
         __weak typeof(self) weakSelf = self;
@@ -101,14 +103,15 @@ static RageShakeManager* sharedInstance = nil;
     }
 }
 
-- (void)stopShaking:(UIResponder*)responder {
-    
+- (void)stopShaking:(UIResponder*)responder
+{
     NSLog(@"[RageShakeManager] Stop shaking with [%@]", [responder class]);
     
     if (isShaking && [AppDelegate theDelegate].isAppForeground && !confirmationAlert
-        && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION)) {
-        
-        if ([responder isKindOfClass:[UIViewController class]] && [MFMailComposeViewController canSendMail]) {
+        && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION))
+    {
+        if ([responder isKindOfClass:[UIViewController class]])
+        {
             confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"Vector", nil)  message:nil style:MXKAlertStyleAlert];
             
             __weak typeof(self) weakSelf = self;

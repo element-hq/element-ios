@@ -45,6 +45,8 @@
 
 #import "UsersDevicesViewController.h"
 
+#import "ReadReceiptsViewController.h"
+
 #import "RoomEmptyBubbleCell.h"
 
 #import "RoomIncomingTextMsgBubbleCell.h"
@@ -162,6 +164,9 @@
     
     // Tell whether the view controller is appeared or not.
     BOOL isAppeared;
+    
+    // The search bar buttom item back up.
+    UIBarButtonItem *searchBarButtonItem;
 }
 
 @end
@@ -853,6 +858,14 @@
 {
     [self showExpandedHeader:NO];
     
+    // Force a simple title view initialised with the current room before leaving actually the room.
+    [self setRoomTitleViewClass:SimpleRoomTitleView.class];
+    self.titleView.editable = NO;
+    self.titleView.mxRoom = self.roomDataSource.room;
+    
+    // Hide the potential read marker banner.
+    self.jumpToLastUnreadBannerContainer.hidden = YES;
+    
     [super leaveRoomOnEvent:event];
 }
 
@@ -906,7 +919,7 @@
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed", roomAlias);
+                NSLog(@"[RoomVC] Join roomAlias (%@) failed", roomAlias);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 
@@ -961,15 +974,20 @@
     {
         [super setBubbleTableViewDisplayInTransition:bubbleTableViewDisplayInTransition];
         
-        [self refreshActivitiesViewDisplay];
-        
-        [self checkReadMarkerVisibility];
-        [self refreshJumpToLastUnreadBannerDisplay];
+        // Refresh additional displays when the table is ready.
+        if (!bubbleTableViewDisplayInTransition && !self.bubblesTableView.isHidden)
+        {
+            [self refreshActivitiesViewDisplay];
+            
+            [self checkReadMarkerVisibility];
+            [self refreshJumpToLastUnreadBannerDisplay];
+        }
     }
 }
 
 - (void)destroy
 {
+    searchBarButtonItem = nil;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     if (currentAlert)
@@ -1007,7 +1025,7 @@
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
         // Here [destroy] is called before [viewWillDisappear:]
-        NSLog(@"[Vector RoomVC] destroyed whereas it is still visible");
+        NSLog(@"[RoomVC] destroyed whereas it is still visible");
         
         [previewHeader removeFromSuperview];
         previewHeader = nil;
@@ -1067,6 +1085,12 @@
 
 - (void)refreshRoomTitle
 {
+    if (searchBarButtonItem && !self.navigationItem.rightBarButtonItem)
+    {
+        // Restore by default the search bar button.
+        self.navigationItem.rightBarButtonItem = searchBarButtonItem;
+    }
+    
     // Set the right room title view
     if (self.isRoomPreview)
     {
@@ -1101,7 +1125,8 @@
         }
         else
         {
-            // Hide the search button
+            // Remove the search button temporarily
+            searchBarButtonItem = self.navigationItem.rightBarButtonItem;
             self.navigationItem.rightBarButtonItem = nil;
             
             [self setRoomTitleViewClass:SimpleRoomTitleView.class];
@@ -1198,7 +1223,7 @@
         // - if the event details view is displayed
         if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.state.membership != MXMembershipJoin) || !self.splitViewController || encryptionInfoView.superview || eventDetailsView.superview))
         {
-            NSLog(@"[Vector RoomVC] Show expanded header ignored");
+            NSLog(@"[RoomVC] Show expanded header ignored");
             return;
         }
         
@@ -1279,7 +1304,7 @@
         // or if the view controller is not embedded inside a split view controller yet.
         if (isVisible && (isSizeTransitionInProgress == YES || !self.splitViewController))
         {
-            NSLog(@"[Vector RoomVC] Show preview header ignored");
+            NSLog(@"[RoomVC] Show preview header ignored");
             return;
         }
         
@@ -1686,6 +1711,11 @@
                 [self showEncryptionInformation:tappedEvent];
             }
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnReceiptsContainer])
+        {
+            MXKReceiptSendersContainer *container = userInfo[kMXKRoomBubbleCellReceiptsContainerKey];
+            [ReadReceiptsViewController openInViewController:self fromContainer:container withSession:self.mainSession];
+        }
         else
         {
             // Keep default implementation for other actions
@@ -1984,7 +2014,7 @@
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf stopActivityIndicator];
 
-                        NSLog(@"[Vector RoomVC] Redact event (%@) failed", selectedEvent.eventId);
+                        NSLog(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
                         //Alert user
                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                         
@@ -2071,7 +2101,7 @@
                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                                 [strongSelf stopActivityIndicator];
 
-                                NSLog(@"[Vector RoomVC] Ignore user (%@) failed", selectedEvent.sender);
+                                NSLog(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
                                 //Alert user
                                 [[AppDelegate theDelegate] showErrorAsAlert:error];
 
@@ -2093,7 +2123,7 @@
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf stopActivityIndicator];
 
-                        NSLog(@"[Vector RoomVC] Report event (%@) failed", selectedEvent.eventId);
+                        NSLog(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
                         //Alert user
                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                         
@@ -2351,6 +2381,46 @@
             unknownDevices = nil;
         }
     }
+    else if ([[segue identifier] isEqualToString:@"showContactPicker"])
+    {
+        ContactsTableViewController *contactsPickerViewController = (ContactsTableViewController*)pushedViewController;
+        
+        // Set delegate to handle selected contact
+        contactsPickerViewController.contactsTableViewControllerDelegate = self;
+        
+        // Prepare its data source
+        ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] init];
+        contactsDataSource.areSectionsShrinkable = YES;
+        contactsDataSource.displaySearchInputInContactsList = YES;
+        contactsDataSource.forceMatrixIdInDisplayName = YES;
+        // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
+        contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
+        
+        // List all the participants matrix user id to ignore them during the contacts search.
+        MXSession* session = self.roomDataSource.mxSession;
+        NSString* roomId = self.roomDataSource.roomId;
+        MXRoom *room = [session roomWithRoomId:roomId];
+        if (room)
+        {
+            NSArray *members = [room.state membersWithoutConferenceUser];
+            
+            for (MXRoomMember *mxMember in members)
+            {
+                // Check his status
+                if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
+                {
+                    // Create the contact related to this member
+                    MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
+                    [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:mxMember.userId];
+                }
+            }
+        }
+        
+        [contactsPickerViewController showSearch:YES];
+        contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
+        
+        [contactsPickerViewController displayList:contactsDataSource];
+    }
 
     // Hide back button title
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -2560,6 +2630,16 @@
     [super scrollViewDidScroll:scrollView];
     
     [self checkReadMarkerVisibility];
+    
+    // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
+    if (!self.roomDataSource.isLive && ![self isRoomPreview])
+    {
+        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.contentInset.bottom;
+        if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
+        {
+            [self goBackToLive];
+        }
+    }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -2722,6 +2802,11 @@
         selectedRoomDetailsIndex = 0;
         [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
     }
+    else if (tappedView == titleView.addParticipantMask)
+    {
+        // Open contact picker
+        [self performSegueWithIdentifier:@"showContactPicker" sender:self];
+    }
     else if (tappedView == previewHeader.rightButton)
     {
         // 'Join' button has been pressed
@@ -2810,7 +2895,7 @@
             } failure:^(NSError *error) {
                 
                 [self stopActivityIndicator];
-                NSLog(@"[Vector RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.state.roomId);
+                NSLog(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.state.roomId);
                 
             }];
         }
@@ -3011,7 +3096,7 @@
             {
                 [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
 
-                    NSLog(@"[Vector RoomVC] onOngoingConferenceCallPressed");
+                    NSLog(@"[RoomVC] onOngoingConferenceCallPressed");
 
                     // Make sure there is not yet a call
                     if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
@@ -3025,7 +3110,8 @@
         {
             // Show "scroll to bottom" icon when the most recent message is not visible,
             // or when the timelime is not live (this icon is used to go back to live).
-            if (!self.roomDataSource.isLive || (!self.bubblesTableView.isHidden && [self isBubblesTableScrollViewAtTheBottom] == NO))
+            // Note: we check if `currentEventIdAtTableBottom` is set to know whether the table has been rendered at least once.
+            if (!self.roomDataSource.isLive || (currentEventIdAtTableBottom && [self isBubblesTableScrollViewAtTheBottom] == NO))
             {
                 // Retrieve the unread messages count
                 NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
@@ -3039,37 +3125,7 @@
                 
                 [roomActivitiesView displayScrollToBottomIcon:unreadCount onIconTapGesture:^{
                     
-                    if (self.roomDataSource.isLive)
-                    {
-                        // Enable the read marker display, and disable its update (in order to not mark as read all the new messages by default).
-                        self.roomDataSource.showReadMarker = YES;
-                        self.updateRoomReadMarker = NO;
-                        
-                        [self scrollBubblesTableViewToBottomAnimated:YES];
-                    }
-                    else
-                    {
-                        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
-                        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-                        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES];
-                        
-                        // Scroll to bottom the bubble history on the display refresh.
-                        shouldScrollToBottomOnTableRefresh = YES;
-                        
-                        [self displayRoom:roomDataSource];
-                        
-                        // The room view controller do not have here the data source ownership.
-                        self.hasRoomDataSourceOwnership = NO;
-                        
-                        [self refreshActivitiesViewDisplay];
-                        [self refreshJumpToLastUnreadBannerDisplay];
-                        
-                        if (self.saveProgressTextInput)
-                        {
-                            // Restore the potential message partially typed before jump to last unread messages.
-                            self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
-                        }
-                    }
+                    [self goBackToLive];
                     
                 }];
             }
@@ -3084,6 +3140,41 @@
         [swipe setNumberOfTouchesRequired:1];
         [swipe setDirection:UISwipeGestureRecognizerDirectionDown];
         [roomActivitiesView addGestureRecognizer:swipe];
+    }
+}
+
+- (void)goBackToLive
+{
+    if (self.roomDataSource.isLive)
+    {
+        // Enable the read marker display, and disable its update (in order to not mark as read all the new messages by default).
+        self.roomDataSource.showReadMarker = YES;
+        self.updateRoomReadMarker = NO;
+        
+        [self scrollBubblesTableViewToBottomAnimated:YES];
+    }
+    else
+    {
+        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES];
+        
+        // Scroll to bottom the bubble history on the display refresh.
+        shouldScrollToBottomOnTableRefresh = YES;
+        
+        [self displayRoom:roomDataSource];
+        
+        // The room view controller do not have here the data source ownership.
+        self.hasRoomDataSourceOwnership = NO;
+        
+        [self refreshActivitiesViewDisplay];
+        [self refreshJumpToLastUnreadBannerDisplay];
+        
+        if (self.saveProgressTextInput)
+        {
+            // Restore the potential message partially typed before jump to last unread messages.
+            self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+        }
     }
 }
 
@@ -3604,6 +3695,128 @@
             [self.roomDataSource.room forgetReadMarker];
         }
     }
+}
+
+#pragma mark - ContactsTableViewControllerDelegate
+
+- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
+{
+    __weak typeof(self) weakSelf = self;
+    
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+    
+    // Invite ?
+    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_invite_prompt_msg", @"Vector", nil), contact.displayName];
+    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_invite_prompt_title", @"Vector", nil)
+                                           message:promptMsg
+                                             style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:MXKAlertActionStyleCancel
+                                                              handler:^(MXKAlert *alert) {
+                                                                  
+                                                                  if (weakSelf)
+                                                                  {
+                                                                      __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                      strongSelf->currentAlert = nil;
+                                                                  }
+                                                                  
+                                                              }];
+    
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"invite", @"Vector", nil)
+                               style:MXKAlertActionStyleDefault
+                             handler:^(MXKAlert *alert) {
+                                 
+                                 // Sanity check
+                                 if (!weakSelf)
+                                 {
+                                     return;
+                                 }
+                                 
+                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                 strongSelf->currentAlert = nil;
+                                 
+                                 MXSession* session = strongSelf.roomDataSource.mxSession;
+                                 NSString* roomId = strongSelf.roomDataSource.roomId;
+                                 MXRoom *room = [session roomWithRoomId:roomId];
+                                 
+                                 NSArray *identifiers = contact.matrixIdentifiers;
+                                 NSString *participantId;
+                                 
+                                 if (identifiers.count)
+                                 {
+                                     participantId = identifiers.firstObject;
+                                     
+                                     // Invite this user if a room is defined
+                                     [room inviteUser:participantId success:^{
+                                         
+                                         // Refresh display by removing the contacts picker
+                                         [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
+                                         
+                                     } failure:^(NSError *error) {
+                                         
+                                         NSLog(@"[RoomVC] Invite %@ failed", participantId);
+                                         // Alert user
+                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                         
+                                     }];
+                                 }
+                                 else
+                                 {
+                                     if (contact.emailAddresses.count)
+                                     {
+                                         // This is a local contact, consider the first email by default.
+                                         // TODO: Prompt the user to select the right email.
+                                         MXKEmail *email = contact.emailAddresses.firstObject;
+                                         participantId = email.emailAddress;
+                                     }
+                                     else
+                                     {
+                                         // This is the text filled by the user.
+                                         participantId = contact.displayName;
+                                     }
+                                     
+                                     // Is it an email or a Matrix user ID?
+                                     if ([MXTools isEmailAddress:participantId])
+                                     {
+                                         [room inviteUserByEmail:participantId success:^{
+                                             
+                                             // Refresh display by removing the contacts picker
+                                             [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
+                                             
+                                         } failure:^(NSError *error) {
+                                             
+                                             NSLog(@"[RoomVC] Invite be email %@ failed", participantId);
+                                             // Alert user
+                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                             
+                                         }];
+                                     }
+                                     else //if ([MXTools isMatrixUserIdentifier:participantId])
+                                     {
+                                         [room inviteUser:participantId success:^{
+                                             
+                                             // Refresh display by removing the contacts picker
+                                             [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
+                                             
+                                         } failure:^(NSError *error) {
+                                             
+                                             NSLog(@"[RoomVC] Invite %@ failed", participantId);
+                                             // Alert user
+                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                             
+                                         }];
+                                     }
+                                 }
+                                 
+                             }];
+    
+    currentAlert.mxkAccessibilityIdentifier = @"RoomVCInviteAlert";
+    [currentAlert showInViewController:self];
 }
 
 @end

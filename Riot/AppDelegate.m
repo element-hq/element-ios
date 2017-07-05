@@ -28,6 +28,8 @@
 #import "SettingsViewController.h"
 #import "ContactDetailsViewController.h"
 
+#import "BugReportViewController.h"
+
 #import "NSBundle+MatrixKit.h"
 #import "MatrixSDK/MatrixSDK.h"
 
@@ -790,6 +792,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Set Google Analytics dispatch interval to e.g. 20 seconds.
             gai.dispatchInterval = 20;
+
+#ifdef DEBUG
+            // Disable GAI in debug as it pollutes stats and crashes in GA
+            gai.dryRun = YES;
+#endif
         }
         else
         {
@@ -824,6 +831,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSString *filePath = [MXLogger crashLog];
     if (filePath)
     {
+        // Do not show the crash report dialog if it is already displayed
+        if ([self.window.rootViewController.childViewControllers[0] isKindOfClass:[UINavigationController class]]
+             && [((UINavigationController*)self.window.rootViewController.childViewControllers[0]).visibleViewController isKindOfClass:[BugReportViewController class]])
+        {
+            return;
+        }
+
         NSString *description = [[NSString alloc] initWithContentsOfFile:filePath
                                                             usedEncoding:nil
                                                                    error:nil];
@@ -2314,7 +2328,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Release properly
             [currentCallViewController destroy];
-            currentCallViewController = nil;
             
             if (completion)
             {

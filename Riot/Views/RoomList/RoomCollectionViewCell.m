@@ -22,6 +22,8 @@
 
 #import "MXRoom+Riot.h"
 
+#import "MXTools.h"
+
 @implementation RoomCollectionViewCell
 
 #pragma mark - Class methods
@@ -39,6 +41,8 @@
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
     
     self.roomTitle.textColor = kRiotTextColorBlack;
+    self.roomTitle1.textColor = kRiotTextColorBlack;
+    self.roomTitle2.textColor = kRiotTextColorBlack;
     self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
     
     // Prepare direct room border
@@ -54,8 +58,6 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -68,7 +70,24 @@
     if (roomCellData)
     {
         // Report computed values as is
+        self.roomTitle.hidden = NO;
         self.roomTitle.text = roomCellData.roomDisplayname;
+        self.roomTitle1.hidden = YES;
+        self.roomTitle2.hidden = YES;
+        
+        // Check whether the room display name is an alias to keep visible the HS.
+        if ([MXTools isMatrixRoomAlias:roomCellData.roomDisplayname])
+        {
+            NSRange range = [roomCellData.roomDisplayname rangeOfString:@":" options:NSBackwardsSearch];
+            if (range.location != NSNotFound)
+            {
+                self.roomTitle.hidden = YES;
+                self.roomTitle1.hidden = NO;
+                self.roomTitle1.text = [roomCellData.roomDisplayname substringToIndex:range.location + 1];
+                self.roomTitle2.hidden = NO;
+                self.roomTitle2.text = [roomCellData.roomDisplayname substringFromIndex:range.location + 1];
+            }
+        }
         
         // Notify unreads and bing
         if (roomCellData.hasUnread)
@@ -87,11 +106,11 @@
             // Use bold font for the room title
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
             }
             else
             {
-                self.roomTitle.font = [UIFont boldSystemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
             }
         }
         else if (roomCellData.roomSummary.room.state.membership == MXMembershipInvite)
@@ -107,11 +126,11 @@
             // Use bold font for the room title
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
             }
             else
             {
-                self.roomTitle.font = [UIFont boldSystemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
             }
         }
         else
@@ -119,11 +138,11 @@
             // The room title is not bold anymore
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
             }
             else
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13];
             }
         }
         
@@ -137,15 +156,20 @@
     }
 }
 
+- (MXKCellData*)renderedCellData
+{
+    return roomCellData;
+}
+
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
-    return 100;
+    return 115;
 }
 
 + (CGSize)defaultCellSize
 {
-    return CGSizeMake(80, 100);
+    return CGSizeMake(80, 115);
 }
 
 - (void)prepareForReuse
@@ -158,6 +182,8 @@
         [self removeGestureRecognizer:self.gestureRecognizers[0]];
     }
     self.tag = -1;
+    
+    roomCellData = nil;
 }
 
 @end
