@@ -14,6 +14,10 @@
 		3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */; };
 		325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */; };
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
+		32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */; };
+		32AE61E51F0A971B007255F4 /* RoomMembershipBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */; };
+		32AE61E91F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E71F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m */; };
+		32AE61EA1F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E81F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib */; };
 		32AE61F21F0D2183007255F4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61EC1F0D2183007255F4 /* InfoPlist.strings */; };
 		32AE61F31F0D2183007255F4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61EE1F0D2183007255F4 /* Localizable.strings */; };
 		32AE61F41F0D2183007255F4 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61F01F0D2183007255F4 /* Vector.strings */; };
@@ -486,6 +490,12 @@
 		3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerTableViewCell.xib; sourceTree = "<group>"; };
 		325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenLogo.png; path = Assets/Images/LaunchScreenLogo.png; sourceTree = "<group>"; };
 		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCell.h; sourceTree = "<group>"; };
+		32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipBubbleCell.m; sourceTree = "<group>"; };
+		32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipBubbleCell.xib; sourceTree = "<group>"; };
+		32AE61E61F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
+		32AE61E71F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m; sourceTree = "<group>"; };
+		32AE61E81F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
 		32AE61ED1F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32AE61EF1F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Localizable.strings; sourceTree = "<group>"; };
 		32AE61F11F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Vector.strings; sourceTree = "<group>"; };
@@ -1706,6 +1716,12 @@
 				F06CDD661EF01E3900870B75 /* RoomEmptyBubbleCell.h */,
 				F06CDD671EF01E3900870B75 /* RoomEmptyBubbleCell.m */,
 				F06CDD681EF01E3900870B75 /* RoomEmptyBubbleCell.xib */,
+				32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */,
+				32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */,
+				32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */,
+				32AE61E61F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h */,
+				32AE61E71F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m */,
+				32AE61E81F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib */,
 				F083BCA81E7009EC00A9B29C /* RoomIncomingAttachmentBubbleCell.h */,
 				F083BCA91E7009EC00A9B29C /* RoomIncomingAttachmentBubbleCell.m */,
 				F083BCAA1E7009EC00A9B29C /* RoomIncomingAttachmentBubbleCell.xib */,
@@ -2248,6 +2264,7 @@
 				F083BD2C1E7009ED00A9B29C /* animatedLogo-4.png in Resources */,
 				F083BD7E1E7009ED00A9B29C /* error@2x.png in Resources */,
 				F083BE931E7009ED00A9B29C /* SimpleRoomTitleView.xib in Resources */,
+				32AE61EA1F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BD951E7009ED00A9B29C /* leave.png in Resources */,
 				F083BE2C1E7009ED00A9B29C /* AuthInputsView.xib in Resources */,
 				F083BD6B1E7009ED00A9B29C /* disclosure_icon.png in Resources */,
@@ -2359,6 +2376,7 @@
 				F083BDE51E7009ED00A9B29C /* voice_call_icon@3x.png in Resources */,
 				F083BE201E7009ED00A9B29C /* RoomParticipantsViewController.xib in Resources */,
 				F083BE471E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				32AE61E51F0A971B007255F4 /* RoomMembershipBubbleCell.xib in Resources */,
 				F083BDA01E7009ED00A9B29C /* mod_icon@3x.png in Resources */,
 				F083BE491E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */,
@@ -2463,6 +2481,7 @@
 				F083BE1E1E7009ED00A9B29C /* RoomMessagesSearchViewController.m in Sources */,
 				F083BE231E7009ED00A9B29C /* RoomViewController.m in Sources */,
 				F083BE9E1E7009ED00A9B29C /* TableViewCellWithCheckBoxes.m in Sources */,
+				32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */,
 				F083BDFC1E7009ED00A9B29C /* HomeMessagesSearchDataSource.m in Sources */,
 				F083BE0E1E7009ED00A9B29C /* ContactsTableViewController.m in Sources */,
 				F083BE861E7009ED00A9B29C /* RoomTableViewCell.m in Sources */,
@@ -2521,6 +2540,7 @@
 				F083BE5C1E7009ED00A9B29C /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F0E05A061E9682E9004B83FB /* ContactsDataSource.m in Sources */,
 				F083BE401E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
+				32AE61E91F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDFD1E7009ED00A9B29C /* PublicRoomsDirectoryDataSource.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,

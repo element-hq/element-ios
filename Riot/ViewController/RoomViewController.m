@@ -85,6 +85,9 @@
 #import "RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
 
+#import "RoomMembershipBubbleCell.h"
+#import "RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h"
+
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
 #import "AvatarGenerator.h"
@@ -277,6 +280,9 @@
     [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
+
+    [self.bubblesTableView registerClass:RoomMembershipBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
@@ -1540,6 +1546,17 @@
         if (!bubbleData.attributedTextMessage)
         {
             cellViewClass = RoomEmptyBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellViewClass = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class;
+            }
+            else
+            {
+                cellViewClass = RoomMembershipBubbleCell.class;
+            }
         }
         else if (bubbleData.isIncoming)
         {
