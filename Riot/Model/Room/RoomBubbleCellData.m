@@ -37,6 +37,12 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         {
             // Membership events have their own cell type
             self.tag = RoomBubbleCellDataTagMembership;
+
+            // Membership events can be collapsed together
+            self.collapsable = YES;
+
+            // Collapse them by default
+            self.collapsed = YES;
         }
 
         // Increase maximum number of components
