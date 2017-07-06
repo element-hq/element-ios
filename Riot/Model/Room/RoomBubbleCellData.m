@@ -220,7 +220,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         if (bubbleComponents.count)
         {
             // Set position of the first component
-            CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
+            CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile || self.attachment.type == MXKAttachmentTypeAudio) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
             MXKRoomBubbleComponent *component;
             NSUInteger index = 0;
             for (; index < bubbleComponents.count; index++)

@@ -129,7 +129,7 @@
             image = [UIImage imageNamed:@"file_photo_icon"];
             break;
         case MXKAttachmentTypeAudio:
-            image = [UIImage imageNamed:@"file_audio_icon"];
+            image = [UIImage imageNamed:@"file_music_icon"];
             break;
         case MXKAttachmentTypeVideo:
             image = [UIImage imageNamed:@"file_video_icon"];
