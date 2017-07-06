@@ -1543,7 +1543,7 @@
         id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
         
         // Select the suitable table view cell class, by considering first the empty bubble cell.
-        if (!bubbleData.attributedTextMessage)
+        if (bubbleData.hasNoDisplay)
         {
             cellViewClass = RoomEmptyBubbleCell.class;
         }
