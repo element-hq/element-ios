@@ -378,7 +378,7 @@
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:selectedEventId];
 
-        if (cellData.collapsed)
+        if (cellData.collapsed && cellData.nextCollapsableCellData)
         {
             // Select nothing for a collased cell but open it
             [self collapseRoomBubble:cellData collapsed:NO];
