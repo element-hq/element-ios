@@ -88,6 +88,7 @@
 #import "RoomMembershipBubbleCell.h"
 #import "RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h"
 #import "RoomMembershipCollapsedBubbleCell.h"
+#import "RoomMembershipExpandedBubbleCell.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
@@ -285,6 +286,7 @@
     [self.bubblesTableView registerClass:RoomMembershipBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipCollapsedBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipExpandedBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedBubbleCell.defaultReuseIdentifier];
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
@@ -1557,7 +1559,20 @@
             }
             else
             {
-                cellViewClass = bubbleData.collapsed ? RoomMembershipCollapsedBubbleCell.class : RoomMembershipBubbleCell.class;
+                if (bubbleData.collapsed)
+                {
+                    cellViewClass = RoomMembershipCollapsedBubbleCell.class;
+                }
+                else if (bubbleData.collapsedAttributedTextMessage)
+                {
+                    // The cell (and its serie) is not collapsed but this cell is the first
+                    // of the serie. So, use the cell with the "collapse" button
+                    cellViewClass = RoomMembershipExpandedBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomMembershipBubbleCell.class;
+                }
             }
         }
         else if (bubbleData.isIncoming)
