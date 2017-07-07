@@ -35,6 +35,30 @@
 
 @implementation EventFormatter
 
+- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
+{
+    NSString *displayText;
+
+    if (events.count)
+    {
+        if (events[0].eventType == MXEventTypeRoomMember)
+        {
+            // This is a serie for cells tagged with RoomBubbleCellDataTagMembership
+            // TODO: Build a complete summary like Riot-web
+            // TODO: i18n the temp string
+            displayText = [NSString stringWithFormat:@"%@ membership changes", @(events.count)];
+        }
+    }
+
+    if (displayText)
+    {
+        // Build the attributed string with the right font and color for the events
+        return [self renderString:displayText forEvent:events[0]];
+    }
+
+    return [super attributedStringFromEvents:events withRoomState:roomState error:error];
+}
+
 - (instancetype)initWithMatrixSession:(MXSession *)matrixSession
 {
     self = [super initWithMatrixSession:matrixSession];
