@@ -377,10 +377,30 @@
     if (selectedEventId.length)
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:selectedEventId];
-        cellData.selectedEventId = selectedEventId;
+
+        if (cellData.collapsed)
+        {
+            // Select nothing for a collased cell but open it
+            [self expandRoomBubble:cellData];
+            return;
+        }
+        else
+        {
+            cellData.selectedEventId = selectedEventId;
+        }
     }
     
     _selectedEventId = selectedEventId;
+}
+
+- (void)expandRoomBubble:(RoomBubbleCellData*)cellData
+{
+    RoomBubbleCellData *nextBubbleData = (RoomBubbleCellData*)cellData;
+    do
+    {
+        nextBubbleData.collapsed = NO;
+    }
+    while ((nextBubbleData = nextBubbleData.nextCollapsableCellData));
 }
 
 @end
