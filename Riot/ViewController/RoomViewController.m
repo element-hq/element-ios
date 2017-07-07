@@ -87,6 +87,7 @@
 
 #import "RoomMembershipBubbleCell.h"
 #import "RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h"
+#import "RoomMembershipCollapsedBubbleCell.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
@@ -283,6 +284,7 @@
 
     [self.bubblesTableView registerClass:RoomMembershipBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipCollapsedBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedBubbleCell.defaultReuseIdentifier];
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
@@ -1555,7 +1557,7 @@
             }
             else
             {
-                cellViewClass = RoomMembershipBubbleCell.class;
+                cellViewClass = bubbleData.collapsed ? RoomMembershipCollapsedBubbleCell.class : RoomMembershipBubbleCell.class;
             }
         }
         else if (bubbleData.isIncoming)
