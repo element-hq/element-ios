@@ -110,6 +110,19 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     return attributedTextMessage;
 }
 
+#pragma mark - Bubble collapsing
+
+- (BOOL)collaspseWith:(id<MXKRoomBubbleCellDataStoring>)cellData
+{
+    if (self.tag == RoomBubbleCellDataTagMembership
+        && cellData.tag == RoomBubbleCellDataTagMembership)
+    {
+        return YES;
+    }
+    
+    return [super collaspseWith:cellData];
+}
+
 #pragma mark - 
 
 - (NSAttributedString*)refreshAttributedTextMessage
