@@ -45,8 +45,7 @@
         {
             // This is a serie for cells tagged with RoomBubbleCellDataTagMembership
             // TODO: Build a complete summary like Riot-web
-            // TODO: i18n the temp string
-            displayText = [NSString stringWithFormat:@"%@ membership changes", @(events.count)];
+            displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_member_updates", @"Vector", nil), events.count];
         }
     }
 
