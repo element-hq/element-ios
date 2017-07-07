@@ -1553,26 +1553,28 @@
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
-            if (bubbleData.isPaginationFirstBubble)
+            if (bubbleData.collapsed)
             {
-                cellViewClass = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class;
-            }
-            else
-            {
-                if (bubbleData.collapsed)
+                if (bubbleData.nextCollapsableCellData)
                 {
                     cellViewClass = RoomMembershipCollapsedBubbleCell.class;
                 }
-                else if (bubbleData.collapsedAttributedTextMessage)
-                {
-                    // The cell (and its serie) is not collapsed but this cell is the first
-                    // of the serie. So, use the cell with the "collapse" button
-                    cellViewClass = RoomMembershipExpandedBubbleCell.class;
-                }
                 else
                 {
-                    cellViewClass = RoomMembershipBubbleCell.class;
+                    // Use a normal membership cell for a single membership event
+                    bubbleData.attributedTextMessage = bubbleData.attributedTextMessageBackup;
+                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
                 }
+            }
+            else if (bubbleData.collapsedAttributedTextMessage)
+            {
+                // The cell (and its serie) is not collapsed but this cell is the first
+                // of the serie. So, use the cell with the "collapse" button.
+                cellViewClass = RoomMembershipExpandedBubbleCell.class;
+            }
+            else
+            {
+                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
             }
         }
         else if (bubbleData.isIncoming)
