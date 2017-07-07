@@ -57,11 +57,6 @@
                     <constraint firstAttribute="bottom" secondItem="HTH-5n-MSU" secondAttribute="bottom" id="oTk-3F-SEC"/>
                     <constraint firstAttribute="trailingMargin" secondItem="stw-MD-khQ" secondAttribute="trailing" constant="-8" id="qO5-ZZ-mHI"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="subviews">
-                        <exclude reference="stw-MD-khQ"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomBubbleCell"/>
