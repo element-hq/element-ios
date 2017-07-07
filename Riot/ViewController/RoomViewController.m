@@ -1750,6 +1750,10 @@
             MXKReceiptSendersContainer *container = userInfo[kMXKRoomBubbleCellReceiptsContainerKey];
             [ReadReceiptsViewController openInViewController:self fromContainer:container withSession:self.mainSession];
         }
+        else if ([actionIdentifier isEqualToString:kRoomMembershipExpandedBubbleCellTapOnCollapseButton])
+        {
+            [self.roomDataSource collapseRoomBubble:((MXKRoomBubbleTableViewCell*)cell).bubbleData collapsed:YES];
+        }
         else
         {
             // Keep default implementation for other actions

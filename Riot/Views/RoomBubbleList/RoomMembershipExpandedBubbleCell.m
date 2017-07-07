@@ -20,6 +20,8 @@
 
 #import "RoomBubbleCellData.h"
 
+NSString *const kRoomMembershipExpandedBubbleCellTapOnCollapseButton = @"kRoomMembershipExpandedBubbleCellTapOnCollapseButton";
+
 @implementation RoomMembershipExpandedBubbleCell
 
 - (void)awakeFromNib
@@ -37,8 +39,10 @@
 
 - (IBAction)onCollapseButtonTap:(id)sender
 {
-    [((MXKRoomBubbleCellData*)self.bubbleData).roomDataSource collapseRoomBubble:self.bubbleData collapsed:YES];
-    
+    if (self.delegate)
+    {
+        [self.delegate cell:self didRecognizeAction:kRoomMembershipExpandedBubbleCellTapOnCollapseButton userInfo:nil];
+    }
 }
 
 @end
