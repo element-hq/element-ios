@@ -35,9 +35,6 @@
 
 @interface RecentsViewController ()
 {
-    // The room identifier related to the cell which is in editing mode (if any).
-    NSString *editedRoomId;
-    
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
     
@@ -140,7 +137,7 @@
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         // Leave potential editing mode
-        [self setEditing:NO];
+        [self cancelEditionMode:isRefreshPending];
         
     }];
     
@@ -225,7 +222,7 @@
     [super viewWillDisappear:animated];
     
     // Leave potential editing mode
-    [self setEditing:NO];
+    [self cancelEditionMode:NO];
     
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
@@ -287,6 +284,8 @@
         return;
     }
     
+    isRefreshPending = NO;
+    
     if (editedRoomId)
     {
         // Check whether the user didn't leave the room
@@ -298,12 +297,11 @@
         }
         else
         {
-            // Cancel the editing mode
-            editedRoomId = nil;
+            // Cancel the editing mode, a new refresh will be triggered.
+            [self cancelEditionMode:YES];
+            return;
         }
     }
-    
-    isRefreshPending = NO;
     
     // Force reset existing sticky headers if any
     [self resetStickyHeaders];
@@ -378,6 +376,26 @@
         if (indexPath)
         {
             [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+    }
+}
+
+- (void)cancelEditionMode:(BOOL)forceRefresh
+{
+    if (self.recentsTableView.isEditing || self.isEditing)
+    {
+        // Leave editing mode first
+        isRefreshPending = forceRefresh;
+        [self setEditing:NO];
+    }
+    else
+    {
+        // Clean
+        editedRoomId = nil;
+        
+        if (forceRefresh)
+        {
+            [self refreshRecentsTable];
         }
     }
 }
@@ -683,11 +701,6 @@
 
 #pragma mark - Internal methods
 
-- (void)scrollToTop:(BOOL)animated
-{
-    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top) animated:animated];
-}
-
 -(void)showPublicRoomsDirectory
 {
     // Here the recents view controller is displayed inside a unified search view controller.
@@ -743,7 +756,7 @@
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
         
-        [self setEditing:NO];
+        [self cancelEditionMode:isRefreshPending];
         
         // Decline the invitation
         [invitedRoom leave:^{
@@ -893,12 +906,7 @@
 
 - (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    editedRoomId = nil;
-    
-    if (isRefreshPending)
-    {
-        [self refreshRecentsTable];
-    }
+    [self cancelEditionMode:isRefreshPending];
 }
 
 - (void)leaveEditedRoom
@@ -924,8 +932,7 @@
                 [self stopActivityIndicator];
                 
                 // Force table refresh
-                editedRoomId = nil;
-                [self refreshRecentsTable];
+                [self cancelEditionMode:YES];
                 
             } failure:^(NSError *error) {
                 
@@ -937,13 +944,13 @@
                 [self stopActivityIndicator];
                 
                 // Leave editing mode
-                [self setEditing:NO];
+                [self cancelEditionMode:isRefreshPending];
             }];
         }
         else
         {
             // Leave editing mode
-            [self setEditing:NO];
+            [self cancelEditionMode:isRefreshPending];
         }
     }
 }
@@ -963,15 +970,14 @@
                 [self stopActivityIndicator];
                 
                 // Force table refresh
-                editedRoomId = nil;
-                [self refreshRecentsTable];
+                [self cancelEditionMode:YES];
                 
             }];
         }
         else
         {
             // Leave editing mode
-            [self setEditing:NO];
+            [self cancelEditionMode:isRefreshPending];
         }
     }
 }
@@ -991,7 +997,7 @@
                 [self stopActivityIndicator];
                 
                 // Leave editing mode
-                [self setEditing:NO];
+                [self cancelEditionMode:isRefreshPending];
 
                 
             } failure:^(NSError *error) {
@@ -1004,14 +1010,14 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
                 
                 // Leave editing mode
-                [self setEditing:NO];
+                [self cancelEditionMode:isRefreshPending];
                 
             }];
         }
         else
         {
             // Leave editing mode
-            [self setEditing:NO];
+            [self cancelEditionMode:isRefreshPending];
         }
     }
 }
@@ -1033,7 +1039,7 @@
                     [self stopActivityIndicator];
                     
                     // Leave editing mode
-                    [self setEditing:NO];
+                    [self cancelEditionMode:isRefreshPending];
                     
                 }];
             }
@@ -1044,7 +1050,7 @@
                     [self stopActivityIndicator];
                     
                     // Leave editing mode
-                    [self setEditing:NO];
+                    [self cancelEditionMode:isRefreshPending];
                     
                 }];
             }
@@ -1052,7 +1058,7 @@
         else
         {
             // Leave editing mode
-            [self setEditing:NO];
+            [self cancelEditionMode:isRefreshPending];
         }
     }
 }
@@ -1658,7 +1664,12 @@
     [currentAlert showInViewController:self];
 }
 
-#pragma mark - Table view scroll handling
+#pragma mark - Table view scrolling
+
+- (void)scrollToTop:(BOOL)animated
+{
+    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top) animated:animated];
+}
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
 {

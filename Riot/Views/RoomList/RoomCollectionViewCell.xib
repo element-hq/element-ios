@@ -82,17 +82,27 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jta-3V-4wL">
+                        <rect key="frame" x="30" y="105" width="20" height="10"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="10" id="eU4-Qq-wum"/>
+                            <constraint firstAttribute="width" constant="20" id="sH5-UK-Q7A"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="5Yd-df-HbB" secondAttribute="trailing" constant="12" id="0gr-xn-dfD"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="oxX-IL-dG4" secondAttribute="bottom" constant="5" id="1JB-d1-zb9"/>
                 <constraint firstItem="oxX-IL-dG4" firstAttribute="top" secondItem="T1Q-RS-8o6" secondAttribute="bottom" constant="4" id="2DB-H2-E2v"/>
+                <constraint firstAttribute="bottom" secondItem="jta-3V-4wL" secondAttribute="bottom" id="3rt-Ig-1rG"/>
                 <constraint firstItem="oxX-IL-dG4" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="4" id="6gu-JD-Gb1"/>
                 <constraint firstItem="X8H-1U-wc3" firstAttribute="centerX" secondItem="oxX-IL-dG4" secondAttribute="centerX" id="K9T-eO-WNb"/>
                 <constraint firstItem="xws-BR-H47" firstAttribute="centerX" secondItem="T1Q-RS-8o6" secondAttribute="centerX" id="Lo3-Ov-Bw8"/>
                 <constraint firstAttribute="trailing" secondItem="Q6g-b0-3sZ" secondAttribute="trailing" id="Mf1-H6-oH4"/>
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="centerX" secondItem="oxX-IL-dG4" secondAttribute="centerX" id="OQy-tF-e3Z"/>
+                <constraint firstItem="jta-3V-4wL" firstAttribute="centerX" secondItem="eCk-zY-LXq" secondAttribute="centerX" id="R87-mq-SlO"/>
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="top" secondItem="X8H-1U-wc3" secondAttribute="bottom" id="XDO-yX-Zs5"/>
                 <constraint firstItem="X8H-1U-wc3" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="7" id="XU5-Lv-9Xn"/>
                 <constraint firstItem="T1Q-RS-8o6" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" constant="10" id="cc7-bg-15Z"/>
@@ -108,6 +118,7 @@
             </constraints>
             <connections>
                 <outlet property="directRoomBorderView" destination="xws-BR-H47" id="34A-hu-DXq"/>
+                <outlet property="editionArrowView" destination="jta-3V-4wL" id="XLj-Cx-3bn"/>
                 <outlet property="encryptedRoomIcon" destination="5Yd-df-HbB" id="5pc-Vi-wMZ"/>
                 <outlet property="missedNotifAndUnreadBadgeBgView" destination="Q6g-b0-3sZ" id="jNG-dA-dfP"/>
                 <outlet property="missedNotifAndUnreadBadgeBgViewWidthConstraint" destination="jeX-st-swl" id="4sa-wn-bgT"/>
