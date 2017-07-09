@@ -1,1 +1,5 @@
-
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Die Kamera wird verwendet um Fotos und Videos aufzunehmen sowie Video-Anrufe zu führen.";
+"NSPhotoLibraryUsageDescription" = "Die Foto-Bibliothek wird verwendet um Fotos und Videos zu senden.";
+"NSMicrophoneUsageDescription" = "Das Mikrofon wird verwendet um Videos aufzunehmen sowie Gespräche zu führen.";
+"NSContactsUsageDescription" = "Das Adressbuch wird verwendet um nach Nutzern aufgrund ihrer E-Mail oder Telefon-Nummer zu suchen.";
