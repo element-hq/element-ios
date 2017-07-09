@@ -469,7 +469,6 @@
 		F0E05A451EA0F9EB004B83FB /* tab_rooms.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2D1EA0F9EB004B83FB /* tab_rooms.png */; };
 		F0E05A461EA0F9EB004B83FB /* tab_rooms@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2E1EA0F9EB004B83FB /* tab_rooms@2x.png */; };
 		F0E05A471EA0F9EB004B83FB /* tab_rooms@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2F1EA0F9EB004B83FB /* tab_rooms@3x.png */; };
-		FBF371BE240C8AADBC113365 /* libPods-Riot Targets-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB1D3DA81B94A281F404FEC /* libPods-Riot Targets-Riot.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -537,14 +536,9 @@
 		32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		4AB8072E21D9EC377EDB0ED5 /* Pods-Riot-Riot Share Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot-Riot Share Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot-Riot Share Extension/Pods-Riot-Riot Share Extension.release.xcconfig"; sourceTree = "<group>"; };
-		4CB1D3DA81B94A281F404FEC /* libPods-Riot Targets-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot Targets-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		51481EE04F8ED8C76DF00CC2 /* Pods-Riot Targets-Riot Share Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot Targets-Riot Share Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot Targets-Riot Share Extension/Pods-Riot Targets-Riot Share Extension.debug.xcconfig"; sourceTree = "<group>"; };
-		68571F15FD88B1FE4A4DEDE7 /* Pods-Riot Targets-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot Targets-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot Targets-Riot/Pods-Riot Targets-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		6B58373020E541A6BF349B58 /* Pods-Riot-Riot Share Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot-Riot Share Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot-Riot Share Extension/Pods-Riot-Riot Share Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		819E16C311F0444E87E41D61 /* libPods-Riot-Riot Share Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot-Riot Share Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		83D4B8215EAB127C0AA0A3C9 /* Pods-Riot Targets-Riot Share Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot Targets-Riot Share Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot Targets-Riot Share Extension/Pods-Riot Targets-Riot Share Extension.release.xcconfig"; sourceTree = "<group>"; };
-		9D6C6C16BBCEDA740E3D8F79 /* libPods-Riot Targets-Riot Share Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot Targets-Riot Share Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6EEF4817F530E6D3263CE0B /* libPods-Riot Share Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot Share Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		F02C1A841E8EB04C0045A404 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
@@ -1109,7 +1103,6 @@
 		F0E05A2D1EA0F9EB004B83FB /* tab_rooms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_rooms.png; sourceTree = "<group>"; };
 		F0E05A2E1EA0F9EB004B83FB /* tab_rooms@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_rooms@2x.png"; sourceTree = "<group>"; };
 		F0E05A2F1EA0F9EB004B83FB /* tab_rooms@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_rooms@3x.png"; sourceTree = "<group>"; };
-		F98A1D0268D43A19387BC583 /* Pods-Riot Targets-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot Targets-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot Targets-Riot/Pods-Riot Targets-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		F9D678EF54918C036FDEDBF9 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1126,7 +1119,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */,
-				FBF371BE240C8AADBC113365 /* libPods-Riot Targets-Riot.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1181,8 +1173,6 @@
 				7D8737F782E108CFD6908691 /* libPods-Riot.a */,
 				C6EEF4817F530E6D3263CE0B /* libPods-Riot Share Extension.a */,
 				819E16C311F0444E87E41D61 /* libPods-Riot-Riot Share Extension.a */,
-				4CB1D3DA81B94A281F404FEC /* libPods-Riot Targets-Riot.a */,
-				9D6C6C16BBCEDA740E3D8F79 /* libPods-Riot Targets-Riot Share Extension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1194,10 +1184,6 @@
 				F9D678EF54918C036FDEDBF9 /* Pods-Riot.release.xcconfig */,
 				6B58373020E541A6BF349B58 /* Pods-Riot-Riot Share Extension.debug.xcconfig */,
 				4AB8072E21D9EC377EDB0ED5 /* Pods-Riot-Riot Share Extension.release.xcconfig */,
-				F98A1D0268D43A19387BC583 /* Pods-Riot Targets-Riot.debug.xcconfig */,
-				68571F15FD88B1FE4A4DEDE7 /* Pods-Riot Targets-Riot.release.xcconfig */,
-				51481EE04F8ED8C76DF00CC2 /* Pods-Riot Targets-Riot Share Extension.debug.xcconfig */,
-				83D4B8215EAB127C0AA0A3C9 /* Pods-Riot Targets-Riot Share Extension.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
