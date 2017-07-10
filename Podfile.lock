@@ -26,6 +26,11 @@ PODS:
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
+  - DTCoreText/Extension (1.6.20):
+    - DTFoundation/Core (~> 1.7.5)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
+    - DTFoundation/DTHTMLParser (~> 1.7.5)
+    - DTFoundation/UIKit (~> 1.7.5)
   - DTFoundation/Core (1.7.12)
   - DTFoundation/DTAnimatedGIF (1.7.12)
   - DTFoundation/DTHTMLParser (1.7.12):
@@ -41,11 +46,31 @@ PODS:
   - libPhoneNumber-iOS (0.9.10)
   - MatrixKit (0.5.2):
     - cmark (~> 0.24.1)
-    - DTCoreText (~> 1.6.17)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
-    - MatrixSDK (= 0.8.2)
+    - MatrixKit/Core (= 0.5.2)
+  - MatrixKit/AppExtension (0.5.2):
+    - cmark (~> 0.24.1)
+    - DTCoreText/Extension
+    - HPGrowingTextView (~> 1.1)
+    - libPhoneNumber-iOS (~> 0.9.10)
+    - MatrixKit/Core
+    - MatrixSDK/AppExtension
+  - MatrixKit/Core (0.5.2):
+    - cmark (~> 0.24.1)
+    - DTCoreText
+    - HPGrowingTextView (~> 1.1)
+    - libPhoneNumber-iOS (~> 0.9.10)
+    - MatrixSDK/Core
   - MatrixSDK (0.8.2):
+    - AFNetworking (~> 3.1.0)
+    - GZIP (~> 1.1.1)
+    - MatrixSDK/Core (= 0.8.2)
+  - MatrixSDK/AppExtension (0.8.2):
+    - AFNetworking (~> 3.1.0)
+    - GZIP (~> 1.1.1)
+    - MatrixSDK/Core
+  - MatrixSDK/Core (0.8.2):
     - AFNetworking (~> 3.1.0)
     - GZIP (~> 1.1.1)
   - OLMKit (2.2.2):
@@ -63,10 +88,19 @@ DEPENDENCIES:
   - DTCoreText
   - GBDeviceInfo (~> 4.3.0)
   - GoogleAnalytics
-  - MatrixKit (= 0.5.2)
+  - MatrixKit (from `../matrix-ios-kit/MatrixKit.podspec`)
+  - MatrixKit/AppExtension (from `../matrix-ios-kit/MatrixKit.podspec`)
+  - MatrixSDK (from `../matrix-ios-sdk/MatrixSDK.podspec`)
+  - MatrixSDK/AppExtension (from `../matrix-ios-sdk/MatrixSDK.podspec`)
   - OLMKit
   - Realm (~> 2.8.1)
   - WebRTC (= 58.17.16937)
+
+EXTERNAL SOURCES:
+  MatrixKit:
+    :path: ../matrix-ios-kit/MatrixKit.podspec
+  MatrixSDK:
+    :path: ../matrix-ios-sdk/MatrixSDK.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -78,12 +112,12 @@ SPEC CHECKSUMS:
   GZIP: f8beb59597f651e6970a45b816508a9c6d700b77
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: f721ae4d5854bce60934f9fb9b0b28e8e68913cb
-  MatrixKit: daad23e5724d8f26a44a322f4d259a26b614ddc6
-  MatrixSDK: 1f9b5fa6334485c431884d2d2ea9ac5f65557528
+  MatrixKit: ca0494158f6acaf725e31ef94b7a481c5280b6ae
+  MatrixSDK: 3210d156fee0d4628dbe9180bb1709cfb155cf31
   OLMKit: b9d8c0ffee9ea8c45bc0aaa9afb47f93fba7efbd
   Realm: 3601ef091c8c499a31101d8563b991e75546cdce
   WebRTC: 1e9a85bf75509eec44be6478c64e9de65ac82332
 
-PODFILE CHECKSUM: ba9311a74b4af32f75db5053d87c9f7181a42d17
+PODFILE CHECKSUM: 72052e939c3aeb10e1f729ff8e934cc1f3dc7d72
 
 COCOAPODS: 1.2.1

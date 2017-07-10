@@ -8,9 +8,9 @@ target "Riot" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Riot has been built
-pod 'MatrixKit', '0.5.2'
+#pod 'MatrixKit', '0.5.2'
 
-# The lastest release available on the CocoaPods repository 
+# The lastest release available on the CocoaPods repository
 #pod 'MatrixKit'
 
 # The develop branch version
@@ -19,8 +19,8 @@ pod 'MatrixKit', '0.5.2'
 
 # The one used for developing both MatrixSDK and MatrixKit
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
-#pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
-#pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
+pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
 pod 'GBDeviceInfo', '~> 4.3.0'
 
@@ -38,6 +38,25 @@ pod 'Realm', '~> 2.8.1'
 pod 'OLMKit', :inhibit_warnings => true
 pod 'cmark', :inhibit_warnings => true
 pod 'DTCoreText', :inhibit_warnings => true
+    
+end
+
+
+target "RiotShareExtension" do
+
+pod 'GoogleAnalytics'
+# The Google WebRTC stack
+pod 'WebRTC', '58.17.16937'
+# OLMKit for crypto
+pod 'OLMKit'
+#pod 'OLMKit', :path => '../olm/OLMKit.podspec'
+pod 'Realm', '~> 2.8.1'
+
+pod 'MatrixSDK/AppExtension', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kitMatrixKit.podspec'
 
 end
+
+
+
 
