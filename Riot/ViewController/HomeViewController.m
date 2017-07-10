@@ -148,6 +148,11 @@
     UIView *view = gestureRecognizer.view;
     NSInteger section = view.tag;
     
+    if (selectedRoomId)
+    {
+        [self cancelEditionMode:YES];
+    }
+    
     // Scroll to the top this section
     if ([self.recentsTableView numberOfRowsInSection:section] > 0)
     {
@@ -420,7 +425,15 @@
                 NSIndexPath *indexPath = [self.dataSource cellIndexPathWithRoomId:selectedRoomId andMatrixSession:room.mxSession];
                 indexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
                 UICollectionViewCell *roomCollectionViewCell = [tableViewCellWithCollectionView.collectionView cellForItemAtIndexPath:indexPath];
-                [tableViewCellWithCollectionView.collectionView scrollRectToVisible:roomCollectionViewCell.frame animated:YES];
+                if (roomCollectionViewCell)
+                {
+                    [tableViewCellWithCollectionView.collectionView scrollRectToVisible:roomCollectionViewCell.frame animated:YES];
+                }
+                else
+                {
+                    [tableViewCellWithCollectionView.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+                }  
+                
                 [self.recentsTableView scrollRectToVisible:tableViewCellWithCollectionView.frame animated:YES];
                 
                 // Disable table view scrolling, and defined the swipe gesture recognizers used to cancel the edition mode
