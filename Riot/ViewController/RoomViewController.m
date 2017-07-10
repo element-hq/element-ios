@@ -88,6 +88,7 @@
 #import "RoomMembershipBubbleCell.h"
 #import "RoomMembershipWithPaginationTitleBubbleCell.h"
 #import "RoomMembershipCollapsedBubbleCell.h"
+#import "RoomMembershipCollapsedWithPaginationTitleBubbleCell.h"
 #import "RoomMembershipExpandedBubbleCell.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
@@ -286,6 +287,7 @@
     [self.bubblesTableView registerClass:RoomMembershipBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipCollapsedBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipCollapsedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipExpandedBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedBubbleCell.defaultReuseIdentifier];
     
     // Prepare jump to last unread banner
@@ -1557,7 +1559,7 @@
             {
                 if (bubbleData.nextCollapsableCellData)
                 {
-                    cellViewClass = RoomMembershipCollapsedBubbleCell.class;
+                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipCollapsedWithPaginationTitleBubbleCell.class : RoomMembershipCollapsedBubbleCell.class;
                 }
                 else
                 {
@@ -1570,7 +1572,7 @@
             {
                 // The cell (and its serie) is not collapsed but this cell is the first
                 // of the serie. So, use the cell with the "collapse" button.
-                cellViewClass = RoomMembershipExpandedBubbleCell.class;
+                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipExpandedBubbleCell.class;
             }
             else
             {

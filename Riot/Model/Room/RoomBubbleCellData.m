@@ -117,7 +117,17 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     if (self.tag == RoomBubbleCellDataTagMembership
         && cellData.tag == RoomBubbleCellDataTagMembership)
     {
-        return YES;
+        // Keep a pagination between events of different days
+        NSString *bubbleDateString = [roomDataSource.eventFormatter dateStringFromDate:self.date withTime:NO];
+        NSString *eventDateString = [roomDataSource.eventFormatter dateStringFromDate:((RoomBubbleCellData*)cellData).date withTime:NO];
+        if (bubbleDateString && eventDateString && [bubbleDateString isEqualToString:eventDateString])
+        {
+            return YES;
+        }
+        else
+        {
+            return NO;
+        }
     }
     
     return [super collaspseWith:cellData];

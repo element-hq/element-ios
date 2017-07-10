@@ -16,6 +16,8 @@
 		321082B31F0E9F41002E0091 /* RoomMembershipCollapsedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */; };
 		322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */; };
 		322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */; };
+		32471CDC1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */; };
+		32471CDD1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32471CDB1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib */; };
 		325072141E8C0AC900A084B6 /* LaunchScreenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */; };
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
 		32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */; };
@@ -498,6 +500,9 @@
 		3228069D1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipExpandedBubbleCell.h; sourceTree = "<group>"; };
 		3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipExpandedBubbleCell.m; sourceTree = "<group>"; };
 		3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipExpandedBubbleCell.xib; sourceTree = "<group>"; };
+		32471CD91F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
+		32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.m; sourceTree = "<group>"; };
+		32471CDB1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
 		325072131E8C0AC900A084B6 /* LaunchScreenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenLogo.png; path = Assets/Images/LaunchScreenLogo.png; sourceTree = "<group>"; };
 		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCell.h; sourceTree = "<group>"; };
@@ -1735,6 +1740,9 @@
 				321082AF1F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.h */,
 				321082B01F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m */,
 				321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */,
+				32471CD91F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.h */,
+				32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */,
+				32471CDB1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib */,
 				3228069D1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.h */,
 				3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */,
 				3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */,
@@ -2119,6 +2127,7 @@
 				F083BD3F1E7009ED00A9B29C /* call_speaker_off_icon.png in Resources */,
 				F083BD3D1E7009ED00A9B29C /* call_hangup_icon@2x.png in Resources */,
 				F083BE551E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				32471CDD1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BD301E7009ED00A9B29C /* bubbles_bg_landscape.png in Resources */,
 				F083BDA41E7009ED00A9B29C /* notifications.png in Resources */,
 				F083BE0F1E7009ED00A9B29C /* ContactsTableViewController.xib in Resources */,
@@ -2506,6 +2515,7 @@
 				F083BDF51E7009ED00A9B29C /* main.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
 				F083BE331E7009ED00A9B29C /* DeviceView.m in Sources */,
+				32471CDC1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE2B1E7009ED00A9B29C /* AuthInputsView.m in Sources */,
 				321082B21F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				F083BE661E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
