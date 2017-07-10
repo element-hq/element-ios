@@ -14,12 +14,13 @@
  limitations under the License.
  */
 
-#import "RoomMembershipCollapsedBubbleCell.h"
+#import "RoomMembershipExpandedBubbleCell.h"
 
 /**
- `RoomMembershipWithPaginationTitleBubbleCell` displays a sum-up of collapsed membership cells with a pagination title.
+ `RoomMembershipExpandedWithPaginationTitleBubbleCell` displays the first membership event of serie
+ that can be collapsable with a pagination title.
  */
-@interface RoomMembershipCollapsedWithPaginationTitleBubbleCell : RoomMembershipCollapsedBubbleCell
+@interface RoomMembershipExpandedWithPaginationTitleBubbleCell : RoomMembershipExpandedBubbleCell
 
 @property (weak, nonatomic) IBOutlet UIView *paginationTitleView;
 @property (weak, nonatomic) IBOutlet UILabel *paginationLabel;
