@@ -20,8 +20,8 @@
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
 		32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */; };
 		32AE61E51F0A971B007255F4 /* RoomMembershipBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */; };
-		32AE61E91F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E71F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m */; };
-		32AE61EA1F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E81F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib */; };
+		32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E71F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m */; };
+		32AE61EA1F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E81F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.xib */; };
 		32AE61F21F0D2183007255F4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61EC1F0D2183007255F4 /* InfoPlist.strings */; };
 		32AE61F31F0D2183007255F4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61EE1F0D2183007255F4 /* Localizable.strings */; };
 		32AE61F41F0D2183007255F4 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61F01F0D2183007255F4 /* Vector.strings */; };
@@ -503,9 +503,9 @@
 		32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCell.h; sourceTree = "<group>"; };
 		32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipBubbleCell.m; sourceTree = "<group>"; };
 		32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipBubbleCell.xib; sourceTree = "<group>"; };
-		32AE61E61F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
-		32AE61E71F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m; sourceTree = "<group>"; };
-		32AE61E81F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
+		32AE61E61F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
+		32AE61E71F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipWithPaginationTitleBubbleCell.m; sourceTree = "<group>"; };
+		32AE61E81F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
 		32AE61ED1F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32AE61EF1F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Localizable.strings; sourceTree = "<group>"; };
 		32AE61F11F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Vector.strings; sourceTree = "<group>"; };
@@ -1729,9 +1729,9 @@
 				32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */,
 				32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */,
 				32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */,
-				32AE61E61F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h */,
-				32AE61E71F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m */,
-				32AE61E81F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib */,
+				32AE61E61F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.h */,
+				32AE61E71F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m */,
+				32AE61E81F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.xib */,
 				321082AF1F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.h */,
 				321082B01F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m */,
 				321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */,
@@ -2281,7 +2281,7 @@
 				F083BD2C1E7009ED00A9B29C /* animatedLogo-4.png in Resources */,
 				F083BD7E1E7009ED00A9B29C /* error@2x.png in Resources */,
 				F083BE931E7009ED00A9B29C /* SimpleRoomTitleView.xib in Resources */,
-				32AE61EA1F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.xib in Resources */,
+				32AE61EA1F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BD951E7009ED00A9B29C /* leave.png in Resources */,
 				F083BE2C1E7009ED00A9B29C /* AuthInputsView.xib in Resources */,
 				F083BD6B1E7009ED00A9B29C /* disclosure_icon.png in Resources */,
@@ -2560,7 +2560,7 @@
 				F083BE5C1E7009ED00A9B29C /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F0E05A061E9682E9004B83FB /* ContactsDataSource.m in Sources */,
 				F083BE401E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
-				32AE61E91F0CE099007255F4 /* RoomMembershipBubbleCellWithPaginationTitleBubbleCell.m in Sources */,
+				32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDFD1E7009ED00A9B29C /* PublicRoomsDirectoryDataSource.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,

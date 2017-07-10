@@ -17,9 +17,9 @@
 #import "RoomMembershipBubbleCell.h"
 
 /**
- `RoomMembershipBubbleCellWithPaginationTitleBubbleCell` displays a membership event with a pagination title.
+ `RoomMembershipWithPaginationTitleBubbleCell` displays a membership event with a pagination title.
  */
-@interface RoomMembershipBubbleCellWithPaginationTitleBubbleCell : RoomMembershipBubbleCell
+@interface RoomMembershipWithPaginationTitleBubbleCell : RoomMembershipBubbleCell
 
 @property (weak, nonatomic) IBOutlet UIView *paginationTitleView;
 @property (weak, nonatomic) IBOutlet UILabel *paginationLabel;

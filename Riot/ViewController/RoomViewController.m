@@ -86,7 +86,7 @@
 #import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
 
 #import "RoomMembershipBubbleCell.h"
-#import "RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h"
+#import "RoomMembershipWithPaginationTitleBubbleCell.h"
 #import "RoomMembershipCollapsedBubbleCell.h"
 #import "RoomMembershipExpandedBubbleCell.h"
 
@@ -284,7 +284,7 @@
     [self.bubblesTableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
 
     [self.bubblesTableView registerClass:RoomMembershipBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipCollapsedBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipExpandedBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedBubbleCell.defaultReuseIdentifier];
     
@@ -1563,7 +1563,7 @@
                 {
                     // Use a normal membership cell for a single membership event
                     bubbleData.attributedTextMessage = bubbleData.attributedTextMessageBackup;
-                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
+                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
                 }
             }
             else if (bubbleData.collapsedAttributedTextMessage)
@@ -1574,7 +1574,7 @@
             }
             else
             {
-                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
+                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
             }
         }
         else if (bubbleData.isIncoming)
