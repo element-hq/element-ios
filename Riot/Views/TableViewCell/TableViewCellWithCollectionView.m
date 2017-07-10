@@ -18,6 +18,13 @@
 
 @implementation TableViewCellWithCollectionView
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.editionViewHeightConstraint.constant = 0;
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
@@ -25,6 +32,11 @@
     self.collectionView.tag = -1;
     self.collectionView.dataSource = nil;
     self.collectionView.delegate = nil;
+    
+    self.editionViewHeightConstraint.constant = 0;
+    self.editionView.hidden = YES;
+    
+    self.collectionView.scrollEnabled = YES;
 }
 
 @end

@@ -53,6 +53,18 @@
     
     // Disable the user interaction on the room avatar.
     self.roomAvatar.userInteractionEnabled = NO;
+    
+    // define arrow mask
+    CAShapeLayer *arrowMaskLayer = [[CAShapeLayer alloc] init];
+    arrowMaskLayer.frame = self.editionArrowView.bounds;
+    CGSize viewSize = self.editionArrowView.frame.size;
+    UIBezierPath *path = [[UIBezierPath alloc] init];
+    [path moveToPoint:CGPointMake(0, viewSize.height)]; // arrow left bottom point
+    [path addLineToPoint:CGPointMake(viewSize.width / 2, 0)]; // arrow head
+    [path addLineToPoint:CGPointMake(viewSize.width, viewSize.height)]; // arrow right bottom point
+    [path closePath]; // arrow top side
+    arrowMaskLayer.path = path.CGPath;
+    self.editionArrowView.layer.mask = arrowMaskLayer;
 }
 
 - (void)layoutSubviews
@@ -182,8 +194,20 @@
         [self removeGestureRecognizer:self.gestureRecognizers[0]];
     }
     self.tag = -1;
+    self.collectionViewTag = -1;
+    
+    self.editionArrowView.hidden = YES;
     
     roomCellData = nil;
+}
+
+- (NSString*)roomId
+{
+    if (roomCellData)
+    {
+        return roomCellData.roomSummary.roomId;
+    }
+    return nil;
 }
 
 @end
