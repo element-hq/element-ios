@@ -20,6 +20,8 @@
 
 #import "RoomBubbleCellData.h"
 
+#import "AvatarGenerator.h"
+
 @implementation RoomMembershipCollapsedBubbleCell
 
 - (void)awakeFromNib
@@ -68,9 +70,15 @@
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
             avatarThumbURL = [nextBubbleData.mxSession.matrixRestClient urlOfContentThumbnail:nextBubbleData.senderAvatarUrl toFitViewSize:avatarView.frame.size withMethod:MXThumbnailingMethodCrop];
         }
+
+        // Use the Riot style placeholder
+        if (!nextBubbleData.senderAvatarPlaceholder)
+        {
+            nextBubbleData.senderAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:nextBubbleData.senderId withDisplayName:nextBubbleData.senderDisplayName];
+        }
         
         avatarView.enableInMemoryCache = YES;
-        [avatarView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage: nextBubbleData.senderAvatarPlaceholder ? nextBubbleData.senderAvatarPlaceholder : self.picturePlaceholder];
+        [avatarView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage: nextBubbleData.senderAvatarPlaceholder];
 
         // Clear the default background color of a MXKImageView instance
         avatarView.backgroundColor = [UIColor clearColor];
