@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,22 +33,22 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZfS-wG-RjJ">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cE0-0g-Su5" userLabel="Capture View">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="607.33333333333337"/>
                             <subviews>
                                 <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="w7z-f3-kdT" userLabel="Preview Container View">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="607.33333333333337"/>
                                     <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCPreviewContainerView"/>
                                 </view>
                                 <button opaque="NO" alpha="0.40000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXk-ZD-TYS" userLabel="Camera Switch Button">
-                                    <rect key="frame" x="317" y="24" width="46" height="46"/>
+                                    <rect key="frame" x="356" y="24" width="46" height="46"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCameraSwitchButton"/>
                                     <constraints>
@@ -63,7 +63,7 @@
                                     </connections>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera_switch.png" translatesAutoresizingMaskIntoConstraints="NO" id="etc-h5-0u2">
-                                    <rect key="frame" x="324" y="35" width="32" height="24"/>
+                                    <rect key="frame" x="363" y="35" width="32" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="32" id="Mci-PP-bNY"/>
                                         <constraint firstAttribute="height" constant="24" id="cqi-nf-MLe"/>
@@ -92,10 +92,10 @@
                                     </constraints>
                                 </imageView>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dxP-iB-dWk" userLabel="Camera Activity Indicator">
-                                    <rect key="frame" x="177.5" y="265" width="20" height="20"/>
+                                    <rect key="frame" x="197" y="294" width="20" height="20"/>
                                 </activityIndicatorView>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXP-Vh-zUp" customClass="MXKPieChartView">
-                                    <rect key="frame" x="141.5" y="432.5" width="92" height="92"/>
+                                    <rect key="frame" x="161" y="490" width="92" height="92"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCameraVideoCaptureProgressView"/>
                                     <constraints>
@@ -104,7 +104,7 @@
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRG-b0-CjY" userLabel="Capture Button">
-                                    <rect key="frame" x="146" y="437" width="83" height="83"/>
+                                    <rect key="frame" x="165.66666666666666" y="494.33333333333331" width="83" height="83"/>
                                     <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCaptureButton"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="uRG-b0-CjY" secondAttribute="height" multiplier="1:1" id="1aP-D4-EI5"/>
@@ -128,7 +128,7 @@
                                 <constraint firstItem="VA2-Cu-dX6" firstAttribute="centerY" secondItem="sO8-Ds-mXZ" secondAttribute="centerY" id="Fze-aW-Jg3"/>
                                 <constraint firstItem="aXP-Vh-zUp" firstAttribute="centerX" secondItem="uRG-b0-CjY" secondAttribute="centerX" id="IWo-s2-YaV"/>
                                 <constraint firstAttribute="bottom" secondItem="w7z-f3-kdT" secondAttribute="bottom" id="Odc-BN-d37"/>
-                                <constraint firstAttribute="width" secondItem="cE0-0g-Su5" secondAttribute="height" multiplier="15:22" id="QDd-Tq-4zL"/>
+                                <constraint firstAttribute="width" secondItem="cE0-0g-Su5" secondAttribute="height" multiplier="15:22" priority="750" id="QDd-Tq-4zL"/>
                                 <constraint firstItem="VA2-Cu-dX6" firstAttribute="centerX" secondItem="sO8-Ds-mXZ" secondAttribute="centerX" id="Xmg-sf-k4n"/>
                                 <constraint firstItem="etc-h5-0u2" firstAttribute="centerY" secondItem="PXk-ZD-TYS" secondAttribute="centerY" id="cW6-ue-5Vb"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="leading" secondItem="cE0-0g-Su5" secondAttribute="leading" id="eH4-0j-WXi"/>
@@ -143,10 +143,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jzs-FL-Rqd" userLabel="Collection Container View">
-                            <rect key="frame" x="0.0" y="550" width="375" height="450"/>
+                            <rect key="frame" x="0.0" y="607.33333333333326" width="414" height="449.99999999999977"/>
                             <subviews>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Cnz-mP-gE5">
-                                    <rect key="frame" x="0.0" y="2" width="375" height="448"/>
+                                    <rect key="frame" x="0.0" y="2" width="414" height="447.99999999999989"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="wY5-ZF-Ge2">
                                         <size key="itemSize" width="148" height="148"/>
@@ -173,10 +173,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QeN-lu-6hK" userLabel="Library View">
-                            <rect key="frame" x="0.0" y="1000" width="375" height="74"/>
+                            <rect key="frame" x="0.0" y="1057.3333333333333" width="414" height="74"/>
                             <subviews>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="74" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mCG-GH-ADc" userLabel="Albums Table View">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="74"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MediaPickerVCAlbumsTableView"/>
@@ -208,6 +208,7 @@
                         <constraint firstAttribute="trailing" secondItem="jzs-FL-Rqd" secondAttribute="trailing" id="g7G-DC-uSR"/>
                         <constraint firstAttribute="trailing" secondItem="QeN-lu-6hK" secondAttribute="trailing" id="kbe-Uh-tug"/>
                         <constraint firstItem="jzs-FL-Rqd" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="bottom" id="q35-tT-GBd"/>
+                        <constraint firstItem="cE0-0g-Su5" firstAttribute="height" relation="lessThanOrEqual" secondItem="ZfS-wG-RjJ" secondAttribute="height" id="w7s-40-3O5"/>
                         <constraint firstItem="jzs-FL-Rqd" firstAttribute="leading" secondItem="ZfS-wG-RjJ" secondAttribute="leading" id="wZf-nP-JTD"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>

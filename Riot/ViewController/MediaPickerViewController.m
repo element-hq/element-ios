@@ -127,15 +127,11 @@ static void *RecordingContext = &RecordingContext;
     // Register album table view cell class
     [self.userAlbumsTableView registerClass:MediaAlbumTableCell.class forCellReuseIdentifier:[MediaAlbumTableCell defaultReuseIdentifier]];
     
-    // Adjust camera preview ratio
-    [self handleScreenOrientation];
-    
     // Force UI refresh according to selected  media types - Set default media type if none.
     self.mediaTypes = _mediaTypes ? _mediaTypes : @[(NSString *)kUTTypeImage];
     
     // Check camera access before set up AV capture
     [self checkDeviceAuthorizationStatus];
-    [self setupAVCapture];
     
     // Set camera preview background
     self.cameraPreviewContainerView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
@@ -159,6 +155,19 @@ static void *RecordingContext = &RecordingContext;
         [self reloadUserLibraryAlbums];
         
     }];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    // Here the views frames are ready, set up the camera preview if it is not already done.
+    if (!captureSession)
+    {
+        // Adjust camera preview ratio
+        [self handleScreenOrientation];
+        [self setupAVCapture];
+    }
 }
 
 - (void)dealloc
@@ -198,7 +207,7 @@ static void *RecordingContext = &RecordingContext;
     
     // Hide the navigation bar, and force the preview camera to be at the top (behing the status bar)
     self.navigationController.navigationBarHidden = YES;
-    [self scrollViewDidScroll:_mainScrollView];
+    self.mainScrollView.contentOffset = CGPointMake(0, 0);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -410,6 +419,7 @@ static void *RecordingContext = &RecordingContext;
                                                                               attribute:NSLayoutAttributeHeight
                                                                              multiplier:ratio
                                                                                constant:0.0f];
+        self.cameraPreviewContainerAspectRatio.priority = 750;
         
         [NSLayoutConstraint activateConstraints:@[self.cameraPreviewContainerAspectRatio]];
         
