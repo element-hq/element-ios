@@ -18,4 +18,12 @@
 
 @implementation RoomEmptyBubbleCell
 
+- (void)prepareForReuse
+{
+    if (self.heightConstraint != 0)
+    {
+        self.heightConstraint = 0;
+    }
+}
+
 @end
