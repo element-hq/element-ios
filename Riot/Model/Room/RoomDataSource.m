@@ -135,14 +135,15 @@
         NSArray *bubbleComponents = cellData.bubbleComponents;
         
         // Display timestamp of the last message
-        if (cellData.containsLastMessage)
+        if (cellData.containsLastMessage && !cellData.collapsed)
         {
             [bubbleCell addTimestampLabelForComponent:cellData.mostRecentComponentIndex];
         }
         
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
-        if ((self.showBubbleReceipts && cellData.hasReadReceipts) || self.showReadMarker)
+        // Ignore the read receipts on collapsed bubbles
+        if ((self.showBubbleReceipts && cellData.hasReadReceipts && !cellData.collapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -155,7 +156,7 @@
                 if (component.event.sentState != MXEventSentStateFailed)
                 {
                     // Handle read receipts (if any)
-                    if (self.showBubbleReceipts && cellData.hasReadReceipts)
+                    if (self.showBubbleReceipts && cellData.hasReadReceipts && !cellData.collapsed)
                     {
                         // Get the events receipts by ignoring the current user receipt.
                         NSArray* receipts = [self.room getEventReceipts:component.event.eventId sorted:YES];
