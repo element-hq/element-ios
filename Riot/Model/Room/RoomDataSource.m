@@ -130,12 +130,6 @@
     // Finalize cell view customization here
     if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
     {
-        // Nothing to do for collapsed cells
-        if (roomBubbleCellData.collapsed)
-        {
-            return cell;
-        }
-
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
         NSArray *bubbleComponents = cellData.bubbleComponents;
