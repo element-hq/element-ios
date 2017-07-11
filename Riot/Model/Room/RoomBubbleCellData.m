@@ -88,7 +88,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 {
     @synchronized(bubbleComponents)
     {
-        if (!attributedTextMessage.length && bubbleComponents.count)
+        if (self.hasAttributedTextMessage && !attributedTextMessage.length && bubbleComponents.count)
         {
             // Attributed text message depends on the room read receipts which must be retrieved on the main thread to prevent us from race conditions.
             // Check here the current thread, this is just a sanity check because the attributed text message
