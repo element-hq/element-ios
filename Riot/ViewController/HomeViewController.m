@@ -31,10 +31,13 @@
     RecentsDataSource *recentsDataSource;
     
     // Room edition
-    NSInteger editedSection;
+    NSInteger selectedSection;
     NSString *selectedRoomId;
     UISwipeGestureRecognizer *horizontalSwipeGestureRecognizer;
     UISwipeGestureRecognizer *verticalSwipeGestureRecognizer;
+    // The content offset of the collection in which the edited room is displayed.
+    // We store this value to prevent the collection view from scrolling to the beginning (observed on iOS < 10).
+    CGFloat selectedCollectionViewContentOffset;
 }
 @end
 
@@ -44,8 +47,9 @@
 {
     [super finalizeInit];
     
-    editedSection = -1;
+    selectedSection = -1;
     selectedRoomId = nil;
+    selectedCollectionViewContentOffset = -1;
     
     self.screenName = @"Home";
 }
@@ -87,6 +91,17 @@
     [self moveAllCollectionsToLeft];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+    if (selectedRoomId)
+    {
+        // Cancel room edition in case of device screen rotation.
+        [self cancelEditionMode:YES];
+    }
+    
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+}
+
 - (void)dealloc
 {
     
@@ -99,6 +114,8 @@
 
 - (void)moveAllCollectionsToLeft
 {
+    selectedCollectionViewContentOffset = -1;
+    
     // Scroll all rooms collections to their beginning
     for (NSInteger section = 0; section < [self numberOfSectionsInTableView:self.recentsTableView]; section++)
     {
@@ -200,7 +217,13 @@
         [super cancelEditionMode:NO];
         
         editedRoomId = selectedRoomId = nil;
-        editedSection = -1;
+        
+        if (selectedCollectionViewContentOffset == -1)
+        {
+            selectedSection = -1;
+        }
+        // Else, do not reset the selectedSection here,
+        // it is used during the table refresh to apply the original collection view offset.
         
         // Remove existing gesture recognizers
         [self.recentsTableView removeGestureRecognizer:horizontalSwipeGestureRecognizer];
@@ -246,12 +269,12 @@
     tableViewCell.collectionView.dataSource = self;
     tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    if (editedSection != -1 && editedRoomId)
+    if (editedRoomId)
     {
         // Disable collection scrolling during edition
         tableViewCell.collectionView.scrollEnabled = NO;
         
-        if (indexPath.section == editedSection)
+        if (indexPath.section == selectedSection)
         {
             // Show edition menu
             tableViewCell.editionViewHeightConstraint.constant = 65;
@@ -310,16 +333,17 @@
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
     
-    if (indexPath.section != editedSection)
-    {
-        // Return the fixed height of the collection view cell used to display a room.
-        return [RoomCollectionViewCell defaultCellSize].height;
-    }
-    else
+    // Retrieve the fixed height of the collection view cell used to display a room.
+    CGFloat height = [RoomCollectionViewCell defaultCellSize].height;
+    
+    // Check the conditions to display the edition menu
+    if (editedRoomId && indexPath.section == selectedSection)
     {
         // Add the edition view height
-        return [RoomCollectionViewCell defaultCellSize].height + 65.0;
+        height += 65.0;
     }
+    
+    return height;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -341,6 +365,31 @@
         [cell render:cellData];
         cell.tag = indexPath.item;
         cell.collectionViewTag = collectionView.tag;
+        
+        if (selectedCollectionViewContentOffset != -1 && collectionView.tag == selectedSection)
+        {
+            if (collectionView.contentOffset.x != selectedCollectionViewContentOffset)
+            {
+                // Force here the content offset of the collection in which the edited cell is displayed.
+                // Indeed because of the table view cell height change the collection view scrolls at the beginning by default (on iOS < 10).
+                collectionView.contentOffset = CGPointMake(selectedCollectionViewContentOffset, 0) ;
+            }
+            
+            if (editedRoomId)
+            {
+                // Scroll the collection view in order to fully display the edited cell.
+                NSIndexPath *indexPath = [self.dataSource cellIndexPathWithRoomId:editedRoomId andMatrixSession:self.mainSession];
+                indexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
+                [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+                selectedCollectionViewContentOffset = collectionView.contentOffset.x;
+            }
+            else
+            {
+                // The edition mode is left now, remove the last stored values.
+                selectedSection = -1;
+                selectedCollectionViewContentOffset = -1;
+            }
+        }
         
         // Edition mode?
         if (editedRoomId)
@@ -416,26 +465,34 @@
                 // Store the identifier of the room related to the edited cell.
                 selectedRoomId = room.state.roomId;
                 // Store the concerned section
-                editedSection = selectedCell.collectionViewTag;
+                selectedCollectionViewContentOffset = -1;
+                selectedSection = selectedCell.collectionViewTag;
+                
+                // Store the current content offset of the selected collection before refreshing.
+                NSIndexPath *tableViewCellIndexPath = [NSIndexPath indexPathForRow:0 inSection:selectedSection];
+                TableViewCellWithCollectionView *tableViewCellWithCollectionView = [self.recentsTableView cellForRowAtIndexPath:tableViewCellIndexPath];
+                CGFloat selectedCollectionViewContentOffsetCpy = tableViewCellWithCollectionView.collectionView.contentOffset.x;
                 
                 [self refreshRecentsTable];
                 
                 // Make visible the edited cell
-                TableViewCellWithCollectionView *tableViewCellWithCollectionView = [self.recentsTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:editedSection]];
-                NSIndexPath *indexPath = [self.dataSource cellIndexPathWithRoomId:selectedRoomId andMatrixSession:room.mxSession];
-                indexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
-                UICollectionViewCell *roomCollectionViewCell = [tableViewCellWithCollectionView.collectionView cellForItemAtIndexPath:indexPath];
+                tableViewCellWithCollectionView = [self.recentsTableView cellForRowAtIndexPath:tableViewCellIndexPath];
+                NSIndexPath *collectionViewCellIndexPath = [self.dataSource cellIndexPathWithRoomId:selectedRoomId andMatrixSession:room.mxSession];
+                collectionViewCellIndexPath = [NSIndexPath indexPathForItem:collectionViewCellIndexPath.item inSection:0];
+                UICollectionViewCell *roomCollectionViewCell = [tableViewCellWithCollectionView.collectionView cellForItemAtIndexPath:collectionViewCellIndexPath];
                 if (roomCollectionViewCell)
                 {
                     [tableViewCellWithCollectionView.collectionView scrollRectToVisible:roomCollectionViewCell.frame animated:YES];
                 }
                 else
                 {
-                    [tableViewCellWithCollectionView.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+                    // On iOS < 10, the collection view scrolls to the beginning during the table refresh.
+                    // We store here the actual content offset, used during the collection view loading.
+                    selectedCollectionViewContentOffset = selectedCollectionViewContentOffsetCpy;
                 }  
                 
                 [self.recentsTableView scrollRectToVisible:tableViewCellWithCollectionView.frame animated:YES];
-                
+
                 // Disable table view scrolling, and defined the swipe gesture recognizers used to cancel the edition mode
                 self.recentsTableView.scrollEnabled = NO;
                 horizontalSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onTableViewSwipe:)];
