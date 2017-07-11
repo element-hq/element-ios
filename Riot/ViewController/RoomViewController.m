@@ -1566,7 +1566,6 @@
                 else
                 {
                     // Use a normal membership cell for a single membership event
-                    bubbleData.attributedTextMessage = bubbleData.attributedTextMessageBackup;
                     cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
                 }
             }

@@ -133,12 +133,32 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     return [super collaspseWith:cellData];
 }
 
+- (void)setCollapsed:(BOOL)collapsed
+{
+    if (collapsed != self.collapsed)
+    {
+        super.collapsed = collapsed;
+
+        // Refresh only cells serie header
+        if (self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
+        {
+            attributedTextMessage = nil;
+        }
+    }
+}
+
 #pragma mark - 
 
 - (NSAttributedString*)refreshAttributedTextMessage
 {
     // CAUTION: This method must be called on the main thread.
-    
+
+    // Return the collapsed string only for cells serie header
+    if (self.collapsed && self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
+    {
+        return super.collapsedAttributedTextMessage;
+    }
+
     NSMutableAttributedString *currentAttributedTextMsg;
     
     // Refresh the receipt flag during this process
