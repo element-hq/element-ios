@@ -31,7 +31,7 @@
 /* A user has invited you to a chat */
 "USER_INVITE_TO_CHAT" = "%@ hat dich zum chatten eingeladen";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ hat dich in eine Chat-Gruppe eingeladen";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ hat dich in einen Gruppenchat eingeladen";
 /* A user has invited you to a named room */
 "USER_INVITE_TO_NAMED_ROOM" = "%@ hat dich in %@ eingeladen";
 /* Incoming one-to-one voice call */
