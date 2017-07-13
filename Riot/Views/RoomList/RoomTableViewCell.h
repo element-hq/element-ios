@@ -22,7 +22,7 @@
 @interface RoomTableViewCell : MXKTableViewCell
 
 @property (weak, nonatomic) IBOutlet MXKImageView *avatarImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *directRoomIcon;
+@property (weak, nonatomic) IBOutlet UIView *directRoomBorderView;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
