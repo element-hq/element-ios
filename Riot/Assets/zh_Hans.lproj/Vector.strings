@@ -54,7 +54,7 @@
 "auth_invalid_phone" = "这看起来不像一个有效的电话号码";
 "auth_missing_password" = "缺少密码";
 "auth_add_email_message" = "添加一个电子邮件地址这样可以其他用户用户发现你，并让你可以重置密码。";
-"auth_add_phone_message" = "添加一个电话号码让其他用户能够发现你";
+"auth_add_phone_message" = "添加一个电话号码让其他用户能够发现你。";
 "auth_add_email_phone_message" = "添加一个电子邮件地址和/或一个电话号码这样可以其他用户用户发现你，并让你可以利用电子邮件重置密码。";
 "auth_add_email_and_phone_message" = "添加一个电子邮件地址和一个电话号码这样可以其他用户用户发现你，并让你可以利用电子邮件重置密码。";
 "auth_missing_email" = "缺少电子邮件";
@@ -278,7 +278,7 @@
 "settings_contacts_discover_matrix_users" = "使用电子邮件和电话号码来发现用户";
 "settings_contacts_phonebook_country" = "电话本国家";
 "settings_labs_e2e_encryption" = "端对端加密";
-"settings_labs_e2e_encryption_prompt_message" = "要完成加密设置您须重新登录";
+"settings_labs_e2e_encryption_prompt_message" = "要完成加密设置您须重新登录。";
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
 "settings_copyright" = "版权";
