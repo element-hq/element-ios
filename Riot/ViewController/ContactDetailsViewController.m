@@ -73,7 +73,7 @@
     /**
      Current alert (if any).
      */
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
 }
 @end
 
@@ -293,7 +293,7 @@
     
     [self removePendingActionMask];
     
-    [currentAlert dismiss:NO];
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
     currentAlert = nil;
 }
 
@@ -815,41 +815,52 @@
             {
                 // Prompt user to ignore content from this user
                 __weak __typeof(self) weakSelf = self;
-                [currentAlert dismiss:NO];
-                currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"room_member_ignore_prompt"]  message:nil style:MXKAlertStyleAlert];
+                [currentAlert dismissViewControllerAnimated:NO completion:nil];
+                currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_member_ignore_prompt"] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 
-                [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->currentAlert = nil;
-                    
-                    // Add the user to the blacklist: ignored users
-                    [strongSelf addPendingActionMask];
-                    [strongSelf.mainSession ignoreUsers:@[strongSelf.firstMatrixId]
-                                                success:^{
-                                                    
-                                                    [strongSelf removePendingActionMask];
-                                                    
-                                                } failure:^(NSError *error) {
-                                                    
-                                                    [strongSelf removePendingActionMask];
-                                                    NSLog(@"[ContactDetailsViewController] Ignore %@ failed", strongSelf.firstMatrixId);
-                                                    
-                                                    // Notify MatrixKit user
-                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                    
-                                                }];
-                    
-                }];
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   if (weakSelf)
+                                                                   {
+                                                                       typeof(self) self = weakSelf;
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                       // Add the user to the blacklist: ignored users
+                                                                       [self addPendingActionMask];
+                                                                       [self.mainSession ignoreUsers:@[self.firstMatrixId]
+                                                                                                   success:^{
+                                                                                                       
+                                                                                                       [self removePendingActionMask];
+                                                                                                       
+                                                                                                   } failure:^(NSError *error) {
+                                                                                                       
+                                                                                                       [self removePendingActionMask];
+                                                                                                       NSLog(@"[ContactDetailsViewController] Ignore %@ failed", self.firstMatrixId);
+                                                                                                       
+                                                                                                       // Notify MatrixKit user
+                                                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                                                       
+                                                                                                   }];
+                                                                   }
+                                                                   
+                                                               }]];
                 
-                currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->currentAlert = nil;
-                }];
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   if (weakSelf)
+                                                                   {
+                                                                       typeof(self) self = weakSelf;
+                                                                       self->currentAlert = nil;
+                                                                   }
+                                                                   
+                                                               }]];
                 
-                currentAlert.mxkAccessibilityIdentifier = @"ContactDetailsVCIgnoreAlert";
-                [currentAlert showInViewController:self];
+                [currentAlert mxk_setAccessibilityIdentifier:@"ContactDetailsVCIgnoreAlert"];
+                [self presentViewController:currentAlert animated:YES completion:nil];
                 break;
             }
             case ContactDetailsActionUnignore:
@@ -860,13 +871,13 @@
                 [self.mainSession unIgnoreUsers:@[self.firstMatrixId]
                                         success:^{
                                             
-                                            __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                            [strongSelf removePendingActionMask];
+                                            __strong __typeof(weakSelf)self = weakSelf;
+                                            [self removePendingActionMask];
                                             
                                         } failure:^(NSError *error) {
                                             
-                                            __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                            [strongSelf removePendingActionMask];
+                                            __strong __typeof(weakSelf)self = weakSelf;
+                                            [self removePendingActionMask];
                                             NSLog(@"[ContactDetailsViewController] Unignore %@ failed", self.firstMatrixId);
                                             
                                             // Notify MatrixKit user

@@ -468,17 +468,20 @@
             // Alert user
             if (alert)
             {
-                [alert dismiss:NO];
+                [alert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            alert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_add_email_and_phone_warning", @"Vector", nil) style:MXKAlertStyleAlert];
+            alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_add_email_and_phone_warning", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
             
-            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert)
-             {
-                 [super onSuccessfulLogin:credentials];
-             }];
+            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               [super onSuccessfulLogin:credentials];
+                                                               
+                                                           }]];
             
-            [alert showInViewController:self];
+            [self presentViewController:alert animated:YES completion:nil];
             return;
         }
     }

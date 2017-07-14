@@ -50,7 +50,7 @@
     ContactsDataSource *peopleSearchDataSource;
     
     // Current alert (if any).
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
 }
 
 @end
@@ -113,7 +113,7 @@
 
     if (currentAlert)
     {
-        [currentAlert dismiss:NO];
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
     

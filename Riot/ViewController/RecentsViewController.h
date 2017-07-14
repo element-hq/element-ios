@@ -33,7 +33,7 @@
     /**
      Current alert (if any).
      */
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
     
     /**
      The list of the section headers currently displayed in the recents table.
