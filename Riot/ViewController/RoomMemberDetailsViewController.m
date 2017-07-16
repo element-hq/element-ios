@@ -712,13 +712,9 @@
             {
                 [roomCell render:room];
             }
-            roomCell.directRoomIcon.hidden = NO;
-            roomCell.encryptedRoomIcon.hidden = !room.state.isEncrypted;
         }
         else
         {
-            roomCell.directRoomIcon.hidden = YES;
-            
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
             roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
             roomCell.avatarImageView.userInteractionEnabled = NO;
