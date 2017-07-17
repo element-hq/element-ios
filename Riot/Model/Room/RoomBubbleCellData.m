@@ -112,7 +112,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
 #pragma mark - Bubble collapsing
 
-- (BOOL)collaspseWith:(id<MXKRoomBubbleCellDataStoring>)cellData
+- (BOOL)collapseWith:(id<MXKRoomBubbleCellDataStoring>)cellData
 {
     if (self.tag == RoomBubbleCellDataTagMembership
         && cellData.tag == RoomBubbleCellDataTagMembership)
@@ -130,7 +130,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         }
     }
     
-    return [super collaspseWith:cellData];
+    return [super collapseWith:cellData];
 }
 
 - (void)setCollapsed:(BOOL)collapsed
