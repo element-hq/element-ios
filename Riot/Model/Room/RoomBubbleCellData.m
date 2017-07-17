@@ -37,6 +37,12 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         {
             // Membership events have their own cell type
             self.tag = RoomBubbleCellDataTagMembership;
+
+            // Membership events can be collapsed together
+            self.collapsable = YES;
+
+            // Collapse them by default
+            self.collapsed = YES;
         }
 
         // Increase maximum number of components
@@ -82,7 +88,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 {
     @synchronized(bubbleComponents)
     {
-        if (!attributedTextMessage.length && bubbleComponents.count)
+        if (self.hasAttributedTextMessage && !attributedTextMessage.length)
         {
             // Attributed text message depends on the room read receipts which must be retrieved on the main thread to prevent us from race conditions.
             // Check here the current thread, this is just a sanity check because the attributed text message
@@ -104,12 +110,55 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     return attributedTextMessage;
 }
 
+#pragma mark - Bubble collapsing
+
+- (BOOL)collapseWith:(id<MXKRoomBubbleCellDataStoring>)cellData
+{
+    if (self.tag == RoomBubbleCellDataTagMembership
+        && cellData.tag == RoomBubbleCellDataTagMembership)
+    {
+        // Keep a pagination between events of different days
+        NSString *bubbleDateString = [roomDataSource.eventFormatter dateStringFromDate:self.date withTime:NO];
+        NSString *eventDateString = [roomDataSource.eventFormatter dateStringFromDate:((RoomBubbleCellData*)cellData).date withTime:NO];
+        if (bubbleDateString && eventDateString && [bubbleDateString isEqualToString:eventDateString])
+        {
+            return YES;
+        }
+        else
+        {
+            return NO;
+        }
+    }
+    
+    return [super collapseWith:cellData];
+}
+
+- (void)setCollapsed:(BOOL)collapsed
+{
+    if (collapsed != self.collapsed)
+    {
+        super.collapsed = collapsed;
+
+        // Refresh only cells series header
+        if (self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
+        {
+            attributedTextMessage = nil;
+        }
+    }
+}
+
 #pragma mark - 
 
 - (NSAttributedString*)refreshAttributedTextMessage
 {
     // CAUTION: This method must be called on the main thread.
-    
+
+    // Return the collapsed string only for cells series header
+    if (self.collapsed && self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
+    {
+        return super.collapsedAttributedTextMessage;
+    }
+
     NSMutableAttributedString *currentAttributedTextMsg;
     
     // Refresh the receipt flag during this process

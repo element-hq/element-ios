@@ -86,7 +86,11 @@
 #import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
 
 #import "RoomMembershipBubbleCell.h"
-#import "RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h"
+#import "RoomMembershipWithPaginationTitleBubbleCell.h"
+#import "RoomMembershipCollapsedBubbleCell.h"
+#import "RoomMembershipCollapsedWithPaginationTitleBubbleCell.h"
+#import "RoomMembershipExpandedBubbleCell.h"
+#import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
@@ -282,7 +286,11 @@
     [self.bubblesTableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
 
     [self.bubblesTableView registerClass:RoomMembershipBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCellWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipCollapsedBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipCollapsedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipExpandedBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomMembershipExpandedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
@@ -1543,19 +1551,33 @@
         id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
         
         // Select the suitable table view cell class, by considering first the empty bubble cell.
-        if (!bubbleData.attributedTextMessage)
+        if (bubbleData.hasNoDisplay)
         {
             cellViewClass = RoomEmptyBubbleCell.class;
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
-            if (bubbleData.isPaginationFirstBubble)
+            if (bubbleData.collapsed)
             {
-                cellViewClass = RoomMembershipBubbleCellWithPaginationTitleBubbleCell.class;
+                if (bubbleData.nextCollapsableCellData)
+                {
+                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipCollapsedWithPaginationTitleBubbleCell.class : RoomMembershipCollapsedBubbleCell.class;
+                }
+                else
+                {
+                    // Use a normal membership cell for a single membership event
+                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
+                }
+            }
+            else if (bubbleData.collapsedAttributedTextMessage)
+            {
+                // The cell (and its series) is not collapsed but this cell is the first
+                // of the series. So, use the cell with the "collapse" button.
+                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipExpandedWithPaginationTitleBubbleCell.class : RoomMembershipExpandedBubbleCell.class;
             }
             else
             {
-                cellViewClass = RoomMembershipBubbleCell.class;
+                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
             }
         }
         else if (bubbleData.isIncoming)
@@ -1732,6 +1754,10 @@
         {
             MXKReceiptSendersContainer *container = userInfo[kMXKRoomBubbleCellReceiptsContainerKey];
             [ReadReceiptsViewController openInViewController:self fromContainer:container withSession:self.mainSession];
+        }
+        else if ([actionIdentifier isEqualToString:kRoomMembershipExpandedBubbleCellTapOnCollapseButton])
+        {
+            [self.roomDataSource collapseRoomBubble:((MXKRoomBubbleTableViewCell*)cell).bubbleData collapsed:YES];
         }
         else
         {

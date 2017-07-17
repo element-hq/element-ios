@@ -14,13 +14,13 @@
  limitations under the License.
  */
 
-#import "RoomMembershipBubbleCellWithPaginationTitleBubbleCell.h"
+#import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
 
 #import "RiotDesignValues.h"
 
 #import "RoomBubbleCellData.h"
 
-@implementation RoomMembershipBubbleCellWithPaginationTitleBubbleCell
+@implementation RoomMembershipExpandedWithPaginationTitleBubbleCell
 
 - (void)awakeFromNib
 {
