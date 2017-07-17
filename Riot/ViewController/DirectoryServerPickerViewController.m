@@ -30,7 +30,7 @@
     void (^onCompleteBlock)(id<MXKDirectoryServerCellDataStoring> cellData);
 
     // Current alert (if any).
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
 
     // Current request in progress.
     MXHTTPOperation *mxCurrentOperation;
@@ -64,7 +64,7 @@
     // Close any pending actionsheet
     if (currentAlert)
     {
-        [currentAlert dismiss:NO];
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
 
@@ -224,10 +224,10 @@
 {
     __weak typeof(self) weakSelf = self;
 
-    [currentAlert dismiss:NO];
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
     // Prompt the user to enter a homeserver
-    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"directory_server_type_homeserver", @"Vector", nil) style:MXKAlertStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"directory_server_type_homeserver", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
 
     [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
 
@@ -235,69 +235,74 @@
         textField.placeholder = NSLocalizedStringFromTable(@"directory_server_placeholder", @"Vector", nil);
         textField.keyboardType = UIKeyboardTypeDefault;
     }];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                       }
+                                                       
+                                                   }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           
+                                                           UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                           
+                                                           self->currentAlert = nil;
+                                                           
+                                                           NSString *homeserver = textField.text;
+                                                           if (homeserver.length)
+                                                           {
+                                                               // Test if the homeserver exists
+                                                               [self.activityIndicator startAnimating];
+                                                               
+                                                               self->mxCurrentOperation = [self->dataSource.mxSession.matrixRestClient publicRoomsOnServer:homeserver limit:20 since:nil filter:nil thirdPartyInstanceId:nil includeAllNetworks:YES success:^(MXPublicRoomsResponse *publicRoomsResponse) {
+                                                                   
+                                                                   if (weakSelf && self->mxCurrentOperation)
+                                                                   {
+                                                                       // The homeserver is valid
+                                                                       self->mxCurrentOperation = nil;
+                                                                       [self.activityIndicator stopAnimating];
+                                                                       
+                                                                       if (self->onCompleteBlock)
+                                                                       {
+                                                                           // Prepare response argument
+                                                                           MXKDirectoryServerCellData *cellData = [[MXKDirectoryServerCellData alloc] initWithHomeserver:homeserver includeAllNetworks:YES];
+                                                                           
+                                                                           self->onCompleteBlock(cellData);
+                                                                       }
+                                                                       
+                                                                       [self withdrawViewControllerAnimated:YES completion:nil];
+                                                                   }
+                                                                   
+                                                               } failure:^(NSError *error) {
+                                                                   
+                                                                   if (weakSelf && self->mxCurrentOperation)
+                                                                   {
+                                                                       // The homeserver is not valid
+                                                                       self->mxCurrentOperation = nil;
+                                                                       [self.activityIndicator stopAnimating];
+                                                                       
+                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                   }
+                                                                   
+                                                               }];
+                                                           }
+                                                       }
+                                                       
+                                                   }]];
 
-    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            self->currentAlert = nil;
-        }
-
-    }];
-
-    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-        if (weakSelf)
-        {
-            UITextField *textField = [alert textFieldAtIndex:0];
-
-            typeof(self) self = weakSelf;
-            self->currentAlert = nil;
-
-            NSString *homeserver = textField.text;
-            if (homeserver.length)
-            {
-                // Test if the homeserver exists
-                [self.activityIndicator startAnimating];
-
-                self->mxCurrentOperation = [self->dataSource.mxSession.matrixRestClient publicRoomsOnServer:homeserver limit:20 since:nil filter:nil thirdPartyInstanceId:nil includeAllNetworks:YES success:^(MXPublicRoomsResponse *publicRoomsResponse) {
-
-                    if (weakSelf && self->mxCurrentOperation)
-                    {
-                        // The homeserver is valid
-                        self->mxCurrentOperation = nil;
-                        [self.activityIndicator stopAnimating];
-
-                        if (self->onCompleteBlock)
-                        {
-                            // Prepare response argument
-                            MXKDirectoryServerCellData *cellData = [[MXKDirectoryServerCellData alloc] initWithHomeserver:homeserver includeAllNetworks:YES];
-
-                            self->onCompleteBlock(cellData);
-                        }
-
-                        [self withdrawViewControllerAnimated:YES completion:nil];
-                    }
-
-                } failure:^(NSError *error) {
-
-                    if (weakSelf && self->mxCurrentOperation)
-                    {
-                        // The homeserver is not valid
-                        self->mxCurrentOperation = nil;
-                        [self.activityIndicator stopAnimating];
-
-                        [[AppDelegate theDelegate] showErrorAsAlert:error];
-                    }
-
-                }];
-            }
-        }
-    }];
-
-    [currentAlert showInViewController:self];
+    [self presentViewController:currentAlert animated:YES completion:nil];
 }
-
 
 @end

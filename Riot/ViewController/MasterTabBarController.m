@@ -45,7 +45,7 @@
     UnifiedSearchViewController *unifiedSearchViewController;
     
     // Current alert (if any).
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -132,7 +132,7 @@
     
     if (currentAlert)
     {
-        [currentAlert dismiss:NO];
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
     
@@ -678,47 +678,46 @@
     
     __weak typeof(self) weakSelf = self;
     
-    [currentAlert dismiss:NO];
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
     
-    currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName]
-                                           message:nil
-                                             style:MXKAlertStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
-    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
-                                                                style:MXKAlertActionStyleDefault
-                                                              handler:^(MXKAlert *alert) {
-                                                                  
-                                                                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
-                                                                  [[NSUserDefaults standardUserDefaults] synchronize];
-                                                                  
-                                                                  if (weakSelf)
-                                                                  {
-                                                                      __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                                                      strongSelf->currentAlert = nil;
-                                                                  }
-                                                                  
-                                                              }];
-    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
-                               style:MXKAlertActionStyleDefault
-                             handler:^(MXKAlert *alert) {
-                                 
-                                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
-                                 [[NSUserDefaults standardUserDefaults] synchronize];
-                                 
-                                 if (weakSelf)
-                                 {
-                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                     strongSelf->currentAlert = nil;
-                                 }
-                                 
-                                 [[AppDelegate theDelegate] startGoogleAnalytics];
-                                 
-                             }];
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
+                                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                       }
+                                                       
+                                                   }]];
     
-    currentAlert.mxkAccessibilityIdentifier = @"HomeVCUseGoogleAnalyticsAlert";
-    [currentAlert showInViewController:self];
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
+                                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                       }
+                                                       
+                                                       [[AppDelegate theDelegate] startGoogleAnalytics];
+                                                       
+                                                   }]];
+    
+    [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseGoogleAnalyticsAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 #pragma mark - UITabBarDelegate

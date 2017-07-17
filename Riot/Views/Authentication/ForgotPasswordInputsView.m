@@ -174,15 +174,20 @@
         {
             if (inputsAlert)
             {
-                [inputsAlert dismiss:NO];
+                [inputsAlert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMsg style:MXKAlertStyleAlert];
-            inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                inputsAlert = nil;
-            }];
+            inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [self.delegate authInputsView:self presentMXKAlert:inputsAlert];
+            [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              inputsAlert = nil;
+                                                              
+                                                          }]];
+            
+            [self.delegate authInputsView:self presentAlertController:inputsAlert];
         }
         else
         {
@@ -248,21 +253,34 @@
                                                else
                                                    errorMessage = error.localizedDescription;
                                                
-                                               __strong typeof(weakSelf) strongSelf = weakSelf;
-                                               if (strongSelf) {
-                                                   if (strongSelf->inputsAlert)
+                                               if (weakSelf)
+                                               {
+                                                   typeof(self) self = weakSelf;
+                                                   
+                                                   if (self->inputsAlert)
                                                    {
-                                                       [strongSelf->inputsAlert dismiss:NO];
+                                                       [self->inputsAlert dismissViewControllerAnimated:NO completion:nil];
                                                    }
                                                    
-                                                   strongSelf->inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage style:MXKAlertStyleAlert];
-                                                   strongSelf->inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                                                       strongSelf->inputsAlert = nil;
-                                                       if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(authInputsViewDidCancelOperation:)])
-                                                           [strongSelf.delegate authInputsViewDidCancelOperation:strongSelf];
-                                                   }];
+                                                   self->inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
                                                    
-                                                   [strongSelf.delegate authInputsView:strongSelf presentMXKAlert:strongSelf->inputsAlert];
+                                                   [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                                                   style:UIAlertActionStyleDefault
+                                                                                                 handler:^(UIAlertAction * action) {
+                                                                                                     
+                                                                                                     if (weakSelf)
+                                                                                                     {
+                                                                                                         typeof(self) self = weakSelf;
+                                                                                                         self->inputsAlert = nil;
+                                                                                                         if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewDidCancelOperation:)])
+                                                                                                         {
+                                                                                                             [self.delegate authInputsViewDidCancelOperation:self];
+                                                                                                         }
+                                                                                                     }
+                                                                                                     
+                                                                                                 }]];
+                                                   
+                                                   [self.delegate authInputsView:self presentAlertController:self->inputsAlert];
                                                }
                                            }];
                 

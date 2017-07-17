@@ -59,7 +59,7 @@ static void *RecordingContext = &RecordingContext;
     
     BOOL lockInterfaceRotation;
     
-    MXKAlert *alert;
+    UIAlertController *alert;
     
     PHFetchResult *recentCaptures;
     
