@@ -1571,8 +1571,8 @@
             }
             else if (bubbleData.collapsedAttributedTextMessage)
             {
-                // The cell (and its serie) is not collapsed but this cell is the first
-                // of the serie. So, use the cell with the "collapse" button.
+                // The cell (and its series) is not collapsed but this cell is the first
+                // of the series. So, use the cell with the "collapse" button.
                 cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipExpandedWithPaginationTitleBubbleCell.class : RoomMembershipExpandedBubbleCell.class;
             }
             else

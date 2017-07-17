@@ -22,7 +22,7 @@
 extern NSString *const kRoomMembershipExpandedBubbleCellTapOnCollapseButton;
 
 /**
- `RoomMembershipExpandedBubbleCell` displays the first membership event of serie
+ `RoomMembershipExpandedBubbleCell` displays the first membership event of series
  that can be collapsable.
  */
 @interface RoomMembershipExpandedBubbleCell : RoomMembershipBubbleCell

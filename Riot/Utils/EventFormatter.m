@@ -43,7 +43,7 @@
     {
         if (events[0].eventType == MXEventTypeRoomMember)
         {
-            // This is a serie for cells tagged with RoomBubbleCellDataTagMembership
+            // This is a series for cells tagged with RoomBubbleCellDataTagMembership
             // TODO: Build a complete summary like Riot-web
             displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_member_updates", @"Vector", nil), events.count];
         }

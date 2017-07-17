@@ -139,7 +139,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     {
         super.collapsed = collapsed;
 
-        // Refresh only cells serie header
+        // Refresh only cells series header
         if (self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
         {
             attributedTextMessage = nil;
@@ -153,7 +153,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 {
     // CAUTION: This method must be called on the main thread.
 
-    // Return the collapsed string only for cells serie header
+    // Return the collapsed string only for cells series header
     if (self.collapsed && self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
     {
         return super.collapsedAttributedTextMessage;

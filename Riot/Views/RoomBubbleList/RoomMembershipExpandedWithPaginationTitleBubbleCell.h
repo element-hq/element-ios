@@ -17,7 +17,7 @@
 #import "RoomMembershipExpandedBubbleCell.h"
 
 /**
- `RoomMembershipExpandedWithPaginationTitleBubbleCell` displays the first membership event of serie
+ `RoomMembershipExpandedWithPaginationTitleBubbleCell` displays the first membership event of series
  that can be collapsable with a pagination title.
  */
 @interface RoomMembershipExpandedWithPaginationTitleBubbleCell : RoomMembershipExpandedBubbleCell
