@@ -1759,6 +1759,9 @@
         }
         else if ([actionIdentifier isEqualToString:kRoomMembershipExpandedBubbleCellTapOnCollapseButton])
         {
+            // Reset the selection before collapsing
+            customizedRoomDataSource.selectedEventId = nil;
+            
             [self.roomDataSource collapseRoomBubble:((MXKRoomBubbleTableViewCell*)cell).bubbleData collapsed:YES];
         }
         else
