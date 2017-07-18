@@ -80,9 +80,13 @@
 "auth_missing_email" = "Missing email address";
 "auth_missing_phone" = "Missing phone number";
 "auth_missing_email_or_phone" = "Missing email address or phone number";
+"auth_email_in_use" = "This email address is already in use";
+"auth_phone_in_use" = "This phone number is already in use";
+"auth_untrusted_id_server" = "The identity server is not trusted";
 "auth_password_dont_match" = "Passwords don't match";
 "auth_username_in_use" = "Username in use";
 "auth_forgot_password" = "Forgot password?";
+"auth_email_not_found" = "Failed to send email: This email address was not found";
 "auth_use_server_options" = "Use custom server options (advanced)";
 "auth_email_validation_message" = "Please check your email to continue registration";
 "auth_msisdn_validation_title" = "Verification Pending";
