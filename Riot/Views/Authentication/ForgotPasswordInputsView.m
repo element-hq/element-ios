@@ -251,7 +251,14 @@
                      }
                      
                      NSString *errorMessage;
-                     if (error.userInfo[@"error"])
+                     
+                     // Translate the potential MX error.
+                     MXError *mxError = [[MXError alloc] initWithNSError:error];
+                     if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDNotFound])
+                         errorMessage = NSLocalizedStringFromTable(@"auth_email_not_found", @"Vector", nil);
+                     else if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted])
+                         errorMessage = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                     else if (error.userInfo[@"error"])
                          errorMessage = error.userInfo[@"error"];
                      else
                          errorMessage = error.localizedDescription;

@@ -2884,6 +2884,36 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [self stopActivityIndicator];
 
         NSLog(@"[SettingsViewController] Failed to request email token");
+        
+        // Translate the potential MX error.
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+        {
+            NSMutableDictionary *userInfo;
+            if (error.userInfo)
+            {
+                userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+            }
+            else
+            {
+                userInfo = [NSMutableDictionary dictionary];
+            }
+            
+            userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+            
+            if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+            {
+                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+            }
+            else
+            {
+                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+            }
+            
+            error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+        }
 
         // Notify user
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -2956,6 +2986,36 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [self stopActivityIndicator];
         
         NSLog(@"[SettingsViewController] Failed to request msisdn token");
+        
+        // Translate the potential MX error.
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+        {
+            NSMutableDictionary *userInfo;
+            if (error.userInfo)
+            {
+                userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+            }
+            else
+            {
+                userInfo = [NSMutableDictionary dictionary];
+            }
+            
+            userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+            
+            if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+            {
+                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+            }
+            else
+            {
+                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+            }
+            
+            error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+        }
         
         // Notify user
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
