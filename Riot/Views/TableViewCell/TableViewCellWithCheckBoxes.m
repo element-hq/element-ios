@@ -283,7 +283,7 @@
                 }
             }
         }
-        else if (checkBox.tag)
+        else if (!isSelected && checkBox.tag)
         {
             checkBox.image = [UIImage imageNamed:@"selection_untick"];
             checkBox.tag = 0;
