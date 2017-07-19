@@ -43,6 +43,7 @@ enum
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
+    SETTINGS_SECTION_USER_INTERFACE_INDEX,
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_ADVANCED_INDEX,
@@ -66,6 +67,12 @@ enum
     //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
     //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
     NOTIFICATION_SETTINGS_COUNT
+};
+
+enum
+{
+    USER_INTERFACE_THEME_INDEX = 0,
+    USER_INTERFACE_COUNT
 };
 
 enum
@@ -181,6 +188,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     BOOL keepNewEmailEditing;
     BOOL keepNewPhoneNumberEditing;
+    
+    // The user interface theme cell
+    TableViewCellWithCheckBoxes *uiThemeCell;
 }
 
 /**
@@ -224,6 +234,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
+    [self.tableView registerClass:TableViewCellWithCheckBoxes.class forCellReuseIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -1083,6 +1094,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+    {
+        count = USER_INTERFACE_COUNT;
+    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
@@ -1548,6 +1563,40 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = labelAndSwitchCell;
         }
     }
+    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+    {
+        if (row == USER_INTERFACE_THEME_INDEX)
+        {
+            uiThemeCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
+            
+            uiThemeCell.mainContainerLeadingConstraint.constant = uiThemeCell.separatorInset.left;
+            
+            uiThemeCell.checkBoxesNumber = 2;
+            
+            uiThemeCell.allowsMultipleSelection = NO;
+            uiThemeCell.delegate = self;
+            
+            NSArray *labels = uiThemeCell.labels;
+            UILabel *label;
+            label = labels[0];
+            label.text = NSLocalizedStringFromTable(@"settings_ui_light_theme", @"Vector", nil);
+            label = labels[1];
+            label.text = NSLocalizedStringFromTable(@"settings_ui_dark_theme", @"Vector", nil);
+            
+            NSString *selectedTheme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];            
+            if (selectedTheme && [selectedTheme isEqualToString:@"dark"])
+            {
+                [uiThemeCell setCheckBoxValue:YES atIndex:1];
+            }
+            else
+            {
+                // Consider the light theme by default.
+                [uiThemeCell setCheckBoxValue:YES atIndex:0];
+            }
+            
+            cell = uiThemeCell;
+        }
+    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         MXKTableViewCell *ignoredUserCell = [self getDefaultTableViewCell:tableView];
@@ -1849,6 +1898,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
@@ -3426,6 +3479,27 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     
     [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - TableViewCellWithCheckBoxesDelegate
+
+- (void)tableViewCellWithCheckBoxes:(TableViewCellWithCheckBoxes *)tableViewCellWithCheckBoxes didTapOnCheckBoxAtIndex:(NSUInteger)index
+{
+    if (tableViewCellWithCheckBoxes == uiThemeCell)
+    {
+        NSString *theme = (index == 0) ? @"light" : @"dark";
+        BOOL isCurrentlySelected = [uiThemeCell checkBoxValueAtIndex:index];
+        
+        if (!isCurrentlySelected)
+        {
+            // The user wants to select this theme
+            [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"userInterfaceTheme"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            // Select the tapped tag
+            [uiThemeCell setCheckBoxValue:YES atIndex:index];
+        }
+    }
 }
 
 @end

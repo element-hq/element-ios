@@ -19,8 +19,9 @@
 #import "DeviceView.h"
 
 #import "MediaPickerViewController.h"
+#import "TableViewCellWithCheckBoxes.h"
 
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate>
+@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, TableViewCellWithCheckBoxesDelegate>
 
 @end
 
