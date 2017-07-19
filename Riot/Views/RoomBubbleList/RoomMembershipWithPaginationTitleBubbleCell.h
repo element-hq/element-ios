@@ -14,13 +14,15 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RoomMembershipBubbleCell.h"
 
 /**
- `RoomEmptyBubbleCell` displays empty bubbles.
+ `RoomMembershipWithPaginationTitleBubbleCell` displays a membership event with a pagination title.
  */
-@interface RoomEmptyBubbleCell : MXKRoomEmptyBubbleTableViewCell
+@interface RoomMembershipWithPaginationTitleBubbleCell : RoomMembershipBubbleCell
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraint;
+@property (weak, nonatomic) IBOutlet UIView *paginationTitleView;
+@property (weak, nonatomic) IBOutlet UILabel *paginationLabel;
+@property (weak, nonatomic) IBOutlet UIView *paginationSeparatorView;
 
 @end

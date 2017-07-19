@@ -133,16 +133,19 @@
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
         NSArray *bubbleComponents = cellData.bubbleComponents;
+
+        BOOL isCollapsableCellCollapsed = cellData.collapsable && cellData.collapsed;
         
         // Display timestamp of the last message
-        if (cellData.containsLastMessage)
+        if (cellData.containsLastMessage && !isCollapsableCellCollapsed)
         {
             [bubbleCell addTimestampLabelForComponent:cellData.mostRecentComponentIndex];
         }
         
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
-        if ((self.showBubbleReceipts && cellData.hasReadReceipts) || self.showReadMarker)
+        // Ignore the read receipts on collapsed bubbles
+        if ((self.showBubbleReceipts && cellData.hasReadReceipts && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -155,7 +158,7 @@
                 if (component.event.sentState != MXEventSentStateFailed)
                 {
                     // Handle read receipts (if any)
-                    if (self.showBubbleReceipts && cellData.hasReadReceipts)
+                    if (self.showBubbleReceipts && cellData.hasReadReceipts && !isCollapsableCellCollapsed)
                     {
                         // Get the events receipts by ignoring the current user receipt.
                         NSArray* receipts = [self.room getEventReceipts:component.event.eventId sorted:YES];
@@ -371,7 +374,17 @@
     if (selectedEventId.length)
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:selectedEventId];
-        cellData.selectedEventId = selectedEventId;
+
+        if (cellData.collapsed && cellData.nextCollapsableCellData)
+        {
+            // Select nothing for a collased cell but open it
+            [self collapseRoomBubble:cellData collapsed:NO];
+            return;
+        }
+        else
+        {
+            cellData.selectedEventId = selectedEventId;
+        }
     }
     
     _selectedEventId = selectedEventId;

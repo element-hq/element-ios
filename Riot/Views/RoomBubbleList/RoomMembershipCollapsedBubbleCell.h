@@ -14,13 +14,13 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RoomIncomingTextMsgBubbleCell.h"
 
 /**
- `RoomEmptyBubbleCell` displays empty bubbles.
+ `RoomMembershipCollapsedBubbleCell` displays a sum-up of collapsed membership cells.
  */
-@interface RoomEmptyBubbleCell : MXKRoomEmptyBubbleTableViewCell
+@interface RoomMembershipCollapsedBubbleCell : RoomIncomingTextMsgBubbleCell
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraint;
+@property (weak, nonatomic) IBOutlet UIView *avatarsView;
 
 @end

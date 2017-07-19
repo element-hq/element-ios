@@ -14,15 +14,29 @@
  limitations under the License.
  */
 
-#import "RoomEmptyBubbleCell.h"
+#import "RoomMembershipWithPaginationTitleBubbleCell.h"
 
-@implementation RoomEmptyBubbleCell
+#import "RiotDesignValues.h"
 
-- (void)prepareForReuse
+#import "RoomBubbleCellData.h"
+
+@implementation RoomMembershipWithPaginationTitleBubbleCell
+
+- (void)awakeFromNib
 {
-    if (self.heightConstraint != 0)
+    [super awakeFromNib];
+
+    self.paginationLabel.textColor = kRiotColorGreen;
+    self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
+}
+
+- (void)render:(MXKCellData *)cellData
+{
+    [super render:cellData];
+
+    if (bubbleData)
     {
-        self.heightConstraint = 0;
+        self.paginationLabel.text = [[bubbleData.eventFormatter dateStringFromDate:bubbleData.date withTime:NO] uppercaseString];
     }
 }
 

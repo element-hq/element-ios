@@ -17,12 +17,17 @@
 #import "RoomMembershipBubbleCell.h"
 
 /**
- `RoomMembershipBubbleCellWithPaginationTitleBubbleCell` displays a membership event with a pagination title.
+ Action identifier used when the user tapped on the "collapse" button.
  */
-@interface RoomMembershipBubbleCellWithPaginationTitleBubbleCell : RoomMembershipBubbleCell
+extern NSString *const kRoomMembershipExpandedBubbleCellTapOnCollapseButton;
 
-@property (weak, nonatomic) IBOutlet UIView *paginationTitleView;
-@property (weak, nonatomic) IBOutlet UILabel *paginationLabel;
-@property (weak, nonatomic) IBOutlet UIView *paginationSeparatorView;
+/**
+ `RoomMembershipExpandedBubbleCell` displays the first membership event of series
+ that can be collapsable.
+ */
+@interface RoomMembershipExpandedBubbleCell : RoomMembershipBubbleCell
+
+@property (weak, nonatomic) IBOutlet UIButton *collapseButton;
+@property (weak, nonatomic) IBOutlet UIView *separatorView;
 
 @end
