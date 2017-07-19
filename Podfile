@@ -52,7 +52,7 @@ pod 'OLMKit'
 #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
 pod 'Realm', '~> 2.8.1'
 
-pod 'MatrixSDK/AppExtension', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kit/MatrixKit.podspec'
 
 end
