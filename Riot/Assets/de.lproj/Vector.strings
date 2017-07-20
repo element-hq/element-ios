@@ -1,1 +1,11 @@
-
+"back" = "Zurück";
+"continue" = "Fortsetzen";
+"retry" = "Wiederholen";
+"cancel" = "Abbruch";
+"save" = "Speichern";
+"leave" = "Verlassen";
+// Actions
+"view" = "Ansehen";
+"invite" = "Einladen";
+// Room Details
+"room_details_title" = "Raum Details";
