@@ -29,6 +29,7 @@
 #import "BugReportViewController.h"
 
 #import "CountryPickerViewController.h"
+#import "LanguagePickerViewController.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
 
 #import "NBPhoneNumberUtil.h"
@@ -71,7 +72,8 @@ enum
 
 enum
 {
-    USER_INTERFACE_THEME_INDEX = 0,
+    USER_INTERFACE_LANGUAGE_INDEX = 0,
+    USER_INTERFACE_THEME_INDEX,
     USER_INTERFACE_COUNT
 };
 
@@ -1565,7 +1567,26 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
-        if (row == USER_INTERFACE_THEME_INDEX)
+        if (row == USER_INTERFACE_LANGUAGE_INDEX)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            }
+
+            NSString *language = [NSBundle mxk_language];
+            NSString *languageDescription = language ? [MXKLanguagePickerViewController languageDescription:language] : [MXKLanguagePickerViewController languageDescription:[MXKLanguagePickerViewController defaultLanguage]];
+
+            cell.textLabel.textColor = kRiotTextColorBlack;
+
+            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
+            cell.detailTextLabel.text = languageDescription;
+
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+        else if (row == USER_INTERFACE_THEME_INDEX)
         {
             uiThemeCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
             
@@ -2057,7 +2078,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
 
-        if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+        if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+        {
+            if (row == USER_INTERFACE_LANGUAGE_INDEX)
+            {
+                // Display the language picker
+                LanguagePickerViewController *languagePickerViewController = [LanguagePickerViewController languagePickerViewController];
+                languagePickerViewController.selectedLanguage = [NSBundle mxk_language];
+                languagePickerViewController.delegate = self;
+                [self pushViewController:languagePickerViewController];
+            }
+        }
+        else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
             MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
 
@@ -3479,6 +3511,26 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     
     [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - MXKCountryPickerViewControllerDelegate
+
+- (void)languagePickerViewController:(MXKLanguagePickerViewController *)languagePickerViewController didSelectLangugage:(NSString *)language
+{
+    [languagePickerViewController withdrawViewControllerAnimated:YES completion:nil];
+
+    if (![language isEqualToString:[NSBundle mxk_language]])
+    {
+        [NSBundle mxk_setLanguage:language];
+
+        // Do a full sync to recompute room summaries
+        // TODO: resetting room summaries and room data sources should be enough
+        [self startActivityIndicator];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+
+            [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+        });
+    }
 }
 
 #pragma mark - TableViewCellWithCheckBoxesDelegate
