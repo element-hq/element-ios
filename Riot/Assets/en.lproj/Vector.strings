@@ -441,7 +441,7 @@
 "directory_server_placeholder" = "matrix.org";
 
 // Events formatter
-"event_formatter_member_updates" = "%tu member updates";
+"event_formatter_member_updates" = "%tu membership changes";
 
 // Others
 "or" = "or";
