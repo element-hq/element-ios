@@ -291,7 +291,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
-    
+
+    // Set up runtime language and fallback
+    NSString *langage = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];;
+    [NSBundle mxk_setLanguage:langage];
+    [NSBundle mxk_setFallbackLanguage:@"en"];
+
     // Define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:kRiotColorGreen];
     

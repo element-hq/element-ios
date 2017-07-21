@@ -14,6 +14,7 @@
 		3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */; };
 		321082B21F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 321082B01F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m */; };
 		321082B31F0E9F41002E0091 /* RoomMembershipCollapsedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */; };
+		32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32185B301F20FA2B00752141 /* LanguagePickerViewController.m */; };
 		322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */; };
 		322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */; };
 		32471CDC1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */; };
@@ -499,6 +500,8 @@
 		321082AF1F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipCollapsedBubbleCell.h; sourceTree = "<group>"; };
 		321082B01F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipCollapsedBubbleCell.m; sourceTree = "<group>"; };
 		321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipCollapsedBubbleCell.xib; sourceTree = "<group>"; };
+		32185B2F1F20FA2B00752141 /* LanguagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguagePickerViewController.h; sourceTree = "<group>"; };
+		32185B301F20FA2B00752141 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
 		3228069D1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipExpandedBubbleCell.h; sourceTree = "<group>"; };
 		3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipExpandedBubbleCell.m; sourceTree = "<group>"; };
 		3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipExpandedBubbleCell.xib; sourceTree = "<group>"; };
@@ -1599,6 +1602,8 @@
 				F083BC2F1E7009EC00A9B29C /* HomeMessagesSearchViewController.m */,
 				F083BC301E7009EC00A9B29C /* HomeViewController.h */,
 				F083BC311E7009EC00A9B29C /* HomeViewController.m */,
+				32185B2F1F20FA2B00752141 /* LanguagePickerViewController.h */,
+				32185B301F20FA2B00752141 /* LanguagePickerViewController.m */,
 				F083BC321E7009EC00A9B29C /* MediaAlbumContentViewController.h */,
 				F083BC331E7009EC00A9B29C /* MediaAlbumContentViewController.m */,
 				F083BC341E7009EC00A9B29C /* MediaAlbumContentViewController.xib */,
@@ -2565,6 +2570,7 @@
 				F083BE7E1E7009ED00A9B29C /* InviteRecentTableViewCell.m in Sources */,
 				F083BE3C1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE211E7009ED00A9B29C /* RoomSearchViewController.m in Sources */,
+				32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */,
 				F083BE3E1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE071E7009ED00A9B29C /* AttachmentsViewController.m in Sources */,
 				F083BE051E7009ED00A9B29C /* RiotDesignValues.m in Sources */,
