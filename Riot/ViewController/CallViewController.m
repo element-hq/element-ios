@@ -124,6 +124,12 @@
     self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    // Hide the status bar on the call view controller.
+    return YES;
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];

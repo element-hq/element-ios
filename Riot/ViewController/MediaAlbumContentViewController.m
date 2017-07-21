@@ -114,6 +114,19 @@
     self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the preferred value of the delegate if it is a view controller itself.
+    // This is required to handle correctly the full screen mode when a media is selected.
+    if ([self.delegate isKindOfClass:UIViewController.class])
+    {
+        return [(UIViewController*)self.delegate prefersStatusBarHidden];
+    }
+    
+    // Keep visible the status bar by default.
+    return NO;
+}
+
 - (void)destroy
 {
     [super destroy];

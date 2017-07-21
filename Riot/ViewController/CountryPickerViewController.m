@@ -45,6 +45,19 @@
 
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
+
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -58,19 +71,6 @@
         [tracker set:kGAIScreenName value:@"CountryPicker"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
-    
-    // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self userInterfaceThemeDidChange];
-        
-    }];
-    [self userInterfaceThemeDidChange];
-}
-
-- (void)userInterfaceThemeDidChange
-{
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
 - (void)destroy

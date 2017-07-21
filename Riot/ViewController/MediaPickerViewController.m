@@ -83,6 +83,11 @@ static void *RecordingContext = &RecordingContext;
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
      */
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The current visibility of the status bar in this view controller.
+     */
+    BOOL isStatusBarHidden;
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
@@ -117,6 +122,9 @@ static void *RecordingContext = &RecordingContext;
     
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
+    
+    // Keep visible the status bar by default.
+    isStatusBarHidden = NO;
 }
 
 - (void)viewDidLoad
@@ -171,6 +179,12 @@ static void *RecordingContext = &RecordingContext;
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the current status bar visibility.
+    return isStatusBarHidden;
 }
 
 - (void)viewDidLayoutSubviews
@@ -759,6 +773,11 @@ static void *RecordingContext = &RecordingContext;
     
     validationView.image = selectedImage;
     [validationView showFullScreen];
+    
+    // Hide the status bar
+    isStatusBarHidden = YES;
+    // Trigger status bar update
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)validateSelectedVideo:(NSURL*)selectedVideoURL responseHandler:(void (^)(BOOL isValidated))handler
@@ -805,6 +824,11 @@ static void *RecordingContext = &RecordingContext;
     }
 
     [validationView showFullScreen];
+    
+    // Hide the status bar
+    isStatusBarHidden = YES;
+    // Trigger status bar update
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)dismissImageValidationView
@@ -825,6 +849,10 @@ static void *RecordingContext = &RecordingContext;
         [validationView dismissSelection];
         [validationView removeFromSuperview];
         validationView = nil;
+        
+        // Restore the status bar
+        isStatusBarHidden = NO;
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 

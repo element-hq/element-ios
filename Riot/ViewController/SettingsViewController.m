@@ -73,8 +73,9 @@ enum
 enum
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
-    USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_COUNT
+//    USER_INTERFACE_THEME_INDEX,
+    USER_INTERFACE_COUNT,
+    USER_INTERFACE_THEME_INDEX
 };
 
 enum
@@ -301,7 +302,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [self refreshSettings];
     }
     
-    [[UIApplication sharedApplication] setStatusBarStyle:kRiotDesignStatusBarStyle animated:NO];
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning

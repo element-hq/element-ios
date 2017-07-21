@@ -79,6 +79,11 @@
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
      */
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The current visibility of the status bar in this view controller.
+     */
+    BOOL isStatusBarHidden;
 }
 @end
 
@@ -107,6 +112,9 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    // Keep visible the status bar by default.
+    isStatusBarHidden = NO;
 }
 
 - (void)viewDidLoad
@@ -219,6 +227,12 @@
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the current status bar visibility.
+    return isStatusBarHidden;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1096,6 +1110,10 @@
             [avatarFullScreenView removeFromSuperview];
 
             avatarFullScreenView = nil;
+            
+            isStatusBarHidden = NO;
+            // Trigger status bar update
+            [self setNeedsStatusBarAppearanceUpdate];
         }];
 
         NSString *avatarURL = nil;
@@ -1113,6 +1131,10 @@
                              previewImage:contactAvatar.image];
 
         [avatarFullScreenView showFullScreen];
+        isStatusBarHidden = YES;
+        
+        // Trigger status bar update
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 

@@ -71,6 +71,11 @@
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
      */
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The current visibility of the status bar in this view controller.
+     */
+    BOOL isStatusBarHidden;
 }
 @end
 
@@ -103,6 +108,9 @@
     adminActionsArray = [[NSMutableArray alloc] init];
     otherActionsArray = [[NSMutableArray alloc] init];
     directChatsArray = [[NSMutableArray alloc] init];
+    
+    // Keep visible the status bar by default.
+    isStatusBarHidden = NO;
 }
 
 - (void)viewDidLoad
@@ -204,6 +212,12 @@
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the current status bar visibility.
+    return isStatusBarHidden;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -890,15 +904,26 @@
     }
     else if (view == self.memberThumbnail || view == self.roomMemberAvatarMask)
     {
+        __weak typeof(self) weakSelf = self;
+        
         // Show the avatar in full screen
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
 
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
-            [avatarFullScreenView dismissSelection];
-            [avatarFullScreenView removeFromSuperview];
-
-            avatarFullScreenView = nil;
+        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle)
+         {
+             [avatarFullScreenView dismissSelection];
+             [avatarFullScreenView removeFromSuperview];
+             
+             avatarFullScreenView = nil;
+             
+             if (weakSelf)
+             {
+                 // Restore the status bar
+                 isStatusBarHidden = NO;
+                 typeof(self) self = weakSelf;
+                 [self setNeedsStatusBarAppearanceUpdate];
+             }            
         }];
 
         NSString *avatarURL = nil;
@@ -913,6 +938,11 @@
                              previewImage:self.memberThumbnail.image];
 
         [avatarFullScreenView showFullScreen];
+        
+        // Hide the status bar
+        isStatusBarHidden = YES;
+        // Trigger status bar update
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 
