@@ -3519,7 +3519,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     [languagePickerViewController withdrawViewControllerAnimated:YES completion:nil];
 
-    if (![language isEqualToString:[NSBundle mxk_language]])
+    if (![language isEqualToString:[NSBundle mxk_language]]
+        || (language == nil && [NSBundle mxk_language]))
     {
         [NSBundle mxk_setLanguage:language];
 
@@ -3527,12 +3528,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] setObject:language forKey:@"appLanguage"];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
-        // Do a full sync to recompute room summaries
-        // TODO: resetting room summaries and room data sources should be enough
+        // Do a full sync to recompute matrix data (rooms data sources and summaries)
         [self startActivityIndicator];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 
-            [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+            [[AppDelegate theDelegate] reloadMatrixSessions:NO];
         });
     }
 }
