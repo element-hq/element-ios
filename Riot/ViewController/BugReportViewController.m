@@ -238,6 +238,7 @@
 
     userInfo[@"locale"] = [NSLocale preferredLanguages][0];
     userInfo[@"app_language"] = [[NSBundle mainBundle] preferredLocalizations][0];
+    //TODO
 
     bugReportRestClient.others = userInfo;
 

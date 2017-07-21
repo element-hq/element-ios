@@ -3523,6 +3523,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         [NSBundle mxk_setLanguage:language];
 
+        // Store user settings
+        [[NSUserDefaults standardUserDefaults] setObject:language forKey:@"appLanguage"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
         // Do a full sync to recompute room summaries
         // TODO: resetting room summaries and room data sources should be enough
         [self startActivityIndicator];
