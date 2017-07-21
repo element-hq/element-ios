@@ -30,10 +30,11 @@
     // Display a gradient view above the screen
     CAGradientLayer* gradientMaskLayer;
     
-    /**
-     Current alert (if any).
-     */
+    // Current alert (if any).
     UIAlertController *currentAlert;
+    
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -45,7 +46,6 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -108,6 +108,20 @@
     [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
     
     [self updateLocalPreviewLayout];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
 - (void)viewDidLayoutSubviews
@@ -153,6 +167,12 @@
 - (void)destroy
 {
     [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
     
     [gradientMaskLayer removeFromSuperlayer];
     gradientMaskLayer = nil;

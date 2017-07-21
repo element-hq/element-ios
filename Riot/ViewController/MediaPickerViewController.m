@@ -78,7 +78,11 @@ static void *RecordingContext = &RecordingContext;
     
     NSTimer *updateVideoRecordingTimer;
     NSDate *videoRecordStartDate;
-
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
@@ -108,7 +112,6 @@ static void *RecordingContext = &RecordingContext;
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
@@ -155,6 +158,19 @@ static void *RecordingContext = &RecordingContext;
         [self reloadUserLibraryAlbums];
         
     }];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
 - (void)viewDidLayoutSubviews
@@ -852,6 +868,12 @@ static void *RecordingContext = &RecordingContext;
 - (void)destroy
 {
     [self stopAVCapture];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
     
     if (UIApplicationWillEnterForegroundNotificationObserver)
     {

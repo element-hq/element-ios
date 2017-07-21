@@ -34,6 +34,11 @@
      The default country code used to initialize the mobile phone number input.
      */
     NSString *defaultCountryCode;
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -59,7 +64,6 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
@@ -76,12 +80,8 @@
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
     self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
-    self.homeServerTextField.textColor = kRiotTextColorBlack;
-    self.homeServerLabel.textColor = kRiotTextColorGray;
     
     self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
-    self.identityServerTextField.textColor = kRiotTextColorBlack;
-    self.identityServerLabel.textColor = kRiotTextColorGray;
     
     self.welcomeImageView.image = [UIImage imageNamed:@"logo"];
     
@@ -129,6 +129,32 @@
     MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
     [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
     self.authInputsView = authInputsView;
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.view.backgroundColor = kRiotSecondaryBgColor;
+    self.navigationBar.barTintColor = kRiotSecondaryBgColor;
+    self.authenticationScrollView.backgroundColor = kRiotPrimaryBgColor;
+    self.authFallbackContentView.backgroundColor = kRiotPrimaryBgColor;
+    
+    self.homeServerTextField.textColor = kRiotPrimaryTextColor;
+    self.homeServerLabel.textColor = kRiotTextColorGray;
+    
+    self.identityServerTextField.textColor = kRiotPrimaryTextColor;
+    self.identityServerLabel.textColor = kRiotTextColorGray;
+    
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:kRiotDesignStatusBarStyle animated:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -141,6 +167,17 @@
     {
         [tracker set:kGAIScreenName value:@"Authentication"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+}
+
+- (void)destroy
+{
+    [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
     }
 }
 
