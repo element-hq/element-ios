@@ -3,13 +3,13 @@
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ a posté dans %@";
 /* New message from a specific person, not referencing a room. Content included. */
-"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+"MSG_FROM_USER_WITH_CONTENT" = "%@ : %@";
 /* New message from a specific person in a named room. Content included. */
-"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ dans %@: %@";
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ dans %@ : %@";
 /* New action message from a specific person, not referencing a room. */
 "ACTION_FROM_USER" = "* %@ %@";
 /* New action message from a specific person in a named room. */
-"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+"ACTION_FROM_USER_IN_ROOM" = "%@ : * %@ %@";
 /* New action message from a specific person, not referencing a room. */
 "IMAGE_FROM_USER" = "%@ vous a envoyé une image";
 /* New action message from a specific person in a named room. */
@@ -43,6 +43,6 @@
 /* Incoming unnamed video conference invite from a specific person */
 "VIDEO_CONF_FROM_USER" = "Appel vidéo groupé depuis %@";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "Appel groupé de %@: '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "Appel groupé de %@ : '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Appel vidéo groupé de %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Appel vidéo groupé de %@ : '%@'";
