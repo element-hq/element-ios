@@ -19,6 +19,8 @@
 
 @interface RoomsListViewController : UIViewController
 
++ (instancetype)listViewControllerWithContext:(NSExtensionContext *)context;
+
 - (void)updateWithRooms:(NSArray <MXRoom *>*)rooms;
 
 @end

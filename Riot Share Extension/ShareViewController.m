@@ -84,9 +84,9 @@
     self.tittleLabel.text = @"Send to";
     
     self.segmentedViewController = [SegmentedViewController segmentedViewController];
-    NSArray *titles = @[@"v1", @"v2"];
-    NSArray *vcs = @[[RoomsListViewController new], [RoomsListViewController new]];
-    [self.segmentedViewController initWithTitles:titles viewControllers:vcs defaultSelected:0];
+    NSArray *titles = @[NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil) , NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
+    NSArray *viewControllers = @[[RoomsListViewController listViewControllerWithContext:self.shareExtensionContext], [RoomsListViewController listViewControllerWithContext:self.shareExtensionContext]];
+    [self.segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [self addChildViewController:self.segmentedViewController];
     [self.contentView addSubview:self.segmentedViewController.view];
@@ -106,7 +106,7 @@
 - (void)cancelSharing
 {
     [self dismissViewControllerAnimated:YES completion:^{
-        NSError *error = [NSError errorWithDomain:@"cancel" code:4201 userInfo:nil];
+        NSError *error = [NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil];
         [self.shareExtensionContext cancelRequestWithError:error];
     }];
 }
@@ -120,10 +120,23 @@
         self.rooms = self.mainSession.rooms;
         if (self.rooms.count)
         {
-            //update the tab controllers
-            [((RoomsListViewController *)self.segmentedViewController.viewControllers[0]) updateWithRooms:self.rooms];
-            [((RoomsListViewController *)self.segmentedViewController.viewControllers[1]) updateWithRooms:self.rooms];
-            NSLog(@"THE ARRAY IS HERE --- \n%@", self.rooms);
+            
+            NSMutableArray *directRooms = [NSMutableArray array];
+            NSMutableArray *rooms = [NSMutableArray array];
+            for (MXRoom *room in self.rooms)
+            {
+                if (room.isDirect)
+                {
+                    [directRooms addObject:room];
+                }
+                else
+                {
+                    [rooms addObject:room];
+                }
+            }
+            
+            [((RoomsListViewController *)self.segmentedViewController.viewControllers[0]) updateWithRooms:rooms];
+            [((RoomsListViewController *)self.segmentedViewController.viewControllers[1]) updateWithRooms:directRooms];
         }
     }
 }
