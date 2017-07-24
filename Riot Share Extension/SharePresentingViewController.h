@@ -15,11 +15,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <Social/Social.h>
-#import <MatrixKit/MatrixKit.h>
 
-@interface ShareViewController : MXKViewController
-
-@property (nonatomic) NSExtensionContext *shareExtensionContext;
+@interface SharePresentingViewController : UIViewController
 
 @end

@@ -15,9 +15,23 @@
  */
 
 #import "ShareViewController.h"
+#import "RoomTableViewCell.h"
+#import "RoomsListViewController.h"
+#import "SegmentedViewController.h"
 
-#import <MatrixSDK/MatrixSDK.h>
-#import <MatrixKit/MatrixKit.h>
+
+@interface ShareViewController ()
+
+@property (nonatomic) NSArray <MXRoom *> *rooms;
+
+@property (weak, nonatomic) IBOutlet UIView *masterContainerView;
+@property (weak, nonatomic) IBOutlet UILabel *tittleLabel;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+
+@property (nonatomic) SegmentedViewController *segmentedViewController;
+
+
+@end
 
 
 @implementation ShareViewController
@@ -28,20 +42,98 @@
 {
     [super viewDidLoad];
     
-    //UI configuration
-    [self.view setBackgroundColor:[UIColor yellowColor]];
-    self.view.alpha = 0.5;
+    [self prepareSession];
+    [self configureViews];
     
-    //MatrixSDK test
-    NSLog(@"SDK VERSION ====== %@", MatrixSDKVersion);
-    
-    //MatrixKit test
-    NSLog(@"KIT VERSION ====== %@", MatrixKitVersion);
-    
-    //UserDefaults test
-    //NSUserDefaults *sharedUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.org.matrix.riot"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSessionSync:) name:kMXSessionDidSyncNotification object:nil];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Private
+
+- (void)prepareSession
+{
+    // Prepare account manager
+    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+    
+    // Use MXFileStore as MXStore to permanently store events.
+    accountManager.storeClass = [MXFileStore class];
+    
+    // Start a matrix session for each enabled accounts.
+    NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts");
+    [accountManager prepareSessionForActiveAccounts];
+    
+    // Resume all existing matrix sessions
+    NSArray *mxAccounts = accountManager.activeAccounts;
+    for (MXKAccount *account in mxAccounts)
+    {
+        [account resume];
+        [self addMatrixSession:account.mxSession];
+    }
+}
+
+- (void)configureViews
+{
+    self.masterContainerView.layer.cornerRadius = 7;
+    self.tittleLabel.text = @"Send to";
+    
+    self.segmentedViewController = [SegmentedViewController segmentedViewController];
+    NSArray *titles = @[@"v1", @"v2"];
+    NSArray *vcs = @[[RoomsListViewController new], [RoomsListViewController new]];
+    [self.segmentedViewController initWithTitles:titles viewControllers:vcs defaultSelected:0];
+    
+    [self addChildViewController:self.segmentedViewController];
+    [self.contentView addSubview:self.segmentedViewController.view];
+    [self.segmentedViewController didMoveToParentViewController:self];
+    
+    self.segmentedViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self.segmentedViewController.view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1 constant:0];
+    widthConstraint.active = YES;
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.segmentedViewController.view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
+    heightConstraint.active = YES;
+    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self.segmentedViewController.view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
+    centerXConstraint.active = YES;
+    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.segmentedViewController.view attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
+    centerYConstraint.active = YES;
+}
+
+- (void)cancelSharing
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        NSError *error = [NSError errorWithDomain:@"cancel" code:4201 userInfo:nil];
+        [self.shareExtensionContext cancelRequestWithError:error];
+    }];
+}
+
+#pragma mark - Notifications
+
+- (void)onSessionSync:(NSNotification *)notification
+{
+    if ([notification.object isEqual:self.mainSession] && !self.rooms.count)
+    {
+        self.rooms = self.mainSession.rooms;
+        if (self.rooms.count)
+        {
+            //update the tab controllers
+            [((RoomsListViewController *)self.segmentedViewController.viewControllers[0]) updateWithRooms:self.rooms];
+            [((RoomsListViewController *)self.segmentedViewController.viewControllers[1]) updateWithRooms:self.rooms];
+            NSLog(@"THE ARRAY IS HERE --- \n%@", self.rooms);
+        }
+    }
+}
+
+#pragma mark - Actions
+
+- (IBAction)close:(UIButton *)sender
+{
+    [self cancelSharing];
+}
 
 /*#pragma mark - SLComposeServiceViewController
 

@@ -15,11 +15,10 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <Social/Social.h>
-#import <MatrixKit/MatrixKit.h>
+#import "MXRoom+Riot.h"
 
-@interface ShareViewController : MXKViewController
+@interface RoomsListViewController : UIViewController
 
-@property (nonatomic) NSExtensionContext *shareExtensionContext;
+- (void)updateWithRooms:(NSArray <MXRoom *>*)rooms;
 
 @end
