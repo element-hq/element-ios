@@ -15,6 +15,7 @@
  */
 
 #import "TableViewCellWithCollectionView.h"
+#import "RiotDesignValues.h"
 
 @implementation TableViewCellWithCollectionView
 
@@ -23,6 +24,8 @@
     [super awakeFromNib];
     
     self.editionViewHeightConstraint.constant = 0;
+    
+    self.editionView.backgroundColor = kRiotSecondaryBgColor;
 }
 
 - (void)prepareForReuse

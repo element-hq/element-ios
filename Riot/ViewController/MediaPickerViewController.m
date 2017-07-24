@@ -78,7 +78,16 @@ static void *RecordingContext = &RecordingContext;
     
     NSTimer *updateVideoRecordingTimer;
     NSDate *videoRecordStartDate;
-
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The current visibility of the status bar in this view controller.
+     */
+    BOOL isStatusBarHidden;
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
@@ -108,12 +117,14 @@ static void *RecordingContext = &RecordingContext;
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
+    
+    // Keep visible the status bar by default.
+    isStatusBarHidden = NO;
 }
 
 - (void)viewDidLoad
@@ -155,6 +166,25 @@ static void *RecordingContext = &RecordingContext;
         [self reloadUserLibraryAlbums];
         
     }];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the current status bar visibility.
+    return isStatusBarHidden;
 }
 
 - (void)viewDidLayoutSubviews
@@ -743,6 +773,11 @@ static void *RecordingContext = &RecordingContext;
     
     validationView.image = selectedImage;
     [validationView showFullScreen];
+    
+    // Hide the status bar
+    isStatusBarHidden = YES;
+    // Trigger status bar update
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)validateSelectedVideo:(NSURL*)selectedVideoURL responseHandler:(void (^)(BOOL isValidated))handler
@@ -789,6 +824,11 @@ static void *RecordingContext = &RecordingContext;
     }
 
     [validationView showFullScreen];
+    
+    // Hide the status bar
+    isStatusBarHidden = YES;
+    // Trigger status bar update
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)dismissImageValidationView
@@ -809,6 +849,10 @@ static void *RecordingContext = &RecordingContext;
         [validationView dismissSelection];
         [validationView removeFromSuperview];
         validationView = nil;
+        
+        // Restore the status bar
+        isStatusBarHidden = NO;
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 
@@ -852,6 +896,12 @@ static void *RecordingContext = &RecordingContext;
 - (void)destroy
 {
     [self stopAVCapture];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
     
     if (UIApplicationWillEnterForegroundNotificationObserver)
     {

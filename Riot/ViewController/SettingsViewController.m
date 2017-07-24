@@ -73,8 +73,9 @@ enum
 enum
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
-    USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_COUNT
+//    USER_INTERFACE_THEME_INDEX,
+    USER_INTERFACE_COUNT,
+    USER_INTERFACE_THEME_INDEX
 };
 
 enum
@@ -174,6 +175,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
     // Postpone destroy operation when saving, pwd reset or email binding is in progress
     BOOL isSavingInProgress;
     BOOL isResetPwdInProgress;
@@ -214,7 +218,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
@@ -280,6 +283,31 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"SettingsVCNavBarSaveButton";
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    
+    if (self.tableView.dataSource)
+    {
+        [self refreshSettings];
+    }
+    
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -295,6 +323,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [documentInteractionController dismissPreviewAnimated:NO];
         [documentInteractionController dismissMenuAnimated:NO];
         documentInteractionController = nil;
+    }
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
     }
 
     if (isSavingInProgress || isResetPwdInProgress || is3PIDBindingInProgress)
@@ -3551,9 +3585,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             // The user wants to select this theme
             [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"userInterfaceTheme"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            // Select the tapped tag
-            [uiThemeCell setCheckBoxValue:YES atIndex:index];
         }
     }
 }
