@@ -159,7 +159,7 @@
 "room_participants_unknown" = "Inconnu";
 "room_participants_idle" = "Inactif";
 "room_participants_now" = "maintenant";
-"room_participants_ago" = "plus tôt";
+"room_participants_ago" = "d'inactivité";
 "room_participants_action_section_admin_tools" = "Outils d'administration";
 "room_participants_action_section_direct_chats" = "Discussions directes";
 "room_participants_action_section_devices" = "Appareils";
@@ -287,7 +287,7 @@
 "settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Politique de confidentialité";
 "settings_privacy_policy_url" = "https://riot.im/privacy";
-"settings_third_party_notices" = "Informations aux tierces parties";
+"settings_third_party_notices" = "Licences tierces";
 "settings_send_crash_report" = "Envoyer des rapports d'erreur anonymes et des statistiques d'utilisation";
 "settings_clear_cache" = "Vider le cache";
 "settings_change_password" = "Changer de mot de passe";
@@ -389,7 +389,7 @@
 "room_displayname_more_than_two_members" = "%@ et %u autres";
 "room_displayname_no_title" = "Salon vide";
 // Call
-"call_incoming_voice_prompt" = "Appel vocal entrant de %@";
+"call_incoming_voice_prompt" = "Appel audio entrant de %@";
 "call_incoming_video_prompt" = "Appel vidéo entrant de %@";
 // No VoIP support
 "no_voip_title" = "Appel entrant";
@@ -398,12 +398,12 @@
 "google_analytics_use_prompt" = "Souhaitez-vous aider à améliorer %@ en envoyer automatiquement des rapports d'erreur et des statistiques d'utilisation ?";
 // Crypto
 "e2e_enabling_on_app_update" = "Riot supporte maintenant le chiffrement de bout en bout mais vous devez vous identifier à nouveau pour l'activer.\n\nVous pouvez le faire maintenant ou depuis les paramètres de l'application.";
-"e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour ce périphérique et les envoyer vers votre homeserver.\nIl s'agit d'un défaut exceptionnel ; désolé pour le désagrément.";
+"e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour cet appareil et les envoyer vers votre homeserver.\nIl s'agit d'un défaut exceptionnel ; désolé pour le désagrément.";
 // Bug report
 "bug_report_title" = "Rapport d'erreur";
 "bug_report_description" = "Merci de décrire l'erreur. Qu'avez-vous fait ? Quel était le comportement attendu ? Que s'est-il passé ?";
 "bug_crash_report_title" = "Rapport d'erreur";
-"bug_crash_report_description" = "Merci de décrire ce que vous faisiez avant le crash :";
+"bug_crash_report_description" = "Merci de décrire ce que vous faisiez avant l'arrêt de l'application :";
 "bug_report_logs_description" = "Afin de diagnostiquer les problèmes, les traces de ce client seront envoyés avec le rapport d'erreur. Si vous préférez envoyer uniquement le texte ci-dessus, merci de décocher :";
 "bug_report_send_logs" = "Envoyer les traces";
 "bug_report_send_screenshot" = "Envoyer une capture d'écran";
