@@ -34,6 +34,9 @@
 
     // Current request in progress.
     MXHTTPOperation *mxCurrentOperation;
+    
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 @end
 
@@ -44,7 +47,6 @@
     [super finalizeInit];
 
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -54,6 +56,12 @@
     dataSource.delegate = nil;
     dataSource = nil;
     onCompleteBlock = nil;
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
 
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
@@ -99,6 +107,19 @@
 
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated

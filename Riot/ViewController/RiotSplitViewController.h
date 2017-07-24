@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import <UIKit/UIKit.h>
 
-#import "DeviceView.h"
+/**
+ RiotSplitViewController extends UISplitViewController to handle status bar display.
+ */
 
-#import "MediaPickerViewController.h"
-#import "TableViewCellWithCheckBoxes.h"
-
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, TableViewCellWithCheckBoxesDelegate>
+@interface RiotSplitViewController : UISplitViewController
 
 @end
 

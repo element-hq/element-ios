@@ -1,13 +1,12 @@
 /*
- Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,27 +14,27 @@
  limitations under the License.
  */
 
-#import "AttachmentsViewController.h"
+#import "LanguagePickerViewController.h"
 
 #import "AppDelegate.h"
 
-@interface AttachmentsViewController ()
+@interface LanguagePickerViewController ()
 {
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
 
-@implementation AttachmentsViewController
-
-#pragma mark -
+@implementation LanguagePickerViewController
 
 - (void)finalizeInit
 {
     [super finalizeInit];
-    
-    // Setup `MXKViewControllerHandling` properties.
+
+    // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -43,9 +42,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
-    self.attachmentsCollection.accessibilityIdentifier =@"AttachmentsVC";
+
+    // Hide line separators of empty cells
+    self.tableView.tableFooterView = [[UIView alloc] init];
     
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -58,21 +57,7 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"AttachmentsViewer"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
 }
 
 - (void)destroy
@@ -83,6 +68,19 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
         kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:@"CountryPicker"];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
 }
 

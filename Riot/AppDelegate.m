@@ -291,7 +291,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
-    
+
+    // Set up runtime language and fallback
+    NSString *langage = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];;
+    [NSBundle mxk_setLanguage:langage];
+    [NSBundle mxk_setFallbackLanguage:@"en"];
+
     // Define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:kRiotColorGreen];
     
@@ -2385,12 +2390,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
             NSLog(@"Call view controller is dismissed (%d)", callIsEnded);
             
-            if (callIsEnded)
-            {
-                // Restore system status bar
-                [UIApplication sharedApplication].statusBarHidden = NO;
-            }
-            
             [callViewController dismissViewControllerAnimated:YES completion:^{
                 
                 if (!callIsEnded)
@@ -2525,31 +2524,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         if (self.window.rootViewController.presentedViewController)
         {
-            [self.window.rootViewController.presentedViewController presentViewController:currentCallViewController animated:YES completion:^{
-                
-                // Hide system status bar
-                [UIApplication sharedApplication].statusBarHidden = YES;
-                
-                if (completion)
-                {
-                    completion ();
-                }
-                
-            }];
+            [self.window.rootViewController.presentedViewController presentViewController:currentCallViewController animated:YES completion:completion];
         }
         else
         {
-            [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
-                
-                // Hide system status bar
-                [UIApplication sharedApplication].statusBarHidden = YES;
-                
-                if (completion)
-                {
-                    completion ();
-                }
-                
-            }];
+            [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:completion];
         }
     }
 }

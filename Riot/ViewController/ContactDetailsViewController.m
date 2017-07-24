@@ -74,6 +74,16 @@
      Current alert (if any).
      */
     UIAlertController *currentAlert;
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The current visibility of the status bar in this view controller.
+     */
+    BOOL isStatusBarHidden;
 }
 @end
 
@@ -100,9 +110,11 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    // Keep visible the status bar by default.
+    isStatusBarHidden = NO;
 }
 
 - (void)viewDidLoad
@@ -202,6 +214,25 @@
         NSNumber *orientation = (NSNumber*)(notif.userInfo[UIApplicationStatusBarOrientationUserInfoKey]);
         self.bottomImageView.hidden = (orientation.integerValue == UIInterfaceOrientationLandscapeLeft || orientation.integerValue == UIInterfaceOrientationLandscapeRight);
     }];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the current status bar visibility.
+    return isStatusBarHidden;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -270,6 +301,12 @@
 - (void)destroy
 {
     [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
     
     if (roomCreationRequest)
     {
@@ -1073,6 +1110,10 @@
             [avatarFullScreenView removeFromSuperview];
 
             avatarFullScreenView = nil;
+            
+            isStatusBarHidden = NO;
+            // Trigger status bar update
+            [self setNeedsStatusBarAppearanceUpdate];
         }];
 
         NSString *avatarURL = nil;
@@ -1090,6 +1131,10 @@
                              previewImage:contactAvatar.image];
 
         [avatarFullScreenView showFullScreen];
+        isStatusBarHidden = YES;
+        
+        // Trigger status bar update
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 

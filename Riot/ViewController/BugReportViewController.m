@@ -237,7 +237,8 @@
     }
 
     userInfo[@"locale"] = [NSLocale preferredLanguages][0];
-    userInfo[@"app_language"] = [[NSBundle mainBundle] preferredLocalizations][0];
+    userInfo[@"default_app_language"] = [[NSBundle mainBundle] preferredLocalizations][0]; // The language chosen by the OS
+    userInfo[@"app_language"] = [NSBundle mxk_language] ? [NSBundle mxk_language] : userInfo[@"default_app_language"]; // The language chosen by the user
 
     bugReportRestClient.others = userInfo;
 

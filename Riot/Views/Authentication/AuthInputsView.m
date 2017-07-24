@@ -291,7 +291,7 @@
     return errorMsg;
 }
 
-- (void)prepareParameters:(void (^)(NSDictionary *parameters))callback
+- (void)prepareParameters:(void (^)(NSDictionary *parameters, NSError *error))callback
 {
     if (callback)
     {
@@ -300,7 +300,7 @@
         {
             // We trigger here a registration based on external inputs. All the required data are handled by the session id.
             NSLog(@"[AuthInputsView] prepareParameters: return external registration parameters");
-            callback(externalRegistrationParameters);
+            callback(externalRegistrationParameters, nil);
             
             // CAUTION: Do not reset this dictionary here, it is used later to handle this registration until the end (see [updateAuthSessionWithCompletedStages:didUpdateParameters:])
             
@@ -438,24 +438,58 @@
                         submittedMSISDN = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
                         
                         [submittedMSISDN requestValidationTokenWithMatrixRestClient:restClient
-                                                                          nextLink:nil
-                                                                           success:^{
-                                                                               
-                                                                               [self showValidationMSISDNDialogToPrepareParameters:callback];
-                                                                               
-                                                                           } failure:^(NSError *error) {
-                                                                               
-                                                                               NSLog(@"[AuthInputsView] Failed to request msisdn token");
-                                                                               
-                                                                               // Ignore connection cancellation error
-                                                                               if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
-                                                                               {
-                                                                                   return;
-                                                                               }
-                                                                               
-                                                                               callback(nil);
-                                                                               
-                                                                           }];
+                                                               isDuringRegistration:YES
+                                                                           nextLink:nil
+                                                                            success:^
+                         {
+                             
+                             [self showValidationMSISDNDialogToPrepareParameters:callback];
+                             
+                         }
+                                                                            failure:^(NSError *error)
+                         {
+                             
+                             NSLog(@"[AuthInputsView] Failed to request msisdn token");
+                             
+                             // Ignore connection cancellation error
+                             if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                             {
+                                 return;
+                             }
+                             
+                             // Translate the potential MX error.
+                             MXError *mxError = [[MXError alloc] initWithNSError:error];
+                             if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+                             {
+                                 NSMutableDictionary *userInfo;
+                                 if (error.userInfo)
+                                 {
+                                     userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                                 }
+                                 else
+                                 {
+                                     userInfo = [NSMutableDictionary dictionary];
+                                 }
+                                 
+                                 userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+                                 
+                                 if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+                                 {
+                                     userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                                     userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                                 }
+                                 else
+                                 {
+                                     userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                                     userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                                 }
+                                 
+                                 error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+                             }
+                             
+                             callback(nil, error);
+                             
+                         }];
                         
                         // Async response
                         return;
@@ -492,39 +526,72 @@
                                               [currentSession.session stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
 
                         [submittedEmail requestValidationTokenWithMatrixRestClient:restClient
+                                                              isDuringRegistration:YES
                                                                           nextLink:nextLink
-                                                                           success:^{
-                                                                               
-                                                                               NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
-                                                                               NSDictionary *parameters;
-                                                                               parameters = @{
-                                                                                              @"auth": @{@"session":currentSession.session, @"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
-                                                                                              @"username": self.userLoginTextField.text,
-                                                                                              @"password": self.passWordTextField.text,
-                                                                                              @"bind_msisdn": [NSNumber numberWithBool:self.isMSISDNFlowCompleted],
-                                                                                              @"bind_email": @(YES)
-                                                                                              };
-                                                                               
-                                                                               [self hideInputsContainer];
-                                                                               
-                                                                               self.messageLabel.text = NSLocalizedStringFromTable(@"auth_email_validation_message", @"Vector", nil);
-                                                                               self.messageLabel.hidden = NO;
-                                                                               
-                                                                               callback(parameters);
-                                                                               
-                                                                           } failure:^(NSError *error) {
-                                                                               
-                                                                               NSLog(@"[AuthInputsView] Failed to request email token");
-                                                                               
-                                                                               // Ignore connection cancellation error
-                                                                               if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
-                                                                               {
-                                                                                   return;
-                                                                               }
-                                                                               
-                                                                               callback(nil);
-                                                                               
-                                                                           }];
+                                                                           success:^
+                         {
+                             
+                             NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
+                             NSDictionary *parameters;
+                             parameters = @{
+                                            @"auth": @{@"session":currentSession.session, @"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
+                                            @"username": self.userLoginTextField.text,
+                                            @"password": self.passWordTextField.text,
+                                            @"bind_msisdn": [NSNumber numberWithBool:self.isMSISDNFlowCompleted],
+                                            @"bind_email": @(YES)
+                                            };
+                             
+                             [self hideInputsContainer];
+                             
+                             self.messageLabel.text = NSLocalizedStringFromTable(@"auth_email_validation_message", @"Vector", nil);
+                             self.messageLabel.hidden = NO;
+                             
+                             callback(parameters, nil);
+                             
+                         }
+                                                                           failure:^(NSError *error)
+                         {
+                             
+                             NSLog(@"[AuthInputsView] Failed to request email token");
+                             
+                             // Ignore connection cancellation error
+                             if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                             {
+                                 return;
+                             }
+                             
+                             // Translate the potential MX error.
+                             MXError *mxError = [[MXError alloc] initWithNSError:error];
+                             if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+                             {
+                                 NSMutableDictionary *userInfo;
+                                 if (error.userInfo)
+                                 {
+                                     userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                                 }
+                                 else
+                                 {
+                                     userInfo = [NSMutableDictionary dictionary];
+                                 }
+                                 
+                                 userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+                                 
+                                 if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+                                 {
+                                     userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+                                     userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+                                 }
+                                 else
+                                 {
+                                     userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                                     userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                                 }
+                                 
+                                 error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+                             }
+                             callback(nil, error);
+                             
+                         }];
                         
                         // Async response
                         return;
@@ -547,12 +614,12 @@
                                                          @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
                                                          };
                             
-                            callback(parameters);
+                            callback(parameters, nil);
                         }
                         else
                         {
                             NSLog(@"[AuthInputsView] reCaptcha stage failed");
-                            callback(nil);
+                            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
                         }
                         
                     }];
@@ -580,11 +647,11 @@
             }
         }
         
-        callback(parameters);
+        callback(parameters, nil);
     }
 }
 
-- (void)updateAuthSessionWithCompletedStages:(NSArray *)completedStages didUpdateParameters:(void (^)(NSDictionary *parameters))callback
+- (void)updateAuthSessionWithCompletedStages:(NSArray *)completedStages didUpdateParameters:(void (^)(NSDictionary *parameters, NSError *error))callback
 {
     if (callback)
     {
@@ -635,12 +702,12 @@
                         }
                         
                         
-                        callback (parameters);
+                        callback (parameters, nil);
                     }
                     else
                     {
                         NSLog(@"[AuthInputsView] reCaptcha stage failed");
-                        callback (nil);
+                        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
                     }
                     
                 }];
@@ -650,7 +717,7 @@
         }
         
         NSLog(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
-        callback (nil);
+        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
     }
 }
 
@@ -1258,7 +1325,7 @@
     return nil;
 }
 
-- (void)showValidationMSISDNDialogToPrepareParameters:(void (^)(NSDictionary *parameters))callback
+- (void)showValidationMSISDNDialogToPrepareParameters:(void (^)(NSDictionary *parameters, NSError *error))callback
 {
     __weak typeof(self) weakSelf = self;
     
@@ -1332,7 +1399,7 @@
                                                                                  @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
                                                                                  };
                                                                   
-                                                                  callback(parameters);
+                                                                  callback(parameters, nil);
                                                                   
                                                               } failure:^(NSError *error) {
                                                                   

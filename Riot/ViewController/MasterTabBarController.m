@@ -46,6 +46,9 @@
     
     // Current alert (if any).
     UIAlertController *currentAlert;
+    
+    // Keep reference on the pushed view controllers to release them correctly
+    NSMutableArray *childViewControllers;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -75,6 +78,8 @@
     {
         tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     }
+    
+    childViewControllers = [NSMutableArray array];
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
@@ -107,6 +112,31 @@
         }
         
         [self refreshTabBarBadges];
+        
+        // Release properly pushed and/or presented view controller
+        if (childViewControllers.count)
+        {
+            for (id viewController in childViewControllers)
+            {
+                if ([viewController isKindOfClass:[UINavigationController class]])
+                {
+                    UINavigationController *navigationController = (UINavigationController*)viewController;
+                    for (id subViewController in navigationController.viewControllers)
+                    {
+                        if ([subViewController respondsToSelector:@selector(destroy)])
+                        {
+                            [subViewController destroy];
+                        }
+                    }
+                }
+                else if ([viewController respondsToSelector:@selector(destroy)])
+                {
+                    [viewController destroy];
+                }
+            }
+            
+            [childViewControllers removeAllObjects];
+        }
     }
     
     if (unifiedSearchViewController)
@@ -141,6 +171,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
         authViewControllerObserver = nil;
     }
+    
+    childViewControllers = nil;
 }
 
 #pragma mark -
@@ -546,7 +578,7 @@
     else
     {
         // Keep ref on destinationViewController
-        [super prepareForSegue:segue sender:sender];
+        [childViewControllers addObject:segue.destinationViewController];
         
         if ([[segue identifier] isEqualToString:@"showAuth"])
         {
@@ -583,6 +615,14 @@
     
     // Hide back button title
     self.navigationController.topViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
+{
+    // Keep ref on presented view controller
+    [childViewControllers addObject:viewControllerToPresent];
+    
+    [super presentViewController:viewControllerToPresent animated:flag completion:completion];
 }
 
 // Made the actual selected view controller update its selected cell.

@@ -29,6 +29,7 @@
 #import "BugReportViewController.h"
 
 #import "CountryPickerViewController.h"
+#import "LanguagePickerViewController.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
 
 #import "NBPhoneNumberUtil.h"
@@ -43,6 +44,7 @@ enum
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
+    SETTINGS_SECTION_USER_INTERFACE_INDEX,
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_ADVANCED_INDEX,
@@ -66,6 +68,14 @@ enum
     //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
     //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
     NOTIFICATION_SETTINGS_COUNT
+};
+
+enum
+{
+    USER_INTERFACE_LANGUAGE_INDEX = 0,
+//    USER_INTERFACE_THEME_INDEX,
+    USER_INTERFACE_COUNT,
+    USER_INTERFACE_THEME_INDEX
 };
 
 enum
@@ -165,6 +175,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
     // Postpone destroy operation when saving, pwd reset or email binding is in progress
     BOOL isSavingInProgress;
     BOOL isResetPwdInProgress;
@@ -181,6 +194,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     BOOL keepNewEmailEditing;
     BOOL keepNewPhoneNumberEditing;
+    
+    // The user interface theme cell
+    TableViewCellWithCheckBoxes *uiThemeCell;
 }
 
 /**
@@ -202,7 +218,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
@@ -224,6 +239,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
+    [self.tableView registerClass:TableViewCellWithCheckBoxes.class forCellReuseIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -267,6 +283,31 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"SettingsVCNavBarSaveButton";
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    
+    if (self.tableView.dataSource)
+    {
+        [self refreshSettings];
+    }
+    
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -282,6 +323,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [documentInteractionController dismissPreviewAnimated:NO];
         [documentInteractionController dismissMenuAnimated:NO];
         documentInteractionController = nil;
+    }
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
     }
 
     if (isSavingInProgress || isResetPwdInProgress || is3PIDBindingInProgress)
@@ -1083,6 +1130,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+    {
+        count = USER_INTERFACE_COUNT;
+    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
@@ -1548,6 +1599,59 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = labelAndSwitchCell;
         }
     }
+    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+    {
+        if (row == USER_INTERFACE_LANGUAGE_INDEX)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            }
+
+            NSString *language = [NSBundle mxk_language];
+            NSString *languageDescription = language ? [MXKLanguagePickerViewController languageDescription:language] : [MXKLanguagePickerViewController languageDescription:[MXKLanguagePickerViewController defaultLanguage]];
+
+            cell.textLabel.textColor = kRiotTextColorBlack;
+
+            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
+            cell.detailTextLabel.text = languageDescription;
+
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+        else if (row == USER_INTERFACE_THEME_INDEX)
+        {
+            uiThemeCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
+            
+            uiThemeCell.mainContainerLeadingConstraint.constant = uiThemeCell.separatorInset.left;
+            
+            uiThemeCell.checkBoxesNumber = 2;
+            
+            uiThemeCell.allowsMultipleSelection = NO;
+            uiThemeCell.delegate = self;
+            
+            NSArray *labels = uiThemeCell.labels;
+            UILabel *label;
+            label = labels[0];
+            label.text = NSLocalizedStringFromTable(@"settings_ui_light_theme", @"Vector", nil);
+            label = labels[1];
+            label.text = NSLocalizedStringFromTable(@"settings_ui_dark_theme", @"Vector", nil);
+            
+            NSString *selectedTheme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];            
+            if (selectedTheme && [selectedTheme isEqualToString:@"dark"])
+            {
+                [uiThemeCell setCheckBoxValue:YES atIndex:1];
+            }
+            else
+            {
+                // Consider the light theme by default.
+                [uiThemeCell setCheckBoxValue:YES atIndex:0];
+            }
+            
+            cell = uiThemeCell;
+        }
+    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         MXKTableViewCell *ignoredUserCell = [self getDefaultTableViewCell:tableView];
@@ -1850,6 +1954,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     }
+    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
+    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         // Check whether this section is visible
@@ -2004,7 +2112,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
 
-        if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+        if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+        {
+            if (row == USER_INTERFACE_LANGUAGE_INDEX)
+            {
+                // Display the language picker
+                LanguagePickerViewController *languagePickerViewController = [LanguagePickerViewController languagePickerViewController];
+                languagePickerViewController.selectedLanguage = [NSBundle mxk_language];
+                languagePickerViewController.delegate = self;
+                [self pushViewController:languagePickerViewController];
+            }
+        }
+        else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
             MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
 
@@ -2875,7 +2994,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
 
     MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmailTextField.text];
-    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient nextLink:nil success:^{
+    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
 
         [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"] for3PID:new3PID];
 
@@ -2884,6 +3003,36 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [self stopActivityIndicator];
 
         NSLog(@"[SettingsViewController] Failed to request email token");
+        
+        // Translate the potential MX error.
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+        {
+            NSMutableDictionary *userInfo;
+            if (error.userInfo)
+            {
+                userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+            }
+            else
+            {
+                userInfo = [NSMutableDictionary dictionary];
+            }
+            
+            userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+            
+            if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+            {
+                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+            }
+            else
+            {
+                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+            }
+            
+            error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+        }
 
         // Notify user
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -2947,7 +3096,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
     
-    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient nextLink:nil success:^{
+    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
         
         [self showValidationMsisdnDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_message"] for3PID:new3PID];
         
@@ -2956,6 +3105,36 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [self stopActivityIndicator];
         
         NSLog(@"[SettingsViewController] Failed to request msisdn token");
+        
+        // Translate the potential MX error.
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+        {
+            NSMutableDictionary *userInfo;
+            if (error.userInfo)
+            {
+                userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+            }
+            else
+            {
+                userInfo = [NSMutableDictionary dictionary];
+            }
+            
+            userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+            
+            if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+            {
+                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+            }
+            else
+            {
+                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+            }
+            
+            error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+        }
         
         // Notify user
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -3366,6 +3545,48 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     
     [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - MXKCountryPickerViewControllerDelegate
+
+- (void)languagePickerViewController:(MXKLanguagePickerViewController *)languagePickerViewController didSelectLangugage:(NSString *)language
+{
+    [languagePickerViewController withdrawViewControllerAnimated:YES completion:nil];
+
+    if (![language isEqualToString:[NSBundle mxk_language]]
+        || (language == nil && [NSBundle mxk_language]))
+    {
+        [NSBundle mxk_setLanguage:language];
+
+        // Store user settings
+        [[NSUserDefaults standardUserDefaults] setObject:language forKey:@"appLanguage"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        // Do a full sync to recompute matrix data (rooms data sources and summaries)
+        [self startActivityIndicator];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+
+            [[AppDelegate theDelegate] reloadMatrixSessions:NO];
+        });
+    }
+}
+
+#pragma mark - TableViewCellWithCheckBoxesDelegate
+
+- (void)tableViewCellWithCheckBoxes:(TableViewCellWithCheckBoxes *)tableViewCellWithCheckBoxes didTapOnCheckBoxAtIndex:(NSUInteger)index
+{
+    if (tableViewCellWithCheckBoxes == uiThemeCell)
+    {
+        NSString *theme = (index == 0) ? @"light" : @"dark";
+        BOOL isCurrentlySelected = [uiThemeCell checkBoxValueAtIndex:index];
+        
+        if (!isCurrentlySelected)
+        {
+            // The user wants to select this theme
+            [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"userInterfaceTheme"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
 }
 
 @end

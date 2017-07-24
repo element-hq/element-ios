@@ -31,6 +31,7 @@
 		3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */; };
 		321082B21F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 321082B01F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m */; };
 		321082B31F0E9F41002E0091 /* RoomMembershipCollapsedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */; };
+		32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32185B301F20FA2B00752141 /* LanguagePickerViewController.m */; };
 		322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */; };
 		322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */; };
 		32471CDC1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */; };
@@ -51,6 +52,8 @@
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
 		A27ECCE3FC4971745D2CB78D /* libPods-RiotShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */; };
+		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
+		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
 		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
 		F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */; };
@@ -547,6 +550,8 @@
 		321082AF1F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipCollapsedBubbleCell.h; sourceTree = "<group>"; };
 		321082B01F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipCollapsedBubbleCell.m; sourceTree = "<group>"; };
 		321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipCollapsedBubbleCell.xib; sourceTree = "<group>"; };
+		32185B2F1F20FA2B00752141 /* LanguagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguagePickerViewController.h; sourceTree = "<group>"; };
+		32185B301F20FA2B00752141 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
 		3228069D1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipExpandedBubbleCell.h; sourceTree = "<group>"; };
 		3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipExpandedBubbleCell.m; sourceTree = "<group>"; };
 		3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipExpandedBubbleCell.xib; sourceTree = "<group>"; };
@@ -577,6 +582,9 @@
 		765F5104DB3EC39713DEB3A4 /* Pods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		839BB91240D350D5607D55BA /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
+		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
+		F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		F02C1A841E8EB04C0045A404 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
 		F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
@@ -1638,6 +1646,8 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */,
+				F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */,
 				F0E059FE1E963103004B83FB /* FavouritesViewController.h */,
 				F0E059FF1E963103004B83FB /* FavouritesViewController.m */,
 				F0E05A001E963103004B83FB /* RoomsViewController.h */,
@@ -1677,6 +1687,8 @@
 				F083BC2F1E7009EC00A9B29C /* HomeMessagesSearchViewController.m */,
 				F083BC301E7009EC00A9B29C /* HomeViewController.h */,
 				F083BC311E7009EC00A9B29C /* HomeViewController.m */,
+				32185B2F1F20FA2B00752141 /* LanguagePickerViewController.h */,
+				32185B301F20FA2B00752141 /* LanguagePickerViewController.m */,
 				F083BC321E7009EC00A9B29C /* MediaAlbumContentViewController.h */,
 				F083BC331E7009EC00A9B29C /* MediaAlbumContentViewController.m */,
 				F083BC341E7009EC00A9B29C /* MediaAlbumContentViewController.xib */,
@@ -2698,6 +2710,7 @@
 				F083BE861E7009ED00A9B29C /* RoomTableViewCell.m in Sources */,
 				F083BDF51E7009ED00A9B29C /* main.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
+				F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */,
 				F083BE331E7009ED00A9B29C /* DeviceView.m in Sources */,
 				32471CDC1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE2B1E7009ED00A9B29C /* AuthInputsView.m in Sources */,
@@ -2739,6 +2752,7 @@
 				F083BE7E1E7009ED00A9B29C /* InviteRecentTableViewCell.m in Sources */,
 				F083BE3C1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE211E7009ED00A9B29C /* RoomSearchViewController.m in Sources */,
+				32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */,
 				F083BE3E1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE071E7009ED00A9B29C /* AttachmentsViewController.m in Sources */,
 				F083BE051E7009ED00A9B29C /* RiotDesignValues.m in Sources */,
