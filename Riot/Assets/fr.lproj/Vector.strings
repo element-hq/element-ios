@@ -410,3 +410,9 @@
 "bug_report_progress_zipping" = "Collecte des traces";
 "bug_report_progress_uploading" = "Envoi du rapport";
 "bug_report_send" = "Envoyer";
+"auth_email_in_use" = "Cette adresse e-mail est déjà utilisée";
+"auth_phone_in_use" = "Ce numéro de téléphone est déjà utilisé";
+"auth_email_not_found" = "Échec lors de l'envoi de l'e-mail : Cette adresse e-mail n'a pas pu être trouvée";
+"settings_ui_language" = "Langue";
+"settings_ui_light_theme" = "Thème clair";
+"settings_ui_dark_theme" = "Thème sombre";
