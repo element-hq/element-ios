@@ -272,7 +272,7 @@
 "room_details_advanced_room_id" = "Raum-ID:";
 "room_details_advanced_enable_e2e_encryption" = "Aktivere Verschlüsselung (Warnung: Nicht deaktivierbar!)";
 "room_details_advanced_e2e_encryption_enabled" = "Verschlüsselung ist in diesem Raum aktiviert";
-"room_details_advanced_e2e_encryption_disabled" = "Verschlüsselung ist in diesem Raum nicht aktiviert";
+"room_details_advanced_e2e_encryption_disabled" = "Verschlüsselung ist in diesem Raum nicht aktiviert.";
 // Titles
 "title_home" = "Start";
 "next" = "Weiter";
