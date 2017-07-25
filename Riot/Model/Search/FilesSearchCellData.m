@@ -118,7 +118,7 @@
     }
     else if ([msgtype isEqualToString:kMXMessageTypeAudio])
     {
-        return [UIImage imageNamed:@"file_audio_icon"];
+        return [UIImage imageNamed:@"file_music_icon"];
     }
     else if ([msgtype isEqualToString:kMXMessageTypeVideo])
     {

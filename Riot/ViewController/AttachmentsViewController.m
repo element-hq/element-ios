@@ -19,6 +19,14 @@
 
 #import "AppDelegate.h"
 
+@interface AttachmentsViewController ()
+{
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+}
+
+@end
+
 @implementation AttachmentsViewController
 
 #pragma mark -
@@ -27,8 +35,7 @@
 {
     [super finalizeInit];
     
-    // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
+    // Setup `MXKViewControllerHandling` properties.
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -39,6 +46,20 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.attachmentsCollection.accessibilityIdentifier =@"AttachmentsVC";
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -51,6 +72,17 @@
     {
         [tracker set:kGAIScreenName value:@"AttachmentsViewer"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+}
+
+- (void)destroy
+{
+    [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
     }
 }
 

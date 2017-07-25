@@ -15,8 +15,18 @@
  */
 
 #import "TableViewCellWithCollectionView.h"
+#import "RiotDesignValues.h"
 
 @implementation TableViewCellWithCollectionView
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.editionViewHeightConstraint.constant = 0;
+    
+    self.editionView.backgroundColor = kRiotSecondaryBgColor;
+}
 
 - (void)prepareForReuse
 {
@@ -25,6 +35,11 @@
     self.collectionView.tag = -1;
     self.collectionView.dataSource = nil;
     self.collectionView.delegate = nil;
+    
+    self.editionViewHeightConstraint.constant = 0;
+    self.editionView.hidden = YES;
+    
+    self.collectionView.scrollEnabled = YES;
 }
 
 @end

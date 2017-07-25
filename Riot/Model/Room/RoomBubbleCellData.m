@@ -33,6 +33,18 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     
     if (self)
     {
+        if (event.eventType == MXEventTypeRoomMember)
+        {
+            // Membership events have their own cell type
+            self.tag = RoomBubbleCellDataTagMembership;
+
+            // Membership events can be collapsed together
+            self.collapsable = YES;
+
+            // Collapse them by default
+            self.collapsed = YES;
+        }
+
         // Increase maximum number of components
         self.maxComponentCount = 20;
         
@@ -76,7 +88,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 {
     @synchronized(bubbleComponents)
     {
-        if (!attributedTextMessage.length && bubbleComponents.count)
+        if (self.hasAttributedTextMessage && !attributedTextMessage.length)
         {
             // Attributed text message depends on the room read receipts which must be retrieved on the main thread to prevent us from race conditions.
             // Check here the current thread, this is just a sanity check because the attributed text message
@@ -98,12 +110,57 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     return attributedTextMessage;
 }
 
+#pragma mark - Bubble collapsing
+
+- (BOOL)collapseWith:(id<MXKRoomBubbleCellDataStoring>)cellData
+{
+    if (self.tag == RoomBubbleCellDataTagMembership
+        && cellData.tag == RoomBubbleCellDataTagMembership)
+    {
+        // For now, do not merge VoIP conference events
+        if (![MXCallManager isConferenceUser:cellData.events.firstObject.stateKey])
+        {
+            // Keep a pagination between events of different days
+            NSString *bubbleDateString = [roomDataSource.eventFormatter dateStringFromDate:self.date withTime:NO];
+            NSString *eventDateString = [roomDataSource.eventFormatter dateStringFromDate:((RoomBubbleCellData*)cellData).date withTime:NO];
+            if (bubbleDateString && eventDateString && [bubbleDateString isEqualToString:eventDateString])
+            {
+                return YES;
+            }
+        }
+
+        return NO;
+    }
+    
+    return [super collapseWith:cellData];
+}
+
+- (void)setCollapsed:(BOOL)collapsed
+{
+    if (collapsed != self.collapsed)
+    {
+        super.collapsed = collapsed;
+
+        // Refresh only cells series header
+        if (self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
+        {
+            attributedTextMessage = nil;
+        }
+    }
+}
+
 #pragma mark - 
 
 - (NSAttributedString*)refreshAttributedTextMessage
 {
     // CAUTION: This method must be called on the main thread.
-    
+
+    // Return the collapsed string only for cells series header
+    if (self.collapsed && self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
+    {
+        return super.collapsedAttributedTextMessage;
+    }
+
     NSMutableAttributedString *currentAttributedTextMsg;
     
     // Refresh the receipt flag during this process
@@ -214,7 +271,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         if (bubbleComponents.count)
         {
             // Set position of the first component
-            CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
+            CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile || self.attachment.type == MXKAttachmentTypeAudio) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
             MXKRoomBubbleComponent *component;
             NSUInteger index = 0;
             for (; index < bubbleComponents.count; index++)
@@ -439,6 +496,28 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         }
     }
     return readReceiptVerticalWhitespace;
+}
+
+- (BOOL)hasSameSenderAsBubbleCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData
+{
+    if (self.tag == RoomBubbleCellDataTagMembership || bubbleCellData.tag == RoomBubbleCellDataTagMembership)
+    {
+        // We do not want to merge membership event cells with other cell types
+        return NO;
+    }
+
+    return [super hasSameSenderAsBubbleCellData:bubbleCellData];
+}
+
+- (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState
+{
+    if (self.tag == RoomBubbleCellDataTagMembership || event.eventType == MXEventTypeRoomMember)
+    {
+        // One single bubble per membership event
+        return NO;
+    }
+
+    return [super addEvent:event andRoomState:roomState];
 }
 
 @end
