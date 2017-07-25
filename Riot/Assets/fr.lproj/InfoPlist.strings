@@ -1,0 +1,5 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "La caméra est utilisée pour prendre des photos, des vidéos et passer des appels vidéo.";
+"NSPhotoLibraryUsageDescription" = "La bibliothèque photo est utilisée pour envoyer des photos et des vidéos.";
+"NSMicrophoneUsageDescription" = "Le microphone est utilisé pour prendre des vidéos et passer des appels.";
+"NSContactsUsageDescription" = "Le carnet d'adresses est utilisé pour rechercher des utilisateurs par e-mail et numéro de téléphone sur Riot.";
