@@ -1111,6 +1111,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     NSString *roomIdOrAlias;
     NSString *eventId;
+    NSString *userId;
     
     // Check permalink to room or event
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
@@ -1127,6 +1128,19 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Such links come from matrix.to permalinks
         roomIdOrAlias = pathParams[0];
         eventId = (pathParams.count >= 2) ? pathParams[1] : nil;
+    }
+
+    // Check permalink to a user
+    else if ([pathParams[0] isEqualToString:@"user"] && pathParams.count == 2)
+    {
+        // The link is the form of "/user/userId"
+        userId = pathParams[1];
+    }
+    else if ([pathParams[0] hasPrefix:@"@"] && pathParams.count == 1)
+    {
+        // The link is the form of "/#/[userId]"
+        // Such links come from matrix.to permalinks
+        userId = pathParams[0];
     }
     
     // Check the conditions to keep the room alias information of a pending fragment.
@@ -1294,6 +1308,33 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 }
             }];
         }
+    }
+    else if (userId)
+    {
+        // Check there is an account that knows this user
+        MXUser *mxUser;
+        MXKAccount *account = [accountManager accountKnowingUserWithUserId:userId];
+        if (account)
+        {
+            mxUser = [account.mxSession userWithUserId:userId];
+        }
+
+        // Prepare the display name of this user
+        NSString *displayName;
+        if (mxUser)
+        {
+            displayName = (mxUser.displayname.length > 0) ? mxUser.displayname : userId;
+        }
+        else
+        {
+            displayName = userId;
+        }
+
+        // Create the contact related to this member
+        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
+        [self showContact:contact];
+
+        continueUserActivity = YES;
     }
     else if ([pathParams[0] isEqualToString:@"register"])
     {
@@ -2318,6 +2359,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 #pragma mark - Contacts handling
+
+- (void)showContact:(MXKContact*)contact
+{
+    [self restoreInitialDisplay:^{
+
+        [self.masterTabBarController selectContact:contact];
+
+    }];
+}
 
 - (void)refreshLocalContacts
 {
