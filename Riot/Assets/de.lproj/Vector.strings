@@ -420,3 +420,4 @@
 "settings_ui_dark_theme" = "Dunkles Design";
 // Events formatter
 "event_formatter_member_updates" = "%tu Änderungen der Mitgliedschaft";
+"contacts_user_directory_section" = "NUTZER VERZEICHNIS";
