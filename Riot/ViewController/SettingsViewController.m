@@ -1610,7 +1610,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
 
             NSString *language = [NSBundle mxk_language];
-            NSString *languageDescription = language ? [MXKLanguagePickerViewController languageDescription:language] : [MXKLanguagePickerViewController languageDescription:[MXKLanguagePickerViewController defaultLanguage]];
+            if (!language)
+            {
+                language = [MXKLanguagePickerViewController defaultLanguage];
+            }
+            NSString *languageDescription = [MXKLanguagePickerViewController languageDescription:language];
+
+            // Capitalise the description in the language locale
+            NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:language];
+            languageDescription = [languageDescription capitalizedStringWithLocale:locale];
 
             cell.textLabel.textColor = kRiotTextColorBlack;
 
