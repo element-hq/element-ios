@@ -29,11 +29,12 @@
 {
     // Display a gradient view above the screen
     CAGradientLayer* gradientMaskLayer;
-
-    /**
-     Current alert (if any).
-     */
-    MXKAlert *currentAlert;
+    
+    // Current alert (if any).
+    UIAlertController *currentAlert;
+    
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -45,7 +46,6 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -96,7 +96,7 @@
     
     gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
     gradientMaskLayer.anchorPoint = CGPointZero;
-
+    
     // Define caller image view size
     CGSize size = [[UIScreen mainScreen] bounds].size;
     CGFloat minSize = MIN(size.width, size.height);
@@ -108,6 +108,26 @@
     [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
     
     [self updateLocalPreviewLayout];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Hide the status bar on the call view controller.
+    return YES;
 }
 
 - (void)viewDidLayoutSubviews
@@ -127,7 +147,7 @@
             gradientMaskLayer.bounds = newBounds;
         }
     }
-
+    
     // The caller image view is circular
     self.callerImageView.layer.cornerRadius = self.callerImageViewWidthConstraint.constant / 2;
     self.callerImageView.clipsToBounds = YES;
@@ -137,10 +157,10 @@
 {
     if (currentAlert)
     {
-        [currentAlert dismiss:NO];
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
-
+    
     [super viewWillDisappear:animated];
 }
 
@@ -153,6 +173,12 @@
 - (void)destroy
 {
     [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
     
     [gradientMaskLayer removeFromSuperlayer];
     gradientMaskLayer = nil;
@@ -167,83 +193,91 @@
     {
         // There are unknown devices, check what the user wants to do
         __weak __typeof(self) weakSelf = self;
-
+        
         MXUsersDevicesMap<MXDeviceInfo*> *unknownDevices = error.userInfo[MXEncryptingErrorUnknownDeviceDevicesKey];
-
-        [currentAlert dismiss:NO];
-        currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
-                                               message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
-                                                 style:MXKAlertStyleAlert];
-
-        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-
-                // Get the UsersDevicesViewController from the storyboard
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-                UsersDevicesViewController *usersDevicesViewController = [storyboard instantiateViewControllerWithIdentifier:@"UsersDevicesViewControllerStoryboardId"];
-
-                [usersDevicesViewController displayUsersDevices:unknownDevices andMatrixSession:self.mainSession onComplete:^(BOOL doneButtonPressed) {
-
-                    if (doneButtonPressed)
-                    {
-                        // Retry the call
-                        if (call.isIncoming)
-                        {
-                            [call answer];
-                        }
-                        else
-                        {
-                            [call callWithVideo:call.isVideoCall];
-                        }
-                    }
-                    else
-                    {
-                        // Ignore the call
-                        [call hangup];
-                    }
-                }];
-
-                // Show this screen within a navigation controller
-                UINavigationController *usersDevicesNavigationController = [[UINavigationController alloc] init];
-                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
-
-                [self presentViewController:usersDevicesNavigationController animated:YES completion:nil];
-
-            }
-        }];
-
-        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:(call.isIncoming ? @"unknown_devices_answer_anyway":@"unknown_devices_call_anyway")]
-                                   style:MXKAlertActionStyleDefault
-                                 handler:^(MXKAlert *alert) {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-
-                // Acknowledge the existence of all devices
-                [self startActivityIndicator];
-                [self.mainSession.crypto setDevicesKnown:unknownDevices complete:^{
-
-                    [self stopActivityIndicator];
-
-                    // Retry the call
-                    if (call.isIncoming)
-                    {
-                        [call answer];
-                    }
-                    else
-                    {
-                        [call callWithVideo:call.isVideoCall];
-                    }
-                }];
-            }
-        }];
-
-        currentAlert.mxkAccessibilityIdentifier = @"CallVCUnknownDevicesAlert";
-        [currentAlert showInViewController:self];
+        
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
+        
+        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
+                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               self->currentAlert = nil;
+                                                               
+                                                               // Get the UsersDevicesViewController from the storyboard
+                                                               UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                                                               UsersDevicesViewController *usersDevicesViewController = [storyboard instantiateViewControllerWithIdentifier:@"UsersDevicesViewControllerStoryboardId"];
+                                                               
+                                                               [usersDevicesViewController displayUsersDevices:unknownDevices andMatrixSession:self.mainSession onComplete:^(BOOL doneButtonPressed) {
+                                                                   
+                                                                   if (doneButtonPressed)
+                                                                   {
+                                                                       // Retry the call
+                                                                       if (call.isIncoming)
+                                                                       {
+                                                                           [call answer];
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                           [call callWithVideo:call.isVideoCall];
+                                                                       }
+                                                                   }
+                                                                   else
+                                                                   {
+                                                                       // Ignore the call
+                                                                       [call hangup];
+                                                                   }
+                                                               }];
+                                                               
+                                                               // Show this screen within a navigation controller
+                                                               UINavigationController *usersDevicesNavigationController = [[UINavigationController alloc] init];
+                                                               [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
+                                                               
+                                                               [self presentViewController:usersDevicesNavigationController animated:YES completion:nil];
+                                                               
+                                                           }
+                                                           
+                                                       }]];
+        
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:(call.isIncoming ? @"unknown_devices_answer_anyway":@"unknown_devices_call_anyway")]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               self->currentAlert = nil;
+                                                               
+                                                               // Acknowledge the existence of all devices
+                                                               [self startActivityIndicator];
+                                                               [self.mainSession.crypto setDevicesKnown:unknownDevices complete:^{
+                                                                   
+                                                                   [self stopActivityIndicator];
+                                                                   
+                                                                   // Retry the call
+                                                                   if (call.isIncoming)
+                                                                   {
+                                                                       [call answer];
+                                                                   }
+                                                                   else
+                                                                   {
+                                                                       [call callWithVideo:call.isVideoCall];
+                                                                   }
+                                                               }];
+                                                           }
+                                                           
+                                                       }]];
+        
+        [currentAlert mxk_setAccessibilityIdentifier:@"CallVCUnknownDevicesAlert"];
+        [self presentViewController:currentAlert animated:YES completion:nil];
     }
     else
     {
@@ -357,7 +391,7 @@
                     [[AppDelegate theDelegate] showRoom:self.mxCall.room.state.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
                 }
                 
-            }];            
+            }];
         }
     }
     else

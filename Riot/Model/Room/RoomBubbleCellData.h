@@ -16,6 +16,13 @@
 
 #import "MXKRoomBubbleCellDataWithAppendingMode.h"
 
+// Custom tags for MXKRoomBubbleCellDataStoring.tag
+typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
+{
+    RoomBubbleCellDataTagMessage = 0, // Default value used for messages
+    RoomBubbleCellDataTagMembership
+};
+
 /**
  `RoomBubbleCellData` defines Vector bubble cell data model.
  */

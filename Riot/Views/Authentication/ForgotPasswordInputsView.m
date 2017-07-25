@@ -35,7 +35,7 @@
 /**
  The block called when the parameters are ready and the user confirms he has checked his email.
  */
-@property (nonatomic, copy) void (^didPrepareParametersCallback)(NSDictionary *parameters);
+@property (nonatomic, copy) void (^didPrepareParametersCallback)(NSDictionary *parameters, NSError *error);
 
 @end
 
@@ -160,7 +160,7 @@
     return errorMsg;
 }
 
-- (void)prepareParameters:(void (^)(NSDictionary *parameters))callback
+- (void)prepareParameters:(void (^)(NSDictionary *parameters, NSError *error))callback
 {
     if (callback)
     {
@@ -174,15 +174,20 @@
         {
             if (inputsAlert)
             {
-                [inputsAlert dismiss:NO];
+                [inputsAlert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMsg style:MXKAlertStyleAlert];
-            inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                inputsAlert = nil;
-            }];
+            inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [self.delegate authInputsView:self presentMXKAlert:inputsAlert];
+            [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              inputsAlert = nil;
+                                                              
+                                                          }]];
+            
+            [self.delegate authInputsView:self presentAlertController:inputsAlert];
         }
         else
         {
@@ -203,68 +208,91 @@
                 [restClient forgetPasswordForEmail:self.emailTextField.text
                                       clientSecret:clientSecret
                                        sendAttempt:1
-                                           success:^(NSString *sid) {
-                                               typeof(weakSelf) strongSelf = weakSelf;
-                                               if (strongSelf) {
-                                                   strongSelf.didPrepareParametersCallback = callback;
-                                                   
-                                                   NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
-                                                   strongSelf.parameters = @{
-                                                                             @"auth": @{
-                                                                                     @"threepid_creds": @{
-                                                                                             @"client_secret": clientSecret,
-                                                                                             @"id_server": identServerURL.host,
-                                                                                             @"sid": sid
-                                                                                             },
-                                                                                     @"type": kMXLoginFlowTypeEmailIdentity
-                                                                                     },
-                                                                             @"new_password": strongSelf.passWordTextField.text
-                                                                             };
-                                                   
-                                                   [strongSelf hideInputsContainer];
-                                                   
-                                                   strongSelf.messageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_reset_password_email_validation_message", @"Vector", nil), strongSelf.emailTextField.text];
-                                                   
-                                                   strongSelf.messageLabel.hidden = NO;
-                                                   
-                                                   [strongSelf.nextStepButton addTarget:strongSelf
-                                                                                 action:@selector(didCheckEmail:)
-                                                                       forControlEvents:UIControlEventTouchUpInside];
-                                                   
-                                                   strongSelf.nextStepButton.hidden = NO;
-                                               }
-                                           } failure:^(NSError *error) {
-                                               NSLog(@"[ForgotPasswordInputsView] Failed to request email token");
-                                               
-                                               // Ignore connection cancellation error
-                                               if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
-                                               {
-                                                   return;
-                                               }
-                                               
-                                               NSString *errorMessage;
-                                               if (error.userInfo[@"error"])
-                                                   errorMessage = error.userInfo[@"error"];
-                                               else
-                                                   errorMessage = error.localizedDescription;
-                                               
-                                               __strong typeof(weakSelf) strongSelf = weakSelf;
-                                               if (strongSelf) {
-                                                   if (strongSelf->inputsAlert)
-                                                   {
-                                                       [strongSelf->inputsAlert dismiss:NO];
-                                                   }
-                                                   
-                                                   strongSelf->inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage style:MXKAlertStyleAlert];
-                                                   strongSelf->inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                                                       strongSelf->inputsAlert = nil;
-                                                       if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(authInputsViewDidCancelOperation:)])
-                                                           [strongSelf.delegate authInputsViewDidCancelOperation:strongSelf];
-                                                   }];
-                                                   
-                                                   [strongSelf.delegate authInputsView:strongSelf presentMXKAlert:strongSelf->inputsAlert];
-                                               }
-                                           }];
+                                           success:^(NSString *sid)
+                 {
+                     typeof(weakSelf) strongSelf = weakSelf;
+                     if (strongSelf) {
+                         strongSelf.didPrepareParametersCallback = callback;
+                         
+                         NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
+                         strongSelf.parameters = @{
+                                                   @"auth": @{
+                                                           @"threepid_creds": @{
+                                                                   @"client_secret": clientSecret,
+                                                                   @"id_server": identServerURL.host,
+                                                                   @"sid": sid
+                                                                   },
+                                                           @"type": kMXLoginFlowTypeEmailIdentity
+                                                           },
+                                                   @"new_password": strongSelf.passWordTextField.text
+                                                   };
+                         
+                         [strongSelf hideInputsContainer];
+                         
+                         strongSelf.messageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_reset_password_email_validation_message", @"Vector", nil), strongSelf.emailTextField.text];
+                         
+                         strongSelf.messageLabel.hidden = NO;
+                         
+                         [strongSelf.nextStepButton addTarget:strongSelf
+                                                       action:@selector(didCheckEmail:)
+                                             forControlEvents:UIControlEventTouchUpInside];
+                         
+                         strongSelf.nextStepButton.hidden = NO;
+                     }
+                 }
+                                           failure:^(NSError *error)
+                 {
+                     NSLog(@"[ForgotPasswordInputsView] Failed to request email token");
+                     
+                     // Ignore connection cancellation error
+                     if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                     {
+                         return;
+                     }
+                     
+                     NSString *errorMessage;
+                     
+                     // Translate the potential MX error.
+                     MXError *mxError = [[MXError alloc] initWithNSError:error];
+                     if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDNotFound])
+                         errorMessage = NSLocalizedStringFromTable(@"auth_email_not_found", @"Vector", nil);
+                     else if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted])
+                         errorMessage = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                     else if (error.userInfo[@"error"])
+                         errorMessage = error.userInfo[@"error"];
+                     else
+                         errorMessage = error.localizedDescription;
+                     
+                     if (weakSelf)
+                     {
+                         typeof(self) self = weakSelf;
+                         
+                         if (self->inputsAlert)
+                         {
+                             [self->inputsAlert dismissViewControllerAnimated:NO completion:nil];
+                         }
+                         
+                         self->inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
+                         
+                         [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                               style:UIAlertActionStyleDefault
+                                                                             handler:^(UIAlertAction * action) {
+                                                                                 
+                                                                                 if (weakSelf)
+                                                                                 {
+                                                                                     typeof(self) self = weakSelf;
+                                                                                     self->inputsAlert = nil;
+                                                                                     if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewDidCancelOperation:)])
+                                                                                     {
+                                                                                         [self.delegate authInputsViewDidCancelOperation:self];
+                                                                                     }
+                                                                                 }
+                                                                                 
+                                                                             }]];
+                         
+                         [self.delegate authInputsView:self presentAlertController:self->inputsAlert];
+                     }
+                 }];
                 
                 // Async response
                 return;
@@ -275,7 +303,7 @@
             }
         }
         
-        callback(self.parameters);
+        callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
     }
 }
 
@@ -344,7 +372,7 @@
     {
         if (self.didPrepareParametersCallback)
         {
-            self.didPrepareParametersCallback(self.parameters);
+            self.didPrepareParametersCallback(self.parameters, nil);
         }
     }
 }
