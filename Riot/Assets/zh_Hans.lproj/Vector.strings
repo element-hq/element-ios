@@ -410,3 +410,14 @@
 "bug_report_send_screenshot" = "发送截图";
 "bug_report_progress_zipping" = "正在收集日志";
 "bug_report_progress_uploading" = "正在上传报告";
+"collapse" = "折叠";
+"auth_email_in_use" = "此电子邮件地址已被占用";
+"auth_phone_in_use" = "此电话号码已被使用";
+"auth_untrusted_id_server" = "此身份服务器不可信";
+"auth_email_not_found" = "发送邮件失败。找不到此邮件地址";
+"settings_user_interface" = "用户界面";
+"settings_ui_language" = "语言";
+"settings_ui_light_theme" = "浅色主题";
+"settings_ui_dark_theme" = "暗色主题";
+// Events formatter
+"event_formatter_member_updates" = "%tu 的成员身份变化";
