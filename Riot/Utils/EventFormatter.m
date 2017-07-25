@@ -35,6 +35,29 @@
 
 @implementation EventFormatter
 
+- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
+{
+    NSString *displayText;
+
+    if (events.count)
+    {
+        if (events[0].eventType == MXEventTypeRoomMember)
+        {
+            // This is a series for cells tagged with RoomBubbleCellDataTagMembership
+            // TODO: Build a complete summary like Riot-web
+            displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_member_updates", @"Vector", nil), events.count];
+        }
+    }
+
+    if (displayText)
+    {
+        // Build the attributed string with the right font and color for the events
+        return [self renderString:displayText forEvent:events[0]];
+    }
+
+    return [super attributedStringFromEvents:events withRoomState:roomState error:error];
+}
+
 - (instancetype)initWithMatrixSession:(MXSession *)matrixSession
 {
     self = [super initWithMatrixSession:matrixSession];
@@ -67,6 +90,7 @@
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
         self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
+        self.singleEmojiTextFont = [UIFont systemFontOfSize:48];
     }
     return self;
 }

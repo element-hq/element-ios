@@ -21,6 +21,11 @@
 {
 @protected
     /**
+     The room identifier related to the cell which is in editing mode (if any).
+     */
+    NSString *editedRoomId;
+    
+    /**
      The image view of the (+) button.
      */
     UIImageView* plusButtonImageView;
@@ -28,7 +33,7 @@
     /**
      Current alert (if any).
      */
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
     
     /**
      The list of the section headers currently displayed in the recents table.
@@ -106,6 +111,12 @@
  */
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
 
+/**
+ Leave the edition mode
+ 
+ @param forceRefresh force table view refresh
+ */
+- (void)cancelEditionMode:(BOOL)forceRefresh;
 
 #pragma mark - Room handling
 /**
@@ -128,6 +139,33 @@
  Join a room by alias or id.
  */
 - (void)joinARoom;
+
+/**
+ Leave the selected room.
+ */
+- (void)leaveEditedRoom;
+
+/**
+ Update the selected room tag.
+ */
+- (void)updateEditedRoomTag:(NSString*)tag;
+
+/**
+ Enable/disable the direct flag of the selected room.
+ */
+- (void)makeDirectEditedRoom:(BOOL)isDirect;
+
+/**
+ Enable/disable the notifications for the selected room.
+ */
+- (void)muteEditedRoomNotifications:(BOOL)mute;
+
+#pragma mark - Scrolling
+
+/**
+ Scroll to the top of the recents list.
+ */
+- (void)scrollToTop:(BOOL)animated;
 
 /**
  Scroll the next room with missed notifications to the top.

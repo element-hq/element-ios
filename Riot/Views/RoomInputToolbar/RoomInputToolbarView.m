@@ -34,7 +34,7 @@
     MediaPickerViewController *mediaPicker;
 
     // The call type selection (voice or video)
-    MXKAlert *callActionSheet;
+    UIAlertController *callActionSheet;
 }
 
 @end
@@ -246,32 +246,52 @@
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
         {
             // Ask the user the kind of the call: voice or video?
-            callActionSheet = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+            callActionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
             __weak typeof(self) weakSelf = self;
-            [callActionSheet addActionWithTitle:NSLocalizedStringFromTable(@"voice", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->callActionSheet = nil;
-
-                [strongSelf.delegate roomInputToolbarView:strongSelf placeCallWithVideo:NO];
-            }];
-
-            [callActionSheet addActionWithTitle:NSLocalizedStringFromTable(@"video", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->callActionSheet = nil;
-
-                [strongSelf.delegate roomInputToolbarView:strongSelf placeCallWithVideo:YES];
-            }];
-
-            callActionSheet.cancelButtonIndex = [callActionSheet addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
-
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->callActionSheet = nil;
-            }];
+            [callActionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"voice", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               if (weakSelf)
+                                                               {
+                                                                   typeof(self) self = weakSelf;
+                                                                   self->callActionSheet = nil;
+                                                                   
+                                                                   [self.delegate roomInputToolbarView:self placeCallWithVideo:NO];
+                                                               }
+                                                               
+                                                           }]];
             
-            callActionSheet.sourceView = self.voiceCallButton;
-
-            [callActionSheet showInViewController:self.window.rootViewController];
+            [callActionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"video", @"Vector", nil)
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+                                                                  
+                                                                  if (weakSelf)
+                                                                  {
+                                                                      typeof(self) self = weakSelf;
+                                                                      self->callActionSheet = nil;
+                                                                      
+                                                                      [self.delegate roomInputToolbarView:self placeCallWithVideo:YES];
+                                                                  }
+                                                                  
+                                                              }]];
+            
+            [callActionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+                                                                  
+                                                                  if (weakSelf)
+                                                                  {
+                                                                      typeof(self) self = weakSelf;
+                                                                      self->callActionSheet = nil;
+                                                                  }
+                                                                  
+                                                              }]];
+            
+            [callActionSheet popoverPresentationController].sourceView = self.voiceCallButton;
+            [callActionSheet popoverPresentationController].sourceRect = self.voiceCallButton.bounds;
+            [self.window.rootViewController presentViewController:callActionSheet animated:YES completion:nil];
         }
     }
     else if (button == self.hangupCallButton)
@@ -292,7 +312,7 @@
 
     if (callActionSheet)
     {
-        [callActionSheet dismiss:NO];
+        [callActionSheet dismissViewControllerAnimated:NO completion:nil];
         callActionSheet = nil;
     }
     
