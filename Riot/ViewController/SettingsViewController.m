@@ -3562,7 +3562,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] setObject:language forKey:@"appLanguage"];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
-        // Do a full sync to recompute matrix data (rooms data sources and summaries)
+        // Do a reload in order to recompute strings in the new language
+        // Note that "reloadMatrixSessions:NO" will reset room summaries
         [self startActivityIndicator];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 
