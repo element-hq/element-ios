@@ -410,3 +410,14 @@
 "bug_report_progress_zipping" = "Sammele Log-Daten";
 "bug_report_progress_uploading" = "Report hochladen";
 "bug_report_send" = "Gesendet";
+"collapse" = "zusammenklappen";
+"auth_email_in_use" = "Diese E-Mail-Adresse wird bereits verwendet";
+"auth_phone_in_use" = "Diese Telefonnummer wird bereits verwendet";
+"auth_untrusted_id_server" = "Dem Identitätsserver wird nicht vertraut";
+"auth_email_not_found" = "Fehler beim Senden der E-Mail: Die E-Mail-Adresse wurde nicht gefunden";
+"settings_user_interface" = "BENUTZEROBERFLÄCHE";
+"settings_ui_language" = "Sprache";
+"settings_ui_light_theme" = "Helles Design";
+"settings_ui_dark_theme" = "Dunkles Design";
+// Events formatter
+"event_formatter_member_updates" = "%tu Änderungen der Mitgliedschaft";
