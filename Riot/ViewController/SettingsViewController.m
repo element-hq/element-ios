@@ -187,6 +187,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     //
     UIAlertController *resetPwdAlertController;
 
+    // The view used to export e2e keys
+    MXKEncryptionKeysExportView *exportView;
+
     // The document interaction Controller used to export e2e keys
     UIDocumentInteractionController *documentInteractionController;
     NSURL *keyExportsFile;
@@ -1610,7 +1613,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
 
             NSString *language = [NSBundle mxk_language];
-            NSString *languageDescription = language ? [MXKLanguagePickerViewController languageDescription:language] : [MXKLanguagePickerViewController languageDescription:[MXKLanguagePickerViewController defaultLanguage]];
+            if (!language)
+            {
+                language = [MXKLanguagePickerViewController defaultLanguage];
+            }
+            NSString *languageDescription = [MXKLanguagePickerViewController languageDescription:language];
+
+            // Capitalise the description in the language locale
+            NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:language];
+            languageDescription = [languageDescription capitalizedStringWithLocale:locale];
 
             cell.textLabel.textColor = kRiotTextColorBlack;
 
@@ -3178,7 +3189,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
-    MXKEncryptionKeysExportView *exportView = [[MXKEncryptionKeysExportView alloc] initWithMatrixSession:self.mainSession];
+    exportView = [[MXKEncryptionKeysExportView alloc] initWithMatrixSession:self.mainSession];
     currentAlert = exportView.alertController;
 
     // Use a temporary file for the export
@@ -3191,27 +3202,31 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     __weak typeof(self) weakSelf = self;
     [exportView showInViewController:self toExportKeysToFile:keyExportsFile onComplete:^(BOOL success) {
 
-        if (weakSelf && success)
+        if (weakSelf)
         {
              typeof(self) self = weakSelf;
             self->currentAlert = nil;
+            self->exportView = nil;
 
-            // Let another app handling this file
-            self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
-            [self->documentInteractionController setDelegate:self];
+            if (success)
+            {
+                // Let another app handling this file
+                self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
+                [self->documentInteractionController setDelegate:self];
 
-            if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
-            {
-                // We want to delete the temp keys file after it has been processed by the other app.
-                // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
-                // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
-                // So, arm a timer to auto delete the file after 10mins.
-                keyExportsFileDeletionTimer = [NSTimer scheduledTimerWithTimeInterval:600 target:self selector:@selector(deleteKeyExportFile) userInfo:self repeats:NO];
-            }
-            else
-            {
-                self->documentInteractionController = nil;
-                [self deleteKeyExportFile];
+                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
+                {
+                    // We want to delete the temp keys file after it has been processed by the other app.
+                    // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
+                    // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
+                    // So, arm a timer to auto delete the file after 10mins.
+                    keyExportsFileDeletionTimer = [NSTimer scheduledTimerWithTimeInterval:600 target:self selector:@selector(deleteKeyExportFile) userInfo:self repeats:NO];
+                }
+                else
+                {
+                    self->documentInteractionController = nil;
+                    [self deleteKeyExportFile];
+                }
             }
         }
     }];
