@@ -416,3 +416,8 @@
 "settings_ui_language" = "Langue";
 "settings_ui_light_theme" = "Thème clair";
 "settings_ui_dark_theme" = "Thème sombre";
+"collapse" = "réduire";
+"auth_untrusted_id_server" = "Le serveur d'identité n'est pas fiable";
+"settings_user_interface" = "INTERFACE UTILISATEUR";
+// Events formatter
+"event_formatter_member_updates" = "%tu changements dans les membres";
