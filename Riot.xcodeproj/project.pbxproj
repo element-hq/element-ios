@@ -43,6 +43,8 @@
 		32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */; };
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
+		92E963B51F28D907008FDAF5 /* IntentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 92E963B41F28D907008FDAF5 /* IntentHandler.m */; };
+		92E963B91F28D907008FDAF5 /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92E963B11F28D906008FDAF5 /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
 		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
@@ -485,6 +487,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		92E963B71F28D907008FDAF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92E963B01F28D906008FDAF5;
+			remoteInfo = SiriIntents;
+		};
 		F094A9BF1B78D8F000B1FBBF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
@@ -493,6 +502,20 @@
 			remoteInfo = Vector;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		92E963BD1F28D907008FDAF5 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				92E963B91F28D907008FDAF5 /* SiriIntents.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1129C74A281B080432B1A1A1 /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
@@ -545,6 +568,10 @@
 		32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92E963B11F28D906008FDAF5 /* SiriIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SiriIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		92E963B31F28D907008FDAF5 /* IntentHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntentHandler.h; sourceTree = "<group>"; };
+		92E963B41F28D907008FDAF5 /* IntentHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntentHandler.m; sourceTree = "<group>"; };
+		92E963B61F28D907008FDAF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
@@ -1111,6 +1138,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		92E963AE1F28D906008FDAF5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F094A99F1B78D8F000B1FBBF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1188,6 +1222,16 @@
 				7D8737F782E108CFD6908691 /* libPods-Riot.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		92E963B21F28D907008FDAF5 /* SiriIntents */ = {
+			isa = PBXGroup;
+			children = (
+				92E963B31F28D907008FDAF5 /* IntentHandler.h */,
+				92E963B41F28D907008FDAF5 /* IntentHandler.m */,
+				92E963B61F28D907008FDAF5 /* Info.plist */,
+			);
+			path = SiriIntents;
 			sourceTree = "<group>";
 		};
 		E1451F540F8BC02A7FB7AA31 /* Pods */ = {
@@ -2045,6 +2089,7 @@
 			children = (
 				F083BB081E7009EC00A9B29C /* Riot */,
 				F083BB021E7005FD00A9B29C /* RiotTests */,
+				92E963B21F28D907008FDAF5 /* SiriIntents */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				E1451F540F8BC02A7FB7AA31 /* Pods */,
 				6567B0BBF3C05D7F7A7F79CC /* Frameworks */,
@@ -2056,6 +2101,7 @@
 			children = (
 				F094A9A21B78D8F000B1FBBF /* Riot.app */,
 				F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */,
+				92E963B11F28D906008FDAF5 /* SiriIntents.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2063,6 +2109,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		92E963B01F28D906008FDAF5 /* SiriIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92E963BA1F28D907008FDAF5 /* Build configuration list for PBXNativeTarget "SiriIntents" */;
+			buildPhases = (
+				92E963AD1F28D906008FDAF5 /* Sources */,
+				92E963AE1F28D906008FDAF5 /* Frameworks */,
+				92E963AF1F28D906008FDAF5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SiriIntents;
+			productName = SiriIntents;
+			productReference = 92E963B11F28D906008FDAF5 /* SiriIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		F094A9A11B78D8F000B1FBBF /* Riot */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Riot" */;
@@ -2073,10 +2136,12 @@
 				F094A9A01B78D8F000B1FBBF /* Resources */,
 				44C35695CFA4F9799C449367 /* [CP] Copy Pods Resources */,
 				381DA4CC07D2104BFA23E45A /* [CP] Embed Pods Frameworks */,
+				92E963BD1F28D907008FDAF5 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				92E963B81F28D907008FDAF5 /* PBXTargetDependency */,
 			);
 			name = Riot;
 			productName = Vector;
@@ -2110,6 +2175,11 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = matrix.org;
 				TargetAttributes = {
+					92E963B01F28D906008FDAF5 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 7J4U792NQT;
+						ProvisioningStyle = Automatic;
+					};
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 7J4U792NQT;
@@ -2148,11 +2218,19 @@
 			targets = (
 				F094A9A11B78D8F000B1FBBF /* Riot */,
 				F094A9BD1B78D8F000B1FBBF /* RiotTests */,
+				92E963B01F28D906008FDAF5 /* SiriIntents */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		92E963AF1F28D906008FDAF5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F094A9A01B78D8F000B1FBBF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2558,6 +2636,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		92E963AD1F28D906008FDAF5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92E963B51F28D907008FDAF5 /* IntentHandler.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F094A99E1B78D8F000B1FBBF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2709,6 +2795,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		92E963B81F28D907008FDAF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92E963B01F28D906008FDAF5 /* SiriIntents */;
+			targetProxy = 92E963B71F28D907008FDAF5 /* PBXContainerItemProxy */;
+		};
 		F094A9C01B78D8F000B1FBBF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F094A9A11B78D8F000B1FBBF /* Riot */;
@@ -2832,6 +2923,41 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		92E963BB1F28D907008FDAF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				INFOPLIST_FILE = SiriIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		92E963BC1F28D907008FDAF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				INFOPLIST_FILE = SiriIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		F094A9C61B78D8F000B1FBBF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2993,6 +3119,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		92E963BA1F28D907008FDAF5 /* Build configuration list for PBXNativeTarget "SiriIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92E963BB1F28D907008FDAF5 /* Debug */,
+				92E963BC1F28D907008FDAF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Riot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
