@@ -120,7 +120,6 @@
         self.rooms = self.mainSession.rooms;
         if (self.rooms.count)
         {
-            
             NSMutableArray *directRooms = [NSMutableArray array];
             NSMutableArray *rooms = [NSMutableArray array];
             for (MXRoom *room in self.rooms)

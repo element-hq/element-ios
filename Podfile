@@ -55,6 +55,11 @@ pod 'Realm', '~> 2.8.1'
 pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kit/MatrixKit.podspec'
 
+# Remove warnings from "bad" pods
+pod 'OLMKit', :inhibit_warnings => true
+pod 'cmark', :inhibit_warnings => true
+pod 'DTCoreText', :inhibit_warnings => true
+
 end
 
 

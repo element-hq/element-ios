@@ -13,7 +13,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.org.matrix.riot</string>
+		<string>group.org.matrix</string>
 	</array>
 </dict>
 </plist>
