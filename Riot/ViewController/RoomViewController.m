@@ -2576,7 +2576,7 @@
         contactsPickerViewController.contactsTableViewControllerDelegate = self;
         
         // Prepare its data source
-        ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] init];
+        ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.roomDataSource.mxSession];
         contactsDataSource.areSectionsShrinkable = YES;
         contactsDataSource.displaySearchInputInContactsList = YES;
         contactsDataSource.forceMatrixIdInDisplayName = YES;
