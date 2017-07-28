@@ -33,6 +33,9 @@
     NSString *searchProcessingText;
     NSMutableArray<MXKContact*> *searchProcessingLocalContacts;
     NSMutableArray<MXKContact*> *searchProcessingMatrixContacts;
+
+    // The current request to the homeserver user directory
+    MXHTTPOperation *hsUserDirectoryOperation;
     
     BOOL forceSearchResultRefresh;
     
@@ -115,6 +118,9 @@
     
     localContactsCheckboxContainer = nil;
     localContactsCheckbox = nil;
+
+    [hsUserDirectoryOperation cancel];
+    hsUserDirectoryOperation = nil;
     
     [super destroy];
 }
@@ -146,6 +152,13 @@
 
 - (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceRefresh
 {
+    // If possible, always start a new search by asking the homeserver user directory
+    BOOL hsUserDirectory = (self.mxSession.state != MXSessionStateHomeserverNotReachable);
+    [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:hsUserDirectory];
+}
+
+- (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceRefresh hsUserDirectory:(BOOL)hsUserDirectory
+{
     // Update search results.
     searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSMutableArray<MXKContact*> *unfilteredLocalContacts;
@@ -161,11 +174,59 @@
             shrinkedSectionsBitMask = 0;
         }
     }
-    else if (forceRefresh || !searchProcessingText.length || [searchText hasPrefix:searchProcessingText] == NO)
+    else if (forceRefresh || ![searchText isEqualToString:searchProcessingText])
     {
         // Prepare on the main thread the arrays used to initialize the search on the processing queue.
         unfilteredLocalContacts = [self unfilteredLocalContactsArray];
-        unfilteredMatrixContacts = [self unfilteredMatrixContactsArray];
+        if (!hsUserDirectory)
+        {
+            _userDirectoryState = ContactsDataSourceUserDirectoryStateOfflineLoading;
+            unfilteredMatrixContacts = [self unfilteredMatrixContactsArray];
+        }
+        else if (![searchText isEqualToString:searchProcessingText])
+        {
+            _userDirectoryState = ContactsDataSourceUserDirectoryStateLoading;
+
+            // Make a search on the homeserver user directory
+            [filteredMatrixContacts removeAllObjects];
+            filteredMatrixContacts = nil;
+
+            // Cancel previous operation
+            if (hsUserDirectoryOperation)
+            {
+                [hsUserDirectoryOperation cancel];
+                hsUserDirectoryOperation = nil;
+            }
+
+            hsUserDirectoryOperation = [self.mxSession.matrixRestClient searchUsers:searchText limit:100 success:^(MXUserSearchResponse *userSearchResponse) {
+
+                filteredMatrixContacts = [NSMutableArray arrayWithCapacity:userSearchResponse.results.count];
+
+                // Keep the response order as the hs ordered users by relevance
+                for (MXUser *mxUser in userSearchResponse.results)
+                {
+                    MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxUser.displayname andMatrixID:mxUser.userId];
+                    [filteredMatrixContacts addObject:contact];
+                }
+
+                hsUserDirectoryOperation = nil;
+
+                _userDirectoryState = userSearchResponse.limited ? ContactsDataSourceUserDirectoryStateLoadedButLimited : ContactsDataSourceUserDirectoryStateLoaded;
+
+                // And inform the delegate about the update
+                [self.delegate dataSource:self didCellChange:nil];
+
+            } failure:^(NSError *error) {
+
+                // Ignore connection cancellation error
+                if ((![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled))
+                {
+                    // But for other errors, launch a local search
+                    NSLog(@"[ContactsDataSource] [MXRestClient searchUsers] returns an error. Do a search on local known contacts");
+                    [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:NO];
+                }
+            }];
+        }
 
         // Disclose the sections
         shrinkedSectionsBitMask = 0;
@@ -239,7 +300,12 @@
                     // Update the filtered contacts.
                     currentSearchText = searchProcessingText;
                     filteredLocalContacts = searchProcessingLocalContacts;
-                    filteredMatrixContacts = searchProcessingMatrixContacts;
+
+                    if (!hsUserDirectory)
+                    {
+                        filteredMatrixContacts = searchProcessingMatrixContacts;
+                        _userDirectoryState = ContactsDataSourceUserDirectoryStateOfflineLoaded;
+                    }
                     
                     if (!self.forceMatrixIdInDisplayName)
                     {
@@ -643,7 +709,17 @@
     }
     else //if (section == filteredMatrixContactsSection)
     {
-        title = NSLocalizedStringFromTable(@"contacts_matrix_users_section", @"Vector", nil);
+        switch (_userDirectoryState)
+        {
+            case ContactsDataSourceUserDirectoryStateOfflineLoading:
+            case ContactsDataSourceUserDirectoryStateOfflineLoaded:
+                title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Vector", nil);
+                break;
+
+            default:
+                title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Vector", nil);
+                break;
+        }
         
         if (currentSearchText.length)
         {
