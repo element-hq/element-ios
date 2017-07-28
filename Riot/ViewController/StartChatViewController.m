@@ -74,17 +74,6 @@
     
     // Assign itself as delegate
     self.contactsTableViewControllerDelegate = self;
-    
-    // Prepare its data source
-    ContactsDataSource *dataSource = [[ContactsDataSource alloc] init];
-    dataSource.areSectionsShrinkable = YES;
-    dataSource.displaySearchInputInContactsList = YES;
-    dataSource.forceMatrixIdInDisplayName = YES;
-    // Add a plus icon to the contact cell when a search session is in progress,
-    // in order to make it more understandable for the end user.
-    dataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
-    
-    [self displayList:dataSource];
 }
 
 - (void)viewDidLoad
@@ -121,7 +110,18 @@
     {
         [self addMatrixSession:mxSession];
     }
-    
+
+    // Prepare its data source
+    ContactsDataSource *dataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mainSession]; // TO TEST
+    dataSource.areSectionsShrinkable = YES;
+    dataSource.displaySearchInputInContactsList = YES;
+    dataSource.forceMatrixIdInDisplayName = YES;
+    // Add a plus icon to the contact cell when a search session is in progress,
+    // in order to make it more understandable for the end user.
+    dataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
+
+    [self displayList:dataSource];
+
     cancelBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
     self.navigationItem.leftBarButtonItem = cancelBarButtonItem;
     
