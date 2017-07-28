@@ -600,7 +600,15 @@
         // Check whether a search session is in progress
         if (currentSearchText.length)
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+            if (indexPath.section == filteredMatrixContactsSection &&
+                (_userDirectoryState == ContactsDataSourceUserDirectoryStateLoading || _userDirectoryState == ContactsDataSourceUserDirectoryStateOfflineLoading))
+            {
+                tableViewCell.textLabel.text = [NSBundle mxk_localizedStringForKey:@"search_searching"];
+            }
+            else
+            {
+                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+            }
         }
         else if (indexPath.section == filteredLocalContactsSection)
         {
