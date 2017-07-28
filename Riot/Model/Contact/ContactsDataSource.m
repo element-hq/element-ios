@@ -198,7 +198,7 @@
                 hsUserDirectoryOperation = nil;
             }
 
-            hsUserDirectoryOperation = [self.mxSession.matrixRestClient searchUsers:searchText limit:100 success:^(MXUserSearchResponse *userSearchResponse) {
+            hsUserDirectoryOperation = [self.mxSession.matrixRestClient searchUsers:searchText limit:50 success:^(MXUserSearchResponse *userSearchResponse) {
 
                 filteredMatrixContacts = [NSMutableArray arrayWithCapacity:userSearchResponse.results.count];
 
@@ -729,7 +729,8 @@
     
     if (count)
     {
-        NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
+        NSString *roomCountFormat = (_userDirectoryState == ContactsDataSourceUserDirectoryStateLoadedButLimited) ? @"   > %tu" : @"   %tu";
+        NSString *roomCount = [NSString stringWithFormat:roomCountFormat, count];
         
         NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
                                                                                          attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
