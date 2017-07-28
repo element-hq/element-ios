@@ -78,6 +78,8 @@
 
 - (void)sendToRoom:(MXRoom *)room
 {
+    NSString *UTTypeText = (__bridge NSString *)kUTTypeText;
+    NSString *UTTypeURL = (__bridge NSString *)kUTTypeURL;
     NSString *UTTypeImage = (__bridge NSString *)kUTTypeImage;
     NSString *UTTypeVideo = (__bridge NSString *)kUTTypeVideo;
     
@@ -85,8 +87,27 @@
     {
         for (NSItemProvider *itemProvider in item.attachments)
         {
-            
-            if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
+            if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeText])
+            {
+                [itemProvider loadItemForTypeIdentifier:UTTypeText options:nil completionHandler:^(NSString *text, NSError * _Null_unspecified error) {
+                    [room sendTextMessage:text success:^(NSString *eventId) {
+                        [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
+                    } failure:^(NSError *error) {
+                        //TODO: handle failure
+                    }];
+                }];
+            }
+            else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeURL])
+            {
+                [itemProvider loadItemForTypeIdentifier:UTTypeURL options:nil completionHandler:^(NSURL *url, NSError * _Null_unspecified error) {
+                    [room sendTextMessage:url.absoluteString success:^(NSString *eventId) {
+                        [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
+                    } failure:^(NSError *error) {
+                        //TODO: handle failure
+                    }];
+                }];
+            }
+            else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
             {
                 NSString *mimeType;
                 if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
@@ -107,7 +128,7 @@
                       }
                          failure:^(NSError *error)
                       {
-                          
+                          //TODO: handle failure
                       }];
                  }];
             }
@@ -115,7 +136,13 @@
             {
                 [itemProvider loadItemForTypeIdentifier:UTTypeVideo options:nil completionHandler:^(NSData *videoItem, NSError * _Null_unspecified error)
                  {
-                     //send the video
+                     //TODO: send the video
+                     [room sendVideo:nil withThumbnail:nil localEcho:nil success:^(NSString *eventId) {
+                         
+                     } failure:^(NSError *error) {
+                         //TODO: handle failure
+                     }];
+                     
                  }];
             }
             
