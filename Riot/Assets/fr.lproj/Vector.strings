@@ -110,7 +110,7 @@
 // Rooms tab
 "room_directory_no_public_room" = "Aucun salon public disponible";
 // Search
-"search_rooms" = "SALONS";
+"search_rooms" = "Salons";
 "search_messages" = "Messages";
 "search_people" = "Personnes";
 "search_files" = "Fichiers";
