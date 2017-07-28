@@ -20,7 +20,7 @@
 #import "RiotDesignValues.h"
 
 #define CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE 0x01
-#define CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE 0x02
+#define CONTACTSDATASOURCE_USERDIRECTORY_BITWISE 0x02
 
 #define CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT 30.0
 #define CONTACTSDATASOURCE_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
@@ -501,7 +501,7 @@
         // Display a default cell when no local contacts is available.
         count = filteredLocalContacts.count ? filteredLocalContacts.count : 1;
     }
-    else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE))
+    else if (section == filteredMatrixContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_USERDIRECTORY_BITWISE))
     {
         // Display a default cell when no contacts is available.
         count = filteredMatrixContacts.count ? filteredMatrixContacts.count : 1;
@@ -781,7 +781,7 @@
                 // This section is collapsable only if it is not empty
                 if (filteredMatrixContacts.count)
                 {
-                    sectionBitwise = CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE;
+                    sectionBitwise = CONTACTSDATASOURCE_USERDIRECTORY_BITWISE;
                 }
             }
         }
@@ -1004,7 +1004,7 @@
 {
     // Return the section header used when the section is shrinked
     NSInteger savedShrinkedSectionsBitMask = shrinkedSectionsBitMask;
-    shrinkedSectionsBitMask = CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE | CONTACTSDATASOURCE_KNOWNCONTACTS_BITWISE;
+    shrinkedSectionsBitMask = CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE | CONTACTSDATASOURCE_USERDIRECTORY_BITWISE;
     
     UIView *stickyHeader = [self viewForHeaderInSection:section withFrame:frame];
     
