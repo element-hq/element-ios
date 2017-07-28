@@ -131,7 +131,6 @@
 "contacts_address_book_no_contact" = "Aucun contact local";
 "contacts_address_book_permission_required" = "Permissions requises pour accéder aux contacts locaux";
 "contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Riot à accéder à vos contacts locaux";
-"contacts_matrix_users_section" = "CONTACTS CONNUS";
 // Chat participants
 "room_participants_title" = "Membres";
 "room_participants_add_participant" = "Ajouter un membre";
