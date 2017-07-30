@@ -49,6 +49,8 @@
 	<string>The microphone is used to take videos, make calls.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>The photo library is used to send photos and videos.</string>
+	<key>NSSiriUsageDescription</key>
+	<string>Use Siri to make calls</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
