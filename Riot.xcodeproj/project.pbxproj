@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		05D592A32FF1D1877B89F73C /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD9D0BDE9232898950554DD5 /* libPods-Riot.a */; };
+		2466B73C1F2DFA3000AE27B0 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B7381F2DF78B00AE27B0 /* FallbackViewController.m */; };
+		2466B73D1F2DFA3900AE27B0 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2466B7391F2DF78B00AE27B0 /* FallbackViewController.xib */; };
+		2466B73E1F2DFAC100AE27B0 /* animatedLogo-4.png in Resources */ = {isa = PBXBuildFile; fileRef = F083BB201E7009EC00A9B29C /* animatedLogo-4.png */; };
 		24B5103E1EFA7083004C6AD2 /* ReadReceiptsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24B5103D1EFA7083004C6AD2 /* ReadReceiptsViewController.m */; };
 		24B510401EFA88CC004C6AD2 /* ReadReceiptsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24B5103F1EFA88CC004C6AD2 /* ReadReceiptsViewController.xib */; };
 		24CBEC521F0EAD310093EABB /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24CBEC511F0EAD310093EABB /* ShareViewController.m */; };
@@ -52,7 +55,6 @@
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
 		A27ECCE3FC4971745D2CB78D /* libPods-RiotShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */; };
-		E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8737F782E108CFD6908691 /* libPods-Riot.a */; };
 		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
 		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
@@ -529,6 +531,9 @@
 
 /* Begin PBXFileReference section */
 		12AA0005C8B3D8D8162584C5 /* Pods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		2466B7371F2DF78B00AE27B0 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
+		2466B7381F2DF78B00AE27B0 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
+		2466B7391F2DF78B00AE27B0 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
 		24B5103C1EFA7083004C6AD2 /* ReadReceiptsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadReceiptsViewController.h; sourceTree = "<group>"; };
 		24B5103D1EFA7083004C6AD2 /* ReadReceiptsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadReceiptsViewController.m; sourceTree = "<group>"; };
 		24B5103F1EFA88CC004C6AD2 /* ReadReceiptsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReadReceiptsViewController.xib; sourceTree = "<group>"; };
@@ -582,7 +587,6 @@
 		765F5104DB3EC39713DEB3A4 /* Pods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		839BB91240D350D5607D55BA /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
-		7D8737F782E108CFD6908691 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
@@ -1182,6 +1186,7 @@
 			isa = PBXGroup;
 			children = (
 				24CBEC5E1F0EB15D0093EABB /* Riot Share Extension.entitlements */,
+				24CBEC561F0EAD310093EABB /* Info.plist */,
 				24EEE5AB1F25ED2E00B3C705 /* SharePresentingViewController.h */,
 				24EEE5AC1F25ED2E00B3C705 /* SharePresentingViewController.m */,
 				24CBEC501F0EAD310093EABB /* ShareViewController.h */,
@@ -1189,7 +1194,9 @@
 				24EEE5A51F24DD5500B3C705 /* ShareViewController.xib */,
 				24EEE5B01F25FF0400B3C705 /* RoomsListViewController.h */,
 				24EEE5B11F25FF0400B3C705 /* RoomsListViewController.m */,
-				24CBEC561F0EAD310093EABB /* Info.plist */,
+				2466B7371F2DF78B00AE27B0 /* FallbackViewController.h */,
+				2466B7381F2DF78B00AE27B0 /* FallbackViewController.m */,
+				2466B7391F2DF78B00AE27B0 /* FallbackViewController.xib */,
 			);
 			path = "Riot Share Extension";
 			sourceTree = "<group>";
@@ -2229,8 +2236,10 @@
 			files = (
 				24EEE5B51F2607C500B3C705 /* SegmentedViewController.xib in Resources */,
 				24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */,
+				2466B73D1F2DFA3900AE27B0 /* FallbackViewController.xib in Resources */,
 				24EEE5A71F24E03400B3C705 /* ShareViewController.xib in Resources */,
 				24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */,
+				2466B73E1F2DFAC100AE27B0 /* animatedLogo-4.png in Resources */,
 				24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */,
 				24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */,
 				24EEE5A41F24C06E00B3C705 /* Vector.strings in Resources */,
@@ -2678,6 +2687,7 @@
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
 				24EEE5AE1F25ED3600B3C705 /* SharePresentingViewController.m in Sources */,
 				24EEE5B41F2607C000B3C705 /* SegmentedViewController.m in Sources */,
+				2466B73C1F2DFA3000AE27B0 /* FallbackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

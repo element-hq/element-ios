@@ -15,9 +15,9 @@
  */
 
 #import "ShareViewController.h"
-#import "RoomTableViewCell.h"
-#import "RoomsListViewController.h"
 #import "SegmentedViewController.h"
+#import "RoomsListViewController.h"
+#import "FallbackViewController.h"
 
 
 @interface ShareViewController ()
@@ -70,7 +70,7 @@
     [accountManager prepareSessionForActiveAccounts];
     
     // Resume all existing matrix sessions
-    NSArray *mxAccounts = accountManager.activeAccounts;
+    NSArray *mxAccounts;// = accountManager.activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
         [account resume];
@@ -81,32 +81,76 @@
 - (void)configureViews
 {
     self.masterContainerView.layer.cornerRadius = 7;
-    self.tittleLabel.text = @"Send to";
     
+    if (self.mainSession)
+    {
+        self.tittleLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), @""];
+        [self configureSegmentedViewController];
+    }
+    else
+    {
+        NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
+        NSString *bundleDisplayName = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+        self.tittleLabel.text = bundleDisplayName;
+        [self configureFallbackViewController];
+    }
+}
+
+- (void)configureSegmentedViewController
+{
     self.segmentedViewController = [SegmentedViewController segmentedViewController];
+    
     NSArray *titles = @[NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil) , NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
-    NSArray *viewControllers = @[[RoomsListViewController listViewControllerWithContext:self.shareExtensionContext], [RoomsListViewController listViewControllerWithContext:self.shareExtensionContext]];
+    
+    void (^failureBlock)() = ^void() {
+        [self finishSharingCanceled:NO];
+    };
+    NSArray *viewControllers = @[[RoomsListViewController listViewControllerWithContext:self.shareExtensionContext failureBlock:failureBlock], [RoomsListViewController listViewControllerWithContext:self.shareExtensionContext failureBlock:failureBlock]];
+    
     [self.segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [self addChildViewController:self.segmentedViewController];
     [self.contentView addSubview:self.segmentedViewController.view];
     [self.segmentedViewController didMoveToParentViewController:self];
     
-    self.segmentedViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self.segmentedViewController.view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1 constant:0];
+    [self autoPinSubviewEdges:self.segmentedViewController.view toSuperviewEdges:self.contentView];
+}
+
+- (void)configureFallbackViewController
+{
+    FallbackViewController *fallbackVC = [FallbackViewController new];
+    [self addChildViewController:fallbackVC];
+    [self.contentView addSubview:fallbackVC.view];
+    [fallbackVC didMoveToParentViewController:self];
+    
+    [self autoPinSubviewEdges:fallbackVC.view toSuperviewEdges:self.contentView];
+}
+
+- (void)autoPinSubviewEdges:(UIView *)subview toSuperviewEdges:(UIView *)superview
+{
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeWidth multiplier:1 constant:0];
     widthConstraint.active = YES;
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.segmentedViewController.view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
     heightConstraint.active = YES;
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self.segmentedViewController.view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
+    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
     centerXConstraint.active = YES;
-    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.segmentedViewController.view attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
+    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
     centerYConstraint.active = YES;
 }
 
-- (void)cancelSharing
+- (void)finishSharingCanceled:(BOOL)canceled
 {
     [self dismissViewControllerAnimated:YES completion:^{
-        NSError *error = [NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil];
+        NSError *error;
+        if (canceled)
+        {
+            error = [NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil];
+        }
+        else
+        {
+            error = [NSError errorWithDomain:@"MXUserFailureErrorDomain" code:500 userInfo:nil];
+        }
         [self.shareExtensionContext cancelRequestWithError:error];
     }];
 }
@@ -144,29 +188,8 @@
 
 - (IBAction)close:(UIButton *)sender
 {
-    [self cancelSharing];
+    [self finishSharingCanceled:YES];
 }
 
-/*#pragma mark - SLComposeServiceViewController
-
-- (BOOL)isContentValid
-{
-    // Do validation of contentText and/or NSExtensionContext attachments here
-    return YES;
-}
-
-- (void)didSelectPost
-{
-    // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-    
-    // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
-    [self.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
-}
-
-- (NSArray *)configurationItems
-{
-    // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.
-    return @[];
-}*/
 
 @end

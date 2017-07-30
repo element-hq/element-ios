@@ -14,13 +14,29 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
-#import "MXRoom+Riot.h"
+#import "FallbackViewController.h"
+#import "RiotDesignValues.h"
 
-@interface RoomsListViewController : UIViewController
+@interface FallbackViewController ()
 
-+ (instancetype)listViewControllerWithContext:(NSExtensionContext *)context failureBlock:(void(^)())failureBlock;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
-- (void)updateWithRooms:(NSArray <MXRoom *>*)rooms;
+@end
+
+@implementation FallbackViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.titleLabel.textColor = kRiotTextColorGray;
+    self.titleLabel.text = NSLocalizedStringFromTable(@"auth_share_extension_prompt", @"Vector", nil);
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 @end

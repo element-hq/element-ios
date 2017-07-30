@@ -14,13 +14,8 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
-#import "MXRoom+Riot.h"
+#import <MatrixKit/MatrixKit.h>
 
-@interface RoomsListViewController : UIViewController
-
-+ (instancetype)listViewControllerWithContext:(NSExtensionContext *)context failureBlock:(void(^)())failureBlock;
-
-- (void)updateWithRooms:(NSArray <MXRoom *>*)rooms;
+@interface FallbackViewController : MXKViewController
 
 @end

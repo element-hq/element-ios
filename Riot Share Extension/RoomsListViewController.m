@@ -16,11 +16,14 @@
 
 #import "RoomsListViewController.h"
 #import "RoomTableViewCell.h"
+#import "NSBundle+MatrixKit.h"
 @import MobileCoreServices;
+
 
 @interface RoomsListViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) NSExtensionContext *shareExtensionContext;
+@property (copy) void (^failureBlock)();
 @property (nonatomic) NSArray <MXRoom *> *rooms;
 @property (nonatomic) UITableView *mainTableView;
 
@@ -39,10 +42,11 @@
 
 #pragma mark - Public
 
-+ (instancetype)listViewControllerWithContext:(NSExtensionContext *)context
++ (instancetype)listViewControllerWithContext:(NSExtensionContext *)context failureBlock:(void(^)())failureBlock
 {
     RoomsListViewController *listViewController = [[self class] new];
     listViewController.shareExtensionContext = context;
+    listViewController.failureBlock = failureBlock;
     return listViewController;
 }
 
@@ -90,20 +94,32 @@
             if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeText])
             {
                 [itemProvider loadItemForTypeIdentifier:UTTypeText options:nil completionHandler:^(NSString *text, NSError * _Null_unspecified error) {
+                    if (!text)
+                    {
+                        [self showFailureAlert];
+                        return;
+                    }
                     [room sendTextMessage:text success:^(NSString *eventId) {
                         [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
                     } failure:^(NSError *error) {
-                        //TODO: handle failure
+                        NSLog(@"[RoomsListViewController] sendTextMessage failed.");
+                        [self showFailureAlert];
                     }];
                 }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeURL])
             {
                 [itemProvider loadItemForTypeIdentifier:UTTypeURL options:nil completionHandler:^(NSURL *url, NSError * _Null_unspecified error) {
+                    if (!url)
+                    {
+                        [self showFailureAlert];
+                        return;
+                    }
                     [room sendTextMessage:url.absoluteString success:^(NSString *eventId) {
                         [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
                     } failure:^(NSError *error) {
-                        //TODO: handle failure
+                        NSLog(@"[RoomsListViewController] sendTextMessage failed.");
+                        [self showFailureAlert];
                     }];
                 }];
             }
@@ -120,6 +136,11 @@
                 }
                 [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(NSData *imageData, NSError * _Null_unspecified error)
                  {
+                     if (!imageData)
+                     {
+                         [self showFailureAlert];
+                         return;
+                     }
                      //send the image
                      UIImage *image = [[UIImage alloc] initWithData:imageData];
                      [room sendImage:imageData withImageSize:image.size mimeType:mimeType andThumbnail:image localEcho:nil success:^(NSString *eventId)
@@ -128,26 +149,48 @@
                       }
                          failure:^(NSError *error)
                       {
-                          //TODO: handle failure
+                          NSLog(@"[RoomsListViewController] sendImage failed.");
+                          [self showFailureAlert];
                       }];
                  }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeVideo])
             {
-                [itemProvider loadItemForTypeIdentifier:UTTypeVideo options:nil completionHandler:^(NSData *videoItem, NSError * _Null_unspecified error)
+                [itemProvider loadItemForTypeIdentifier:UTTypeVideo options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error)
                  {
-                     //TODO: send the video
-                     [room sendVideo:nil withThumbnail:nil localEcho:nil success:^(NSString *eventId) {
-                         
+                     if (!videoLocalUrl)
+                     {
+                         [self showFailureAlert];
+                         return;
+                     }
+                     [room sendVideo:videoLocalUrl withThumbnail:nil localEcho:nil success:^(NSString *eventId) {
+                         [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
                      } failure:^(NSError *error) {
-                         //TODO: handle failure
+                         NSLog(@"[RoomsListViewController] sendVideo failed.");
+                         [self showFailureAlert];
                      }];
                      
                  }];
             }
-            
         }
     }
+}
+
+- (void)showFailureAlert
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (self.failureBlock)
+        {
+            self.failureBlock();
+        }
+        else
+        {
+            [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserFailureErrorDomain" code:500 userInfo:nil]];
+        }
+    }];
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
@@ -187,12 +230,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Send to %@", self.rooms[indexPath.row].riotDisplayname] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), self.rooms[indexPath.row].riotDisplayname] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancelAction];
     
-    UIAlertAction *sendAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"send", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self sendToRoom:self.rooms[indexPath.row]];
     }];
     [alertController addAction:sendAction];
