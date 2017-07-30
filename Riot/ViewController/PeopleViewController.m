@@ -50,11 +50,6 @@
     contactsSectionNumber = 0;
     
     self.screenName = @"People";
-    
-    // Prepare its contacts data source
-    contactsDataSource = [[ContactsDataSource alloc] init];
-    contactsDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    contactsDataSource.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -151,6 +146,13 @@
         recentsDataSource = (RecentsDataSource*)listDataSource;
     }
 
+    if (!contactsDataSource)
+    {
+        // Prepare its contacts data source
+        contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:listDataSource.mxSession];
+        contactsDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        contactsDataSource.delegate = self;
+    }
 }
 
 #pragma mark - MXKDataSourceDelegate

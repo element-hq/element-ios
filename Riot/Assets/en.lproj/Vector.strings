@@ -169,7 +169,8 @@
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
 "contacts_address_book_permission_denied" = "You didn't allow Riot to access your local contacts";
-"contacts_matrix_users_section" = "KNOWN CONTACTS";
+"contacts_user_directory_section" = "USER DIRECTORY";
+"contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
 
 // Chat participants
 "room_participants_title" = "Participants";

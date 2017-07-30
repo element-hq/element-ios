@@ -1,0 +1,5 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "用来拍照、拍视频和视频聊天的摄像头。";
+"NSPhotoLibraryUsageDescription" = "用来发送图片和视频的图片文件夹。";
+"NSMicrophoneUsageDescription" = "用来拍视频和通话的麦克风。";
+"NSContactsUsageDescription" = "在 Riot 里通过电子邮件或电话搜索用户的通讯录。";

@@ -161,7 +161,6 @@
 "contacts_address_book_no_contact" = "Geen lokale contacten";
 "contacts_address_book_permission_required" = "Permissie vereist voor toegang tot de lokale contacten";
 "contacts_address_book_permission_denied" = "Je hebt Riot geen toegang tot je lokale contacten toegestaan";
-"contacts_matrix_users_section" = "BEKENDE CONTACTEN";
 
 // Chat participants
 "room_participants_title" = "Deelnemers";
