@@ -70,7 +70,7 @@
     [accountManager prepareSessionForActiveAccounts];
     
     // Resume all existing matrix sessions
-    NSArray *mxAccounts;// = accountManager.activeAccounts;
+    NSArray *mxAccounts = accountManager.activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
         [account resume];

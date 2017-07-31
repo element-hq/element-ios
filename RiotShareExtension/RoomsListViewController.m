@@ -141,9 +141,19 @@
                          [self showFailureAlert];
                          return;
                      }
-                     //send the image
+                     //Send the image
                      UIImage *image = [[UIImage alloc] initWithData:imageData];
-                     [room sendImage:imageData withImageSize:image.size mimeType:mimeType andThumbnail:image localEcho:nil success:^(NSString *eventId)
+                     UIImage *thumbnail = nil;
+                     // Thumbnail is useful only in case of encrypted room
+                     if (room.state.isEncrypted)
+                     {
+                         thumbnail = [MXKTools reduceImage:image toFitInSize:CGSizeMake(800, 600)];
+                         if (thumbnail == image)
+                         {
+                             thumbnail = nil;
+                         }
+                     }
+                     [room sendImage:imageData withImageSize:image.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId)
                       {
                           [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
                       }
@@ -163,7 +173,18 @@
                          [self showFailureAlert];
                          return;
                      }
-                     [room sendVideo:videoLocalUrl withThumbnail:nil localEcho:nil success:^(NSString *eventId) {
+                     
+                     // Retrieve the video frame at 1 sec to define the video thumbnail
+                     AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
+                     AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+                     assetImageGenerator.appliesPreferredTrackTransform = YES;
+                     CMTime time = CMTimeMake(1, 1);
+                     CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
+                     // Finalize video attachment
+                     UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
+                     CFRelease(imageRef);
+                     
+                     [room sendVideo:videoLocalUrl withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
                          [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
                      } failure:^(NSError *error) {
                          NSLog(@"[RoomsListViewController] sendVideo failed.");
