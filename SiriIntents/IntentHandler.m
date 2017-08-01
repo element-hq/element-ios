@@ -27,6 +27,16 @@
 
 @implementation IntentHandler
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [MXSDKOptions sharedInstance].applicationGroupIdentifier = @"group.org.matrix";
+    }
+    return self;
+}
+
 - (id)handlerForIntent:(INIntent *)intent
 {
     return self;
@@ -59,55 +69,58 @@
         MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         if (account)
         {
-            MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
-            [session setStore:[[MXFileStore alloc] init] success:^{
+            MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
+            [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
                 
                 // Find all users with whom direct chats are existed
                 NSMutableSet<NSString *> *directUserIDs = [NSMutableSet set];
-                for (MXRoom *room in session.rooms)
+                for (MXRoomSummary *summary in roomsSummaries)
                 {
-                    if (room.directUserId)
-                        [directUserIDs addObject:room.directUserId];
+                    if (summary.isDirect)
+                        [directUserIDs addObject:summary.directUserId];
                 }
                 
-                NSMutableArray<INPerson *> *matchingPersons = [NSMutableArray array];
-                for (NSString *userID in directUserIDs.allObjects)
-                {
-                    MXUser *user = [session userWithUserId:userID];
-                    if (!user.displayname)
-                        continue;
+                [fileStore asyncUsers:^(NSArray<MXUser *> * _Nonnull users) {
                     
-                    if (!NSEqualRanges([user.displayname rangeOfString:callee.displayName options:NSCaseInsensitiveSearch], (NSRange){NSNotFound,0}))
+                    // Find users with whom we have a direct chat and whose display name contains string presented us by Siri
+                    NSMutableArray<INPerson *> *matchingPersons = [NSMutableArray array];
+                    for (MXUser *user in users)
                     {
-                        INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
-                        INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
-                                                                   nameComponents:nil
-                                                                      displayName:user.displayname
-                                                                            image:nil
-                                                                contactIdentifier:nil
-                                                                 customIdentifier:user.userId];
-                        
-                        [matchingPersons addObject:person];
+                        if ([directUserIDs containsObject:user.userId])
+                        {
+                            if (!user.displayname)
+                                continue;
+                            
+                            if (!NSEqualRanges([user.displayname rangeOfString:callee.displayName options:NSCaseInsensitiveSearch], (NSRange){NSNotFound,0}))
+                            {
+                                INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
+                                INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
+                                                                           nameComponents:nil
+                                                                              displayName:user.displayname
+                                                                                    image:nil
+                                                                        contactIdentifier:nil
+                                                                         customIdentifier:user.userId];
+                                
+                                [matchingPersons addObject:person];
+                            }
+                        }
                     }
-                }
-                
-                if (matchingPersons.count == 0)
-                {
-                    completion(@[[INPersonResolutionResult unsupported]]);
-                }
-                else if (matchingPersons.count == 1)
-                {
-                    completion(@[[INPersonResolutionResult successWithResolvedPerson:matchingPersons.firstObject]]);
-                }
-                else
-                {
-                    completion(@[[INPersonResolutionResult disambiguationWithPeopleToDisambiguate:matchingPersons]]);
-                }
-                
-            } failure:^(NSError *error) {
-                // TODO: Maybe handle this in another way
-                completion(@[[INPersonResolutionResult unsupported]]);
-            }];
+                    
+                    if (matchingPersons.count == 0)
+                    {
+                        completion(@[[INPersonResolutionResult unsupported]]);
+                    }
+                    else if (matchingPersons.count == 1)
+                    {
+                        completion(@[[INPersonResolutionResult successWithResolvedPerson:matchingPersons.firstObject]]);
+                    }
+                    else
+                    {
+                        completion(@[[INPersonResolutionResult disambiguationWithPeopleToDisambiguate:matchingPersons]]);
+                    }
+                    
+                } failure:nil];
+            } failure:nil];
         }
         else
         {
