@@ -22,15 +22,22 @@
 #import "AppDelegate.h"
 
 #define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE 0x01
-#define CONTACTS_TABLEVC_KNOWNCONTACTS_BITWISE 0x02
+#define CONTACTS_TABLEVC_USERDIRECTORY_BITWISE 0x02
 
 #define CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT 30.0
 #define CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
 
 @interface ContactsTableViewController ()
 {
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    /**
+     Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+     */
     id kAppDelegateDidTapStatusBarNotificationObserver;
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -58,7 +65,6 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
@@ -85,6 +91,19 @@
     
     // Hide line separators of empty cells
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
 }
 
 - (void)didReceiveMemoryWarning
@@ -96,6 +115,12 @@
 - (void)destroy
 {
     [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

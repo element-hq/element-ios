@@ -21,4 +21,6 @@
  */
 @interface RoomEmptyBubbleCell : MXKRoomEmptyBubbleTableViewCell
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraint;
+
 @end

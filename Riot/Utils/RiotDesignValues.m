@@ -17,9 +17,16 @@
 
 #import "RiotDesignValues.h"
 
+NSString *const kRiotDesignValuesDidChangeThemeNotification = @"kRiotDesignValuesDidChangeThemeNotification";
+
+UIColor *kRiotPrimaryBgColor;
+UIColor *kRiotSecondaryBgColor;
+UIColor *kRiotPrimaryTextColor;
+UIColor *kRiotSecondaryTextColor;
+UIColor *kRiotTopicTextColor;
+
 UIColor *kRiotColorGreen;
 UIColor *kRiotColorLightGreen;
-UIColor *kRiotColorLightGrey;
 UIColor *kRiotColorLightOrange;
 UIColor *kRiotColorSilver;
 UIColor *kRiotColorPinkRed;
@@ -27,16 +34,36 @@ UIColor *kRiotColorRed;
 UIColor *kRiotColorIndigo;
 UIColor *kRiotColorOrange;
 
+UIColor *kRiotBgColorWhite;
+UIColor *kRiotBgColorBlack;
+
+UIColor *kRiotColorLightGrey;
+UIColor *kRiotColorLightBlack;
+
 UIColor *kRiotTextColorBlack;
 UIColor *kRiotTextColorDarkGray;
 UIColor *kRiotTextColorGray;
-
-UIColor *kRiotNavBarTintColor;
+UIColor *kRiotTextColorWhite;
+UIColor *kRiotTextColorDarkWhite;
 
 NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
 
+UIStatusBarStyle kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
+
 @implementation RiotDesignValues
+
++ (RiotDesignValues *)sharedInstance
+{
+    static RiotDesignValues *sharedOnceInstance;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedOnceInstance = [[RiotDesignValues alloc] init];
+    });
+    
+    return sharedOnceInstance;
+}
 
 + (void)load
 {
@@ -46,22 +73,72 @@ NSInteger const kRiotRoomAdminLevel = 100;
 
     // Colors as defined by the design
     kRiotColorGreen = UIColorFromRGB(0x62CE9C);
-    kRiotColorLightGrey = [UIColor colorWithRed:(242.0 / 255.0) green:(242.0 / 255.0) blue:(242.0 / 255.0) alpha:1.0];
     kRiotColorSilver = UIColorFromRGB(0xC7C7CC);
     kRiotColorPinkRed = UIColorFromRGB(0xFF0064);
     kRiotColorRed = UIColorFromRGB(0xFF4444);
     kRiotColorIndigo = UIColorFromRGB(0xBD79CC);
     kRiotColorOrange = UIColorFromRGB(0xF8A15F);
-
-    kRiotTextColorBlack = [UIColor colorWithRed:(60.0 / 255.0) green:(60.0 / 255.0) blue:(60.0 / 255.0) alpha:1.0];
-    kRiotTextColorDarkGray = [UIColor colorWithRed:(74.0 / 255.0) green:(74.0 / 255.0) blue:(74.0 / 255.0) alpha:1.0];
-    kRiotTextColorGray = [UIColor colorWithRed:(157.0 / 255.0) green:(157.0 / 255.0) blue:(157.0 / 255.0) alpha:1.0];
     
-    kRiotNavBarTintColor = kRiotColorLightGrey;
+    kRiotBgColorWhite = [UIColor whiteColor];
+    kRiotBgColorBlack = UIColorFromRGB(0x2D2D2D);
+    
+    kRiotColorLightGrey = UIColorFromRGB(0xF2F2F2);
+    kRiotColorLightBlack = UIColorFromRGB(0x353535);
+
+    kRiotTextColorBlack = UIColorFromRGB(0x3C3C3C);
+    kRiotTextColorDarkGray = UIColorFromRGB(0x4A4A4A);
+    kRiotTextColorGray = UIColorFromRGB(0x9D9D9D);
+    kRiotTextColorWhite = UIColorFromRGB(0xDDDDDD);
+    kRiotTextColorDarkWhite = UIColorFromRGB(0xD9D9D9);
 
     // Colors copied from Vector web
     kRiotColorLightGreen = UIColorFromRGB(0x50e2c2);
     kRiotColorLightOrange = UIColorFromRGB(0xf4c371);
+    
+    // Observe user interface theme change.
+    [[NSUserDefaults standardUserDefaults] addObserver:[RiotDesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
+    [[RiotDesignValues sharedInstance] userInterfaceThemeDidChange];
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([@"userInterfaceTheme" isEqualToString:keyPath])
+    {
+        [self userInterfaceThemeDidChange];
+    }
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    // Retrieve the current selected theme ("light" if none).
+    NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+    
+    // Currently only 2 themes is supported
+    if ([theme isEqualToString:@"dark"])
+    {
+        // Set dark theme colors
+        kRiotPrimaryBgColor = kRiotBgColorBlack;
+        kRiotSecondaryBgColor = kRiotColorLightBlack;
+        kRiotPrimaryTextColor = kRiotTextColorWhite;
+        kRiotSecondaryTextColor = kRiotTextColorGray;
+        kRiotTopicTextColor = kRiotTextColorDarkWhite;
+        
+        kRiotDesignStatusBarStyle = UIStatusBarStyleLightContent;
+    }
+    else
+    {
+        // Set light theme colors by default.
+        kRiotPrimaryBgColor = kRiotBgColorWhite;
+        kRiotSecondaryBgColor = kRiotColorLightGrey;
+        kRiotPrimaryTextColor = kRiotTextColorBlack;
+        kRiotSecondaryTextColor = kRiotTextColorGray;
+        kRiotTopicTextColor = kRiotTextColorDarkGray;
+        
+        kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
 }
 
 @end

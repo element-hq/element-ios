@@ -55,7 +55,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) MXKAlert *errorNotification;
+@property (strong, nonatomic) UIAlertController *errorNotification;
 
 @property (strong, nonatomic) NSString *appVersion;
 @property (strong, nonatomic) NSString *build;
@@ -84,7 +84,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)restoreInitialDisplay:(void (^)())completion;
 
-- (MXKAlert*)showErrorAsAlert:(NSError*)error;
+- (UIAlertController*)showErrorAsAlert:(NSError*)error;
 
 #pragma mark - Matrix Sessions handling
 

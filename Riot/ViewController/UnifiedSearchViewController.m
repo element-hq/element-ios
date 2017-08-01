@@ -50,7 +50,7 @@
     ContactsDataSource *peopleSearchDataSource;
     
     // Current alert (if any).
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
 }
 
 @end
@@ -113,7 +113,7 @@
 
     if (currentAlert)
     {
-        [currentAlert dismiss:NO];
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
     
@@ -211,7 +211,7 @@
         [filesSearchViewController displaySearch:filesSearchDataSource];
         
         // Init the search for people
-        peopleSearchDataSource = [[ContactsDataSource alloc] init];
+        peopleSearchDataSource = [[ContactsDataSource alloc] initWithMatrixSession:mainSession];
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
         peopleSearchDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;

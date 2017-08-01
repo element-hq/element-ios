@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -335,7 +335,7 @@
         <!--RecentsSplitVC-->
         <scene sceneID="Nki-YV-4Qg">
             <objects>
-                <splitViewController title="RecentsSplitVC" id="H1p-Uh-vWS" sceneMemberID="viewController">
+                <splitViewController title="RecentsSplitVC" id="H1p-Uh-vWS" customClass="RiotSplitViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="EB5-8V-irH"/>
                     <connections>
@@ -428,7 +428,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="6LG-qc-7jf">
-                                <rect key="frame" x="127" y="284" width="120" height="99"/>
+                                <rect key="frame" x="127" y="283" width="120" height="101"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -564,7 +564,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo.png" width="120" height="99"/>
+        <image name="logo.png" width="120" height="101"/>
         <image name="search_icon.png" width="22" height="22"/>
         <image name="settings_icon.png" width="24" height="24"/>
         <image name="tab_favourites.png" width="25" height="25"/>
@@ -577,10 +577,10 @@
         <image name="tab_rooms_selected.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tk8-vF-K4T"/>
-        <segue reference="Tfl-tq-LQp"/>
+        <segue reference="fNQ-S3-DbZ"/>
         <segue reference="ziz-Xl-QVg"/>
         <segue reference="mFs-HA-7Oo"/>
-        <segue reference="fNQ-S3-DbZ"/>
+        <segue reference="0ws-cL-0tk"/>
+        <segue reference="Tfl-tq-LQp"/>
     </inferredMetricsTieBreakers>
 </document>

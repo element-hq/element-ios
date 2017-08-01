@@ -29,6 +29,12 @@
     [super awakeFromNib];
     
     self.titleLabel.textColor = kRiotTextColorBlack;
+    
+    // Prepare direct room border
+    [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
+    self.directRoomBorderView.clipsToBounds = YES;
+    self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
+    self.directRoomBorderView.layer.borderWidth = 3;
 }
 
 - (void)layoutSubviews
@@ -46,6 +52,18 @@
     self.avatarImageView.backgroundColor = [UIColor clearColor];
     
     self.titleLabel.text = room.riotDisplayname;
+    
+    self.directRoomBorderView.hidden = !room.isDirect;
+    
+    self.encryptedRoomIcon.hidden = !room.state.isEncrypted;
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    self.directRoomBorderView.hidden = YES;
+    self.encryptedRoomIcon.hidden = YES;
 }
 
 + (CGFloat)cellHeight

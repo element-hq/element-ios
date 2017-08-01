@@ -1,0 +1,45 @@
+// Titles
+"title_home" = "Uz sākumu";
+"title_favourites" = "Favorīti";
+"title_people" = "Cilvēki";
+"title_rooms" = "Istabas";
+"warning" = "Brīdinājums";
+// Actions
+"view" = "Skatīt";
+"next" = "Tālāk";
+"back" = "Atpakaļ";
+"continue" = "Turpināt";
+"create" = "Izveidot";
+"start" = "Sākt";
+"leave" = "Atstāt";
+"remove" = "Dzēst";
+"invite" = "Uzaicināt";
+"retry" = "Atgriezties";
+"on" = "Ieslēgts";
+"off" = "Izslēgts";
+"cancel" = "Atcelt";
+"save" = "Saglabāt";
+"join" = "Pievienoties";
+"decline" = "Noraidīt";
+"accept" = "Apstiprināt";
+"preview" = "Priekšskatījums";
+"camera" = "Kamera";
+"voice" = "Balss";
+"video" = "Video";
+"active_call" = "Aktīvs zvans";
+"active_call_details" = "Aktīvs zvans (%@)";
+"later" = "Vēlāk";
+"rename" = "Pārdēvēt";
+// Authentication
+"auth_login" = "Pierakstīties";
+"auth_register" = "Reģistrēties";
+"auth_submit" = "Iesniegt";
+"auth_skip" = "Izlaist";
+"auth_send_reset_email" = "Nosūtīt atiestatīšanas epastu";
+"auth_return_to_login" = "Atgriezties uz pierakstīšanās skatu";
+"auth_user_id_placeholder" = "Epasts vai lietotājvārds";
+"auth_password_placeholder" = "Parole";
+"auth_new_password_placeholder" = "Jauna parole";
+"auth_user_name_placeholder" = "Lietotājvārds";
+"auth_optional_email_placeholder" = "Epasta adrese (pēc izvēles)";
+"auth_email_placeholder" = "Epasta adrese";
