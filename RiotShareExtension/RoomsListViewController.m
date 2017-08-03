@@ -125,15 +125,6 @@
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
             {
-                NSString *mimeType;
-                if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
-                {
-                    mimeType = @"image/jpeg";
-                }
-                else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
-                {
-                    mimeType = @"image/png";
-                }
                 [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(NSData *imageData, NSError * _Null_unspecified error)
                  {
                      if (!imageData)
@@ -143,6 +134,22 @@
                      }
                      //Send the image
                      UIImage *image = [[UIImage alloc] initWithData:imageData];
+                     
+                     NSString *mimeType;
+                     if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
+                     {
+                         mimeType = @"image/png";
+                     }
+                     else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
+                     {
+                         mimeType = @"image/jpeg";
+                     }
+                     else
+                     {
+                         image = [[UIImage alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)];
+                         mimeType = @"image/jpeg";
+                     }
+                     
                      UIImage *thumbnail = nil;
                      // Thumbnail is useful only in case of encrypted room
                      if (room.state.isEncrypted)
