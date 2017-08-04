@@ -1,3 +1,9 @@
+Changes in 0.5.1 (2017-08-01)
+===============================================
+
+Improvements:
+ * Fix a build issue that appeared after merging to master.
+
 Changes in 0.5.0 (2017-08-01)
 ===============================================
 
