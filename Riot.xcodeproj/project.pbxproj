@@ -17,6 +17,12 @@
 		32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32185B301F20FA2B00752141 /* LanguagePickerViewController.m */; };
 		322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */; };
 		322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */; };
+		3233F7311F31F4BF006ACA81 /* JitsiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3233F72F1F31F4BF006ACA81 /* JitsiViewController.m */; };
+		3233F7321F31F4BF006ACA81 /* JitsiViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */; };
+		3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3233F73B1F3306A7006ACA81 /* WidgetManager.m */; };
+		3233F73F1F331F05006ACA81 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = 3233F73E1F331F05006ACA81 /* Widget.m */; };
+		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
+		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		32471CDC1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */; };
 		32471CDD1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32471CDB1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib */; };
 		32471CE11F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32471CDF1F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m */; };
@@ -494,6 +500,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		3233F7481F3497E2006ACA81 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1129C74A281B080432B1A1A1 /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		24B5103C1EFA7083004C6AD2 /* ReadReceiptsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadReceiptsViewController.h; sourceTree = "<group>"; };
@@ -512,6 +532,14 @@
 		3228069D1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipExpandedBubbleCell.h; sourceTree = "<group>"; };
 		3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipExpandedBubbleCell.m; sourceTree = "<group>"; };
 		3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipExpandedBubbleCell.xib; sourceTree = "<group>"; };
+		3233F72E1F31F4BF006ACA81 /* JitsiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JitsiViewController.h; sourceTree = "<group>"; };
+		3233F72F1F31F4BF006ACA81 /* JitsiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JitsiViewController.m; sourceTree = "<group>"; };
+		3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JitsiViewController.xib; sourceTree = "<group>"; };
+		3233F73A1F3306A6006ACA81 /* WidgetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetManager.h; sourceTree = "<group>"; };
+		3233F73B1F3306A7006ACA81 /* WidgetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidgetManager.m; sourceTree = "<group>"; };
+		3233F73D1F331F05006ACA81 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
+		3233F73E1F331F05006ACA81 /* Widget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Widget.m; sourceTree = "<group>"; };
+		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		32471CD91F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
 		32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.m; sourceTree = "<group>"; };
 		32471CDB1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
@@ -1116,6 +1144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2EAC1A4FBD6FE5228584591 /* libPods-Riot.a in Frameworks */,
+				3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1140,6 +1169,43 @@
 				3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */,
 			);
 			path = Directory;
+			sourceTree = "<group>";
+		};
+		3233F7291F31F3B4006ACA81 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				3233F7431F3497DA006ACA81 /* jitsi-meet */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		3233F72D1F31F47E006ACA81 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				3233F72E1F31F4BF006ACA81 /* JitsiViewController.h */,
+				3233F72F1F31F4BF006ACA81 /* JitsiViewController.m */,
+				3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		3233F7391F33065F006ACA81 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				3233F73A1F3306A6006ACA81 /* WidgetManager.h */,
+				3233F73B1F3306A7006ACA81 /* WidgetManager.m */,
+				3233F73D1F331F05006ACA81 /* Widget.h */,
+				3233F73E1F331F05006ACA81 /* Widget.m */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		3233F7431F3497DA006ACA81 /* jitsi-meet */ = {
+			isa = PBXGroup;
+			children = (
+				3233F7441F3497DA006ACA81 /* JitsiMeet.framework */,
+			);
+			path = "jitsi-meet";
 			sourceTree = "<group>";
 		};
 		327382A71F276AD200356143 /* de.lproj */ = {
@@ -1226,6 +1292,7 @@
 				F083BC0F1E7009EC00A9B29C /* Utils */,
 				F083BC191E7009EC00A9B29C /* ViewController */,
 				F083BC571E7009EC00A9B29C /* Views */,
+				3233F7291F31F3B4006ACA81 /* libs */,
 				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
 				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
 				F083BBE21E7009EC00A9B29C /* Main.storyboard */,
@@ -1593,6 +1660,7 @@
 		F083BC0F1E7009EC00A9B29C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				3233F7391F33065F006ACA81 /* Widgets */,
 				F083BC101E7009EC00A9B29C /* AvatarGenerator.h */,
 				F083BC111E7009EC00A9B29C /* AvatarGenerator.m */,
 				F083BC121E7009EC00A9B29C /* EventFormatter.h */,
@@ -1608,6 +1676,7 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3233F72D1F31F47E006ACA81 /* Widgets */,
 				F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */,
 				F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */,
 				F0E059FE1E963103004B83FB /* FavouritesViewController.h */,
@@ -2073,6 +2142,7 @@
 				F094A9A01B78D8F000B1FBBF /* Resources */,
 				44C35695CFA4F9799C449367 /* [CP] Copy Pods Resources */,
 				381DA4CC07D2104BFA23E45A /* [CP] Embed Pods Frameworks */,
+				3233F7481F3497E2006ACA81 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2189,6 +2259,7 @@
 				F083BD3D1E7009ED00A9B29C /* call_hangup_icon@2x.png in Resources */,
 				F083BE551E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				32471CDD1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
+				3233F7321F31F4BF006ACA81 /* JitsiViewController.xib in Resources */,
 				F083BD301E7009ED00A9B29C /* bubbles_bg_landscape.png in Resources */,
 				F083BDA41E7009ED00A9B29C /* notifications.png in Resources */,
 				F083BE0F1E7009ED00A9B29C /* ContactsTableViewController.xib in Resources */,
@@ -2592,6 +2663,7 @@
 				F083BE661E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE141E7009ED00A9B29C /* HomeViewController.m in Sources */,
 				F083BDFB1E7009ED00A9B29C /* RoomSearchDataSource.m in Sources */,
+				3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */,
 				F083BE281E7009ED00A9B29C /* StartChatViewController.m in Sources */,
 				F083BE841E7009ED00A9B29C /* RoomIdOrAliasTableViewCell.m in Sources */,
 				F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */,
@@ -2621,6 +2693,7 @@
 				F083BE2F1E7009ED00A9B29C /* ContactTableViewCell.m in Sources */,
 				F083BE901E7009ED00A9B29C /* RoomTitleView.m in Sources */,
 				F083BE6E1E7009ED00A9B29C /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
+				3233F7311F31F4BF006ACA81 /* JitsiViewController.m in Sources */,
 				F083BE2A1E7009ED00A9B29C /* UsersDevicesViewController.m in Sources */,
 				F083BE2D1E7009ED00A9B29C /* ForgotPasswordInputsView.m in Sources */,
 				F083BE7E1E7009ED00A9B29C /* InviteRecentTableViewCell.m in Sources */,
@@ -2644,6 +2717,7 @@
 				F083BE401E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDFD1E7009ED00A9B29C /* PublicRoomsDirectoryDataSource.m in Sources */,
+				3233F73F1F331F05006ACA81 /* Widget.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,
 				F083BE4C1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
@@ -2923,6 +2997,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Riot/libs",
+					"$(PROJECT_DIR)/Riot/libs/jitsi-meet",
+				);
 				INFOPLIST_FILE = Riot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2940,6 +3019,11 @@
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Riot/libs",
+					"$(PROJECT_DIR)/Riot/libs/jitsi-meet",
+				);
 				INFOPLIST_FILE = Riot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
