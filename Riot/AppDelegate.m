@@ -34,6 +34,7 @@
 #import "MatrixSDK/MatrixSDK.h"
 
 #import "Tools.h"
+#import "WidgetManager.h"
 
 #import "AFNetworkReachabilityManager.h"
 
@@ -1675,6 +1676,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         // Update home data sources
         [_masterTabBarController addMatrixSession:mxSession];
+
+        // Register the session to the widgets manager
+        [[WidgetManager sharedManager] addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
         
@@ -1689,6 +1693,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Update home data sources
     [_masterTabBarController removeMatrixSession:mxSession];
+
+    // Update the widgets manager
+    [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
     
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
