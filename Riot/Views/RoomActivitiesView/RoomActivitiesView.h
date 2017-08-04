@@ -66,6 +66,13 @@
  */
 - (void)displayOngoingConferenceCall:(void (^)(BOOL video))ongoingConferenceCallPressed;
 
+/**
+ Display an ongoing jitsi conference call.
+ Replace the current notification if any.
+
+ @param ongoingJitsiConferencePressed the block called when the user clicks on the banner.
+ */
+- (void)displayOngoingJitsiConference:(void (^)())ongoingJitsiConferencePressed;
 
 /**
  Display a "scroll to bottom" icon.

@@ -47,6 +47,8 @@
 
 #import "ReadReceiptsViewController.h"
 
+#import "JitsiViewController.h"
+
 #import "RoomEmptyBubbleCell.h"
 
 #import "RoomIncomingTextMsgBubbleCell.h"
@@ -96,6 +98,7 @@
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
+#import "WidgetManager.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -3275,6 +3278,8 @@
         {
             [roomActivitiesView removeGestureRecognizer:roomActivitiesView.gestureRecognizers[0]];
         }
+
+        Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
         
         if ([AppDelegate theDelegate].isOffline)
         {
@@ -3304,6 +3309,26 @@
                     }
                 }];
             }
+        }
+        else if (jitsiWidget)
+        {
+            // The room has an active jitsi widget, show it in the banner
+            [roomActivitiesView displayOngoingJitsiConference:^{
+
+                // Present the Jitsi view controller
+                AppDelegate *appDelegate = [AppDelegate theDelegate];
+                JitsiViewController *jitsiViewController = [JitsiViewController jitsiViewControllerForWidget:jitsiWidget];
+
+                if (appDelegate.window.rootViewController.presentedViewController)
+                {
+                    [appDelegate.window.rootViewController.presentedViewController presentViewController:jitsiViewController animated:YES completion:nil];
+                }
+                else
+                {
+                    [appDelegate.window.rootViewController presentViewController:jitsiViewController animated:YES completion:nil];
+                }
+
+            }];
         }
         else if ([self checkUnsentMessages] == NO)
         {

@@ -390,4 +390,21 @@
     _selectedEventId = selectedEventId;
 }
 
+- (Widget *)jitsiWidget
+{
+    Widget *jitsiWidget;
+
+    NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsInRoom:self.room];
+    for (Widget *widget in widgets)
+    {
+        if ([widget.type isEqualToString:kWidgetTypeJitsi])
+        {
+            jitsiWidget = widget;
+            break;
+        }
+    }
+
+    return jitsiWidget;
+}
+
 @end

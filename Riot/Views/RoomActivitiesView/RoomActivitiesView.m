@@ -242,6 +242,50 @@
     [self checkHeight:YES];
 }
 
+- (void)displayOngoingJitsiConference:(void (^)())ongoingJitsiConferencePressed
+{
+    [self reset];
+
+    // @TODO: use dedicated strings
+    objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed", [ongoingJitsiConferencePressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+    // Build the string to display in the banner
+    NSString *onGoingConferenceCall =
+    [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil),
+     NSLocalizedStringFromTable(@"voice", @"Vector", nil),
+     NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+
+    NSMutableAttributedString *onGoingConferenceCallAttibutedString = [[NSMutableAttributedString alloc] initWithString:onGoingConferenceCall];
+
+    // Add a link on the "voice" string
+    NSRange voiceRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"voice", @"Vector", nil)];
+    [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:voiceRange];
+    [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVoicePressed" range:voiceRange];
+
+    // Add a link on the "video" string
+    NSRange videoRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+    [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:videoRange];
+    [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVideoPressed" range:videoRange];
+
+    // Display the string in white on pink red
+    NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
+    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
+
+    self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
+    self.messageTextView.tintColor = UIColor.whiteColor;
+    self.messageTextView.hidden = NO;
+
+    self.backgroundColor = kRiotColorPinkRed;
+    self.messageTextView.backgroundColor = kRiotColorPinkRed;
+
+    // Hide the separator to display correctly the red pink conf call banner
+    self.separatorView.hidden = YES;
+    
+    [self checkHeight:YES];
+}
+
 - (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture
 {
     if (newMessagesCount)
