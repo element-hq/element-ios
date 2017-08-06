@@ -8,14 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		05D592A32FF1D1877B89F73C /* libPods-Riot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD9D0BDE9232898950554DD5 /* libPods-Riot.a */; };
+		243517981F375B6800D0683E /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B7531F2F80B800AE27B0 /* FallbackViewController.m */; };
+		243517991F375B7100D0683E /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2466B7541F2F80B800AE27B0 /* FallbackViewController.xib */; };
+		2435179A1F375B8A00D0683E /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B75C1F2F80B800AE27B0 /* ShareViewController.m */; };
+		2435179B1F375B8F00D0683E /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B75A1F2F80B800AE27B0 /* SharePresentingViewController.m */; };
+		2435179C1F375B9400D0683E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2466B7551F2F80B800AE27B0 /* Info.plist */; };
+		2435179D1F375BA100D0683E /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2466B75D1F2F80B800AE27B0 /* ShareViewController.xib */; };
+		2435179E1F375BA600D0683E /* RoomsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B7581F2F80B800AE27B0 /* RoomsListViewController.m */; };
+		2435179F1F375C0F00D0683E /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
 		2466B73E1F2DFAC100AE27B0 /* animatedLogo-4.png in Resources */ = {isa = PBXBuildFile; fileRef = F083BB201E7009EC00A9B29C /* animatedLogo-4.png */; };
-		2466B75E1F2F80B800AE27B0 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B7531F2F80B800AE27B0 /* FallbackViewController.m */; };
-		2466B75F1F2F80B800AE27B0 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2466B7541F2F80B800AE27B0 /* FallbackViewController.xib */; };
-		2466B7601F2F80B800AE27B0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2466B7551F2F80B800AE27B0 /* Info.plist */; };
-		2466B7611F2F80B800AE27B0 /* RoomsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B7581F2F80B800AE27B0 /* RoomsListViewController.m */; };
-		2466B7621F2F80B800AE27B0 /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B75A1F2F80B800AE27B0 /* SharePresentingViewController.m */; };
-		2466B7631F2F80B800AE27B0 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2466B75C1F2F80B800AE27B0 /* ShareViewController.m */; };
-		2466B7641F2F80B800AE27B0 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2466B75D1F2F80B800AE27B0 /* ShareViewController.xib */; };
 		24B5103E1EFA7083004C6AD2 /* ReadReceiptsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24B5103D1EFA7083004C6AD2 /* ReadReceiptsViewController.m */; };
 		24B510401EFA88CC004C6AD2 /* ReadReceiptsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24B5103F1EFA88CC004C6AD2 /* ReadReceiptsViewController.xib */; };
 		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -2280,10 +2281,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2435179D1F375BA100D0683E /* ShareViewController.xib in Resources */,
 				24EEE5B51F2607C500B3C705 /* SegmentedViewController.xib in Resources */,
 				24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */,
+				2435179C1F375B9400D0683E /* Info.plist in Resources */,
+				243517991F375B7100D0683E /* FallbackViewController.xib in Resources */,
 				24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */,
 				2466B73E1F2DFAC100AE27B0 /* animatedLogo-4.png in Resources */,
+				2435179F1F375C0F00D0683E /* Vector.strings in Resources */,
 				24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */,
 				24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */,
 				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
@@ -2641,9 +2646,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2466B7601F2F80B800AE27B0 /* Info.plist in Resources */,
-				2466B7641F2F80B800AE27B0 /* ShareViewController.xib in Resources */,
-				2466B75F1F2F80B800AE27B0 /* FallbackViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2734,7 +2736,11 @@
 			files = (
 				24EEE5A01F23A08900B3C705 /* RoomTableViewCell.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
+				2435179E1F375BA600D0683E /* RoomsListViewController.m in Sources */,
+				243517981F375B6800D0683E /* FallbackViewController.m in Sources */,
+				2435179B1F375B8F00D0683E /* SharePresentingViewController.m in Sources */,
 				24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */,
+				2435179A1F375B8A00D0683E /* ShareViewController.m in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
 				24EEE5B41F2607C000B3C705 /* SegmentedViewController.m in Sources */,
 			);
@@ -2884,11 +2890,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2466B75E1F2F80B800AE27B0 /* FallbackViewController.m in Sources */,
 				F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */,
-				2466B7611F2F80B800AE27B0 /* RoomsListViewController.m in Sources */,
-				2466B7631F2F80B800AE27B0 /* ShareViewController.m in Sources */,
-				2466B7621F2F80B800AE27B0 /* SharePresentingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3036,7 +3038,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "Riot Share Extension/Info.plist";
+				INFOPLIST_FILE = RiotShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.share.extension;
@@ -3059,7 +3061,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "Riot Share Extension/Info.plist";
+				INFOPLIST_FILE = RiotShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.share.extension;
