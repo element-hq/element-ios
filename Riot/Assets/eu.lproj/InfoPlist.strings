@@ -1,0 +1,5 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kamera argazkiak eta bideoak ateratzeko eta bideo deiak egiteko erabiltzen da.";
+"NSPhotoLibraryUsageDescription" = "Argazkien liburutegia argazkiak eta bideoak bidaltzeko erabiltzen da.";
+"NSMicrophoneUsageDescription" = "Mikrofonoa bideoak atera eta deiak egiteko erabiltzen da.";
+"NSContactsUsageDescription" = "Kontaktuen liburua Riot erabiltzaileak e-mail edo telefono zenbaki bidez bilatzeko erabiltzen da.";
