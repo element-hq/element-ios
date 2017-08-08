@@ -21,9 +21,9 @@
 
 @implementation RoomIncomingAttachmentWithPaginationTitleBubbleCell
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
     self.userNameLabel.textColor = kRiotTextColorBlack;
     

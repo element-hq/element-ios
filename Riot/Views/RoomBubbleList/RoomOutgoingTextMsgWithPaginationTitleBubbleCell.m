@@ -21,16 +21,12 @@
 
 @implementation RoomOutgoingTextMsgWithPaginationTitleBubbleCell
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
-    self.readReceiptsAlignment = ReadReceiptAlignmentRight;
-    
-    self.userNameLabel.textColor = kRiotTextColorBlack;
+    [super customizeTableViewCellRendering];
     
     self.paginationLabel.textColor = kRiotColorGreen;
     self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
-    self.messageTextView.tintColor = kRiotColorGreen;
 }
 
 - (void)render:(MXKCellData *)cellData

@@ -95,12 +95,12 @@
 {
     [super customizeViewRendering];
     
-    self.repeatPasswordTextField.textColor = kRiotTextColorBlack;
-    self.userLoginTextField.textColor = kRiotTextColorBlack;
-    self.passWordTextField.textColor = kRiotTextColorBlack;
+    self.repeatPasswordTextField.textColor = kRiotPrimaryTextColor;
+    self.userLoginTextField.textColor = kRiotPrimaryTextColor;
+    self.passWordTextField.textColor = kRiotPrimaryTextColor;
     
-    self.emailTextField.textColor = kRiotTextColorBlack;
-    self.phoneTextField.textColor = kRiotTextColorBlack;
+    self.emailTextField.textColor = kRiotPrimaryTextColor;
+    self.phoneTextField.textColor = kRiotPrimaryTextColor;
     
     self.messageLabel.numberOfLines = 0;
 }
@@ -1157,7 +1157,7 @@
     self.repeatPasswordContainer.hidden = YES;
     
     // Hide other items
-    self.messageLabel.textColor = kRiotTextColorBlack;
+    self.messageLabel.textColor = kRiotPrimaryTextColor;
     self.messageLabelTopConstraint.constant = 8;
     self.messageLabel.hidden = YES;
     self.recaptchaWebView.hidden = YES;

@@ -132,10 +132,6 @@
     actionsArray = [[NSMutableArray alloc] init];
     directChatsArray = [[NSMutableArray alloc] init];
     
-    self.headerView.backgroundColor = kRiotColorLightGrey;
-    self.contactNameLabel.textColor = kRiotTextColorBlack;
-    self.contactStatusLabel.textColor = kRiotColorGreen;
-    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
@@ -227,6 +223,10 @@
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    
+    self.headerView.backgroundColor = kRiotColorLightGrey;
+    self.contactNameLabel.textColor = kRiotPrimaryTextColor;
+    self.contactStatusLabel.textColor = kRiotColorGreen;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -708,8 +708,8 @@
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
             
-            [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateNormal];
-            [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateHighlighted];
+            [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
+            [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             

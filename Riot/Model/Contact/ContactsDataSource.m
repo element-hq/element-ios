@@ -741,7 +741,7 @@
         NSString *roomCount = [NSString stringWithFormat:roomCountFormat, count];
         
         NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
         [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
                                                                                     attributes:@{NSForegroundColorAttributeName : kRiotColorSilver,
@@ -752,7 +752,7 @@
     else if (title)
     {
         sectionTitle = [[NSAttributedString alloc] initWithString:title
-                                               attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                               attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                             NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
     }
     
@@ -850,7 +850,7 @@
             
             UILabel *checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(54, 5, containerWidth - 64, 30)];
             checkboxLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            checkboxLabel.textColor = kRiotTextColorBlack;
+            checkboxLabel.textColor = kRiotPrimaryTextColor;
             checkboxLabel.font = [UIFont systemFontOfSize:16.0];
             checkboxLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_matrix_users_toggle", @"Vector", nil);
             [localContactsCheckboxContainer addSubview:checkboxLabel];

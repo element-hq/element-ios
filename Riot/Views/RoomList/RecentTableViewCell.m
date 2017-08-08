@@ -36,6 +36,11 @@
     // Initialize unread count badge
     [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
     
     self.roomTitle.textColor = kRiotTextColorBlack;
     self.lastEventDescription.textColor = kRiotTextColorGray;

@@ -23,9 +23,9 @@
 
 #pragma mark - Class methods
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
     self.descLabel.textColor = kRiotTextColorBlack;
 }

@@ -25,9 +25,9 @@
 
 #pragma mark - Class methods
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
     self.titleLabel.textColor = kRiotTextColorBlack;
     self.descriptionLabel.textColor = kRiotTextColorGray;

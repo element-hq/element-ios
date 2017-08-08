@@ -40,17 +40,6 @@
     [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
     
-    self.roomTitle.textColor = kRiotTextColorBlack;
-    self.roomTitle1.textColor = kRiotTextColorBlack;
-    self.roomTitle2.textColor = kRiotTextColorBlack;
-    self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
-    
-    // Prepare direct room border
-    [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
-    self.directRoomBorderView.clipsToBounds = YES;
-    self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
-    self.directRoomBorderView.layer.borderWidth = 3;
-    
     // Disable the user interaction on the room avatar.
     self.roomAvatar.userInteractionEnabled = NO;
     
@@ -65,6 +54,24 @@
     [path closePath]; // arrow top side
     arrowMaskLayer.path = path.CGPath;
     self.editionArrowView.layer.mask = arrowMaskLayer;
+}
+
+- (void)customizeCollectionViewCellRendering
+{
+    [super customizeCollectionViewCellRendering];
+    
+    self.roomTitle.textColor = kRiotTextColorBlack;
+    self.roomTitle1.textColor = kRiotTextColorBlack;
+    self.roomTitle2.textColor = kRiotTextColorBlack;
+    self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
+    
+    // Prepare direct room border
+    [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
+    self.directRoomBorderView.clipsToBounds = YES;
+    self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
+    self.directRoomBorderView.layer.borderWidth = 3;
+    
+    self.editionArrowView.backgroundColor = kRiotSecondaryBgColor;
 }
 
 - (void)layoutSubviews

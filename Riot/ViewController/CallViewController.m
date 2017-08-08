@@ -76,36 +76,10 @@
     [self.endCallButton setImage:[UIImage imageNamed:@"call_hangup_icon"] forState:UIControlStateNormal];
     [self.endCallButton setImage:[UIImage imageNamed:@"call_hangup_icon"] forState:UIControlStateHighlighted];
     
-    self.callerNameLabel.textColor = kRiotTextColorBlack;
-    self.callStatusLabel.textColor = kRiotTextColorDarkGray;
-    
-    self.localPreviewContainerView.layer.borderColor = kRiotColorGreen.CGColor;
-    self.localPreviewContainerView.layer.borderWidth = 2;
-    self.localPreviewContainerView.layer.cornerRadius = 5;
-    self.localPreviewContainerView.clipsToBounds = YES;
-    
-    self.remotePreviewContainerView.backgroundColor = [UIColor whiteColor];
-    
-    // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
-    gradientMaskLayer = [CAGradientLayer layer];
-    
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
-    
-    gradientMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)opaqueWhiteColor, (__bridge id)transparentWhiteColor, nil];
-    
-    gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
-    gradientMaskLayer.anchorPoint = CGPointZero;
-    
     // Define caller image view size
     CGSize size = [[UIScreen mainScreen] bounds].size;
     CGFloat minSize = MIN(size.width, size.height);
     self.callerImageViewWidthConstraint.constant = minSize / 2;
-    
-    // CAConstraint is not supported on IOS.
-    // it seems only being supported on Mac OS.
-    // so viewDidLayoutSubviews will refresh the layout bounds.
-    [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
     
     [self updateLocalPreviewLayout];
     
@@ -122,6 +96,37 @@
 {
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    
+    self.callerNameLabel.textColor = kRiotPrimaryTextColor;
+    self.callStatusLabel.textColor = kRiotTextColorDarkGray;
+    
+    self.localPreviewContainerView.layer.borderColor = kRiotColorGreen.CGColor;
+    self.localPreviewContainerView.layer.borderWidth = 2;
+    self.localPreviewContainerView.layer.cornerRadius = 5;
+    self.localPreviewContainerView.clipsToBounds = YES;
+    
+    self.remotePreviewContainerView.backgroundColor = [UIColor whiteColor];
+    
+    if (gradientMaskLayer)
+    {
+        [gradientMaskLayer removeFromSuperlayer];
+    }
+    
+    // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
+    gradientMaskLayer = [CAGradientLayer layer];
+    
+    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+    
+    gradientMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)opaqueWhiteColor, (__bridge id)transparentWhiteColor, nil];
+    
+    gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
+    gradientMaskLayer.anchorPoint = CGPointZero;
+    
+    // CAConstraint is not supported on IOS.
+    // it seems only being supported on Mac OS.
+    // so viewDidLayoutSubviews will refresh the layout bounds.
+    [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
 }
 
 - (BOOL)prefersStatusBarHidden

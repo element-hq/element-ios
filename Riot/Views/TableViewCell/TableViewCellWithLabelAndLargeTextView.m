@@ -25,13 +25,19 @@
 {
     [super awakeFromNib];
     
-    _label.textColor = kRiotTextColorBlack;
-    
     // Adjust text view
     // Remove the container inset: this operation impacts only the vertical margin.
     // Reset textContainer.lineFragmentPadding to remove horizontal margin.
     _textView.textContainerInset = UIEdgeInsetsZero;
     _textView.textContainer.lineFragmentPadding = 0;
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
+    
+    _label.textColor = kRiotTextColorBlack;
+    _textView.textColor = kRiotTextColorBlack;
 }
 
 - (void)layoutSubviews

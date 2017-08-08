@@ -22,9 +22,9 @@
 @implementation FilesSearchTableViewCell
 @synthesize delegate, mxkCellData;
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
     self.title.textColor = kRiotTextColorBlack;
     

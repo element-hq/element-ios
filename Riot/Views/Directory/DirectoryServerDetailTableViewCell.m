@@ -20,9 +20,9 @@
 
 @implementation DirectoryServerDetailTableViewCell
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
 
     self.detailDescLabel.textColor = kRiotTextColorGray;
 }
