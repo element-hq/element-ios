@@ -90,7 +90,7 @@
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
         self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
-        self.singleEmojiTextFont = [UIFont systemFontOfSize:48];
+        self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
     }
     return self;
 }

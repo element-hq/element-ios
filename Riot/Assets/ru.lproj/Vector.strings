@@ -164,3 +164,13 @@
 "room_participants_action_start_video_call" = "Начать видеовызов";
 // Chat
 "room_jump_to_first_unread" = "Перейти к первому непрочитанному сообщению";
+"room_creation_appearance" = "Внешний вид";
+"directory_cell_description" = "%tu комнат";
+"directory_search_results_title" = "Просмотр результатов поиска";
+"directory_search_results" = "%tu результатов поиска для %@";
+"directory_search_results_more_than" = ">%tu результатов поиска для %@";
+"room_participants_invite_malformed_id" = "Неверный идентификатор. Должен быть адрес электронной почты или идентификатор Matrix, например '@thomas:matrix.org'";
+"room_participants_now" = "сейчас";
+"room_participants_ago" = "назад";
+"room_participants_action_section_direct_chats" = "Прямые чаты";
+"room_participants_action_invite" = "Пригласить";
