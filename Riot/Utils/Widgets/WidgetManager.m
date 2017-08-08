@@ -58,10 +58,9 @@ NSString *const kWidgetTypeJitsi = @"jitsi";
 {
     NSMutableArray<Widget *> *widgets = [NSMutableArray array];
 
-    // TODO: stateEventWithType should return an array
-    MXEvent *widgetEvent = [room.state stateEventWithType:kWidgetEventTypeString];
+    NSArray<MXEvent*> *widgetEvents = [room.state stateEventsWithType:kWidgetEventTypeString];
 
-    if (widgetEvent)
+    for (MXEvent *widgetEvent in widgetEvents)
     {
         Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent inMatrixSession:room.mxSession];
 
@@ -94,7 +93,8 @@ NSString *const kWidgetTypeJitsi = @"jitsi";
 
     [mxSession removeListener:listener];
 
-    [widgetEventListener removeObjectForKey:mxSession.matrixRestClient.credentials.userId];
+    // @TODO
+    // [widgetEventListener removeObjectForKey:mxSession.matrixRestClient.credentials.userId];
 }
 
 @end
