@@ -284,8 +284,18 @@
         [gitHubLabels addObject:versionLabel];
     }
 
+    NSMutableString *bugReportDescription = [NSMutableString stringWithString:_bugReportDescriptionTextView.text];
+
+    if (_reportCrash)
+    {
+        // Append the crash dump to the user description in order to ease triaging of GH issues
+        NSString *crashLogFile = [MXLogger crashLog];
+        NSString *crashLog =  [NSString stringWithContentsOfFile:crashLogFile encoding:NSUTF8StringEncoding error:nil];
+        [bugReportDescription appendFormat:@"\n\n\n--------------------------------------------------------------------------------\n\n%@", crashLog];
+    }
+
     // Submit
-    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files attachGitHubLabels:gitHubLabels progress:^(MXBugReportState state, NSProgress *progress) {
+    [bugReportRestClient sendBugReport:bugReportDescription sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files attachGitHubLabels:gitHubLabels progress:^(MXBugReportState state, NSProgress *progress) {
 
         switch (state)
         {
