@@ -33,6 +33,34 @@
 {
     [super awakeFromNib];
     
+    self.previewLabel.text = nil;
+    self.subNoticeLabel.text = nil;
+    
+    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
+    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.leftButton addGestureRecognizer:tap];
+    self.leftButton.userInteractionEnabled = YES;
+    
+    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
+    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.rightButton addGestureRecognizer:tap];
+    self.rightButton.userInteractionEnabled = YES;
+}
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
     self.mainHeaderBackground.backgroundColor = kRiotColorLightGrey;
     
     self.displayNameTextField.textColor = kRiotTextColorBlack;
@@ -44,37 +72,19 @@
     
     self.previewLabel.textColor = kRiotTextColorDarkGray;
     self.previewLabel.numberOfLines = 0;
-    self.previewLabel.text = nil;
     
     self.subNoticeLabel.textColor = kRiotTextColorGray;
     self.subNoticeLabel.numberOfLines = 0;
-    self.subNoticeLabel.text = nil;
     
     self.bottomBorderView.backgroundColor = kRiotColorLightGrey;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
     self.leftButton.backgroundColor = kRiotColorGreen;
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.leftButton addGestureRecognizer:tap];
-    self.leftButton.userInteractionEnabled = YES;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     self.rightButton.backgroundColor = kRiotColorGreen;
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.rightButton addGestureRecognizer:tap];
-    self.rightButton.userInteractionEnabled = YES;
 }
 
 - (void)refreshDisplay

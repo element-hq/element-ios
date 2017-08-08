@@ -21,9 +21,11 @@
 
 @implementation EncryptionInfoView
 
-- (void)awakeFromNib
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
 {
-    [super awakeFromNib];
+    [super customizeViewRendering];
     
     self.defaultTextColor = kRiotTextColorBlack;
 }

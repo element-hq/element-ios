@@ -38,8 +38,6 @@
 {
     [super awakeFromNib];
     
-    self.displayNameTextField.textColor = kRiotTextColorBlack;
-    
     if (_titleMask)
     {
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
@@ -107,6 +105,13 @@
             }
         }        
     }
+}
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.displayNameTextField.textColor = kRiotTextColorBlack;
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData

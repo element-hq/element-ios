@@ -32,6 +32,11 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+}
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
     
     self.displayNameTextField.textColor = kRiotTextColorBlack;
     self.roomTopic.textColor = kRiotTextColorDarkGray;

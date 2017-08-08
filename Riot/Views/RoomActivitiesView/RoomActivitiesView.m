@@ -96,9 +96,6 @@
 {
     [super awakeFromNib];
     
-    self.separatorView.backgroundColor = kRiotColorLightGrey;
-    self.messageLabel.textColor = kRiotTextColorGray;
-    
     // Adjust text view
     // Remove the container inset: this operation impacts only the vertical margin.
     // Reset textContainer.lineFragmentPadding to remove horizontal margin.
@@ -107,6 +104,18 @@
 
     xibMainHeightConstraint = self.mainHeightConstraint.constant;
 }
+
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.separatorView.backgroundColor = kRiotColorLightGrey;
+    self.messageLabel.textColor = kRiotTextColorGray;
+}
+
+#pragma mark -
 
 - (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
 {

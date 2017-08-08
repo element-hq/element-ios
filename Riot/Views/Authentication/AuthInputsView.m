@@ -63,19 +63,9 @@
 {
     [super awakeFromNib];
     
-    _repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
-    _repeatPasswordTextField.textColor = kRiotTextColorBlack;
-    
+    self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
     self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
-    self.userLoginTextField.textColor = kRiotTextColorBlack;
-    
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
-    self.passWordTextField.textColor = kRiotTextColorBlack;
-    
-    self.emailTextField.textColor = kRiotTextColorBlack;
-    self.phoneTextField.textColor = kRiotTextColorBlack;
-    
-    self.messageLabel.numberOfLines = 0;
     
     _thirdPartyIdentifiersHidden = YES;
     _isThirdPartyIdentifierPending = NO;
@@ -97,6 +87,22 @@
     {
         self.currentLastContainer = _currentLastContainer;
     }
+}
+
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.repeatPasswordTextField.textColor = kRiotTextColorBlack;
+    self.userLoginTextField.textColor = kRiotTextColorBlack;
+    self.passWordTextField.textColor = kRiotTextColorBlack;
+    
+    self.emailTextField.textColor = kRiotTextColorBlack;
+    self.phoneTextField.textColor = kRiotTextColorBlack;
+    
+    self.messageLabel.numberOfLines = 0;
 }
 
 #pragma mark -

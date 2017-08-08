@@ -52,19 +52,9 @@
     [super awakeFromNib];
     
     self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
-    self.emailTextField.textColor = kRiotTextColorBlack;
-    
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_new_password_placeholder", @"Vector", nil);
-    self.passWordTextField.textColor = kRiotTextColorBlack;
-    
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_new_password_placeholder", @"Vector", nil);
-    self.repeatPasswordTextField.textColor = kRiotTextColorBlack;
     
-    self.messageLabel.numberOfLines = 0;
-    
-    [self.nextStepButton.layer setCornerRadius:5];
-    self.nextStepButton.clipsToBounds = YES;
-    self.nextStepButton.backgroundColor = kRiotColorGreen;
     [self.nextStepButton setTitle:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_next_step_button"] forState:UIControlStateNormal];
     [self.nextStepButton setTitle:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_next_step_button"] forState:UIControlStateHighlighted];
     self.nextStepButton.enabled = YES;
@@ -100,6 +90,23 @@
     }
     
     self.viewHeightConstraint.constant = lastItemFrame.origin.y + lastItemFrame.size.height;
+}
+
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.emailTextField.textColor = kRiotTextColorBlack;
+    self.passWordTextField.textColor = kRiotTextColorBlack;
+    self.repeatPasswordTextField.textColor = kRiotTextColorBlack;
+    
+    self.messageLabel.numberOfLines = 0;
+    
+    [self.nextStepButton.layer setCornerRadius:5];
+    self.nextStepButton.clipsToBounds = YES;
+    self.nextStepButton.backgroundColor = kRiotColorGreen;
 }
 
 #pragma mark -

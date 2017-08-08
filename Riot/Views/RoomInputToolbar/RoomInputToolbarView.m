@@ -63,15 +63,24 @@
 {
     [super awakeFromNib];
     
-    // Remove default toolbar background color
-    self.backgroundColor = [UIColor clearColor];
-    
     _supportCallOption = YES;
     
     self.rightInputToolbarButton.hidden = YES;
     
     [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateNormal];
     [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateHighlighted];
+    
+    self.isEncryptionEnabled = _isEncryptionEnabled;
+}
+
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    // Remove default toolbar background color
+    self.backgroundColor = [UIColor clearColor];
     
     self.separatorView.backgroundColor = kRiotColorSilver;
     
@@ -83,9 +92,9 @@
     growingTextView.font = [UIFont systemFontOfSize:15];
     growingTextView.textColor = kRiotTextColorBlack;
     growingTextView.tintColor = kRiotColorGreen;
-    
-    self.isEncryptionEnabled = _isEncryptionEnabled;
 }
+
+#pragma mark -
 
 - (void)setSupportCallOption:(BOOL)supportCallOption
 {

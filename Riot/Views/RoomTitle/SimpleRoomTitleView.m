@@ -32,8 +32,6 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.displayNameTextField.textColor = kRiotTextColorBlack;
 }
 
 - (void)layoutSubviews
@@ -66,6 +64,13 @@
             self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
         }        
     }
+}
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.displayNameTextField.textColor = kRiotTextColorBlack;
 }
 
 - (void)refreshDisplay
