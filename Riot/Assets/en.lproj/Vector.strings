@@ -49,6 +49,7 @@
 "later" = "Later";
 "rename" = "Rename";
 "collapse" = "collapse";
+"send_to" = "Send to %@";
 
 // Authentication
 "auth_login" = "Log in";
@@ -102,6 +103,7 @@
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
 "auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
+"auth_share_extension_prompt" = "Login in the main app to share content";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -250,6 +252,7 @@
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
+"room_event_failed_to_send" = "Failed to send";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
