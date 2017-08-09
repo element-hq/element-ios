@@ -89,8 +89,8 @@
 "auth_reset_password_missing_email" = "Het e-mailadres dat met je account verbonden is moet ingevoerd worden.";
 "auth_reset_password_missing_password" = "Een nieuw wachtwoord moet ingevoerd worden.";
 "auth_reset_password_email_validation_message" = "Een e-mail is naar %@ gestuurd. Zodra je de link die het bevat hebt gevolgd, klik hieronder.";
-"auth_reset_password_next_step_button" = "I heb mijn e-mailadres geverifieerd.";
-"auth_reset_password_error_unauthorized" = "Het is niet gelukt om het e-mailadres te verifiëren: wees er zeker van dat je op de link in de e-mail hebt geklikt.";
+"auth_reset_password_next_step_button" = "Ik heb mijn e-mailadres geverifieerd";
+"auth_reset_password_error_unauthorized" = "Het is niet gelukt om het e-mailadres te verifiëren: wees er zeker van dat je op de link in de e-mail hebt geklikt";
 "auth_reset_password_error_not_found" = "Het ziet er niet naar uit dat het e-mailadres met het Matrix ID op deze Homeserver is verbonden.";
 "auth_reset_password_success_message" = "Je wachtwoord is opnieuw ingesteld.\n\nJe bent op alle apparaten uitgelogd en je zal geen notificaties meer ontvangen. Om notificaties weer in te schakelen, log op elk apparaat opnieuw in.";
 "auth_add_email_and_phone_warning" = "Registratie met e-mail en telefoonnummer tegelijkertijd wordt nog niet ondersteund totdat de api bestaat. Alleen het telefoonnummer zal worden gebruikt. Je kan je e-mailadres later aan je profiel in de instellingen toevoegen.";
