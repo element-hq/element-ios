@@ -56,21 +56,39 @@ NSString *const kWidgetTypeJitsi = @"jitsi";
 
 - (NSArray<Widget *> *)widgetsInRoom:(MXRoom *)room
 {
-    NSMutableArray<Widget *> *widgets = [NSMutableArray array];
+    // Widget id -> widget
+    NSMutableDictionary <NSString*, Widget *> *widgets = [NSMutableDictionary dictionary];
 
+    // Get all im.vector.modular.widgets state events in the room
     NSArray<MXEvent*> *widgetEvents = [room.state stateEventsWithType:kWidgetEventTypeString];
 
-    for (MXEvent *widgetEvent in widgetEvents)
+    // There can be several im.vector.modular.widgets state events for a same widget but
+    // only the last one must be considered.
+    // We assume that returned events are ordered chronologically
+    for (MXEvent *widgetEvent in widgetEvents.reverseObjectEnumerator)
     {
-        Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent inMatrixSession:room.mxSession];
-
-        if (widget.isActive)
+        // (widgetEvent.stateKey = widget id)
+        if (!widgets[widgetEvent.stateKey])
         {
-            [widgets addObject:widget];
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent inMatrixSession:room.mxSession];
+            if (widget)
+            {
+                widgets[widget.widgetId] = widget;
+            }
         }
     }
 
-    return widgets;
+    // Return active widgets only
+    NSMutableArray<Widget *> *activeWidgets = [NSMutableArray array];
+    for (Widget *widget in widgets.allValues)
+    {
+        if (widget.isActive)
+        {
+            [activeWidgets addObject:widget];
+        }
+    }
+
+    return activeWidgets;
 }
 
 - (void)addMatrixSession:(MXSession *)mxSession
