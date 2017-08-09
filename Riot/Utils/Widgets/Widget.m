@@ -33,6 +33,7 @@
     {
         _widgetId = widgetEvent.stateKey;
         _widgetEvent = widgetEvent;
+        _mxSession = mxSession;
 
         MXJSONModelSetString(_type, widgetEvent.content[@"type"]);
         MXJSONModelSetString(_url, widgetEvent.content[@"url"]);
@@ -53,6 +54,11 @@
 - (BOOL)isActive
 {
     return (_type != nil && _url != nil);
+}
+
+- (NSString *)roomId
+{
+    return _widgetEvent.roomId;
 }
 
 @end

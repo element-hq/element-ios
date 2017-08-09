@@ -21,6 +21,8 @@
 NSString *const kWidgetEventTypeString = @"im.vector.modular.widgets";
 NSString *const kWidgetTypeJitsi = @"jitsi";
 
+NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManagerDidUpdateWidgetNotification";
+
 @interface WidgetManager ()
 {
     // UserId -> Listener for matrix events for widgets.
@@ -67,7 +69,7 @@ NSString *const kWidgetTypeJitsi = @"jitsi";
     // We assume that returned events are ordered chronologically
     for (MXEvent *widgetEvent in widgetEvents.reverseObjectEnumerator)
     {
-        // (widgetEvent.stateKey = widget id)
+        // widgetEvent.stateKey = widget id
         if (!widgets[widgetEvent.stateKey])
         {
             Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent inMatrixSession:room.mxSession];
@@ -97,8 +99,11 @@ NSString *const kWidgetTypeJitsi = @"jitsi";
 
         if (direction == MXTimelineDirectionForwards)
         {
-            // @TODO
-            NSLog(@"event : %@", event);
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
+            if (widget)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKWidgetManagerDidUpdateWidgetNotification object:widget];
+            }
         }
     }];
 

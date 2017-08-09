@@ -60,9 +60,19 @@
 @property (nonatomic, readonly, nonnull) MXEvent *widgetEvent;
 
 /**
+ The Matrix session where the widget is.
+ */
+@property (nonatomic, readonly, nonnull) MXSession *mxSession;
+
+/**
  Indicate if the widget is still active.
  */
 @property (nonatomic, readonly) BOOL isActive;
+
+/**
+ The room id of the widget.
+ */
+@property (nonatomic, readonly, nonnull) NSString *roomId;
 
 /**
  Create a Widget instance from a widget event.

@@ -165,6 +165,9 @@
     id kMXCallStateDidChangeObserver;
     id kMXCallManagerConferenceStartedObserver;
     id kMXCallManagerConferenceFinishedObserver;
+
+    // Observers to manage widgets
+    id kMXKWidgetManagerDidUpdateWidgetObserver;
     
     // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
     id mxRoomSummaryDidChangeObserver;
@@ -451,6 +454,7 @@
     
     [self listenTypingNotifications];
     [self listenCallNotifications];
+    [self listenWidgetNotifications];
     
     if (self.showExpandedHeader)
     {
@@ -498,7 +502,8 @@
     }
     
     [self removeCallNotificationsListeners];
-    
+    [self removeWidgetNotificationsListeners];
+
     // Re-enable the read marker display, and disable its update.
     self.roomDataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
@@ -1060,7 +1065,8 @@
     }
     
     [self removeCallNotificationsListeners];
-    
+    [self removeWidgetNotificationsListeners];
+
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
         // Here [destroy] is called before [viewWillDisappear:]
@@ -3259,6 +3265,33 @@
         NSString *roomId = notif.object;
         if ([roomId isEqualToString:customizedRoomDataSource.roomId])
         {
+            [self refreshActivitiesViewDisplay];
+            [self refreshRoomInputToolbar];
+        }
+    }];
+}
+
+#pragma mark - Widget notifications management
+
+- (void)removeWidgetNotificationsListeners
+{
+    if (kMXKWidgetManagerDidUpdateWidgetObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXKWidgetManagerDidUpdateWidgetObserver];
+        kMXKWidgetManagerDidUpdateWidgetObserver = nil;
+    }
+}
+
+- (void)listenWidgetNotifications
+{
+    kMXKWidgetManagerDidUpdateWidgetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKWidgetManagerDidUpdateWidgetNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        Widget *widget = notif.object;
+        if (widget.mxSession == self.roomDataSource.mxSession
+            && [widget.roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            // Jitsi conference widget existence is shown in the bottom bar
+            // Update the bar
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
         }
