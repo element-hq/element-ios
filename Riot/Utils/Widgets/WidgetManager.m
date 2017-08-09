@@ -25,7 +25,7 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
 
 @interface WidgetManager ()
 {
-    // UserId -> Listener for matrix events for widgets.
+    // MXSession kind of hash -> Listener for matrix events for widgets.
     // There is one per matrix session.
     NSMutableDictionary<NSString*, id> *widgetEventListener;
 }
@@ -124,17 +124,20 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
         }
     }];
 
-    widgetEventListener[mxSession.matrixRestClient.credentials.userId] = listener;
+    NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
+    widgetEventListener[hash] = listener;
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
 {
-    id listener = widgetEventListener[mxSession.myUser.userId];
+    // mxSession.myUser.userId and mxSession.matrixRestClient.credentials.userId may be nil here
+    // So, use a kind of hash value instead
+    NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
+    id listener = widgetEventListener[hash];
 
     [mxSession removeListener:listener];
 
-    // @TODO
-    // [widgetEventListener removeObjectForKey:mxSession.matrixRestClient.credentials.userId];
+    [widgetEventListener removeObjectForKey:hash];
 }
 
 @end
