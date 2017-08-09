@@ -62,12 +62,29 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
     NSMutableDictionary <NSString*, Widget *> *widgets = [NSMutableDictionary dictionary];
 
     // Get all im.vector.modular.widgets state events in the room
-    NSArray<MXEvent*> *widgetEvents = [room.state stateEventsWithType:kWidgetEventTypeString];
+    NSMutableArray<MXEvent*> *widgetEvents = [NSMutableArray arrayWithArray:[room.state stateEventsWithType:kWidgetEventTypeString]];
 
     // There can be several im.vector.modular.widgets state events for a same widget but
     // only the last one must be considered.
-    // We assume that returned events are ordered chronologically
-    for (MXEvent *widgetEvent in widgetEvents.reverseObjectEnumerator)
+
+    // Order widgetEvents with the last event first
+    [widgetEvents sortUsingComparator:^NSComparisonResult(MXEvent *event1, MXEvent *event2) {
+
+         NSComparisonResult result = NSOrderedAscending;
+         if (event2.originServerTs > event1.originServerTs)
+         {
+             result = NSOrderedDescending;
+         }
+         else if (event2.originServerTs == event1.originServerTs)
+         {
+             result = NSOrderedSame;
+         }
+
+         return result;
+     }];
+
+    // Create each widget with its lastest im.vector.modular.widgets state event
+    for (MXEvent *widgetEvent in widgetEvents)
     {
         // widgetEvent.stateKey = widget id
         if (!widgets[widgetEvent.stateKey])
