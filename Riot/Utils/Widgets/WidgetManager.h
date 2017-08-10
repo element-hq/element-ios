@@ -49,12 +49,17 @@ extern NSString *const kMXKWidgetManagerDidUpdateWidgetNotification;
 + (instancetype)sharedManager;
 
 /**
+ A [NSUserDefaults standardUserDefaults] setting to enable scalar widgets.
+ */
+@property (nonatomic) BOOL enabled;
+
+/**
  List all active widgets in a room.
  
  @param room the room to check.
  @return a list of widgets.
  */
--(NSArray<Widget*> *)widgetsInRoom:(MXRoom*)room;
+- (NSArray<Widget*> *)widgetsInRoom:(MXRoom*)room;
 
 /**
  Add/remove matrix session.

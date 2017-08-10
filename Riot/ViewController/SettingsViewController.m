@@ -95,7 +95,8 @@ enum
 
 enum
 {
-    LABS_CRYPTO_INDEX = 0,
+    LABS_MATRIX_APPS_INDEX = 0,
+    LABS_CRYPTO_INDEX,
     LABS_COUNT
 };
 
@@ -1865,7 +1866,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_CRYPTO_INDEX)
+        if (row == LABS_MATRIX_APPS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            // In the future, the text will be "Matrix Apps".
+            // As we support only jitsi widget at the moment, [WidgetManager sharedManager].enabled
+            // conditions the activation of "Use jitsi for conference call"
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_jitsi_conference", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [WidgetManager sharedManager].enabled;
+
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsMatrixApps:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
+        else if (row == LABS_CRYPTO_INDEX)
         {
             MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
 
@@ -2551,6 +2567,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
+    }
+}
+
+- (void)toggleLabsMatrixApps:(id)sender
+{
+    if (sender && [sender isKindOfClass:UISwitch.class])
+    {
+        UISwitch *switchButton = (UISwitch*)sender;
+        if (switchButton.isOn != [WidgetManager sharedManager].enabled)
+        {
+            [WidgetManager sharedManager].enabled = switchButton.isOn;
+            [self.tableView reloadData];
+        }
     }
 }
 

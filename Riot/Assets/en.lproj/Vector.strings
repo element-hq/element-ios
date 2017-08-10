@@ -341,6 +341,7 @@
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
+"settings_labs_jitsi_conference" = "Use jitsi for conference calls";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";

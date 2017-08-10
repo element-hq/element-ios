@@ -46,6 +46,17 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
     return sharedManager;
 }
 
+- (BOOL)enabled
+{
+     return [[NSUserDefaults standardUserDefaults] boolForKey:@"MatrixApps"];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [[NSUserDefaults standardUserDefaults] setBool:enabled forKey:@"MatrixApps"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -58,6 +69,11 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
 
 - (NSArray<Widget *> *)widgetsInRoom:(MXRoom *)room
 {
+    if (!self.enabled)
+    {
+        return nil;
+    }
+
     // Widget id -> widget
     NSMutableDictionary <NSString*, Widget *> *widgets = [NSMutableDictionary dictionary];
 
@@ -112,9 +128,13 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
 
 - (void)addMatrixSession:(MXSession *)mxSession
 {
+     __weak __typeof__(self) weakSelf = self;
+    
     id listener = [mxSession listenToEventsOfTypes:@[kWidgetEventTypeString] onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
 
-        if (direction == MXTimelineDirectionForwards)
+        typeof(self) self = weakSelf;
+
+        if (self.enabled && direction == MXTimelineDirectionForwards)
         {
             Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
             if (widget)
