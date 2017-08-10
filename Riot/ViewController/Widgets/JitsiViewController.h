@@ -46,11 +46,15 @@
  Creates and returns a new `JitsiViewController` object.
 
  @discussion This is the designated initializer for programmatic instantiation.
- 
- @param widget the jitsi widget containinf jitis conference information.
+
  @return An initialized `JitsiViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)jitsiViewControllerForWidget:(Widget*)widget;
++ (instancetype)jitsiViewController;
+
+/**
+ Make
+ */
+- (BOOL)openWidget:(Widget*)widget withVideo:(BOOL)video;
 
 /**
  The jitsi widget displayed by this `JitsiViewController`.

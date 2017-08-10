@@ -3346,21 +3346,29 @@
         else if (jitsiWidget)
         {
             // The room has an active jitsi widget, show it in the banner
-            [roomActivitiesView displayOngoingJitsiConference:^{
+            [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
+
+                NSLog(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
 
                 // Present the Jitsi view controller
                 AppDelegate *appDelegate = [AppDelegate theDelegate];
-                JitsiViewController *jitsiViewController = [JitsiViewController jitsiViewControllerForWidget:jitsiWidget];
+                JitsiViewController *jitsiViewController = [JitsiViewController jitsiViewController];
 
-                if (appDelegate.window.rootViewController.presentedViewController)
+                if ([jitsiViewController openWidget:jitsiWidget withVideo:video])
                 {
-                    [appDelegate.window.rootViewController.presentedViewController presentViewController:jitsiViewController animated:YES completion:nil];
+                    if (appDelegate.window.rootViewController.presentedViewController)
+                    {
+                        [appDelegate.window.rootViewController.presentedViewController presentViewController:jitsiViewController animated:YES completion:nil];
+                    }
+                    else
+                    {
+                        [appDelegate.window.rootViewController presentViewController:jitsiViewController animated:YES completion:nil];
+                    }
                 }
                 else
                 {
-                    [appDelegate.window.rootViewController presentViewController:jitsiViewController animated:YES completion:nil];
+                    // @TODO
                 }
-
             }];
         }
         else if ([self checkUnsentMessages] == NO)

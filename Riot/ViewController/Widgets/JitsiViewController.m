@@ -18,6 +18,15 @@
 
 static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
 
+@interface JitsiViewController ()
+{
+    NSString *jitsiUrl;
+
+    BOOL video;
+}
+
+@end
+
 @implementation JitsiViewController
 
 #pragma mark - Class methods
@@ -28,24 +37,19 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)jitsiViewControllerForWidget:(Widget*)widget
++ (instancetype)jitsiViewController
 {
     JitsiViewController *jitsiViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
-
-    jitsiViewController->_widget = widget;
-
     return jitsiViewController;
 }
 
-- (void)viewDidLoad
+- (BOOL)openWidget:(Widget*)widget withVideo:(BOOL)aVideo
 {
-    [super viewDidLoad];
-
-    self.jitsiMeetView.delegate = self;
+    video = aVideo;
+    _widget = widget;
 
     // Extract the jitsi conference id from the widget url
-    // @TODO: Consider doing this in a `JitsiWidget` class.
     NSString *confId;
     NSURL *url = [NSURL URLWithString:_widget.url];
     NSURLComponents *components = [[NSURLComponents new] initWithURL:url resolvingAgainstBaseURL:NO];
@@ -56,16 +60,32 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
         if ([item.name isEqualToString:@"confId"])
         {
             confId = item.value;
+            break;
         }
     }
 
+    // And build from it the url to use in jitsi-meet sdk
     if (confId)
     {
-        // Pass the URL to jitsi-meet sdk
-        NSString *jitsiUrl = [NSString stringWithFormat:@"%@%@", kJitsiServerUrl, confId];
-        [self.jitsiMeetView loadURLString:jitsiUrl];
+        jitsiUrl = [NSString stringWithFormat:@"%@%@", kJitsiServerUrl, confId];
     }
-    // @TODO: else
+
+    return (jitsiUrl != nil);
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    self.jitsiMeetView.delegate = self;
+
+    // Pass the URL to jitsi-meet sdk
+    [self.jitsiMeetView loadURLObject: @{
+                                         @"url": jitsiUrl,
+                                         @"configOverwrite": @{
+                                                 @"startWithVideoMuted": @(!video)
+                                                 }
+                                         }];
 }
 
 - (void)didReceiveMemoryWarning
