@@ -45,4 +45,4 @@
 /* Incoming named voice conference invite from a specific person */
 "VOICE_CONF_NAMED_FROM_USER" = "從 %@ 而來的群組通話：'%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "從";
+"VIDEO_CONF_NAMED_FROM_USER" = "從 %@ 而來的視訊群組通話：'%@'";
