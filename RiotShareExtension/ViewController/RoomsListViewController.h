@@ -16,11 +16,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MXRoom+Riot.h"
+#import "ShareRecentsDataSource.h"
 
-@interface RoomsListViewController : UIViewController
+@interface RoomsListViewController : UIViewController <MXKDataSourceDelegate>
 
-+ (instancetype)listViewControllerWithContext:(NSExtensionContext *)context failureBlock:(void(^)())failureBlock;
-
-- (void)updateWithRooms:(NSArray <MXRoom *>*)rooms;
++ (instancetype)listViewControllerWithDataSource:(ShareRecentsDataSource *)dataSource failureBlock:(void(^)())failureBlock;
 
 @end

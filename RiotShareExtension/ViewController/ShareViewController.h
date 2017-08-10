@@ -20,6 +20,4 @@
 
 @interface ShareViewController : MXKViewController
 
-@property (nonatomic) NSExtensionContext *shareExtensionContext;
-
 @end

@@ -16,6 +16,7 @@
 
 #import "SharePresentingViewController.h"
 #import "ShareViewController.h"
+#import "ShareExtensionManager.h"
 
 @interface SharePresentingViewController ()
 
@@ -27,8 +28,9 @@
 {
     [super viewDidLoad];
     
+    [ShareExtensionManager sharedManager].shareExtensionContext = self.extensionContext;
+    
     ShareViewController *shareViewController = [[ShareViewController alloc] init];
-    shareViewController.shareExtensionContext = self.extensionContext;
     
     shareViewController.providesPresentationContextTransitionStyle = YES;
     shareViewController.definesPresentationContext = YES;

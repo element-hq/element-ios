@@ -18,11 +18,15 @@
 #import "SegmentedViewController.h"
 #import "RoomsListViewController.h"
 #import "FallbackViewController.h"
+#import "ShareRecentsDataSource.h"
+#import "ShareExtensionManager.h"
 
 
 @interface ShareViewController ()
 
 @property (nonatomic) NSArray <MXRoom *> *rooms;
+
+@property (nonatomic) MXKRecentsDataSource *recentsDataSource;
 
 @property (weak, nonatomic) IBOutlet UIView *masterContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *tittleLabel;
@@ -103,11 +107,18 @@
     NSArray *titles = @[NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil) , NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
     
     void (^failureBlock)() = ^void() {
-        [self finishSharingCanceled:NO];
+        [[ShareExtensionManager sharedManager] cancelSharingWithFailure];
     };
-    NSArray *viewControllers = @[[RoomsListViewController listViewControllerWithContext:self.shareExtensionContext failureBlock:failureBlock], [RoomsListViewController listViewControllerWithContext:self.shareExtensionContext failureBlock:failureBlock]];
     
-    [self.segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
+    ShareRecentsDataSource *roomsDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:self.mainSession dataSourceMode:RecentsDataSourceModeRooms];
+    RoomsListViewController *roomsViewController = [RoomsListViewController listViewControllerWithDataSource:roomsDataSource failureBlock:failureBlock];
+    roomsDataSource.delegate = roomsViewController;
+    
+    ShareRecentsDataSource *peopleDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:self.mainSession dataSourceMode:RecentsDataSourceModePeople];
+    RoomsListViewController *peopleViewController = [RoomsListViewController listViewControllerWithDataSource:peopleDataSource failureBlock:failureBlock];
+    peopleDataSource.delegate = peopleViewController;
+    
+    [self.segmentedViewController initWithTitles:titles viewControllers:@[roomsViewController, peopleViewController] defaultSelected:0];
     
     [self addChildViewController:self.segmentedViewController];
     [self.contentView addSubview:self.segmentedViewController.view];
@@ -139,48 +150,13 @@
     centerYConstraint.active = YES;
 }
 
-- (void)finishSharingCanceled:(BOOL)canceled
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-        NSError *error;
-        if (canceled)
-        {
-            error = [NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil];
-        }
-        else
-        {
-            error = [NSError errorWithDomain:@"MXUserFailureErrorDomain" code:500 userInfo:nil];
-        }
-        [self.shareExtensionContext cancelRequestWithError:error];
-    }];
-}
-
 #pragma mark - Notifications
 
 - (void)onSessionSync:(NSNotification *)notification
 {
     if ([notification.object isEqual:self.mainSession] && !self.rooms.count)
     {
-        self.rooms = self.mainSession.rooms;
-        if (self.rooms.count)
-        {
-            NSMutableArray *directRooms = [NSMutableArray array];
-            NSMutableArray *rooms = [NSMutableArray array];
-            for (MXRoom *room in self.rooms)
-            {
-                if (room.isDirect)
-                {
-                    [directRooms addObject:room];
-                }
-                else
-                {
-                    [rooms addObject:room];
-                }
-            }
-            
-            [((RoomsListViewController *)self.segmentedViewController.viewControllers[0]) updateWithRooms:rooms];
-            [((RoomsListViewController *)self.segmentedViewController.viewControllers[1]) updateWithRooms:directRooms];
-        }
+        self.recentsDataSource = [[MXKRecentsDataSource alloc] initWithMatrixSession:self.mainSession];
     }
 }
 
@@ -188,7 +164,7 @@
 
 - (IBAction)close:(UIButton *)sender
 {
-    [self finishSharingCanceled:YES];
+    [[ShareExtensionManager sharedManager] cancelSharing];
 }
 
 
