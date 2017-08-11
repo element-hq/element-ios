@@ -30,6 +30,11 @@
     
     [ShareExtensionManager sharedManager].shareExtensionContext = self.extensionContext;
     
+    [self presentShareViewController];
+}
+
+- (void)presentShareViewController
+{
     ShareViewController *shareViewController = [[ShareViewController alloc] init];
     
     shareViewController.providesPresentationContextTransitionStyle = YES;

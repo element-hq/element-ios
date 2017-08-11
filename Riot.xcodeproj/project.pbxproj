@@ -11,6 +11,7 @@
 		2435179C1F375B9400D0683E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2466B7551F2F80B800AE27B0 /* Info.plist */; };
 		2435179F1F375C0F00D0683E /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
 		245FC3ED1F3D079A00603C6A /* ShareExtensionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 245FC3EB1F3CAF9800603C6A /* ShareExtensionManager.m */; };
+		245FC3EF1F3DD30800603C6A /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC071E7009EC00A9B29C /* RecentCellData.m */; };
 		2466B73E1F2DFAC100AE27B0 /* animatedLogo-4.png in Resources */ = {isa = PBXBuildFile; fileRef = F083BB201E7009EC00A9B29C /* animatedLogo-4.png */; };
 		24B5103E1EFA7083004C6AD2 /* ReadReceiptsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24B5103D1EFA7083004C6AD2 /* ReadReceiptsViewController.m */; };
 		24B510401EFA88CC004C6AD2 /* ReadReceiptsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24B5103F1EFA88CC004C6AD2 /* ReadReceiptsViewController.xib */; };
@@ -2764,6 +2765,7 @@
 			files = (
 				24EEE5A01F23A08900B3C705 /* RoomTableViewCell.m in Sources */,
 				24D6B3581F3C90D300FC7A71 /* ShareRecentsDataSource.m in Sources */,
+				245FC3EF1F3DD30800603C6A /* RecentCellData.m in Sources */,
 				24D6B35C1F3CA03600FC7A71 /* RoomsListViewController.m in Sources */,
 				24D6B35A1F3CA02C00FC7A71 /* ShareViewController.m in Sources */,
 				24D6B3591F3CA02900FC7A71 /* SharePresentingViewController.m in Sources */,

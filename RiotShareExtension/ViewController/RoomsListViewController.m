@@ -18,14 +18,17 @@
 #import "RoomTableViewCell.h"
 #import "NSBundle+MatrixKit.h"
 #import "ShareExtensionManager.h"
+#import "RecentCellData.h"
+#import "RiotDesignValues.h"
 
 
-@interface RoomsListViewController () <UITableViewDelegate>
+@interface RoomsListViewController () <UITableViewDelegate, UISearchBarDelegate>
 
 @property (nonatomic) ShareRecentsDataSource *dataSource;
 @property (copy) void (^failureBlock)();
 
 @property (nonatomic) UITableView *mainTableView;
+@property (nonatomic) UISearchBar *searchBar;
 
 @end
 
@@ -38,6 +41,7 @@
 {
     [super viewDidLoad];
     [self configureTableView];
+    [self configureSearchBar];
 }
 
 #pragma mark - Public
@@ -70,6 +74,23 @@
     centerXConstraint.active = YES;
     NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
     centerYConstraint.active = YES;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.dataSource searchWithPatterns:nil];
+    });
+}
+
+- (void)configureSearchBar
+{
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    self.searchBar.tintColor = kRiotColorGreen;
+    self.searchBar.showsCancelButton = YES;
+    
+    self.searchBar.delegate = self;
+    
+    self.mainTableView.tableHeaderView = self.searchBar;
 }
 
 #pragma mark - Private
@@ -81,7 +102,6 @@
         if (self.failureBlock)
         {
             self.failureBlock();
-            [[ShareExtensionManager sharedManager] cancelSharing];
         }
     }];
     [alertController addAction:okAction];
@@ -133,7 +153,7 @@
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
-    if ([cellData isKindOfClass:[MXKRecentCellData class]])
+    if ([cellData isKindOfClass:[RecentCellData class]])
     {
         return [RoomTableViewCell class];
     }
@@ -147,6 +167,31 @@
         return [RoomTableViewCell defaultReuseIdentifier];
     }
     return nil;
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if (searchText.length)
+    {
+        [self.dataSource searchWithPatterns:@[searchText]];
+    }
+    else
+    {
+        [self.dataSource searchWithPatterns:nil];
+    }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    [self.dataSource searchWithPatterns:nil];
 }
 
 @end

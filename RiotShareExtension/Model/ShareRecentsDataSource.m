@@ -8,6 +8,7 @@
 
 #import "ShareRecentsDataSource.h"
 #import "RoomTableViewCell.h"
+#import "RecentCellData.h"
 
 @interface ShareRecentsDataSource ()
 
@@ -25,12 +26,13 @@
     self = [super initWithMatrixSession:mxSession];
     if (self)
     {
+        self.dataSourceMode = dataSourceMode;
         _recentRooms = [NSMutableArray array];
         _recentPeople = [NSMutableArray array];
-        self.dataSourceMode = dataSourceMode;
     }
     return self;
 }
+
 
 #pragma mark - Private
 
@@ -66,6 +68,11 @@
 
 #pragma mark - MXKRecentsDataSource
 
+- (Class)cellDataClassForCellIdentifier:(NSString *)identifier
+{
+    return RecentCellData.class;
+}
+
 - (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath
 {
     id<MXKRecentCellDataStoring> cellData = nil;
@@ -85,8 +92,8 @@
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
     [super dataSource:dataSource didCellChange:changes];
-    [self updateArrays];
     
+    [self updateArrays];
     [self.delegate dataSource:self didCellChange:changes];
 }
 
@@ -124,5 +131,6 @@
     
     return cell;
 }
+
 
 @end

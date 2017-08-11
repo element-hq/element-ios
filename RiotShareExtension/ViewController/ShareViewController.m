@@ -107,7 +107,9 @@
     NSArray *titles = @[NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil) , NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
     
     void (^failureBlock)() = ^void() {
-        [[ShareExtensionManager sharedManager] cancelSharingWithFailure];
+        [self dismissViewControllerAnimated:YES completion:^{
+            [[ShareExtensionManager sharedManager] cancelSharingWithFailure];
+        }];
     };
     
     ShareRecentsDataSource *roomsDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:self.mainSession dataSourceMode:RecentsDataSourceModeRooms];
@@ -164,7 +166,9 @@
 
 - (IBAction)close:(UIButton *)sender
 {
-    [[ShareExtensionManager sharedManager] cancelSharing];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [[ShareExtensionManager sharedManager] cancelSharing];
+    }];
 }
 
 
