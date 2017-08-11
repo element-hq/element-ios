@@ -24,7 +24,7 @@
 {
     [super customizeTableViewCellRendering];
 
-    self.detailDescLabel.textColor = kRiotTextColorGray;
+    self.detailDescLabel.textColor = kRiotSecondaryTextColor;
 }
 
 - (void)render:(id<MXKDirectoryServerCellDataStoring>)cellData

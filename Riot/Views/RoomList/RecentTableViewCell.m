@@ -42,10 +42,10 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.roomTitle.textColor = kRiotTextColorBlack;
-    self.lastEventDescription.textColor = kRiotTextColorGray;
-    self.lastEventDate.textColor = kRiotTextColorGray;
-    self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
+    self.roomTitle.textColor = kRiotPrimaryTextColor;
+    self.lastEventDescription.textColor = kRiotSecondaryTextColor;
+    self.lastEventDate.textColor = kRiotSecondaryTextColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
     
     // Prepare direct room border
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
@@ -82,7 +82,7 @@
         {
             // Force the default text color for the last message (cancel highlighted message color)
             NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
-            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:kRiotTextColorGray range:NSMakeRange(0, lastEventDescription.length)];
+            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:kRiotSecondaryTextColor range:NSMakeRange(0, lastEventDescription.length)];
             self.lastEventDescription.attributedText = lastEventDescription;
         }
         else
@@ -124,7 +124,7 @@
         }
         else
         {
-            self.lastEventDate.textColor = kRiotTextColorGray;
+            self.lastEventDate.textColor = kRiotSecondaryTextColor;
             
             // The room title is not bold anymore
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])

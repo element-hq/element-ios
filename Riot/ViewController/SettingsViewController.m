@@ -34,6 +34,8 @@
 
 #import "NBPhoneNumberUtil.h"
 
+#import "AvatarGenerator.h"
+
 #import "OLMKit/OLMKit.h"
 
 
@@ -73,9 +75,8 @@ enum
 enum
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
-//    USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_COUNT,
-    USER_INTERFACE_THEME_INDEX
+    USER_INTERFACE_THEME_INDEX,
+    USER_INTERFACE_COUNT
 };
 
 enum
@@ -236,8 +237,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"settings_title", @"Vector", nil);
     
-    self.tableView.backgroundColor = kRiotColorLightGrey;
-    
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
@@ -299,13 +298,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    // Check the table view style to select its bg color.
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
     {
         [self refreshSettings];
     }
-    
-    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -879,30 +881,30 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Crypto information
     NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
                                                           initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
-                                                          attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                          attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                                        NSFontAttributeName: [UIFont systemFontOfSize:17]}];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:account.device.displayName ? account.device.displayName : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:account.device.deviceId ? account.device.deviceId : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:fingerprint ? fingerprint : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                                   NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
     
     return cryptoInformationString;
@@ -1197,12 +1199,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = kRiotTextColorBlack;
+    cell.mxkLabel.textColor = kRiotPrimaryTextColor;
     
     cell.mxkTextField.userInteractionEnabled = YES;
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
     cell.mxkTextField.textAlignment = NSTextAlignmentRight;
-    cell.mxkTextField.textColor = kRiotTextColorGray;
+    cell.mxkTextField.textColor = kRiotSecondaryTextColor;
     cell.mxkTextField.font = [UIFont systemFontOfSize:16];
     cell.mxkTextField.placeholder = nil;
     
@@ -1222,7 +1224,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = kRiotTextColorBlack;
+    cell.mxkLabel.textColor = kRiotPrimaryTextColor;
     
     return cell;
 }
@@ -1243,7 +1245,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     cell.textLabel.accessibilityIdentifier = nil;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
-    cell.textLabel.textColor = kRiotTextColorBlack;
+    cell.textLabel.textColor = kRiotPrimaryTextColor;
     
     return cell;
 }
@@ -1311,7 +1313,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
             profileCell.accessibilityIdentifier=@"SettingsVCProfilPictureStaticText";
-            profileCell.mxkLabel.textColor = kRiotTextColorBlack;
+            profileCell.mxkLabel.textColor = kRiotPrimaryTextColor;
             
             // if the user defines a new avatar
             if (newAvatarImage)
@@ -1396,6 +1398,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 newEmailCell.mxkLabel.text = nil;
                 newEmailCell.mxkTextField.placeholder = NSLocalizedStringFromTable(@"settings_email_address_placeholder", @"Vector", nil);
+                if (kRiotPlaceholderTextColor)
+                {
+                    newEmailCell.mxkTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                 initWithString:newEmailCell.mxkTextField.placeholder
+                                                                 attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                }
                 newEmailCell.mxkTextField.text = newEmailTextField.text;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
                 newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
@@ -1535,7 +1543,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         else if (row == userSettingsNightModeSepIndex)
         {
             UITableViewCell *sepCell = [[UITableViewCell alloc] init];
-            sepCell.backgroundColor = kRiotColorLightGrey;
+            sepCell.backgroundColor = kRiotSecondaryBgColor;
             
             cell = sepCell;
         }
@@ -1623,7 +1631,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:language];
             languageDescription = [languageDescription capitalizedStringWithLocale:locale];
 
-            cell.textLabel.textColor = kRiotTextColorBlack;
+            cell.textLabel.textColor = kRiotPrimaryTextColor;
 
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
             cell.detailTextLabel.text = languageDescription;
@@ -1703,7 +1711,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
             NSString *countryName = [local displayNameForKey:NSLocaleCountryCode value:countryCode];
             
-            cell.textLabel.textColor = kRiotTextColorBlack;
+            cell.textLabel.textColor = kRiotPrimaryTextColor;
             
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
@@ -2023,7 +2031,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = kRiotTextColorBlack;
+        tableViewHeaderFooterView.textLabel.textColor = kRiotPrimaryTextColor;
         tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
     }
 }
@@ -2048,6 +2056,32 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 }
 
 #pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    if (cell.selectionStyle != UITableViewCellSelectionStyleNone)
+    {        
+        // Update the selected background view
+        if (kRiotSelectedBgColor)
+        {
+            cell.selectedBackgroundView = [[UIView alloc] init];
+            cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        }
+        else
+        {
+            if (tableView.style == UITableViewStylePlain)
+            {
+                cell.selectedBackgroundView = nil;
+            }
+            else
+            {
+                cell.selectedBackgroundView.backgroundColor = nil;
+            }
+        }
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -2108,7 +2142,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
             }];
             
-            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(20, 18)];
+            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(20, 18)];
             [actions insertObject:leaveAction atIndex:0];
         }
     }
@@ -3601,6 +3635,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             // The user wants to select this theme
             [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"userInterfaceTheme"];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            // Do a reload in order to recompute attributed strings in the new theme
+            // Note that "reloadMatrixSessions:NO" will reset room summaries
+            [self startActivityIndicator];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                
+                // Clear fake Riot Avatars.
+                [AvatarGenerator clear];
+                
+                [[AppDelegate theDelegate] reloadMatrixSessions:NO];
+                
+            });
         }
     }
 }

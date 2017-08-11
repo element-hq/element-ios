@@ -96,16 +96,17 @@
 {
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
     
     self.callerNameLabel.textColor = kRiotPrimaryTextColor;
-    self.callStatusLabel.textColor = kRiotTextColorDarkGray;
+    self.callStatusLabel.textColor = kRiotTopicTextColor;
     
     self.localPreviewContainerView.layer.borderColor = kRiotColorGreen.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
     
-    self.remotePreviewContainerView.backgroundColor = [UIColor whiteColor];
+    self.remotePreviewContainerView.backgroundColor = kRiotPrimaryBgColor;
     
     if (gradientMaskLayer)
     {
@@ -115,8 +116,12 @@
     // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
     gradientMaskLayer = [CAGradientLayer layer];
     
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+    // Consider the grayscale components of the kRiotPrimaryBgColor.
+    CGFloat white = 1.0;
+    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    
+    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
+    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     
     gradientMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)opaqueWhiteColor, (__bridge id)transparentWhiteColor, nil];
     

@@ -592,7 +592,7 @@
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.textColor = kRiotSecondaryTextColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
@@ -766,7 +766,7 @@
     NSInteger sectionBitwise = 0;
     
     sectionHeader = [[UIView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = kRiotColorLightGrey;
+    sectionHeader.backgroundColor = kRiotSecondaryBgColor;
     
     frame.origin.x = 20;
     frame.origin.y = 5;

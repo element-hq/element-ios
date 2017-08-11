@@ -28,7 +28,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = kRiotTextColorBlack;
+    self.titleLabel.textColor = kRiotPrimaryTextColor;
     
     // Prepare direct room border
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];

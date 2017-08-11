@@ -137,7 +137,7 @@
         
         UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, containerWidth - 60, 31)];
         theLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        theLabel.textColor = kRiotTextColorBlack;
+        theLabel.textColor = kRiotPrimaryTextColor;
         [checkboxContainer addSubview:theLabel];
         [labelArray addObject:theLabel];
         

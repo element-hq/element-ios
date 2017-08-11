@@ -28,7 +28,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = kRiotTextColorBlack;
+    self.titleLabel.textColor = kRiotPrimaryTextColor;
 }
 
 - (void)layoutSubviews

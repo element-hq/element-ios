@@ -90,7 +90,7 @@
     growingTextView.backgroundColor = [UIColor clearColor];
     
     growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = kRiotTextColorBlack;
+    growingTextView.textColor = kRiotPrimaryTextColor;
     growingTextView.tintColor = kRiotColorGreen;
 }
 

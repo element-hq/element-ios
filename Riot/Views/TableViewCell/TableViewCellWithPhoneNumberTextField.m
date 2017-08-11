@@ -26,10 +26,10 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.mxkLabel.textColor = kRiotTextColorBlack;
-    self.mxkTextField.textColor = kRiotTextColorBlack;
+    self.mxkLabel.textColor = kRiotPrimaryTextColor;
+    self.mxkTextField.textColor = kRiotPrimaryTextColor;
     
-    _isoCountryCodeLabel.textColor = kRiotTextColorBlack;
+    _isoCountryCodeLabel.textColor = kRiotPrimaryTextColor;
 }
 
 - (void)setIsoCountryCode:(NSString *)isoCountryCode

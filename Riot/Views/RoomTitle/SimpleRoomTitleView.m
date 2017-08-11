@@ -70,7 +70,7 @@
 {
     [super customizeViewRendering];
     
-    self.displayNameTextField.textColor = kRiotTextColorBlack;
+    self.displayNameTextField.textColor = (self.mxRoom.riotDisplayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
 }
 
 - (void)refreshDisplay
@@ -83,11 +83,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-            self.displayNameTextField.textColor = kRiotTextColorGray;
+            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
         }
         else
         {
-            self.displayNameTextField.textColor = kRiotTextColorBlack;
+            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
         }
     }
 }

@@ -26,11 +26,11 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.title.textColor = kRiotTextColorBlack;
+    self.title.textColor = kRiotPrimaryTextColor;
     
-    self.message.textColor = kRiotTextColorGray;
+    self.message.textColor = kRiotSecondaryTextColor;
     
-    self.date.tintColor = kRiotTextColorGray;
+    self.date.tintColor = kRiotSecondaryTextColor;
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
@@ -95,7 +95,7 @@
                     self.attachmentImageView.enableInMemoryCache = YES;
                     [self.attachmentImageView setImageURL:url withType:mimetype andImageOrientation:bubbleData.attachment.thumbnailOrientation previewImage:preview];
                     
-                    self.attachmentImageView.backgroundColor = [UIColor whiteColor];
+                    self.attachmentImageView.backgroundColor = kRiotPrimaryBgColor;
                 }
             }
             

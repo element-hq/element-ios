@@ -27,7 +27,7 @@
 {
     [super customizeViewRendering];
     
-    self.defaultTextColor = kRiotTextColorBlack;
+    self.defaultTextColor = kRiotPrimaryTextColor;
 }
 
 @end

@@ -60,10 +60,10 @@
 {
     [super customizeCollectionViewCellRendering];
     
-    self.roomTitle.textColor = kRiotTextColorBlack;
-    self.roomTitle1.textColor = kRiotTextColorBlack;
-    self.roomTitle2.textColor = kRiotTextColorBlack;
-    self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
+    self.roomTitle.textColor = kRiotPrimaryTextColor;
+    self.roomTitle1.textColor = kRiotPrimaryTextColor;
+    self.roomTitle2.textColor = kRiotPrimaryTextColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
     
     // Prepare direct room border
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];

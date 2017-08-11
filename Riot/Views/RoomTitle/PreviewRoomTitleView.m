@@ -61,22 +61,22 @@
 {
     [super customizeViewRendering];
     
-    self.mainHeaderBackground.backgroundColor = kRiotColorLightGrey;
+    self.mainHeaderBackground.backgroundColor = kRiotSecondaryBgColor;
     
-    self.displayNameTextField.textColor = kRiotTextColorBlack;
+    self.displayNameTextField.textColor = (self.mxRoom.riotDisplayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
     
-    self.roomTopic.textColor = kRiotTextColorDarkGray;
+    self.roomTopic.textColor = kRiotTopicTextColor;
     self.roomTopic.numberOfLines = 0;
     
     self.roomMembers.textColor = kRiotColorGreen;
     
-    self.previewLabel.textColor = kRiotTextColorDarkGray;
+    self.previewLabel.textColor = kRiotTopicTextColor;
     self.previewLabel.numberOfLines = 0;
     
-    self.subNoticeLabel.textColor = kRiotTextColorGray;
+    self.subNoticeLabel.textColor = kRiotSecondaryTextColor;
     self.subNoticeLabel.numberOfLines = 0;
     
-    self.bottomBorderView.backgroundColor = kRiotColorLightGrey;
+    self.bottomBorderView.backgroundColor = kRiotSecondaryBgColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
@@ -148,11 +148,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-            self.displayNameTextField.textColor = kRiotTextColorGray;
+            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
         }
         else
         {
-            self.displayNameTextField.textColor = kRiotTextColorBlack;
+            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
         }
         
         // Display room topic

@@ -52,7 +52,8 @@
     [super customizeTableViewCellRendering];
     
     // apply the vector colours
-    self.contactInformationLabel.textColor = kRiotTextColorGray;
+    self.contactDisplayNameLabel.textColor = kRiotPrimaryTextColor;
+    self.contactInformationLabel.textColor = kRiotSecondaryTextColor;
     
     // Clear the default background color of a MXKImageView instance
     self.thumbnailView.backgroundColor = [UIColor clearColor];
