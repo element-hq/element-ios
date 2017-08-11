@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,6 +20,8 @@
 #import "AvatarGenerator.h"
 #import "MXKImageView.h"
 
+#import "RiotDesignValues.h"
+
 @implementation PublicRoomTableViewCell
 
 - (void)awakeFromNib
@@ -28,6 +31,17 @@
     // Round image view
     [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
     _roomAvatar.clipsToBounds = YES;
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
+    
+    self.roomDisplayName.textColor = kRiotPrimaryTextColor;
+    self.roomTopic.textColor = kRiotSecondaryTextColor;
+    self.memberCount.textColor = kRiotSecondaryTextColor;
+    
+    _roomAvatar.backgroundColor = [UIColor clearColor];
 }
 
 - (void)render:(MXPublicRoom *)publicRoom withMatrixSession:(MXSession*)mxSession
@@ -58,8 +72,6 @@
     {
         _roomAvatar.image = avatarImage;
     }
-
-    _roomAvatar.backgroundColor = [UIColor clearColor];
     
     _roomAvatar.contentMode = UIViewContentModeScaleAspectFill;
 }

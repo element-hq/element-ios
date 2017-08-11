@@ -69,12 +69,12 @@
 
         localTimeZone = [NSTimeZone localTimeZone];
         
-        self.defaultTextColor = kRiotTextColorBlack;
-        self.subTitleTextColor = kRiotTextColorGray;
-        self.prefixTextColor = kRiotTextColorGray;
+        self.defaultTextColor = kRiotPrimaryTextColor;
+        self.subTitleTextColor = kRiotSecondaryTextColor;
+        self.prefixTextColor = kRiotSecondaryTextColor;
         self.bingTextColor = kRiotColorPinkRed;
         self.encryptingTextColor = kRiotColorGreen;
-        self.sendingTextColor = kRiotTextColorGray;
+        self.sendingTextColor = kRiotSecondaryTextColor;
         self.errorTextColor = kRiotColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];

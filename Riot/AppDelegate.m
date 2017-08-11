@@ -1898,7 +1898,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (!launchAnimationContainerView && window)
             {
                 launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = [UIColor whiteColor];
+                launchAnimationContainerView.backgroundColor = kRiotPrimaryBgColor;
                 launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [window addSubview:launchAnimationContainerView];
                 
@@ -2496,7 +2496,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    _callStatusBarButton.titleLabel.textColor = [UIColor whiteColor];
+    _callStatusBarButton.titleLabel.textColor = kRiotPrimaryBgColor;
     
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
     {

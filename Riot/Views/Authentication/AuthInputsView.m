@@ -63,22 +63,18 @@
 {
     [super awakeFromNib];
     
-    _repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
-    _repeatPasswordTextField.textColor = kRiotTextColorBlack;
-    
-    self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
-    self.userLoginTextField.textColor = kRiotTextColorBlack;
-    
-    self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
-    self.passWordTextField.textColor = kRiotTextColorBlack;
-    
-    self.emailTextField.textColor = kRiotTextColorBlack;
-    self.phoneTextField.textColor = kRiotTextColorBlack;
-    
-    self.messageLabel.numberOfLines = 0;
-    
     _thirdPartyIdentifiersHidden = YES;
     _isThirdPartyIdentifierPending = NO;
+    
+    self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
+    self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
+    self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
+    
+    if (kRiotPlaceholderTextColor)
+    {
+        // Apply placeholder color
+        [self customizeViewRendering];
+    }
 }
 
 - (void)destroy
@@ -96,6 +92,65 @@
     if (_currentLastContainer)
     {
         self.currentLastContainer = _currentLastContainer;
+    }
+}
+
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.repeatPasswordTextField.textColor = kRiotPrimaryTextColor;
+    self.userLoginTextField.textColor = kRiotPrimaryTextColor;
+    self.passWordTextField.textColor = kRiotPrimaryTextColor;
+    
+    self.emailTextField.textColor = kRiotPrimaryTextColor;
+    self.phoneTextField.textColor = kRiotPrimaryTextColor;
+    
+    self.isoCountryCodeLabel.textColor = kRiotPrimaryTextColor;
+    self.callingCodeLabel.textColor = kRiotPrimaryTextColor;
+    
+    self.messageLabel.textColor = kRiotSecondaryTextColor;
+    self.messageLabel.numberOfLines = 0;
+    
+    if (kRiotPlaceholderTextColor)
+    {
+        if (self.userLoginTextField.placeholder)
+        {
+            self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                             initWithString:self.userLoginTextField.placeholder
+                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+        
+        if (self.repeatPasswordTextField.placeholder)
+        {
+            self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                  initWithString:self.repeatPasswordTextField.placeholder
+                                                                  attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+            
+        }
+        
+        if (self.passWordTextField.placeholder)
+        {
+            self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                            initWithString:self.passWordTextField.placeholder
+                                                            attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+        
+        if (self.phoneTextField.placeholder)
+        {
+            self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:self.phoneTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+        
+        if (self.emailTextField.placeholder)
+        {
+            self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:self.emailTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
     }
 }
 
@@ -137,8 +192,17 @@
                 
                 self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
                 self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
-                self.messageLabel.textColor = kRiotTextColorGray;
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
+                
+                if (kRiotPlaceholderTextColor)
+                {
+                    self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                     initWithString:self.userLoginTextField.placeholder
+                                                                     attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                    self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                 initWithString:self.phoneTextField.placeholder
+                                                                 attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                }
                 
                 self.userLoginContainer.hidden = NO;
                 self.messageLabel.hidden = NO;
@@ -949,7 +1013,16 @@
     {
         self.passWordTextField.returnKeyType = UIReturnKeyNext;
         
-        self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
+        if (kRiotPlaceholderTextColor)
+        {
+            self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                             initWithString:NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil)
+                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+        else
+        {
+            self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
+        }
         
         self.userLoginContainer.hidden = NO;
         self.passwordContainer.hidden = NO;
@@ -972,6 +1045,13 @@
                 self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
             }
             
+            if (kRiotPlaceholderTextColor)
+            {
+                self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                             initWithString:self.emailTextField.placeholder
+                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+            }
+            
             self.emailContainer.hidden = NO;
             
             self.messageLabel.hidden = NO;
@@ -991,6 +1071,13 @@
             else
             {
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_phone_placeholder", @"Vector", nil);
+            }
+            
+            if (kRiotPlaceholderTextColor)
+            {
+                self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                             initWithString:self.phoneTextField.placeholder
+                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
             }
             
             self.phoneContainer.hidden = NO;
@@ -1151,7 +1238,6 @@
     self.repeatPasswordContainer.hidden = YES;
     
     // Hide other items
-    self.messageLabel.textColor = kRiotTextColorBlack;
     self.messageLabelTopConstraint.constant = 8;
     self.messageLabel.hidden = YES;
     self.recaptchaWebView.hidden = YES;

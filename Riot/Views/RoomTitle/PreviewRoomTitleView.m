@@ -33,30 +33,12 @@
 {
     [super awakeFromNib];
     
-    self.mainHeaderBackground.backgroundColor = kRiotColorLightGrey;
-    
-    self.displayNameTextField.textColor = kRiotTextColorBlack;
-    
-    self.roomTopic.textColor = kRiotTextColorDarkGray;
-    self.roomTopic.numberOfLines = 0;
-    
-    self.roomMembers.textColor = kRiotColorGreen;
-    
-    self.previewLabel.textColor = kRiotTextColorDarkGray;
-    self.previewLabel.numberOfLines = 0;
     self.previewLabel.text = nil;
-    
-    self.subNoticeLabel.textColor = kRiotTextColorGray;
-    self.subNoticeLabel.numberOfLines = 0;
     self.subNoticeLabel.text = nil;
     
-    self.bottomBorderView.backgroundColor = kRiotColorLightGrey;
-    
-    [self.leftButton.layer setCornerRadius:5];
-    self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kRiotColorGreen;
     [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
     [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
@@ -64,17 +46,45 @@
     [self.leftButton addGestureRecognizer:tap];
     self.leftButton.userInteractionEnabled = YES;
     
-    [self.rightButton.layer setCornerRadius:5];
-    self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kRiotColorGreen;
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
+    
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
     [self.rightButton addGestureRecognizer:tap];
     self.rightButton.userInteractionEnabled = YES;
+}
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.mainHeaderBackground.backgroundColor = kRiotSecondaryBgColor;
+    
+    self.displayNameTextField.textColor = (self.mxRoom.riotDisplayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
+    
+    self.roomTopic.textColor = kRiotTopicTextColor;
+    self.roomTopic.numberOfLines = 0;
+    
+    self.roomMembers.textColor = kRiotColorGreen;
+    
+    self.previewLabel.textColor = kRiotTopicTextColor;
+    self.previewLabel.numberOfLines = 0;
+    
+    self.subNoticeLabel.textColor = kRiotSecondaryTextColor;
+    self.subNoticeLabel.numberOfLines = 0;
+    
+    self.bottomBorderView.backgroundColor = kRiotSecondaryBgColor;
+    
+    [self.leftButton.layer setCornerRadius:5];
+    self.leftButton.clipsToBounds = YES;
+    self.leftButton.backgroundColor = kRiotColorGreen;
+    
+    [self.rightButton.layer setCornerRadius:5];
+    self.rightButton.clipsToBounds = YES;
+    self.rightButton.backgroundColor = kRiotColorGreen;
 }
 
 - (void)refreshDisplay
@@ -138,11 +148,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-            self.displayNameTextField.textColor = kRiotTextColorGray;
+            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
         }
         else
         {
-            self.displayNameTextField.textColor = kRiotTextColorBlack;
+            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
         }
         
         // Display room topic

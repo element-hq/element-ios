@@ -67,6 +67,8 @@
 "auth_phone_placeholder" = "Phone number";
 "auth_repeat_password_placeholder" = "Repeat password";
 "auth_repeat_new_password_placeholder" = "Confirm your new password";
+"auth_home_server_placeholder" = "URL (e.g. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (e.g. https://matrix.org)";
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
 "auth_invalid_password" = "Password too short (min 6)";

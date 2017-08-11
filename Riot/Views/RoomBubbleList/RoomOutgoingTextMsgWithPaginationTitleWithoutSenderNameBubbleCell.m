@@ -21,11 +21,4 @@
 
 @implementation RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-
-    self.messageTextView.tintColor = kRiotColorGreen;
-}
-
 @end
