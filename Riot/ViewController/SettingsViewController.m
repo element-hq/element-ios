@@ -1653,8 +1653,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSArray *labels = uiThemeCell.labels;
             UILabel *label;
             label = labels[0];
+            label.textColor = kRiotPrimaryTextColor;
             label.text = NSLocalizedStringFromTable(@"settings_ui_light_theme", @"Vector", nil);
             label = labels[1];
+            label.textColor = kRiotPrimaryTextColor;
             label.text = NSLocalizedStringFromTable(@"settings_ui_dark_theme", @"Vector", nil);
             
             NSString *selectedTheme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];            
@@ -3632,21 +3634,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (!isCurrentlySelected)
         {
+            // Clear fake Riot Avatars based on the previous theme.
+            [AvatarGenerator clear];
+            
             // The user wants to select this theme
             [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"userInterfaceTheme"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            // Do a reload in order to recompute attributed strings in the new theme
-            // Note that "reloadMatrixSessions:NO" will reset room summaries
-            [self startActivityIndicator];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                
-                // Clear fake Riot Avatars.
-                [AvatarGenerator clear];
-                
-                [[AppDelegate theDelegate] reloadMatrixSessions:NO];
-                
-            });
         }
     }
 }
