@@ -2639,8 +2639,31 @@
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
+    // If there is a already a jitsi widget, join it
+    Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+    if (jitsiWidget)
+    {
+        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+        // Check app permissions before placing the call
+        [MXKTools checkAccessForCall:video
+         manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
+         manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+           showPopUpInViewController:self completionHandler:^(BOOL granted) {
+
+               if (granted)
+               {
+                   [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+               }
+               else
+               {
+                   NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
+               }
+           }];
+    }
+
     // Conference call is not supported in encrypted rooms
-    if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.joinedMembers.count > 2)
+    else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.joinedMembers.count > 2)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
