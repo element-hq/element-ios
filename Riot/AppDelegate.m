@@ -2536,6 +2536,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [_jitsiViewController dismissViewControllerAnimated:YES completion:completion];
         _jitsiViewController = nil;
+
+        [self removeCallStatusBar];
     }
 }
 

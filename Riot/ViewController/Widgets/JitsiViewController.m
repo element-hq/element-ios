@@ -73,6 +73,18 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
     return (jitsiUrl != nil);
 }
 
+- (void)hangup
+{
+    jitsiUrl = nil;
+
+    // It would have been nicer to ask JitsiMeetView but there is no api.
+    // Dismissing the view controller and releasing it does the job for the moment
+    if (_delegate)
+    {
+        [_delegate jitsiViewController:self dismissViewJitsiController:nil];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

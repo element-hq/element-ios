@@ -1211,9 +1211,11 @@
             userPictureView.clipsToBounds = YES;
         }
         
-        // Show the hangup button if there is an active call in the current room
+        // Show the hangup button if there is an active call or an active jitsi
+        // conference call in the current room
         MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
-        if (callInRoom && callInRoom.state != MXCallStateEnded)
+        if ((callInRoom && callInRoom.state != MXCallStateEnded)
+            || [[AppDelegate theDelegate].jitsiViewController.widget.roomId isEqualToString:self.roomDataSource.roomId])
         {
             roomInputToolbarView.activeCall = YES;
         }
@@ -2713,6 +2715,13 @@
     {
         [callInRoom hangup];
     }
+    else if ([[AppDelegate theDelegate].jitsiViewController.widget.roomId isEqualToString:self.roomDataSource.roomId])
+    {
+        [[AppDelegate theDelegate].jitsiViewController hangup];
+    }
+
+    [self refreshActivitiesViewDisplay];
+    [self refreshRoomInputToolbar];
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion

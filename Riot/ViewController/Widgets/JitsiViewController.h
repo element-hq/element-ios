@@ -58,6 +58,11 @@
 - (BOOL)openWidget:(Widget*)widget withVideo:(BOOL)video;
 
 /**
+ Hang up the jitsi conference call in progress.
+ */
+- (void)hangup;
+
+/**
  The jitsi widget displayed by this `JitsiViewController`.
  */
 @property (nonatomic, readonly) Widget *widget;
