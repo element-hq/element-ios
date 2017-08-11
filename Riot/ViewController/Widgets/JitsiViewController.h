@@ -20,6 +20,8 @@
 
 #import "WidgetManager.h"
 
+@protocol JitsiViewControllerDelegate;
+
 /**
  The `JitsiViewController` is a specific VC for handling a jitsi widget using
  jitsi-meet iOS SDK instead of displaying it in a webview like other scalar widgets.
@@ -28,11 +30,6 @@
  
  */
 @interface JitsiViewController : MXKViewController <JitsiMeetViewDelegate>
-
-/**
- The jitsi-meet SDK view.
- */
-@property (weak, nonatomic) IBOutlet JitsiMeetView *jitsiMeetView;
 
 /**
  Returns the `UINib` object initialized for a `JitsiViewController`.
@@ -52,7 +49,11 @@
 + (instancetype)jitsiViewController;
 
 /**
- Make
+ Make jitsi-meet iOS SDK open the jitsi conference indicated by a jitsi widget.
+ 
+ @param widget the jitsi widget.
+ @param video to indicate voice or video call.
+ @return YES if the operation is successful.
  */
 - (BOOL)openWidget:(Widget*)widget withVideo:(BOOL)video;
 
@@ -60,5 +61,40 @@
  The jitsi widget displayed by this `JitsiViewController`.
  */
 @property (nonatomic, readonly) Widget *widget;
+
+/**
+ The delegate for the view controller.
+ */
+@property (nonatomic) id<JitsiViewControllerDelegate> delegate;
+
+#pragma mark - Xib attributes
+
+// The jitsi-meet SDK view
+@property (weak, nonatomic) IBOutlet JitsiMeetView *jitsiMeetView;
+@property (weak, nonatomic) IBOutlet UIButton *backToAppButton;
+
+@end
+
+
+/**
+ Delegate for `JitsiViewController` object
+ */
+@protocol JitsiViewControllerDelegate <NSObject>
+
+/**
+ Tells the delegate to dismiss the jitsi view controller.
+
+ @param jitsiViewController the jitsi view controller.
+ @param completion the block to execute at the end of the operation.
+ */
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)())completion;
+
+/**
+ Tells the delegate to put the jitsi view controller in background.
+
+ @param jitsiViewController the jitsi view controller.
+ @param completion the block to execute at the end of the operation.
+ */
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)())completion;
 
 @end

@@ -3345,31 +3345,26 @@
         }
         else if (jitsiWidget)
         {
-            // The room has an active jitsi widget, show it in the banner
-            [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
-
-                NSLog(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
-
-                // Present the Jitsi view controller
-                AppDelegate *appDelegate = [AppDelegate theDelegate];
-                JitsiViewController *jitsiViewController = [JitsiViewController jitsiViewController];
-
-                if ([jitsiViewController openWidget:jitsiWidget withVideo:video])
+            // The room has an active jitsi widget
+            // Show it in the banner if the user is not already in
+            AppDelegate *appDelegate = [AppDelegate theDelegate];
+            if ([appDelegate.jitsiViewController.widget.widgetId isEqualToString:jitsiWidget.widgetId])
+            {
+                if ([self checkUnsentMessages] == NO)
                 {
-                    if (appDelegate.window.rootViewController.presentedViewController)
-                    {
-                        [appDelegate.window.rootViewController.presentedViewController presentViewController:jitsiViewController animated:YES completion:nil];
-                    }
-                    else
-                    {
-                        [appDelegate.window.rootViewController presentViewController:jitsiViewController animated:YES completion:nil];
-                    }
+                    [self refreshTypingNotification];
                 }
-                else
-                {
-                    // @TODO
-                }
-            }];
+            }
+            else
+            {
+                [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
+
+                    NSLog(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
+
+                    // Present the Jitsi view controller
+                    [appDelegate displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+                }];
+            }
         }
         else if ([self checkUnsentMessages] == NO)
         {

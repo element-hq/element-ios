@@ -93,6 +93,16 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Actions
+
+- (IBAction)onBackToAppButtonPressed:(id)sender
+{
+    if (_delegate)
+    {
+        [_delegate jitsiViewController:self goBackToApp:nil];
+    }
+}
+
 #pragma mark - JitsiMeetViewDelegate
 
 - (void)conferenceFailed:(NSDictionary *)data
@@ -104,8 +114,16 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
 
 - (void)conferenceLeft:(NSDictionary *)data
 {
-    // The conference is over. Close this view controller.
-    [self dismissViewControllerAnimated:YES completion:nil];
+    // The conference is over. Let the delegate close this view controller.
+    if (_delegate)
+    {
+        [_delegate jitsiViewController:self dismissViewJitsiController:nil];
+    }
+    else
+    {
+        // Do it ourself
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end
