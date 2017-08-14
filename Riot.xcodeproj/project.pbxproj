@@ -451,6 +451,7 @@
 		F0A4A1681EF7CB66003630DB /* members_list_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1651EF7CB66003630DB /* members_list_icon@2x.png */; };
 		F0A4A1691EF7CB66003630DB /* members_list_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */; };
 		F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */; };
+		F0B4CBA71F41CA44008E99C5 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
 		F0D869ED1EC455A100BB0A2B /* create_direct_chat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */; };
@@ -1074,6 +1075,7 @@
 		F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "members_list_icon@3x.png"; sourceTree = "<group>"; };
 		F0B4CBA31F418D0B008E99C5 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
+		F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
 		F0D869E81EC455A100BB0A2B /* create_direct_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_direct_chat.png; sourceTree = "<group>"; };
 		F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@2x.png"; sourceTree = "<group>"; };
 		F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@3x.png"; sourceTree = "<group>"; };
@@ -1753,6 +1755,7 @@
 				F083BC661E7009EC00A9B29C /* DeviceTableViewCell.xib */,
 				F083BC671E7009EC00A9B29C /* DeviceView.h */,
 				F083BC681E7009EC00A9B29C /* DeviceView.m */,
+				F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -2454,6 +2457,7 @@
 				F083BDBF1E7009ED00A9B29C /* scrolldown.png in Resources */,
 				F083BDE31E7009ED00A9B29C /* voice_call_icon.png in Resources */,
 				F083BDCC1E7009ED00A9B29C /* selection_tick@2x.png in Resources */,
+				F0B4CBA71F41CA44008E99C5 /* DeviceView.xib in Resources */,
 				F083BD961E7009ED00A9B29C /* leave@2x.png in Resources */,
 				F0E05A461EA0F9EB004B83FB /* tab_rooms@2x.png in Resources */,
 				32AE61F41F0D2183007255F4 /* Vector.strings in Resources */,

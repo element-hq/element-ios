@@ -27,7 +27,12 @@
 {
     [super customizeViewRendering];
     
+    self.containerView.backgroundColor = kRiotSecondaryBgColor;//kRiotPrimaryBgColor;
+    self.textView.backgroundColor = kRiotPrimaryBgColor;//kRiotSecondaryBgColor;
     self.defaultTextColor = kRiotPrimaryTextColor;
+    self.cancelButton.tintColor = kRiotColorGreen;
+    self.deleteButton.tintColor = kRiotColorGreen;
+    self.renameButton.tintColor = kRiotColorGreen;
 }
 
 @end
