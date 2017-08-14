@@ -2086,8 +2086,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             NSArray *labels = roomTagCell.labels;
             UILabel *label;
             label = labels[0];
+            label.textColor = kRiotPrimaryTextColor;
             label.text = NSLocalizedStringFromTable(@"room_details_favourite_tag", @"Vector", nil);
             label = labels[1];
+            label.textColor = kRiotPrimaryTextColor;
             label.text = NSLocalizedStringFromTable(@"room_details_low_priority_tag", @"Vector", nil);
             
             if ([updatedItemsDict objectForKey:kRoomSettingsTagKey])
