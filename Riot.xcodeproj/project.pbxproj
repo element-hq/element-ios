@@ -452,6 +452,7 @@
 		F0A4A1691EF7CB66003630DB /* members_list_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */; };
 		F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */; };
 		F0B4CBA71F41CA44008E99C5 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */; };
+		F0B4CBAA1F41E71A008E99C5 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
 		F0D869ED1EC455A100BB0A2B /* create_direct_chat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */; };
@@ -1076,6 +1077,8 @@
 		F0B4CBA31F418D0B008E99C5 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
+		F0B4CBA81F41E71A008E99C5 /* RiotNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotNavigationController.h; sourceTree = "<group>"; };
+		F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotNavigationController.m; sourceTree = "<group>"; };
 		F0D869E81EC455A100BB0A2B /* create_direct_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_direct_chat.png; sourceTree = "<group>"; };
 		F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@2x.png"; sourceTree = "<group>"; };
 		F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@3x.png"; sourceTree = "<group>"; };
@@ -1613,6 +1616,8 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0B4CBA81F41E71A008E99C5 /* RiotNavigationController.h */,
+				F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */,
 				F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */,
 				F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */,
 				F0E059FE1E963103004B83FB /* FavouritesViewController.h */,
@@ -2661,6 +2666,7 @@
 				F083BE001E7009ED00A9B29C /* FilesSearchCellData.m in Sources */,
 				F083BE7A1E7009ED00A9B29C /* RoomInputToolbarView.m in Sources */,
 				F083BDFF1E7009ED00A9B29C /* RecentsDataSource.m in Sources */,
+				F0B4CBAA1F41E71A008E99C5 /* RiotNavigationController.m in Sources */,
 				F083BE461E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE251E7009ED00A9B29C /* SegmentedViewController.m in Sources */,
 				F083BE1B1E7009ED00A9B29C /* RoomFilesViewController.m in Sources */,

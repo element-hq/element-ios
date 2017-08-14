@@ -25,6 +25,8 @@
 
 #import "UsersDevicesViewController.h"
 
+#import "RiotNavigationController.h"
+
 @interface CallViewController ()
 {
     // Display a gradient view above the screen
@@ -247,7 +249,22 @@
                                                                }];
                                                                
                                                                // Show this screen within a navigation controller
-                                                               UINavigationController *usersDevicesNavigationController = [[UINavigationController alloc] init];
+                                                               UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
+                                                               
+                                                               // Set Riot navigation bar colors
+                                                               usersDevicesNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
+                                                               NSDictionary<NSString *,id> *titleTextAttributes = usersDevicesNavigationController.navigationBar.titleTextAttributes;
+                                                               if (titleTextAttributes)
+                                                               {
+                                                                   NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
+                                                                   textAttributes[NSForegroundColorAttributeName] = kRiotPrimaryTextColor;
+                                                                   usersDevicesNavigationController.navigationBar.titleTextAttributes = textAttributes;
+                                                               }
+                                                               else if (kRiotPrimaryTextColor)
+                                                               {
+                                                                   usersDevicesNavigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
+                                                               }
+                                                               
                                                                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
                                                                
                                                                [self presentViewController:usersDevicesNavigationController animated:YES completion:nil];
