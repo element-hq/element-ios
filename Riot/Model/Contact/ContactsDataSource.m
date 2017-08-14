@@ -46,6 +46,7 @@
     NSInteger shrinkedSectionsBitMask;
     
     UIView *localContactsCheckboxContainer;
+    UILabel *checkboxLabel;
     UIImageView *localContactsCheckbox;
 }
 
@@ -117,6 +118,7 @@
     _contactCellAccessoryImage = nil;
     
     localContactsCheckboxContainer = nil;
+    checkboxLabel = nil;
     localContactsCheckbox = nil;
 
     [hsUserDirectoryOperation cancel];
@@ -848,9 +850,8 @@
             localContactsCheckbox.translatesAutoresizingMaskIntoConstraints = NO;
             [localContactsCheckboxContainer addSubview:localContactsCheckbox];
             
-            UILabel *checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(54, 5, containerWidth - 64, 30)];
+            checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(54, 5, containerWidth - 64, 30)];
             checkboxLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            checkboxLabel.textColor = kRiotPrimaryTextColor;
             checkboxLabel.font = [UIFont systemFontOfSize:16.0];
             checkboxLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_matrix_users_toggle", @"Vector", nil);
             [localContactsCheckboxContainer addSubview:checkboxLabel];
@@ -968,6 +969,9 @@
             
             [NSLayoutConstraint activateConstraints:@[heightConstraint, centerYConstraint, leadingConstraint, trailingConstraint]];
         }
+        
+        // Apply UI theme
+        checkboxLabel.textColor = kRiotPrimaryTextColor;
         
         // Set the right value of the tick box
         localContactsCheckbox.image = hideNonMatrixEnabledContacts ? [UIImage imageNamed:@"selection_tick"] : [UIImage imageNamed:@"selection_untick"];

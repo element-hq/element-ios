@@ -48,6 +48,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     NSInteger shrinkedSectionsBitMask;
 
     UIView *directorySectionContainer;
+    UILabel *networkLabel;
     UILabel *directoryServerLabel;
 
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
@@ -598,9 +599,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
 
             // Add the "Network" label at the left
-            UILabel *networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
+            networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
             networkLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            networkLabel.textColor = kRiotPrimaryTextColor;
             networkLabel.font = [UIFont systemFontOfSize:16.0];
             networkLabel.text = NSLocalizedStringFromTable(@"room_recents_directory_section_network", @"Vector", nil);
             [directorySectionContainer addSubview:networkLabel];
@@ -608,7 +608,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             // Add label for selected directory server
             directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, containerWidth - 32, 30)];
             directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            directoryServerLabel.textColor = kRiotSecondaryTextColor;
             directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
             directoryServerLabel.textAlignment = NSTextAlignmentRight;
             [directorySectionContainer addSubview:directoryServerLabel];
@@ -725,6 +724,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
             [NSLayoutConstraint activateConstraints:@[trailingConstraint, centerYConstraint, widthConstraint, heightConstraint]];
         }
+        
+        // Apply the current UI theme.
+        networkLabel.textColor = kRiotPrimaryTextColor;
+        directoryServerLabel.textColor = kRiotSecondaryTextColor;
 
         // Set the current directory server name
         directoryServerLabel.text = _publicRoomsDirectoryDataSource.directoryServerDisplayname;
