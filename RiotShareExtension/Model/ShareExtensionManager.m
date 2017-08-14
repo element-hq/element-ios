@@ -24,148 +24,58 @@
     return sharedInstance;
 }
 
+#pragma mark - Public
+
 - (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock
 {
     NSString *UTTypeText = (__bridge NSString *)kUTTypeText;
     NSString *UTTypeURL = (__bridge NSString *)kUTTypeURL;
     NSString *UTTypeImage = (__bridge NSString *)kUTTypeImage;
     NSString *UTTypeVideo = (__bridge NSString *)kUTTypeVideo;
+    NSString *UTTypeFileUrl = (__bridge NSString *)kUTTypeFileURL;
+    NSString *UTTypeMovie = (__bridge NSString *)kUTTypeMovie;
     
     for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
     {
         for (NSItemProvider *itemProvider in item.attachments)
         {
-            if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeText])
+            if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeFileUrl])
+            {
+                [itemProvider loadItemForTypeIdentifier:UTTypeFileUrl options:nil completionHandler:^(NSURL *fileUrl, NSError * _Null_unspecified error) {
+                    [self sendFileWithUrl:fileUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                }];
+            }
+            else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeText])
             {
                 [itemProvider loadItemForTypeIdentifier:UTTypeText options:nil completionHandler:^(NSString *text, NSError * _Null_unspecified error) {
-                    if (!text)
-                    {
-                        if (failureBlock)
-                        {
-                            failureBlock();
-                        }
-                        return;
-                    }
-                    [room sendTextMessage:text success:^(NSString *eventId) {
-                        [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
-                    } failure:^(NSError *error) {
-                        NSLog(@"[ShareExtensionManager] sendTextMessage failed.");
-                        if (failureBlock)
-                        {
-                            failureBlock();
-                        }
-                    }];
+                    [self sendText:text toRoom:room extensionItem:item failureBlock:failureBlock];
                 }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeURL])
             {
                 [itemProvider loadItemForTypeIdentifier:UTTypeURL options:nil completionHandler:^(NSURL *url, NSError * _Null_unspecified error) {
-                    if (!url)
-                    {
-                        if (failureBlock)
-                        {
-                            failureBlock();
-                        }
-                        return;
-                    }
-                    [room sendTextMessage:url.absoluteString success:^(NSString *eventId) {
-                        [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
-                    } failure:^(NSError *error) {
-                        NSLog(@"[ShareExtensionManager] sendTextMessage failed.");
-                        if (failureBlock)
-                        {
-                            failureBlock();
-                        }
-                    }];
+                    [self sendText:url.absoluteString toRoom:room extensionItem:item failureBlock:failureBlock];
                 }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
             {
                 [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(NSData *imageData, NSError * _Null_unspecified error)
                  {
-                     if (!imageData)
-                     {
-                         if (failureBlock)
-                         {
-                             failureBlock();
-                         }
-                         return;
-                     }
-                     //Send the image
-                     UIImage *image = [[UIImage alloc] initWithData:imageData];
-                     
-                     NSString *mimeType;
-                     if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
-                     {
-                         mimeType = @"image/png";
-                     }
-                     else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
-                     {
-                         mimeType = @"image/jpeg";
-                     }
-                     else
-                     {
-                         image = [[UIImage alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)];
-                         mimeType = @"image/jpeg";
-                     }
-                     
-                     UIImage *thumbnail = nil;
-                     // Thumbnail is useful only in case of encrypted room
-                     if (room.state.isEncrypted)
-                     {
-                         thumbnail = [MXKTools reduceImage:image toFitInSize:CGSizeMake(800, 600)];
-                         if (thumbnail == image)
-                         {
-                             thumbnail = nil;
-                         }
-                     }
-                     [room sendImage:imageData withImageSize:image.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId)
-                      {
-                          [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
-                      }
-                             failure:^(NSError *error)
-                      {
-                          NSLog(@"[ShareExtensionManager] sendImage failed.");
-                          if (failureBlock)
-                          {
-                              failureBlock();
-                          }
-                      }];
+                     [self sendImage:imageData withProvider:itemProvider toRoom:room extensionItem:item failureBlock:failureBlock];
                  }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeVideo])
             {
                 [itemProvider loadItemForTypeIdentifier:UTTypeVideo options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error)
                  {
-                     if (!videoLocalUrl)
-                     {
-                         if (failureBlock)
-                         {
-                             failureBlock();
-                         }
-                         return;
-                     }
-                     
-                     // Retrieve the video frame at 1 sec to define the video thumbnail
-                     AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
-                     AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
-                     assetImageGenerator.appliesPreferredTrackTransform = YES;
-                     CMTime time = CMTimeMake(1, 1);
-                     CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
-                     // Finalize video attachment
-                     UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
-                     CFRelease(imageRef);
-                     
-                     [room sendVideo:videoLocalUrl withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
-                         [self.shareExtensionContext completeRequestReturningItems:@[item] completionHandler:nil];
-                     } failure:^(NSError *error) {
-                         NSLog(@"[ShareExtensionManager] sendVideo failed.");
-                         if (failureBlock)
-                         {
-                             failureBlock();
-                         }
-                     }];
-                     
+                     [self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                 }];
+            }
+            else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeMovie])
+            {
+                [itemProvider loadItemForTypeIdentifier:UTTypeMovie options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error)
+                 {
+                     [self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
                  }];
             }
         }
@@ -180,6 +90,137 @@
 - (void)cancelSharingWithFailure
 {
     [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
+}
+
+#pragma mark - Sharing
+
+- (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+{
+    if (!text)
+    {
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        if (failureBlock)
+        {
+            failureBlock();
+        }
+        return;
+    }
+    [room sendTextMessage:text success:^(NSString *eventId) {
+        [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+    } failure:^(NSError *error) {
+        NSLog(@"[ShareExtensionManager] sendTextMessage failed.");
+        if (failureBlock)
+        {
+            failureBlock();
+        }
+    }];
+}
+
+- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+{
+    if (!fileUrl)
+    {
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        if (failureBlock)
+        {
+            failureBlock();
+        }
+        return;
+    }
+    NSString *mimeType = [fileUrl pathExtension];
+    [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
+        [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+    } failure:^(NSError *error) {
+        NSLog(@"[ShareExtensionManager] sendFile failed.");
+        if (failureBlock)
+        {
+            failureBlock();
+        }
+    }];
+}
+
+- (void)sendImage:(NSData *)imageData withProvider:(NSItemProvider*)itemProvider toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+{
+    if (!imageData)
+    {
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        if (failureBlock)
+        {
+            failureBlock();
+        }
+        return;
+    }
+    //Send the image
+    UIImage *image = [[UIImage alloc] initWithData:imageData];
+    
+    NSString *mimeType;
+    if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
+    {
+        mimeType = @"image/png";
+    }
+    else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
+    {
+        mimeType = @"image/jpeg";
+    }
+    else
+    {
+        image = [[UIImage alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)];
+        mimeType = @"image/jpeg";
+    }
+    
+    UIImage *thumbnail = nil;
+    // Thumbnail is useful only in case of encrypted room
+    if (room.state.isEncrypted)
+    {
+        thumbnail = [MXKTools reduceImage:image toFitInSize:CGSizeMake(800, 600)];
+        if (thumbnail == image)
+        {
+            thumbnail = nil;
+        }
+    }
+    
+    [room sendImage:imageData withImageSize:image.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+        [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+    } failure:^(NSError *error) {
+        NSLog(@"[ShareExtensionManager] sendImage failed.");
+        if (failureBlock)
+        {
+            failureBlock();
+        }
+    }];
+}
+
+- (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+{
+    if (!videoLocalUrl)
+    {
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        if (failureBlock)
+        {
+            failureBlock();
+        }
+        return;
+    }
+    
+    // Retrieve the video frame at 1 sec to define the video thumbnail
+    AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
+    AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+    assetImageGenerator.appliesPreferredTrackTransform = YES;
+    CMTime time = CMTimeMake(1, 1);
+    CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
+    // Finalize video attachment
+    UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
+    CFRelease(imageRef);
+    
+    [room sendVideo:videoLocalUrl withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+        [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+    } failure:^(NSError *error) {
+        NSLog(@"[ShareExtensionManager] sendVideo failed.");
+        if (failureBlock)
+        {
+            failureBlock();
+        }
+    }];
 }
 
 
