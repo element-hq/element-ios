@@ -453,6 +453,7 @@
 		F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */; };
 		F0B4CBA71F41CA44008E99C5 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */; };
 		F0B4CBAA1F41E71A008E99C5 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */; };
+		F0B4CBAC1F41F090008E99C5 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
 		F0D869ED1EC455A100BB0A2B /* create_direct_chat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */; };
@@ -1079,6 +1080,7 @@
 		F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
 		F0B4CBA81F41E71A008E99C5 /* RiotNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotNavigationController.h; sourceTree = "<group>"; };
 		F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotNavigationController.m; sourceTree = "<group>"; };
+		F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EncryptionInfoView.xib; sourceTree = "<group>"; };
 		F0D869E81EC455A100BB0A2B /* create_direct_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_direct_chat.png; sourceTree = "<group>"; };
 		F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@2x.png"; sourceTree = "<group>"; };
 		F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@3x.png"; sourceTree = "<group>"; };
@@ -1770,6 +1772,7 @@
 			children = (
 				F083BC6A1E7009EC00A9B29C /* EncryptionInfoView.h */,
 				F083BC6B1E7009EC00A9B29C /* EncryptionInfoView.m */,
+				F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */,
 			);
 			path = EncryptionInfoView;
 			sourceTree = "<group>";
@@ -2280,6 +2283,7 @@
 				F083BE9F1E7009ED00A9B29C /* TableViewCellWithCheckBoxes.xib in Resources */,
 				F0E05A421EA0F9EB004B83FB /* tab_rooms_selected.png in Resources */,
 				F083BE4F1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				F0B4CBAC1F41F090008E99C5 /* EncryptionInfoView.xib in Resources */,
 				F083BD241E7009ED00A9B29C /* add_participant@3x.png in Resources */,
 				F083BD891E7009ED00A9B29C /* file_music_icon.png in Resources */,
 				F083BDD11E7009ED00A9B29C /* settings_icon.png in Resources */,

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="8VI-1E-fge" customClass="EncryptionInfoView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <textView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Vk-Jx-L6Y">
+                    <rect key="frame" x="10" y="10" width="580" height="540"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ump-1C-SzI">
+                    <rect key="frame" x="60" y="560" width="30" height="30"/>
+                    <state key="normal" title="OK">
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="t42-2S-MsY"/>
+                    </connections>
+                </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qkC-t0-Qd0">
+                    <rect key="frame" x="355" y="560" width="40" height="30"/>
+                    <state key="normal" title="Verify">
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="ljK-ul-fY2"/>
+                    </connections>
+                </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IdO-jn-iTV">
+                    <rect key="frame" x="507" y="560" width="38" height="30"/>
+                    <state key="normal" title="Block">
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="j21-e2-e3C"/>
+                    </connections>
+                </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4h-aG-8UN">
+                    <rect key="frame" x="506" y="560" width="40" height="30"/>
+                    <state key="normal" title="Verify">
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="nKr-w7-ECp"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="L4h-aG-8UN" firstAttribute="top" secondItem="3Vk-Jx-L6Y" secondAttribute="bottom" constant="10" id="0tX-be-JRZ"/>
+                <constraint firstAttribute="centerX" secondItem="qkC-t0-Qd0" secondAttribute="centerX" multiplier="0.8" id="7iU-9D-miY"/>
+                <constraint firstAttribute="bottom" secondItem="qkC-t0-Qd0" secondAttribute="bottom" constant="10" id="DyR-rX-nt0"/>
+                <constraint firstAttribute="bottom" secondItem="Ump-1C-SzI" secondAttribute="bottom" constant="10" id="Nfo-nh-gvW"/>
+                <constraint firstItem="3Vk-Jx-L6Y" firstAttribute="top" secondItem="8VI-1E-fge" secondAttribute="top" constant="10" id="Oi3-Zq-HKf"/>
+                <constraint firstAttribute="bottom" secondItem="L4h-aG-8UN" secondAttribute="bottom" constant="10" id="Owt-zM-W2X"/>
+                <constraint firstItem="3Vk-Jx-L6Y" firstAttribute="leading" secondItem="8VI-1E-fge" secondAttribute="leading" constant="10" id="Tqb-eF-AIh"/>
+                <constraint firstAttribute="centerX" secondItem="Ump-1C-SzI" secondAttribute="centerX" multiplier="4" id="YMC-ob-tqT"/>
+                <constraint firstAttribute="bottom" secondItem="IdO-jn-iTV" secondAttribute="bottom" constant="10" id="YcV-iN-9WU"/>
+                <constraint firstAttribute="trailing" secondItem="3Vk-Jx-L6Y" secondAttribute="trailing" constant="10" id="ZbI-rp-TR9"/>
+                <constraint firstAttribute="centerX" secondItem="L4h-aG-8UN" secondAttribute="centerX" multiplier="0.57" id="g1v-Mg-fQ6"/>
+                <constraint firstAttribute="centerX" secondItem="IdO-jn-iTV" secondAttribute="centerX" multiplier="0.57" id="gAm-ph-zPW"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="blockButton" destination="IdO-jn-iTV" id="HI0-ZU-esJ"/>
+                <outlet property="cancelButton" destination="Ump-1C-SzI" id="U8M-nT-JiK"/>
+                <outlet property="confirmVerifyButton" destination="L4h-aG-8UN" id="GX6-dB-JG6"/>
+                <outlet property="textView" destination="3Vk-Jx-L6Y" id="uOw-Bq-neN"/>
+                <outlet property="verifyButton" destination="qkC-t0-Qd0" id="6LD-04-WgO"/>
+            </connections>
+        </view>
+    </objects>
+</document>
