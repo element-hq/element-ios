@@ -61,6 +61,7 @@
 {
     [super customizeViewRendering];
     
+    self.backgroundColor = kRiotPrimaryBgColor;
     self.mainHeaderBackground.backgroundColor = kRiotSecondaryBgColor;
     
     self.displayNameTextField.textColor = (self.mxRoom.riotDisplayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
