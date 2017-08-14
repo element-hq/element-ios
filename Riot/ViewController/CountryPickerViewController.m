@@ -24,6 +24,11 @@
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
      */
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The fake top view displayed in case of vertical bounce.
+     */
+    UIView *topview;
 }
 
 @end
@@ -48,6 +53,12 @@
     // Note: UISearchDisplayController is deprecated in iOS 8.
     // MXKCountryPickerViewController should use UISearchController to manage the presentation of a search bar and display search results.
     self.searchDisplayController.searchResultsTableView.tableFooterView = [[UIView alloc] init];
+    
+    // Add a top view which will be displayed in case of vertical bounce.
+    CGFloat height = self.tableView.frame.size.height;
+    topview = [[UIView alloc] initWithFrame:CGRectMake(0,-height,self.tableView.frame.size.width,height)];
+    topview.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [self.tableView addSubview:topview];
 
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -68,6 +79,7 @@
     
     // Use the primary bg color for the table view in plain style.
     self.tableView.backgroundColor = kRiotPrimaryBgColor;
+    topview.backgroundColor = kRiotPrimaryBgColor;
     self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -97,6 +109,9 @@
 - (void)destroy
 {
     [super destroy];
+    
+    [topview removeFromSuperview];
+    topview = nil;
     
     if (kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
