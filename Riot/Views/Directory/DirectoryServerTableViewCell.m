@@ -36,7 +36,7 @@
     
     // Round image view
     self.iconImageView.clipsToBounds = YES;
-    self.iconImageView.backgroundColor = [UIColor clearColor];
+    self.iconImageView.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)render:(id<MXKDirectoryServerCellDataStoring>)cellData

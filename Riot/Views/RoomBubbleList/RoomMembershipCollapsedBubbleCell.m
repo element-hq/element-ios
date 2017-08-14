@@ -81,7 +81,7 @@
         [avatarView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage: nextBubbleData.senderAvatarPlaceholder];
 
         // Clear the default background color of a MXKImageView instance
-        avatarView.backgroundColor = [UIColor clearColor];
+        avatarView.defaultBackgroundColor = [UIColor clearColor];
 
         [self.avatarsView addSubview:avatarView];
     }

@@ -1983,7 +1983,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 [roomPhotoCell.mxkImageView addGestureRecognizer:tap];
             }
             
-            roomPhotoCell.mxkImageView.backgroundColor = [UIColor clearColor];
+            roomPhotoCell.mxkImageView.defaultBackgroundColor = [UIColor clearColor];
             
             roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
             roomPhotoCell.mxkLabel.textColor = kRiotPrimaryTextColor;

@@ -35,6 +35,8 @@
     self.directRoomBorderView.clipsToBounds = YES;
     self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
     self.directRoomBorderView.layer.borderWidth = 3;
+    
+    self.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutSubviews
@@ -49,7 +51,6 @@
 - (void)render:(MXRoom *)room
 {
     [room setRoomAvatarImageIn:self.avatarImageView];
-    self.avatarImageView.backgroundColor = [UIColor clearColor];
     
     self.titleLabel.text = room.riotDisplayname;
     

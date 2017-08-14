@@ -52,6 +52,8 @@
     self.directRoomBorderView.clipsToBounds = YES;
     self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
     self.directRoomBorderView.layer.borderWidth = 3;
+    
+    self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutSubviews
@@ -136,8 +138,6 @@
                 self.roomTitle.font = [UIFont systemFontOfSize:17];
             }
         }
-        
-        self.roomAvatar.backgroundColor = [UIColor clearColor];
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
 

@@ -144,7 +144,7 @@
     contactTitleView = [RoomMemberTitleView roomMemberTitleView];
     contactAvatar = contactTitleView.memberAvatar;
     contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
-    contactAvatar.backgroundColor = [UIColor clearColor];
+    contactAvatar.defaultBackgroundColor = [UIColor clearColor];
 
     // Add tap to show the contact avatar in fullscreen
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
@@ -748,7 +748,7 @@
         else
         {
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
-            roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
+            roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
             roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
         }
         
