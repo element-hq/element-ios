@@ -28,6 +28,8 @@
 #import "MXKEncryptionKeysExportView.h"
 #import "BugReportViewController.h"
 
+#import "WebViewViewController.h"
+
 #import "CountryPickerViewController.h"
 #import "LanguagePickerViewController.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
@@ -2239,7 +2241,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
                 
@@ -2247,7 +2249,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
@@ -2255,7 +2257,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
@@ -2265,7 +2267,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
 
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
                 
