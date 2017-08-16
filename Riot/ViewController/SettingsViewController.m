@@ -203,6 +203,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     // The user interface theme cell
     TableViewCellWithCheckBoxes *uiThemeCell;
+    
+    // The current pushed view controller
+    UIViewController *pushedViewController;
 }
 
 /**
@@ -325,6 +328,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)destroy
 {
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
+    
     if (documentInteractionController)
     {
         [documentInteractionController dismissPreviewAnimated:NO];
@@ -387,6 +393,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [tracker set:kGAIScreenName value:@"Settings"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
+    
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
     
     // Refresh display
     [self refreshSettings];
@@ -455,10 +464,37 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)pushViewController:(UIViewController*)viewController
 {
+    // Keep ref on pushed view controller
+    pushedViewController = viewController;
+    
     // Hide back button title
     self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)releasePushedViewController
+{
+    if (pushedViewController)
+    {
+        if ([pushedViewController isKindOfClass:[UINavigationController class]])
+        {
+            UINavigationController *navigationController = (UINavigationController*)pushedViewController;
+            for (id subViewController in navigationController.viewControllers)
+            {
+                if ([subViewController respondsToSelector:@selector(destroy)])
+                {
+                    [subViewController destroy];
+                }
+            }
+        }
+        else if ([pushedViewController respondsToSelector:@selector(destroy)])
+        {
+            [(id)pushedViewController destroy];
+        }
+        
+        pushedViewController = nil;
+    }
 }
 
 - (void)dismissKeyboard
