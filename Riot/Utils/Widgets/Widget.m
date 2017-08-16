@@ -61,4 +61,9 @@
     return _widgetEvent.roomId;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<Widget: %p> id: %@ - type: %@ - name: %@ - url: %@", self, _widgetId, _type, _name, _url];
+}
+
 @end
