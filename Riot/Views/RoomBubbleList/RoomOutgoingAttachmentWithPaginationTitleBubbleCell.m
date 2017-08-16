@@ -25,8 +25,13 @@
 {
     [super awakeFromNib];
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kRiotTextColorBlack;
+    self.userNameLabel.textColor = kRiotPrimaryTextColor;
     
     self.paginationLabel.textColor = kRiotColorGreen;
     self.paginationSeparatorView.backgroundColor = kRiotColorGreen;

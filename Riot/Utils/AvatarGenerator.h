@@ -54,4 +54,9 @@
  */
 + (UIImage*)generateAvatarForText:(NSString*)text;
 
+/**
+ Clear all the resources stored in memory.
+ */
++ (void)clear;
+
 @end

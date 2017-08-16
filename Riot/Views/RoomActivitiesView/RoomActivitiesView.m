@@ -96,9 +96,6 @@
 {
     [super awakeFromNib];
     
-    self.separatorView.backgroundColor = kRiotColorLightGrey;
-    self.messageLabel.textColor = kRiotTextColorGray;
-    
     // Adjust text view
     // Remove the container inset: this operation impacts only the vertical margin.
     // Reset textContainer.lineFragmentPadding to remove horizontal margin.
@@ -107,6 +104,21 @@
 
     xibMainHeightConstraint = self.mainHeightConstraint.constant;
 }
+
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.separatorView.backgroundColor = kRiotSecondaryBgColor;
+    if (self.messageLabel.textColor != kRiotColorPinkRed)
+    {
+        self.messageLabel.textColor = kRiotSecondaryTextColor;
+    }
+}
+
+#pragma mark -
 
 - (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
 {
@@ -225,12 +237,12 @@
 
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
-    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:kRiotPrimaryBgColor range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
 
     self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
-    self.messageTextView.tintColor = UIColor.whiteColor;
+    self.messageTextView.tintColor = kRiotPrimaryBgColor;
     self.messageTextView.hidden = NO;
 
     self.backgroundColor = kRiotColorPinkRed;
@@ -321,7 +333,7 @@
     [self.messageTextView resignFirstResponder];
     self.messageTextView.hidden = YES;
     
-    self.messageLabel.textColor = kRiotTextColorGray;
+    self.messageLabel.textColor = kRiotSecondaryTextColor;
 
     objc_removeAssociatedObjects(self.messageTextView);
 }

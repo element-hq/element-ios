@@ -25,6 +25,8 @@
 
 #import "UsersDevicesViewController.h"
 
+#import "RiotNavigationController.h"
+
 @interface CallViewController ()
 {
     // Display a gradient view above the screen
@@ -76,36 +78,10 @@
     [self.endCallButton setImage:[UIImage imageNamed:@"call_hangup_icon"] forState:UIControlStateNormal];
     [self.endCallButton setImage:[UIImage imageNamed:@"call_hangup_icon"] forState:UIControlStateHighlighted];
     
-    self.callerNameLabel.textColor = kRiotTextColorBlack;
-    self.callStatusLabel.textColor = kRiotTextColorDarkGray;
-    
-    self.localPreviewContainerView.layer.borderColor = kRiotColorGreen.CGColor;
-    self.localPreviewContainerView.layer.borderWidth = 2;
-    self.localPreviewContainerView.layer.cornerRadius = 5;
-    self.localPreviewContainerView.clipsToBounds = YES;
-    
-    self.remotePreviewContainerView.backgroundColor = [UIColor whiteColor];
-    
-    // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
-    gradientMaskLayer = [CAGradientLayer layer];
-    
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
-    
-    gradientMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)opaqueWhiteColor, (__bridge id)transparentWhiteColor, nil];
-    
-    gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
-    gradientMaskLayer.anchorPoint = CGPointZero;
-    
     // Define caller image view size
     CGSize size = [[UIScreen mainScreen] bounds].size;
     CGFloat minSize = MIN(size.width, size.height);
     self.callerImageViewWidthConstraint.constant = minSize / 2;
-    
-    // CAConstraint is not supported on IOS.
-    // it seems only being supported on Mac OS.
-    // so viewDidLayoutSubviews will refresh the layout bounds.
-    [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
     
     [self updateLocalPreviewLayout];
     
@@ -122,6 +98,42 @@
 {
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    self.callerNameLabel.textColor = kRiotPrimaryTextColor;
+    self.callStatusLabel.textColor = kRiotTopicTextColor;
+    
+    self.localPreviewContainerView.layer.borderColor = kRiotColorGreen.CGColor;
+    self.localPreviewContainerView.layer.borderWidth = 2;
+    self.localPreviewContainerView.layer.cornerRadius = 5;
+    self.localPreviewContainerView.clipsToBounds = YES;
+    
+    self.remotePreviewContainerView.backgroundColor = kRiotPrimaryBgColor;
+    
+    if (gradientMaskLayer)
+    {
+        [gradientMaskLayer removeFromSuperlayer];
+    }
+    
+    // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
+    gradientMaskLayer = [CAGradientLayer layer];
+    
+    // Consider the grayscale components of the kRiotPrimaryBgColor.
+    CGFloat white = 1.0;
+    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    
+    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
+    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
+    
+    gradientMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)opaqueWhiteColor, (__bridge id)transparentWhiteColor, nil];
+    
+    gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
+    gradientMaskLayer.anchorPoint = CGPointZero;
+    
+    // CAConstraint is not supported on IOS.
+    // it seems only being supported on Mac OS.
+    // so viewDidLayoutSubviews will refresh the layout bounds.
+    [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -237,7 +249,22 @@
                                                                }];
                                                                
                                                                // Show this screen within a navigation controller
-                                                               UINavigationController *usersDevicesNavigationController = [[UINavigationController alloc] init];
+                                                               UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
+                                                               
+                                                               // Set Riot navigation bar colors
+                                                               usersDevicesNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
+                                                               NSDictionary<NSString *,id> *titleTextAttributes = usersDevicesNavigationController.navigationBar.titleTextAttributes;
+                                                               if (titleTextAttributes)
+                                                               {
+                                                                   NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
+                                                                   textAttributes[NSForegroundColorAttributeName] = kRiotPrimaryTextColor;
+                                                                   usersDevicesNavigationController.navigationBar.titleTextAttributes = textAttributes;
+                                                               }
+                                                               else if (kRiotPrimaryTextColor)
+                                                               {
+                                                                   usersDevicesNavigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
+                                                               }
+                                                               
                                                                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
                                                                
                                                                [self presentViewController:usersDevicesNavigationController animated:YES completion:nil];

@@ -90,7 +90,7 @@ static UILabel* backgroundLabel = nil;
     if (!backgroundLabel)
     {
         backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        backgroundLabel.textColor = [UIColor whiteColor];
+        backgroundLabel.textColor = kRiotPrimaryBgColor;
         backgroundLabel.textAlignment = NSTextAlignmentCenter;
         backgroundLabel.font = [UIFont boldSystemFontOfSize:25];
     }
@@ -120,7 +120,7 @@ static UILabel* backgroundLabel = nil;
 + (UIImage *)imageFromText:(NSString*)text withBackgroundColor:(UIColor*)color size:(CGFloat)size andFontSize:(CGFloat)fontSize
 {
     UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size, size)];
-    bgLabel.textColor = [UIColor whiteColor];
+    bgLabel.textColor = kRiotPrimaryBgColor;
     bgLabel.textAlignment = NSTextAlignmentCenter;
     bgLabel.font = [UIFont boldSystemFontOfSize:fontSize];
     
@@ -191,6 +191,13 @@ static UILabel* backgroundLabel = nil;
     NSUInteger colorIndex = [AvatarGenerator colorIndexForText:itemId];
     
     return [AvatarGenerator imageFromText:firstChar withBackgroundColor:[colorsList objectAtIndex:colorIndex] size:size andFontSize:fontSize];
+}
+
++ (void)clear
+{
+    [imageByKeyDict removeAllObjects];
+    colorsList = nil;
+    backgroundLabel = nil;
 }
 
 @end

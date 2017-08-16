@@ -21,12 +21,12 @@
 
 @implementation MediaAlbumTableCell
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
-    self.albumDisplayNameLabel.textColor = kRiotTextColorBlack;
-    self.albumCountLabel.textColor = kRiotTextColorGray;
+    self.albumDisplayNameLabel.textColor = kRiotPrimaryTextColor;
+    self.albumCountLabel.textColor = kRiotSecondaryTextColor;
 }
 
 @end

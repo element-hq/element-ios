@@ -475,6 +475,12 @@
 		F0A4A1671EF7CB66003630DB /* members_list_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1641EF7CB66003630DB /* members_list_icon.png */; };
 		F0A4A1681EF7CB66003630DB /* members_list_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1651EF7CB66003630DB /* members_list_icon@2x.png */; };
 		F0A4A1691EF7CB66003630DB /* members_list_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */; };
+		F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */; };
+		F0B4CBA71F41CA44008E99C5 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */; };
+		F0B4CBAA1F41E71A008E99C5 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */; };
+		F0B4CBAC1F41F090008E99C5 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */; };
+		F0B4CBB11F4215E3008E99C5 /* EventDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */; };
+		F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
 		F0D869ED1EC455A100BB0A2B /* create_direct_chat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */; };
@@ -1137,6 +1143,15 @@
 		F0A4A1641EF7CB66003630DB /* members_list_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = members_list_icon.png; sourceTree = "<group>"; };
 		F0A4A1651EF7CB66003630DB /* members_list_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "members_list_icon@2x.png"; sourceTree = "<group>"; };
 		F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "members_list_icon@3x.png"; sourceTree = "<group>"; };
+		F0B4CBA31F418D0B008E99C5 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
+		F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
+		F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
+		F0B4CBA81F41E71A008E99C5 /* RiotNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotNavigationController.h; sourceTree = "<group>"; };
+		F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotNavigationController.m; sourceTree = "<group>"; };
+		F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EncryptionInfoView.xib; sourceTree = "<group>"; };
+		F0B4CBAE1F4215E3008E99C5 /* EventDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsView.h; sourceTree = "<group>"; };
+		F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsView.m; sourceTree = "<group>"; };
+		F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailsView.xib; sourceTree = "<group>"; };
 		F0D869E81EC455A100BB0A2B /* create_direct_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_direct_chat.png; sourceTree = "<group>"; };
 		F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@2x.png"; sourceTree = "<group>"; };
 		F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@3x.png"; sourceTree = "<group>"; };
@@ -1727,6 +1742,8 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0B4CBA81F41E71A008E99C5 /* RiotNavigationController.h */,
+				F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */,
 				F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */,
 				F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */,
 				F0E059FE1E963103004B83FB /* FavouritesViewController.h */,
@@ -1811,6 +1828,8 @@
 				24B5103C1EFA7083004C6AD2 /* ReadReceiptsViewController.h */,
 				24B5103D1EFA7083004C6AD2 /* ReadReceiptsViewController.m */,
 				24B5103F1EFA88CC004C6AD2 /* ReadReceiptsViewController.xib */,
+				F0B4CBA31F418D0B008E99C5 /* WebViewViewController.h */,
+				F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1818,6 +1837,7 @@
 		F083BC571E7009EC00A9B29C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F0B4CBAD1F4215E3008E99C5 /* Event */,
 				F083BC581E7009EC00A9B29C /* Authentication */,
 				F083BC5F1E7009EC00A9B29C /* Contact */,
 				F083BC631E7009EC00A9B29C /* Device */,
@@ -1867,6 +1887,7 @@
 				F083BC661E7009EC00A9B29C /* DeviceTableViewCell.xib */,
 				F083BC671E7009EC00A9B29C /* DeviceView.h */,
 				F083BC681E7009EC00A9B29C /* DeviceView.m */,
+				F0B4CBA61F41CA44008E99C5 /* DeviceView.xib */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -1876,6 +1897,7 @@
 			children = (
 				F083BC6A1E7009EC00A9B29C /* EncryptionInfoView.h */,
 				F083BC6B1E7009EC00A9B29C /* EncryptionInfoView.m */,
+				F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */,
 			);
 			path = EncryptionInfoView;
 			sourceTree = "<group>";
@@ -2181,6 +2203,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F0B4CBAD1F4215E3008E99C5 /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				F0B4CBAE1F4215E3008E99C5 /* EventDetailsView.h */,
+				F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */,
+				F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */,
+			);
+			path = Event;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2440,7 +2472,9 @@
 				F083BE6D1E7009ED00A9B29C /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				F083BE9F1E7009ED00A9B29C /* TableViewCellWithCheckBoxes.xib in Resources */,
 				F0E05A421EA0F9EB004B83FB /* tab_rooms_selected.png in Resources */,
+				F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */,
 				F083BE4F1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				F0B4CBAC1F41F090008E99C5 /* EncryptionInfoView.xib in Resources */,
 				F083BD241E7009ED00A9B29C /* add_participant@3x.png in Resources */,
 				F083BD891E7009ED00A9B29C /* file_music_icon.png in Resources */,
 				F083BDD11E7009ED00A9B29C /* settings_icon.png in Resources */,
@@ -2623,6 +2657,7 @@
 				F083BDBF1E7009ED00A9B29C /* scrolldown.png in Resources */,
 				F083BDE31E7009ED00A9B29C /* voice_call_icon.png in Resources */,
 				F083BDCC1E7009ED00A9B29C /* selection_tick@2x.png in Resources */,
+				F0B4CBA71F41CA44008E99C5 /* DeviceView.xib in Resources */,
 				F083BD961E7009ED00A9B29C /* leave@2x.png in Resources */,
 				F0E05A461EA0F9EB004B83FB /* tab_rooms@2x.png in Resources */,
 				32AE61F41F0D2183007255F4 /* Vector.strings in Resources */,
@@ -2798,6 +2833,7 @@
 				F083BEA21E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 				F083BE0A1E7009ED00A9B29C /* CallViewController.m in Sources */,
 				F083BE111E7009ED00A9B29C /* DirectoryViewController.m in Sources */,
+				F0B4CBB11F4215E3008E99C5 /* EventDetailsView.m in Sources */,
 				F083BE1E1E7009ED00A9B29C /* RoomMessagesSearchViewController.m in Sources */,
 				F083BE231E7009ED00A9B29C /* RoomViewController.m in Sources */,
 				F083BE9E1E7009ED00A9B29C /* TableViewCellWithCheckBoxes.m in Sources */,
@@ -2868,12 +2904,14 @@
 				32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDFD1E7009ED00A9B29C /* PublicRoomsDirectoryDataSource.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
+				F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,
 				F083BE4C1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F075BEDB1EBB26F100A7B68A /* TableViewCellWithCollectionView.m in Sources */,
 				F083BE001E7009ED00A9B29C /* FilesSearchCellData.m in Sources */,
 				F083BE7A1E7009ED00A9B29C /* RoomInputToolbarView.m in Sources */,
 				F083BDFF1E7009ED00A9B29C /* RecentsDataSource.m in Sources */,
+				F0B4CBAA1F41E71A008E99C5 /* RiotNavigationController.m in Sources */,
 				F083BE461E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE251E7009ED00A9B29C /* SegmentedViewController.m in Sources */,
 				F083BE1B1E7009ED00A9B29C /* RoomFilesViewController.m in Sources */,

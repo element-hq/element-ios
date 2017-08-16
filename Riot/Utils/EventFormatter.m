@@ -69,12 +69,24 @@
 
         localTimeZone = [NSTimeZone localTimeZone];
         
-        self.defaultTextColor = kRiotTextColorBlack;
-        self.subTitleTextColor = kRiotTextColorGray;
-        self.prefixTextColor = kRiotTextColorGray;
+        // Use the secondary bg color to set the background color in the default CSS.
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        self.defaultCSS = [NSString stringWithFormat:@" \
+                           pre,code { \
+                           background-color: #%06lX; \
+                           display: inline; \
+                           font-family: monospace; \
+                           white-space: pre; \
+                           -coretext-fontname: Menlo-Regular; \
+                           font-size: small; \
+                           }", bgColor];
+        
+        self.defaultTextColor = kRiotPrimaryTextColor;
+        self.subTitleTextColor = kRiotSecondaryTextColor;
+        self.prefixTextColor = kRiotSecondaryTextColor;
         self.bingTextColor = kRiotColorPinkRed;
         self.encryptingTextColor = kRiotColorGreen;
-        self.sendingTextColor = kRiotTextColorGray;
+        self.sendingTextColor = kRiotSecondaryTextColor;
         self.errorTextColor = kRiotColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
@@ -90,7 +102,7 @@
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
         self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
-        self.singleEmojiTextFont = [UIFont systemFontOfSize:48];
+        self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
     }
     return self;
 }

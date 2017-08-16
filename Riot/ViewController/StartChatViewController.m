@@ -130,10 +130,8 @@
     
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_creation_invite_another_user", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
-    _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;    
     [self refreshSearchBarItemsColor:_searchBarView];
-    
-    _searchBarHeaderBorder.backgroundColor = kRiotColorSilver;
     
     // Hide line separators of empty cells
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
@@ -142,6 +140,29 @@
     
     // Redirect table data source
     self.contactsTableView.dataSource = self;
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    [super userInterfaceThemeDidChange];
+    
+    [self refreshSearchBarItemsColor:_searchBarView];
+    
+    _searchBarHeaderBorder.backgroundColor = kRiotColorSilver;
+    
+    // Check the table view style to select its bg color.
+    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.view.backgroundColor = self.contactsTableView.backgroundColor;
+    
+    if (self.contactsTableView.dataSource)
+    {
+        [self.contactsTableView reloadData];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)destroy
@@ -352,6 +373,29 @@
 
 #pragma mark - UITableView delegate
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     CGFloat height = 0.0;
@@ -403,7 +447,7 @@
         
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -578,7 +622,7 @@
 
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = kRiotTextColorGray;
+    searchBarTextField.textColor = kRiotSecondaryTextColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
@@ -592,10 +636,13 @@
     effectBackgroundBottom.hidden = YES;
         
     // place holder
-    searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
-                                                                               attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: kRiotColorGreen,
-                                                                                            NSForegroundColorAttributeName: kRiotColorGreen}];
+    if (searchBarTextField.placeholder)
+    {
+        searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
+                                                                                   attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
+                                                                                                NSUnderlineColorAttributeName: kRiotColorGreen,
+                                                                                                NSForegroundColorAttributeName: kRiotColorGreen}];
+    }
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

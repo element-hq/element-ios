@@ -36,7 +36,9 @@ extern UIColor *kRiotPrimaryBgColor;
 extern UIColor *kRiotSecondaryBgColor;
 extern UIColor *kRiotPrimaryTextColor;
 extern UIColor *kRiotSecondaryTextColor; //subtitle, sending messages color.
+extern UIColor *kRiotPlaceholderTextColor; // nil is used to keep the default color.
 extern UIColor *kRiotTopicTextColor;
+extern UIColor *kRiotSelectedBgColor; // nil is used to keep the default color.
 
 #pragma mark - Riot Colors
 extern UIColor *kRiotColorGreen;
@@ -48,26 +50,14 @@ extern UIColor *kRiotColorRed;
 extern UIColor *kRiotColorIndigo;
 extern UIColor *kRiotColorOrange;
 
-#pragma mark - Riot Background Colors
-extern UIColor *kRiotBgColorWhite;
-extern UIColor *kRiotBgColorBlack;
-
-extern UIColor *kRiotColorLightGrey;
-extern UIColor *kRiotColorLightBlack;
-
-#pragma mark - Riot Text Colors
-extern UIColor *kRiotTextColorBlack;
-extern UIColor *kRiotTextColorDarkGray;
-extern UIColor *kRiotTextColorGray;
-extern UIColor *kRiotTextColorWhite;
-extern UIColor *kRiotTextColorDarkWhite;
-
 #pragma mark - Riot Standard Room Member Power Level
 extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;
 
-#pragma mark - Riot 
+#pragma mark - Riot bar style
 extern UIStatusBarStyle kRiotDesignStatusBarStyle;
+extern UIBarStyle kRiotDesignSearchBarStyle;
+extern UIColor *kRiotDesignSearchBarTintColor;
 
 
 /**
