@@ -1870,14 +1870,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
-            // In the future, the text will be "Matrix Apps".
-            // As we support only jitsi widget at the moment, [WidgetManager sharedManager].enabled
-            // conditions the activation of "Use jitsi for conference call"
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_jitsi_conference", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [WidgetManager sharedManager].enabled;
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"useJitsiForConferenceCalls"];
 
             [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsMatrixApps:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
         }
@@ -2570,16 +2567,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
-- (void)toggleLabsMatrixApps:(id)sender
+- (void)toggleJitsiForConference:(id)sender
 {
     if (sender && [sender isKindOfClass:UISwitch.class])
     {
         UISwitch *switchButton = (UISwitch*)sender;
-        if (switchButton.isOn != [WidgetManager sharedManager].enabled)
-        {
-            [WidgetManager sharedManager].enabled = switchButton.isOn;
-            [self.tableView reloadData];
-        }
+
+        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"useJitsiForConferenceCalls"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        [self.tableView reloadData];
     }
 }
 

@@ -394,14 +394,10 @@
 {
     Widget *jitsiWidget;
 
-    NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsInRoom:self.room];
-    for (Widget *widget in widgets)
+    // Manage only one jitsi widget at a time for the moment
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"useJitsiForConferenceCalls"])
     {
-        if ([widget.type isEqualToString:kWidgetTypeJitsi])
-        {
-            jitsiWidget = widget;
-            break;
-        }
+        jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room].firstObject;
     }
 
     return jitsiWidget;
