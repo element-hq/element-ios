@@ -28,6 +28,8 @@
 
 #import "AttachmentsViewController.h"
 
+#import "EventDetailsView.h"
+
 #import "RoomAvatarTitleView.h"
 #import "ExpandedRoomTitleView.h"
 #import "SimpleRoomTitleView.h"
@@ -300,12 +302,7 @@
     [self.bubblesTableView registerClass:RoomMembershipExpandedBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipExpandedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
-    // Prepare jump to last unread banner
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotTextColorBlack, NSForegroundColorAttributeName: kRiotTextColorBlack}];
-    
     // Prepare expanded header
-    self.expandedHeaderContainer.backgroundColor = kRiotColorLightGrey;
-    
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
     expandedHeader.delegate = self;
     expandedHeader.tapGestureDelegate = self;
@@ -342,9 +339,6 @@
     [swipe setDirection:UISwipeGestureRecognizerDirectionUp];
     [self.expandedHeaderContainer addGestureRecognizer:swipe];
     
-    // Prepare preview header container
-    self.previewHeaderContainer.backgroundColor = kRiotColorLightGrey;
-    
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
@@ -362,6 +356,9 @@
     // Custom the attachmnet viewer
     [self setAttachmentsViewerClass:AttachmentsViewController.class];
     
+    // Custom the event details view
+    [self setEventDetailsViewClass:EventDetailsView.class];
+    
     // Update navigation bar items
     self.navigationItem.rightBarButtonItem.target = self;
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
@@ -378,10 +375,6 @@
     missedDiscussionsBarButtonCustomView.accessibilityIdentifier = @"RoomVCMissedDiscussionsBarButton";
     
     missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
-    missedDiscussionsBadgeLabel.textColor = [UIColor whiteColor];
-    missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
-    missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
-    
     missedDiscussionsBadgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [missedDiscussionsBadgeLabelBgView addSubview:missedDiscussionsBadgeLabel];
     
@@ -423,6 +416,33 @@
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    // Prepare jump to last unread banner
+    self.jumpToLastUnreadBannerContainer.backgroundColor = kRiotPrimaryBgColor;
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotPrimaryTextColor, NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
+    
+    
+    self.expandedHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
+    self.previewHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
+    
+    missedDiscussionsBadgeLabel.textColor = kRiotPrimaryBgColor;
+    missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
+    missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
+    
+    // Check the table view style to select its bg color.
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.view.backgroundColor = self.bubblesTableView.backgroundColor;
+    
+    if (self.bubblesTableView.dataSource)
+    {
+        [self.bubblesTableView reloadData];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -2836,6 +2856,26 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+    
     if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;

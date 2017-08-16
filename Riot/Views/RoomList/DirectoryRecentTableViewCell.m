@@ -25,12 +25,12 @@
 
 #pragma mark - Class methods
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = kRiotTextColorBlack;
-    self.descriptionLabel.textColor = kRiotTextColorGray;
+    self.titleLabel.textColor = kRiotPrimaryTextColor;
+    self.descriptionLabel.textColor = kRiotSecondaryTextColor;
 }
 
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource

@@ -111,7 +111,14 @@
 
 - (void)userInterfaceThemeDidChange
 {
+    self.assetsCollectionView.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden

@@ -23,8 +23,11 @@ UIColor *kRiotPrimaryBgColor;
 UIColor *kRiotSecondaryBgColor;
 UIColor *kRiotPrimaryTextColor;
 UIColor *kRiotSecondaryTextColor;
+UIColor *kRiotPlaceholderTextColor;
 UIColor *kRiotTopicTextColor;
+UIColor *kRiotSelectedBgColor;
 
+// Riot Colors
 UIColor *kRiotColorGreen;
 UIColor *kRiotColorLightGreen;
 UIColor *kRiotColorLightOrange;
@@ -34,12 +37,13 @@ UIColor *kRiotColorRed;
 UIColor *kRiotColorIndigo;
 UIColor *kRiotColorOrange;
 
+// Riot Background Colors
 UIColor *kRiotBgColorWhite;
 UIColor *kRiotBgColorBlack;
-
 UIColor *kRiotColorLightGrey;
 UIColor *kRiotColorLightBlack;
 
+// Riot Text Colors
 UIColor *kRiotTextColorBlack;
 UIColor *kRiotTextColorDarkGray;
 UIColor *kRiotTextColorGray;
@@ -50,6 +54,8 @@ NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
 
 UIStatusBarStyle kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
+UIBarStyle kRiotDesignSearchBarStyle = UIBarStyleDefault;
+UIColor *kRiotDesignSearchBarTintColor = nil;
 
 @implementation RiotDesignValues
 
@@ -122,9 +128,13 @@ UIStatusBarStyle kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
         kRiotSecondaryBgColor = kRiotColorLightBlack;
         kRiotPrimaryTextColor = kRiotTextColorWhite;
         kRiotSecondaryTextColor = kRiotTextColorGray;
+        kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         kRiotTopicTextColor = kRiotTextColorDarkWhite;
+        kRiotSelectedBgColor = [UIColor blackColor];
         
         kRiotDesignStatusBarStyle = UIStatusBarStyleLightContent;
+        kRiotDesignSearchBarStyle = UIBarStyleBlack;
+        kRiotDesignSearchBarTintColor = kRiotColorGreen;
     }
     else
     {
@@ -133,9 +143,13 @@ UIStatusBarStyle kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
         kRiotSecondaryBgColor = kRiotColorLightGrey;
         kRiotPrimaryTextColor = kRiotTextColorBlack;
         kRiotSecondaryTextColor = kRiotTextColorGray;
+        kRiotPlaceholderTextColor = nil; // Use default 70% gray color.
         kRiotTopicTextColor = kRiotTextColorDarkGray;
+        kRiotSelectedBgColor = nil; // Use the default selection color.
         
         kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
+        kRiotDesignSearchBarStyle = UIBarStyleDefault;
+        kRiotDesignSearchBarTintColor = nil; // Default tint color.
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
