@@ -26,7 +26,7 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
 @interface WidgetManager ()
 {
     // MXSession kind of hash -> Listener for matrix events for widgets.
-    // There is one per matrix session.
+    // There is one per matrix session
     NSMutableDictionary<NSString*, id> *widgetEventListener;
 }
 
@@ -46,17 +46,6 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
     return sharedManager;
 }
 
-- (BOOL)enabled
-{
-     return [[NSUserDefaults standardUserDefaults] boolForKey:@"MatrixApps"];
-}
-
-- (void)setEnabled:(BOOL)enabled
-{
-    [[NSUserDefaults standardUserDefaults] setBool:enabled forKey:@"MatrixApps"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 - (instancetype)init
 {
     self = [super init];
@@ -69,11 +58,11 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
 
 - (NSArray<Widget *> *)widgetsInRoom:(MXRoom *)room
 {
-    if (!self.enabled)
-    {
-        return nil;
-    }
+    return [self widgetsOfTypes:nil inRoom:room];
+}
 
+- (NSArray<Widget *> *)widgetsOfTypes:(NSArray<NSString *> *)widgetTypes inRoom:(MXRoom *)room
+{
     // Widget id -> widget
     NSMutableDictionary <NSString*, Widget *> *widgets = [NSMutableDictionary dictionary];
 
@@ -99,9 +88,21 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
          return result;
      }];
 
-    // Create each widget with its lastest im.vector.modular.widgets state event
+    // Create each widget from its lastest im.vector.modular.widgets state event
     for (MXEvent *widgetEvent in widgetEvents)
     {
+        // Filter widget types if required
+        if (widgetTypes)
+        {
+            NSString *widgetType;
+            MXJSONModelSetString(widgetType, widgetEvent.content[@"type"]);
+
+            if (NSNotFound == [widgetTypes indexOfObject:widgetType])
+            {
+                continue;
+            }
+        }
+
         // widgetEvent.stateKey = widget id
         if (!widgets[widgetEvent.stateKey])
         {
@@ -134,7 +135,7 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
 
         typeof(self) self = weakSelf;
 
-        if (self.enabled && direction == MXTimelineDirectionForwards)
+        if (self && direction == MXTimelineDirectionForwards)
         {
             Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
             if (widget)
