@@ -63,4 +63,15 @@
     return kRiotDesignStatusBarStyle;
 }
 
+- (void)destroy
+{
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
+    
+    [super destroy];
+}
+
 @end
