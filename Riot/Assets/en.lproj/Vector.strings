@@ -50,6 +50,7 @@
 "rename" = "Rename";
 "collapse" = "collapse";
 "send_to" = "Send to %@";
+"sending" = "Sending";
 
 // Authentication
 "auth_login" = "Log in";

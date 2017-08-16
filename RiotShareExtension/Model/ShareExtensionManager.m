@@ -7,7 +7,23 @@
 //
 
 #import "ShareExtensionManager.h"
+#import "MXKPieChartHUD.h"
 @import MobileCoreServices;
+
+typedef NS_ENUM(NSInteger, ImageCompressionMode)
+{
+    ImageCompressionModeNone,
+    ImageCompressionModeSmall,
+    ImageCompressionModeMedium,
+    ImageCompressionModeLarge
+};
+
+@interface ShareExtensionManager ()
+
+@property ImageCompressionMode imageCompressionMode;
+@property CGFloat actualLargeSize;
+
+@end
 
 
 @implementation ShareExtensionManager
@@ -20,6 +36,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(onMediaUploadProgress:) name:kMXMediaUploadProgressNotification object:nil];
     });
     return sharedInstance;
 }
@@ -34,6 +51,7 @@
     NSString *UTTypeVideo = (__bridge NSString *)kUTTypeVideo;
     NSString *UTTypeFileUrl = (__bridge NSString *)kUTTypeFileURL;
     NSString *UTTypeMovie = (__bridge NSString *)kUTTypeMovie;
+    
     
     for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
     {
@@ -61,7 +79,11 @@
             {
                 [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(NSData *imageData, NSError * _Null_unspecified error)
                  {
-                     [self sendImage:imageData withProvider:itemProvider toRoom:room extensionItem:item failureBlock:failureBlock];
+                     UIImage *image = [[UIImage alloc] initWithData:imageData];
+                     UIAlertController *compressionPrompt = [self compressionPromptForImage:image shareBlock:^{
+                         [self sendImage:imageData withProvider:itemProvider toRoom:room extensionItem:item failureBlock:failureBlock];
+                     }];
+                     [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
                  }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeVideo])
@@ -82,6 +104,21 @@
     }
 }
 
+- (BOOL)hasImageTypeContent
+{
+    for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
+    {
+        for (NSItemProvider *itemProvider in item.attachments)
+        {
+            if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeImage])
+            {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
 - (void)cancelSharing
 {
     [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
@@ -90,6 +127,152 @@
 - (void)cancelSharingWithFailure
 {
     [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
+}
+
+- (UIAlertController *)compressionPromptForImage:(UIImage *)image shareBlock:(nonnull void(^)())shareBlock
+{
+    UIAlertController *compressionPrompt;
+    
+    // Get availabe sizes for this image
+    MXKImageCompressionSizes compressionSizes = [MXKTools availableCompressionSizesForImage:image];
+    
+    // Apply the compression mode
+    if (compressionSizes.small.fileSize || compressionSizes.medium.fileSize || compressionSizes.large.fileSize)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        compressionPrompt = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt"] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        if (compressionSizes.small.fileSize)
+        {
+            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.small.fileSize round:NO], (int)compressionSizes.small.imageSize.width, (int)compressionSizes.small.imageSize.height];
+            
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_small"], resolution];
+            
+            [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+                                                                    
+                                                                    if (weakSelf)
+                                                                    {
+                                                                        typeof(self) self = weakSelf;
+                                                                        
+                                                                        // Send the small image
+                                                                        self.imageCompressionMode = ImageCompressionModeSmall;
+                                                                        if (shareBlock)
+                                                                        {
+                                                                            shareBlock();
+                                                                        }
+                                                                        
+                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
+                                                                    }
+                                                                    
+                                                                }]];
+        }
+        
+        if (compressionSizes.medium.fileSize)
+        {
+            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.medium.fileSize round:NO], (int)compressionSizes.medium.imageSize.width, (int)compressionSizes.medium.imageSize.height];
+            
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_medium"], resolution];
+            
+            [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+                                                                    
+                                                                    if (weakSelf)
+                                                                    {
+                                                                        typeof(self) self = weakSelf;
+                                                                        
+                                                                        // Send the medium image
+                                                                        self.imageCompressionMode = ImageCompressionModeMedium;
+                                                                        if (shareBlock)
+                                                                        {
+                                                                            shareBlock();
+                                                                        }
+                                                                        
+                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
+                                                                    }
+                                                                    
+                                                                }]];
+        }
+        
+        if (compressionSizes.large.fileSize)
+        {
+            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.large.fileSize round:NO], (int)compressionSizes.large.imageSize.width, (int)compressionSizes.large.imageSize.height];
+            
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_large"], resolution];
+            
+            [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+                                                                    
+                                                                    if (weakSelf)
+                                                                    {
+                                                                        typeof(self) self = weakSelf;
+                                                                        
+                                                                        // Send the large image
+                                                                        self.imageCompressionMode = ImageCompressionModeLarge;
+                                                                        self.actualLargeSize = compressionSizes.actualLargeSize;
+                                                                        if (shareBlock)
+                                                                        {
+                                                                            shareBlock();
+                                                                        }
+                                                                        
+                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
+                                                                    }
+                                                                    
+                                                                }]];
+        }
+        
+        NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.original.fileSize round:NO], (int)compressionSizes.original.imageSize.width, (int)compressionSizes.original.imageSize.height];
+        
+        NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_original"], resolution];
+        
+        [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action) {
+                                                                
+                                                                if (weakSelf)
+                                                                {
+                                                                    typeof(self) self = weakSelf;
+                                                                    
+                                                                    self.imageCompressionMode = ImageCompressionModeNone;
+                                                                    if (shareBlock)
+                                                                    {
+                                                                        shareBlock();
+                                                                    }
+                                                                    
+                                                                    [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
+                                                                }
+                                                                
+                                                            }]];
+        
+        [compressionPrompt addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action) {
+                                                                
+                                                                if (weakSelf)
+                                                                {
+                                                                    [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
+                                                                }
+                                                                
+                                                            }]];
+        
+        
+    }
+    
+    return compressionPrompt;
+}
+
+#pragma mark - Notifications
+
+- (void)onMediaUploadProgress:(NSNotification *)notification
+{
+    if ([self.delegate respondsToSelector:@selector(shareExtensionManager:mediaUploadProgress:)])
+    {
+        [self.delegate shareExtensionManager:self mediaUploadProgress:((NSNumber *)notification.userInfo[kMXMediaLoaderProgressValueKey]).floatValue];
+    }
 }
 
 #pragma mark - Sharing
@@ -152,6 +335,19 @@
     }
     //Send the image
     UIImage *image = [[UIImage alloc] initWithData:imageData];
+    
+    if (self.imageCompressionMode == ImageCompressionModeSmall)
+    {
+        image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE)];
+    }
+    else if (self.imageCompressionMode == ImageCompressionModeMedium)
+    {
+        image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE)];
+    }
+    else if (self.imageCompressionMode == ImageCompressionModeLarge)
+    {
+        image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(self.actualLargeSize, self.actualLargeSize)];
+    }
     
     NSString *mimeType;
     if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])

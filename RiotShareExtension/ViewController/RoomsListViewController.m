@@ -20,15 +20,19 @@
 #import "ShareExtensionManager.h"
 #import "RecentCellData.h"
 #import "RiotDesignValues.h"
+#import "MXKPieChartView.h"
+#import "MXKPieChartHUD.h"
 
 
-@interface RoomsListViewController () <UITableViewDelegate, UISearchBarDelegate>
+
+@interface RoomsListViewController () <UITableViewDelegate, UISearchBarDelegate, ShareExtensionManagerDelegate>
 
 @property (nonatomic) ShareRecentsDataSource *dataSource;
 @property (copy) void (^failureBlock)();
 
 @property (nonatomic) UITableView *mainTableView;
 @property (nonatomic) UISearchBar *searchBar;
+@property (nonatomic) MXKPieChartHUD *hudView;
 
 @end
 
@@ -67,17 +71,11 @@
     self.mainTableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1 constant:0];
-    widthConstraint.active = YES;
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
-    heightConstraint.active = YES;
     NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
-    centerXConstraint.active = YES;
     NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
-    centerYConstraint.active = YES;
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.dataSource searchWithPatterns:nil];
-    });
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
 }
 
 - (void)configureSearchBar
@@ -94,6 +92,35 @@
 }
 
 #pragma mark - Private
+
+- (void)showShareAlertForRoomPath:(NSIndexPath *)indexPath
+{
+    NSString *receipantName = [self.dataSource getRoomAtIndexPath:indexPath].riotDisplayname;
+    if (!receipantName.length)
+    {
+        receipantName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+    }
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), receipantName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:cancelAction];
+    
+    UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        MXRoom *selectedRoom = [self.dataSource getRoomAtIndexPath:indexPath];
+        
+        self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
+        [ShareExtensionManager sharedManager].delegate = self;
+        self.parentViewController.view.userInteractionEnabled = NO;
+        
+        [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^{
+            [self showFailureAlert];
+        }];
+    }];
+    [alertController addAction:sendAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 
 - (void)showFailureAlert
 {
@@ -119,26 +146,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSString *receipantName = [self.dataSource getRoomAtIndexPath:indexPath].riotDisplayname;
-    if (!receipantName.length)
-    {
-        receipantName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-    }
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), receipantName] message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:cancelAction];
-    
-    UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        MXRoom *selectedRoom = [self.dataSource getRoomAtIndexPath:indexPath];
-        [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^{
-            [self showFailureAlert];
-        }];
-    }];
-    [alertController addAction:sendAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    [self showShareAlertForRoomPath:indexPath];
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -192,6 +200,20 @@
 {
     [searchBar resignFirstResponder];
     [self.dataSource searchWithPatterns:nil];
+}
+
+#pragma mark - ShareExtensionManagerDelegate
+
+- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager showImageCompressionPrompt:(UIAlertController *)compressionPrompt
+{
+    [compressionPrompt popoverPresentationController].sourceView = self.view;
+    [compressionPrompt popoverPresentationController].sourceRect = self.view.frame;
+    [self presentViewController:compressionPrompt animated:YES completion:nil];
+}
+
+- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager mediaUploadProgress:(CGFloat)progress
+{
+    [self.hudView setProgress:progress];
 }
 
 @end
