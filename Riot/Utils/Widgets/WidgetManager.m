@@ -97,7 +97,7 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
             NSString *widgetType;
             MXJSONModelSetString(widgetType, widgetEvent.content[@"type"]);
 
-            if (NSNotFound == [widgetTypes indexOfObject:widgetType])
+            if (widgetType && NSNotFound == [widgetTypes indexOfObject:widgetType])
             {
                 continue;
             }
