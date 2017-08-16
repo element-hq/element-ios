@@ -24,6 +24,11 @@
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
      */
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The fake top view displayed in case of vertical bounce.
+     */
+    UIView *topview;
 }
 
 @end
@@ -46,6 +51,12 @@
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
     
+    // Add a top view which will be displayed in case of vertical bounce.
+    CGFloat height = self.tableView.frame.size.height;
+    topview = [[UIView alloc] initWithFrame:CGRectMake(0,-height,self.tableView.frame.size.width,height)];
+    topview.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [self.tableView addSubview:topview];
+    
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -63,8 +74,9 @@
     self.searchBar.barStyle = kRiotDesignSearchBarStyle;
     self.searchBar.tintColor = kRiotDesignSearchBarTintColor;
     
-    // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    // Use the primary bg color for the table view in plain style.
+    self.tableView.backgroundColor = kRiotPrimaryBgColor;
+    topview.backgroundColor = kRiotPrimaryBgColor;
     
     if (self.tableView.dataSource)
     {
@@ -80,6 +92,9 @@
 - (void)destroy
 {
     [super destroy];
+    
+    [topview removeFromSuperview];
+    topview = nil;
     
     if (kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
@@ -103,6 +118,8 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+    cell.textLabel.textColor = kRiotPrimaryTextColor;
+    cell.detailTextLabel.textColor = kRiotSecondaryTextColor;
     cell.backgroundColor = kRiotPrimaryBgColor;
     
     // Update the selected background view

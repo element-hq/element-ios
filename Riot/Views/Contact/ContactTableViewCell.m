@@ -56,7 +56,7 @@
     self.contactInformationLabel.textColor = kRiotSecondaryTextColor;
     
     // Clear the default background color of a MXKImageView instance
-    self.thumbnailView.backgroundColor = [UIColor clearColor];
+    self.thumbnailView.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutSubviews

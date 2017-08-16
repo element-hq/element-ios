@@ -18,7 +18,6 @@
 #import "PublicRoomTableViewCell.h"
 
 #import "AvatarGenerator.h"
-#import "MXKImageView.h"
 
 #import "RiotDesignValues.h"
 
@@ -41,7 +40,7 @@
     self.roomTopic.textColor = kRiotSecondaryTextColor;
     self.memberCount.textColor = kRiotSecondaryTextColor;
     
-    _roomAvatar.backgroundColor = [UIColor clearColor];
+    _roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)render:(MXPublicRoom *)publicRoom withMatrixSession:(MXSession*)mxSession

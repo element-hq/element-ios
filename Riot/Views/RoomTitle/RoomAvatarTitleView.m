@@ -90,7 +90,7 @@
     self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
     self.roomAvatar.clipsToBounds = YES;
     
-    self.roomAvatar.backgroundColor = kRiotSecondaryBgColor;
+    self.roomAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
 }
 
 - (void)setRoomAvatarURL:(NSString *)roomAvatarURL

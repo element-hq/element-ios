@@ -768,7 +768,7 @@
         else
         {
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
-            roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
+            roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
             roomCell.avatarImageView.userInteractionEnabled = NO;
             roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
         }

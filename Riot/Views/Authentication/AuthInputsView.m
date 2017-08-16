@@ -23,6 +23,8 @@
 #import "CountryPickerViewController.h"
 #import "NBPhoneNumberUtil.h"
 
+#import "RiotNavigationController.h"
+
 @interface AuthInputsView ()
 {
     /**
@@ -1134,7 +1136,22 @@
         phoneNumberCountryPicker.delegate = self;
         phoneNumberCountryPicker.showCountryCallingCode = YES;
         
-        phoneNumberPickerNavigationController = [[UINavigationController alloc] init];
+        phoneNumberPickerNavigationController = [[RiotNavigationController alloc] init];
+        
+        // Set Riot navigation bar colors
+        phoneNumberPickerNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
+        NSDictionary<NSString *,id> *titleTextAttributes = phoneNumberPickerNavigationController.navigationBar.titleTextAttributes;
+        if (titleTextAttributes)
+        {
+            NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
+            textAttributes[NSForegroundColorAttributeName] = kRiotPrimaryTextColor;
+            phoneNumberPickerNavigationController.navigationBar.titleTextAttributes = textAttributes;
+        }
+        else if (kRiotPrimaryTextColor)
+        {
+            phoneNumberPickerNavigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
+        }
+        
         [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
         
         UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];

@@ -72,6 +72,8 @@
     self.directRoomBorderView.layer.borderWidth = 3;
     
     self.editionArrowView.backgroundColor = kRiotSecondaryBgColor;
+    
+    self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutSubviews
@@ -164,8 +166,6 @@
                 self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13];
             }
         }
-        
-        self.roomAvatar.backgroundColor = [UIColor clearColor];
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
         

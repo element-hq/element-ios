@@ -28,6 +28,8 @@
 
 #import "AttachmentsViewController.h"
 
+#import "EventDetailsView.h"
+
 #import "RoomAvatarTitleView.h"
 #import "ExpandedRoomTitleView.h"
 #import "SimpleRoomTitleView.h"
@@ -347,6 +349,9 @@
     
     // Custom the attachmnet viewer
     [self setAttachmentsViewerClass:AttachmentsViewController.class];
+    
+    // Custom the event details view
+    [self setEventDetailsViewClass:EventDetailsView.class];
     
     // Update navigation bar items
     self.navigationItem.rightBarButtonItem.target = self;

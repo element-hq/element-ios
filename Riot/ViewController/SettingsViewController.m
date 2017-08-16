@@ -28,6 +28,8 @@
 #import "MXKEncryptionKeysExportView.h"
 #import "BugReportViewController.h"
 
+#import "WebViewViewController.h"
+
 #import "CountryPickerViewController.h"
 #import "LanguagePickerViewController.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
@@ -201,6 +203,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     // The user interface theme cell
     TableViewCellWithCheckBoxes *uiThemeCell;
+    
+    // The current pushed view controller
+    UIViewController *pushedViewController;
 }
 
 /**
@@ -323,6 +328,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)destroy
 {
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
+    
     if (documentInteractionController)
     {
         [documentInteractionController dismissPreviewAnimated:NO];
@@ -385,6 +393,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [tracker set:kGAIScreenName value:@"Settings"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
+    
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
     
     // Refresh display
     [self refreshSettings];
@@ -453,10 +464,37 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)pushViewController:(UIViewController*)viewController
 {
+    // Keep ref on pushed view controller
+    pushedViewController = viewController;
+    
     // Hide back button title
     self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)releasePushedViewController
+{
+    if (pushedViewController)
+    {
+        if ([pushedViewController isKindOfClass:[UINavigationController class]])
+        {
+            UINavigationController *navigationController = (UINavigationController*)pushedViewController;
+            for (id subViewController in navigationController.viewControllers)
+            {
+                if ([subViewController respondsToSelector:@selector(destroy)])
+                {
+                    [subViewController destroy];
+                }
+            }
+        }
+        else if ([pushedViewController respondsToSelector:@selector(destroy)])
+        {
+            [(id)pushedViewController destroy];
+        }
+        
+        pushedViewController = nil;
+    }
 }
 
 - (void)dismissKeyboard
@@ -2239,7 +2277,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
                 
@@ -2247,7 +2285,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
@@ -2255,7 +2293,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
@@ -2265,7 +2303,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
 
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
                 

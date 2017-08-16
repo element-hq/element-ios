@@ -1,5 +1,4 @@
 /*
- Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,24 +14,21 @@
  limitations under the License.
  */
 
-#import "DeviceView.h"
+#import "EventDetailsView.h"
 
 #import "RiotDesignValues.h"
 
-@implementation DeviceView
-
-#pragma mark - Override MXKView
+@implementation EventDetailsView
 
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
     
-    self.containerView.backgroundColor = kRiotSecondaryBgColor;
+    self.backgroundColor = kRiotSecondaryBgColor;
     self.textView.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultTextColor = kRiotPrimaryTextColor;
-    self.cancelButton.tintColor = kRiotColorGreen;
-    self.deleteButton.tintColor = kRiotColorGreen;
-    self.renameButton.tintColor = kRiotColorGreen;
+    self.textView.textColor = kRiotPrimaryTextColor;
+    self.redactButton.tintColor = kRiotColorGreen;
+    self.closeButton.tintColor = kRiotColorGreen;
 }
 
 @end

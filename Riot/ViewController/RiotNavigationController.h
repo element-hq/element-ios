@@ -1,5 +1,4 @@
 /*
- Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,24 +14,13 @@
  limitations under the License.
  */
 
-#import "DeviceView.h"
+#import <UIKit/UIKit.h>
 
-#import "RiotDesignValues.h"
+/**
+ RiotNavigationController extends UINavigationController to handle status bar display.
+ */
 
-@implementation DeviceView
-
-#pragma mark - Override MXKView
-
--(void)customizeViewRendering
-{
-    [super customizeViewRendering];
-    
-    self.containerView.backgroundColor = kRiotSecondaryBgColor;
-    self.textView.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultTextColor = kRiotPrimaryTextColor;
-    self.cancelButton.tintColor = kRiotColorGreen;
-    self.deleteButton.tintColor = kRiotColorGreen;
-    self.renameButton.tintColor = kRiotColorGreen;
-}
+@interface RiotNavigationController : UINavigationController
 
 @end
+

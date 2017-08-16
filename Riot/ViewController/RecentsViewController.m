@@ -1336,6 +1336,7 @@
             if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
             {
                 UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+                cell.backgroundColor = kRiotPrimaryBgColor;
                 
                 // snapshot the cell
                 UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);

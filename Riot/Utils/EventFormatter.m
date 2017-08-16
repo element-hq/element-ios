@@ -69,6 +69,18 @@
 
         localTimeZone = [NSTimeZone localTimeZone];
         
+        // Use the secondary bg color to set the background color in the default CSS.
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        self.defaultCSS = [NSString stringWithFormat:@" \
+                           pre,code { \
+                           background-color: #%06lX; \
+                           display: inline; \
+                           font-family: monospace; \
+                           white-space: pre; \
+                           -coretext-fontname: Menlo-Regular; \
+                           font-size: small; \
+                           }", bgColor];
+        
         self.defaultTextColor = kRiotPrimaryTextColor;
         self.subTitleTextColor = kRiotSecondaryTextColor;
         self.prefixTextColor = kRiotSecondaryTextColor;
