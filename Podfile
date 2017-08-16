@@ -53,7 +53,7 @@ pod 'OLMKit'
 pod 'Realm', '~> 2.8.1'
 
 # The tagged version on which this version of Riot has been built
-pod 'MatrixKit', '0.5.2'
+pod 'MatrixKit', '0.6.0'
 
 # The lastest release available on the CocoaPods repository
 #pod 'MatrixKit/AppExtension'
