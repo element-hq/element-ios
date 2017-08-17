@@ -108,7 +108,7 @@
     
     void (^failureBlock)() = ^void() {
         [self dismissViewControllerAnimated:YES completion:^{
-            [[ShareExtensionManager sharedManager] cancelSharingWithFailure];
+            [[ShareExtensionManager sharedManager] terminateExtensionCanceled:NO];
         }];
     };
     
@@ -167,7 +167,7 @@
 - (IBAction)close:(UIButton *)sender
 {
     [self dismissViewControllerAnimated:YES completion:^{
-        [[ShareExtensionManager sharedManager] cancelSharing];
+        [[ShareExtensionManager sharedManager] terminateExtensionCanceled:YES];
     }];
 }
 

@@ -152,14 +152,16 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return NO;
 }
 
-- (void)cancelSharing
+- (void)terminateExtensionCanceled:(BOOL)canceled
 {
-    [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
-}
-
-- (void)cancelSharingWithFailure
-{
-    [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
+    if (canceled)
+    {
+        [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
+    }
+    else
+    {
+        [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
+    }
 }
 
 - (UIAlertController *)compressionPromptForImage:(UIImage *)image shareBlock:(nonnull void(^)())shareBlock
