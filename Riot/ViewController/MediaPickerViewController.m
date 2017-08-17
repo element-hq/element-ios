@@ -44,6 +44,9 @@ static void *RecordingContext = &RecordingContext;
     BOOL isPictureCaptureEnabled;
     BOOL isVideoCaptureEnabled;
     
+    // Set up only one session at the time.
+    BOOL isCaptureSessionSetupInProgress;
+    
     AVCaptureSession *captureSession;
     AVCaptureDeviceInput *frontCameraInput;
     AVCaptureDeviceInput *backCameraInput;
@@ -125,6 +128,8 @@ static void *RecordingContext = &RecordingContext;
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
+    
+    isCaptureSessionSetupInProgress = NO;
 }
 
 - (void)viewDidLoad
@@ -989,11 +994,12 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)setupAVCapture
 {
-    if (captureSession)
+    if (captureSession || isCaptureSessionSetupInProgress)
     {
         NSLog(@"[MediaPickerVC] Attemping to setup AVCapture when it is already started!");
         return;
     }
+    isCaptureSessionSetupInProgress = YES;
     
     [self.cameraActivityIndicator startAnimating];
     
@@ -1164,6 +1170,9 @@ static void *RecordingContext = &RecordingContext;
                 [self.cameraActivityIndicator stopAnimating];
             });
         }
+        
+        isCaptureSessionSetupInProgress = NO;
+        
     });
 }
 
