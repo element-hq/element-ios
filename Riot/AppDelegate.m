@@ -1615,8 +1615,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
     }];
     
-    // Observe settings changes
-    [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
+    // Apply the application group name, and add observer on settings changes.
+    [MXKAppSettings standardAppSettings].applicationGroup = @"group.im.vector";
+    [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
     // Prepare account manager
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
