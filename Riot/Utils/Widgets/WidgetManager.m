@@ -30,6 +30,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // MXSession kind of hash -> Listener for matrix events for widgets.
     // There is one per matrix session
     NSMutableDictionary<NSString*, id> *widgetEventListener;
+
+    // Success blocks of widgets being created
+    // MXSession kind of hash -> (Widget id -> `createWidget:` success block).
+    NSMutableDictionary<NSString*,
+        NSMutableDictionary<NSString*, void (^)(Widget *widget)>*> *successBlockForWidgetCreation;
 }
 
 @end
@@ -54,6 +59,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     if (self)
     {
         widgetEventListener = [NSMutableDictionary dictionary];
+        successBlockForWidgetCreation = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -129,6 +135,67 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return activeWidgets;
 }
 
+- (MXHTTPOperation *)createWidget:(NSString*)widgetId
+                      withContent:(NSDictionary<NSString*, NSObject*>*)widgetContent
+                           inRoom:(MXRoom*)room
+                          success:(void (^)(Widget *widget))success
+                          failure:(void (^)(NSError *error))failure
+{
+    NSError *permissionError = [self checkWidgetPermissionInRoom:room];
+    if (permissionError)
+    {
+        if (failure)
+        {
+            failure(permissionError);
+        }
+        return nil;
+    }
+
+    // Send a state event with the widget data
+    // TODO: This API will be shortly replaced by a pure scalar API
+    return [room sendStateEventOfType:kWidgetEventTypeString
+                              content:widgetContent
+                             stateKey:widgetId
+                              success:nil failure:failure];
+}
+
+
+- (MXHTTPOperation *)createJitsiWidgetInRoom:(MXRoom*)room
+                                   withVideo:(BOOL)video
+                                     success:(void (^)(Widget *jitsiWidget))success
+                                     failure:(void (^)(NSError *error))failure
+{
+    // Build data for a jitsi widget
+    NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsi, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
+
+    // Create a random enough jitsi conference id
+    // Note: the jitsi server automatically creates conference when the conference
+    // id does not exist yet
+    NSString *widgetSessionId = [[[[NSProcessInfo processInfo] globallyUniqueString] substringToIndex:7] lowercaseString];
+    NSString *confId = [room.roomId substringWithRange:NSMakeRange(1, [room.roomId rangeOfString:@":"].location - 1)];
+    confId = [confId stringByAppendingString:widgetSessionId];
+
+    // TODO: This url may come from scalar API
+    // Note: this url can be used as is inside a web container (like iframe for Riot-web)
+    // Riot-iOS does not directly use it but extracts params from it (see `[JitsiViewController openWidget:withVideo:]`)
+    NSString *url = [NSString stringWithFormat:@"https://scalar-staging.riot.im/scalar/api/widgets/jitsi.html?confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id@", confId, video ? @"false" : @"true"];
+
+    NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
+    successBlockForWidgetCreation[hash][widgetId] = success;
+
+    return [self createWidget:widgetId
+                  withContent:@{
+                                @"url": url,
+                                @"type": kWidgetTypeJitsi,
+                                @"data": @{
+                                        @"widgetSessionId": widgetSessionId
+                                        }
+                                }
+                       inRoom:room
+                      success:success
+                      failure:failure];
+}
+
 - (MXHTTPOperation *)closeWidget:(NSString *)widgetId inRoom:(MXRoom *)room success:(void (^)())success failure:(void (^)(NSError *))failure
 {
     NSError *permissionError = [self checkWidgetPermissionInRoom:room];
@@ -142,16 +209,17 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     }
 
     // Send a state event with an empty content to disable the widget
+    // TODO: This API will be shortly replaced by a pure scalar API
     return [room sendStateEventOfType:kWidgetEventTypeString
                               content:@{}
                              stateKey:widgetId
                               success:^(NSString *eventId)
-    {
-        if (success)
-        {
-            success();
-        }
-    } failure:failure];
+            {
+                if (success)
+                {
+                    success();
+                }
+            } failure:failure];
 }
 
 /**
@@ -184,7 +252,9 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 - (void)addMatrixSession:(MXSession *)mxSession
 {
      __weak __typeof__(self) weakSelf = self;
-    
+
+    NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
+
     id listener = [mxSession listenToEventsOfTypes:@[kWidgetEventTypeString] onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
 
         typeof(self) self = weakSelf;
@@ -196,11 +266,23 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKWidgetManagerDidUpdateWidgetNotification object:widget];
             }
+            
+            // If it is a widget we have just created, indicate its creation is complete
+            if (self->successBlockForWidgetCreation[hash].count)
+            {
+                // stateKey = widgetId
+                NSString *widgetId = event.stateKey;
+                if (self->successBlockForWidgetCreation[hash][widgetId])
+                {
+                    self->successBlockForWidgetCreation[hash][widgetId](widget);
+                    [self->successBlockForWidgetCreation[hash] removeObjectForKey:widgetId];
+                }
+            }
         }
     }];
 
-    NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
     widgetEventListener[hash] = listener;
+    successBlockForWidgetCreation[hash] = [NSMutableDictionary dictionary];
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
@@ -213,6 +295,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     [mxSession removeListener:listener];
 
     [widgetEventListener removeObjectForKey:hash];
+    [successBlockForWidgetCreation removeObjectForKey:hash];
 }
 
 @end

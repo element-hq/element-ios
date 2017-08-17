@@ -75,6 +75,41 @@ typedef enum : NSUInteger
  */
 - (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes inRoom:(MXRoom*)room;
 
+
+/**
+ Add a scalar widget to a room.
+
+ @param widgetId the id of the widget.
+ @param widgetContent the widget content.
+ @param room the room to create the widget to.
+
+ @param success A block object called when the operation succeeds. It provides the newly added widget.
+ @param failure A block object called when the operation fails.
+
+ @return a MXHTTPOperation instance.
+ */
+- (MXHTTPOperation *)createWidget:(NSString*)widgetId
+                      withContent:(NSDictionary<NSString*, NSObject*>*)widgetContent
+                           inRoom:(MXRoom*)room
+                          success:(void (^)(Widget *widget))success
+                          failure:(void (^)(NSError *error))failure;
+
+/**
+ Add a jitsi conference widget to a room.
+
+ @param room the room to create the widget to.
+ @param video the conference type
+
+ @param success A block object called when the operation succeeds. It provides the newly added widget.
+ @param failure A block object called when the operation fails.
+
+ @return a MXHTTPOperation instance.
+ */
+- (MXHTTPOperation *)createJitsiWidgetInRoom:(MXRoom*)room
+                                   withVideo:(BOOL)video
+                                     success:(void (^)(Widget *jitsiWidget))success
+                                     failure:(void (^)(NSError *error))failure;
+
 /**
  Close/Disable a widget in a room.
 
@@ -89,6 +124,7 @@ typedef enum : NSUInteger
 - (MXHTTPOperation *)closeWidget:(NSString*)widgetId inRoom:(MXRoom*)room
                          success:(void (^)())success
                          failure:(void (^)(NSError *error))failure;
+
 
 /**
  Add/remove matrix session.
