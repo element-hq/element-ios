@@ -498,4 +498,5 @@
 
 // Widget
 "widget_no_power_to_manage" = "You need permission to manage widgets in this room";
+"widget_creation_failure" = "Widget creation has failed";
 

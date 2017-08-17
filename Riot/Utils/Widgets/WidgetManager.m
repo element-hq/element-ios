@@ -35,6 +35,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // MXSession kind of hash -> (Widget id -> `createWidget:` success block).
     NSMutableDictionary<NSString*,
         NSMutableDictionary<NSString*, void (^)(Widget *widget)>*> *successBlockForWidgetCreation;
+
+    // Failure blocks of widgets being created
+    // MXSession kind of hash -> (Widget id -> `createWidget:` failure block).
+    NSMutableDictionary<NSString*,
+        NSMutableDictionary<NSString*, void (^)(NSError *error)>*> *failureBlockForWidgetCreation;
 }
 
 @end
@@ -60,6 +65,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     {
         widgetEventListener = [NSMutableDictionary dictionary];
         successBlockForWidgetCreation = [NSMutableDictionary dictionary];
+        failureBlockForWidgetCreation = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -182,6 +188,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
     NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
     successBlockForWidgetCreation[hash][widgetId] = success;
+    failureBlockForWidgetCreation[hash][widgetId] = failure;
 
     return [self createWidget:widgetId
                   withContent:@{
@@ -261,28 +268,48 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
         if (self && direction == MXTimelineDirectionForwards)
         {
+            // stateKey = widgetId
+            NSString *widgetId = event.stateKey;
+
+            NSLog(@"[WidgetManager] New widget detected: %@ in %@", widgetId, event.roomId);
+
             Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
             if (widget)
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKWidgetManagerDidUpdateWidgetNotification object:widget];
-            }
-            
-            // If it is a widget we have just created, indicate its creation is complete
-            if (self->successBlockForWidgetCreation[hash].count)
-            {
-                // stateKey = widgetId
-                NSString *widgetId = event.stateKey;
+                // If it is a widget we have just created, indicate its creation is complete
                 if (self->successBlockForWidgetCreation[hash][widgetId])
                 {
                     self->successBlockForWidgetCreation[hash][widgetId](widget);
-                    [self->successBlockForWidgetCreation[hash] removeObjectForKey:widgetId];
+                }
+
+                // Broadcast the generic notification
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKWidgetManagerDidUpdateWidgetNotification object:widget];
+            }
+            else
+            {
+                NSLog(@"[WidgetManager] Cannot decode new widget - event: %@", event);
+
+                if (self->failureBlockForWidgetCreation[hash][widgetId])
+                {
+                    // If it is a widget we have just created, indicate its creation has failed somehow
+                    NSError *error = [NSError errorWithDomain:WidgetManagerErrorDomain
+                                                         code:WidgetManagerErrorCodeCreationFailed
+                                                     userInfo:@{
+                                                                NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_creation_failure", @"Vector", nil)
+                                                                }];
+
+                    self->failureBlockForWidgetCreation[hash][widgetId](error);
                 }
             }
+
+            [self->successBlockForWidgetCreation[hash] removeObjectForKey:widgetId];
+            [self->failureBlockForWidgetCreation[hash] removeObjectForKey:widgetId];
         }
     }];
 
     widgetEventListener[hash] = listener;
     successBlockForWidgetCreation[hash] = [NSMutableDictionary dictionary];
+    failureBlockForWidgetCreation[hash] = [NSMutableDictionary dictionary];
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
@@ -296,6 +323,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
     [widgetEventListener removeObjectForKey:hash];
     [successBlockForWidgetCreation removeObjectForKey:hash];
+    [failureBlockForWidgetCreation removeObjectForKey:hash];
 }
 
 @end
