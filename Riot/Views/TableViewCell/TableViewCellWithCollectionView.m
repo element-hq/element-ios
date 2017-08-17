@@ -24,6 +24,11 @@
     [super awakeFromNib];
     
     self.editionViewHeightConstraint.constant = 0;
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
     
     self.editionView.backgroundColor = kRiotSecondaryBgColor;
 }

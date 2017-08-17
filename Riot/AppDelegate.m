@@ -313,6 +313,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     _masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
     _masterTabBarController = _masterNavigationController.viewControllers.firstObject;
     
+    // Force the background color of the fake view controller displayed when there is no details.
+    UINavigationController *secondNavController = self.secondaryNavigationController;
+    if (secondNavController)
+    {
+        secondNavController.navigationBar.barTintColor = kRiotPrimaryBgColor;
+        secondNavController.topViewController.view.backgroundColor = kRiotPrimaryBgColor;
+    }
+    
     // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
     // to avoid empty room View Controller in portrait orientation
     // else, the user cannot select a room
@@ -1899,7 +1907,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (!launchAnimationContainerView && window)
             {
                 launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = [UIColor whiteColor];
+                launchAnimationContainerView.backgroundColor = kRiotPrimaryBgColor;
                 launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [window addSubview:launchAnimationContainerView];
                 
@@ -2497,7 +2505,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    _callStatusBarButton.titleLabel.textColor = [UIColor whiteColor];
+    _callStatusBarButton.titleLabel.textColor = kRiotPrimaryBgColor;
     
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
     {
@@ -2649,7 +2657,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     }
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    return [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
+    UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
+    emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+    return emptyDetailsViewController;
 }
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController

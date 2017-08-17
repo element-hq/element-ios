@@ -23,11 +23,11 @@
 
 #pragma mark - Class methods
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
-    self.descLabel.textColor = kRiotTextColorBlack;
+    self.descLabel.textColor = kRiotPrimaryTextColor;
 }
 
 - (void)layoutSubviews
@@ -36,7 +36,7 @@
     
     // Round image view
     self.iconImageView.clipsToBounds = YES;
-    self.iconImageView.backgroundColor = [UIColor clearColor];
+    self.iconImageView.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)render:(id<MXKDirectoryServerCellDataStoring>)cellData

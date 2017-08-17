@@ -21,11 +21,11 @@
 
 @implementation RoomIncomingAttachmentBubbleCell
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kRiotTextColorBlack;
+    self.userNameLabel.textColor = kRiotPrimaryTextColor;
     self.messageTextView.tintColor = kRiotColorGreen;
 }
 
