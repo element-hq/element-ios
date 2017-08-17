@@ -2682,6 +2682,29 @@
            }];
     }
 
+    // Create the conf using jitsi widget and open it directly
+    else if (self.roomDataSource.room.state.joinedMembers.count > 2
+             && [[NSUserDefaults standardUserDefaults] boolForKey:@"useJitsiForConferenceCalls"])
+    {
+        __weak __typeof(self) weakSelf = self;
+
+        [[WidgetManager sharedManager] createJitsiWidgetInRoom:self.roomDataSource.room
+                                                     withVideo:video
+                                                       success:^(Widget *jitsiWidget) {
+                                                           if (weakSelf)
+                                                           {
+                                                               [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+                                                           }
+                                                       }
+                                                       failure:^(NSError *error) {
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               [self showJitsiErrorAsAlert:error];
+                                                           }
+                                                       }];
+    }
+
     // Conference call is not supported in encrypted rooms
     else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.joinedMembers.count > 2)
     {
@@ -3370,6 +3393,22 @@
     }];
 }
 
+- (void)showJitsiErrorAsAlert:(NSError*)error
+{
+    // Customise the error for permission issues
+    if ([error.domain isEqualToString:WidgetManagerErrorDomain] && error.code == WidgetManagerErrorCodeNotEnoughPower)
+    {
+        error = [NSError errorWithDomain:error.domain
+                                    code:error.code
+                                userInfo:@{
+                                           NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"room_conference_call_no_power", @"Vector", nil)
+                                           }];
+    }
+
+    // Alert user
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
+}
+
 #pragma mark - Unreachable Network Handling
 
 - (void)refreshActivitiesViewDisplay
@@ -3377,7 +3416,7 @@
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
         RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*)self.activitiesView;
-        
+
         // Reset gesture recognizers
         while (roomActivitiesView.gestureRecognizers.count)
         {
@@ -3454,20 +3493,9 @@
                     } failure:^(NSError *error) {
                         if (weakSelf)
                         {
-                            // Customise the error for permission issues
-                            if ([error.domain isEqualToString:WidgetManagerErrorDomain] && error.code == WidgetManagerErrorCodeNotEnoughPower)
-                            {
-                                error = [NSError errorWithDomain:error.domain
-                                                            code:error.code
-                                                        userInfo:@{
-                                                                   NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"room_conference_call_no_power", @"Vector", nil)
-                                                                   }];
-                            }
-                            
-                            // Alert user
-                            [[AppDelegate theDelegate] showErrorAsAlert:error];
-                            
                             typeof(self) self = weakSelf;
+
+                            [self showJitsiErrorAsAlert:error];
                             [self stopActivityIndicator];
                         }
                     }];
