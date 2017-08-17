@@ -3439,8 +3439,6 @@
 
                     [self startActivityIndicator];
 
-                    // TODO: hang up if we are in the conf
-
                     // Close the widget
                     __weak __typeof(self) weakSelf = self;
                     [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId inRoom:self.roomDataSource.room success:^{
@@ -3456,9 +3454,17 @@
                     } failure:^(NSError *error) {
                         if (weakSelf)
                         {
-                            // TODO: Customise the alert for permission issues
+                            // Customise the error for permission issues
+                            if ([error.domain isEqualToString:WidgetManagerErrorDomain] && error.code == WidgetManagerErrorCodeNotEnoughPower)
+                            {
+                                error = [NSError errorWithDomain:error.domain
+                                                            code:error.code
+                                                        userInfo:@{
+                                                                   NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"room_conference_call_no_power", @"Vector", nil)
+                                                                   }];
+                            }
                             
-                            //Alert user
+                            // Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                             
                             typeof(self) self = weakSelf;

@@ -233,6 +233,7 @@
 "room_ongoing_conference_call" = "Ongoing conference call. Join as %@ or %@.";
 "room_ongoing_conference_call_with_close" = "Ongoing conference call. Join as %@ or %@. %@ it.";
 "room_ongoing_conference_call_close" = "Close";
+"room_conference_call_no_power" = "You need permission to manage conference call in this room";
 "room_prompt_resend" = "Resend all";
 "room_prompt_cancel" = "cancel all";
 "room_resend_unsent_messages" = "Resend unsent messages";
