@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
     
-    self.titleLabel.textColor = kRiotTextColorGray;
+    self.titleLabel.textColor = kRiotSecondaryTextColor;
     self.titleLabel.text = NSLocalizedStringFromTable(@"auth_share_extension_prompt", @"Vector", nil);
 }
 
