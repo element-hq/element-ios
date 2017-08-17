@@ -23,6 +23,8 @@ NSString *const kWidgetTypeJitsi = @"jitsi";
 
 NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManagerDidUpdateWidgetNotification";
 
+NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
+
 @interface WidgetManager ()
 {
     // MXSession kind of hash -> Listener for matrix events for widgets.
@@ -125,6 +127,58 @@ NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManag
     }
 
     return activeWidgets;
+}
+
+- (MXHTTPOperation *)closeWidget:(NSString *)widgetId inRoom:(MXRoom *)room success:(void (^)())success failure:(void (^)(NSError *))failure
+{
+    NSError *permissionError = [self checkWidgetPermissionInRoom:room];
+    if (permissionError)
+    {
+        if (failure)
+        {
+            failure(permissionError);
+        }
+        return nil;
+    }
+
+    // Send a state event with an empty content to disable the widget
+    return [room sendStateEventOfType:kWidgetEventTypeString
+                              content:@{}
+                             stateKey:widgetId
+                              success:^(NSString *eventId)
+    {
+        if (success)
+        {
+            success();
+        }
+    } failure:failure];
+}
+
+/**
+ Check user's power for widgets management in a room.
+ 
+ @param room the room to check.
+ @return an NSError if the user cannot act on widgets in this room. Else, nil.
+ */
+- (NSError *)checkWidgetPermissionInRoom:(MXRoom *)room
+{
+    NSError *error;
+
+    // Check user's power in the room
+    MXRoomPowerLevels *powerLevels = room.state.powerLevels;
+    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:room.mxSession.myUser.userId];
+
+    // The user must be able to send state events to manage widgets
+    if (oneSelfPowerLevel < powerLevels.stateDefault)
+    {
+        error = [NSError errorWithDomain:WidgetManagerErrorDomain
+                                             code:WidgetManagerErrorCodeNotEnoughPower
+                                         userInfo:@{
+                                                    NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_no_power_to_manage", @"Vector", nil)
+                                                    }];
+    }
+
+    return error;
 }
 
 - (void)addMatrixSession:(MXSession *)mxSession

@@ -231,6 +231,8 @@
 "room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
 "room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present. %@ or %@ now?";
 "room_ongoing_conference_call" = "Ongoing conference call. Join as %@ or %@.";
+"room_ongoing_conference_call_with_close" = "Ongoing conference call. Join as %@ or %@. %@ it.";
+"room_ongoing_conference_call_close" = "Close";
 "room_prompt_resend" = "Resend all";
 "room_prompt_cancel" = "cancel all";
 "room_resend_unsent_messages" = "Resend unsent messages";
@@ -492,4 +494,7 @@
 "bug_report_progress_zipping" = "Collecting logs";
 "bug_report_progress_uploading" = "Uploading report";
 "bug_report_send" = "Send";
+
+// Widget
+"widget_no_power_to_manage" = "You need permission to manage widgets in this room";
 

@@ -3412,7 +3412,7 @@
                     {
                         [customizedRoomDataSource.room placeCallWithVideo:video success:nil failure:nil];
                     }
-                }];
+                } onClosePressed:nil];
             }
         }
         else if (jitsiWidget)
@@ -3435,6 +3435,36 @@
 
                     // Present the Jitsi view controller
                     [appDelegate displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+                } onClosePressed:^{
+
+                    [self startActivityIndicator];
+
+                    // TODO: hang up if we are in the conf
+
+                    // Close the widget
+                    __weak __typeof(self) weakSelf = self;
+                    [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId inRoom:self.roomDataSource.room success:^{
+
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            [self stopActivityIndicator];
+
+                            // The banner will automatically leave thanks to kMXKWidgetManagerDidUpdateWidgetNotification
+                        }
+
+                    } failure:^(NSError *error) {
+                        if (weakSelf)
+                        {
+                            // TODO: Customise the alert for permission issues
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                            typeof(self) self = weakSelf;
+                            [self stopActivityIndicator];
+                        }
+                    }];
                 }];
             }
         }

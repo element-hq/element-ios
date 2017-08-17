@@ -63,8 +63,10 @@
 
  @param ongoingConferenceCallPressed the block called when the user clicks on the banner.
                                      video is YES if the user chose to join the conf in video mode.
+ @param ongoingConferenceCallClosePressed the block called when the user clicks on the banner close button.
+                                          nil means do not display a close button.
  */
-- (void)displayOngoingConferenceCall:(void (^)(BOOL video))ongoingConferenceCallPressed;
+- (void)displayOngoingConferenceCall:(void (^)(BOOL video))ongoingConferenceCallPressed onClosePressed:(void (^)(void))ongoingConferenceCallClosePressed;
 
 /**
  Display a "scroll to bottom" icon.

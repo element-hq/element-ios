@@ -33,7 +33,17 @@ FOUNDATION_EXPORT NSString *const kWidgetTypeJitsi;
 /**
  Posted when a widget has been created, updated or removed.
  */
-extern NSString *const kMXKWidgetManagerDidUpdateWidgetNotification;
+FOUNDATION_EXPORT NSString *const kMXKWidgetManagerDidUpdateWidgetNotification;
+
+/**
+ `WidgetManager` NSError domain and codes.
+ */
+FOUNDATION_EXPORT NSString *const WidgetManagerErrorDomain;
+
+typedef enum : NSUInteger
+{
+    WidgetManagerErrorCodeNotEnoughPower
+} WidgetManagerErrorCode;
 
 
 /**
@@ -64,6 +74,21 @@ extern NSString *const kMXKWidgetManagerDidUpdateWidgetNotification;
  @return a list of widgets.
  */
 - (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes inRoom:(MXRoom*)room;
+
+/**
+ Close/Disable a widget in a room.
+
+ @param widgetId the id of the widget to close.
+ @param room the room the widget is in.
+
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+
+ @return a MXHTTPOperation instance.
+ */
+- (MXHTTPOperation *)closeWidget:(NSString*)widgetId inRoom:(MXRoom*)room
+                         success:(void (^)())success
+                         failure:(void (^)(NSError *error))failure;
 
 /**
  Add/remove matrix session.
