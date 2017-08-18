@@ -3384,7 +3384,7 @@
 
 - (void)listenWidgetNotifications
 {
-    kMXKWidgetManagerDidUpdateWidgetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKWidgetManagerDidUpdateWidgetNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kMXKWidgetManagerDidUpdateWidgetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kWidgetManagerDidUpdateWidgetNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
         Widget *widget = notif.object;
         if (widget.mxSession == self.roomDataSource.mxSession
@@ -3513,7 +3513,7 @@
                             typeof(self) self = weakSelf;
                             [self stopActivityIndicator];
 
-                            // The banner will automatically leave thanks to kMXKWidgetManagerDidUpdateWidgetNotification
+                            // The banner will automatically leave thanks to kWidgetManagerDidUpdateWidgetNotification
                         }
 
                     } failure:^(NSError *error) {

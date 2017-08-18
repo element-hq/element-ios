@@ -31,9 +31,10 @@ FOUNDATION_EXPORT NSString *const kWidgetEventTypeString;
 FOUNDATION_EXPORT NSString *const kWidgetTypeJitsi;
 
 /**
- Posted when a widget has been created, updated or removed.
+ Posted when a widget has been created, updated or disabled.
+ The notification object is the `Widget` instance.
  */
-FOUNDATION_EXPORT NSString *const kMXKWidgetManagerDidUpdateWidgetNotification;
+FOUNDATION_EXPORT NSString *const kWidgetManagerDidUpdateWidgetNotification;
 
 /**
  `WidgetManager` NSError domain and codes.
@@ -131,7 +132,7 @@ WidgetManagerErrorCode;
 /**
  Add/remove matrix session.
  
- Registering session allows to generate `kMXKWidgetManagerDidUpdateWidgetNotification` notifications.
+ Registering session allows to generate `kWidgetManagerDidUpdateWidgetNotification` notifications.
  
  @param mxSession the session to add/remove.
  */

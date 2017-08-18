@@ -21,7 +21,7 @@
 NSString *const kWidgetEventTypeString = @"im.vector.modular.widgets";
 NSString *const kWidgetTypeJitsi = @"jitsi";
 
-NSString *const kMXKWidgetManagerDidUpdateWidgetNotification = @"kMXKWidgetManagerDidUpdateWidgetNotification";
+NSString *const kWidgetManagerDidUpdateWidgetNotification = @"kWidgetManagerDidUpdateWidgetNotification";
 
 NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
@@ -283,7 +283,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                 }
 
                 // Broadcast the generic notification
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKWidgetManagerDidUpdateWidgetNotification object:widget];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kWidgetManagerDidUpdateWidgetNotification object:widget];
             }
             else
             {
