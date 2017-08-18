@@ -60,6 +60,7 @@
 {
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -1,3 +1,11 @@
+Changes in 0.5.2 (2017-08-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.6.1).
+ * Emojis: Boost size of messages containing only emojis (not only one).
+ * Bug Report: Make the crash dump appear in GH issues created for crashes
+
 Changes in 0.5.1 (2017-08-01)
 ===============================================
 

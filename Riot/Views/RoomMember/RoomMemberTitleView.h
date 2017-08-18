@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomMemberTitleView : UIView
+@interface RoomMemberTitleView : MXKView
 
 /**
  *  Returns the `UINib` object initialized for the room member title view.

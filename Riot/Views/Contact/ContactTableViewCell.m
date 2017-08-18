@@ -42,15 +42,21 @@
 {
     [super awakeFromNib];
     
-    // apply the vector colours
-    self.contactInformationLabel.textColor = kRiotTextColorGray;
-    
-    // Clear the default background color of a MXKImageView instance
-    self.thumbnailView.backgroundColor = [UIColor clearColor];
-    
     // Disable by default interactions defined in the cell
     // because we want [tableView didSelectRowAtIndexPath:] to be called
     self.thumbnailView.userInteractionEnabled = NO;
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
+    
+    // apply the vector colours
+    self.contactDisplayNameLabel.textColor = kRiotPrimaryTextColor;
+    self.contactInformationLabel.textColor = kRiotSecondaryTextColor;
+    
+    // Clear the default background color of a MXKImageView instance
+    self.thumbnailView.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutSubviews
