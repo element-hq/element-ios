@@ -23,13 +23,13 @@
 
 @implementation MessagesSearchResultAttachmentBubbleCell
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kRiotTextColorBlack;
+    self.userNameLabel.textColor = kRiotPrimaryTextColor;
     
-    self.roomNameLabel.textColor = kRiotTextColorGray;
+    self.roomNameLabel.textColor = kRiotSecondaryTextColor;
     
     self.messageTextView.tintColor = kRiotColorGreen;
 }

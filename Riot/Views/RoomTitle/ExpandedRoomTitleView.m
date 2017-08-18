@@ -32,9 +32,14 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+}
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
     
-    self.displayNameTextField.textColor = kRiotTextColorBlack;
-    self.roomTopic.textColor = kRiotTextColorDarkGray;
+    self.displayNameTextField.textColor = (self.mxRoom.riotDisplayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
+    self.roomTopic.textColor = kRiotTopicTextColor;
     self.roomMembers.textColor = kRiotColorGreen;
 }
 
@@ -48,11 +53,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-            self.displayNameTextField.textColor = kRiotTextColorGray;
+            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
         }
         else
         {
-            self.displayNameTextField.textColor = kRiotTextColorBlack;
+            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
         }
         
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];

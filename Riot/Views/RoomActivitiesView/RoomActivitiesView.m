@@ -96,9 +96,6 @@
 {
     [super awakeFromNib];
     
-    self.separatorView.backgroundColor = kRiotColorLightGrey;
-    self.messageLabel.textColor = kRiotTextColorGray;
-    
     // Adjust text view
     // Remove the container inset: this operation impacts only the vertical margin.
     // Reset textContainer.lineFragmentPadding to remove horizontal margin.
@@ -107,6 +104,21 @@
 
     xibMainHeightConstraint = self.mainHeightConstraint.constant;
 }
+
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.separatorView.backgroundColor = kRiotSecondaryBgColor;
+    if (self.messageLabel.textColor != kRiotColorPinkRed)
+    {
+        self.messageLabel.textColor = kRiotSecondaryTextColor;
+    }
+}
+
+#pragma mark -
 
 - (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
 {
@@ -199,17 +211,31 @@
     [self checkHeight:YES];
 }
 
-- (void)displayOngoingConferenceCall:(void (^)(BOOL))onOngoingConferenceCallPressed
+- (void)displayOngoingConferenceCall:(void (^)(BOOL))onOngoingConferenceCallPressed onClosePressed:(void (^)(void))onOngoingConferenceCallClosePressed
 {
     [self reset];
 
     objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed", [onOngoingConferenceCallPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
     // Build the string to display in the banner
-    NSString *onGoingConferenceCall =
-    [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil),
-     NSLocalizedStringFromTable(@"voice", @"Vector", nil),
-     NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+    NSString *onGoingConferenceCall;
+
+    if (!onOngoingConferenceCallClosePressed)
+    {
+        onGoingConferenceCall = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"voice", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+    }
+    else
+    {
+        // Display the banner with a "Close it" string
+        objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallClosePressed", [onOngoingConferenceCallClosePressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+        onGoingConferenceCall = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call_with_close", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"voice", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"video", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"room_ongoing_conference_call_close", @"Vector", nil)];
+    }
 
     NSMutableAttributedString *onGoingConferenceCallAttibutedString = [[NSMutableAttributedString alloc] initWithString:onGoingConferenceCall];
 
@@ -223,14 +249,22 @@
     [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:videoRange];
     [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVideoPressed" range:videoRange];
 
+    // Add a link on the "Close" string
+    if (onOngoingConferenceCallClosePressed)
+    {
+        NSRange closeRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"room_ongoing_conference_call_close", @"Vector", nil)];
+        [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:closeRange];
+        [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallClosePressed" range:closeRange];
+    }
+
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
-    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:kRiotPrimaryBgColor range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
 
     self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
-    self.messageTextView.tintColor = UIColor.whiteColor;
+    self.messageTextView.tintColor = kRiotPrimaryBgColor;
     self.messageTextView.hidden = NO;
 
     self.backgroundColor = kRiotColorPinkRed;
@@ -321,7 +355,7 @@
     [self.messageTextView resignFirstResponder];
     self.messageTextView.hidden = YES;
     
-    self.messageLabel.textColor = kRiotTextColorGray;
+    self.messageLabel.textColor = kRiotSecondaryTextColor;
 
     objc_removeAssociatedObjects(self.messageTextView);
 }
@@ -370,7 +404,16 @@
 
         return NO;
     }
-    return YES;
+    else if ([[URL absoluteString] isEqualToString:@"onOngoingConferenceCallClosePressed"])
+    {
+        void (^onOngoingConferenceCallClosePressed)(BOOL) = objc_getAssociatedObject(self.messageTextView, "onOngoingConferenceCallClosePressed");
+        if (onOngoingConferenceCallClosePressed)
+        {
+            onOngoingConferenceCallClosePressed(YES);
+        }
+
+        return NO;
+    }    return YES;
 }
 
 #pragma mark - UIGestureRecognizerDelegate

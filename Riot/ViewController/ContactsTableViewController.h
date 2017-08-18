@@ -78,6 +78,11 @@
 @property (nonatomic) NSString *screenName;
 
 /**
+ Callback used to take into account the change of the user interface theme.
+ */
+- (void)userInterfaceThemeDidChange;
+
+/**
  Refresh the cell selection in the table.
  
  This must be done accordingly to the currently selected contact in the master tabbar of the application.

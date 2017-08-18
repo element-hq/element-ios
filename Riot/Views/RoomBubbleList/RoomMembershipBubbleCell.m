@@ -32,10 +32,15 @@
 {
     [super awakeFromNib];
 
-    self.messageTextView.tintColor = kRiotColorGreen;
-
     // Get original xib values
     xibPictureViewTopConstraintConstant = self.pictureViewTopConstraint.constant;
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
+    
+    self.messageTextView.tintColor = kRiotColorGreen;
 }
 
 - (void)prepareForReuse

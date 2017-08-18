@@ -48,6 +48,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     NSInteger shrinkedSectionsBitMask;
 
     UIView *directorySectionContainer;
+    UILabel *networkLabel;
     UILabel *directoryServerLabel;
 
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
@@ -394,7 +395,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
         
         NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
         [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
                                                                                     attributes:@{NSForegroundColorAttributeName : kRiotColorSilver,
@@ -405,7 +406,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (title)
     {
         sectionTitle = [[NSAttributedString alloc] initWithString:title
-                                               attributes:@{NSForegroundColorAttributeName : kRiotTextColorBlack,
+                                               attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
                                                             NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
     }
     
@@ -444,7 +445,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (count)
     {
         UILabel *missedNotifAndUnreadBadgeLabel = [[UILabel alloc] init];
-        missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
+        missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
         missedNotifAndUnreadBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
         if (count > 1000)
         {
@@ -491,7 +492,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = kRiotColorLightGrey;
+    sectionHeader.backgroundColor = kRiotSecondaryBgColor;
     NSInteger sectionBitwise = 0;
     UIImageView *chevronView;
     UIView *accessoryView;
@@ -598,9 +599,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
 
             // Add the "Network" label at the left
-            UILabel *networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
+            networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
             networkLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            networkLabel.textColor = kRiotTextColorBlack;
             networkLabel.font = [UIFont systemFontOfSize:16.0];
             networkLabel.text = NSLocalizedStringFromTable(@"room_recents_directory_section_network", @"Vector", nil);
             [directorySectionContainer addSubview:networkLabel];
@@ -608,7 +608,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             // Add label for selected directory server
             directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, containerWidth - 32, 30)];
             directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            directoryServerLabel.textColor = kRiotTextColorGray;
             directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
             directoryServerLabel.textAlignment = NSTextAlignmentRight;
             [directorySectionContainer addSubview:directoryServerLabel];
@@ -725,6 +724,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
             [NSLayoutConstraint activateConstraints:@[trailingConstraint, centerYConstraint, widthConstraint, heightConstraint]];
         }
+        
+        // Apply the current UI theme.
+        networkLabel.textColor = kRiotPrimaryTextColor;
+        directoryServerLabel.textColor = kRiotSecondaryTextColor;
 
         // Set the current directory server name
         directoryServerLabel.text = _publicRoomsDirectoryDataSource.directoryServerDisplayname;
@@ -815,7 +818,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.textColor = kRiotSecondaryTextColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }

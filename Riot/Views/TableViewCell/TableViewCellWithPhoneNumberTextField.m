@@ -16,9 +16,21 @@
 
 #import "TableViewCellWithPhoneNumberTextField.h"
 
+#import "RiotDesignValues.h"
+
 #import "NBPhoneNumberUtil.h"
 
 @implementation TableViewCellWithPhoneNumberTextField
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
+    
+    self.mxkLabel.textColor = kRiotPrimaryTextColor;
+    self.mxkTextField.textColor = kRiotPrimaryTextColor;
+    
+    _isoCountryCodeLabel.textColor = kRiotPrimaryTextColor;
+}
 
 - (void)setIsoCountryCode:(NSString *)isoCountryCode
 {

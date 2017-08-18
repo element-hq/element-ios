@@ -22,9 +22,9 @@
 
 @implementation RoomMembershipExpandedWithPaginationTitleBubbleCell
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
 
     self.paginationLabel.textColor = kRiotColorGreen;
     self.paginationSeparatorView.backgroundColor = kRiotColorGreen;

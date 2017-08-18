@@ -28,11 +28,17 @@ NSString *const kRoomMembershipExpandedBubbleCellTapOnCollapseButton = @"kRoomMe
 {
     [super awakeFromNib];
 
-    self.separatorView.backgroundColor = kRiotColorLightGrey;
-
     NSString* title = NSLocalizedStringFromTable(@"collapse", @"Vector", nil);
     [self.collapseButton setTitle:title forState:UIControlStateNormal];
     [self.collapseButton setTitle:title forState:UIControlStateHighlighted];
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
+    
+    self.separatorView.backgroundColor = kRiotSecondaryBgColor;
+    
     [self.collapseButton setTintColor:kRiotColorGreen];
     self.collapseButton.titleLabel.font = [UIFont systemFontOfSize:14];
 }
