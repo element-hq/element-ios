@@ -425,4 +425,14 @@
     _selectedEventId = selectedEventId;
 }
 
+- (Widget *)jitsiWidget
+{
+    Widget *jitsiWidget;
+
+    // Note: Manage only one jitsi widget at a time for the moment
+    jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room].firstObject;
+
+    return jitsiWidget;
+}
+
 @end

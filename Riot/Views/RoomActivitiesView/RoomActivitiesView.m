@@ -211,17 +211,31 @@
     [self checkHeight:YES];
 }
 
-- (void)displayOngoingConferenceCall:(void (^)(BOOL))onOngoingConferenceCallPressed
+- (void)displayOngoingConferenceCall:(void (^)(BOOL))onOngoingConferenceCallPressed onClosePressed:(void (^)(void))onOngoingConferenceCallClosePressed
 {
     [self reset];
 
     objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed", [onOngoingConferenceCallPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
     // Build the string to display in the banner
-    NSString *onGoingConferenceCall =
-    [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil),
-     NSLocalizedStringFromTable(@"voice", @"Vector", nil),
-     NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+    NSString *onGoingConferenceCall;
+
+    if (!onOngoingConferenceCallClosePressed)
+    {
+        onGoingConferenceCall = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"voice", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+    }
+    else
+    {
+        // Display the banner with a "Close it" string
+        objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallClosePressed", [onOngoingConferenceCallClosePressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+        onGoingConferenceCall = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call_with_close", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"voice", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"video", @"Vector", nil),
+                                 NSLocalizedStringFromTable(@"room_ongoing_conference_call_close", @"Vector", nil)];
+    }
 
     NSMutableAttributedString *onGoingConferenceCallAttibutedString = [[NSMutableAttributedString alloc] initWithString:onGoingConferenceCall];
 
@@ -234,6 +248,14 @@
     NSRange videoRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"video", @"Vector", nil)];
     [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:videoRange];
     [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVideoPressed" range:videoRange];
+
+    // Add a link on the "Close" string
+    if (onOngoingConferenceCallClosePressed)
+    {
+        NSRange closeRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"room_ongoing_conference_call_close", @"Vector", nil)];
+        [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:closeRange];
+        [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallClosePressed" range:closeRange];
+    }
 
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
@@ -382,7 +404,16 @@
 
         return NO;
     }
-    return YES;
+    else if ([[URL absoluteString] isEqualToString:@"onOngoingConferenceCallClosePressed"])
+    {
+        void (^onOngoingConferenceCallClosePressed)(BOOL) = objc_getAssociatedObject(self.messageTextView, "onOngoingConferenceCallClosePressed");
+        if (onOngoingConferenceCallClosePressed)
+        {
+            onOngoingConferenceCallClosePressed(YES);
+        }
+
+        return NO;
+    }    return YES;
 }
 
 #pragma mark - UIGestureRecognizerDelegate
