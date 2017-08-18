@@ -132,16 +132,19 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
 
 - (void)conferenceLeft:(NSDictionary *)data
 {
-    // The conference is over. Let the delegate close this view controller.
-    if (_delegate)
-    {
-        [_delegate jitsiViewController:self dismissViewJitsiController:nil];
-    }
-    else
-    {
-        // Do it ourself
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        // The conference is over. Let the delegate close this view controller.
+        if (_delegate)
+        {
+            [_delegate jitsiViewController:self dismissViewJitsiController:nil];
+        }
+        else
+        {
+            // Do it ourself
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    });
 }
 
 @end
