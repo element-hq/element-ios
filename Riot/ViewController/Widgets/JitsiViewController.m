@@ -70,6 +70,11 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
         jitsiUrl = [NSString stringWithFormat:@"%@%@", kJitsiServerUrl, confId];
     }
 
+    if (!jitsiUrl)
+    {
+        NSLog(@"[JitsiVC] Failed to load widget: %@", widget);
+    }
+
     return (jitsiUrl != nil);
 }
 
@@ -98,6 +103,9 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
                                                  @"startWithVideoMuted": @(!video)
                                                  }
                                          }];
+
+    // TODO: Set up user info but it is not yet available in the jitsi-meet iOS SDK
+    // See https://github.com/jitsi/jitsi-meet/issues/1880
 }
 
 - (void)didReceiveMemoryWarning
@@ -120,8 +128,6 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
 - (void)conferenceFailed:(NSDictionary *)data
 {
     NSLog(@"[JitsiViewController] conferenceFailed - data: %@", data);
-
-    // @TODO: show something to the end user
 }
 
 - (void)conferenceLeft:(NSDictionary *)data

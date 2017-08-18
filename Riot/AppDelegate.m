@@ -2511,13 +2511,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         else
         {
-            // @TODO
             _jitsiViewController = nil;
+
+            NSError *error = [NSError errorWithDomain:@""
+                                                 code:0
+                                             userInfo:@{
+                                                        NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)
+                                                        }];
+            [self showErrorAsAlert:error];
         }
     }
     else
     {
-        // @TODO
+        NSError *error = [NSError errorWithDomain:@""
+                                    code:0
+                                userInfo:@{
+                                           NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)
+                                           }];
+        [self showErrorAsAlert:error];
     }
 }
 

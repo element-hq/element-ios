@@ -1,4 +1,6 @@
-jitsi-meet (https://github.com/jitsi/jitsi-meet) does not provide yet a pod for iOS SDK (https://github.com/jitsi/jitsi-meet/issues/1854). So, the framework is temporarly 
+jitsi-meet (https://github.com/jitsi/jitsi-meet) does not provide yet a pod for
+iOS SDK (https://github.com/jitsi/jitsi-meet/issues/1854). So, the framework is
+built as described below and it is temporarly added to the Xcode project.
 
 How to build JitsiMeet.framework:
 - clone https://github.com/jitsi/jitsi-meet

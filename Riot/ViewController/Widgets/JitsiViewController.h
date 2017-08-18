@@ -23,11 +23,10 @@
 @protocol JitsiViewControllerDelegate;
 
 /**
- The `JitsiViewController` is a specific VC for handling a jitsi widget using
+ The `JitsiViewController` is a VC for specifically handling a jitsi widget using the
  jitsi-meet iOS SDK instead of displaying it in a webview like other scalar widgets.
  
  https://github.com/jitsi/jitsi-meet/tree/master/ios
- 
  */
 @interface JitsiViewController : MXKViewController <JitsiMeetViewDelegate>
 

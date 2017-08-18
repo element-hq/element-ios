@@ -472,6 +472,8 @@
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";
 "call_incoming_video_prompt" = "Incoming video call from %@";
+"call_already_displayed" = "There is already a call in progress.";
+"call_jitsi_error" = "Failed to join the conference call.";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";
