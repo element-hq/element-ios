@@ -2689,6 +2689,7 @@
 {
      __weak __typeof(self) weakSelf = self;
 
+#ifdef USE_JITSI_WIDGET
     // If there is already a jitsi widget, join it
     Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
     if (jitsiWidget)
@@ -2725,9 +2726,11 @@
              }
          }];
     }
+    else
+#endif
 
     // Classic conference call is not supported in encrypted rooms
-    else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.joinedMembers.count > 2)
+    if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.joinedMembers.count > 2)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
@@ -3459,6 +3462,7 @@
                 } onClosePressed:nil];
             }
         }
+#ifdef USE_JITSI_WIDGET
         else if (jitsiWidget)
         {
             // The room has an active jitsi widget
@@ -3528,6 +3532,7 @@
                 }];
             }
         }
+#endif
         else if ([self checkUnsentMessages] == NO)
         {
             // Show "scroll to bottom" icon when the most recent message is not visible,
