@@ -38,6 +38,8 @@
 		327382C21F276AED00356143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BC1F276AED00356143 /* InfoPlist.strings */; };
 		327382C31F276AED00356143 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BE1F276AED00356143 /* Localizable.strings */; };
 		327382C41F276AED00356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
+		32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA51F473BDB0076CA16 /* Localizable.strings */; };
+		32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA71F473BDB0076CA16 /* Vector.strings */; };
 		32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */; };
 		32AE61E51F0A971B007255F4 /* RoomMembershipBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */; };
 		32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E71F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m */; };
@@ -563,6 +565,8 @@
 		327382BD1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		327382BF1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		327382C11F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vector.strings; sourceTree = "<group>"; };
+		32918EA61F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
+		32918EA81F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Vector.strings; sourceTree = "<group>"; };
 		32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCell.h; sourceTree = "<group>"; };
 		32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipBubbleCell.m; sourceTree = "<group>"; };
 		32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipBubbleCell.xib; sourceTree = "<group>"; };
@@ -1253,6 +1257,15 @@
 			path = en.lproj;
 			sourceTree = "<group>";
 		};
+		32918EA41F473BDB0076CA16 /* ru.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				32918EA51F473BDB0076CA16 /* Localizable.strings */,
+				32918EA71F473BDB0076CA16 /* Vector.strings */,
+			);
+			path = ru.lproj;
+			sourceTree = "<group>";
+		};
 		32AE61EB1F0D2183007255F4 /* nl.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -1331,6 +1344,7 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				32918EA41F473BDB0076CA16 /* ru.lproj */,
 				327382A71F276AD200356143 /* de.lproj */,
 				327382BB1F276AED00356143 /* en.lproj */,
 				327382AE1F276AD200356143 /* fr.lproj */,
@@ -2242,6 +2256,7 @@
 				nl,
 				de,
 				fr,
+				ru,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -2284,6 +2299,7 @@
 				F083BD441E7009ED00A9B29C /* call_speaker_on_icon@3x.png in Resources */,
 				F0614A0F1EDDCCE700F5DC9A /* jump_to_unread@3x.png in Resources */,
 				F083BE511E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
+				32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */,
 				F083BDAE1E7009ED00A9B29C /* plus_icon@2x.png in Resources */,
 				F0E05A401EA0F9EB004B83FB /* tab_people@2x.png in Resources */,
 				F083BD5A1E7009ED00A9B29C /* chevron@2x.png in Resources */,
@@ -2381,6 +2397,7 @@
 				F083BD811E7009ED00A9B29C /* favourite@2x.png in Resources */,
 				F0A4A1681EF7CB66003630DB /* members_list_icon@2x.png in Resources */,
 				F083BD9F1E7009ED00A9B29C /* mod_icon@2x.png in Resources */,
+				32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */,
 				F083BD801E7009ED00A9B29C /* favourite.png in Resources */,
 				F083BD4B1E7009ED00A9B29C /* camera_capture.png in Resources */,
 				F083BD841E7009ED00A9B29C /* favouriteOff@2x.png in Resources */,
@@ -2905,6 +2922,22 @@
 			isa = PBXVariantGroup;
 			children = (
 				327382C11F276AED00356143 /* en */,
+			);
+			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		32918EA51F473BDB0076CA16 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32918EA61F473BDB0076CA16 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		32918EA71F473BDB0076CA16 /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32918EA81F473BDB0076CA16 /* ru */,
 			);
 			name = Vector.strings;
 			sourceTree = "<group>";
