@@ -8,7 +8,7 @@ target "Riot" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Riot has been built
-pod 'MatrixKit', '0.6.0'
+pod 'MatrixKit', '0.6.1'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'

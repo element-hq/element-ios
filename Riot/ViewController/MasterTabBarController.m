@@ -49,6 +49,9 @@
     
     // Keep reference on the pushed view controllers to release them correctly
     NSMutableArray *childViewControllers;
+    
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -70,9 +73,7 @@
     
     // Sanity check
     NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController, @"Something wrong in Main.storyboard");
-    
-    self.tabBar.tintColor = kRiotColorGreen;
-    
+
     // Adjust the display of the icons in the tabbar.
     for (UITabBarItem *tabBarItem in self.tabBar.items)
     {
@@ -83,6 +84,29 @@
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.tabBar.tintColor = kRiotColorGreen;
+    self.tabBar.barTintColor = kRiotSecondaryBgColor;
+    
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+    
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -170,6 +194,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
         authViewControllerObserver = nil;
+    }
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
     }
     
     childViewControllers = nil;
@@ -640,7 +670,7 @@
 {
     _hidden = hidden;
     
-    [self.view superview].backgroundColor = [UIColor whiteColor];
+    [self.view superview].backgroundColor = kRiotPrimaryBgColor;
     self.view.hidden = hidden;
     self.navigationController.navigationBar.hidden = hidden;
 }

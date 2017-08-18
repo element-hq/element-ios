@@ -26,6 +26,14 @@
 
 #import "MXRoom+Riot.h"
 
+@interface RoomDataSource()
+{
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+}
+
+@end
+
 @implementation RoomDataSource
 
 - (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
@@ -36,14 +44,8 @@
         // Replace default Cell data class
         [self registerCellDataClass:RoomBubbleCellData.class forCellIdentifier:kMXKRoomBubbleCellDataIdentifier];
         
-        // Replace event formatter
-        self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
-        self.eventFormatter.treatMatrixUserIdAsLink = YES;
-        self.eventFormatter.treatMatrixRoomIdAsLink = YES;
-        self.eventFormatter.treatMatrixRoomAliasAsLink = YES;
-        
-        // Apply the event types filter to display only the wanted event types.
-        self.eventFormatter.eventTypesFilterForMessages = [MXKAppSettings standardAppSettings].eventsFilterForMessages;
+        // Replace the event formatter
+        [self updateEventFormatter];
 
         // Handle timestamp and read receips display at Vector app level (see [tableView: cellForRowAtIndexPath:])
         self.useCustomDateTimeLabel = YES;
@@ -54,8 +56,41 @@
         self.bubblesPagination = MXKRoomDataSourceBubblesPaginationPerDay;
         
         self.markTimelineInitialEvent = NO;
+        
+        // Observe user interface theme change.
+        kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            // Force room data reload.
+            [self updateEventFormatter];
+            [self reload];
+            
+        }];
     }
     return self;
+}
+
+- (void)updateEventFormatter
+{
+    // Set a new event formatter
+    // TODO: We should use the same EventFormatter instance for all the rooms of a mxSession.
+    self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
+    self.eventFormatter.treatMatrixUserIdAsLink = YES;
+    self.eventFormatter.treatMatrixRoomIdAsLink = YES;
+    self.eventFormatter.treatMatrixRoomAliasAsLink = YES;
+    
+    // Apply the event types filter to display only the wanted event types.
+    self.eventFormatter.eventTypesFilterForMessages = [MXKAppSettings standardAppSettings].eventsFilterForMessages;
+}
+
+- (void)destroy
+{
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
+    
+    [super destroy];
 }
 
 - (void)didReceiveReceiptEvent:(MXEvent *)receiptEvent roomState:(MXRoomState *)roomState
@@ -388,6 +423,16 @@
     }
     
     _selectedEventId = selectedEventId;
+}
+
+- (Widget *)jitsiWidget
+{
+    Widget *jitsiWidget;
+
+    // Note: Manage only one jitsi widget at a time for the moment
+    jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room].firstObject;
+
+    return jitsiWidget;
 }
 
 @end

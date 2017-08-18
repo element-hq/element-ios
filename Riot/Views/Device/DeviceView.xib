@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="8VI-1E-fge" customClass="DeviceView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D7c-Zw-n8I">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c3W-Ma-n01">
+                    <rect key="frame" x="10" y="74" width="580" height="250"/>
+                    <subviews>
+                        <textView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Vk-Jx-L6Y">
+                            <rect key="frame" x="10" y="10" width="560" height="190"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ump-1C-SzI">
+                            <rect key="frame" x="57.5" y="210" width="30" height="30"/>
+                            <state key="normal" title="OK">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="t42-2S-MsY"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o3Z-D3-2S3">
+                            <rect key="frame" x="335" y="210" width="56" height="30"/>
+                            <state key="normal" title="Rename">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="hbe-VP-vE5"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qkC-t0-Qd0">
+                            <rect key="frame" x="485" y="210" width="45" height="30"/>
+                            <state key="normal" title="Delete">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onButtonPressed:" destination="8VI-1E-fge" eventType="touchUpInside" id="ljK-ul-fY2"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="3Vk-Jx-L6Y" firstAttribute="leading" secondItem="c3W-Ma-n01" secondAttribute="leading" constant="10" id="ECh-zm-rMb"/>
+                        <constraint firstAttribute="trailing" secondItem="3Vk-Jx-L6Y" secondAttribute="trailing" constant="10" id="J2X-t1-Wuo"/>
+                        <constraint firstItem="qkC-t0-Qd0" firstAttribute="top" secondItem="3Vk-Jx-L6Y" secondAttribute="bottom" constant="10" id="QLy-iD-ead"/>
+                        <constraint firstAttribute="bottom" secondItem="o3Z-D3-2S3" secondAttribute="bottom" constant="10" id="RLg-NE-JtP"/>
+                        <constraint firstAttribute="centerX" secondItem="Ump-1C-SzI" secondAttribute="centerX" multiplier="4" id="anR-Ea-ml6"/>
+                        <constraint firstAttribute="bottom" secondItem="qkC-t0-Qd0" secondAttribute="bottom" constant="10" id="eJw-AZ-Okc"/>
+                        <constraint firstItem="3Vk-Jx-L6Y" firstAttribute="top" secondItem="c3W-Ma-n01" secondAttribute="top" constant="10" id="ej1-zq-aDf"/>
+                        <constraint firstAttribute="centerX" secondItem="o3Z-D3-2S3" secondAttribute="centerX" multiplier="4/5" id="h0U-I5-5dA"/>
+                        <constraint firstAttribute="bottom" secondItem="Ump-1C-SzI" secondAttribute="bottom" constant="10" id="kLj-CN-wSG"/>
+                        <constraint firstAttribute="height" priority="750" constant="250" id="rtj-ON-bkY"/>
+                        <constraint firstAttribute="centerX" secondItem="qkC-t0-Qd0" secondAttribute="centerX" multiplier="4/7" id="s2R-r3-jqz"/>
+                    </constraints>
+                </view>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4za-i5-u2D">
+                    <rect key="frame" x="290" y="290" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="D7c-Zw-n8I" firstAttribute="top" secondItem="8VI-1E-fge" secondAttribute="top" id="9Md-NO-OM3"/>
+                <constraint firstAttribute="trailing" secondItem="c3W-Ma-n01" secondAttribute="trailing" constant="10" id="F6j-Ia-5EQ"/>
+                <constraint firstItem="D7c-Zw-n8I" firstAttribute="leading" secondItem="8VI-1E-fge" secondAttribute="leading" id="Gzh-sa-sB4"/>
+                <constraint firstItem="c3W-Ma-n01" firstAttribute="height" relation="lessThanOrEqual" secondItem="8VI-1E-fge" secondAttribute="height" constant="-20" id="OE8-Ll-IX0"/>
+                <constraint firstItem="4za-i5-u2D" firstAttribute="centerX" secondItem="8VI-1E-fge" secondAttribute="centerX" id="SGT-wg-tcC"/>
+                <constraint firstItem="c3W-Ma-n01" firstAttribute="top" secondItem="8VI-1E-fge" secondAttribute="top" constant="74" id="a6K-LL-lzT"/>
+                <constraint firstItem="4za-i5-u2D" firstAttribute="centerY" secondItem="8VI-1E-fge" secondAttribute="centerY" id="gjb-ga-edx"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="c3W-Ma-n01" secondAttribute="bottom" constant="10" id="oD7-T4-DuW"/>
+                <constraint firstAttribute="bottom" secondItem="D7c-Zw-n8I" secondAttribute="bottom" id="qda-fo-h6c"/>
+                <constraint firstItem="c3W-Ma-n01" firstAttribute="leading" secondItem="8VI-1E-fge" secondAttribute="leading" constant="10" id="ryV-yq-aqs"/>
+                <constraint firstAttribute="trailing" secondItem="D7c-Zw-n8I" secondAttribute="trailing" id="wCd-aV-jjY"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="activityIndicator" destination="4za-i5-u2D" id="IH9-BZ-e26"/>
+                <outlet property="bgView" destination="D7c-Zw-n8I" id="iQs-LG-SpD"/>
+                <outlet property="cancelButton" destination="Ump-1C-SzI" id="U8M-nT-JiK"/>
+                <outlet property="containerView" destination="c3W-Ma-n01" id="Stk-lk-Wew"/>
+                <outlet property="deleteButton" destination="qkC-t0-Qd0" id="bRu-al-rte"/>
+                <outlet property="renameButton" destination="o3Z-D3-2S3" id="4tr-TC-EcJ"/>
+                <outlet property="textView" destination="3Vk-Jx-L6Y" id="uOw-Bq-neN"/>
+            </connections>
+        </view>
+    </objects>
+</document>

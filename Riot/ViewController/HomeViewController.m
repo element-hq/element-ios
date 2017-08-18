@@ -410,6 +410,8 @@
         }
     }
     
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
     return cell;
 }
 
