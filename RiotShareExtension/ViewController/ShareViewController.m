@@ -63,6 +63,9 @@
 
 - (void)prepareSession
 {
+    // Apply the application group
+    [MXKAppSettings standardAppSettings].applicationGroup = @"group.im.vector";
+    
     // Prepare account manager
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
