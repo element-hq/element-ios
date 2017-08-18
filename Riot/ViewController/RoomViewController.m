@@ -2697,7 +2697,7 @@
     }
 
     // If enabled, create the conf using jitsi widget and open it directly
-    else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"useJitsiForConferenceCalls"]
+    else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"createConferenceCallsWithJitsi"]
              && self.roomDataSource.room.state.joinedMembers.count > 2)
     {
         [self startActivityIndicator];

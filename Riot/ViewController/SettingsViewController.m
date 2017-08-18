@@ -1918,8 +1918,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_jitsi_conference", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"useJitsiForConferenceCalls"];
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"createConferenceCallsWithJitsi"];
 
             [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
@@ -2647,7 +2647,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         UISwitch *switchButton = (UISwitch*)sender;
 
-        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"useJitsiForConferenceCalls"];
+        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"createConferenceCallsWithJitsi"];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
         [self.tableView reloadData];
