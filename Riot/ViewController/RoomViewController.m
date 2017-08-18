@@ -2659,118 +2659,123 @@
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
-    // If there is a already a jitsi widget, join it
-    Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
-    if (jitsiWidget)
-    {
-        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    __weak __typeof(self) weakSelf = self;
 
-        // Check app permissions before placing the call
-        [MXKTools checkAccessForCall:video
-         manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
-         manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
-           showPopUpInViewController:self completionHandler:^(BOOL granted) {
+    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+    // Check app permissions first
+    [MXKTools checkAccessForCall:video
+     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
+     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+       showPopUpInViewController:self completionHandler:^(BOOL granted) {
+
+           if (weakSelf)
+           {
+               typeof(self) self = weakSelf;
 
                if (granted)
                {
-                   [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+                   [self roomInputToolbarView:toolbarView placeCallWithVideo2:video];
                }
                else
                {
                    NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
                }
-           }];
+           }
+       }];
+}
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo2:(BOOL)video
+{
+     __weak __typeof(self) weakSelf = self;
+
+    // If there is already a jitsi widget, join it
+    Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+    if (jitsiWidget)
+    {
+        [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
     }
 
-    // Create the conf using jitsi widget and open it directly
-    else if (self.roomDataSource.room.state.joinedMembers.count > 2
-             && [[NSUserDefaults standardUserDefaults] boolForKey:@"useJitsiForConferenceCalls"])
+    // If enabled, create the conf using jitsi widget and open it directly
+    else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"useJitsiForConferenceCalls"]
+             && self.roomDataSource.room.state.joinedMembers.count > 2)
     {
-        __weak __typeof(self) weakSelf = self;
+        [self startActivityIndicator];
 
         [[WidgetManager sharedManager] createJitsiWidgetInRoom:self.roomDataSource.room
                                                      withVideo:video
-                                                       success:^(Widget *jitsiWidget) {
-                                                           if (weakSelf)
-                                                           {
-                                                               [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
-                                                           }
-                                                       }
-                                                       failure:^(NSError *error) {
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               [self showJitsiErrorAsAlert:error];
-                                                           }
-                                                       }];
+                                                       success:^(Widget *jitsiWidget)
+         {
+             if (weakSelf)
+             {
+                 typeof(self) self = weakSelf;
+                 [self stopActivityIndicator];
+
+                 [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+             }
+         }
+                                                       failure:^(NSError *error)
+         {
+             if (weakSelf)
+             {
+                 typeof(self) self = weakSelf;
+                 [self stopActivityIndicator];
+
+                 [self showJitsiErrorAsAlert:error];
+             }
+         }];
     }
 
-    // Conference call is not supported in encrypted rooms
+    // Classic conference call is not supported in encrypted rooms
     else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.joinedMembers.count > 2)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        __weak __typeof(self) weakSelf = self;
+
         currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_conference_call_in_encrypted_rooms"]  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        
+
         [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                          style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                           }
-                                                           
-                                                       }]];
-        
+                                                       handler:^(UIAlertAction * action)
+                                 {
+                                     if (weakSelf)
+                                     {
+                                         typeof(self) self = weakSelf;
+                                         self->currentAlert = nil;
+                                     }
+
+                                 }]];
+
         [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
         [self presentViewController:currentAlert animated:YES completion:nil];
     }
+
     // In case of conference call, check that the user has enough power level
     else if (self.roomDataSource.room.state.joinedMembers.count > 2 &&
              ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room])
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        __weak __typeof(self) weakSelf = self;
+
         currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_power_to_create_conference_call"]  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        
+
         [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                          style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                           }
-                                                           
-                                                       }]];
-        
+                                                       handler:^(UIAlertAction * action)
+                                 {
+                                     if (weakSelf)
+                                     {
+                                         typeof(self) self = weakSelf;
+                                         self->currentAlert = nil;
+                                     }
+                                 }]];
+
         [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
         [self presentViewController:currentAlert animated:YES completion:nil];
     }
+
+    // Classic 1:1 or group call can be done
     else
     {
-        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-        
-        // Check app permissions before placing the call
-        [MXKTools checkAccessForCall:video
-         manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
-         manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
-           showPopUpInViewController:self completionHandler:^(BOOL granted) {
-               
-               if (granted)
-               {
-                   [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
-               }
-               else
-               {
-                   NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
-               }
-           }];
+        [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
     }
 }
 
@@ -3472,8 +3477,29 @@
 
                     NSLog(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
 
-                    // Present the Jitsi view controller
-                    [appDelegate displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+                    __weak __typeof(self) weakSelf = self;
+                    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+                    // Check app permissions first
+                    [MXKTools checkAccessForCall:video
+                     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
+                     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+                       showPopUpInViewController:self completionHandler:^(BOOL granted) {
+
+                           if (weakSelf)
+                           {
+                               if (granted)
+                               {
+                                   // Present the Jitsi view controller
+                                   [appDelegate displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+                               }
+                               else
+                               {
+                                   NSLog(@"[RoomVC] onOngoingConferenceCallPressed: Warning: The application does not have the perssion to join the call");
+                               }
+                           }
+                       }];
+
                 } onClosePressed:^{
 
                     [self startActivityIndicator];
