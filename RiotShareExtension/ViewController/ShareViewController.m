@@ -24,9 +24,11 @@
 
 @interface ShareViewController ()
 
-@property (nonatomic) NSArray <MXRoom *> *rooms;
+// The current user account
+@property (nonatomic) MXKAccount *userAccount;
+@property (nonatomic) id removedAccountObserver;
 
-@property (nonatomic) MXKRecentsDataSource *recentsDataSource;
+@property (nonatomic) NSArray <MXRoom *> *rooms;
 
 @property (weak, nonatomic) IBOutlet UIView *masterContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *tittleLabel;
@@ -47,16 +49,35 @@
     [super viewDidLoad];
     
     [self prepareSession];
-    [self configureViews];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSessionSync:) name:kMXSessionDidSyncNotification object:nil];
+    [self configureViews];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Add observer to handle removed accounts
+    self.removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self checkUserAccount];
+    }];
+    
+    [self checkUserAccount];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // Remove listener
+    if (self.removedAccountObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.removedAccountObserver];
+        self.removedAccountObserver = nil;
+    }
+    
+    [self.userAccount pauseInBackgroundTask];
 }
 
 #pragma mark - Private
@@ -66,28 +87,71 @@
     // Apply the application group
     [MXKAppSettings standardAppSettings].applicationGroup = @"group.im.vector";
     
-    // Prepare account manager
-    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
-    
-    // Use MXFileStore as MXStore to permanently store events.
-    accountManager.storeClass = [MXFileStore class];
-    
-    // Start a matrix session for each enabled accounts.
-    NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts");
-    [accountManager prepareSessionForActiveAccounts];
-    
-    // Resume all existing matrix sessions
-    NSArray *mxAccounts = accountManager.activeAccounts;
-    for (MXKAccount *account in mxAccounts)
+    // We consider for now the first enabled account.
+    // TODO: Handle multiple accounts
+    self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    if (self.userAccount)
     {
-        [account resume];
-        [self addMatrixSession:account.mxSession];
+        NSLog(@"[ShareViewController] openSession for %@ account", self.userAccount.mxCredentials.userId);
+        // Use MXFileStore as MXStore to permanently store events.
+        [self.userAccount openSessionWithStore:[[MXFileStore alloc] init]];
+        
+        [self addMatrixSession:self.userAccount.mxSession];
+    }
+}
+
+- (void)checkUserAccount
+{
+    // Force account manager to reload account from the local storage.
+    [[MXKAccountManager sharedManager] forceReloadAccounts];
+    
+    if (self.userAccount)
+    {
+        // Check whether the used account is still the first active one
+        MXKAccount *firstAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        // Compare the access token
+        if (!firstAccount || ![self.userAccount.mxCredentials.accessToken isEqualToString:firstAccount.mxCredentials.accessToken])
+        {
+            // Remove this account
+            [self removeMatrixSession:self.userAccount.mxSession];
+            [self.userAccount closeSession:YES];
+            self.userAccount = nil;
+        }
+    }
+    
+    if (self.userAccount)
+    {
+        // Resume the matrix session
+        [self.userAccount resume];
+    }
+    else
+    {
+        // Prepare a new session if a new account is available.
+        [self prepareSession];
+        
+        [self configureViews];
     }
 }
 
 - (void)configureViews
 {
     self.masterContainerView.layer.cornerRadius = 7;
+    
+    // Empty the content view
+    NSArray *subviews = self.contentView.subviews;
+    for (UIView *subview in subviews)
+    {
+        [subview removeFromSuperview];
+    }
+    
+    // Release the current segmented view controller if any
+    if (self.segmentedViewController)
+    {
+        // TODO: release correctly all the existing data source and view controllers...
+        [self.segmentedViewController destroy];
+        self.segmentedViewController = nil;
+    }
     
     if (self.mainSession)
     {
@@ -153,16 +217,6 @@
     centerXConstraint.active = YES;
     NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
     centerYConstraint.active = YES;
-}
-
-#pragma mark - Notifications
-
-- (void)onSessionSync:(NSNotification *)notification
-{
-    if ([notification.object isEqual:self.mainSession] && !self.rooms.count)
-    {
-        self.recentsDataSource = [[MXKRecentsDataSource alloc] initWithMatrixSession:self.mainSession];
-    }
 }
 
 #pragma mark - Actions
