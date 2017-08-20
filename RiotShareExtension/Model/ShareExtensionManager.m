@@ -164,7 +164,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
 }
 
-- (UIAlertController *)compressionPromptForImage:(UIImage *)image shareBlock:(nonnull void(^)())shareBlock
+#pragma mark - Private
+
+- (UIAlertController *)compressionPromptForImage:(UIImage *)image shareBlock:(void(^)())shareBlock
 {
     UIAlertController *compressionPrompt;
     
@@ -300,6 +302,14 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return compressionPrompt;
 }
 
+- (void)didStartSendingToRoom:(MXRoom *)room
+{
+    if ([self.delegate respondsToSelector:@selector(shareExtensionManager:didStartSendingContentToRoom:)])
+    {
+        [self.delegate shareExtensionManager:self didStartSendingContentToRoom:room];
+    }
+}
+
 #pragma mark - Notifications
 
 - (void)onMediaUploadProgress:(NSNotification *)notification
@@ -314,6 +324,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
 {
+    [self didStartSendingToRoom:room];
     if (!text)
     {
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
@@ -343,6 +354,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
 {
+    [self didStartSendingToRoom:room];
     if (!fileUrl)
     {
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
@@ -373,6 +385,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendImage:(NSData *)imageData withProvider:(NSItemProvider*)itemProvider toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
 {
+    [self didStartSendingToRoom:room];
     if (!imageData)
     {
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
@@ -443,6 +456,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
 {
+    [self didStartSendingToRoom:room];
     if (!videoLocalUrl)
     {
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");

@@ -35,6 +35,8 @@
 
 @optional
 
+- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(MXRoom *)room;
+
 /**
  Called when the progress of the uploading media changes
  @param extensionManager the ShareExtensionManager object that called the method
