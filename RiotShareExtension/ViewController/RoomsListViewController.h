@@ -18,8 +18,8 @@
 #import "MXRoom+Riot.h"
 #import "ShareRecentsDataSource.h"
 
-@interface RoomsListViewController : UIViewController <MXKDataSourceDelegate>
+@interface RoomsListViewController : MXKRecentListViewController
 
-+ (instancetype)listViewControllerWithDataSource:(ShareRecentsDataSource *)dataSource failureBlock:(void(^)())failureBlock;
+@property (copy) void (^failureBlock)();
 
 @end

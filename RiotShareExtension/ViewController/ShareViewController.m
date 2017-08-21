@@ -148,7 +148,7 @@
     // Release the current segmented view controller if any
     if (self.segmentedViewController)
     {
-        // TODO: release correctly all the existing data source and view controllers...
+        // Release correctly all the existing data source and view controllers.
         [self.segmentedViewController destroy];
         self.segmentedViewController = nil;
     }
@@ -180,12 +180,14 @@
     };
     
     ShareRecentsDataSource *roomsDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:self.mainSession dataSourceMode:RecentsDataSourceModeRooms];
-    RoomsListViewController *roomsViewController = [RoomsListViewController listViewControllerWithDataSource:roomsDataSource failureBlock:failureBlock];
-    roomsDataSource.delegate = roomsViewController;
+    RoomsListViewController *roomsViewController = [RoomsListViewController recentListViewController];
+    roomsViewController.failureBlock = failureBlock;
+    [roomsViewController displayList:roomsDataSource];
     
     ShareRecentsDataSource *peopleDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:self.mainSession dataSourceMode:RecentsDataSourceModePeople];
-    RoomsListViewController *peopleViewController = [RoomsListViewController listViewControllerWithDataSource:peopleDataSource failureBlock:failureBlock];
-    peopleDataSource.delegate = peopleViewController;
+    RoomsListViewController *peopleViewController = [RoomsListViewController recentListViewController];
+    peopleViewController.failureBlock = failureBlock;
+    [peopleViewController displayList:peopleDataSource];
     
     [self.segmentedViewController initWithTitles:titles viewControllers:@[roomsViewController, peopleViewController] defaultSelected:0];
     
