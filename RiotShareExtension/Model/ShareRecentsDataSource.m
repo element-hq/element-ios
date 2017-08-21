@@ -59,14 +59,14 @@
         
         if (self.dataSourceMode == RecentsDataSourceModePeople)
         {
-            if (room.isDirect)
+            if (room.isDirect && room.state.membership == MXMembershipJoin)
             {
                 [self.recentPeople addObject:cellData];
             }
         }
         else if (self.dataSourceMode == RecentsDataSourceModeRooms)
         {
-            if (!room.isDirect)
+            if (!room.isDirect && room.state.membership == MXMembershipJoin)
             {
                 [self.recentRooms addObject:cellData];
             }

@@ -62,6 +62,7 @@
     _tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
     _tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _tableSearchBar.showsCancelButton = NO;
+    _tableSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     _tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     _tableSearchBar.delegate = self;
 }
@@ -143,9 +144,7 @@
     UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         MXRoom *selectedRoom = [self.dataSource getRoomAtIndexPath:indexPath];
         
-        self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
         [ShareExtensionManager sharedManager].delegate = self;
-        self.parentViewController.view.userInteractionEnabled = NO;
         
         [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^{
             [self showFailureAlert];
@@ -260,6 +259,13 @@
     [compressionPrompt popoverPresentationController].sourceView = self.view;
     [compressionPrompt popoverPresentationController].sourceRect = self.view.frame;
     [self presentViewController:compressionPrompt animated:YES completion:nil];
+}
+
+- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(MXRoom *)room
+{
+    self.parentViewController.view.userInteractionEnabled = NO;
+    self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
+    [self.hudView setProgress:0.0];
 }
 
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager mediaUploadProgress:(CGFloat)progress
