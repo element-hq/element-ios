@@ -382,8 +382,17 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         return;
     }
-    //Send the image
+    
+    // Prepare the image
+    BOOL rotated = NO;
     UIImage *image = [[UIImage alloc] initWithData:imageData];
+    
+    // Make sure the uploaded image orientation is up
+    if (image.imageOrientation != UIImageOrientationUp)
+    {
+        image = [MXKTools forceImageOrientationUp:image];
+        rotated = YES;
+    }
     
     if (self.imageCompressionMode == ImageCompressionModeSmall)
     {
@@ -402,14 +411,27 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
     {
         mimeType = @"image/png";
+        
+        if (rotated)
+        {
+            // Update imageData
+            imageData = UIImagePNGRepresentation(image);
+        }
     }
     else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
     {
         mimeType = @"image/jpeg";
+        
+        if (rotated)
+        {
+            // Update imageData
+            imageData = UIImageJPEGRepresentation(image, 1.0);
+        }
     }
     else
     {
-        image = [[UIImage alloc] initWithData:UIImageJPEGRepresentation(image, 1.0)];
+        imageData = UIImageJPEGRepresentation(image, 1.0);
+        image = [[UIImage alloc] initWithData:imageData];
         mimeType = @"image/jpeg";
     }
     
