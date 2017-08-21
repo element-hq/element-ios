@@ -25,70 +25,104 @@
 
 
 
-@interface RoomsListViewController () <UITableViewDelegate, UISearchBarDelegate, ShareExtensionManagerDelegate>
+@interface RoomsListViewController () <ShareExtensionManagerDelegate>
 
-@property (nonatomic) ShareRecentsDataSource *dataSource;
-@property (copy) void (^failureBlock)();
-
-@property (nonatomic) UITableView *mainTableView;
-@property (nonatomic) UISearchBar *searchBar;
 @property (nonatomic) MXKPieChartHUD *hudView;
+
+// The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
+// when the user selects it.
+@property (nonatomic) UISearchBar *tableSearchBar;
 
 @end
 
 
 @implementation RoomsListViewController
 
+#pragma mark - Class methods
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass([RoomsListViewController class])
+                          bundle:[NSBundle bundleForClass:[RoomsListViewController class]]];
+}
+
++ (instancetype)recentListViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([RoomsListViewController class])
+                                          bundle:[NSBundle bundleForClass:[RoomsListViewController class]]];
+}
+
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    self.enableBarButtonSearch = NO;
+    
+    // Create the fake search bar
+    _tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
+    _tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _tableSearchBar.showsCancelButton = NO;
+    _tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    _tableSearchBar.delegate = self;
+}
+
 #pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self configureTableView];
+    
+    [self.recentsTableView registerNib:[RoomTableViewCell nib] forCellReuseIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
+    
     [self configureSearchBar];
 }
 
-#pragma mark - Public
-
-+ (instancetype)listViewControllerWithDataSource:(ShareRecentsDataSource *)dataSource failureBlock:(void(^)())failureBlock
+- (void)destroy
 {
-    RoomsListViewController *listViewController = [[self class] new];
-    listViewController.dataSource = dataSource;
-    listViewController.failureBlock = failureBlock;
-    return listViewController;
+    // Release the room data source
+    [self.dataSource destroy];
+    
+    [super destroy];
 }
 
 #pragma mark - Views
 
-- (void)configureTableView
-{
-    self.mainTableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
-    self.mainTableView.dataSource = self.dataSource;
-    self.mainTableView.delegate = self;
-    [self.mainTableView registerNib:[RoomTableViewCell nib] forCellReuseIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
-    
-    [self.view addSubview:self.mainTableView];
-    self.mainTableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1 constant:0];
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
-    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.mainTableView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
-    
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
-}
-
 - (void)configureSearchBar
 {
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
-    self.searchBar.tintColor = kRiotColorGreen;
-    self.searchBar.showsCancelButton = YES;
+    self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
-    self.searchBar.delegate = self;
+    self.recentsSearchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    self.recentsSearchBar.tintColor = kRiotColorGreen;
     
-    self.mainTableView.tableHeaderView = self.searchBar;
+    _tableSearchBar.tintColor = self.recentsSearchBar.tintColor;
+}
+
+#pragma mark - Override MXKRecentListViewController
+
+- (void)refreshRecentsTable
+{
+    [super refreshRecentsTable];
+    
+    // Check conditions to display the fake search bar into the table header
+    if (self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
+    {
+        // Add the search bar by hiding it by default.
+        self.recentsTableView.tableHeaderView = _tableSearchBar;
+        self.recentsTableView.contentOffset = CGPointMake(0, self.recentsTableView.contentOffset.y + _tableSearchBar.frame.size.height);
+    }
+}
+
+- (void)hideSearchBar:(BOOL)hidden
+{
+    [super hideSearchBar:hidden];
+    
+    if (!hidden)
+    {
+        // Remove the fake table header view if any
+        self.recentsTableView.tableHeaderView = nil;
+        self.recentsTableView.contentInset = UIEdgeInsetsZero;
+    }
 }
 
 #pragma mark - Private
@@ -151,14 +185,6 @@
 
 #pragma mark - MXKDataSourceDelegate
 
-- (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
-{
-    if (dataSource == self.dataSource)
-    {
-        [self.mainTableView reloadData];
-    }
-}
-
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
     if ([cellData isKindOfClass:[RecentCellData class]])
@@ -179,27 +205,52 @@
 
 #pragma mark - UISearchBarDelegate
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    if (searchText.length)
+    if (searchBar == _tableSearchBar)
     {
-        [self.dataSource searchWithPatterns:@[searchText]];
+        [self hideSearchBar:NO];
+        [self.recentsSearchBar becomeFirstResponder];
+        return NO;
     }
-    else
-    {
-        [self.dataSource searchWithPatterns:nil];
-    }
+    
+    return YES;
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    [searchBar resignFirstResponder];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
+        
+    });
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    [searchBar resignFirstResponder];
-    [self.dataSource searchWithPatterns:nil];
+    [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    
+    if (scrollView == self.recentsTableView)
+    {
+        if (!self.recentsSearchBar.isHidden)
+        {
+            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.contentInset.top > self.recentsSearchBar.frame.size.height))
+            {
+                // Hide the search bar
+                [self hideSearchBar:YES];
+                
+                // Refresh display
+                [self refreshRecentsTable];
+            }
+        }
+    }
 }
 
 #pragma mark - ShareExtensionManagerDelegate

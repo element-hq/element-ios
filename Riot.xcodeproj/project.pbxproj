@@ -481,6 +481,7 @@
 		F0B4CBAC1F41F090008E99C5 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */; };
 		F0B4CBB11F4215E3008E99C5 /* EventDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */; };
 		F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */; };
+		F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
 		F0D869ED1EC455A100BB0A2B /* create_direct_chat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */; };
@@ -1152,6 +1153,7 @@
 		F0B4CBAE1F4215E3008E99C5 /* EventDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsView.h; sourceTree = "<group>"; };
 		F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsView.m; sourceTree = "<group>"; };
 		F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailsView.xib; sourceTree = "<group>"; };
+		F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
 		F0D869E81EC455A100BB0A2B /* create_direct_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_direct_chat.png; sourceTree = "<group>"; };
 		F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@2x.png"; sourceTree = "<group>"; };
 		F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@3x.png"; sourceTree = "<group>"; };
@@ -1240,6 +1242,7 @@
 				24D6B34E1F3C8F8A00FC7A71 /* ShareViewController.xib */,
 				24D6B3481F3C8F8A00FC7A71 /* RoomsListViewController.h */,
 				24D6B3491F3C8F8A00FC7A71 /* RoomsListViewController.m */,
+				F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */,
 				24D6B3451F3C8F8A00FC7A71 /* FallbackViewController.h */,
 				24D6B3461F3C8F8A00FC7A71 /* FallbackViewController.m */,
 				24D6B3471F3C8F8A00FC7A71 /* FallbackViewController.xib */,
@@ -2345,6 +2348,7 @@
 				24D6B35B1F3CA03300FC7A71 /* ShareViewController.xib in Resources */,
 				24EEE5B51F2607C500B3C705 /* SegmentedViewController.xib in Resources */,
 				24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */,
+				F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */,
 				2435179C1F375B9400D0683E /* Info.plist in Resources */,
 				24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */,
 				2466B73E1F2DFAC100AE27B0 /* animatedLogo-4.png in Resources */,
