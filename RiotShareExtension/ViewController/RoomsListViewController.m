@@ -62,6 +62,7 @@
     _tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
     _tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _tableSearchBar.showsCancelButton = NO;
+    _tableSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     _tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     _tableSearchBar.delegate = self;
 }

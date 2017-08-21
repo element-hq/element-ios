@@ -380,7 +380,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             failureBlock();
         }
-    }];
+    } keepActualFilename:YES];
 }
 
 - (void)sendImage:(NSData *)imageData withProvider:(NSItemProvider*)itemProvider toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
