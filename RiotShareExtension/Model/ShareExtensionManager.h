@@ -89,3 +89,10 @@
 - (void)terminateExtensionCanceled:(BOOL)canceled;
 
 @end
+
+
+@interface NSItemProvider (ShareExtensionManager)
+
+@property BOOL isLoaded;
+
+@end

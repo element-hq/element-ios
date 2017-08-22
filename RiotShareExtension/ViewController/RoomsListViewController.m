@@ -263,9 +263,12 @@
 
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(MXRoom *)room
 {
-    self.parentViewController.view.userInteractionEnabled = NO;
-    self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
-    [self.hudView setProgress:0.0];
+    if (!self.hudView)
+    {
+        self.parentViewController.view.userInteractionEnabled = NO;
+        self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
+        [self.hudView setProgress:0.0];
+    }
 }
 
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager mediaUploadProgress:(CGFloat)progress
