@@ -891,6 +891,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
+    if (notificationSettings.types == UIUserNotificationTypeNone)
+        return;
+    
     self.pushRegistry = [[PKPushRegistry alloc] initWithQueue:nil];
     self.pushRegistry.delegate = self;
     self.pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
@@ -937,7 +940,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSLog(@"[AppDelegate] didReceiveLocalNotification : no linked session / account has been found.");
         }
     }
-
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
