@@ -1054,9 +1054,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
         }
         
-        // Update icon badge number
-        [UIApplication sharedApplication].applicationIconBadgeNumber = [session riot_missedDiscussionsCount];
-        
         dispatch_block_t completionBlock = [weakSelf createPushNotificationHandlingStateCleaningBlock];
         weakSelf.pushNotificationHandlingCompletionBlock = completionBlock;
         
@@ -1087,6 +1084,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     return dispatch_block_create(0, ^{
         [session.notificationCenter removeListener:weakSelf.notificationListenerBlock];
+        
+        // Update icon badge number
+        [UIApplication sharedApplication].applicationIconBadgeNumber = [session riot_missedDiscussionsCount];
         
         id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
         
