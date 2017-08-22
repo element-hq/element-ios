@@ -450,7 +450,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         return;
     }
-    NSString *mimeType = [fileUrl pathExtension];
+    
+    NSString *mimeType;
+    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[fileUrl pathExtension] , NULL);
+    mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType);
+    CFRelease(uti);
     
     __weak typeof(self) weakSelf = self;
     
