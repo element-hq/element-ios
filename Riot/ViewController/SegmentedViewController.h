@@ -20,7 +20,7 @@ limitations under the License.
 #import "UIViewController+RiotSearch.h"
 
 /**
- This view controller manages several uiviewcontrollers like UISegmentedControlled manages uiTableView
+ This view controller manages several uiviewcontrollers like UISegmentedController manages uiTableView
  except that the managed items are custom UIViewControllers.
  It uses a Vector design.
  */

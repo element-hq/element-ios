@@ -17,7 +17,7 @@
 
 #import "SegmentedViewController.h"
 
-#import "AppDelegate.h"
+#import "RiotDesignValues.h"
 
 @interface SegmentedViewController ()
 {
@@ -129,7 +129,6 @@
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)viewDidLoad
