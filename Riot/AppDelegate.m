@@ -1044,16 +1044,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             weakSelf.pushNotificationHandlingCompletionBlock = nil;
         }
         
-        BOOL isEventRoomDirect = [session roomWithRoomId:event.roomId].isDirect;
-        NSString *notificationBody = [weakSelf notificationBodyForEvent:event inDirectRoom:isEventRoomDirect withRoomState:roomState];
-        if (notificationBody)
+        // For all type of event show local notifications besides the situation
+        // when the type of event is call invite and we have CallKit support
+        BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
+        if (!(event.eventType == MXEventTypeCallInvite && isCallKitActive))
         {
-            UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-            eventNotification.fireDate = [NSDate date];
-            eventNotification.alertBody = notificationBody;
-            eventNotification.userInfo = @{ @"room_id" : event.roomId };
-            
-            [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+            BOOL isEventRoomDirect = [session roomWithRoomId:event.roomId].isDirect;
+            NSString *notificationBody = [weakSelf notificationBodyForEvent:event inDirectRoom:isEventRoomDirect withRoomState:roomState];
+            if (notificationBody)
+            {
+                UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                eventNotification.fireDate = [NSDate date];
+                eventNotification.alertBody = notificationBody;
+                eventNotification.userInfo = @{ @"room_id" : event.roomId };
+                
+                [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+            }
         }
         
         dispatch_block_t completionBlock = [weakSelf createPushNotificationHandlingStateCleaningBlock];
