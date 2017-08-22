@@ -17,6 +17,8 @@
 
 #import "AppDelegate.h"
 
+#import <Intents/Intents.h>
+
 #import "RecentsDataSource.h"
 #import "RoomDataSource.h"
 
@@ -525,6 +527,41 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
     {
         continueUserActivity = [self handleUniversalLink:userActivity];
+    }
+    else if ([userActivity.activityType isEqualToString:INStartAudioCallIntentIdentifier] ||
+             [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier])
+    {
+        INInteraction *interaction = userActivity.interaction;
+        
+        // roomID provided by Siri intent
+        NSString *roomID = userActivity.userInfo[@"roomID"];
+        
+        // We've launched from calls history list
+        if (!roomID)
+        {
+            INPerson *person;
+            
+            if ([interaction.intent isKindOfClass:INStartAudioCallIntent.class])
+            {
+                person = [[(INStartAudioCallIntent *)(interaction.intent) contacts] firstObject];
+            }
+            else if ([interaction.intent isKindOfClass:INStartVideoCallIntent.class])
+            {
+                person = [[(INStartVideoCallIntent *)(interaction.intent) contacts] firstObject];
+            }
+            
+            roomID = person.personHandle.value;
+        }
+        
+        BOOL isVideoCall = [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier];
+        
+        MXSession *session = mxSessionArray.firstObject;
+        [session.callManager placeCallInRoom:roomID
+                                   withVideo:isVideoCall
+                                     success:^(MXCall *call) {}
+                                     failure:^(NSError *error) {}];
+        
+        continueUserActivity = YES;
     }
 
     return continueUserActivity;
