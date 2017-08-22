@@ -899,7 +899,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
-    [application registerForRemoteNotifications];
+    // Register for remote notifications only if user provide access to notification feature
+    if (notificationSettings.types != UIUserNotificationTypeNone)
+    {
+        [application registerForRemoteNotifications];
+    }
 }
 
 - (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
