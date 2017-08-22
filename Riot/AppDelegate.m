@@ -43,6 +43,8 @@
 
 #import "CallViewController.h"
 
+#import "MXSession+Riot.h"
+
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -1051,6 +1053,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
         }
+        
+        // Update icon badge number
+        [UIApplication sharedApplication].applicationIconBadgeNumber = [session riot_missedDiscussionsCount];
         
         dispatch_block_t completionBlock = [weakSelf createPushNotificationHandlingStateCleaningBlock];
         weakSelf.pushNotificationHandlingCompletionBlock = completionBlock;
