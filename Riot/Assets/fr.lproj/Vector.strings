@@ -422,3 +422,14 @@
 "settings_user_interface" = "INTERFACE UTILISATEUR";
 // Events formatter
 "event_formatter_member_updates" = "%tu changements dans les membres";
+"auth_home_server_placeholder" = "URL (e.g. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (e.g. https://matrix.org)";
+"room_ongoing_conference_call_with_close" = "Conférence en cours. Rejoindre en %@ ou %@. %@.";
+"room_ongoing_conference_call_close" = "Clore";
+"room_conference_call_no_power" = "Permissions requises pour gérer la conférence dans ce salon";
+"settings_labs_create_conference_with_jitsi" = "Créer les conférences avec jitsi";
+"call_already_displayed" = "Il y a déjà un appel en cours.";
+"call_jitsi_error" = "Impossible de joindre la conférence.";
+// Widget
+"widget_no_power_to_manage" = "Permissions requises pour gérer les widgets dans ce salon";
+"widget_creation_failure" = "Impossible de créer la widget";

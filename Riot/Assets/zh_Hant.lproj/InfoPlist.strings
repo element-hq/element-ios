@@ -1,0 +1,5 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "攝影機被用於照片與影片，進行視訊通話。";
+"NSPhotoLibraryUsageDescription" = "照片庫被用於傳送照片與影片。";
+"NSMicrophoneUsageDescription" = "麥克風被用於拍攝影片、進行通話。";
+"NSContactsUsageDescription" = "通訊錄被用於在 Riot 上透過電子郵件或電話號碼搜尋使用者。";

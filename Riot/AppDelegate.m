@@ -34,6 +34,8 @@
 #import "MatrixSDK/MatrixSDK.h"
 
 #import "Tools.h"
+#import "MXRoom+Riot.h"
+#import "WidgetManager.h"
 
 #import "AFNetworkReachabilityManager.h"
 
@@ -1684,6 +1686,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         // Update home data sources
         [_masterTabBarController addMatrixSession:mxSession];
+
+        // Register the session to the widgets manager
+        [[WidgetManager sharedManager] addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
         
@@ -1698,6 +1703,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Update home data sources
     [_masterTabBarController removeMatrixSession:mxSession];
+
+    // Update the widgets manager
+    [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
     
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
@@ -1792,7 +1800,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         // Ignore the call if a call is already in progress
-        if (!currentCallViewController)
+        if (!currentCallViewController && !_jitsiViewController)
         {
             MXCall *mxCall = (MXCall*)notif.object;
             
@@ -2489,6 +2497,89 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+#pragma mark - Jitsi call
+
+- (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video
+{
+    if (!_jitsiViewController && !currentCallViewController)
+    {
+        _jitsiViewController = [JitsiViewController jitsiViewController];
+
+        if ([_jitsiViewController openWidget:jitsiWidget withVideo:video])
+        {
+            _jitsiViewController.delegate = self;
+            [self presentJitsiViewController:nil];
+        }
+        else
+        {
+            _jitsiViewController = nil;
+
+            NSError *error = [NSError errorWithDomain:@""
+                                                 code:0
+                                             userInfo:@{
+                                                        NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)
+                                                        }];
+            [self showErrorAsAlert:error];
+        }
+    }
+    else
+    {
+        NSError *error = [NSError errorWithDomain:@""
+                                    code:0
+                                userInfo:@{
+                                           NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)
+                                           }];
+        [self showErrorAsAlert:error];
+    }
+}
+
+- (void)presentJitsiViewController:(void (^)())completion
+{
+    [self removeCallStatusBar];
+
+    if (_jitsiViewController)
+    {
+        if (self.window.rootViewController.presentedViewController)
+        {
+            [self.window.rootViewController.presentedViewController presentViewController:_jitsiViewController animated:YES completion:completion];
+        }
+        else
+        {
+            [self.window.rootViewController presentViewController:_jitsiViewController animated:YES completion:completion];
+        }
+    }
+}
+
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)())completion
+{
+    if (jitsiViewController == _jitsiViewController)
+    {
+        [_jitsiViewController dismissViewControllerAnimated:YES completion:completion];
+        _jitsiViewController = nil;
+
+        [self removeCallStatusBar];
+    }
+}
+
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)())completion
+{
+    if (jitsiViewController == _jitsiViewController)
+    {
+        [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
+
+            MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
+            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.riotDisplayname];
+            [self addCallStatusBar:btnTitle];
+
+            if (completion)
+            {
+                completion();
+            }
+        }];
+    }
+}
+
+
 #pragma mark - Call status handling
 
 - (void)addCallStatusBar:(NSString*)buttonTitle
@@ -2517,7 +2608,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     [_callStatusBarButton setBackgroundColor:kRiotColorGreen];
-    [_callStatusBarButton addTarget:self action:@selector(presentCallViewController) forControlEvents:UIControlEventTouchUpInside];
+    [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
     [_callStatusBarButton setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -2570,9 +2661,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)presentCallViewController
+- (void)onCallStatusBarButtonPressed
 {
-    [self presentCallViewController:nil];
+    if (currentCallViewController)
+    {
+        [self presentCallViewController:nil];
+    }
+    else if (_jitsiViewController)
+    {
+        [self presentJitsiViewController:nil];
+    }
 }
 
 - (void)presentCallViewController:(void (^)())completion
