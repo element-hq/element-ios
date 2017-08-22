@@ -23,6 +23,7 @@
 #import "AppDelegate.h"
 
 #import "MXRoom+Riot.h"
+#import "MXSession+Riot.h"
 
 @interface MasterTabBarController ()
 {
@@ -424,26 +425,7 @@
     // Considering all the current sessions.
     for (MXSession *session in mxSessionArray)
     {
-        // Sum all the rooms with missed notifications.
-        for (MXRoomSummary *roomSummary in session.roomsSummaries)
-        {
-            NSUInteger notificationCount = roomSummary.notificationCount;
-            
-            // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
-            if (roomSummary.room.isMentionsOnly)
-            {
-                // Only the highlighted missed messages must be considered here.
-                notificationCount = roomSummary.highlightCount;
-            }
-            
-            if (notificationCount)
-            {
-                roomCount ++;
-            }
-        }
-        
-        // Add the invites count
-        roomCount += [session invitedRooms].count;
+        roomCount += [session riot_missedDiscussionsCount];
     }
     
     return roomCount;
