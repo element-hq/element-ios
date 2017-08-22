@@ -1057,6 +1057,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 eventNotification.fireDate = [NSDate date];
                 eventNotification.alertBody = notificationBody;
                 eventNotification.userInfo = @{ @"room_id" : event.roomId };
+             
+                // Set sound name based on the value provided in action of MXPushRule
+                for (MXPushRuleAction *action in rule.actions)
+                {
+                    if (action.actionType == MXPushRuleActionTypeSetTweak)
+                    {
+                        if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                        {
+                            NSString *soundName = action.parameters[@"value"];
+                            if ([soundName isEqualToString:@"default"])
+                                soundName = UILocalNotificationDefaultSoundName;
+                            
+                            eventNotification.soundName = soundName;
+                        }     
+                    }
+                }
                 
                 [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
             }
