@@ -62,6 +62,7 @@ enum
 enum
 {
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
+    NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT,
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
     NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
@@ -1613,6 +1614,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = labelAndSwitchCell;
         }
+        else if (row == NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = account.showDecryptedContentInNotifications;
+            labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = labelAndSwitchCell;
+        }
         else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
         {
             MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
@@ -2599,6 +2612,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         // toggle the pushes
         [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
     }
+}
+
+- (void)toggleShowDecodedContent:(id)sender
+{
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    account.showDecryptedContentInNotifications = !account.showDecryptedContentInNotifications;
 }
 
 - (void)toggleLocalContactsSync:(id)sender
