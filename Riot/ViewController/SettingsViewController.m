@@ -1608,8 +1608,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
         }
@@ -1633,8 +1633,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithMissedNotif"];
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
         }
@@ -1645,8 +1645,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithUnread"];
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
         }
@@ -1737,8 +1737,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventValueChanged];
 
             cell = labelAndSwitchCell;
         }
@@ -1848,8 +1848,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
             sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
             sendCrashReportCell.mxkSwitch.enabled = YES;
-            [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
+            [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventValueChanged];
             
             cell = sendCrashReportCell;
         }
@@ -1924,8 +1924,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"createConferenceCallsWithJitsi"];
 
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventValueChanged];
 
             cell = labelAndSwitchCell;
         }
@@ -1940,8 +1940,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = (nil != session.crypto);
 
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventValueChanged];
 
             if (session.crypto)
             {
@@ -1991,8 +1991,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.mxSession.crypto.globalBlacklistUnverifiedDevices;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventValueChanged];
 
             cell = labelAndSwitchCell;
         }
