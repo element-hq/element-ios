@@ -27,7 +27,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -2438,7 +2438,7 @@
 				24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */,
 				24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
+				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2811,13 +2811,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Riot-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3051A9ED306E05F8AE91C906 /* [CP] Check Pods Manifest.lock */ = {
@@ -2826,13 +2829,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RiotShareExtension-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		68D6013FA64A4507DC9DB95B /* [CP] Copy Pods Resources */ = {
@@ -2841,9 +2847,73 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-resources.sh",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAccountDetailsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAttachmentsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAuthenticationViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKCallViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKContactDetailsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKContactListViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKCountryPickerViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKLanguagePickerViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRecentListViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomMemberDetailsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomMemberListViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomSettingsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKSearchViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Account/MXKAccountTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Authentication/MXKAuthInputsEmailCodeBasedView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Authentication/MXKAuthInputsPasswordBasedView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Contact/MXKContactTableCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/DeviceView/MXKDeviceView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/EncryptionInfoView/MXKEncryptionInfoView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKCollectionViewCell/MXKMediaCollectionViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKEventDetailsView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKPieChartHUD.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKRoomCreationView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithButton.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndButton.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndImageView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndMXKImageView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSlider.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSubLabel.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSwitch.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndTextField.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelTextFieldAndButton.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithPicker.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithSearchBar.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextFieldAndButton.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/PushRule/MXKPushRuleCreationTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/PushRule/MXKPushRuleTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/ReadReceipts/MXKReadReceiptTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomEmptyBubbleTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIOSOutgoingBubbleTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithHPGrowingText.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithSimpleTextView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKInterleavedRecentTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKPublicRoomTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKRecentTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomMemberList/MXKRoomMemberTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
+				"$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle",
+				"${PODS_ROOT}/../../matrix-ios-sdk/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2856,9 +2926,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-frameworks.sh",
+				"${PODS_ROOT}/WebRTC/WebRTC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2871,9 +2944,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension-resources.sh",
+				"${PODS_ROOT}/../../matrix-ios-sdk/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
