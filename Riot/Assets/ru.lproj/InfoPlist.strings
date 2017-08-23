@@ -1,1 +1,5 @@
-
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Камера используется для съемки фотографий и видеороликов, а также для видеозвонков.";
+"NSPhotoLibraryUsageDescription" = "Галерея используется для отправки фотографий и видео.";
+"NSMicrophoneUsageDescription" = "Микрофон используется при съемке видео и выполнении звонков.";
+"NSContactsUsageDescription" = "Контактная книга используется для поиска пользователей в Riot по электронной почте или номеру телефона.";
