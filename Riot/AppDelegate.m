@@ -168,6 +168,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
 @property (strong, nonatomic) UIAlertController *incomingCallNotification;
 
+@property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
+
 @end
 
 @implementation AppDelegate
@@ -897,12 +899,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
+{
+    self.registrationForRemoteNotificationsCompletion = completion;
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
     // Register for remote notifications only if user provide access to notification feature
     if (notificationSettings.types != UIUserNotificationTypeNone)
     {
-        [application registerForRemoteNotifications];
+        [self registerForRemoteNotificationsWithCompletion:nil];
+    }
+    else
+    {
+        // Clear existing token
+        MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+        [accountManager setApnsDeviceToken:nil];
     }
 }
 
@@ -915,11 +929,23 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [accountManager setApnsDeviceToken:deviceToken];
     
     isAPNSRegistered = YES;
+    
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(nil);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
 }
 
 - (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
+    
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(error);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
 }
 
 - (void)cancelBackgroundSync
