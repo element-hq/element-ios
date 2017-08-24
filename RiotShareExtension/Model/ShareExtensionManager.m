@@ -201,7 +201,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          {
                              UIImage *firstImage = [UIImage imageWithData:self.pendingImages.firstObject];
                              UIAlertController *compressionPrompt = [self compressionPromptForImage:firstImage shareBlock:^{
-                                 [self sendImages:self.pendingImages withProvider:itemProvider toRoom:room extensionItem:item failureBlock:failureBlock];
+                                 [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
                              }];
                              
                              [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
@@ -514,12 +514,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     } keepActualFilename:YES];
 }
 
-- (void)sendImages:(NSMutableArray *)imageDatas withProvider:(NSItemProvider*)itemProvider toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:( void(^)())failureBlock
+- (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:( void(^)())failureBlock
 {
     [self didStartSendingToRoom:room];
     
-    for (NSData *imageData in imageDatas)
+    for (NSInteger index = 0; index < imageDatas.count; index++)
     {
+        NSData *imageData = imageDatas[index];
+        NSItemProvider *itemProvider = itemProviders[index];
+        
         if (!imageData)
         {
             NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
