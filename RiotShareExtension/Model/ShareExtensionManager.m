@@ -151,6 +151,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     __weak typeof(self) weakSelf = self;
     
+    [self.pendingImages removeAllObjects];
+    
     for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
     {
         for (NSItemProvider *itemProvider in item.attachments)
@@ -423,18 +425,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return YES;
 }
 
-- (BOOL)hasNonnullContent:(NSArray *)array
-{
-    for (id object in array)
-    {
-        if (![object isEqual:[NSNull null]])
-        {
-            return YES;
-        }
-    }
-    return NO;
-}
-
 #pragma mark - Notifications
 
 - (void)onMediaUploadProgress:(NSNotification *)notification
@@ -606,9 +596,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             if (weakSelf)
             {
                 typeof(self) self = weakSelf;
-                imageDatas[[imageDatas indexOfObject:imageData]] = [NSNull null];
+                [imageDatas removeObject:imageData];
                 
-                if (![self hasNonnullContent:imageDatas])
+                if (!imageDatas.count)
                 {
                     [self suspendSession];
                     [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
@@ -617,9 +607,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             }
         } failure:^(NSError *error) {
             NSLog(@"[ShareExtensionManager] sendImage failed.");
-            imageDatas[[imageDatas indexOfObject:imageData]] = [NSNull null];
+            [imageDatas removeObject:imageData];
             
-            if (![self hasNonnullContent:imageDatas])
+            if (!imageDatas.count)
             {
                 if (failureBlock)
                 {
