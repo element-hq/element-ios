@@ -1472,6 +1472,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     
+    // Set the App Group identifier.
+    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+    
     // Define the media cache version
     sdkOptions.mediaCacheAppVersion = 0;
     
@@ -1647,8 +1650,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
     }];
     
-    // Apply the application group name, and add observer on settings changes.
-    [MXKAppSettings standardAppSettings].applicationGroup = @"group.im.vector";
+    // Add observer on settings changes.
     [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
     // Prepare account manager

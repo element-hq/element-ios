@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(suspendSession) name:NSExtensionHostDidEnterBackgroundNotification object:nil];
         
         // Apply the application group
-        [MXKAppSettings standardAppSettings].applicationGroup = @"group.im.vector";
+        [MXSDKOptions sharedInstance].applicationGroupIdentifier = @"group.im.vector";
     });
     return sharedInstance;
 }
