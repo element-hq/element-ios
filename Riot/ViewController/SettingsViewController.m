@@ -2562,7 +2562,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)togglePushNotifications:(id)sender
 {
     // Check first whether the user allow notification from device settings
-    if ([[MXKAccountManager sharedManager] isAPNSAvailable] == NO)
+    UIUserNotificationType currentUserNotificationTypes = UIApplication.sharedApplication.currentUserNotificationSettings.types;
+    if (currentUserNotificationTypes == UIUserNotificationTypeNone)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
@@ -2594,10 +2595,28 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         [self startActivityIndicator];
         
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+        MXKAccount* account = accountManager.activeAccounts.firstObject;
         
-        // toggle the pushes
-        [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
+        if (accountManager.apnsDeviceToken)
+        {
+            [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
+        }
+        else
+        {
+            // Obtain device token when user has just enabled access to notifications from system settings
+            [[AppDelegate theDelegate] registerForRemoteNotificationsWithCompletion:^(NSError * error) {
+                if (error)
+                {
+                    [(UISwitch *)sender setOn:NO animated:YES];
+                    [self stopActivityIndicator];
+                }
+                else
+                {
+                    [account setEnablePushNotifications:YES];
+                }
+            }];
+        }
     }
 }
 
