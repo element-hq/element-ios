@@ -41,7 +41,7 @@
 /* Incoming unnamed voice conference invite from a specific person */
 "VOICE_CONF_FROM_USER" = "Групповой звонок от %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Видеоконференция %@";
+"VIDEO_CONF_FROM_USER" = "Групповой видеозвонок от %@";
 /* Incoming named voice conference invite from a specific person */
 "VOICE_CONF_NAMED_FROM_USER" = "Групповой звонок от %@: '%@'";
 /* Incoming named video conference invite from a specific person */
