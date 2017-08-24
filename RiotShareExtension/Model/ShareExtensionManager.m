@@ -470,7 +470,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self didStartSendingToRoom:room];
     if (!text)
     {
-        NSLog(@"[ShareExtensionManager] sendText: failed.");
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
             failureBlock();
@@ -501,7 +501,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self didStartSendingToRoom:room];
     if (!fileUrl)
     {
-        NSLog(@"[ShareExtensionManager] sendFileWithUrl: failed.");
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
             failureBlock();
@@ -537,7 +537,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self didStartSendingToRoom:room];
     if (!image)
     {
-        NSLog(@"[ShareExtensionManager] sendImage: failed.");
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
             failureBlock();
@@ -611,7 +611,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self didStartSendingToRoom:room];
     if (!videoLocalUrl)
     {
-        NSLog(@"[ShareExtensionManager] sendVideo: failed.");
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
             failureBlock();
