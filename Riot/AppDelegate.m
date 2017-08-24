@@ -1792,6 +1792,36 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             currentCallViewController.mxCall = mxCall;
             currentCallViewController.delegate = self;
             
+            UIApplicationState applicationState = UIApplication.sharedApplication.applicationState;
+            
+            // App has been woken by PushKit notification in the background
+            if (applicationState == UIApplicationStateBackground && mxCall.isIncoming)
+            {
+                // Create backgound task.
+                // Without CallKit this will allow us to play vibro until the call was ended
+                // With CallKit we'll inform the system when the call is ended to let the system terminate our app to save resources
+                id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
+                NSUInteger callTaskIdentifier = [handler startBackgroundTaskWithName:nil completion:^{}];
+                
+                // Start listening for call state change notifications
+                __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                __block id token = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange
+                                                                                     object:mxCall
+                                                                                      queue:nil
+                                                                                 usingBlock:^(NSNotification * _Nonnull note) {
+                                                                                     MXCall *call = (MXCall *)note.object;
+                                                                                     
+                                                                                     if (call.state == MXCallStateEnded)
+                                                                                     {
+                                                                                         // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
+                                                                                         currentCallViewController = nil;
+                                                                                         [notificationCenter removeObserver:token];
+                                                                                         
+                                                                                         [handler endBackgrounTaskWithIdentifier:callTaskIdentifier];
+                                                                                     }
+                                                                                 }];
+            }
+            
             if (mxCall.isIncoming && !isCallKitAvailable)
             {
                 // Prompt user before presenting the call view controller
