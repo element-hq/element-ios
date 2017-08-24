@@ -27,7 +27,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -42,6 +42,12 @@
 		32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32185B301F20FA2B00752141 /* LanguagePickerViewController.m */; };
 		322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */; };
 		322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */; };
+		3233F7311F31F4BF006ACA81 /* JitsiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3233F72F1F31F4BF006ACA81 /* JitsiViewController.m */; };
+		3233F7321F31F4BF006ACA81 /* JitsiViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */; };
+		3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3233F73B1F3306A7006ACA81 /* WidgetManager.m */; };
+		3233F73F1F331F05006ACA81 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = 3233F73E1F331F05006ACA81 /* Widget.m */; };
+		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
+		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		32471CDC1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */; };
 		32471CDD1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32471CDB1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib */; };
 		32471CE11F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32471CDF1F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m */; };
@@ -57,6 +63,8 @@
 		327382C21F276AED00356143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BC1F276AED00356143 /* InfoPlist.strings */; };
 		327382C31F276AED00356143 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BE1F276AED00356143 /* Localizable.strings */; };
 		327382C41F276AED00356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
+		32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA51F473BDB0076CA16 /* Localizable.strings */; };
+		32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA71F473BDB0076CA16 /* Vector.strings */; };
 		32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */; };
 		32AE61E51F0A971B007255F4 /* RoomMembershipBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */; };
 		32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E71F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m */; };
@@ -545,6 +553,17 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3233F7481F3497E2006ACA81 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -582,6 +601,14 @@
 		3228069D1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipExpandedBubbleCell.h; sourceTree = "<group>"; };
 		3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipExpandedBubbleCell.m; sourceTree = "<group>"; };
 		3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipExpandedBubbleCell.xib; sourceTree = "<group>"; };
+		3233F72E1F31F4BF006ACA81 /* JitsiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JitsiViewController.h; sourceTree = "<group>"; };
+		3233F72F1F31F4BF006ACA81 /* JitsiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JitsiViewController.m; sourceTree = "<group>"; };
+		3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JitsiViewController.xib; sourceTree = "<group>"; };
+		3233F73A1F3306A6006ACA81 /* WidgetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetManager.h; sourceTree = "<group>"; };
+		3233F73B1F3306A7006ACA81 /* WidgetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidgetManager.m; sourceTree = "<group>"; };
+		3233F73D1F331F05006ACA81 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
+		3233F73E1F331F05006ACA81 /* Widget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Widget.m; sourceTree = "<group>"; };
+		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		32471CD91F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
 		32471CDA1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.m; sourceTree = "<group>"; };
 		32471CDB1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
@@ -599,6 +626,8 @@
 		327382BD1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		327382BF1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		327382C11F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vector.strings; sourceTree = "<group>"; };
+		32918EA61F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
+		32918EA81F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Vector.strings; sourceTree = "<group>"; };
 		32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCell.h; sourceTree = "<group>"; };
 		32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipBubbleCell.m; sourceTree = "<group>"; };
 		32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipBubbleCell.xib; sourceTree = "<group>"; };
@@ -1207,6 +1236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				05D592A32FF1D1877B89F73C /* libPods-Riot.a in Frameworks */,
+				3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1276,6 +1306,43 @@
 			path = Directory;
 			sourceTree = "<group>";
 		};
+		3233F7291F31F3B4006ACA81 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				3233F7431F3497DA006ACA81 /* jitsi-meet */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		3233F72D1F31F47E006ACA81 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				3233F72E1F31F4BF006ACA81 /* JitsiViewController.h */,
+				3233F72F1F31F4BF006ACA81 /* JitsiViewController.m */,
+				3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		3233F7391F33065F006ACA81 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				3233F73A1F3306A6006ACA81 /* WidgetManager.h */,
+				3233F73B1F3306A7006ACA81 /* WidgetManager.m */,
+				3233F73D1F331F05006ACA81 /* Widget.h */,
+				3233F73E1F331F05006ACA81 /* Widget.m */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		3233F7431F3497DA006ACA81 /* jitsi-meet */ = {
+			isa = PBXGroup;
+			children = (
+				3233F7441F3497DA006ACA81 /* JitsiMeet.framework */,
+			);
+			path = "jitsi-meet";
+			sourceTree = "<group>";
+		};
 		327382A71F276AD200356143 /* de.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -1304,6 +1371,15 @@
 				327382C01F276AED00356143 /* Vector.strings */,
 			);
 			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		32918EA41F473BDB0076CA16 /* ru.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				32918EA51F473BDB0076CA16 /* Localizable.strings */,
+				32918EA71F473BDB0076CA16 /* Vector.strings */,
+			);
+			path = ru.lproj;
 			sourceTree = "<group>";
 		};
 		32AE61EB1F0D2183007255F4 /* nl.lproj */ = {
@@ -1363,6 +1439,7 @@
 				F083BC0F1E7009EC00A9B29C /* Utils */,
 				F083BC191E7009EC00A9B29C /* ViewController */,
 				F083BC571E7009EC00A9B29C /* Views */,
+				3233F7291F31F3B4006ACA81 /* libs */,
 				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
 				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
 				F083BBE21E7009EC00A9B29C /* Main.storyboard */,
@@ -1386,6 +1463,7 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				32918EA41F473BDB0076CA16 /* ru.lproj */,
 				327382A71F276AD200356143 /* de.lproj */,
 				327382BB1F276AED00356143 /* en.lproj */,
 				327382AE1F276AD200356143 /* fr.lproj */,
@@ -1730,6 +1808,7 @@
 		F083BC0F1E7009EC00A9B29C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				3233F7391F33065F006ACA81 /* Widgets */,
 				F083BC101E7009EC00A9B29C /* AvatarGenerator.h */,
 				F083BC111E7009EC00A9B29C /* AvatarGenerator.m */,
 				F083BC121E7009EC00A9B29C /* EventFormatter.h */,
@@ -1745,6 +1824,7 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3233F72D1F31F47E006ACA81 /* Widgets */,
 				F0B4CBA81F41E71A008E99C5 /* RiotNavigationController.h */,
 				F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */,
 				F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */,
@@ -2249,6 +2329,7 @@
 				24CBEC5D1F0EAD310093EABB /* Embed App Extensions */,
 				7FFD40AA75DB32D83350D225 /* [CP] Embed Pods Frameworks */,
 				68D6013FA64A4507DC9DB95B /* [CP] Copy Pods Resources */,
+				3233F7481F3497E2006ACA81 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2327,6 +2408,7 @@
 				nl,
 				de,
 				fr,
+				ru,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -2356,7 +2438,7 @@
 				24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */,
 				24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
+				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2389,6 +2471,7 @@
 				F083BD441E7009ED00A9B29C /* call_speaker_on_icon@3x.png in Resources */,
 				F0614A0F1EDDCCE700F5DC9A /* jump_to_unread@3x.png in Resources */,
 				F083BE511E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
+				32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */,
 				F083BDAE1E7009ED00A9B29C /* plus_icon@2x.png in Resources */,
 				F0E05A401EA0F9EB004B83FB /* tab_people@2x.png in Resources */,
 				F083BD5A1E7009ED00A9B29C /* chevron@2x.png in Resources */,
@@ -2399,6 +2482,7 @@
 				F083BD3D1E7009ED00A9B29C /* call_hangup_icon@2x.png in Resources */,
 				F083BE551E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				32471CDD1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
+				3233F7321F31F4BF006ACA81 /* JitsiViewController.xib in Resources */,
 				F083BD301E7009ED00A9B29C /* bubbles_bg_landscape.png in Resources */,
 				F083BDA41E7009ED00A9B29C /* notifications.png in Resources */,
 				F083BE0F1E7009ED00A9B29C /* ContactsTableViewController.xib in Resources */,
@@ -2485,6 +2569,7 @@
 				F083BD811E7009ED00A9B29C /* favourite@2x.png in Resources */,
 				F0A4A1681EF7CB66003630DB /* members_list_icon@2x.png in Resources */,
 				F083BD9F1E7009ED00A9B29C /* mod_icon@2x.png in Resources */,
+				32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */,
 				F083BD801E7009ED00A9B29C /* favourite.png in Resources */,
 				F083BD4B1E7009ED00A9B29C /* camera_capture.png in Resources */,
 				F083BD841E7009ED00A9B29C /* favouriteOff@2x.png in Resources */,
@@ -2726,9 +2811,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Riot-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2741,9 +2829,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RiotShareExtension-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2756,9 +2847,73 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-resources.sh",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAccountDetailsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAttachmentsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAuthenticationViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKCallViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKContactDetailsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKContactListViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKCountryPickerViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKLanguagePickerViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRecentListViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomMemberDetailsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomMemberListViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomSettingsViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKSearchViewController.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Account/MXKAccountTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Authentication/MXKAuthInputsEmailCodeBasedView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Authentication/MXKAuthInputsPasswordBasedView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Contact/MXKContactTableCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/DeviceView/MXKDeviceView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/EncryptionInfoView/MXKEncryptionInfoView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKCollectionViewCell/MXKMediaCollectionViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKEventDetailsView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKPieChartHUD.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKRoomCreationView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithButton.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndButton.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndImageView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndMXKImageView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSlider.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSubLabel.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSwitch.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndTextField.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelTextFieldAndButton.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithPicker.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithSearchBar.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextFieldAndButton.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/PushRule/MXKPushRuleCreationTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/PushRule/MXKPushRuleTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/ReadReceipts/MXKReadReceiptTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomEmptyBubbleTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIOSOutgoingBubbleTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithHPGrowingText.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithSimpleTextView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKInterleavedRecentTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKPublicRoomTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKRecentTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomMemberList/MXKRoomMemberTableViewCell.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
+				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
+				"$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle",
+				"${PODS_ROOT}/../../matrix-ios-sdk/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2771,9 +2926,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-frameworks.sh",
+				"${PODS_ROOT}/WebRTC/WebRTC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2786,9 +2944,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension-resources.sh",
+				"${PODS_ROOT}/../../matrix-ios-sdk/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2855,6 +3016,7 @@
 				F083BE661E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE141E7009ED00A9B29C /* HomeViewController.m in Sources */,
 				F083BDFB1E7009ED00A9B29C /* RoomSearchDataSource.m in Sources */,
+				3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */,
 				F083BE281E7009ED00A9B29C /* StartChatViewController.m in Sources */,
 				F083BE841E7009ED00A9B29C /* RoomIdOrAliasTableViewCell.m in Sources */,
 				F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */,
@@ -2884,6 +3046,7 @@
 				F083BE2F1E7009ED00A9B29C /* ContactTableViewCell.m in Sources */,
 				F083BE901E7009ED00A9B29C /* RoomTitleView.m in Sources */,
 				F083BE6E1E7009ED00A9B29C /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
+				3233F7311F31F4BF006ACA81 /* JitsiViewController.m in Sources */,
 				F083BE2A1E7009ED00A9B29C /* UsersDevicesViewController.m in Sources */,
 				F083BE2D1E7009ED00A9B29C /* ForgotPasswordInputsView.m in Sources */,
 				F083BE7E1E7009ED00A9B29C /* InviteRecentTableViewCell.m in Sources */,
@@ -2907,6 +3070,7 @@
 				F083BE401E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDFD1E7009ED00A9B29C /* PublicRoomsDirectoryDataSource.m in Sources */,
+				3233F73F1F331F05006ACA81 /* Widget.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
 				F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,
@@ -3060,6 +3224,22 @@
 			isa = PBXVariantGroup;
 			children = (
 				327382C11F276AED00356143 /* en */,
+			);
+			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		32918EA51F473BDB0076CA16 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32918EA61F473BDB0076CA16 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		32918EA71F473BDB0076CA16 /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32918EA81F473BDB0076CA16 /* ru */,
 			);
 			name = Vector.strings;
 			sourceTree = "<group>";
@@ -3238,6 +3418,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Riot/libs",
+					"$(PROJECT_DIR)/Riot/libs/jitsi-meet",
+				);
 				INFOPLIST_FILE = Riot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3255,6 +3440,11 @@
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Riot/libs",
+					"$(PROJECT_DIR)/Riot/libs/jitsi-meet",
+				);
 				INFOPLIST_FILE = Riot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

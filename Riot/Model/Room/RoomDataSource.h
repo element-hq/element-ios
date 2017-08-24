@@ -17,6 +17,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "WidgetManager.h"
+
 /**
  The data source for `RoomViewController` in Vector.
  */
@@ -31,5 +33,12 @@
  Tell whether the initial event of the timeline (if any) must be marked. Default is NO.
  */
 @property(nonatomic) BOOL markTimelineInitialEvent;
+
+/**
+ Check if there is an active jitsi widget in the room and return it.
+
+ @return a widget representating the active jitsi conference in the room. Else, nil.
+ */
+- (Widget *)jitsiWidget;
 
 @end
