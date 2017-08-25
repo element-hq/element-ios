@@ -29,13 +29,13 @@
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>NSExtensionActivationSupportsText</key>
-				<true/>
+				<false/>
 			</dict>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
