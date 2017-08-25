@@ -52,8 +52,8 @@ pod 'OLMKit'
 #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
 pod 'Realm', '~> 2.8.1'
 
-# The tagged version on which this version of Riot has been built
-pod 'MatrixKit', '0.6.2'
+# The tagged version on which this version of Riot share extension has been built
+pod 'MatrixKit/AppExtension', '0.6.2'
 
 # The lastest release available on the CocoaPods repository
 #pod 'MatrixKit/AppExtension'
@@ -70,7 +70,6 @@ pod 'MatrixKit', '0.6.2'
 # Remove warnings from "bad" pods
 pod 'OLMKit', :inhibit_warnings => true
 pod 'cmark', :inhibit_warnings => true
-pod 'DTCoreText', :inhibit_warnings => true
 
 end
 
