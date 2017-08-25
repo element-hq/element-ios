@@ -62,7 +62,7 @@ extern UIColor *kRiotDesignSearchBarTintColor;
 // Flag to enable the display of jitsi conference widget
 // TODO: Disable it before release
 // TODO: Remove it once Riot web and android are ready
-//#define USE_JITSI_WIDGET
+#define USE_JITSI_WIDGET
 
 /**
  `RiotDesignValues` class manages the Riot design parameters
