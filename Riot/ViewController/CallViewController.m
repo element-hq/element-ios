@@ -27,6 +27,8 @@
 
 #import "RiotNavigationController.h"
 
+#import "IncomingCallView.h"
+
 @interface CallViewController ()
 {
     // Display a gradient view above the screen
@@ -194,6 +196,37 @@
     
     [gradientMaskLayer removeFromSuperlayer];
     gradientMaskLayer = nil;
+}
+
+- (UIView *)createIncomingCallView
+{
+    NSString *avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.peer.avatarUrl
+                                                                          toFitViewSize:IncomingCallView.callerAvatarSize
+                                                                             withMethod:MXThumbnailingMethodCrop];
+    
+    NSString *callInfo;
+    if (self.mxCall.isVideoCall)
+        callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
+    else
+        callInfo = NSLocalizedStringFromTable(@"call_incoming_voice", @"Vector", nil);
+    
+    IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatarURL:avatarThumbURL
+                                                                          placeholderImage:self.picturePlaceholder
+                                                                                callerName:self.peer.displayname
+                                                                                  callInfo:callInfo];
+    
+    // Incoming call is retained by call vc so use weak to avoid retain cycle
+    __weak typeof(self) weakSelf = self;
+    
+    incomingCallView.onAnswer = ^{
+        [weakSelf onButtonPressed:weakSelf.answerCallButton];
+    };
+    
+    incomingCallView.onReject = ^{
+        [weakSelf onButtonPressed:weakSelf.rejectCallButton];
+    };
+    
+    return incomingCallView;
 }
 
 #pragma mark - MXCallDelegate
