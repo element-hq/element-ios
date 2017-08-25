@@ -21,11 +21,19 @@
 
 @implementation EncryptionInfoView
 
-- (void)awakeFromNib
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
 {
-    [super awakeFromNib];
+    [super customizeViewRendering];
     
-    self.defaultTextColor = kRiotTextColorBlack;
+    self.backgroundColor = kRiotSecondaryBgColor;
+    self.textView.backgroundColor = kRiotPrimaryBgColor;
+    self.defaultTextColor = kRiotPrimaryTextColor;
+    self.cancelButton.tintColor = kRiotColorGreen;
+    self.verifyButton.tintColor = kRiotColorGreen;
+    self.blockButton.tintColor = kRiotColorGreen;
+    self.confirmVerifyButton.tintColor = kRiotColorGreen;
 }
 
 @end

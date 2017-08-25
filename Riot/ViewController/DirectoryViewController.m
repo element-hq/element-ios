@@ -30,6 +30,9 @@
 
     // The animated view displayed at the table view bottom when paginating
     UIView* footerSpinnerView;
+    
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -41,7 +44,6 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -56,6 +58,45 @@
 
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    // Check the table view style to select its bg color.
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.view.backgroundColor = self.tableView.backgroundColor;
+    
+    if (self.tableView.dataSource)
+    {
+        [self.tableView reloadData];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
+}
+
+- (void)destroy
+{
+    [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -116,6 +157,29 @@
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -230,19 +294,7 @@
 
             if (roomsAdded)
             {
-                // Notify the table view there are new items at its tail
-                NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:roomsAdded];
-
-                NSUInteger numberOfRowsBefore = [self->dataSource tableView:self.tableView numberOfRowsInSection:0];
-                numberOfRowsBefore -= roomsAdded;
-
-                for (NSUInteger i = 0; i < roomsAdded; i++)
-                {
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(numberOfRowsBefore + i) inSection:0];
-                    [indexPaths addObject:indexPath];
-                }
-
-                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView reloadData];
             }
             
             [self removeSpinnerFooterView];

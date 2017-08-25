@@ -22,14 +22,14 @@
 @interface RoomTableViewCell : MXKTableViewCell
 
 @property (weak, nonatomic) IBOutlet MXKImageView *avatarImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *directRoomIcon;
+@property (weak, nonatomic) IBOutlet UIView *directRoomBorderView;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 /**
  Update the information displayed by the cell.
  
- @param rooom the room to render.
+ @param room the room to render.
  */
 - (void)render:(MXRoom *)room;
 

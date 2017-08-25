@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -29,7 +30,7 @@ static RageShakeManager* sharedInstance = nil;
     bool isShaking;
     double startShakingTimeStamp;
     
-    MXKAlert *confirmationAlert;
+    UIAlertController *confirmationAlert;
 }
 @end
 
@@ -53,38 +54,53 @@ static RageShakeManager* sharedInstance = nil;
     if (self) {
         isShaking = NO;
         startShakingTimeStamp = 0;
-
+        
         confirmationAlert = nil;
-
+        
     }
     
     return self;
 }
 
-- (void)promptCrashReportInViewController:(UIViewController*)viewController {
-    if ([MXLogger crashLog] && [MFMailComposeViewController canSendMail]) {
-        
-        confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"Vector", nil)  message:nil style:MXKAlertStyleAlert];
+- (void)promptCrashReportInViewController:(UIViewController*)viewController
+{
+    if ([MXLogger crashLog])
+    {
+        confirmationAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
         
         __weak typeof(self) weakSelf = self;
-        [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            typeof(self) self = weakSelf;
-            self->confirmationAlert = nil;
-            
-            // Erase the crash log (there is only chance for the user to send it)
-            [MXLogger deleteCrashLog];
-        }];
+        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action) {
+                                                                
+                                                                if (weakSelf)
+                                                                {
+                                                                    typeof(self) self = weakSelf;
+                                                                    self->confirmationAlert = nil;
+                                                                }
+                                                                
+                                                                // Erase the crash log (there is only chance for the user to send it)
+                                                                [MXLogger deleteCrashLog];
+                                                                
+                                                            }]];
         
-        [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            typeof(self) self = weakSelf;
-            self->confirmationAlert = nil;
-
-            BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
-            bugReportViewController.reportCrash = YES;
-            [bugReportViewController showInViewController:viewController];
-        }];
+        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action) {
+                                                                
+                                                                if (weakSelf)
+                                                                {
+                                                                    typeof(self) self = weakSelf;
+                                                                    self->confirmationAlert = nil;
+                                                                }
+                                                                
+                                                                BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
+                                                                bugReportViewController.reportCrash = YES;
+                                                                [bugReportViewController showInViewController:viewController];
+                                                                
+                                                            }]];
         
-        [confirmationAlert showInViewController:viewController];
+        [viewController presentViewController:confirmationAlert animated:YES completion:nil];
     }
 }
 
@@ -101,36 +117,51 @@ static RageShakeManager* sharedInstance = nil;
     }
 }
 
-- (void)stopShaking:(UIResponder*)responder {
-    
+- (void)stopShaking:(UIResponder*)responder
+{
     NSLog(@"[RageShakeManager] Stop shaking with [%@]", [responder class]);
     
     if (isShaking && [AppDelegate theDelegate].isAppForeground && !confirmationAlert
-        && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION)) {
-        
-        if ([responder isKindOfClass:[UIViewController class]] && [MFMailComposeViewController canSendMail]) {
-            confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"Vector", nil)  message:nil style:MXKAlertStyleAlert];
+        && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION))
+    {
+        if ([responder isKindOfClass:[UIViewController class]])
+        {
+            confirmationAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
             
             __weak typeof(self) weakSelf = self;
-            [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                typeof(self) self = weakSelf;
-                self->confirmationAlert = nil;
-            }];
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+                                                                    
+                                                                    if (weakSelf)
+                                                                    {
+                                                                        typeof(self) self = weakSelf;
+                                                                        self->confirmationAlert = nil;
+                                                                    }
+                                                                    
+                                                                }]];
             
-            [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                typeof(self) self = weakSelf;
-                self->confirmationAlert = nil;
-
-                UIViewController *controller = (UIViewController*)responder;
-                if (controller) {
-
-                    BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
-                    bugReportViewController.screenshot = [self takeScreenshot];
-                    [bugReportViewController showInViewController:controller];
-                }
-            }];
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+                                                                    
+                                                                    if (weakSelf)
+                                                                    {
+                                                                        typeof(self) self = weakSelf;
+                                                                        self->confirmationAlert = nil;
+                                                                    }
+                                                                    
+                                                                    UIViewController *controller = (UIViewController*)responder;
+                                                                    if (controller) {
+                                                                        
+                                                                        BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
+                                                                        bugReportViewController.screenshot = [self takeScreenshot];
+                                                                        [bugReportViewController showInViewController:controller];
+                                                                    }
+                                                                    
+                                                                }]];
             
-            [confirmationAlert showInViewController:(UIViewController*)responder];
+            [(UIViewController*)responder presentViewController:confirmationAlert animated:YES completion:nil];
         }
     }
     
@@ -143,17 +174,17 @@ static RageShakeManager* sharedInstance = nil;
 }
 
 /**
-  Take a screenshot of the current screen.
-
+ Take a screenshot of the current screen.
+ 
  @return an image
  */
 - (UIImage*)takeScreenshot {
-
+    
     UIImage *image;
-
+    
     AppDelegate* theDelegate = [AppDelegate theDelegate];
     UIGraphicsBeginImageContextWithOptions(theDelegate.window.bounds.size, NO, [UIScreen mainScreen].scale);
-
+    
     // Iterate over every window from back to front
     for (UIWindow *window in [[UIApplication sharedApplication] windows])
     {
@@ -170,20 +201,20 @@ static RageShakeManager* sharedInstance = nil;
             CGContextTranslateCTM(UIGraphicsGetCurrentContext(),
                                   -[window bounds].size.width * [[window layer] anchorPoint].x,
                                   -[window bounds].size.height * [[window layer] anchorPoint].y);
-
+            
             // Render the layer hierarchy to the current context
             [[window layer] renderInContext:UIGraphicsGetCurrentContext()];
-
+            
             // Restore the context
             CGContextRestoreGState(UIGraphicsGetCurrentContext());
         }
     }
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
+    
     // the image is copied in the clipboard
     [UIPasteboard generalPasteboard].image = image;
-
+    
     return image;
 }
 

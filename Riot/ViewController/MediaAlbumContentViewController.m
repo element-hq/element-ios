@@ -37,6 +37,11 @@
      The currently selected media. Nil when the multiselection is not active.
      */
     NSMutableArray <PHAsset*> *selectedAssets;
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -64,7 +69,6 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
@@ -95,11 +99,50 @@
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"media_picker_select", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onSelect:)];
     }
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
 }
 
-- (void)dealloc
+- (void)userInterfaceThemeDidChange
 {
+    self.assetsCollectionView.backgroundColor = kRiotPrimaryBgColor;
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the preferred value of the delegate if it is a view controller itself.
+    // This is required to handle correctly the full screen mode when a media is selected.
+    if ([self.delegate isKindOfClass:UIViewController.class])
+    {
+        return [(UIViewController*)self.delegate prefersStatusBarHidden];
+    }
     
+    // Keep visible the status bar by default.
+    return NO;
+}
+
+- (void)destroy
+{
+    [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -187,13 +230,6 @@
     self.navigationItem.title = _assetsCollection.localizedTitle;
     
     [self.assetsCollectionView reloadData];
-}
-
-#pragma mark - Override MXKViewController
-
-- (void)destroy
-{
-    [super destroy];
 }
 
 #pragma mark - UICollectionViewDataSource

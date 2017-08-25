@@ -214,6 +214,10 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 {
     if (_hasReachedPaginationEnd)
     {
+        if (complete)
+        {
+            complete(0);
+        }
         return nil;
     }
 
@@ -334,18 +338,26 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotTextColorGray;
+            tableViewCell.textLabel.textColor = kRiotSecondaryTextColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        
-        if (_searchPattern.length)
+
+        if (state == MXKDataSourceStateReady)
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+            if (_searchPattern.length)
+            {
+                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+            }
+            else
+            {
+                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_directory_no_public_room", @"Vector", nil);
+            }
         }
         else
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_directory_no_public_room", @"Vector", nil);
+            // Show nothing while loading and in other cases
+            tableViewCell.textLabel.text = @"";
         }
         
         return tableViewCell;

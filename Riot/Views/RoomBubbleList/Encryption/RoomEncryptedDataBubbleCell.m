@@ -95,6 +95,12 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
     for (NSUInteger componentIndex = 0; componentIndex < bubbleComponents.count; componentIndex++)
     {
         component  = bubbleComponents[componentIndex];
+        
+        // Ignore components without display.
+        if (!component.attributedTextMessage)
+        {
+            continue;
+        }
     
         UIImage *icon = [RoomEncryptedDataBubbleCell encryptionIconForEvent:component.event andSession:bubbleData.mxSession];
         UIImageView *encryptStatusImageView = [[UIImageView alloc] initWithImage:icon];

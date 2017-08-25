@@ -26,6 +26,14 @@
 
 #import "MXRoom+Riot.h"
 
+@interface RoomDataSource()
+{
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+}
+
+@end
+
 @implementation RoomDataSource
 
 - (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
@@ -36,14 +44,8 @@
         // Replace default Cell data class
         [self registerCellDataClass:RoomBubbleCellData.class forCellIdentifier:kMXKRoomBubbleCellDataIdentifier];
         
-        // Replace event formatter
-        self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
-        self.eventFormatter.treatMatrixUserIdAsLink = YES;
-        self.eventFormatter.treatMatrixRoomIdAsLink = YES;
-        self.eventFormatter.treatMatrixRoomAliasAsLink = YES;
-        
-        // Apply the event types filter to display only the wanted event types.
-        self.eventFormatter.eventTypesFilterForMessages = [MXKAppSettings standardAppSettings].eventsFilterForMessages;
+        // Replace the event formatter
+        [self updateEventFormatter];
 
         // Handle timestamp and read receips display at Vector app level (see [tableView: cellForRowAtIndexPath:])
         self.useCustomDateTimeLabel = YES;
@@ -54,8 +56,41 @@
         self.bubblesPagination = MXKRoomDataSourceBubblesPaginationPerDay;
         
         self.markTimelineInitialEvent = NO;
+        
+        // Observe user interface theme change.
+        kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            // Force room data reload.
+            [self updateEventFormatter];
+            [self reload];
+            
+        }];
     }
     return self;
+}
+
+- (void)updateEventFormatter
+{
+    // Set a new event formatter
+    // TODO: We should use the same EventFormatter instance for all the rooms of a mxSession.
+    self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
+    self.eventFormatter.treatMatrixUserIdAsLink = YES;
+    self.eventFormatter.treatMatrixRoomIdAsLink = YES;
+    self.eventFormatter.treatMatrixRoomAliasAsLink = YES;
+    
+    // Apply the event types filter to display only the wanted event types.
+    self.eventFormatter.eventTypesFilterForMessages = [MXKAppSettings standardAppSettings].eventsFilterForMessages;
+}
+
+- (void)destroy
+{
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
+    
+    [super destroy];
 }
 
 - (void)didReceiveReceiptEvent:(MXEvent *)receiptEvent roomState:(MXRoomState *)roomState
@@ -133,24 +168,22 @@
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
         NSArray *bubbleComponents = cellData.bubbleComponents;
+
+        BOOL isCollapsableCellCollapsed = cellData.collapsable && cellData.collapsed;
         
         // Display timestamp of the last message
-        if (cellData.containsLastMessage)
+        if (cellData.containsLastMessage && !isCollapsableCellCollapsed)
         {
             [bubbleCell addTimestampLabelForComponent:cellData.mostRecentComponentIndex];
         }
         
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
-        if ((self.showBubbleReceipts && cellData.hasReadReceipts) || self.showReadMarker)
+        // Ignore the read receipts on collapsed bubbles
+        if ((self.showBubbleReceipts && cellData.hasReadReceipts && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
-            // Read receipts container are inserted here on the right side into the overlay container.
+            // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
-            bubbleCell.bubbleOverlayContainer.backgroundColor = [UIColor clearColor];
-            bubbleCell.bubbleOverlayContainer.alpha = 1;
-            bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
-            bubbleCell.bubbleOverlayContainer.hidden = NO;
-            
             NSInteger index = bubbleComponents.count;
             CGFloat bottomPositionY = bubbleCell.frame.size.height;
             while (index--)
@@ -160,7 +193,7 @@
                 if (component.event.sentState != MXEventSentStateFailed)
                 {
                     // Handle read receipts (if any)
-                    if (self.showBubbleReceipts && cellData.hasReadReceipts)
+                    if (self.showBubbleReceipts && cellData.hasReadReceipts && !isCollapsableCellCollapsed)
                     {
                         // Get the events receipts by ignoring the current user receipt.
                         NSArray* receipts = [self.room getEventReceipts:component.event.eventId sorted:YES];
@@ -199,10 +232,26 @@
                             avatarsContainer.tag = index;
                             
                             [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
+                            avatarsContainer.readReceipts = receipts;
+                            UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(onReceiptContainerTap:)];
+                            [tapRecognizer setNumberOfTapsRequired:1];
+                            [tapRecognizer setNumberOfTouchesRequired:1];
+                            [avatarsContainer addGestureRecognizer:tapRecognizer];
+                            avatarsContainer.userInteractionEnabled = YES;
                             
                             avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";
-                            [bubbleCell.bubbleOverlayContainer addSubview:avatarsContainer];
+                            
+                            // Add this read receipts container in the content view
+                            if (!bubbleCell.tmpSubviews)
+                            {
+                                bubbleCell.tmpSubviews = [NSMutableArray arrayWithArray:@[avatarsContainer]];
+                            }
+                            else
+                            {
+                                [bubbleCell.tmpSubviews addObject:avatarsContainer];
+                            }
+                            [bubbleCell.contentView addSubview:avatarsContainer];
                             
                             // Force receipts container size
                             NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
@@ -224,14 +273,14 @@
                             NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
                                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                                     toItem:bubbleCell.bubbleOverlayContainer
+                                                                                                     toItem:avatarsContainer.superview
                                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                                  multiplier:1.0
                                                                                                    constant:-6];
                             NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
                                                                                              attribute:NSLayoutAttributeTop
                                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                                toItem:bubbleCell.bubbleOverlayContainer
+                                                                                                toItem:avatarsContainer.superview
                                                                                              attribute:NSLayoutAttributeTop
                                                                                             multiplier:1.0
                                                                                               constant:bottomPositionY - 13];
@@ -244,6 +293,13 @@
                     // Check whether the read marker must be displayed here.
                     if (self.showReadMarker)
                     {
+                        // The read marker is added into the overlay container.
+                        // CAUTION: Keep disabled the user interaction on this container to not disturb tap gesture handling.
+                        bubbleCell.bubbleOverlayContainer.backgroundColor = [UIColor clearColor];
+                        bubbleCell.bubbleOverlayContainer.alpha = 1;
+                        bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
+                        bubbleCell.bubbleOverlayContainer.hidden = NO;
+                        
                         if ([component.event.eventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
                             bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - 2, bubbleCell.bubbleOverlayContainer.frame.size.width, 2)];
@@ -353,10 +409,30 @@
     if (selectedEventId.length)
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:selectedEventId];
-        cellData.selectedEventId = selectedEventId;
+
+        if (cellData.collapsed && cellData.nextCollapsableCellData)
+        {
+            // Select nothing for a collased cell but open it
+            [self collapseRoomBubble:cellData collapsed:NO];
+            return;
+        }
+        else
+        {
+            cellData.selectedEventId = selectedEventId;
+        }
     }
     
     _selectedEventId = selectedEventId;
+}
+
+- (Widget *)jitsiWidget
+{
+    Widget *jitsiWidget;
+
+    // Note: Manage only one jitsi widget at a time for the moment
+    jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room].firstObject;
+
+    return jitsiWidget;
 }
 
 @end

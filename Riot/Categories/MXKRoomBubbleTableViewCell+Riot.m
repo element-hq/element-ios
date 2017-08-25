@@ -29,6 +29,7 @@
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH 4
 
 NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRiotEditButtonPressed";
+NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellTapOnReceiptsContainer";
 
 @implementation MXKRoomBubbleTableViewCell (Riot)
 
@@ -47,13 +48,20 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
     
     if (component && component.date)
     {
+        // Check whether this is the first displayed component.
+        BOOL isFirstDisplayedComponent = (componentIndex == 0);
+        if ([bubbleData isKindOfClass:RoomBubbleCellData.class])
+        {
+            isFirstDisplayedComponent = (componentIndex == ((RoomBubbleCellData*)bubbleData).oldestComponentIndex);
+        }
+        
         CGFloat timeLabelPosX = self.bubbleInfoContainer.frame.size.width - VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH;
-        CGFloat timeLabelPosY = componentIndex ? component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant: 0;
+        CGFloat timeLabelPosY = isFirstDisplayedComponent ? 0 : component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant;
         UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeLabelPosX, timeLabelPosY, VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH , 18)];
         
         timeLabel.text = [bubbleData.eventFormatter timeStringFromDate:component.date];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = kRiotTextColorGray;
+        timeLabel.textColor = kRiotSecondaryTextColor;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
              timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
@@ -104,7 +112,7 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
         [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
         
         // Check whether a vertical whitespace was applied to display correctly the timestamp.
-        if (componentIndex || bubbleData.shouldHideSenderInformation || bubbleData.shouldHideSenderName)
+        if (!isFirstDisplayedComponent || bubbleData.shouldHideSenderInformation || bubbleData.shouldHideSenderName)
         {
             // Adjust the position of the potential encryption icon in this case.
             if (self.encryptionStatusContainerView)
@@ -146,7 +154,7 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
         
         // Retrieve the read receipts container related to the selected component (if any)
         // Blur the others
-        for (UIView* view in self.bubbleOverlayContainer.subviews)
+        for (UIView* view in self.tmpSubviews)
         {
             // Note read receipt container tag is equal to the index of the related component.
             if (view.tag != componentIndex)
@@ -170,19 +178,30 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
 
         // Define the marker frame
         CGFloat markPosY = component.position.y + self.msgTextViewTopConstraint.constant;
-
-        CGFloat markHeight;
-        if (componentIndex == bubbleComponents.count - 1)
+        
+        NSInteger mostRecentComponentIndex = bubbleComponents.count - 1;
+        if ([bubbleData isKindOfClass:RoomBubbleCellData.class])
         {
-            // There is no component after this component in the cell,
-            // use the rest of the cell height
-            markHeight = self.contentView.frame.size.height - markPosY;
+            mostRecentComponentIndex = ((RoomBubbleCellData*)bubbleData).mostRecentComponentIndex;
         }
-        else
+        
+        // Compute the mark height.
+        // Use the rest of the cell height by default.
+        CGFloat markHeight = self.contentView.frame.size.height - markPosY;
+        if (componentIndex != mostRecentComponentIndex)
         {
-            // Stop the marker height to the top of the next component in the cell
-            MXKRoomBubbleComponent *nextComponent  = bubbleComponents[componentIndex + 1];
-            markHeight = nextComponent.position.y - component.position.y;
+            // There is another component (with display) after this component in the cell.
+            // Stop the marker height to the top of this component.
+            for (NSInteger index = componentIndex + 1; index < bubbleComponents.count; index ++)
+            {
+                MXKRoomBubbleComponent *nextComponent  = bubbleComponents[index];
+                
+                if (nextComponent.attributedTextMessage)
+                {
+                    markHeight = nextComponent.position.y - component.position.y;
+                    break;
+                }
+            }
         }
 
         UIView *markerView = [[UIView alloc] initWithFrame:CGRectMake(VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X,
@@ -244,7 +263,7 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
         
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = kRiotTextColorGray;
+        timeLabel.textColor = kRiotSecondaryTextColor;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
             timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
@@ -301,15 +320,18 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
     if (blurred)
     {
         self.bubbleOverlayContainer.hidden = NO;
-        self.bubbleOverlayContainer.backgroundColor = [UIColor whiteColor];
+        self.bubbleOverlayContainer.backgroundColor = kRiotPrimaryBgColor;
         self.bubbleOverlayContainer.alpha = 0.8;
         self.bubbleOverlayContainer.userInteractionEnabled = YES;
         
-        // Blur read receipts if any
+        // Blur subviews if any
         for (UIView* view in self.bubbleOverlayContainer.subviews)
         {
             view.alpha = 0.2;
         }
+        
+        // Move this view in front
+        [self.contentView bringSubviewToFront:self.bubbleOverlayContainer];
     }
     else
     {
@@ -320,7 +342,7 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
             self.bubbleOverlayContainer.alpha = 1;
             self.bubbleOverlayContainer.userInteractionEnabled = NO;
             
-            // Restore read receipts display
+            // Restore subviews display
             for (UIView* view in self.bubbleOverlayContainer.subviews)
             {
                 view.alpha = 1;
@@ -388,16 +410,31 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
     }
 }
 
+- (IBAction)onReceiptContainerTap:(UITapGestureRecognizer *)sender
+{
+    if (self.delegate)
+    {
+        [self.delegate cell:self didRecognizeAction:kMXKRoomBubbleCellTapOnReceiptsContainer userInfo:@{kMXKRoomBubbleCellReceiptsContainerKey : sender.view}];
+    }
+}
+
 #pragma mark - Internals
 
 - (void)addEditButtonForComponent:(NSUInteger)componentIndex completion:(void (^ __nullable)(BOOL finished))completion
 {
     MXKRoomBubbleComponent *component  = bubbleData.bubbleComponents[componentIndex];
     
+    // Check whether this is the first displayed component.
+    BOOL isFirstDisplayedComponent = (componentIndex == 0);
+    if ([bubbleData isKindOfClass:RoomBubbleCellData.class])
+    {
+        isFirstDisplayedComponent = (componentIndex == ((RoomBubbleCellData*)bubbleData).oldestComponentIndex);
+    }
+    
     // Define 'Edit' button frame
     UIImage *editIcon = [UIImage imageNamed:@"edit_icon"];
     CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH - 22 - editIcon.size.width / 2;
-    CGFloat editBtnPosY = componentIndex ? component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant - 13 : -13;
+    CGFloat editBtnPosY = isFirstDisplayedComponent ? -13 : component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant - 13;
     UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(editBtnPosX, editBtnPosY, 44, 44)];
     
     [editButton setImage:editIcon forState:UIControlStateNormal];

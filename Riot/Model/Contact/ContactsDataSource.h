@@ -17,6 +17,20 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
+ The state of the users search from the homeserver user directory.
+ */
+typedef enum : NSUInteger
+{
+    ContactsDataSourceUserDirectoryStateLoading,
+    ContactsDataSourceUserDirectoryStateLoadedButLimited,
+    ContactsDataSourceUserDirectoryStateLoaded,
+    // The search is based on local known matrix contacts
+    ContactsDataSourceUserDirectoryStateOfflineLoading,
+    ContactsDataSourceUserDirectoryStateOfflineLoaded
+} ContactsDataSourceUserDirectoryState;
+
+
+/**
  'ContactsDataSource' is a base class to handle contacts in Riot.
  */
 @interface ContactsDataSource : MXKDataSource <UITableViewDataSource, UIGestureRecognizerDelegate>
@@ -144,5 +158,10 @@
  a valid email or a Matrix user ID.
  */
 @property (nonatomic, readonly) MXKContact *searchInputContact;
+
+/**
+ The state of the users search from the homeserver user directory.
+ */
+@property (nonatomic, readonly) ContactsDataSourceUserDirectoryState userDirectoryState;
 
 @end

@@ -17,8 +17,6 @@
 
 #import "TableViewCellWithCheckBoxes.h"
 
-#import "RiotDesignValues.h"
-
 // The space between 2 check boxes
 #define TABLEVIEWCELLWITHCHECKBOXES_MARGIN 8
 
@@ -137,7 +135,6 @@
         
         UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, containerWidth - 60, 31)];
         theLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        theLabel.textColor = kRiotTextColorBlack;
         [checkboxContainer addSubview:theLabel];
         [labelArray addObject:theLabel];
         
@@ -283,7 +280,7 @@
                 }
             }
         }
-        else if (checkBox.tag)
+        else if (!isSelected && checkBox.tag)
         {
             checkBox.image = [UIImage imageNamed:@"selection_untick"];
             checkBox.tag = 0;

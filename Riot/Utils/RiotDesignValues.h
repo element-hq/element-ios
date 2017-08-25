@@ -18,6 +18,11 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
+ Posted when the user interface theme has been changed.
+ */
+extern NSString *const kRiotDesignValuesDidChangeThemeNotification;
+
+/**
  Convert a RGB hexadecimal value into a UIColor.
  */
 #define UIColorFromRGB(rgbValue) \
@@ -26,10 +31,18 @@
                      blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
                     alpha:1.0]
 
+#pragma mark - Riot Theme Colors (depends on the selected theme light or dark).
+extern UIColor *kRiotPrimaryBgColor;
+extern UIColor *kRiotSecondaryBgColor;
+extern UIColor *kRiotPrimaryTextColor;
+extern UIColor *kRiotSecondaryTextColor; //subtitle, sending messages color.
+extern UIColor *kRiotPlaceholderTextColor; // nil is used to keep the default color.
+extern UIColor *kRiotTopicTextColor;
+extern UIColor *kRiotSelectedBgColor; // nil is used to keep the default color.
+
 #pragma mark - Riot Colors
 extern UIColor *kRiotColorGreen;
 extern UIColor *kRiotColorLightGreen;
-extern UIColor *kRiotColorLightGrey;
 extern UIColor *kRiotColorLightOrange;
 extern UIColor *kRiotColorSilver;
 extern UIColor *kRiotColorPinkRed;
@@ -37,24 +50,23 @@ extern UIColor *kRiotColorRed;
 extern UIColor *kRiotColorIndigo;
 extern UIColor *kRiotColorOrange;
 
-#pragma mark - Riot Text Colors
-extern UIColor *kRiotTextColorBlack;
-extern UIColor *kRiotTextColorDarkGray;
-extern UIColor *kRiotTextColorGray;
-
-#pragma mark - Riot Navigation Bar Tint Color
-extern UIColor *kRiotNavBarTintColor;
-
 #pragma mark - Riot Standard Room Member Power Level
 extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;
+
+#pragma mark - Riot bar style
+extern UIStatusBarStyle kRiotDesignStatusBarStyle;
+extern UIBarStyle kRiotDesignSearchBarStyle;
+extern UIColor *kRiotDesignSearchBarTintColor;
+
+// Flag to enable the display of jitsi conference widget
+// TODO: Disable it before release
+// TODO: Remove it once Riot web and android are ready
+//#define USE_JITSI_WIDGET
 
 /**
  `RiotDesignValues` class manages the Riot design parameters
  */
 @interface RiotDesignValues : NSObject
-
-// to update the navigation bar buttons color
-// [[AppDelegate theDelegate] recentsNavigationController].navigationBar.tintColor = [UIColor greenColor];
 
 @end

@@ -29,6 +29,10 @@
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *roomTitle;
+@property (weak, nonatomic) IBOutlet UILabel *roomTitle1;
+@property (weak, nonatomic) IBOutlet UILabel *roomTitle2;
+
+@property (weak, nonatomic) IBOutlet UIView *editionArrowView;
 
 @property (weak, nonatomic) IBOutlet UIView *directRoomBorderView;
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
@@ -37,6 +41,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *missedNotifAndUnreadBadgeLabel;
 @property (weak, nonatomic) IBOutlet UIView  *missedNotifAndUnreadBadgeBgView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *missedNotifAndUnreadBadgeBgViewWidthConstraint;
+
+@property (nonatomic, readonly) NSString *roomId;
+
+@property (nonatomic) NSInteger collectionViewTag; // default is -1
 
 /**
  The default collection view cell size.

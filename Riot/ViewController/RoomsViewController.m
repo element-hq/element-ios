@@ -210,7 +210,12 @@
 {
     if (indexPath.section == recentsDataSource.directorySection)
     {
-        [self openPublicRoomAtIndexPath:indexPath];
+        // Sanity check
+        MXPublicRoom *publicRoom = [recentsDataSource.publicRoomsDirectoryDataSource roomAtIndexPath:indexPath];
+        if (publicRoom)
+        {
+            [self openPublicRoomAtIndexPath:indexPath];
+        }
     }
     else
     {
@@ -268,9 +273,12 @@
 
 - (void)triggerDirectoryPagination
 {
-    if (recentsDataSource.publicRoomsDirectoryDataSource.hasReachedPaginationEnd || footerSpinnerView)
+    if (!recentsDataSource
+        || recentsDataSource.state == MXKDataSourceStateUnknown
+        || recentsDataSource.publicRoomsDirectoryDataSource.hasReachedPaginationEnd
+        || footerSpinnerView)
     {
-        // We got all public rooms or we are already paginating
+        // We are not yet ready or being killed or we got all public rooms or we are already paginating
         // Do nothing
         return;
     }

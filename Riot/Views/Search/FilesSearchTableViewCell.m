@@ -22,15 +22,15 @@
 @implementation FilesSearchTableViewCell
 @synthesize delegate, mxkCellData;
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
-    self.title.textColor = kRiotTextColorBlack;
+    self.title.textColor = kRiotPrimaryTextColor;
     
-    self.message.textColor = kRiotTextColorGray;
+    self.message.textColor = kRiotSecondaryTextColor;
     
-    self.date.tintColor = kRiotTextColorGray;
+    self.date.tintColor = kRiotSecondaryTextColor;
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
@@ -95,7 +95,7 @@
                     self.attachmentImageView.enableInMemoryCache = YES;
                     [self.attachmentImageView setImageURL:url withType:mimetype andImageOrientation:bubbleData.attachment.thumbnailOrientation previewImage:preview];
                     
-                    self.attachmentImageView.backgroundColor = [UIColor whiteColor];
+                    self.attachmentImageView.backgroundColor = kRiotPrimaryBgColor;
                 }
             }
             
@@ -129,7 +129,7 @@
             image = [UIImage imageNamed:@"file_photo_icon"];
             break;
         case MXKAttachmentTypeAudio:
-            image = [UIImage imageNamed:@"file_audio_icon"];
+            image = [UIImage imageNamed:@"file_music_icon"];
             break;
         case MXKAttachmentTypeVideo:
             image = [UIImage imageNamed:@"file_video_icon"];

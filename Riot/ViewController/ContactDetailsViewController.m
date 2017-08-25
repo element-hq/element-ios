@@ -73,7 +73,17 @@
     /**
      Current alert (if any).
      */
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The current visibility of the status bar in this view controller.
+     */
+    BOOL isStatusBarHidden;
 }
 @end
 
@@ -100,9 +110,11 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    // Keep visible the status bar by default.
+    isStatusBarHidden = NO;
 }
 
 - (void)viewDidLoad
@@ -120,10 +132,6 @@
     actionsArray = [[NSMutableArray alloc] init];
     directChatsArray = [[NSMutableArray alloc] init];
     
-    self.headerView.backgroundColor = kRiotColorLightGrey;
-    self.contactNameLabel.textColor = kRiotTextColorBlack;
-    self.contactStatusLabel.textColor = kRiotColorGreen;
-    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
@@ -136,7 +144,7 @@
     contactTitleView = [RoomMemberTitleView roomMemberTitleView];
     contactAvatar = contactTitleView.memberAvatar;
     contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
-    contactAvatar.backgroundColor = [UIColor clearColor];
+    contactAvatar.defaultBackgroundColor = [UIColor clearColor];
 
     // Add tap to show the contact avatar in fullscreen
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
@@ -202,6 +210,44 @@
         NSNumber *orientation = (NSNumber*)(notif.userInfo[UIApplicationStatusBarOrientationUserInfoKey]);
         self.bottomImageView.hidden = (orientation.integerValue == UIInterfaceOrientationLandscapeLeft || orientation.integerValue == UIInterfaceOrientationLandscapeRight);
     }];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    self.headerView.backgroundColor = kRiotSecondaryBgColor;
+    self.contactNameLabel.textColor = kRiotPrimaryTextColor;
+    self.contactStatusLabel.textColor = kRiotColorGreen;
+    
+    // Check the table view style to select its bg color.
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.view.backgroundColor = self.tableView.backgroundColor;
+    
+    if (self.tableView.dataSource)
+    {
+        [self.tableView reloadData];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the current status bar visibility.
+    return isStatusBarHidden;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -271,6 +317,12 @@
 {
     [super destroy];
     
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
+    
     if (roomCreationRequest)
     {
         [roomCreationRequest cancel];
@@ -293,7 +345,7 @@
     
     [self removePendingActionMask];
     
-    [currentAlert dismiss:NO];
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
     currentAlert = nil;
 }
 
@@ -671,8 +723,8 @@
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
             
-            [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateNormal];
-            [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateHighlighted];
+            [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
+            [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -696,7 +748,7 @@
         else
         {
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
-            roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
+            roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
             roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
         }
         
@@ -712,6 +764,29 @@
 }
 
 #pragma mark - TableView delegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -815,41 +890,52 @@
             {
                 // Prompt user to ignore content from this user
                 __weak __typeof(self) weakSelf = self;
-                [currentAlert dismiss:NO];
-                currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"room_member_ignore_prompt"]  message:nil style:MXKAlertStyleAlert];
+                [currentAlert dismissViewControllerAnimated:NO completion:nil];
+                currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_member_ignore_prompt"] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 
-                [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->currentAlert = nil;
-                    
-                    // Add the user to the blacklist: ignored users
-                    [strongSelf addPendingActionMask];
-                    [strongSelf.mainSession ignoreUsers:@[strongSelf.firstMatrixId]
-                                                success:^{
-                                                    
-                                                    [strongSelf removePendingActionMask];
-                                                    
-                                                } failure:^(NSError *error) {
-                                                    
-                                                    [strongSelf removePendingActionMask];
-                                                    NSLog(@"[ContactDetailsViewController] Ignore %@ failed", strongSelf.firstMatrixId);
-                                                    
-                                                    // Notify MatrixKit user
-                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                    
-                                                }];
-                    
-                }];
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   if (weakSelf)
+                                                                   {
+                                                                       typeof(self) self = weakSelf;
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                       // Add the user to the blacklist: ignored users
+                                                                       [self addPendingActionMask];
+                                                                       [self.mainSession ignoreUsers:@[self.firstMatrixId]
+                                                                                                   success:^{
+                                                                                                       
+                                                                                                       [self removePendingActionMask];
+                                                                                                       
+                                                                                                   } failure:^(NSError *error) {
+                                                                                                       
+                                                                                                       [self removePendingActionMask];
+                                                                                                       NSLog(@"[ContactDetailsViewController] Ignore %@ failed", self.firstMatrixId);
+                                                                                                       
+                                                                                                       // Notify MatrixKit user
+                                                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                                                       
+                                                                                                   }];
+                                                                   }
+                                                                   
+                                                               }]];
                 
-                currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->currentAlert = nil;
-                }];
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   if (weakSelf)
+                                                                   {
+                                                                       typeof(self) self = weakSelf;
+                                                                       self->currentAlert = nil;
+                                                                   }
+                                                                   
+                                                               }]];
                 
-                currentAlert.mxkAccessibilityIdentifier = @"ContactDetailsVCIgnoreAlert";
-                [currentAlert showInViewController:self];
+                [currentAlert mxk_setAccessibilityIdentifier:@"ContactDetailsVCIgnoreAlert"];
+                [self presentViewController:currentAlert animated:YES completion:nil];
                 break;
             }
             case ContactDetailsActionUnignore:
@@ -860,13 +946,13 @@
                 [self.mainSession unIgnoreUsers:@[self.firstMatrixId]
                                         success:^{
                                             
-                                            __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                            [strongSelf removePendingActionMask];
+                                            __strong __typeof(weakSelf)self = weakSelf;
+                                            [self removePendingActionMask];
                                             
                                         } failure:^(NSError *error) {
                                             
-                                            __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                            [strongSelf removePendingActionMask];
+                                            __strong __typeof(weakSelf)self = weakSelf;
+                                            [self removePendingActionMask];
                                             NSLog(@"[ContactDetailsViewController] Unignore %@ failed", self.firstMatrixId);
                                             
                                             // Notify MatrixKit user
@@ -1062,6 +1148,10 @@
             [avatarFullScreenView removeFromSuperview];
 
             avatarFullScreenView = nil;
+            
+            isStatusBarHidden = NO;
+            // Trigger status bar update
+            [self setNeedsStatusBarAppearanceUpdate];
         }];
 
         NSString *avatarURL = nil;
@@ -1079,6 +1169,10 @@
                              previewImage:contactAvatar.image];
 
         [avatarFullScreenView showFullScreen];
+        isStatusBarHidden = YES;
+        
+        // Trigger status bar update
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 

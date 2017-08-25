@@ -21,11 +21,18 @@
 
 @implementation DeviceView
 
-- (void)awakeFromNib
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
 {
-    [super awakeFromNib];
+    [super customizeViewRendering];
     
-    self.defaultTextColor = kRiotTextColorBlack;
+    self.containerView.backgroundColor = kRiotSecondaryBgColor;
+    self.textView.backgroundColor = kRiotPrimaryBgColor;
+    self.defaultTextColor = kRiotPrimaryTextColor;
+    self.cancelButton.tintColor = kRiotColorGreen;
+    self.deleteButton.tintColor = kRiotColorGreen;
+    self.renameButton.tintColor = kRiotColorGreen;
 }
 
 @end

@@ -24,6 +24,7 @@
 #import "GAIDictionaryBuilder.h"
 
 #import "MasterTabBarController.h"
+#import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
 
@@ -40,7 +41,7 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
  */
 extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
 {
     BOOL isAPNSRegistered;
     
@@ -55,7 +56,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) MXKAlert *errorNotification;
+@property (strong, nonatomic) UIAlertController *errorNotification;
 
 @property (strong, nonatomic) NSString *appVersion;
 @property (strong, nonatomic) NSString *build;
@@ -84,7 +85,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)restoreInitialDisplay:(void (^)())completion;
 
-- (MXKAlert*)showErrorAsAlert:(NSError*)error;
+- (UIAlertController*)showErrorAsAlert:(NSError*)error;
 
 #pragma mark - Matrix Sessions handling
 
@@ -115,6 +116,13 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)registerUserNotificationSettings;
 
+/**
+ Perform registration for remote notifications.
+ 
+ @param completion the block to be executed when registration finished.
+ */
+- (void)registerForRemoteNotificationsWithCompletion:(void (^)(NSError *))completion;
+
 #pragma mark - Matrix Room handling
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
@@ -132,6 +140,21 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
  @return YES in case of processing success.
  */
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
+
+#pragma mark - Jitsi call
+
+/**
+ Open the Jitsi view controller from a widget.
+ 
+ @param jitsiWidget the jitsi widget.
+ @param video to indicate voice or video call.
+ */
+- (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video;
+
+/**
+ The current Jitsi view controller being displayed.
+ */
+@property (nonatomic, readonly) JitsiViewController *jitsiViewController;
 
 #pragma mark - Call status handling
 

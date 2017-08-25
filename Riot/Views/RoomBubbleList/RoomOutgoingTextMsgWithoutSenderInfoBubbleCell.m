@@ -26,6 +26,12 @@
     [super awakeFromNib];
     
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+}
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
+    
     self.messageTextView.tintColor = kRiotColorGreen;
 }
 

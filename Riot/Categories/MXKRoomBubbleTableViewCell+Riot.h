@@ -24,6 +24,13 @@
 extern NSString *const kMXKRoomBubbleCellRiotEditButtonPressed;
 
 /**
+ Action identifier used when the user tapped on receipts area.
+ 
+ The 'userInfo' disctionary contains an 'MXKReceiptSendersContainer' object under the 'kMXKRoomBubbleCellReceiptsContainerKey' key, representing the receipts container which was tapped on.
+ */
+extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
+
+/**
  Define a `MXKRoomBubbleTableViewCell` category at Riot level to handle bubble customisation.
  */
 @interface MXKRoomBubbleTableViewCell (Riot)
@@ -55,6 +62,11 @@ extern NSString *const kMXKRoomBubbleCellRiotEditButtonPressed;
  Add a label to display the date of the cell.
  */
 - (void)addDateLabel;
+
+/**
+ Called when the user taps on the Receipt Container.
+ */
+- (IBAction)onReceiptContainerTap:(UITapGestureRecognizer *)sender;
 
 /**
  Blur the view by adding a transparent overlay. Default is NO.

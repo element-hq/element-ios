@@ -34,6 +34,11 @@
      The default country code used to initialize the mobile phone number input.
      */
     NSString *defaultCountryCode;
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -59,7 +64,6 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
@@ -76,48 +80,33 @@
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
     self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
-    self.homeServerTextField.textColor = kRiotTextColorBlack;
-    self.homeServerLabel.textColor = kRiotTextColorGray;
     
     self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
-    self.identityServerTextField.textColor = kRiotTextColorBlack;
-    self.identityServerLabel.textColor = kRiotTextColorGray;
     
     self.welcomeImageView.image = [UIImage imageNamed:@"logo"];
     
     [self.submitButton.layer setCornerRadius:5];
     self.submitButton.clipsToBounds = YES;
-    self.submitButton.backgroundColor = kRiotColorGreen;
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     self.submitButton.enabled = YES;
     
     [self.skipButton.layer setCornerRadius:5];
     self.skipButton.clipsToBounds = YES;
-    self.skipButton.backgroundColor = kRiotColorGreen;
     [self.skipButton setTitle:NSLocalizedStringFromTable(@"auth_skip", @"Vector", nil) forState:UIControlStateNormal];
     [self.skipButton setTitle:NSLocalizedStringFromTable(@"auth_skip", @"Vector", nil) forState:UIControlStateHighlighted];
     self.skipButton.enabled = YES;
     
-    NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
-    [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, forgotPasswordTitle.length)];
-    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kRiotColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
-    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
-    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
-    
-    [self updateForgotPwdButtonVisibility];
-    
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
-    
-    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : kRiotTextColorGray, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
-    [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
-    [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
     [self hideCustomServers:YES];
     
     // The view controller dismiss itself on successful login.
     self.delegate = self;
+    
+    self.homeServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_home_server_placeholder", @"Vector", nil);
+    self.identityServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_identity_server_placeholder", @"Vector", nil);
     
     // Custom used authInputsView
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
@@ -129,6 +118,73 @@
     MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
     [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
     self.authInputsView = authInputsView;
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.view.backgroundColor = kRiotSecondaryBgColor;
+    
+    self.navigationBar.barTintColor = kRiotSecondaryBgColor;
+    self.authenticationScrollView.backgroundColor = kRiotPrimaryBgColor;
+    self.authFallbackContentView.backgroundColor = kRiotPrimaryBgColor;
+    
+    if (kRiotPlaceholderTextColor)
+    {
+        if (self.homeServerTextField.placeholder)
+        {
+            self.homeServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                             initWithString:self.homeServerTextField.placeholder
+                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+        if (self.identityServerTextField.placeholder)
+        {
+            self.identityServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                             initWithString:self.identityServerTextField.placeholder
+                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+    }
+    
+    self.submitButton.backgroundColor = kRiotColorGreen;
+    self.skipButton.backgroundColor = kRiotColorGreen;
+    
+    self.noFlowLabel.textColor = kRiotColorRed;
+    
+    NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
+    [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kRiotColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
+    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
+    [self updateForgotPwdButtonVisibility];
+    
+    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : kRiotSecondaryTextColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
+    [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
+    [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
+    
+    self.homeServerTextField.textColor = kRiotPrimaryTextColor;
+    self.homeServerLabel.textColor = kRiotSecondaryTextColor;
+    
+    self.identityServerTextField.textColor = kRiotPrimaryTextColor;
+    self.identityServerLabel.textColor = kRiotSecondaryTextColor;
+    
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    [self.authInputsView customizeViewRendering];
+    
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -141,6 +197,17 @@
     {
         [tracker set:kGAIScreenName value:@"Authentication"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+}
+
+- (void)destroy
+{
+    [super destroy];
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -468,17 +535,20 @@
             // Alert user
             if (alert)
             {
-                [alert dismiss:NO];
+                [alert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            alert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_add_email_and_phone_warning", @"Vector", nil) style:MXKAlertStyleAlert];
+            alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_add_email_and_phone_warning", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
             
-            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert)
-             {
-                 [super onSuccessfulLogin:credentials];
-             }];
+            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               [super onSuccessfulLogin:credentials];
+                                                               
+                                                           }]];
             
-            [alert showInViewController:self];
+            [self presentViewController:alert animated:YES completion:nil];
             return;
         }
     }

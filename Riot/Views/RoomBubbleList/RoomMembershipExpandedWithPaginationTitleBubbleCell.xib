@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="WmY-Jw-mqv" customClass="RoomMembershipExpandedWithPaginationTitleBubbleCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="124"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="123.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oqv-9x-o80" userLabel="Pagination Title View">
+                        <rect key="frame" x="56" y="10" width="534" height="24"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQh-wY-vKf" userLabel="Pagination Label">
+                                <rect key="frame" x="0.0" y="0.0" width="524" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="Qjb-Oj-Dlo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ffj-Hu-v3L" userLabel="Pagination Separator View">
+                                <rect key="frame" x="0.0" y="23" width="534" height="1"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <accessibility key="accessibilityConfiguration" identifier="PaginationTitleView"/>
+                        <constraints>
+                            <constraint firstItem="ffj-Hu-v3L" firstAttribute="leading" secondItem="oqv-9x-o80" secondAttribute="leading" id="74y-0k-YYx"/>
+                            <constraint firstAttribute="trailing" secondItem="ffj-Hu-v3L" secondAttribute="trailing" id="F7U-pq-r4x"/>
+                            <constraint firstAttribute="trailing" secondItem="fQh-wY-vKf" secondAttribute="trailing" constant="10" id="IHi-Ll-bCW"/>
+                            <constraint firstAttribute="bottom" secondItem="ffj-Hu-v3L" secondAttribute="bottom" id="RNu-GB-THa"/>
+                            <constraint firstAttribute="height" constant="24" id="Yjs-no-OD5"/>
+                            <constraint firstItem="fQh-wY-vKf" firstAttribute="top" secondItem="oqv-9x-o80" secondAttribute="top" id="fOw-sy-H9U"/>
+                            <constraint firstItem="fQh-wY-vKf" firstAttribute="leading" secondItem="oqv-9x-o80" secondAttribute="leading" id="ly6-8M-B8f"/>
+                            <constraint firstItem="ffj-Hu-v3L" firstAttribute="top" secondItem="fQh-wY-vKf" secondAttribute="bottom" constant="5" id="mJs-YR-uRp"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="df5-x1-Zhy">
+                        <rect key="frame" x="531" y="57" width="54" height="29"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <state key="normal" title="collapse"/>
+                        <connections>
+                            <action selector="onCollapseButtonTap:" destination="WmY-Jw-mqv" eventType="touchUpInside" id="ECj-ic-h0T"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJl-MG-cbs">
+                        <rect key="frame" x="55" y="89" width="530" height="1"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="Jyb-5H-rlc"/>
+                        </constraints>
+                    </view>
+                    <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgp-Z5-rAj" userLabel="Picture View" customClass="MXKImageView">
+                        <rect key="frame" x="55" y="102" width="16" height="16"/>
+                        <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="PictureView"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="16" id="NQk-ck-Lo8"/>
+                            <constraint firstAttribute="height" constant="16" id="dNT-QU-CUG"/>
+                        </constraints>
+                    </view>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="HTH-5n-MSU">
+                        <rect key="frame" x="71" y="93" width="102" height="30.5"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="MessageTextView"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="102" id="OX6-NK-oti"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="ZZt-rc-tVJ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                    </textView>
+                    <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
+                        <rect key="frame" x="515" y="96" width="70" height="27.5"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="1E4-Lu-3sr"/>
+                        </constraints>
+                    </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stw-MD-khQ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="123.5"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="stw-MD-khQ" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="0oH-d5-525"/>
+                    <constraint firstItem="hgp-Z5-rAj" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="102" id="2Ih-ga-N9s"/>
+                    <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="96" id="4Ac-p5-610"/>
+                    <constraint firstItem="oqv-9x-o80" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="56" id="4Qa-nt-Kyt"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="stw-MD-khQ" secondAttribute="bottom" constant="-8" id="8Lj-ay-d6E"/>
+                    <constraint firstItem="df5-x1-Zhy" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="57" id="A0F-3b-DdS"/>
+                    <constraint firstAttribute="trailing" secondItem="dJl-MG-cbs" secondAttribute="trailing" constant="15" id="IqK-FM-2sV"/>
+                    <constraint firstItem="stw-MD-khQ" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="JXb-n4-O4S"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="15" id="Shz-6S-kGd"/>
+                    <constraint firstItem="dJl-MG-cbs" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="81" id="cTz-wW-wDq"/>
+                    <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="63" id="cxO-Px-nau"/>
+                    <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="f24-Fr-D4j"/>
+                    <constraint firstAttribute="trailing" secondItem="oqv-9x-o80" secondAttribute="trailing" constant="10" id="gXs-v7-6Dn"/>
+                    <constraint firstItem="oqv-9x-o80" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="10" id="jnY-Dc-Syw"/>
+                    <constraint firstItem="dJl-MG-cbs" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="55" id="lWu-UJ-6BJ"/>
+                    <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="93" id="mkw-3s-H8B"/>
+                    <constraint firstAttribute="trailing" secondItem="df5-x1-Zhy" secondAttribute="trailing" constant="15" id="oAn-Qb-KHL"/>
+                    <constraint firstAttribute="bottom" secondItem="HTH-5n-MSU" secondAttribute="bottom" id="oTk-3F-SEC"/>
+                    <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="pWt-Mb-kAX"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="stw-MD-khQ" secondAttribute="trailing" constant="-8" id="qO5-ZZ-mHI"/>
+                    <constraint firstItem="hgp-Z5-rAj" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="55" id="tuw-aU-ncu"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomBubbleCell"/>
+            <connections>
+                <outlet property="bubbleInfoContainer" destination="IOg-Kt-8vW" id="TAw-QY-Y9e"/>
+                <outlet property="bubbleInfoContainerTopConstraint" destination="4Ac-p5-610" id="lmm-l8-kaq"/>
+                <outlet property="bubbleOverlayContainer" destination="stw-MD-khQ" id="fDX-tM-vSH"/>
+                <outlet property="collapseButton" destination="df5-x1-Zhy" id="Mei-j7-0ez"/>
+                <outlet property="messageTextView" destination="HTH-5n-MSU" id="YN4-iK-gNc"/>
+                <outlet property="msgTextViewBottomConstraint" destination="oTk-3F-SEC" id="nmX-GC-tPw"/>
+                <outlet property="msgTextViewLeadingConstraint" destination="cxO-Px-nau" id="yrt-qb-Eit"/>
+                <outlet property="msgTextViewMinHeightConstraint" destination="ZZt-rc-tVJ" id="hDD-TL-PFM"/>
+                <outlet property="msgTextViewTopConstraint" destination="mkw-3s-H8B" id="lON-oG-Xx9"/>
+                <outlet property="msgTextViewTrailingConstraint" destination="Shz-6S-kGd" id="5ib-m6-Lna"/>
+                <outlet property="msgTextViewWidthConstraint" destination="OX6-NK-oti" id="Ptq-cZ-07y"/>
+                <outlet property="paginationLabel" destination="fQh-wY-vKf" id="jqj-LP-5qG"/>
+                <outlet property="paginationSeparatorView" destination="ffj-Hu-v3L" id="T0c-69-ijB"/>
+                <outlet property="paginationTitleView" destination="oqv-9x-o80" id="TYq-e6-6DG"/>
+                <outlet property="pictureView" destination="hgp-Z5-rAj" id="rKM-QG-RJN"/>
+                <outlet property="pictureViewTopConstraint" destination="2Ih-ga-N9s" id="rpQ-bN-moE"/>
+                <outlet property="separatorView" destination="dJl-MG-cbs" id="Vnp-K7-DEh"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

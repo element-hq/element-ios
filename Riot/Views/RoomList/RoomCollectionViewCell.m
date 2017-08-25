@@ -22,6 +22,8 @@
 
 #import "MXRoom+Riot.h"
 
+#import "MXTools.h"
+
 @implementation RoomCollectionViewCell
 
 #pragma mark - Class methods
@@ -38,8 +40,30 @@
     [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
     
-    self.roomTitle.textColor = kRiotTextColorBlack;
-    self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
+    // Disable the user interaction on the room avatar.
+    self.roomAvatar.userInteractionEnabled = NO;
+    
+    // define arrow mask
+    CAShapeLayer *arrowMaskLayer = [[CAShapeLayer alloc] init];
+    arrowMaskLayer.frame = self.editionArrowView.bounds;
+    CGSize viewSize = self.editionArrowView.frame.size;
+    UIBezierPath *path = [[UIBezierPath alloc] init];
+    [path moveToPoint:CGPointMake(0, viewSize.height)]; // arrow left bottom point
+    [path addLineToPoint:CGPointMake(viewSize.width / 2, 0)]; // arrow head
+    [path addLineToPoint:CGPointMake(viewSize.width, viewSize.height)]; // arrow right bottom point
+    [path closePath]; // arrow top side
+    arrowMaskLayer.path = path.CGPath;
+    self.editionArrowView.layer.mask = arrowMaskLayer;
+}
+
+- (void)customizeCollectionViewCellRendering
+{
+    [super customizeCollectionViewCellRendering];
+    
+    self.roomTitle.textColor = kRiotPrimaryTextColor;
+    self.roomTitle1.textColor = kRiotPrimaryTextColor;
+    self.roomTitle2.textColor = kRiotPrimaryTextColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
     
     // Prepare direct room border
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
@@ -47,15 +71,14 @@
     self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
     self.directRoomBorderView.layer.borderWidth = 3;
     
-    // Disable the user interaction on the room avatar.
-    self.roomAvatar.userInteractionEnabled = NO;
+    self.editionArrowView.backgroundColor = kRiotSecondaryBgColor;
+    
+    self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -68,7 +91,24 @@
     if (roomCellData)
     {
         // Report computed values as is
+        self.roomTitle.hidden = NO;
         self.roomTitle.text = roomCellData.roomDisplayname;
+        self.roomTitle1.hidden = YES;
+        self.roomTitle2.hidden = YES;
+        
+        // Check whether the room display name is an alias to keep visible the HS.
+        if ([MXTools isMatrixRoomAlias:roomCellData.roomDisplayname])
+        {
+            NSRange range = [roomCellData.roomDisplayname rangeOfString:@":" options:NSBackwardsSearch];
+            if (range.location != NSNotFound)
+            {
+                self.roomTitle.hidden = YES;
+                self.roomTitle1.hidden = NO;
+                self.roomTitle1.text = [roomCellData.roomDisplayname substringToIndex:range.location + 1];
+                self.roomTitle2.hidden = NO;
+                self.roomTitle2.text = [roomCellData.roomDisplayname substringFromIndex:range.location + 1];
+            }
+        }
         
         // Notify unreads and bing
         if (roomCellData.hasUnread)
@@ -87,11 +127,11 @@
             // Use bold font for the room title
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
             }
             else
             {
-                self.roomTitle.font = [UIFont boldSystemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
             }
         }
         else if (roomCellData.roomSummary.room.state.membership == MXMembershipInvite)
@@ -107,11 +147,11 @@
             // Use bold font for the room title
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightBold];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
             }
             else
             {
-                self.roomTitle.font = [UIFont boldSystemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
             }
         }
         else
@@ -119,15 +159,13 @@
             // The room title is not bold anymore
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
             }
             else
             {
-                self.roomTitle.font = [UIFont systemFontOfSize:15];
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13];
             }
         }
-        
-        self.roomAvatar.backgroundColor = [UIColor clearColor];
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
         
@@ -137,15 +175,20 @@
     }
 }
 
+- (MXKCellData*)renderedCellData
+{
+    return roomCellData;
+}
+
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
-    return 100;
+    return 115;
 }
 
 + (CGSize)defaultCellSize
 {
-    return CGSizeMake(80, 100);
+    return CGSizeMake(80, 115);
 }
 
 - (void)prepareForReuse
@@ -158,6 +201,20 @@
         [self removeGestureRecognizer:self.gestureRecognizers[0]];
     }
     self.tag = -1;
+    self.collectionViewTag = -1;
+    
+    self.editionArrowView.hidden = YES;
+    
+    roomCellData = nil;
+}
+
+- (NSString*)roomId
+{
+    if (roomCellData)
+    {
+        return roomCellData.roomSummary.roomId;
+    }
+    return nil;
 }
 
 @end

@@ -48,6 +48,9 @@
 "active_call_details" = "Active Call (%@)";
 "later" = "Later";
 "rename" = "Rename";
+"collapse" = "collapse";
+"send_to" = "Send to %@";
+"sending" = "Sending";
 
 // Authentication
 "auth_login" = "Log in";
@@ -66,6 +69,8 @@
 "auth_phone_placeholder" = "Phone number";
 "auth_repeat_password_placeholder" = "Repeat password";
 "auth_repeat_new_password_placeholder" = "Confirm your new password";
+"auth_home_server_placeholder" = "URL (e.g. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (e.g. https://matrix.org)";
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
 "auth_invalid_password" = "Password too short (min 6)";
@@ -79,9 +84,13 @@
 "auth_missing_email" = "Missing email address";
 "auth_missing_phone" = "Missing phone number";
 "auth_missing_email_or_phone" = "Missing email address or phone number";
+"auth_email_in_use" = "This email address is already in use";
+"auth_phone_in_use" = "This phone number is already in use";
+"auth_untrusted_id_server" = "The identity server is not trusted";
 "auth_password_dont_match" = "Passwords don't match";
 "auth_username_in_use" = "Username in use";
 "auth_forgot_password" = "Forgot password?";
+"auth_email_not_found" = "Failed to send email: This email address was not found";
 "auth_use_server_options" = "Use custom server options (advanced)";
 "auth_email_validation_message" = "Please check your email to continue registration";
 "auth_msisdn_validation_title" = "Verification Pending";
@@ -97,6 +106,7 @@
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
 "auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
+"auth_share_extension_prompt" = "Login in the main app to share content";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -162,7 +172,8 @@
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
 "contacts_address_book_permission_denied" = "You didn't allow Riot to access your local contacts";
-"contacts_matrix_users_section" = "KNOWN CONTACTS";
+"contacts_user_directory_section" = "USER DIRECTORY";
+"contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
 
 // Chat participants
 "room_participants_title" = "Participants";
@@ -223,6 +234,9 @@
 "room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
 "room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present. %@ or %@ now?";
 "room_ongoing_conference_call" = "Ongoing conference call. Join as %@ or %@.";
+"room_ongoing_conference_call_with_close" = "Ongoing conference call. Join as %@ or %@. %@ it.";
+"room_ongoing_conference_call_close" = "Close";
+"room_conference_call_no_power" = "You need permission to manage conference call in this room";
 "room_prompt_resend" = "Resend all";
 "room_prompt_cancel" = "cancel all";
 "room_resend_unsent_messages" = "Resend unsent messages";
@@ -244,6 +258,7 @@
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
+"room_event_failed_to_send" = "Failed to send";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
@@ -284,6 +299,7 @@
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
 "settings_calls_settings" = "CALLS";
+"settings_user_interface" = "USER INTERFACE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "LOCAL CONTACTS";
 "settings_advanced" = "ADVANCED";
@@ -326,6 +342,9 @@
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
+"settings_ui_language" = "Language";
+"settings_ui_light_theme" = "Light theme";
+"settings_ui_dark_theme" = "Dark theme";
 
 "settings_unignore_user" = "Show all messages from %@?";
 
@@ -334,6 +353,7 @@
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
+"settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -418,6 +438,10 @@
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
 
+// Read Receipts
+"read_receipts_list" = "Read Receipts List";
+"receipt_status_read" = "Read: ";
+
 // Media picker
 "media_picker_library" = "Library";
 "media_picker_select" = "Select";
@@ -429,6 +453,9 @@
 "directory_server_all_native_rooms" = "All native Matrix rooms";
 "directory_server_type_homeserver" = "Type a homeserver to list public rooms from";
 "directory_server_placeholder" = "matrix.org";
+
+// Events formatter
+"event_formatter_member_updates" = "%tu membership changes";
 
 // Others
 "or" = "or";
@@ -452,6 +479,8 @@
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";
 "call_incoming_video_prompt" = "Incoming video call from %@";
+"call_already_displayed" = "There is already a call in progress.";
+"call_jitsi_error" = "Failed to join the conference call.";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";
@@ -474,3 +503,9 @@
 "bug_report_send_screenshot" = "Send screenshot";
 "bug_report_progress_zipping" = "Collecting logs";
 "bug_report_progress_uploading" = "Uploading report";
+"bug_report_send" = "Send";
+
+// Widget
+"widget_no_power_to_manage" = "You need permission to manage widgets in this room";
+"widget_creation_failure" = "Widget creation has failed";
+

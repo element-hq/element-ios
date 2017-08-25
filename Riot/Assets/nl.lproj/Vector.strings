@@ -1,0 +1,450 @@
+/*
+ Copyright 2017 Vector Creations Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+// Titles
+"title_home" = "Home";
+"title_favourites" = "Favorieten";
+"title_people" = "Personen";
+"title_rooms" = "Ruimtes";
+"warning" = "Waarschuwing";
+// Actions
+"view" = "Weergeven";
+"next" = "Volgende";
+"back" = "Terug";
+"continue" = "Verder gaan";
+"create" = "Maak";
+"start" = "Starten";
+"leave" = "Verlaten";
+"remove" = "Verwijderen";
+"invite" = "Uitnodigen";
+"retry" = "Opnieuw proberen";
+"on" = "Aan";
+"off" = "Uit";
+"cancel" = "Annuleren";
+"save" = "Opslaan";
+"join" = "Toetreden";
+"decline" = "Afwijzen";
+"accept" = "Accepteren";
+"preview" = "Voorvertonen";
+"camera" = "Camera";
+"voice" = "Spraak";
+"video" = "Video";
+"active_call" = "Actief Gesprek";
+"active_call_details" = "Actief gesprek (%@)";
+"later" = "Later";
+"rename" = "Herbenoemen";
+// Authentication
+"auth_login" = "Inloggen";
+"auth_register" = "Registreren";
+"auth_submit" = "Versturen";
+"auth_skip" = "Overslaan";
+"auth_send_reset_email" = "Stuur Herstel E-mail";
+"auth_return_to_login" = "Ga terug naar het herstel scherm";
+"auth_user_id_placeholder" = "E-mail of gebruikersnaam";
+"auth_password_placeholder" = "Wachtwoord";
+"auth_new_password_placeholder" = "Nieuw wachtwoord";
+"auth_user_name_placeholder" = "Gebruikersnaam";
+"auth_optional_email_placeholder" = "E-mailadres (optioneel)";
+"auth_email_placeholder" = "E-mailadres";
+"auth_optional_phone_placeholder" = "Telefoonnummer (optioneel)";
+"auth_phone_placeholder" = "Telefoonnummer";
+"auth_repeat_password_placeholder" = "Wachtwoord herhalen";
+"auth_repeat_new_password_placeholder" = "Bevestig je nieuwe wachtwoord";
+"auth_invalid_login_param" = "Incorrecte gebruikersnaam en/of wachtwoord";
+"auth_invalid_user_name" = "Gebruikersnamen mogen alleen letters, cijfers, punten, afbreekstreepjes en lage streepjes bevatten";
+"auth_invalid_password" = "Het wachtwoord is te kort (min 6)";
+"auth_invalid_email" = "Dit ziet er niet uit als een geldig e-mailadres";
+"auth_invalid_phone" = "Dit ziet er niet uit als een geldig telefoonnummer";
+"auth_missing_password" = "Missend wachtwoord";
+"auth_add_email_message" = "Voeg een e-mailadres aan je account toe zodat gebruikers je kunnen vinden en je het wachtwoord kunt herstellen.";
+"auth_add_phone_message" = "Voeg een telefoonnummer aan je account toe zodat gebruikers je kunnen vinden.";
+"auth_add_email_phone_message" = "Voeg een e-mailadres en/of een telefoonnummer aan je account toe zodat gebruikers je kunnen vinden. Je e-mailadres maakt het ook mogelijk om je wachtwoord te herstellen.";
+"auth_add_email_and_phone_message" = "Voeg een e-mailadres en een telefoonnummer aan je account toe zodat gebruikers je kunnen vinden. Je e-mailadres maakt het ook mogelijk om je wachtwoord te herstellen.";
+"auth_missing_email" = "Het e-mailadres mist";
+"auth_missing_phone" = "Het telefoonnummer mist";
+"auth_missing_email_or_phone" = "Het e-mailadres of telefoonnummer mist";
+"auth_password_dont_match" = "De wachtwoorden komen niet overeen";
+"auth_username_in_use" = "De gebruikersnaam is al in gebruik";
+"auth_forgot_password" = "Wachtwoord vergeten?";
+"auth_use_server_options" = "Gebruik aangepaste server options (geavanceerd)";
+"auth_email_validation_message" = "Bekijk je e-mail om verder te gaan met de registratie";
+"auth_msisdn_validation_title" = "Verificatie Aanhangig";
+"auth_msisdn_validation_message" = "We hebben een SMS met een activatie code gestuurd. Vul deze code hieronder in.";
+"auth_msisdn_validation_error" = "Niet mogelijk om het telefoonnummer te verifiëren.";
+"auth_recaptcha_message" = "Deze Thuisserver wil er graag zeker van zijn dat je geen robot bent";
+"auth_reset_password_message" = "Om je wachtwoord te herstellen, voer het e-mailadres dat met je account verbonden is in:";
+"auth_reset_password_missing_email" = "Het e-mailadres dat met je account verbonden is moet ingevoerd worden.";
+"auth_reset_password_missing_password" = "Een nieuw wachtwoord moet ingevoerd worden.";
+"auth_reset_password_email_validation_message" = "Een e-mail is naar %@ gestuurd. Zodra je de link die het bevat hebt gevolgd, klik hieronder.";
+"auth_reset_password_next_step_button" = "Ik heb mijn e-mailadres geverifieerd";
+"auth_reset_password_error_unauthorized" = "Het is niet gelukt om het e-mailadres te verifiëren: wees er zeker van dat je op de link in de e-mail hebt geklikt";
+"auth_reset_password_error_not_found" = "Het ziet er niet naar uit dat het e-mailadres met het Matrix ID op deze Homeserver is verbonden.";
+"auth_reset_password_success_message" = "Je wachtwoord is opnieuw ingesteld.\n\nJe bent op alle apparaten uitgelogd en je zal geen notificaties meer ontvangen. Om notificaties weer in te schakelen, log op elk apparaat opnieuw in.";
+"auth_add_email_and_phone_warning" = "Registratie met e-mail en telefoonnummer tegelijkertijd wordt nog niet ondersteund totdat de api bestaat. Alleen het telefoonnummer zal worden gebruikt. Je kan je e-mailadres later aan je profiel in de instellingen toevoegen.";
+// Chat creation
+"room_creation_title" = "Niew gesprek";
+"room_creation_account" = "Account";
+"room_creation_appearance" = "Uiterlijk";
+"room_creation_appearance_name" = "Naam";
+"room_creation_appearance_picture" = "Gespreksafbeelding (optioneel)";
+"room_creation_privacy" = "Privacy";
+"room_creation_private_room" = "Dit gesprek is privé";
+"room_creation_public_room" = "Dit gesprek ik publiek";
+"room_creation_make_public" = "Maak publiek";
+"room_creation_make_public_prompt_title" = "Dit gesprek publiek maken?";
+"room_creation_make_public_prompt_msg" = "Weet je zeker dat je dit gesprek publiek wilt maken? Iedereen kan je berichten lezen en aan het gesprek deelnemen.";
+"room_creation_keep_private" = "Privé houden";
+"room_creation_make_private" = "Privé maken";
+"room_creation_wait_for_creation" = "Er wordt al een ruimte aangemaakt. Even geduld alstublieft.";
+"room_creation_invite_another_user" = "Zoek / nodig uit bij Gebruikers ID, Naam of e-mail";
+// Room recents
+"room_recents_directory_section" = "RUIMTE ADRESBOEK";
+"room_recents_directory_section_network" = "Netwerk";
+"room_recents_favourites_section" = "FAVORIETEN";
+"room_recents_people_section" = "PERSONEN";
+"room_recents_conversations_section" = "RUIMTES";
+"room_recents_no_conversation" = "Geen ruimtes";
+"room_recents_low_priority_section" = "LAGE PRIORITEIT";
+"room_recents_invites_section" = "UITNODIGINGEN";
+"room_recents_start_chat_with" = "Start gesprek";
+"room_recents_create_empty_room" = "Creeër ruimte";
+"room_recents_join_room" = "Aan de ruimte deelnemen";
+"room_recents_join_room_title" = "Neem aan een ruimte deel";
+"room_recents_join_room_prompt" = "Typ een ruimte id of naam in";
+// People tab
+"people_invites_section" = "UITNODIGINGEN";
+"people_conversation_section" = "GESPREKKEN";
+"people_no_conversation" = "Geen gesprekken";
+// Rooms tab
+"room_directory_no_public_room" = "Geen publieke ruimtes beschikbaar";
+// Search
+"search_rooms" = "Ruimtes";
+"search_messages" = "Berichten";
+"search_people" = "Personen";
+"search_files" = "Bestanden";
+"search_default_placeholder" = "Zoeken";
+"search_people_placeholder" = "Zoek bij Gebruikers ID, Naam of e-mail";
+"search_no_result" = "Geen resultaten";
+// Directory
+"directory_cell_title" = "Blader door de catalogus";
+"directory_cell_description" = "%tu ruimtes";
+"directory_search_results_title" = "Blader door catalogus resultaten";
+"directory_search_results" = "%tu resultaten gevonden voor %@";
+"directory_search_results_more_than" = ">%tu resultaten gevonden voor %@";
+"directory_searching_title" = "Catalogus afzoeken…";
+"directory_search_fail" = "Niet gelukt om data op te halen";
+// Contacts
+"contacts_address_book_section" = "LOKALE CONTACTEN";
+"contacts_address_book_matrix_users_toggle" = "Alleen Matrix gebruikers";
+"contacts_address_book_no_contact" = "Geen lokale contacten";
+"contacts_address_book_permission_required" = "Permissie vereist voor toegang tot de lokale contacten";
+"contacts_address_book_permission_denied" = "Je hebt Riot geen toegang tot je lokale contacten toegestaan";
+// Chat participants
+"room_participants_title" = "Deelnemers";
+"room_participants_add_participant" = "Deelnemer toevoegen";
+"room_participants_one_participant" = "1 deelnemer";
+"room_participants_multi_participants" = "%d deelnemers";
+"room_participants_leave_prompt_title" = "Ruimte verlaten";
+"room_participants_leave_prompt_msg" = "Weet je zeker dat je de ruimte wilt verlaten?";
+"room_participants_remove_prompt_title" = "Bevestiging";
+"room_participants_remove_prompt_msg" = "Weet je zeker dat je %@ van dit gesprek wilt verwijderen?";
+"room_participants_remove_third_party_invite_msg" = "Verwijderen derde-partij uitnodiging is nog niet ondersteund tot de api bestaat";
+"room_participants_invite_prompt_title" = "Bevestiging";
+"room_participants_invite_prompt_msg" = "Weet je zeker dat je %@ voor dit gesprek wilt uitnodigen?";
+"room_participants_filter_room_members" = "Filter ruimteleden";
+"room_participants_invite_another_user" = "Zoek / nodig uit bij Gebruikers ID, Naam of e-mail";
+"room_participants_invite_malformed_id_title" = "Uitnodigingsfout";
+"room_participants_invite_malformed_id" = "Ongeldig ID. Het hoort een e-mailadres of een Matrix ID zoals '@localpart:domain' te zijn";
+"room_participants_invited_section" = "UITGENODIGD";
+"room_participants_online" = "Online";
+"room_participants_offline" = "Offline";
+"room_participants_unknown" = "Onbekend";
+"room_participants_idle" = "Afwezig";
+"room_participants_now" = "nu";
+"room_participants_ago" = "geleden";
+"room_participants_action_section_admin_tools" = "Beheerder gereedschappen";
+"room_participants_action_section_direct_chats" = "Directe gesprekken";
+"room_participants_action_section_devices" = "Apparaten";
+"room_participants_action_section_other" = "Anders";
+"room_participants_action_invite" = "Nodig uit";
+"room_participants_action_leave" = "Deze ruimte verlaten";
+"room_participants_action_remove" = "Verwijder van deze ruimte";
+"room_participants_action_ban" = "Verban uit deze ruimte";
+"room_participants_action_unban" = "Ontban";
+"room_participants_action_ignore" = "Verberg alle berichten van deze gebruiker";
+"room_participants_action_unignore" = "Toon alle berichten van deze gebruiker";
+"room_participants_action_set_default_power_level" = "Terugzetten naar normale gebruiker";
+"room_participants_action_set_moderator" = "Maak moderator";
+"room_participants_action_set_admin" = "Maak admin";
+"room_participants_action_start_new_chat" = "Start nieuw gesprek";
+"room_participants_action_start_voice_call" = "Start spraakoproep";
+"room_participants_action_start_video_call" = "Start video-oproep";
+"room_participants_action_mention" = "Vermelden";
+// Chat
+"room_jump_to_first_unread" = "Spring naar het eerste ongelezen bericht";
+"room_new_message_notification" = "%d nieuw bericht";
+"room_new_messages_notification" = "%d nieuwe berichten";
+"room_one_user_is_typing" = "%@ is aan het typen…";
+"room_two_users_are_typing" = "%@ & %@ zijn aan het typen…";
+"room_many_users_are_typing" = "%@, %@ & anderen zijn aan het typen…";
+"room_message_placeholder" = "Stuur een bericht (onversleuteld)…";
+"encrypted_room_message_placeholder" = "Stuur een versleuteld bericht…";
+"room_message_short_placeholder" = "Stuur een bericht…";
+"room_offline_notification" = "De verbinding met de server is verloren.";
+"room_unsent_messages_notification" = "Berichten niet verstuurd. %@ of %@ nu?";
+"room_unsent_messages_unknown_devices_notification" = "Bericht is niet verstuurd doordat onbekende apparaten aanwezig zijn. %@ of %@ nu?";
+"room_ongoing_conference_call" = "Er is een vergadergesprek gaande. Deelnemen als %@ of %@.";
+"room_prompt_resend" = "Alles opnieuw versturen";
+"room_prompt_cancel" = "Alles annuleren";
+"room_resend_unsent_messages" = "Niet verstuurde berichten opnieuw versturen";
+"room_delete_unsent_messages" = "Niet verstuurde berichten verwijderen";
+"room_event_action_copy" = "Kopiëren";
+"room_event_action_quote" = "Citeer";
+"room_event_action_redact" = "Verwijderen";
+"room_event_action_more" = "Meer";
+"room_event_action_share" = "Delen";
+"room_event_action_permalink" = "Permalink";
+"room_event_action_view_source" = "Bekijk bron";
+"room_event_action_report" = "Inhoud melden";
+"room_event_action_report_prompt_reason" = "Reden voor het aangeven van deze content";
+"room_event_action_report_prompt_ignore_user" = "Wil je alle berichten van deze gebruiker verbergen?";
+"room_event_action_save" = "Opslaan";
+"room_event_action_resend" = "Opnieuw versturen";
+"room_event_action_delete" = "Verwijderen";
+"room_event_action_cancel_upload" = "Uploaden annuleren";
+"room_event_action_cancel_download" = "Downloaden annuleren";
+"room_event_action_view_encryption" = "Versleutelingsinformatie";
+"room_warning_about_encryption" = "Eind-tot-eind versleuteling is nog in beta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen nog niet de geschiedenis van voordat ze de ruimte betraden kunnen ontsleutelen.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op applicaties die geen versleuteling ondersteunen.";
+// Unknown devices
+"unknown_devices_alert_title" = "Ruimte bevat onbekende apparaten";
+"unknown_devices_alert" = "Deze ruimte bevat onbekende apparaten die niet geen geverifieerd.\nDit betekent dat er geen garantie is dat de apparaten bij de gebruikers horen waar het beweert dat het bij hoort.\nWe raden je aan om bij elk apparaat door het verificatieprocces heen te gaan voordat je doorgaat, maar je kan het bericht opnieuw versturen zonder te verifiëren als je dat prefereert.";
+"unknown_devices_send_anyway" = "Alsnog versturen";
+"unknown_devices_call_anyway" = "Alsnog bellen";
+"unknown_devices_answer_anyway" = "Alsnog beantwoorden";
+"unknown_devices_verify" = "Verifiëren…";
+"unknown_devices_title" = "Onbekende apparaten";
+// Room Title
+"room_title_new_room" = "Nieuwe ruimte";
+"room_title_multiple_active_members" = "%@/%@ actieve leden";
+"room_title_one_active_member" = "%@/%@ actief lid";
+"room_title_invite_members" = "Leden uitnodigen";
+"room_title_members" = "%@ leden";
+"room_title_one_member" = "1 lid";
+// Room Preview
+"room_preview_invitation_format" = "Je bent uitgenodigd om aan deze ruimte deel te nemen bij %@";
+"room_preview_subtitle" = "Dit is een voorvertoning van deze ruimte. Ruimte interacties zijn uitgeschakeld.";
+"room_preview_unlinked_email_warning" = "Deze uitnodiging is naar %@ verstuurd. Maar diegene is niet geassocieerd met dit account.\nMisschien wil je met een ander account inloggen of deze e-mail aan dit account toevoegen.";
+"room_preview_try_join_an_unknown_room" = "Je probeert aan %@ deel te nemen. Zou je willen toetreden om aan de discussie deel te nemen?";
+"room_preview_try_join_an_unknown_room_default" = "een ruimte";
+// Settings
+"settings_title" = "Instellingen";
+"account_logout_all" = "Op alle accounts uitloggen";
+"settings_config_no_build_info" = "Geen bouw informatie";
+"settings_mark_all_as_read" = "Alle berichten als gelezen markeren";
+"settings_report_bug" = "Fout rapporteren";
+"settings_clear_cache" = "Cache verwijderen";
+"settings_config_home_server" = "Thuisserver is %@";
+"settings_config_identity_server" = "Identiteitsserver is %@";
+"settings_config_user_id" = "Ingelogd als %@";
+"settings_user_settings" = "GEBRUIKER INSTELLINGEN";
+"settings_notifications_settings" = "NOTIFICATIE INSTELLINGEN";
+"settings_ignored_users" = "GENEGEERDE GEBRUIKERS";
+"settings_contacts" = "LOKALE CONTACTEN";
+"settings_advanced" = "GEAVANCEERD";
+"settings_other" = "ANDERS";
+"settings_labs" = "LABS";
+"settings_devices" = "APPARATEN";
+"settings_cryptography" = "CRYPTOGRAFIE";
+"settings_sign_out" = "Uitloggen";
+"settings_sign_out_confirmation" = "Weet je het zeker?";
+"settings_sign_out_e2e_warn" = "Je zal je eind-tot-eind encryptie sleutels kwijtraken. Dat betekent dat je op dit apparaat geen oude berichten meer kan lezen in een versleutelde ruimtes.";
+"settings_profile_picture" = "Profielfoto";
+"settings_display_name" = "Naam";
+"settings_first_name" = "Voornaam";
+"settings_surname" = "Achternaam";
+"settings_remove_prompt_title" = "Bevestiging";
+"settings_remove_email_prompt_msg" = "Weet je zeker dat je het e-mailadres %@ wilt verwijderen?";
+"settings_remove_phone_prompt_msg" = "Weet je zeker dat je het telefoonnummer %@ wilt verwijderen?";
+"settings_email_address" = "E-mail";
+"settings_email_address_placeholder" = "Voer je e-mailadres in";
+"settings_add_email_address" = "E-mailadres toevoegen";
+"settings_phone_number" = "Telefoon";
+"settings_add_phone_number" = "Telefoonnummer toevoegen";
+"settings_change_password" = "Wachtwoord veranderen";
+"settings_night_mode" = "Nachtmodus";
+"settings_fail_to_update_profile" = "Het vernieuwen van het profiel is mislukt";
+"settings_enable_push_notif" = "Notificaties op dit apparaat";
+"settings_global_settings_info" = "Globale notificatie instellingen zijn beschikbaar op je %@ web client";
+"settings_pin_rooms_with_missed_notif" = "Pin ruimtes met gemiste notificaties";
+"settings_pin_rooms_with_unread" = "Pin ruimtes met ongelezen berichten";
+"settings_on_denied_notification" = "Notificaties worden ontkent voor %@, sta ze toe in je apparaat instellingen";
+//"settings_enable_all_notif" = "Alle notificaties aanzetten";
+//"settings_messages_my_display_name" = "Bericht dat mijn naam bevat";
+//"settings_messages_my_user_name" = "Bericht dat mijn gebruikersnaam bevat";
+//"settings_messages_sent_to_me" = "Berichten naar mij gestuurd";
+//"settings_invited_to_room" = "Wanneer ik in een ruimte wordt uitgenodigd";
+//"settings_join_leave_rooms" = "Wanneer personen tot ruimtes toetreden of verlaten";
+//"settings_call_invitations" = "Oproep uitnodigingen";
+
+"settings_unignore_user" = "Alle berichten van %@ laten zien?";
+"settings_contacts_discover_matrix_users" = "Gebruik e-mailadressen en telefoonnummers om gebruikers te vinden";
+"settings_contacts_phonebook_country" = "Telefoonboek land";
+"settings_labs_e2e_encryption" = "Eind-tot-Eind versleuteling";
+"settings_labs_e2e_encryption_prompt_message" = "Om het opzetten van de versleuteling af te ronden moet je opnieuw inloggen.";
+"settings_version" = "Versie %@";
+"settings_olm_version" = "Olm Versie %@";
+"settings_copyright" = "Copyright";
+"settings_copyright_url" = "https://riot.im/copyright";
+"settings_term_conditions" = "Algemene voorwaarden";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
+"settings_privacy_policy" = "Privacybeleid";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
+"settings_third_party_notices" = "Derde partij meldingen";
+"settings_send_crash_report" = "Stuur anon crash & gebruiksdata";
+"settings_clear_cache" = "Cache verwijderen";
+"settings_change_password" = "Wachtwoord veranderen";
+"settings_old_password" = "oud wachtwoord";
+"settings_new_password" = "nieuw wachtwoord";
+"settings_confirm_password" = "wachtwoord bevestigen";
+"settings_fail_to_update_password" = "Wachtwoord updaten mislukt";
+"settings_password_updated" = "Je wachtwoord is geüpdatet";
+"settings_crypto_device_name" = "Apparaatnaam: ";
+"settings_crypto_device_id" = "\nApparaat ID: ";
+"settings_crypto_device_key" = "\nApparaatsleutel: ";
+"settings_crypto_export" = "Sleutels exporteren";
+"settings_crypto_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";
+// Room Details
+"room_details_title" = "Ruimte Details";
+"room_details_people" = "Leden";
+"room_details_files" = "Bestanden";
+"room_details_settings" = "Instellingen";
+"room_details_photo" = "Ruimte foto";
+"room_details_room_name" = "Ruimtenaam";
+"room_details_topic" = "Onderwerp";
+"room_details_favourite_tag" = "Favoriet";
+"room_details_low_priority_tag" = "Lage prioriteit";
+"room_details_mute_notifs" = "Notificaties dempen";
+"room_details_access_section" = "Wie kan tot deze ruimte toetreden?";
+"room_details_access_section_invited_only" = "Alleen personen die zijn uitgenodigd";
+"room_details_access_section_anyone_apart_from_guest" = "Iedereen die de ruimte's link kent, behalve gasten";
+"room_details_access_section_anyone" = "Iedereen die de ruimte's link kent, inclusief gasten";
+"room_details_access_section_no_address_warning" = "De ruimte moet een adres hebben om er naar te linken";
+"room_details_access_section_directory_toggle" = "Zet deze ruimte in de ruimte catalogus";
+"room_details_history_section" = "Wie kan de geschiedenis lezen?";
+"room_details_history_section_anyone" = "Iedereen";
+"room_details_history_section_members_only" = "Alleen leden (vanaf de tijd dat deze optie geselecteerd wordt)";
+"room_details_history_section_members_only_since_invited" = "Alleen leden (vanaf het moment dat ze uitgenodigd zijn)";
+"room_details_history_section_members_only_since_joined" = "Alleen leden (vanaf het moment dat ze toetreden)";
+"room_details_history_section_prompt_title" = "Privacy waarschuwing";
+"room_details_history_section_prompt_msg" = "Veranderingen van wie de geschiedenis kan lezen zal alleen gelden voor toekomstige berichten in deze ruimte. De zichtbaarheid van bestaande geschiedenis zal ondervanderd blijven.";
+"room_details_addresses_section" = "Adressen";
+"room_details_no_local_addresses" = "Deze ruimte heeft geen lokale adressen";
+"room_details_new_address" = "Nieuw adres toevoegen";
+"room_details_new_address_placeholder" = "Nieuw adres toevoegen (bijv. #foo%@)";
+"room_details_addresses_invalid_address_prompt_title" = "Ongeldige naam formaat";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ is geen geldig formaat voor een naam";
+"room_details_addresses_disable_main_address_prompt_title" = "Hoofdadres waarschuwing";
+"room_details_addresses_disable_main_address_prompt_msg" = "Je hebt geen hoofdadres gespecificeerd. Het standaard hoofdadres voor deze ruimte zal willekeurig gekozen worden";
+"room_details_banned_users_section" = "Verbannen gebruikers";
+"room_details_advanced_section" = "Geavanceerd";
+"room_details_advanced_room_id" = "Ruimte ID:";
+"room_details_advanced_enable_e2e_encryption" = "Versleuteling aanzetten (waarschuwing: dit kan niet meer worden uitgezet!)";
+"room_details_advanced_e2e_encryption_enabled" = "Versleuteling staat aan in deze ruimte";
+"room_details_advanced_e2e_encryption_disabled" = "Versleuteling staat niet aan in deze ruimte.";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";
+"room_details_advanced_e2e_encryption_prompt_message" = "Eind-tot-eind versleuteling is experimenteel en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen nog niet de geschiedenis van voordat ze de ruimte betraden kunnen ontsleutelen.\n\nZodra de versleuteling aan staat kan het niet meer worden uitgezet (voor nu).\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op applicaties die geen versleuteling ondersteunen.";
+"room_details_fail_to_update_avatar" = "Ruimte foto vernieuwen mislukt";
+"room_details_fail_to_update_room_name" = "Ruimtenaam vernieuwen mislukt";
+"room_details_fail_to_update_topic" = "Ruimteonderwerp vernieuwen mislukt";
+"room_details_fail_to_update_room_guest_access" = "Ruimte's gast toegang vernieuwen mislukt";
+"room_details_fail_to_update_room_join_rule" = "Toetredingsregel vernieuwen mislukt";
+"room_details_fail_to_update_room_directory_visibility" = "Ruimte catalogus vernieuwen mislukt";
+"room_details_fail_to_update_history_visibility" = "Geschiedenis zichtbaarheid vernieuwen mislukt";
+"room_details_fail_to_add_room_aliases" = "Nieuwe ruimte adressen toevoegen mislukt";
+"room_details_fail_to_remove_room_aliases" = "Ruimte adressen verwijderen mislukt";
+"room_details_fail_to_update_room_canonical_alias" = "Hoofdadres vernieuwen mislukt";
+"room_details_fail_to_enable_encryption" = "Versleuteling in deze ruimte aanzetten mislukt";
+"room_details_save_changes_prompt" = "Wil je de veranderingen opslaan?";
+"room_details_set_main_address" = "Instellen als hoofdadres";
+"room_details_unset_main_address" = "Instellen als niet hoofdadres";
+"room_details_copy_room_id" = "Kopieer Ruimte ID";
+"room_details_copy_room_address" = "Kopieer Ruimte Adres";
+"room_details_copy_room_url" = "Kopieer Ruimte URL";
+// Media picker
+"media_picker_library" = "Bibliotheek";
+"media_picker_select" = "Selecteren";
+// Directory
+"directory_title" = "Catalogus";
+"directory_server_picker_title" = "Selecteer een catalogus";
+"directory_server_all_rooms" = "Alle ruimtes op %@ server";
+"directory_server_all_native_rooms" = "Alle lokale Matrix ruimtes";
+"directory_server_type_homeserver" = "Voer een thuisserver in om de publieke ruimtes ervan te weergeven";
+"directory_server_placeholder" = "matrix.org";
+// Others
+"or" = "of";
+"you" = "Jij";
+"today" = "Vandaag";
+"yesterday" = "Gisteren";
+"network_offline_prompt" = "Het ziet er naar uit dat de internet verbinding offline is.";
+"public_room_section_title" = "Publieke ruimtes (op %@):";
+"bug_report_prompt" = "De applicatie is de vorige keer gecrasht. Wil je een crash rapport indienen?";
+"rage_shake_prompt" = "Het ziet er naar uit dat je de telefoon in frustratie schudt. Wil je een foutmelding indienen?";
+"camera_access_not_granted" = "%@ heeft geen permission om de Camera te gebruiken, verander de privacy instellingen";
+"large_badge_value_k_format" = "%.1fK";
+// room display name
+"room_displayname_invite_from" = "Uitnodiging van %@";
+"room_displayname_room_invite" = "Ruimte Uitnodiging";
+"room_displayname_two_members" = "%@ en %@";
+"room_displayname_more_than_two_members" = "%@ en %u anderen";
+"room_displayname_no_title" = "Lege ruimte";
+// Call
+"call_incoming_voice_prompt" = "Inkomende spraakoproep van %@";
+"call_incoming_video_prompt" = "Inkomende video oproep van %@";
+// No VoIP support
+"no_voip_title" = "Inkomende oproep";
+"no_voip" = "%@ belt jou %@ maar ondersteunt nog geen oproepen.\nJe kan deze notificatie negeren en vanaf een ander apparaat opnemen of de oproep afwijzen.";
+// Crash report
+"google_analytics_use_prompt" = "Wil je helpen met het verbeteren van %@ bij het automatisch rapporteren van crash rapporten en data van gebruik?";
+// Crypto
+"e2e_enabling_on_app_update" = "Riot ondersteunt nu eind-tot-eind sleuteling maar je moet opnieuw inloggen om het aan te zetten.\n\nJe kan het nu of later doen vanaf de applicatie instellingen.";
+"e2e_need_log_in_again" = "Je moet opnieuw inloggen om eind-tot-eind versleuteling sleutels te genereren voor dit apparaat en om de publieke sleutel naar de thuisserver te sturen.\nDit is eenmalig; excuses voor het ongemak.";
+// Bug report
+"bug_report_title" = "Foutmelding";
+"bug_report_description" = "Beschrijf de foutmelding. Wat heb je gedaan? Wat verwachte je dat er zou gebeuren? Wat gebeurde er werkelijk?";
+"bug_crash_report_title" = "Crash Rapport";
+"bug_crash_report_description" = "Beschrijf wat je deed voor de crash:";
+"bug_report_logs_description" = "Om problemen te diagnoseren worden rapporten van deze applicatie met de foutmelding meegestuurd. Als je liever alleen bovenstaande tekst stuurt, haal dan het vinkje weg:";
+"bug_report_send_logs" = "Rapporten versturen";
+"bug_report_send_screenshot" = "Schermafbeelding versturen";
+"bug_report_progress_zipping" = "Rapporten verzamelen";
+"bug_report_progress_uploading" = "Rapport uploaden";
+"collapse" = "inkorten";
+"auth_email_in_use" = "Dit e-mailadres is al in gebruik";
+"auth_phone_in_use" = "Dit telefoonnummer is al in gebruik";
+"auth_untrusted_id_server" = "De identiteitsserver is niet vertrouwd";
+"auth_email_not_found" = "E-mail versturen mislukt: dit e-mailadres werd niet gevonden";
+"contacts_user_directory_section" = "GEBRUIKERSADRESBOEK";
+"contacts_user_directory_offline_section" = "GEBRUIKERSADRESBOEK (offline)";
+"settings_user_interface" = "GEBRUIKERSINTERFACE";
+"settings_ui_language" = "Taal";
+"settings_ui_light_theme" = "Lichte thema";
+"settings_ui_dark_theme" = "Donkere thema";
+// Read Receipts
+"read_receipts_list" = "Leesbewijzen Lijst";
+"receipt_status_read" = "Lees: ";
+// Events formatter
+"event_formatter_member_updates" = "%tu lidmaatschap aanpassingen";
+"bug_report_send" = "Stuur";

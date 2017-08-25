@@ -26,11 +26,11 @@
 
 #pragma mark - Class methods
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
-    self.deviceName.textColor = kRiotTextColorBlack;
+    self.deviceName.textColor = kRiotPrimaryTextColor;
     
     [self.verifyButton.layer setCornerRadius:5];
     self.verifyButton.clipsToBounds = YES;

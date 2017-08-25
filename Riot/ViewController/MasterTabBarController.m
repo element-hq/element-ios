@@ -45,7 +45,13 @@
     UnifiedSearchViewController *unifiedSearchViewController;
     
     // Current alert (if any).
-    MXKAlert *currentAlert;
+    UIAlertController *currentAlert;
+    
+    // Keep reference on the pushed view controllers to release them correctly
+    NSMutableArray *childViewControllers;
+    
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -67,17 +73,40 @@
     
     // Sanity check
     NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController, @"Something wrong in Main.storyboard");
-    
-    self.tabBar.tintColor = kRiotColorGreen;
-    
+
     // Adjust the display of the icons in the tabbar.
     for (UITabBarItem *tabBarItem in self.tabBar.items)
     {
         tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     }
     
+    childViewControllers = [NSMutableArray array];
+    
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.tabBar.tintColor = kRiotColorGreen;
+    self.tabBar.barTintColor = kRiotSecondaryBgColor;
+    
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+    
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -107,6 +136,31 @@
         }
         
         [self refreshTabBarBadges];
+        
+        // Release properly pushed and/or presented view controller
+        if (childViewControllers.count)
+        {
+            for (id viewController in childViewControllers)
+            {
+                if ([viewController isKindOfClass:[UINavigationController class]])
+                {
+                    UINavigationController *navigationController = (UINavigationController*)viewController;
+                    for (id subViewController in navigationController.viewControllers)
+                    {
+                        if ([subViewController respondsToSelector:@selector(destroy)])
+                        {
+                            [subViewController destroy];
+                        }
+                    }
+                }
+                else if ([viewController respondsToSelector:@selector(destroy)])
+                {
+                    [viewController destroy];
+                }
+            }
+            
+            [childViewControllers removeAllObjects];
+        }
     }
     
     if (unifiedSearchViewController)
@@ -132,7 +186,7 @@
     
     if (currentAlert)
     {
-        [currentAlert dismiss:NO];
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
     
@@ -141,6 +195,14 @@
         [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
         authViewControllerObserver = nil;
     }
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
+    
+    childViewControllers = nil;
 }
 
 #pragma mark -
@@ -546,7 +608,7 @@
     else
     {
         // Keep ref on destinationViewController
-        [super prepareForSegue:segue sender:sender];
+        [childViewControllers addObject:segue.destinationViewController];
         
         if ([[segue identifier] isEqualToString:@"showAuth"])
         {
@@ -585,6 +647,14 @@
     self.navigationController.topViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
+{
+    // Keep ref on presented view controller
+    [childViewControllers addObject:viewControllerToPresent];
+    
+    [super presentViewController:viewControllerToPresent animated:flag completion:completion];
+}
+
 // Made the actual selected view controller update its selected cell.
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
@@ -600,7 +670,7 @@
 {
     _hidden = hidden;
     
-    [self.view superview].backgroundColor = [UIColor whiteColor];
+    [self.view superview].backgroundColor = kRiotPrimaryBgColor;
     self.view.hidden = hidden;
     self.navigationController.navigationBar.hidden = hidden;
 }
@@ -678,47 +748,46 @@
     
     __weak typeof(self) weakSelf = self;
     
-    [currentAlert dismiss:NO];
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
     
-    currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName]
-                                           message:nil
-                                             style:MXKAlertStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
-    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
-                                                                style:MXKAlertActionStyleDefault
-                                                              handler:^(MXKAlert *alert) {
-                                                                  
-                                                                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
-                                                                  [[NSUserDefaults standardUserDefaults] synchronize];
-                                                                  
-                                                                  if (weakSelf)
-                                                                  {
-                                                                      __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                                                      strongSelf->currentAlert = nil;
-                                                                  }
-                                                                  
-                                                              }];
-    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
-                               style:MXKAlertActionStyleDefault
-                             handler:^(MXKAlert *alert) {
-                                 
-                                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
-                                 [[NSUserDefaults standardUserDefaults] synchronize];
-                                 
-                                 if (weakSelf)
-                                 {
-                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                     strongSelf->currentAlert = nil;
-                                 }
-                                 
-                                 [[AppDelegate theDelegate] startGoogleAnalytics];
-                                 
-                             }];
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
+                                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                       }
+                                                       
+                                                   }]];
     
-    currentAlert.mxkAccessibilityIdentifier = @"HomeVCUseGoogleAnalyticsAlert";
-    [currentAlert showInViewController:self];
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
+                                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                       }
+                                                       
+                                                       [[AppDelegate theDelegate] startGoogleAnalytics];
+                                                       
+                                                   }]];
+    
+    [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseGoogleAnalyticsAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 #pragma mark - UITabBarDelegate

@@ -11,5 +11,9 @@
 		<string>applinks:riot.im</string>
 		<string>applinks:www.riot.im</string>
 	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.im.vector</string>
+	</array>
 </dict>
 </plist>

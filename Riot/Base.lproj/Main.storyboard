@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -81,12 +81,12 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" image="search_icon.png" id="Koy-mU-PTG" userLabel="Menu Bar Button Item"/>
                     </navigationItem>
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="djN-zB-Vni" id="VQG-Mp-hSa"/>
                         <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="fNQ-S3-DbZ"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="ziz-Xl-QVg"/>
+                        <segue destination="e7G-NU-7ck" kind="show" identifier="showRoomDetails" id="mFs-HA-7Oo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yjg-uP-Hcy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -154,7 +154,7 @@
                 <tableViewController id="e7G-NU-7ck" customClass="SegmentedViewController" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXh-hO-Zgf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2558" y="-546"/>
+            <point key="canvasLocation" x="3326" y="-442"/>
         </scene>
         <!--People View Controller-->
         <scene sceneID="Qba-PP-lco">
@@ -335,7 +335,7 @@
         <!--RecentsSplitVC-->
         <scene sceneID="Nki-YV-4Qg">
             <objects>
-                <splitViewController title="RecentsSplitVC" id="H1p-Uh-vWS" sceneMemberID="viewController">
+                <splitViewController title="RecentsSplitVC" id="H1p-Uh-vWS" customClass="RiotSplitViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="EB5-8V-irH"/>
                     <connections>
@@ -365,10 +365,10 @@
             </objects>
             <point key="canvasLocation" x="1223" y="-3899"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Riot Navigation Controller-->
         <scene sceneID="TbB-77-7oK">
             <objects>
-                <navigationController id="qAW-wR-KyU" sceneMemberID="viewController">
+                <navigationController id="qAW-wR-KyU" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="r5V-3P-3Lg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -397,7 +397,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="01q-h6-40E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3326" y="-420"/>
+            <point key="canvasLocation" x="5046" y="-711"/>
         </scene>
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
@@ -428,7 +428,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="6LG-qc-7jf">
-                                <rect key="frame" x="127" y="284" width="120" height="99"/>
+                                <rect key="frame" x="127" y="283" width="120" height="101"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -470,10 +470,10 @@
             </objects>
             <point key="canvasLocation" x="1929" y="-2049"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Riot Navigation Controller-->
         <scene sceneID="Fbq-8h-gyk">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="CtR-n9-ztG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -507,10 +507,10 @@
             </objects>
             <point key="canvasLocation" x="3610" y="-3761"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Riot Navigation Controller-->
         <scene sceneID="Qyz-FA-hw5">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MHE-SG-tnL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -564,7 +564,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo.png" width="120" height="99"/>
+        <image name="logo.png" width="120" height="101"/>
         <image name="search_icon.png" width="22" height="22"/>
         <image name="settings_icon.png" width="24" height="24"/>
         <image name="tab_favourites.png" width="25" height="25"/>
@@ -577,9 +577,10 @@
         <image name="tab_rooms_selected.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="f5u-Y1-7nt"/>
-        <segue reference="cUw-vU-gJq"/>
-        <segue reference="Tfl-tq-LQp"/>
+        <segue reference="fNQ-S3-DbZ"/>
+        <segue reference="ziz-Xl-QVg"/>
+        <segue reference="mFs-HA-7Oo"/>
         <segue reference="0ws-cL-0tk"/>
+        <segue reference="Tfl-tq-LQp"/>
     </inferredMetricsTieBreakers>
 </document>

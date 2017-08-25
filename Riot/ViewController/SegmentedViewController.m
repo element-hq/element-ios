@@ -17,7 +17,7 @@
 
 #import "SegmentedViewController.h"
 
-#import "AppDelegate.h"
+#import "RiotDesignValues.h"
 
 @interface SegmentedViewController ()
 {
@@ -42,6 +42,9 @@
     // the selected marker view
     UIView* selectedMarkerView;
     NSLayoutConstraint *leftMarkerViewConstraint;
+    
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -95,6 +98,12 @@
         selectedMarkerView = nil;
     }
     
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
+    
     [super destroy];
 }
 
@@ -119,9 +128,7 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)viewDidLoad
@@ -151,6 +158,27 @@
     [NSLayoutConstraint activateConstraints:@[self.selectionContainerTopConstraint]];
     
     [self createSegmentedViews];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -66,6 +66,16 @@
      Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
      */
     id UIApplicationWillChangeStatusBarOrientationNotificationObserver;
+    
+    /**
+     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    /**
+     The current visibility of the status bar in this view controller.
+     */
+    BOOL isStatusBarHidden;
 }
 @end
 
@@ -92,23 +102,21 @@
     [super finalizeInit];
     
     // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kRiotNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     adminActionsArray = [[NSMutableArray alloc] init];
     otherActionsArray = [[NSMutableArray alloc] init];
     directChatsArray = [[NSMutableArray alloc] init];
+    
+    // Keep visible the status bar by default.
+    isStatusBarHidden = NO;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    self.memberHeaderView.backgroundColor = kRiotColorLightGrey;
-    self.roomMemberNameLabel.textColor = kRiotTextColorBlack;
-    self.roomMemberStatusLabel.textColor = kRiotColorGreen;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -187,6 +195,44 @@
         NSNumber *orientation = (NSNumber*)(notif.userInfo[UIApplicationStatusBarOrientationUserInfoKey]);
         self.bottomImageView.hidden = (orientation.integerValue == UIInterfaceOrientationLandscapeLeft || orientation.integerValue == UIInterfaceOrientationLandscapeRight);
     }];
+    
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    self.memberHeaderView.backgroundColor = kRiotSecondaryBgColor;
+    self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;
+    self.roomMemberStatusLabel.textColor = kRiotColorGreen;
+    
+    // Check the table view style to select its bg color.
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.view.backgroundColor = self.tableView.backgroundColor;
+    
+    if (self.tableView.dataSource)
+    {
+        [self.tableView reloadData];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Return the current status bar visibility.
+    return isStatusBarHidden;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -247,6 +293,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillChangeStatusBarOrientationNotificationObserver];
         UIApplicationWillChangeStatusBarOrientationNotificationObserver = nil;
+    }
+    
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
     }
     
     [memberTitleView removeFromSuperview];
@@ -690,8 +742,8 @@
             }
             else
             {
-                [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kRiotTextColorBlack forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
             }
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -712,15 +764,11 @@
             {
                 [roomCell render:room];
             }
-            roomCell.directRoomIcon.hidden = NO;
-            roomCell.encryptedRoomIcon.hidden = !room.state.isEncrypted;
         }
         else
         {
-            roomCell.directRoomIcon.hidden = YES;
-            
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
-            roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
+            roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
             roomCell.avatarImageView.userInteractionEnabled = NO;
             roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
         }
@@ -753,6 +801,29 @@
 }
 
 #pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -871,15 +942,26 @@
     }
     else if (view == self.memberThumbnail || view == self.roomMemberAvatarMask)
     {
+        __weak typeof(self) weakSelf = self;
+        
         // Show the avatar in full screen
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
 
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
-            [avatarFullScreenView dismissSelection];
-            [avatarFullScreenView removeFromSuperview];
-
-            avatarFullScreenView = nil;
+        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle)
+         {
+             [avatarFullScreenView dismissSelection];
+             [avatarFullScreenView removeFromSuperview];
+             
+             avatarFullScreenView = nil;
+             
+             if (weakSelf)
+             {
+                 // Restore the status bar
+                 isStatusBarHidden = NO;
+                 typeof(self) self = weakSelf;
+                 [self setNeedsStatusBarAppearanceUpdate];
+             }            
         }];
 
         NSString *avatarURL = nil;
@@ -894,6 +976,11 @@
                              previewImage:self.memberThumbnail.image];
 
         [avatarFullScreenView showFullScreen];
+        
+        // Hide the status bar
+        isStatusBarHidden = YES;
+        // Trigger status bar update
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 
