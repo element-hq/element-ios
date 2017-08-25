@@ -59,11 +59,18 @@
         // so we just extract the first one
         INPerson *callee = contacts.firstObject;
         
-        // Check if the user has selected right callee among several candidates from previous resolution process run
+        // If this method is called after selection of the appropriate user, it will hold userId of an user to whom we must call
+        NSString *selectedUserId;
+        
+        // Check if the user has selected appropriate room among several candidates from previous resolution process run
         if (callee.customIdentifier && callee.customIdentifier.length)
         {
             completion(@[[INPersonResolutionResult successWithResolvedPerson:callee]]);
             return;
+        }
+        else
+        {
+            selectedUserId = callee.personHandle.value;
         }
         
         MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
@@ -72,60 +79,107 @@
             MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
             [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
                 
-                // Find all users with whom direct chats are existed
-                NSMutableSet<NSString *> *directUserIDs = [NSMutableSet set];
+                // Contains userIds of all users with whom the current user has direct chats
+                NSMutableArray<NSString *> *directUserIds = [NSMutableArray array];
+                
+                // Contains room summaries for all direct rooms connected with particular userId
+                NSMutableDictionary<NSString *, NSMutableArray<MXRoomSummary *> *> *roomSummaries = [NSMutableDictionary dictionary];
+                
                 for (MXRoomSummary *summary in roomsSummaries)
                 {
+                    // TODO: We also need to check if joined room members count equals 2
+                    // It is pointlessly to save rooms with 1 joined member or room with more than 2 joined members
                     if (summary.isDirect)
-                        [directUserIDs addObject:summary.directUserId];
+                    {
+                        NSString *diretUserId = summary.directUserId;
+                        
+                        // Collect room summaries only for specified user
+                        if (selectedUserId && ![diretUserId isEqualToString:selectedUserId])
+                            continue;
+                        
+                        // Save userId
+                        [directUserIds addObject:diretUserId];
+                        
+                        // Save associated with diretUserId room summary
+                        NSMutableArray<MXRoomSummary *> *userRoomSummaries = roomSummaries[diretUserId];
+                        if (userRoomSummaries)
+                            [userRoomSummaries addObject:summary];
+                        else
+                            roomSummaries[diretUserId] = [NSMutableArray arrayWithObject:summary];
+                    }
                 }
                 
-                [fileStore asyncUsers:^(NSArray<MXUser *> * _Nonnull users) {
+                [fileStore UsersWithUserIds:directUserIds success:^(NSArray<MXUser *> * _Nonnull users) {
                     
-                    // Find users with whom we have a direct chat and whose display name contains string presented us by Siri
-                    NSMutableArray<INPerson *> *matchingPersons = [NSMutableArray array];
+                    // Find users whose display name contains string presented us by Siri
+                    NSMutableArray<MXUser *> *matchingUsers = [NSMutableArray array];
                     for (MXUser *user in users)
                     {
-                        if ([directUserIDs containsObject:user.userId])
+                        if (!user.displayname)
+                            continue;
+                        
+                        if (!NSEqualRanges([callee.displayName rangeOfString:user.displayname options:NSCaseInsensitiveSearch], (NSRange){NSNotFound,0}))
                         {
-                            if (!user.displayname)
-                                continue;
+                            [matchingUsers addObject:user];
+                        }
+                    }
+
+                    NSMutableArray<INPerson *> *persons = [NSMutableArray array];
+                    
+                    if (matchingUsers.count == 1)
+                    {
+                        MXUser *user = matchingUsers.firstObject;
+                        
+                        // Provide to the user a list of direct rooms to choose from
+                        NSArray<MXRoomSummary *> *summaries = roomSummaries[user.userId];
+                        for (MXRoomSummary *summary in summaries)
+                        {
+                            INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
                             
-                            if (!NSEqualRanges([user.displayname rangeOfString:callee.displayName options:NSCaseInsensitiveSearch], (NSRange){NSNotFound,0}))
-                            {
-                                INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
-                                INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
-                                                                           nameComponents:nil
-                                                                              displayName:user.displayname
-                                                                                    image:nil
-                                                                        contactIdentifier:nil
-                                                                         customIdentifier:user.userId];
-                                
-                                [matchingPersons addObject:person];
-                            }
+                            NSString *displayName = summary.displayname ? summary.displayname : user.displayname;
+                            
+                            INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
+                                                                       nameComponents:nil
+                                                                          displayName:displayName
+                                                                                image:nil
+                                                                    contactIdentifier:nil
+                                                                     customIdentifier:summary.roomId];
+                            
+                            [persons addObject:person];
+                        }
+                    }
+                    else if (matchingUsers.count > 1)
+                    {
+                        // Provide to the user a list of users to choose from
+                        // This is the case when there are several users with the same name
+                        for (MXUser *user in matchingUsers)
+                        {
+                            INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
+                            INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
+                                                                       nameComponents:nil
+                                                                          displayName:user.displayname
+                                                                                image:nil
+                                                                    contactIdentifier:nil
+                                                                     customIdentifier:nil];
+                            
+                            [persons addObject:person];
                         }
                     }
                     
-                    if (matchingPersons.count == 0)
+                    if (persons.count == 0)
                     {
                         completion(@[[INPersonResolutionResult unsupported]]);
                     }
-                    else if (matchingPersons.count == 1)
+                    else if (persons.count == 1)
                     {
-                        completion(@[[INPersonResolutionResult successWithResolvedPerson:matchingPersons.firstObject]]);
+                        completion(@[[INPersonResolutionResult successWithResolvedPerson:persons.firstObject]]);
                     }
                     else
                     {
-                        completion(@[[INPersonResolutionResult disambiguationWithPeopleToDisambiguate:matchingPersons]]);
+                        completion(@[[INPersonResolutionResult disambiguationWithPeopleToDisambiguate:persons]]);
                     }
-                    
-                } failure:nil];
+                }];
             } failure:nil];
-        }
-        else
-        {
-            // If user hasn't logged in yet just pass a blank INPerson instance and handle this situation in confirmStartAudioCall:completion:
-            completion(@[[INPersonResolutionResult successWithResolvedPerson:[INPerson new]]]);
         }
     }
 }
@@ -161,7 +215,7 @@
     if (person && person.customIdentifier)
     {
         NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass(INStartAudioCallIntent.class)];
-        userActivity.userInfo = @{ @"userID" : person.customIdentifier };
+        userActivity.userInfo = @{ @"roomID" : person.customIdentifier };
         
         response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeContinueInApp
                                                            userActivity:userActivity];
