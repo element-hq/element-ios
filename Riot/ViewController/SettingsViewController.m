@@ -1621,8 +1621,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.showDecryptedContentInNotifications;
             labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventValueChanged];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
         }
