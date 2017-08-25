@@ -18,4 +18,6 @@
 
 @interface SharePresentingViewController : UIViewController
 
+- (void)destroy;
+
 @end

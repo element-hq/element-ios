@@ -30,6 +30,8 @@
 
 @property (nonatomic) SegmentedViewController *segmentedViewController;
 
+@property (nonatomic) id shareExtensionManagerDidChangeMXSessionObserver;
+
 
 @end
 
@@ -42,7 +44,7 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidChangeMXSessionNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    self.shareExtensionManagerDidChangeMXSessionObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidChangeMXSessionNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self configureViews];
         
@@ -51,12 +53,21 @@
     [self configureViews];
 }
 
-#pragma mark - Private
-
-- (void)configureViews
+- (void)destroy
 {
-    self.masterContainerView.layer.cornerRadius = 7;
+    [super destroy];
     
+    if (self.shareExtensionManagerDidChangeMXSessionObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.shareExtensionManagerDidChangeMXSessionObserver];
+        self.shareExtensionManagerDidChangeMXSessionObserver = nil;
+    }
+    
+    [self resetContentView];
+}
+
+- (void)resetContentView
+{
     // Empty the content view
     NSArray *subviews = self.contentView.subviews;
     for (UIView *subview in subviews)
@@ -67,10 +78,21 @@
     // Release the current segmented view controller if any
     if (self.segmentedViewController)
     {
+        [self.segmentedViewController removeFromParentViewController];
+        
         // Release correctly all the existing data source and view controllers.
         [self.segmentedViewController destroy];
         self.segmentedViewController = nil;
     }
+}
+
+#pragma mark - Private
+
+- (void)configureViews
+{
+    self.masterContainerView.layer.cornerRadius = 7;
+    
+    [self resetContentView];
     
     if ([ShareExtensionManager sharedManager].mxSession)
     {
