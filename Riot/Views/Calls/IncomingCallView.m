@@ -68,12 +68,14 @@ static const CGFloat kButtonSize = 80.0;
         self.callerNameLabel.textColor = [UIColor colorWithRed:60.0/255.0 green:60.0/255.0 blue:60.0/255.0 alpha:1.0];
         self.callerNameLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightMedium];
         self.callerNameLabel.text = callerName;
+        self.callerNameLabel.textAlignment = NSTextAlignmentCenter;
         
         self.callInfoLabel = [[UILabel alloc] init];
         self.callInfoLabel.backgroundColor = [UIColor whiteColor];
         self.callInfoLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
         self.callInfoLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.callInfoLabel.text = callInfo;
+        self.callInfoLabel.textAlignment = NSTextAlignmentCenter;
         
         UIColor *answerButtonBorderColor = [UIColor colorWithRed:98.0/255.0 green:206.0/255.0 blue:156.0/255.0 alpha:1.0];
         
@@ -163,12 +165,20 @@ static const CGFloat kButtonSize = 80.0;
                                                                             constant:18.0],
                                               
                                               [NSLayoutConstraint constraintWithItem:self.callerNameLabel
-                                                                           attribute:NSLayoutAttributeCenterX
+                                                                           attribute:NSLayoutAttributeLeading
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:self
-                                                                           attribute:NSLayoutAttributeCenterX
+                                                                           attribute:NSLayoutAttributeLeading
                                                                           multiplier:1.0
-                                                                            constant:0.0],
+                                                                            constant:15.0],
+                                              
+                                              [NSLayoutConstraint constraintWithItem:self.callerNameLabel
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                          multiplier:1.0
+                                                                            constant:-15.0],
                                               
                                               [NSLayoutConstraint constraintWithItem:self.callInfoLabel
                                                                            attribute:NSLayoutAttributeTop
@@ -183,6 +193,14 @@ static const CGFloat kButtonSize = 80.0;
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:self
                                                                            attribute:NSLayoutAttributeCenterX
+                                                                          multiplier:1.0
+                                                                            constant:0.0],
+                                              
+                                              [NSLayoutConstraint constraintWithItem:self.callInfoLabel
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.callerNameLabel
+                                                                           attribute:NSLayoutAttributeWidth
                                                                           multiplier:1.0
                                                                             constant:0.0],
                                               
