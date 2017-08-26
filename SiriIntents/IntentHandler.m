@@ -62,7 +62,7 @@
         // If this method is called after selection of the appropriate user, it will hold userId of an user to whom we must call
         NSString *selectedUserId;
         
-        // Check if the user has selected appropriate room among several candidates from previous resolution process run
+        // Check if the user has selected right room among several direct rooms from previous resolution process run
         if (callee.customIdentifier && callee.customIdentifier.length)
         {
             // If callee will have the same name as one of the contact in the system contacts app
@@ -77,6 +77,7 @@
         }
         else
         {
+            // This resolution process run after selecting appropriate user among suggested user list
             selectedUserId = callee.personHandle.value;
         }
         
@@ -143,6 +144,7 @@
                         {
                             INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
                             
+                            // For rooms we try to use room display name
                             NSString *displayName = summary.displayname ? summary.displayname : user.displayname;
                             
                             INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
