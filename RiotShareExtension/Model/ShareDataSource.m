@@ -15,6 +15,7 @@
  */
 
 #import "ShareDataSource.h"
+#import "ShareExtensionManager.h"
 #import "RoomTableViewCell.h"
 
 @interface ShareDataSource ()
@@ -48,16 +49,7 @@
     [self.recentRooms removeAllObjects];
     [self.recentPeople removeAllObjects];
     
-    // Force account manager to reload account from the local storage.
-    [[MXKAccountManager sharedManager] forceReloadAccounts];
-    
-    // Get the first active account
-    MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    
-    MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-    
-    //NSMutableArray *rooms = [NSMutableArray array];
-    //NSMutableArray *people = [NSMutableArray array];
+    MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:[ShareExtensionManager sharedManager].account.mxCredentials];
     
     [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
         for (MXRoomSummary *roomSummary in roomsSummaries)
@@ -125,7 +117,7 @@
     
     MXRoomSummary *roomSummary = [self getRoomSummaryAtIndexPath:indexPath];
     
-    [cell renderWithSummary:roomSummary];
+    [cell renderWithSummary:roomSummary restClient:[ShareExtensionManager sharedManager].mxRestClient];
     
     if (!roomSummary.displayname.length && !cell.titleLabel.text.length)
     {

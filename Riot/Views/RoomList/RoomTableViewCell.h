@@ -33,7 +33,7 @@
  */
 - (void)render:(MXRoom *)room;
 
-- (void)renderWithSummary:(MXRoomSummary *)roomSummary;
+- (void)renderWithSummary:(MXRoomSummary *)roomSummary restClient:(MXRestClient *)restClient;
 
 /**
  Get the cell height.

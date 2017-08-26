@@ -32,13 +32,16 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 @interface ShareExtensionManager ()
 
-@property NSArray *rooms;
-@property NSArray *people;
+@property (nonatomic, readwrite) MXKAccount *account;
+@property (nonatomic, readwrite) MXRestClient *mxRestClient;
 
-@property NSMutableArray <NSData *> *pendingImages;
-@property NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
-@property ImageCompressionMode imageCompressionMode;
-@property CGFloat actualLargeSize;
+@property (nonatomic) NSArray *rooms;
+@property (nonatomic) NSArray *people;
+
+@property (nonatomic) NSMutableArray <NSData *> *pendingImages;
+@property (nonatomic) NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
+@property (nonatomic) ImageCompressionMode imageCompressionMode;
+@property (nonatomic) CGFloat actualLargeSize;
 
 @end
 
@@ -52,7 +55,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     static ShareExtensionManager *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        
         sharedInstance = [[self alloc] init];
         
         sharedInstance.pendingImages = [NSMutableArray array];
@@ -60,19 +62,19 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(onMediaUploadProgress:) name:kMXMediaUploadProgressNotification object:nil];
         
-        // Add observer to handle logout
-        /*[[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:kMXKAccountManagerDidRemoveAccountNotification object:nil];*/
-        
-        // Add observer on the Extension host
-        /*[[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];*/
-        /*[[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(suspendSession) name:NSExtensionHostDidEnterBackgroundNotification object:nil];*/
-        
         MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-        
         // Apply the application group
         sdkOptions.applicationGroupIdentifier = @"group.im.vector";
         // Disable identicon use
         sdkOptions.disableIdenticonUseForUserAvatar = YES;
+        
+        // Force account manager to reload account from the local storage.
+        [[MXKAccountManager sharedManager] forceReloadAccounts];
+        
+        // Save the first active account
+        sharedInstance.account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        sharedInstance.mxRestClient = [[MXRestClient alloc] initWithCredentials:sharedInstance.account.mxCredentials andOnUnrecognizedCertificateBlock:nil];
     });
     return sharedInstance;
 }
@@ -85,7 +87,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     _shareExtensionContext = shareExtensionContext;
 }
 
-- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock
+- (void)sendContentToRoom:(NSString *)roomID failureBlock:(void(^)())failureBlock
 {
     NSString *UTTypeText = (__bridge NSString *)kUTTypeText;
     NSString *UTTypeURL = (__bridge NSString *)kUTTypeURL;
@@ -112,7 +114,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            [self sendFileWithUrl:fileUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                            //[self sendFileWithUrl:fileUrl toRoom:room extensionItem:item failureBlock:failureBlock];
                         }
                         
                     });
@@ -129,7 +131,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            [self sendText:text toRoom:room extensionItem:item failureBlock:failureBlock];
+                            //[self sendText:text toRoom:room extensionItem:item failureBlock:failureBlock];
                         }
                         
                     });
@@ -146,7 +148,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            [self sendText:url.absoluteString toRoom:room extensionItem:item failureBlock:failureBlock];
+                            //[self sendText:url.absoluteString toRoom:room extensionItem:item failureBlock:failureBlock];
                         }
                         
                     });
@@ -167,7 +169,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          {
                              UIImage *firstImage = [UIImage imageWithData:self.pendingImages.firstObject];
                              UIAlertController *compressionPrompt = [self compressionPromptForImage:firstImage shareBlock:^{
-                                 [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
+                                 //[self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
                              }];
                              
                              [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
@@ -185,7 +187,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          if (weakSelf)
                          {
                              typeof(self) self = weakSelf;
-                             [self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                             //[self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
                          }
                          
                      });
@@ -202,7 +204,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          if (weakSelf)
                          {
                              typeof(self) self = weakSelf;
-                             [self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                             //[self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
                          }
                          
                      });
@@ -405,11 +407,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return compressionPrompt;
 }
 
-- (void)didStartSendingToRoom:(MXRoom *)room
+- (void)didStartSendingToRoom:(NSString *)roomID
 {
     if ([self.delegate respondsToSelector:@selector(shareExtensionManager:didStartSendingContentToRoom:)])
     {
-        [self.delegate shareExtensionManager:self didStartSendingContentToRoom:room];
+        [self.delegate shareExtensionManager:self didStartSendingContentToRoom:roomID];
     }
 }
 
@@ -450,9 +452,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 #pragma mark - Sharing
 
-- (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendText:(NSString *)text toRoom:(NSString *)roomID extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
 {
-    [self didStartSendingToRoom:room];
+    [self didStartSendingToRoom:roomID];
     if (!text)
     {
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
@@ -465,7 +467,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     __weak typeof(self) weakSelf = self;
     
-    [room sendTextMessage:text success:^(NSString *eventId) {
+    [self.mxRestClient sendTextMessageToRoom:roomID text:text success:^(NSString *eventId) {
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
@@ -480,9 +482,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }];
 }
 
-- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(NSString *)roomID extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
 {
-    [self didStartSendingToRoom:room];
+    [self didStartSendingToRoom:roomID];
     if (!fileUrl)
     {
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
@@ -500,7 +502,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     __weak typeof(self) weakSelf = self;
     
-    [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
+    //self.mxRestClient send
+    
+    
+    
+    /*[room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
@@ -512,7 +518,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             failureBlock();
         }
-    } keepActualFilename:YES];
+    } keepActualFilename:YES];*/
 }
 
 

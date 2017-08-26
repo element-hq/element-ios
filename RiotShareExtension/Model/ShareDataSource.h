@@ -22,16 +22,11 @@ typedef NS_ENUM(NSInteger, ShareDataSourceMode)
     DataSourceModeRooms
 };
 
-@protocol ShareDataSourceDelegate <NSObject>
-
-- (void)refreshRooms;
-
-@end
 
 @interface ShareDataSource : MXKRecentsDataSource
 
-//@property (weak) id<ShareDataSourceDelegate> delegate;
-
 - (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode;
+
+- (MXRoomSummary *)getRoomSummaryAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
