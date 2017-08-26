@@ -88,7 +88,8 @@
             [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
                 
                 // Contains userIds of all users with whom the current user has direct chats
-                NSMutableArray<NSString *> *directUserIds = [NSMutableArray array];
+                // Use set to avoid duplicates
+                NSMutableSet<NSString *> *directUserIds = [NSMutableSet set];
                 
                 // Contains room summaries for all direct rooms connected with particular userId
                 NSMutableDictionary<NSString *, NSMutableArray<MXRoomSummary *> *> *roomSummaries = [NSMutableDictionary dictionary];
@@ -117,7 +118,7 @@
                     }
                 }
                 
-                [fileStore UsersWithUserIds:directUserIds success:^(NSArray<MXUser *> * _Nonnull users) {
+                [fileStore UsersWithUserIds:directUserIds.allObjects success:^(NSArray<MXUser *> * _Nonnull users) {
                     
                     // Find users whose display name contains string presented us by Siri
                     NSMutableArray<MXUser *> *matchingUsers = [NSMutableArray array];
