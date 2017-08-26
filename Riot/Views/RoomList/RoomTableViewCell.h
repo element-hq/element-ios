@@ -33,6 +33,8 @@
  */
 - (void)render:(MXRoom *)room;
 
+- (void)renderWithSummary:(MXRoomSummary *)roomSummary;
+
 /**
  Get the cell height.
 

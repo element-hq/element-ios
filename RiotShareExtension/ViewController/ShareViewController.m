@@ -18,7 +18,7 @@
 #import "SegmentedViewController.h"
 #import "RoomsListViewController.h"
 #import "FallbackViewController.h"
-#import "ShareRecentsDataSource.h"
+#import "ShareDataSource.h"
 #import "ShareExtensionManager.h"
 
 
@@ -94,7 +94,7 @@
     
     [self resetContentView];
     
-    if ([ShareExtensionManager sharedManager].mxSession)
+    if ([MXKAccountManager sharedManager].activeAccounts.count)
     {
         self.tittleLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), @""];
         [self configureSegmentedViewController];
@@ -120,12 +120,12 @@
         }];
     };
     
-    ShareRecentsDataSource *roomsDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:[ShareExtensionManager sharedManager].mxSession dataSourceMode:RecentsDataSourceModeRooms];
+    ShareDataSource *roomsDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModeRooms];
     RoomsListViewController *roomsViewController = [RoomsListViewController recentListViewController];
     roomsViewController.failureBlock = failureBlock;
     [roomsViewController displayList:roomsDataSource];
     
-    ShareRecentsDataSource *peopleDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:[ShareExtensionManager sharedManager].mxSession dataSourceMode:RecentsDataSourceModePeople];
+    ShareDataSource *peopleDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModePeople];
     RoomsListViewController *peopleViewController = [RoomsListViewController recentListViewController];
     peopleViewController.failureBlock = failureBlock;
     [peopleViewController displayList:peopleDataSource];

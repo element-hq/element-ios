@@ -32,8 +32,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 @interface ShareExtensionManager ()
 
-// The current user account
-@property (nonatomic) MXKAccount *userAccount;
+@property NSArray *rooms;
+@property NSArray *people;
 
 @property NSMutableArray <NSData *> *pendingImages;
 @property NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
@@ -61,11 +61,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(onMediaUploadProgress:) name:kMXMediaUploadProgressNotification object:nil];
         
         // Add observer to handle logout
-        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:kMXKAccountManagerDidRemoveAccountNotification object:nil];
+        /*[[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:kMXKAccountManagerDidRemoveAccountNotification object:nil];*/
         
         // Add observer on the Extension host
-        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(suspendSession) name:NSExtensionHostDidEnterBackgroundNotification object:nil];
+        /*[[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];*/
+        /*[[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(suspendSession) name:NSExtensionHostDidEnterBackgroundNotification object:nil];*/
         
         MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
         
@@ -77,72 +77,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return sharedInstance;
 }
 
-- (void)checkUserAccount
-{
-    // Force account manager to reload account from the local storage.
-    [[MXKAccountManager sharedManager] forceReloadAccounts];
-    
-    if (self.userAccount)
-    {
-        // Check whether the used account is still the first active one
-        MXKAccount *firstAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        
-        // Compare the access token
-        if (!firstAccount || ![self.userAccount.mxCredentials.accessToken isEqualToString:firstAccount.mxCredentials.accessToken])
-        {
-            // Remove this account
-            [self.userAccount closeSession:YES];
-            self.userAccount = nil;
-            _mxSession = nil;
-            
-            // Post notification
-            [[NSNotificationCenter defaultCenter] postNotificationName:kShareExtensionManagerDidChangeMXSessionNotification object:_mxSession userInfo:nil];
-        }
-    }
-    
-    if (self.userAccount)
-    {
-        // Resume the matrix session
-        [self.userAccount resume];
-    }
-    else
-    {
-        // Prepare a new session if a new account is available.
-        [self prepareSession];
-    }
-}
-
-- (void)prepareSession
-{    
-    // We consider the first enabled account.
-    // TODO: Handle multiple accounts
-    self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    if (self.userAccount)
-    {
-        NSLog(@"[ShareExtensionManager] openSession for %@ account", self.userAccount.mxCredentials.userId);
-        // Use MXFileStore as MXStore to permanently store events.
-        [self.userAccount openSessionWithStore:[[MXFileStore alloc] init]];
-        
-        _mxSession = self.userAccount.mxSession;
-        
-        // Post notification
-        [[NSNotificationCenter defaultCenter] postNotificationName:kShareExtensionManagerDidChangeMXSessionNotification object:_mxSession userInfo:nil];
-    }
-}
-
-- (void)suspendSession
-{
-    [self.userAccount pauseInBackgroundTask];
-}
 
 #pragma mark - Public
 
 - (void)setShareExtensionContext:(NSExtensionContext *)shareExtensionContext
 {
     _shareExtensionContext = shareExtensionContext;
-    
-    // Prepare or resume the matrix session.
-    [self checkUserAccount];
 }
 
 - (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock
@@ -290,7 +230,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)terminateExtensionCanceled:(BOOL)canceled
 {
-    [self suspendSession];
+    //[self suspendSession];
     
     if (canceled)
     {
@@ -309,7 +249,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)completeRequestReturningItems:(nullable NSArray *)items completionHandler:(void(^ __nullable)(BOOL expired))completionHandler;
 {
-    [self suspendSession];
+    //[self suspendSession];
     
     [self.shareExtensionContext completeRequestReturningItems:items completionHandler:completionHandler];
     
@@ -650,7 +590,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 
                 if (!imageDatas.count)
                 {
-                    [self suspendSession];
+                    //[self suspendSession];
                     [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
                 }
                 

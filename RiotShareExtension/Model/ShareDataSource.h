@@ -16,14 +16,22 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-typedef NS_ENUM(NSInteger, ShareRecentsDataSourceMode)
+typedef NS_ENUM(NSInteger, ShareDataSourceMode)
 {
-    RecentsDataSourceModePeople,
-    RecentsDataSourceModeRooms
+    DataSourceModePeople,
+    DataSourceModeRooms
 };
 
-@interface ShareRecentsDataSource : MXKRecentsDataSource
+@protocol ShareDataSourceDelegate <NSObject>
 
-- (instancetype)initWithMatrixSession:(MXSession *)mxSession dataSourceMode:(ShareRecentsDataSourceMode)dataSourceMode;
+- (void)refreshRooms;
+
+@end
+
+@interface ShareDataSource : MXKRecentsDataSource
+
+//@property (weak) id<ShareDataSourceDelegate> delegate;
+
+- (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode;
 
 @end

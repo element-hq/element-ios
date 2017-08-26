@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MXRoom+Riot.h"
-#import "ShareRecentsDataSource.h"
+#import "ShareDataSource.h"
 
 @interface RoomsListViewController : MXKRecentListViewController
 
