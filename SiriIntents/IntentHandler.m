@@ -188,7 +188,7 @@
                     {
                         completion(@[[INPersonResolutionResult disambiguationWithPeopleToDisambiguate:persons]]);
                     }
-                }];
+                } failure:nil];
             } failure:nil];
         }
     }
