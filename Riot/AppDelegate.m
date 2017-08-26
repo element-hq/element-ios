@@ -1448,7 +1448,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
     
     // Use shared container to share data with app extensions
-    sdkOptions.applicationGroupIdentifier = @"group.org.matrix";
+    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];

@@ -32,7 +32,7 @@
     self = [super init];
     if (self)
     {
-        [MXSDKOptions sharedInstance].applicationGroupIdentifier = @"group.org.matrix";
+        [MXSDKOptions sharedInstance].applicationGroupIdentifier = @"group.im.vector";
     }
     return self;
 }
