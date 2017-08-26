@@ -29,6 +29,7 @@
 			<key>IntentsSupported</key>
 			<array>
 				<string>INStartAudioCallIntent</string>
+				<string>INStartVideoCallIntent</string>
 			</array>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
