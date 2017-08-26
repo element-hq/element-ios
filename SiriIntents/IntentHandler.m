@@ -65,7 +65,14 @@
         // Check if the user has selected appropriate room among several candidates from previous resolution process run
         if (callee.customIdentifier && callee.customIdentifier.length)
         {
-            completion(@[[INPersonResolutionResult successWithResolvedPerson:callee]]);
+            // If callee will have the same name as one of the contact in the system contacts app
+            // Siri will pass us this contact in the intent.contacts array and we must provide the same count of
+            // resolution results as elements count in the intent.contact.
+            // So we just pass the same result at all iterations
+            NSMutableArray *resolutionResults = [NSMutableArray array];
+            for (NSInteger i = 0; i < contacts.count; ++i)
+                [resolutionResults addObject:[INPersonResolutionResult successWithResolvedPerson:callee]];
+            completion(resolutionResults);
             return;
         }
         else
