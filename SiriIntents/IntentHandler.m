@@ -118,7 +118,7 @@
                     }
                 }
                 
-                [fileStore UsersWithUserIds:directUserIds.allObjects success:^(NSArray<MXUser *> * _Nonnull users) {
+                [fileStore asyncUsersWithUserIds:directUserIds.allObjects success:^(NSArray<MXUser *> * _Nonnull users) {
                     
                     // Find users whose display name contains string presented us by Siri
                     NSMutableArray<MXUser *> *matchingUsers = [NSMutableArray array];
