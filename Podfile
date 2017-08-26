@@ -10,7 +10,7 @@ target "Riot" do
 # The tagged version on which this version of Riot has been built
 pod 'MatrixKit', '0.6.2'
 
-# The lastest release available on the CocoaPods repository
+# The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
 
 # The develop branch version
