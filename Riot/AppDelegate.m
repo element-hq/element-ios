@@ -166,7 +166,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
-@property (strong, nonatomic) UIAlertController *incomingCallNotification;
 
 @end
 
@@ -563,13 +562,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Enable error notifications
                 isErrorNotificationSuspended = NO;
                 
-                // Restore call alert if any
-                if (_incomingCallNotification)
-                {
-                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible incoming call alert");
-                    [self showNotificationAlert:_incomingCallNotification];
-                }
-                else if (noCallSupportAlert)
+                if (noCallSupportAlert)
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
                     [self showNotificationAlert:noCallSupportAlert];
@@ -2359,22 +2352,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (currentCallViewController && callViewController == currentCallViewController)
     {
-        if (_incomingCallNotification)
-        {
-            // The user was prompted for an incoming call which ended
-            // The call view controller was not presented yet.
-            [_incomingCallNotification dismissViewControllerAnimated:NO completion:nil];
-            _incomingCallNotification = nil;
-            
-            // Release properly
-            [currentCallViewController destroy];
-            
-            if (completion)
-            {
-                completion();
-            }
-        }
-        else if (callViewController.isBeingPresented)
+        if (callViewController.isBeingPresented)
         {
             // Here the presentation of the call view controller is in progress
             // Postpone the dismiss
