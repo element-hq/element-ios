@@ -51,4 +51,10 @@
  */
 + (CGSize)defaultCellSize;
 
+/**
+ Render the cell data to show in the Widget
+ @param cellData the cell data to be rendered
+ */
+- (void)renderForWidget:(MXKCellData *)cellData;
+
 @end

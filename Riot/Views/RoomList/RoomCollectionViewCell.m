@@ -81,6 +81,42 @@
     [super layoutSubviews];
 }
 
+- (void)renderForWidget:(MXKCellData *)cellData
+{
+    self.missedNotifAndUnreadBadgeBgView.hidden = YES;
+    self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    
+    roomCellData = (id<MXKRecentCellDataStoring>)cellData;
+    if (roomCellData)
+    {
+        NSString *riotDisplayName = roomCellData.roomSummary.room.riotDisplayname;
+        
+        // Report computed values as is
+        self.roomTitle.hidden = NO;
+        self.roomTitle.text = riotDisplayName;
+        self.roomTitle1.hidden = YES;
+        self.roomTitle2.hidden = YES;
+        
+        // Check whether the room display name is an alias to keep visible the HS.
+        if ([MXTools isMatrixRoomAlias:riotDisplayName])
+        {
+            NSRange range = [riotDisplayName rangeOfString:@":" options:NSBackwardsSearch];
+            if (range.location != NSNotFound)
+            {
+                self.roomTitle.hidden = YES;
+                self.roomTitle1.hidden = NO;
+                self.roomTitle1.text = [riotDisplayName substringToIndex:range.location + 1];
+                self.roomTitle2.hidden = NO;
+                self.roomTitle2.text = [riotDisplayName substringFromIndex:range.location + 1];
+            }
+        }
+        
+        self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
+        self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.isEncrypted;
+        [roomCellData.roomSummary.room setRoomAvatarImageIn:self.roomAvatar];
+    }
+}
+
 - (void)render:(MXKCellData *)cellData
 {
     // Hide by default missed notifications and unread widgets
@@ -111,7 +147,7 @@
         }
         
         // Notify unreads and bing
-        if (roomCellData.hasUnread)
+        if (roomCellData.hasUnread )
         {
             if (0 < roomCellData.notificationCount)
             {

@@ -20,3 +20,8 @@
 "NSMicrophoneUsageDescription" = "The microphone is used to take videos, make calls.";
 "NSContactsUsageDescription" = "The contact book is used to search for users by email or phone number on Riot.";
 
+// 3D Touch shortcut titles
+"shortcut_favourites" = "Favourites";
+"shortcut_rooms" = "Rooms";
+"shortcut_people" = "People";
+"shortcut_search" = "Search";

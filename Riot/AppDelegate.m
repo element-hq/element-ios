@@ -64,6 +64,11 @@
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
+static NSString *const kShortcutItemTypeFavourites = @"shortcut_item_type_favourites";
+static NSString *const kShortcutItemTypePeople = @"shortcut_item_type_people";
+static NSString *const kShortcutItemTypeRooms = @"shortcut_item_type_rooms";
+static NSString *const kShortcutItemTypeSearch = @"shortcut_item_type_search";
+
 @interface AppDelegate ()
 {
     /**
@@ -541,6 +546,78 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     return continueUserActivity;
 }
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
+{
+    NSString *roomId = [url.absoluteString stringByReplacingOccurrencesOfString:@"show-room://" withString:@""];
+    if (!roomId.length)
+    {
+        return NO;
+    }
+    
+    NSString *fragment = [NSString stringWithFormat:@"/room/%@", roomId];
+    [self handleUniversalLinkFragment:fragment];
+    return YES;
+}
+
+
+#pragma mark - 3D Touch Shortcuts handling
+
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler
+{
+    completionHandler([self handleShortcut:shortcutItem]);
+}
+
+- (void)onSessionSync:(NSNotification *)notification
+{
+    NSArray <MXRoom *> *rooms = ((MXSession *)self.mxSessions.firstObject).rooms;
+    
+    if (rooms.count)
+    {
+        //UIApplicationShortcutItem *firstDynamicItem = [[UIApplicationShortcutItem alloc] initWithType:kShortcutItemTypeRecentRoom localizedTitle:rooms[0].riotDisplayname localizedSubtitle:nil icon:nil userInfo:@{@"roomID" : rooms[0].roomId}];
+        //[UIApplication sharedApplication].shortcutItems = @[firstDynamicItem];
+    }
+}
+
+- (BOOL)handleShortcut:(UIApplicationShortcutItem *)shortcut
+{
+    if ([shortcut.type isEqualToString:kShortcutItemTypeFavourites])
+    {
+        [self popToHomeViewControllerAnimated:NO completion:^{
+            self.masterTabBarController.selectedIndex = TABBAR_FAVOURITES_INDEX;
+        }];
+    }
+    else if ([shortcut.type isEqualToString:kShortcutItemTypeRooms])
+    {
+        [self popToHomeViewControllerAnimated:NO completion:^{
+            self.masterTabBarController.selectedIndex = TABBAR_ROOMS_INDEX;
+        }];
+    }
+    else if ([shortcut.type isEqualToString:kShortcutItemTypePeople])
+    {
+        [self popToHomeViewControllerAnimated:NO completion:^{
+            self.masterTabBarController.selectedIndex = TABBAR_PEOPLE_INDEX;
+        }];
+    }
+    else if ([shortcut.type isEqualToString:kShortcutItemTypeSearch])
+    {
+        [self popToHomeViewControllerAnimated:NO completion:^{
+            self.masterTabBarController.selectedIndex = TABBAR_HOME_INDEX;
+            [self.masterTabBarController performSegueWithIdentifier:@"showUnifiedSearch" sender:nil];
+        }];
+    }
+    /*else if ([shortcut.type isEqualToString:kShortcutItemTypeRecentRoom])
+     {
+     NSString *fragment = [NSString stringWithFormat:@"/room/%@", shortcut.userInfo[@"roomID"]];
+     [self handleUniversalLinkFragment:fragment];
+     }*/
+    else
+    {
+        return NO;
+    }
+    return YES;
+}
+
 
 #pragma mark - Application layout handling
 

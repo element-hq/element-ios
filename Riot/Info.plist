@@ -2,6 +2,52 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>tab_favourites</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>shortcut_favourites</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>shortcut_item_type_favourites</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>tab_rooms</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>shortcut_rooms</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>shortcut_item_type_rooms</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>tab_people</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>shortcut_people</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>shortcut_item_type_people</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>search_icon</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>shortcut_search</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>shortcut_item_type_search</string>
+		</dict>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>im.vector</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>show-room</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
