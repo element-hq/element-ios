@@ -1489,6 +1489,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
+
+    // Get modular widget events in rooms histories
+    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
@@ -1537,6 +1540,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
+
+            // Send read receipts for modular widgets events too
+            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
+            [acknowledgableEventTypes addObject:kWidgetEventTypeString];
+            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
