@@ -574,11 +574,37 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         BOOL isVideoCall = [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier];
         
+        UIApplication *application = UIApplication.sharedApplication;
+        NSNumber *backgroundTaskIdentifier;
+        
+        // Start background task since we need time for MXSession preparasion because our app can be launched in the background
+        if (application.applicationState == UIApplicationStateBackground)
+            backgroundTaskIdentifier = @([application beginBackgroundTaskWithExpirationHandler:^{}]);
+
         MXSession *session = mxSessionArray.firstObject;
         [session.callManager placeCallInRoom:roomID
                                    withVideo:isVideoCall
-                                     success:^(MXCall *call) {}
-                                     failure:^(NSError *error) {}];
+                                     success:^(MXCall *call) {
+                                         if (application.applicationState == UIApplicationStateBackground)
+                                         {
+                                             __weak NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
+                                             __block id token =
+                                             [center addObserverForName:kMXCallStateDidChange
+                                                                 object:call
+                                                                  queue:nil
+                                                             usingBlock:^(NSNotification * _Nonnull note) {
+                                                                 if (call.state == MXCallStateEnded)
+                                                                 {
+                                                                     [application endBackgroundTask:backgroundTaskIdentifier.unsignedIntegerValue];
+                                                                     [center removeObserver:token];
+                                                                 }
+                                                             }];
+                                         }
+                                     }
+                                     failure:^(NSError *error) {
+                                         if (backgroundTaskIdentifier)
+                                             [application endBackgroundTask:backgroundTaskIdentifier.unsignedIntegerValue];
+                                     }];
         
         continueUserActivity = YES;
     }
