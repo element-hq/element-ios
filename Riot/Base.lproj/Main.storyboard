@@ -365,10 +365,10 @@
             </objects>
             <point key="canvasLocation" x="1223" y="-3899"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Riot Navigation Controller-->
         <scene sceneID="TbB-77-7oK">
             <objects>
-                <navigationController id="qAW-wR-KyU" sceneMemberID="viewController">
+                <navigationController id="qAW-wR-KyU" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="r5V-3P-3Lg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -470,10 +470,10 @@
             </objects>
             <point key="canvasLocation" x="1929" y="-2049"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Riot Navigation Controller-->
         <scene sceneID="Fbq-8h-gyk">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="CtR-n9-ztG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -507,10 +507,10 @@
             </objects>
             <point key="canvasLocation" x="3610" y="-3761"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Riot Navigation Controller-->
         <scene sceneID="Qyz-FA-hw5">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MHE-SG-tnL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>

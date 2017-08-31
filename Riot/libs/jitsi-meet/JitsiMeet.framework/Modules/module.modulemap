@@ -1,0 +1,6 @@
+framework module JitsiMeet {
+  umbrella header "JitsiMeet.h"
+
+  export *
+  module * { export * }
+}

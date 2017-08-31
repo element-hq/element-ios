@@ -19,6 +19,8 @@
 
 #import "RiotDesignValues.h"
 
+#import "WidgetManager.h"
+
 @interface EventFormatter ()
 {
     /**
@@ -34,6 +36,53 @@
 @end
 
 @implementation EventFormatter
+
+- (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+{
+    // Build strings for modular widget events
+    // TODO: At the moment, we support only jitsi widgets
+    if (event.eventType == MXEventTypeCustom
+        && [event.type isEqualToString:kWidgetEventTypeString])
+    {
+        NSString *displayText;
+
+        // Prepare the display name of the sender
+        NSString *senderDisplayName = roomState ? [self senderDisplayNameForEvent:event withRoomState:roomState] : event.sender;
+
+        if ([event.content[@"type"] isEqualToString:kWidgetTypeJitsi])
+        {
+            // This is an alive jitsi widget
+            displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added", @"Vector", nil), senderDisplayName];
+        }
+        else if (event.content.count == 0)
+        {
+            // This is a closed widget
+            // Check if it corresponds to a jitsi widget by looking at other state events for
+            // this jitsi widget (widget id = event.stateKey).
+            for (MXEvent *widgetStateEvent in [roomState stateEventsWithType:kWidgetEventTypeString])
+            {
+                if ([widgetStateEvent.stateKey isEqualToString:event.stateKey] && [widgetStateEvent.content[@"type"] isEqualToString:kWidgetTypeJitsi])
+                {
+                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
+                    break;
+                }
+            }
+        }
+
+        if (displayText)
+        {
+            if (error)
+            {
+                *error = MXKEventFormatterErrorNone;
+            }
+
+            // Build the attributed string with the right font and color for the events
+            return [self renderString:displayText forEvent:event];
+        }
+    }
+
+    return [super attributedStringFromEvent:event withRoomState:roomState error:error];
+}
 
 - (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
 {
@@ -69,12 +118,24 @@
 
         localTimeZone = [NSTimeZone localTimeZone];
         
-        self.defaultTextColor = kRiotTextColorBlack;
-        self.subTitleTextColor = kRiotTextColorGray;
-        self.prefixTextColor = kRiotTextColorGray;
+        // Use the secondary bg color to set the background color in the default CSS.
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        self.defaultCSS = [NSString stringWithFormat:@" \
+                           pre,code { \
+                           background-color: #%06lX; \
+                           display: inline; \
+                           font-family: monospace; \
+                           white-space: pre; \
+                           -coretext-fontname: Menlo-Regular; \
+                           font-size: small; \
+                           }", (unsigned long)bgColor];
+        
+        self.defaultTextColor = kRiotPrimaryTextColor;
+        self.subTitleTextColor = kRiotSecondaryTextColor;
+        self.prefixTextColor = kRiotSecondaryTextColor;
         self.bingTextColor = kRiotColorPinkRed;
         self.encryptingTextColor = kRiotColorGreen;
-        self.sendingTextColor = kRiotTextColorGray;
+        self.sendingTextColor = kRiotSecondaryTextColor;
         self.errorTextColor = kRiotColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
@@ -90,7 +151,7 @@
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
         self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
-        self.singleEmojiTextFont = [UIFont systemFontOfSize:48];
+        self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
     }
     return self;
 }

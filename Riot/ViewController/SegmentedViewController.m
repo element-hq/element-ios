@@ -17,7 +17,7 @@
 
 #import "SegmentedViewController.h"
 
-#import "AppDelegate.h"
+#import "RiotDesignValues.h"
 
 @interface SegmentedViewController ()
 {
@@ -129,7 +129,6 @@
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)viewDidLoad
@@ -172,6 +171,14 @@
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated

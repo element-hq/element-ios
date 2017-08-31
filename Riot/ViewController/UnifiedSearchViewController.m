@@ -152,7 +152,7 @@
     // Here the actual view size is available, check the background image display if any
     [self checkAndShowBackgroundImage];
     
-    if (self.splitViewController && self.splitViewController.isCollapsed)
+    if (self.splitViewController && !self.splitViewController.isCollapsed)
     {
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
@@ -211,7 +211,7 @@
         [filesSearchViewController displaySearch:filesSearchDataSource];
         
         // Init the search for people
-        peopleSearchDataSource = [[ContactsDataSource alloc] init];
+        peopleSearchDataSource = [[ContactsDataSource alloc] initWithMatrixSession:mainSession];
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
         peopleSearchDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;

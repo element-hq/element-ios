@@ -51,23 +51,19 @@
 {
     [super awakeFromNib];
     
-    self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
-    self.emailTextField.textColor = kRiotTextColorBlack;
-    
-    self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_new_password_placeholder", @"Vector", nil);
-    self.passWordTextField.textColor = kRiotTextColorBlack;
-    
-    self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_new_password_placeholder", @"Vector", nil);
-    self.repeatPasswordTextField.textColor = kRiotTextColorBlack;
-    
-    self.messageLabel.numberOfLines = 0;
-    
-    [self.nextStepButton.layer setCornerRadius:5];
-    self.nextStepButton.clipsToBounds = YES;
-    self.nextStepButton.backgroundColor = kRiotColorGreen;
     [self.nextStepButton setTitle:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_next_step_button"] forState:UIControlStateNormal];
     [self.nextStepButton setTitle:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_next_step_button"] forState:UIControlStateHighlighted];
     self.nextStepButton.enabled = YES;
+    
+    self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
+    self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_new_password_placeholder", @"Vector", nil);
+    self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_new_password_placeholder", @"Vector", nil);
+    
+    if (kRiotPlaceholderTextColor)
+    {
+        // Apply placeholder color
+        [self customizeViewRendering];
+    }    
 }
 
 - (void)destroy
@@ -100,6 +96,47 @@
     }
     
     self.viewHeightConstraint.constant = lastItemFrame.origin.y + lastItemFrame.size.height;
+}
+
+#pragma mark - Override MXKView
+
+-(void)customizeViewRendering
+{
+    [super customizeViewRendering];
+    
+    self.messageLabel.textColor = kRiotPrimaryTextColor;
+    
+    self.emailTextField.textColor = kRiotPrimaryTextColor;
+    self.passWordTextField.textColor = kRiotPrimaryTextColor;
+    self.repeatPasswordTextField.textColor = kRiotPrimaryTextColor;
+    
+    self.messageLabel.numberOfLines = 0;
+    
+    [self.nextStepButton.layer setCornerRadius:5];
+    self.nextStepButton.clipsToBounds = YES;
+    self.nextStepButton.backgroundColor = kRiotColorGreen;
+    
+    if (kRiotPlaceholderTextColor)
+    {
+        if (self.emailTextField.placeholder)
+        {
+            self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:self.emailTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+        if (self.passWordTextField.placeholder)
+        {
+            self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:self.passWordTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+        if (self.repeatPasswordTextField.placeholder)
+        {
+            self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                            initWithString:self.repeatPasswordTextField.placeholder
+                                                            attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+        }
+    }
 }
 
 #pragma mark -

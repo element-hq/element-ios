@@ -37,8 +37,41 @@ pod 'Realm', '~> 2.8.1'
 pod 'OLMKit', :inhibit_warnings => true
 pod 'cmark', :inhibit_warnings => true
 pod 'DTCoreText', :inhibit_warnings => true
+    
+end
+
+
+target "RiotShareExtension" do
+
+pod 'GoogleAnalytics'
+# The Google WebRTC stack
+pod 'WebRTC', '58.17.16937'
+# OLMKit for crypto
+pod 'OLMKit'
+#pod 'OLMKit', :path => '../olm/OLMKit.podspec'
+pod 'Realm', '~> 2.8.1'
+
+# The tagged version on which this version of Riot share extension has been built
+pod 'MatrixKit/AppExtension', '0.6.2'
+
+# The lastest release available on the CocoaPods repository
+#pod 'MatrixKit/AppExtension'
+
+# The develop branch version
+#pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
+#pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
+
+# The one used for developing both MatrixSDK and MatrixKit
+# Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
+#pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+#pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kit/MatrixKit.podspec'
+
+# Remove warnings from "bad" pods
+pod 'OLMKit', :inhibit_warnings => true
+pod 'cmark', :inhibit_warnings => true
 
 end
+
 
 target "SiriIntents" do
 
@@ -70,3 +103,4 @@ pod 'OLMKit', :inhibit_warnings => true
 pod 'cmark', :inhibit_warnings => true
 
 end
+

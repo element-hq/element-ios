@@ -61,7 +61,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         
         timeLabel.text = [bubbleData.eventFormatter timeStringFromDate:component.date];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = kRiotTextColorGray;
+        timeLabel.textColor = kRiotSecondaryTextColor;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
              timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
@@ -263,7 +263,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = kRiotTextColorGray;
+        timeLabel.textColor = kRiotSecondaryTextColor;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
             timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
@@ -320,7 +320,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     if (blurred)
     {
         self.bubbleOverlayContainer.hidden = NO;
-        self.bubbleOverlayContainer.backgroundColor = [UIColor whiteColor];
+        self.bubbleOverlayContainer.backgroundColor = kRiotPrimaryBgColor;
         self.bubbleOverlayContainer.alpha = 0.8;
         self.bubbleOverlayContainer.userInteractionEnabled = YES;
         

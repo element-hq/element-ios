@@ -44,6 +44,9 @@ static void *RecordingContext = &RecordingContext;
     BOOL isPictureCaptureEnabled;
     BOOL isVideoCaptureEnabled;
     
+    // Set up only one session at the time.
+    BOOL isCaptureSessionSetupInProgress;
+    
     AVCaptureSession *captureSession;
     AVCaptureDeviceInput *frontCameraInput;
     AVCaptureDeviceInput *backCameraInput;
@@ -125,6 +128,8 @@ static void *RecordingContext = &RecordingContext;
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
+    
+    isCaptureSessionSetupInProgress = NO;
 }
 
 - (void)viewDidLoad
@@ -153,8 +158,6 @@ static void *RecordingContext = &RecordingContext;
     self.cameraSwitchButton.layer.cornerRadius = self.cameraSwitchButton.frame.size.width / 2;
     self.cameraSwitchButton.clipsToBounds = YES;
     
-    self.cameraVideoCaptureProgressView.progressColor = [UIColor whiteColor];
-    self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
     self.cameraVideoCaptureProgressView.progress = 0;
     
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
@@ -179,6 +182,18 @@ static void *RecordingContext = &RecordingContext;
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    self.cameraVideoCaptureProgressView.progressColor = kRiotPrimaryBgColor;
+    self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
+    
+    self.userAlbumsTableView.backgroundColor = kRiotPrimaryBgColor;
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -331,12 +346,12 @@ static void *RecordingContext = &RecordingContext;
         if (self.cameraVideoCaptureProgressView.progressColor != [UIColor lightGrayColor])
         {
             self.cameraVideoCaptureProgressView.progressColor = [UIColor lightGrayColor];
-            self.cameraVideoCaptureProgressView.unprogressColor = [UIColor whiteColor];
+            self.cameraVideoCaptureProgressView.unprogressColor = kRiotPrimaryBgColor;
         }
     }
-    else if (self.cameraVideoCaptureProgressView.progressColor != [UIColor whiteColor])
+    else if (self.cameraVideoCaptureProgressView.progressColor != kRiotPrimaryBgColor)
     {
-        self.cameraVideoCaptureProgressView.progressColor = [UIColor whiteColor];
+        self.cameraVideoCaptureProgressView.progressColor = kRiotPrimaryBgColor;
         self.cameraVideoCaptureProgressView.unprogressColor = [UIColor lightGrayColor];
     }
     
@@ -979,11 +994,12 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)setupAVCapture
 {
-    if (captureSession)
+    if (captureSession || isCaptureSessionSetupInProgress)
     {
         NSLog(@"[MediaPickerVC] Attemping to setup AVCapture when it is already started!");
         return;
     }
+    isCaptureSessionSetupInProgress = YES;
     
     [self.cameraActivityIndicator startAnimating];
     
@@ -1154,6 +1170,9 @@ static void *RecordingContext = &RecordingContext;
                 [self.cameraActivityIndicator stopAnimating];
             });
         }
+        
+        isCaptureSessionSetupInProgress = NO;
+        
     });
 }
 
@@ -1636,6 +1655,29 @@ static void *RecordingContext = &RecordingContext;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {

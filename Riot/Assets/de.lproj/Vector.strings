@@ -114,7 +114,6 @@
 "contacts_address_book_matrix_users_toggle" = "Nur Matrix-Nutzer";
 "contacts_address_book_no_contact" = "Keine lokalen Kontakte";
 "contacts_address_book_permission_required" = "Berechtigungen benötigt um auf lokale Kontakte zuzugreifen";
-"contacts_matrix_users_section" = "BEKANNTE KONTAKTE";
 // Chat participants
 "room_participants_title" = "Teilnehmer";
 "room_participants_add_participant" = "Teilnehmer hinzufügen";
@@ -421,3 +420,5 @@
 "settings_ui_dark_theme" = "Dunkles Design";
 // Events formatter
 "event_formatter_member_updates" = "%tu Änderungen der Mitgliedschaft";
+"contacts_user_directory_section" = "NUTZER VERZEICHNIS";
+"contacts_user_directory_offline_section" = "NUTZER VERZEICHNIS (offline)";

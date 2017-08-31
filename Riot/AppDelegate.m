@@ -17,6 +17,8 @@
 
 #import "AppDelegate.h"
 
+#import <Intents/Intents.h>
+
 #import "RecentsDataSource.h"
 #import "RoomDataSource.h"
 
@@ -34,12 +36,20 @@
 #import "MatrixSDK/MatrixSDK.h"
 
 #import "Tools.h"
+#import "MXRoom+Riot.h"
+#import "WidgetManager.h"
 
 #import "AFNetworkReachabilityManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
 
+#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+
+// Calls
 #import "CallViewController.h"
+
+#import <MatrixSDK/MXCallKitAdapter.h>
+#import <MatrixSDK/MXCallKitConfiguration.h>
 
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
@@ -50,9 +60,10 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
-#include <MatrixSDK/MXJingleCallStack.h>
-
-#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+#ifdef MX_CALL_STACK_JINGLE
+#import <MatrixSDK/MXJingleCallStack.h>
+#import <MatrixSDK/MXJingleCallAudioSessionConfigurator.h>
+#endif
 
 #define CALL_STATUS_BAR_HEIGHT 44
 
@@ -165,6 +176,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
 @property (strong, nonatomic) UIAlertController *incomingCallNotification;
+
+@property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
 @end
 
@@ -312,6 +325,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     _masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
     _masterTabBarController = _masterNavigationController.viewControllers.firstObject;
+    
+    // Force the background color of the fake view controller displayed when there is no details.
+    UINavigationController *secondNavController = self.secondaryNavigationController;
+    if (secondNavController)
+    {
+        secondNavController.navigationBar.barTintColor = kRiotPrimaryBgColor;
+        secondNavController.topViewController.view.backgroundColor = kRiotPrimaryBgColor;
+    }
     
     // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
     // to avoid empty room View Controller in portrait orientation
@@ -526,6 +547,67 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         continueUserActivity = [self handleUniversalLink:userActivity];
     }
+    else if ([userActivity.activityType isEqualToString:INStartAudioCallIntentIdentifier] ||
+             [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier])
+    {
+        INInteraction *interaction = userActivity.interaction;
+        
+        // roomID provided by Siri intent
+        NSString *roomID = userActivity.userInfo[@"roomID"];
+        
+        // We've launched from calls history list
+        if (!roomID)
+        {
+            INPerson *person;
+            
+            if ([interaction.intent isKindOfClass:INStartAudioCallIntent.class])
+            {
+                person = [[(INStartAudioCallIntent *)(interaction.intent) contacts] firstObject];
+            }
+            else if ([interaction.intent isKindOfClass:INStartVideoCallIntent.class])
+            {
+                person = [[(INStartVideoCallIntent *)(interaction.intent) contacts] firstObject];
+            }
+            
+            roomID = person.personHandle.value;
+        }
+        
+        BOOL isVideoCall = [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier];
+        
+        UIApplication *application = UIApplication.sharedApplication;
+        NSNumber *backgroundTaskIdentifier;
+        
+        // Start background task since we need time for MXSession preparasion because our app can be launched in the background
+        if (application.applicationState == UIApplicationStateBackground)
+            backgroundTaskIdentifier = @([application beginBackgroundTaskWithExpirationHandler:^{}]);
+
+        MXSession *session = mxSessionArray.firstObject;
+        [session.callManager placeCallInRoom:roomID
+                                   withVideo:isVideoCall
+                                     success:^(MXCall *call) {
+                                         if (application.applicationState == UIApplicationStateBackground)
+                                         {
+                                             __weak NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
+                                             __block id token =
+                                             [center addObserverForName:kMXCallStateDidChange
+                                                                 object:call
+                                                                  queue:nil
+                                                             usingBlock:^(NSNotification * _Nonnull note) {
+                                                                 if (call.state == MXCallStateEnded)
+                                                                 {
+                                                                     [application endBackgroundTask:backgroundTaskIdentifier.unsignedIntegerValue];
+                                                                     [center removeObserver:token];
+                                                                 }
+                                                             }];
+                                         }
+                                     }
+                                     failure:^(NSError *error) {
+                                         if (backgroundTaskIdentifier)
+                                             [application endBackgroundTask:backgroundTaskIdentifier.unsignedIntegerValue];
+                                     }];
+        
+        continueUserActivity = YES;
+    }
     
     return continueUserActivity;
 }
@@ -553,13 +635,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Enable error notifications
                 isErrorNotificationSuspended = NO;
                 
-                // Restore call alert if any
-                if (_incomingCallNotification)
-                {
-                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible incoming call alert");
-                    [self showNotificationAlert:_incomingCallNotification];
-                }
-                else if (noCallSupportAlert)
+                if (noCallSupportAlert)
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
                     [self showNotificationAlert:noCallSupportAlert];
@@ -887,9 +963,25 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
+{
+    self.registrationForRemoteNotificationsCompletion = completion;
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
-    [application registerForRemoteNotifications];
+    // Register for remote notifications only if user provide access to notification feature
+    if (notificationSettings.types != UIUserNotificationTypeNone)
+    {
+        [self registerForRemoteNotificationsWithCompletion:nil];
+    }
+    else
+    {
+        // Clear existing token
+        MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+        [accountManager setApnsDeviceToken:nil];
+    }
 }
 
 - (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
@@ -901,11 +993,23 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [accountManager setApnsDeviceToken:deviceToken];
     
     isAPNSRegistered = YES;
+    
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(nil);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
 }
 
 - (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
+    
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(error);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
 }
 
 - (void)cancelBackgroundSync
@@ -1432,6 +1536,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     
+    // Set the App Group identifier.
+    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+    
     // Define the media cache version
     sdkOptions.mediaCacheAppVersion = 0;
     
@@ -1446,6 +1553,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
+
+    // Get modular widget events in rooms histories
+    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
     
     // Use shared container to share data with app extensions
     sdkOptions.applicationGroupIdentifier = @"group.im.vector";
@@ -1488,6 +1598,19 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (callStack)
             {
                 [mxSession enableVoIPWithCallStack:callStack];
+
+                // Setup CallKit
+                if ([MXCallKitAdapter callKitAvailable])
+                {
+                    BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+                    [self enableCallKit:isCallKitEnabled forCallManager:mxSession.callManager];
+                    
+                    // Register for changes performed by the user
+                    [[MXKAppSettings standardAppSettings] addObserver:self
+                                                           forKeyPath:@"enableCallKit"
+                                                              options:NSKeyValueObservingOptionNew
+                                                              context:NULL];
+                }
             }
             else
             {
@@ -1497,6 +1620,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
+
+            // Send read receipts for modular widgets events too
+            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
+            [acknowledgableEventTypes addObject:kWidgetEventTypeString];
+            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1610,8 +1738,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
     }];
     
-    // Observe settings changes
-    [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
+    // Add observer on settings changes.
+    [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
     // Prepare account manager
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
@@ -1678,6 +1806,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         // Update home data sources
         [_masterTabBarController addMatrixSession:mxSession];
+
+        // Register the session to the widgets manager
+        [[WidgetManager sharedManager] addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
         
@@ -1692,6 +1823,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Update home data sources
     [_masterTabBarController removeMatrixSession:mxSession];
+
+    // Update the widgets manager
+    [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
     
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
@@ -1773,6 +1907,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [self enableInAppNotificationsForAccount:(MXKAccount*)object];
     }
+    else if (object == [MXKAppSettings standardAppSettings] && [keyPath isEqualToString:@"enableCallKit"])
+    {
+        BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+        MXCallManager *callManager = [[[[[MXKAccountManager sharedManager] activeAccounts] firstObject] mxSession] callManager];
+        [self enableCallKit:isCallKitEnabled forCallManager:callManager];
+    }
 }
 
 - (void)addMatrixCallObserver
@@ -1783,18 +1923,55 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     // Register call observer in order to handle new opened session
-    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
+    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall
+                                                                           object:nil
+                                                                            queue:[NSOperationQueue mainQueue]
+                                                                       usingBlock:^(NSNotification *notif)
+    {
         // Ignore the call if a call is already in progress
-        if (!currentCallViewController)
+        if (!currentCallViewController && !_jitsiViewController)
         {
             MXCall *mxCall = (MXCall*)notif.object;
             
-            // Prepare the call view controller
-            currentCallViewController = [CallViewController callViewController:mxCall];
-            currentCallViewController.delegate = self;
+            BOOL isCallKitAvailable = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
             
-            if (mxCall.isIncoming)
+            // Prepare the call view controller
+            currentCallViewController = [CallViewController callViewController:nil];
+            currentCallViewController.playRingtone = !isCallKitAvailable;
+            currentCallViewController.mxCall = mxCall;
+            currentCallViewController.delegate = self;
+
+            UIApplicationState applicationState = UIApplication.sharedApplication.applicationState;
+            
+            // App has been woken by PushKit notification in the background
+            if (applicationState == UIApplicationStateBackground && mxCall.isIncoming)
+            {
+                // Create backgound task.
+                // Without CallKit this will allow us to play vibro until the call was ended
+                // With CallKit we'll inform the system when the call is ended to let the system terminate our app to save resources
+                id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
+                NSUInteger callTaskIdentifier = [handler startBackgroundTaskWithName:nil completion:^{}];
+                
+                // Start listening for call state change notifications
+                __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                __block id token = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange
+                                                                                     object:mxCall
+                                                                                      queue:nil
+                                                                                 usingBlock:^(NSNotification * _Nonnull note) {
+                                                                                     MXCall *call = (MXCall *)note.object;
+                                                                                     
+                                                                                     if (call.state == MXCallStateEnded)
+                                                                                     {
+                                                                                         // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
+                                                                                         currentCallViewController = nil;
+                                                                                         [notificationCenter removeObserver:token];
+                                                                                         
+                                                                                         [handler endBackgrounTaskWithIdentifier:callTaskIdentifier];
+                                                                                     }
+                                                                                 }];
+            }
+            
+            if (mxCall.isIncoming && !isCallKitAvailable)
             {
                 // Prompt user before presenting the call view controller
                 NSString *callPromptFormat = mxCall.isVideoCall ? NSLocalizedStringFromTable(@"call_incoming_video_prompt", @"Vector", nil) : NSLocalizedStringFromTable(@"call_incoming_voice_prompt", @"Vector", nil);
@@ -1805,16 +1982,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 }
                 NSString *callPrompt = [NSString stringWithFormat:callPromptFormat, callerName];
                 
-                __weak typeof(self) weakSelf = self;
-                
                 // Removing existing notification (if any)
                 [_incomingCallNotification dismissViewControllerAnimated:NO completion:nil];
-                
-                
                 
                 _incomingCallNotification = [UIAlertController alertControllerWithTitle:callPrompt
                                                                                 message:nil
                                                                          preferredStyle:UIAlertControllerStyleAlert];
+
+                __weak typeof(self) weakSelf = self;
                 
                 [_incomingCallNotification addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
                                                                               style:UIAlertActionStyleDefault
@@ -1868,7 +2043,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 [self presentCallViewController:nil];
             }
         }
-        
     }];
 }
 
@@ -1901,7 +2075,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (!launchAnimationContainerView && window)
             {
                 launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = [UIColor whiteColor];
+                launchAnimationContainerView.backgroundColor = kRiotPrimaryBgColor;
                 launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [window addSubview:launchAnimationContainerView];
                 
@@ -2025,6 +2199,29 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         [launchAnimationContainerView removeFromSuperview];
         launchAnimationContainerView = nil;
+    }
+}
+
+- (void)enableCallKit:(BOOL)enable forCallManager:(MXCallManager *)callManager
+{
+    if (enable)
+    {
+        // Create adapter with default configuration for a while
+        MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] init];
+        
+        id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
+        
+#ifdef MX_CALL_STACK_JINGLE
+        audioSessionConfigurator = [[MXJingleCallAudioSessionConfigurator alloc] init];
+#endif
+        
+        callKitAdapter.audioSessionConfigurator = audioSessionConfigurator;
+        
+        callManager.callKitAdapter = callKitAdapter;
+    }
+    else
+    {
+        callManager.callKitAdapter = nil;
     }
 }
 
@@ -2423,6 +2620,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Release properly
             [currentCallViewController destroy];
+            currentCallViewController = nil;
             
             if (completion)
             {
@@ -2483,6 +2681,89 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+#pragma mark - Jitsi call
+
+- (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video
+{
+    if (!_jitsiViewController && !currentCallViewController)
+    {
+        _jitsiViewController = [JitsiViewController jitsiViewController];
+
+        if ([_jitsiViewController openWidget:jitsiWidget withVideo:video])
+        {
+            _jitsiViewController.delegate = self;
+            [self presentJitsiViewController:nil];
+        }
+        else
+        {
+            _jitsiViewController = nil;
+
+            NSError *error = [NSError errorWithDomain:@""
+                                                 code:0
+                                             userInfo:@{
+                                                        NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)
+                                                        }];
+            [self showErrorAsAlert:error];
+        }
+    }
+    else
+    {
+        NSError *error = [NSError errorWithDomain:@""
+                                    code:0
+                                userInfo:@{
+                                           NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)
+                                           }];
+        [self showErrorAsAlert:error];
+    }
+}
+
+- (void)presentJitsiViewController:(void (^)())completion
+{
+    [self removeCallStatusBar];
+
+    if (_jitsiViewController)
+    {
+        if (self.window.rootViewController.presentedViewController)
+        {
+            [self.window.rootViewController.presentedViewController presentViewController:_jitsiViewController animated:YES completion:completion];
+        }
+        else
+        {
+            [self.window.rootViewController presentViewController:_jitsiViewController animated:YES completion:completion];
+        }
+    }
+}
+
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)())completion
+{
+    if (jitsiViewController == _jitsiViewController)
+    {
+        [_jitsiViewController dismissViewControllerAnimated:YES completion:completion];
+        _jitsiViewController = nil;
+
+        [self removeCallStatusBar];
+    }
+}
+
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)())completion
+{
+    if (jitsiViewController == _jitsiViewController)
+    {
+        [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
+
+            MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
+            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.riotDisplayname];
+            [self addCallStatusBar:btnTitle];
+
+            if (completion)
+            {
+                completion();
+            }
+        }];
+    }
+}
+
+
 #pragma mark - Call status handling
 
 - (void)addCallStatusBar:(NSString*)buttonTitle
@@ -2499,7 +2780,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    _callStatusBarButton.titleLabel.textColor = [UIColor whiteColor];
+    _callStatusBarButton.titleLabel.textColor = kRiotPrimaryBgColor;
     
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
     {
@@ -2511,7 +2792,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     [_callStatusBarButton setBackgroundColor:kRiotColorGreen];
-    [_callStatusBarButton addTarget:self action:@selector(presentCallViewController) forControlEvents:UIControlEventTouchUpInside];
+    [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
     [_callStatusBarButton setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -2564,9 +2845,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)presentCallViewController
+- (void)onCallStatusBarButtonPressed
 {
-    [self presentCallViewController:nil];
+    if (currentCallViewController)
+    {
+        [self presentCallViewController:nil];
+    }
+    else if (_jitsiViewController)
+    {
+        [self presentJitsiViewController:nil];
+    }
 }
 
 - (void)presentCallViewController:(void (^)())completion
@@ -2651,7 +2939,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     }
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    return [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
+    UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
+    emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+    return emptyDetailsViewController;
 }
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController

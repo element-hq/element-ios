@@ -110,7 +110,7 @@
 // Rooms tab
 "room_directory_no_public_room" = "Aucun salon public disponible";
 // Search
-"search_rooms" = "SALONS";
+"search_rooms" = "Salons";
 "search_messages" = "Messages";
 "search_people" = "Personnes";
 "search_files" = "Fichiers";
@@ -131,7 +131,8 @@
 "contacts_address_book_no_contact" = "Aucun contact local";
 "contacts_address_book_permission_required" = "Permissions requises pour accéder aux contacts locaux";
 "contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Riot à accéder à vos contacts locaux";
-"contacts_matrix_users_section" = "CONTACTS CONNUS";
+"contacts_user_directory_section" = "RÉPERTOIRE UTILISATEURS";
+"contacts_user_directory_offline_section" = "RÉPERTOIRE UTILISATEURS (hors-ligne)";
 // Chat participants
 "room_participants_title" = "Membres";
 "room_participants_add_participant" = "Ajouter un membre";
@@ -179,7 +180,7 @@
 "room_participants_action_start_video_call" = "Nouvel appel vidéo";
 "room_participants_action_mention" = "Mentionner";
 // Chat
-"room_jump_to_first_unread" = "Aller directement au premier message non lu";
+"room_jump_to_first_unread" = "Aller au premier message non lu";
 "room_new_message_notification" = "%d nouveau message";
 "room_new_messages_notification" = "%d nouveaux messages";
 "room_one_user_is_typing" = "%@ est en train d'écrire…";
@@ -212,7 +213,7 @@
 "room_event_action_cancel_upload" = "Annuler le téléchargement";
 "room_event_action_cancel_download" = "Annuler le téléchargement";
 "room_event_action_view_encryption" = "Informations sur le chiffrement";
-"room_warning_about_encryption" = "Le chiffrement de bout en bout est en bêta et peut ne pas être fiable.\n\nIl ne devrait pas être considéré comme de confiance pour sécuriser les données.\n\nLes appareils ne pourront pas encore déchiffrer l'historique avant leur adhésion au salon.\n\nLes messages chiffrés ne pourront pas être lus pas les clients qui n'implémentent pas le chiffrement.";
+"room_warning_about_encryption" = "Le chiffrement de bout en bout est en bêta et peut ne pas être fiable.\n\nIl ne devrait pas être considéré comme de confiance pour sécuriser les données.\n\nLes appareils ne peuvent pas encore déchiffrer l'historique avant leur adhésion au salon.\n\nLes messages chiffrés ne peuvent pas être lus pas les clients qui n'implémentent pas le chiffrement.";
 // Unknown devices
 "unknown_devices_alert_title" = "Le salon contient des appareils inconnus";
 "unknown_devices_alert" = "Ce salon contient des appareils inconnus qui n'ont pas été vérifiés.\nCela signifie qu'il n'y a pas de garantie que ces appareils appartiennent aux utilisateurs déclarés.\nNous recommendons d'effectuer le processus de vérification pour chaque appareil avant de continuer, mais vous pouvez renvoyer les message sans vérifier si vous préférez.";
@@ -254,7 +255,7 @@
 "settings_cryptography" = "CHIFFREMENT";
 "settings_sign_out" = "Se déconnecter";
 "settings_sign_out_confirmation" = "Êtes-vous sûr ?";
-"settings_sign_out_e2e_warn" = "Vous perdrez vos clés de chiffrement de bout en bout. Cela signifie que vous ne pourrez plus lire les enciens messages sur les salons chiffrés depuis cet appreil.";
+"settings_sign_out_e2e_warn" = "Vous perdrez vos clés de chiffrement de bout en bout. Cela signifie que vous ne pourrez plus lire les anciens messages sur les salons chiffrés depuis cet appreil.";
 "settings_profile_picture" = "Image de profil";
 "settings_display_name" = "Nom d'affichage";
 "settings_first_name" = "Prénom";
@@ -270,7 +271,7 @@
 "settings_night_mode" = "Mode nuit";
 "settings_fail_to_update_profile" = "Impossible de mettre à jour le profil";
 "settings_enable_push_notif" = "Notifications sur cet appareil";
-"settings_global_settings_info" = "Les paramètres de notification globaux sont disponibles sur votre %@ client web";
+"settings_global_settings_info" = "Les paramètres de notification globaux sont disponibles sur votre client web %@";
 "settings_pin_rooms_with_missed_notif" = "Épingler les salons avec des notifications non lues";
 "settings_pin_rooms_with_unread" = "Épingler les salons avec des messages non lus";
 "settings_on_denied_notification" = "Les notifications sont refusées pour %@, merci de les autoriser dans les préférences de votre appareil";
@@ -329,18 +330,18 @@
 "room_details_no_local_addresses" = "Ce salon n'a pas d'adresse locale";
 "room_details_new_address" = "Ajouter une adresse";
 "room_details_new_address_placeholder" = "Ajouter une adresse (par ex. #foo%@)";
-"room_details_addresses_invalid_address_prompt_title" = "Format d'alias invalide";
+"room_details_addresses_invalid_address_prompt_title" = "Format d'adresse invalide";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ n'est pas un format valide pour un alias";
 "room_details_addresses_disable_main_address_prompt_title" = "Alerte sur l'adresse principale";
 "room_details_addresses_disable_main_address_prompt_msg" = "Vous n'aurez aucune adresse principale spécifiée. L'adresse principale par défaut de ce salon sera choisie aléatoirement";
 "room_details_banned_users_section" = "Utilisateurs bannis";
 "room_details_advanced_section" = "Avancé";
 "room_details_advanced_room_id" = "Identifiant de salon :";
-"room_details_advanced_enable_e2e_encryption" = "Activer le chiffrement (attention : ne peut plus être désactivé !)";
+"room_details_advanced_enable_e2e_encryption" = "Activer le chiffrement (attention : ne peut pas être désactivé !)";
 "room_details_advanced_e2e_encryption_enabled" = "Le chiffrement est activé sur ce salon";
 "room_details_advanced_e2e_encryption_disabled" = "Le chiffrement est désactivé sur ce salon.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Chiffrer vers les appareils vérifiés uniquement";
-"room_details_advanced_e2e_encryption_prompt_message" = "Le chiffrement de bout en bout est en bêta et peut ne pas être fiable.\n\nIl ne devrait pas être considéré comme de confiance pour sécuriser les données.\n\nLes appareils ne pourront pas encore déchiffrer l'historique avant leur adhésion au salon.\n\nUne fois le chiffrement activé pour un salon, il ne peut plus être désactivé (pour l'instant).\n\nLes messages chiffrés ne pourront pas être lus pas les clients qui n'implémentent pas le chiffrement.";
+"room_details_advanced_e2e_encryption_prompt_message" = "Le chiffrement de bout en bout est en bêta et peut ne pas être fiable.\n\nIl ne devrait pas être considéré comme de confiance pour sécuriser les données.\n\nLes appareils ne peuvent pas encore déchiffrer l'historique avant leur adhésion au salon.\n\nUne fois le chiffrement activé pour un salon, il ne peut plus être désactivé (pour l'instant).\n\nLes messages chiffrés ne peuvents pas être lus pas les clients qui n'implémentent pas le chiffrement.";
 "room_details_fail_to_update_avatar" = "Impossible de modifier l'image du salon";
 "room_details_fail_to_update_room_name" = "Impossible de modifier le nom du salon";
 "room_details_fail_to_update_topic" = "Impossible de modifier le sujet";
@@ -393,9 +394,9 @@
 "call_incoming_video_prompt" = "Appel vidéo entrant de %@";
 // No VoIP support
 "no_voip_title" = "Appel entrant";
-"no_voip" = "%@ vous appel mais %@ ne supporte pas encore les appels.\nVous pouvez ignorer cette notification et répondre à l'appel depuis un autre appareil, ou bien le rejeter.";
+"no_voip" = "%@ vous appelle mais %@ ne supporte pas encore les appels.\nVous pouvez ignorer cette notification et répondre à l'appel depuis un autre appareil, ou bien le rejeter.";
 // Crash report
-"google_analytics_use_prompt" = "Souhaitez-vous aider à améliorer %@ en envoyer automatiquement des rapports d'erreur et des statistiques d'utilisation ?";
+"google_analytics_use_prompt" = "Souhaitez-vous aider à améliorer %@ en envoyant automatiquement des rapports d'erreur et des statistiques d'utilisation ?";
 // Crypto
 "e2e_enabling_on_app_update" = "Riot supporte maintenant le chiffrement de bout en bout mais vous devez vous identifier à nouveau pour l'activer.\n\nVous pouvez le faire maintenant ou depuis les paramètres de l'application.";
 "e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour cet appareil et les envoyer vers votre homeserver.\nIl s'agit d'un défaut exceptionnel ; désolé pour le désagrément.";
@@ -421,3 +422,14 @@
 "settings_user_interface" = "INTERFACE UTILISATEUR";
 // Events formatter
 "event_formatter_member_updates" = "%tu changements dans les membres";
+"auth_home_server_placeholder" = "URL (e.g. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (e.g. https://matrix.org)";
+"room_ongoing_conference_call_with_close" = "Conférence en cours. Rejoindre en %@ ou %@. %@.";
+"room_ongoing_conference_call_close" = "Clore";
+"room_conference_call_no_power" = "Permissions requises pour gérer la conférence dans ce salon";
+"settings_labs_create_conference_with_jitsi" = "Créer les conférences avec jitsi";
+"call_already_displayed" = "Il y a déjà un appel en cours.";
+"call_jitsi_error" = "Impossible de joindre la conférence.";
+// Widget
+"widget_no_power_to_manage" = "Permissions requises pour gérer les widgets dans ce salon";
+"widget_creation_failure" = "Impossible de créer la widget";

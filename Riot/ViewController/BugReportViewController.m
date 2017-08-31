@@ -26,6 +26,9 @@
 
     // The temporary file used to store the screenshot
     NSURL *screenShotFile;
+    
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @property (nonatomic) BOOL sendLogs;
@@ -72,7 +75,6 @@
     _containerView.layer.cornerRadius = 20;
 
     _bugReportDescriptionTextView.layer.borderWidth = 1.0f;
-    _bugReportDescriptionTextView.layer.borderColor = kRiotColorLightGrey.CGColor;
     _bugReportDescriptionTextView.text = nil;
     _bugReportDescriptionTextView.delegate = self;
 
@@ -121,6 +123,60 @@
 
     // Add an accessory view in order to retrieve keyboard view
     _bugReportDescriptionTextView.inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
+
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    self.containerView.backgroundColor = kRiotPrimaryBgColor;
+    self.sendingContainer.backgroundColor = kRiotPrimaryBgColor;
+    
+    self.titleLabel.textColor = kRiotPrimaryTextColor;
+    self.sendingLabel.textColor = kRiotPrimaryTextColor;
+    self.descriptionLabel.textColor = kRiotPrimaryTextColor;
+    self.bugReportDescriptionTextView.textColor = kRiotPrimaryTextColor;
+    self.bugReportDescriptionTextView.tintColor = kRiotColorGreen;
+    self.logsDescriptionLabel.textColor = kRiotPrimaryTextColor;
+    self.sendLogsLabel.textColor = kRiotPrimaryTextColor;
+    self.sendScreenshotLabel.textColor = kRiotPrimaryTextColor;
+    
+    self.sendButton.tintColor = kRiotColorGreen;
+    self.cancelButton.tintColor = kRiotColorGreen;
+    
+    _bugReportDescriptionTextView.layer.borderColor = kRiotSecondaryBgColor.CGColor;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
+}
+
+- (void)destroy
+{
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
+    
+    [super destroy];
+}
+
+- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
+{
+    [super dismissViewControllerAnimated:flag completion:completion];
+    
+    [self destroy];
 }
 
 - (void)dealloc
@@ -284,8 +340,18 @@
         [gitHubLabels addObject:versionLabel];
     }
 
+    NSMutableString *bugReportDescription = [NSMutableString stringWithString:_bugReportDescriptionTextView.text];
+
+    if (_reportCrash)
+    {
+        // Append the crash dump to the user description in order to ease triaging of GH issues
+        NSString *crashLogFile = [MXLogger crashLog];
+        NSString *crashLog =  [NSString stringWithContentsOfFile:crashLogFile encoding:NSUTF8StringEncoding error:nil];
+        [bugReportDescription appendFormat:@"\n\n\n--------------------------------------------------------------------------------\n\n%@", crashLog];
+    }
+
     // Submit
-    [bugReportRestClient sendBugReport:_bugReportDescriptionTextView.text sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files attachGitHubLabels:gitHubLabels progress:^(MXBugReportState state, NSProgress *progress) {
+    [bugReportRestClient sendBugReport:bugReportDescription sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files attachGitHubLabels:gitHubLabels progress:^(MXBugReportState state, NSProgress *progress) {
 
         switch (state)
         {

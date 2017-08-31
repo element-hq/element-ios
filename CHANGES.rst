@@ -1,3 +1,67 @@
+Changes in 0.5.3 (2017-08-25)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.6.2).
+ * Support dark theme (vector-im/riot-meta#22).
+ * Set the application group identifier to be able to share userDefaults object.
+ 
+Bug Fixes:
+ * SettingsViewController: Release correctly the pushed view controller.
+ * App have crashed whilst uploading photos (#1445).
+ * Register for remote notifications only if user provides access to notification feature, thanks to @aramsargsyan (#1467).
+ * Improvements in notification registration flow, thanks to @aramsargsyan (#1472).
+ 
+Translations:
+ * Enable Russian.
+
+Changes in 0.5.2 (2017-08-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.6.1).
+ * Emojis: Boost size of messages containing only emojis (not only one).
+ * Bug Report: Make the crash dump appear in GH issues created for crashes
+
+Changes in 0.5.1 (2017-08-01)
+===============================================
+
+Improvements:
+ * Fix a build issue that appeared after merging to master.
+
+Changes in 0.5.0 (2017-08-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.6.0).
+ * MXKRoomViewController: Merge of membership events (MELS).
+ * Language can be changed at runtime from the settings.
+ * Add the m.audio attachments support (https://github.com/vector-im/riot-ios#1102).
+ * Improve opening of a room. No more white screen with a loading wheel.
+ * Remove MXKAlert, use UIAlertViewController instead.
+ * UX Rework: Add edition mode support to the home page (vector-im/riot-meta#75).
+ * RoomTableViewCell: Replace the direct chat icon with a green ring.
+ * People: Use the user directory api from the homeserver to search people (vector-im/riot-meta#95).
+ * Add support of matrix.to links to users (#1410).
+ * RoomVC: Send button: Fix its width adjustability to support other languages.
+
+Translations:
+ * Note: Only Dutch, German and French have been added to Riot. Other translations are not complete yet.
+ * Dutch, thanks to @nvbln (PR #1317).
+ * German, thanks to @krombel, @esackbauer, @Bamstam.
+ * French, thanks to @krombel, @kaiyou, @babolivier and @bestspyever.
+ * Russian, thanks to @gabrin, @Andrey and @shvchk.
+ * Simplified Chinese, thanks to @tonghuix.
+ * Latvian, thanks to @lauris79.
+ * Spanish, thanks to @javierquevedo.
+ 
+Bug fixes:
+ * Home: On iOS <= 9.0, the rooms collection scrolls to the left on room edition.
+ * Home: Fix the flickering effects observed when user edits a room on iOS < 10.
+ * Camera preview is broken after a second try (#686).
+ * Fix the wrong preview layout on iPad described in PR #1372.
+ * Room settings: ticks are badly refreshed (#681).
+
 Changes in 0.4.3 (2017-07-05)
 ===============================================
 

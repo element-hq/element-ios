@@ -110,6 +110,21 @@
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    // Check the table view style to select its bg color.
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.view.backgroundColor = self.bubblesTableView.backgroundColor;
+    
+    if (self.bubblesTableView.dataSource)
+    {
+        [self.bubblesTableView reloadData];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)destroy
@@ -173,6 +188,29 @@
 }
 
 #pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

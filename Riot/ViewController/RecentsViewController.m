@@ -158,6 +158,26 @@
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    // Use the primary bg color for the recents table view in plain style.
+    self.recentsTableView.backgroundColor = kRiotPrimaryBgColor;
+    topview.backgroundColor = kRiotSecondaryBgColor;
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+    
+    tableSearchBar.barStyle = self.recentsSearchBar.barStyle = kRiotDesignSearchBarStyle;
+    tableSearchBar.tintColor = self.recentsSearchBar.tintColor = kRiotDesignSearchBarTintColor;
+    
+    if (self.recentsTableView.dataSource)
+    {
+        // Force table refresh
+        [self cancelEditionMode:YES];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 - (void)destroy
@@ -830,7 +850,7 @@
         }];
         
         UIImage *actionIcon = isDirect ? [UIImage imageNamed:@"directChatOff"] : [UIImage imageNamed:@"directChatOn"];
-        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:directAction atIndex:0];
         
         
@@ -844,7 +864,7 @@
         }];
         
         actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
         
         // Favorites management
@@ -869,7 +889,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favouriteOff"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -881,7 +901,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favourite"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -894,7 +914,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityHigh"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -906,7 +926,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityLow"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -917,7 +937,7 @@
         }];
         
         actionIcon = [UIImage imageNamed:@"leave"];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         
         [actions insertObject:leaveAction atIndex:0];
     }
@@ -1085,6 +1105,29 @@
 }
 
 #pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -1293,6 +1336,7 @@
             if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
             {
                 UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+                cell.backgroundColor = kRiotPrimaryBgColor;
                 
                 // snapshot the cell
                 UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);

@@ -131,9 +131,6 @@
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [self refreshSearchBarItemsColor:_searchBarView];
-    
-    _searchBarHeaderBorder.backgroundColor = kRiotColorSilver;
     
     // Search bar header is hidden when no room is provided
     _searchBarHeader.hidden = (self.mxRoom == nil);
@@ -160,6 +157,32 @@
 - (void)userInterfaceThemeDidChange
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.barTitleColor = kRiotPrimaryTextColor;
+    
+    [self refreshSearchBarItemsColor:_searchBarView];
+    
+    _searchBarHeaderBorder.backgroundColor = kRiotColorSilver;
+    
+    // Check the table view style to select its bg color.
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.view.backgroundColor = self.tableView.backgroundColor;
+    
+    // Update the gradient view above the screen
+    CGFloat white = 1.0;
+    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
+    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
+    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    
+    if (self.tableView.dataSource)
+    {
+        [self.tableView reloadData];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
 }
 
 // This method is called when the viewcontroller is added or removed from a container view controller.
@@ -532,8 +555,12 @@
     // Add blur mask programmatically
     tableViewMaskLayer = [CAGradientLayer layer];
     
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+    // Consider the grayscale components of the kRiotPrimaryBgColor.
+    CGFloat white = 1.0;
+    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    
+    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
+    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     
     tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
     
@@ -615,7 +642,7 @@
     contactsPickerViewController.contactsTableViewControllerDelegate = self;
     
     // Prepare its data source
-    ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] init];
+    ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.displaySearchInputInContactsList = YES;
     contactsDataSource.forceMatrixIdInDisplayName = YES;
@@ -1115,6 +1142,29 @@
 
 #pragma mark - UITableView delegate
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = kRiotPrimaryBgColor;
+    
+    // Update the selected background view
+    if (kRiotSelectedBgColor)
+    {
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+    }
+    else
+    {
+        if (tableView.style == UITableViewStylePlain)
+        {
+            cell.selectedBackgroundView = nil;
+        }
+        else
+        {
+            cell.selectedBackgroundView.backgroundColor = nil;
+        }
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     CGFloat height = 0.0;
@@ -1134,7 +1184,7 @@
     if (section == invitedSection)
     {
         sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
-        sectionHeader.backgroundColor = kRiotColorLightGrey;
+        sectionHeader.backgroundColor = kRiotSecondaryBgColor;
         
         CGRect frame = sectionHeader.frame;
         frame.origin.x = 20;
@@ -1142,6 +1192,7 @@
         frame.size.width = sectionHeader.frame.size.width - 10;
         frame.size.height -= 10;
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
+        headerLabel.textColor = kRiotPrimaryTextColor;
         headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
         headerLabel.backgroundColor = [UIColor clearColor];
         
@@ -1245,7 +1296,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -1609,7 +1660,7 @@
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = kRiotTextColorGray;
+    searchBarTextField.textColor = kRiotSecondaryTextColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;

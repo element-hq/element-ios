@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,11 +21,11 @@
 
 @implementation TableViewCellWithCheckBoxAndLabel
 
-- (void)awakeFromNib
+- (void)customizeTableViewCellRendering
 {
-    [super awakeFromNib];
+    [super customizeTableViewCellRendering];
     
-    _label.textColor = kRiotTextColorBlack;
+    _label.textColor = kRiotPrimaryTextColor;
 }
 
 - (void)setEnabled:(BOOL)enabled
