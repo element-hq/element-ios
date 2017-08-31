@@ -20,6 +20,7 @@
 #import <MatrixSDK/MXMediaManager.h>
 
 #import "CircleButton.h"
+#import "RiotDesignValues.h"
 
 static const CGFloat kAvatarSize = 100.0;
 static const CGFloat kButtonSize = 80.0;
@@ -50,11 +51,11 @@ static const CGFloat kButtonSize = 80.0;
     self = [super initWithFrame:CGRectZero];
     if (self)
     {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = kRiotPrimaryBgColor;
         self.opaque = YES;
         
         self.callerImageView = [[MXKImageView alloc] init];
-        self.callerImageView.backgroundColor = [UIColor whiteColor];
+        self.callerImageView.backgroundColor = kRiotPrimaryBgColor;
         self.callerImageView.clipsToBounds = YES;
         self.callerImageView.mediaFolder = kMXMediaManagerAvatarThumbnailFolder;
         self.callerImageView.enableInMemoryCache = YES;
@@ -64,39 +65,41 @@ static const CGFloat kButtonSize = 80.0;
                              previewImage:placeholderImage];
         
         self.callerNameLabel = [[UILabel alloc] init];
-        self.callerNameLabel.backgroundColor = [UIColor whiteColor];
-        self.callerNameLabel.textColor = [UIColor colorWithRed:60.0/255.0 green:60.0/255.0 blue:60.0/255.0 alpha:1.0];
+        self.callerNameLabel.backgroundColor = kRiotPrimaryBgColor;
+        self.callerNameLabel.textColor = kRiotPrimaryTextColor;
         self.callerNameLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightMedium];
         self.callerNameLabel.text = callerName;
         self.callerNameLabel.textAlignment = NSTextAlignmentCenter;
         
         self.callInfoLabel = [[UILabel alloc] init];
-        self.callInfoLabel.backgroundColor = [UIColor whiteColor];
-        self.callInfoLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+        self.callInfoLabel.backgroundColor = kRiotPrimaryBgColor;
+        self.callInfoLabel.textColor = kRiotSecondaryTextColor;
         self.callInfoLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.callInfoLabel.text = callInfo;
         self.callInfoLabel.textAlignment = NSTextAlignmentCenter;
         
-        UIColor *answerButtonBorderColor = [UIColor colorWithRed:98.0/255.0 green:206.0/255.0 blue:156.0/255.0 alpha:1.0];
+        UIColor *answerButtonBorderColor = kRiotColorGreen;
         
         self.answerButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_icon"]
                                                     borderColor:answerButtonBorderColor];
+        self.answerButton.defaultBackgroundColor = kRiotPrimaryBgColor;
         [self.answerButton addTarget:self action:@selector(didTapAnswerButton) forControlEvents:UIControlEventTouchUpInside];
         
         self.answerTitleLabel = [[UILabel alloc] init];
-        self.answerTitleLabel.backgroundColor = [UIColor whiteColor];
+        self.answerTitleLabel.backgroundColor = kRiotPrimaryBgColor;
         self.answerTitleLabel.textColor = answerButtonBorderColor;
         self.answerTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.answerTitleLabel.text = NSLocalizedStringFromTable(@"accept", @"Vector", nil);
         
-        UIColor *rejectButtonBorderColor = [UIColor colorWithRed:1.0 green:0.0 blue:100.0/255.0 alpha:1.0];
+        UIColor *rejectButtonBorderColor = kRiotColorPinkRed;
         
         self.rejectButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"call_hangup_icon"]
                                                     borderColor:rejectButtonBorderColor];
+        self.rejectButton.defaultBackgroundColor = kRiotPrimaryBgColor;
         [self.rejectButton addTarget:self action:@selector(didTapRejectButton) forControlEvents:UIControlEventTouchUpInside];
         
         self.rejectTitleLabel = [[UILabel alloc] init];
-        self.rejectTitleLabel.backgroundColor = [UIColor whiteColor];
+        self.rejectTitleLabel.backgroundColor = kRiotPrimaryBgColor;
         self.rejectTitleLabel.textColor = rejectButtonBorderColor;
         self.rejectTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.rejectTitleLabel.text = NSLocalizedStringFromTable(@"decline", @"Vector", nil);

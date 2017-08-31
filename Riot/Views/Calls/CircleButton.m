@@ -40,6 +40,12 @@
     return self;
 }
 
+- (void)setDefaultBackgroundColor:(UIColor *)defaultBackgroundColor
+{
+    _defaultBackgroundColor = defaultBackgroundColor;
+    self.backgroundColor = defaultBackgroundColor;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
