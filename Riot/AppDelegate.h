@@ -116,6 +116,13 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)registerUserNotificationSettings;
 
+/**
+ Perform registration for remote notifications.
+ 
+ @param completion the block to be executed when registration finished.
+ */
+- (void)registerForRemoteNotificationsWithCompletion:(void (^)(NSError *))completion;
+
 #pragma mark - Matrix Room handling
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;

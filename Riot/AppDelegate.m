@@ -167,6 +167,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
 
+@property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
+
 @end
 
 @implementation AppDelegate
@@ -890,12 +892,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
+{
+    self.registrationForRemoteNotificationsCompletion = completion;
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
     // Register for remote notifications only if user provide access to notification feature
     if (notificationSettings.types != UIUserNotificationTypeNone)
     {
-        [application registerForRemoteNotifications];
+        [self registerForRemoteNotificationsWithCompletion:nil];
+    }
+    else
+    {
+        // Clear existing token
+        MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+        [accountManager setApnsDeviceToken:nil];
     }
 }
 
@@ -908,11 +922,23 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [accountManager setApnsDeviceToken:deviceToken];
     
     isAPNSRegistered = YES;
+    
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(nil);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
 }
 
 - (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
+    
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(error);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
 }
 
 - (void)cancelBackgroundSync
@@ -1439,6 +1465,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     
+    // Set the App Group identifier.
+    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+    
     // Define the media cache version
     sdkOptions.mediaCacheAppVersion = 0;
     
@@ -1453,6 +1482,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
+
+    // Get modular widget events in rooms histories
+    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
@@ -1501,6 +1533,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
+
+            // Send read receipts for modular widgets events too
+            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
+            [acknowledgableEventTypes addObject:kWidgetEventTypeString];
+            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1614,8 +1651,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
     }];
     
-    // Apply the application group name, and add observer on settings changes.
-    [MXKAppSettings standardAppSettings].applicationGroup = @"group.im.vector";
+    // Add observer on settings changes.
     [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
     // Prepare account manager
@@ -2352,7 +2388,23 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (currentCallViewController && callViewController == currentCallViewController)
     {
-        if (callViewController.isBeingPresented)
+        if (_incomingCallNotification)
+        {
+            // The user was prompted for an incoming call which ended
+            // The call view controller was not presented yet.
+            [_incomingCallNotification dismissViewControllerAnimated:NO completion:nil];
+            _incomingCallNotification = nil;
+            
+            // Release properly
+            [currentCallViewController destroy];
+            currentCallViewController = nil;
+            
+            if (completion)
+            {
+                completion();
+            }
+        }
+        else if (callViewController.isBeingPresented)
         {
             // Here the presentation of the call view controller is in progress
             // Postpone the dismiss

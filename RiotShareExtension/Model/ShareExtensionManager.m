@@ -15,6 +15,7 @@
  */
 
 #import "ShareExtensionManager.h"
+#import "SharePresentingViewController.h"
 #import "MXKPieChartHUD.h"
 @import MobileCoreServices;
 
@@ -60,8 +61,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(suspendSession) name:NSExtensionHostDidEnterBackgroundNotification object:nil];
         
+        MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
+        
         // Apply the application group
-        [MXKAppSettings standardAppSettings].applicationGroup = @"group.im.vector";
+        sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+        // Disable identicon use
+        sdkOptions.disableIdenticonUseForUserAvatar = YES;
     });
     return sharedInstance;
 }
@@ -293,9 +298,22 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
     }
+    
+    [self.primaryViewController destroy];
+    self.primaryViewController = nil;
 }
 
 #pragma mark - Private
+
+- (void)completeRequestReturningItems:(nullable NSArray *)items completionHandler:(void(^ __nullable)(BOOL expired))completionHandler;
+{
+    [self suspendSession];
+    
+    [self.shareExtensionContext completeRequestReturningItems:items completionHandler:completionHandler];
+    
+    [self.primaryViewController destroy];
+    self.primaryViewController = nil;
+}
 
 - (UIAlertController *)compressionPromptForImage:(UIImage *)image shareBlock:(void(^)())shareBlock
 {
@@ -484,8 +502,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
-            [self suspendSession];
-            [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+            [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
         }
     } failure:^(NSError *error) {
         NSLog(@"[ShareExtensionManager] sendTextMessage failed.");
@@ -520,8 +537,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
-            [self suspendSession];
-            [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+            [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
         }
     } failure:^(NSError *error) {
         NSLog(@"[ShareExtensionManager] sendFile failed.");
@@ -594,8 +610,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
-            [self suspendSession];
-            [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+            [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
         }
     } failure:^(NSError *error) {
         NSLog(@"[ShareExtensionManager] sendImage failed.");
@@ -635,8 +650,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
-            [self suspendSession];
-            [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+            [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
         }
     } failure:^(NSError *error) {
         NSLog(@"[ShareExtensionManager] sendVideo failed.");

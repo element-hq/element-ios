@@ -453,6 +453,8 @@
 
 // Events formatter
 "event_formatter_member_updates" = "%tu membership changes";
+"event_formatter_jitsi_widget_added" = "VoIP conference added by %@";
+"event_formatter_jitsi_widget_removed" = "VoIP conference removed by %@";
 
 // Others
 "or" = "or";

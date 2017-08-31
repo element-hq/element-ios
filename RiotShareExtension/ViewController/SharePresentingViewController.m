@@ -20,6 +20,8 @@
 
 @interface SharePresentingViewController ()
 
+@property (nonatomic) ShareViewController *shareViewController;
+
 @end
 
 @implementation SharePresentingViewController
@@ -28,21 +30,33 @@
 {
     [super viewDidLoad];
     
-    [ShareExtensionManager sharedManager].shareExtensionContext = self.extensionContext;
+    ShareExtensionManager *sharedManager = [ShareExtensionManager sharedManager];
+    
+    sharedManager.primaryViewController = self;
+    sharedManager.shareExtensionContext = self.extensionContext;
     
     [self presentShareViewController];
 }
 
+- (void)destroy
+{
+    if (self.shareViewController)
+    {
+        [self.shareViewController destroy];
+        self.shareViewController = nil;
+    }
+}
+
 - (void)presentShareViewController
 {
-    ShareViewController *shareViewController = [[ShareViewController alloc] init];
+    self.shareViewController = [[ShareViewController alloc] init];
     
-    shareViewController.providesPresentationContextTransitionStyle = YES;
-    shareViewController.definesPresentationContext = YES;
-    shareViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    shareViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    self.shareViewController.providesPresentationContextTransitionStyle = YES;
+    self.shareViewController.definesPresentationContext = YES;
+    self.shareViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    self.shareViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
-    [self presentViewController:shareViewController animated:YES completion:nil];
+    [self presentViewController:self.shareViewController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
