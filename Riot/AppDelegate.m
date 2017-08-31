@@ -1983,6 +1983,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 _incomingCallNotification = [UIAlertController alertControllerWithTitle:callPrompt
                                                                                 message:nil
                                                                          preferredStyle:UIAlertControllerStyleAlert];
+
+                __weak typeof(self) weakSelf = self;
                 
                 [_incomingCallNotification addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
                                                                               style:UIAlertActionStyleDefault

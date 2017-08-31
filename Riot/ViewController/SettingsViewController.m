@@ -25,6 +25,8 @@
 
 #import "AppDelegate.h"
 #import "AvatarGenerator.h"
+
+#import "MXKEncryptionKeysExportView.h"
 #import "BugReportViewController.h"
 
 #import "WebViewViewController.h"
