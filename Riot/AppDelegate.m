@@ -175,7 +175,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
-@property (strong, nonatomic) UIAlertController *incomingCallNotification;
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
@@ -635,13 +634,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Enable error notifications
                 isErrorNotificationSuspended = NO;
                 
-                // Restore call alert if any
-                if (_incomingCallNotification)
-                {
-                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible incoming call alert");
-                    [self showNotificationAlert:_incomingCallNotification];
-                }
-                else if (noCallSupportAlert)
+                if (noCallSupportAlert)
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
                     [self showNotificationAlert:noCallSupportAlert];
@@ -1559,6 +1552,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
+
+    // Get modular widget events in rooms histories
+    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
@@ -1620,6 +1616,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
+
+            // Send read receipts for modular widgets events too
+            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
+            [acknowledgableEventTypes addObject:kWidgetEventTypeString];
+            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1935,7 +1936,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             currentCallViewController.playRingtone = !isCallKitAvailable;
             currentCallViewController.mxCall = mxCall;
             currentCallViewController.delegate = self;
-            
+
             UIApplicationState applicationState = UIApplication.sharedApplication.applicationState;
             
             // App has been woken by PushKit notification in the background
@@ -2038,7 +2039,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 [self presentCallViewController:nil];
             }
         }
-     }];
+    }];
 }
 
 - (void)handleLaunchAnimation
@@ -2615,6 +2616,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Release properly
             [currentCallViewController destroy];
+            currentCallViewController = nil;
             
             if (completion)
             {
