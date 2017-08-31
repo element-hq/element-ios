@@ -175,6 +175,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
+@property (strong, nonatomic) UIAlertController *incomingCallNotification;
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
