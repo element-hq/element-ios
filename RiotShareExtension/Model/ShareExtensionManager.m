@@ -8,7 +8,8 @@
  http://www.apache.org/licenses/LICENSE-2.0
  
  Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
+ distributed under the License is distributed on
+ an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
@@ -33,10 +34,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 @interface ShareExtensionManager ()
 
 @property (nonatomic, readwrite) MXKAccount *account;
-@property (nonatomic, readwrite) MXRestClient *mxRestClient;
-
-@property (nonatomic) NSArray *rooms;
-@property (nonatomic) NSArray *people;
 
 @property (nonatomic) NSMutableArray <NSData *> *pendingImages;
 @property (nonatomic) NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
@@ -74,7 +71,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // Save the first active account
         sharedInstance.account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         
-        sharedInstance.mxRestClient = [[MXRestClient alloc] initWithCredentials:sharedInstance.account.mxCredentials andOnUnrecognizedCertificateBlock:nil];
     });
     return sharedInstance;
 }
@@ -87,7 +83,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     _shareExtensionContext = shareExtensionContext;
 }
 
-- (void)sendContentToRoom:(NSString *)roomID failureBlock:(void(^)())failureBlock
+- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock
 {
     NSString *UTTypeText = (__bridge NSString *)kUTTypeText;
     NSString *UTTypeURL = (__bridge NSString *)kUTTypeURL;
@@ -114,7 +110,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            //[self sendFileWithUrl:fileUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                            [self sendFileWithUrl:fileUrl toRoom:room extensionItem:item failureBlock:failureBlock];
                         }
                         
                     });
@@ -131,7 +127,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            //[self sendText:text toRoom:room extensionItem:item failureBlock:failureBlock];
+                            [self sendText:text toRoom:room extensionItem:item failureBlock:failureBlock];
                         }
                         
                     });
@@ -148,7 +144,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            //[self sendText:url.absoluteString toRoom:room extensionItem:item failureBlock:failureBlock];
+                            [self sendText:url.absoluteString toRoom:room extensionItem:item failureBlock:failureBlock];
                         }
                         
                     });
@@ -169,7 +165,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          {
                              UIImage *firstImage = [UIImage imageWithData:self.pendingImages.firstObject];
                              UIAlertController *compressionPrompt = [self compressionPromptForImage:firstImage shareBlock:^{
-                                 //[self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
+                                 [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
                              }];
                              
                              [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
@@ -187,7 +183,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          if (weakSelf)
                          {
                              typeof(self) self = weakSelf;
-                             //[self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                             [self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
                          }
                          
                      });
@@ -204,7 +200,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          if (weakSelf)
                          {
                              typeof(self) self = weakSelf;
-                             //[self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                             [self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
                          }
                          
                      });
@@ -232,8 +228,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)terminateExtensionCanceled:(BOOL)canceled
 {
-    //[self suspendSession];
-    
     if (canceled)
     {
         [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
@@ -407,11 +401,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return compressionPrompt;
 }
 
-- (void)didStartSendingToRoom:(NSString *)roomID
+- (void)didStartSendingToRoom:(MXRoom *)room
 {
     if ([self.delegate respondsToSelector:@selector(shareExtensionManager:didStartSendingContentToRoom:)])
     {
-        [self.delegate shareExtensionManager:self didStartSendingContentToRoom:roomID];
+        [self.delegate shareExtensionManager:self didStartSendingContentToRoom:room];
     }
 }
 
@@ -452,9 +446,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 #pragma mark - Sharing
 
-- (void)sendText:(NSString *)text toRoom:(NSString *)roomID extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
 {
-    [self didStartSendingToRoom:roomID];
+    [self didStartSendingToRoom:room];
     if (!text)
     {
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
@@ -466,8 +460,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
     
     __weak typeof(self) weakSelf = self;
-    
-    [self.mxRestClient sendTextMessageToRoom:roomID text:text success:^(NSString *eventId) {
+    [room sendTextMessage:text success:^(NSString *eventId) {
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
@@ -482,9 +475,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }];
 }
 
-- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(NSString *)roomID extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
 {
-    [self didStartSendingToRoom:roomID];
+    [self didStartSendingToRoom:room];
     if (!fileUrl)
     {
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
@@ -502,11 +495,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     __weak typeof(self) weakSelf = self;
     
-    //self.mxRestClient send
-    
-    
-    
-    /*[room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
+    [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
         if (weakSelf)
         {
             typeof(self) self = weakSelf;
@@ -518,7 +507,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             failureBlock();
         }
-    } keepActualFilename:YES];*/
+    } keepActualFilename:YES];
 }
 
 
@@ -596,7 +585,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 
                 if (!imageDatas.count)
                 {
-                    //[self suspendSession];
                     [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
                 }
                 

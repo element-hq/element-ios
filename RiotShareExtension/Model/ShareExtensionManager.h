@@ -45,9 +45,9 @@ extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
 /**
  Called when the manager starts sending the content to a room
  @param extensionManager the ShareExtensionManager object that called the method
- @param roomID the ID of the room
+ @param room the room where content will be sent
  */
-- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(NSString *)roomID;
+- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(MXRoom *)room;
 
 /**
  Called when the progress of the uploading media changes
@@ -90,11 +90,11 @@ extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
 
 /**
  Send the content that the user has chosen to a room
- @param roomID the ID of the room to send the content to
+ @param room the room to send the content to
  @param failureBlock the code to be executed when sharing has failed for whatever reason
  note: there is no "successBlock" parameter because when the sharing succeds, the extension needs to close itself
  */
-- (void)sendContentToRoom:(NSString *)roomID failureBlock:(void(^)())failureBlock;
+- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock;
 
 /**
  Checks if there is an image in the user chosen content

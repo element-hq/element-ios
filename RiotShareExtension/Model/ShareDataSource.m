@@ -17,13 +17,14 @@
 #import "ShareDataSource.h"
 #import "ShareExtensionManager.h"
 #import "RoomTableViewCell.h"
+#import "MXRoom+Riot.h"
 
 @interface ShareDataSource ()
 
 @property (nonatomic, readwrite) ShareDataSourceMode dataSourceMode;
 
-@property NSMutableArray *recentRooms;
-@property NSMutableArray *recentPeople;
+@property NSArray <MXRoom *> *rooms;
+@property NSMutableArray <MXRoom *> *visibleRooms;
 
 @end
 
@@ -31,11 +32,11 @@
 
 - (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode
 {
+    self = [super init];
     if (self)
     {
         self.dataSourceMode = dataSourceMode;
-        _recentRooms = [NSMutableArray array];
-        _recentPeople = [NSMutableArray array];
+        _rooms = [NSMutableArray array];
         [self updateRooms];
     }
     return self;
@@ -46,50 +47,105 @@
 
 - (void)updateRooms
 {
-    [self.recentRooms removeAllObjects];
-    [self.recentPeople removeAllObjects];
-    
     MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:[ShareExtensionManager sharedManager].account.mxCredentials];
+    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].account.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
     
+    __weak MXSession *weakSession = session;
+    [session setStore:fileStore success:^{
+        if (weakSession)
+        {
+            __strong MXSession *session = weakSession;
+            [self getRoomsFromStore:fileStore session:session];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"[ShareExtensionManager failed to set store]");
+    }];
+}
+     
+- (void)getRoomsFromStore:(MXFileStore *)fileStore session:(MXSession *)session
+{
+    NSMutableArray *rooms = [NSMutableArray array];
     [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
         for (MXRoomSummary *roomSummary in roomsSummaries)
         {
-            if (self.dataSourceMode == DataSourceModePeople)
-            {
-                if (roomSummary.isDirect)
-                {
-                    [self.recentPeople addObject:roomSummary];
-                }
-            }
-            else
-            {
-                if (!roomSummary.isDirect)
-                {
-                    [self.recentRooms addObject:roomSummary];
-                }
-            }
-            [self.delegate dataSource:self didCellChange:nil];
+            [fileStore asyncAccountDataOfRoom:roomSummary.roomId success:^(MXRoomAccountData * _Nonnull accountData) {
+                [fileStore asyncStateEventsOfRoom:roomSummary.roomId success:^(NSArray<MXEvent *> * _Nonnull roomStateEvents) {
+                    
+                    MXRoom *room = [[MXRoom alloc] initWithRoomId:roomSummary.roomId andMatrixSession:session andStateEvents:roomStateEvents andAccountData:accountData];
+                    
+                    if ((self.dataSourceMode == DataSourceModeRooms) ^ roomSummary.isDirect)
+                    {
+                        [rooms addObject:room];
+                    }
+                    
+                    if ([roomsSummaries indexOfObject:roomSummary] == roomsSummaries.count - 1)
+                    {
+                        self.rooms = rooms;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.delegate dataSource:self didCellChange:nil];
+                        });
+                    }
+                    
+                } failure:^(NSError * _Nonnull error) {
+                    NSLog(@"[ShareExtensionManager failed to get state events]");
+                }];
+            } failure:^(NSError * _Nonnull error) {
+                NSLog(@"[ShareExtensionManager failed to get account data]");
+            }];
+            
         }
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"[ShareExtensionManager failed to get room summaries]");
     }];
 }
 
+#pragma mark - MXKRecentsDataSource
 
-- (MXRoomSummary *)getRoomSummaryAtIndexPath:(NSIndexPath *)indexPath
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
-    MXRoomSummary *room = nil;
-    
-    if (self.dataSourceMode == DataSourceModePeople)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate dataSource:dataSource didCellChange:nil];
+    });
+}
+
+- (MXRoom *)getRoomAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.visibleRooms)
     {
-        room = self.recentPeople[indexPath.row];
+        return self.visibleRooms[indexPath.row];
+    }
+    return self.rooms[indexPath.row];
+}
+
+- (void)searchWithPatterns:(NSArray *)patternsList
+{
+    if (self.visibleRooms)
+    {
+        [self.visibleRooms removeAllObjects];
     }
     else
     {
-        room = self.recentRooms[indexPath.row];
+        self.visibleRooms = [NSMutableArray arrayWithCapacity:self.rooms.count];
     }
-    
-    return room;
+    if (patternsList.count)
+    {
+        for (MXRoom *room in self.rooms)
+        {
+            for (NSString* pattern in patternsList)
+            {
+                if (room.riotDisplayname && [room.riotDisplayname rangeOfString:pattern options:NSCaseInsensitiveSearch].location != NSNotFound)
+                {
+                    [self.visibleRooms addObject:room];
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        self.visibleRooms = nil;
+    }
+    [self.delegate dataSource:self didCellChange:nil];
 }
 
 #pragma mark - UITableViewDataSource
@@ -101,28 +157,20 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.dataSourceMode == DataSourceModePeople)
+    if (self.visibleRooms)
     {
-        return self.recentPeople.count;
+        return self.visibleRooms.count;
     }
-    else
-    {
-        return self.recentRooms.count;
-    }
+    return self.rooms.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RoomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
     
-    MXRoomSummary *roomSummary = [self getRoomSummaryAtIndexPath:indexPath];
+    MXRoom *room = [self getRoomAtIndexPath:indexPath];
     
-    [cell renderWithSummary:roomSummary restClient:[ShareExtensionManager sharedManager].mxRestClient];
-    
-    if (!roomSummary.displayname.length && !cell.titleLabel.text.length)
-    {
-        cell.titleLabel.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
-    }
+    [cell render:room];
     
     return cell;
 }

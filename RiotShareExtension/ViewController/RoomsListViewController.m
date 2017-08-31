@@ -207,6 +207,16 @@
 
 #pragma mark - UISearchBarDelegate
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    NSArray *patterns = nil;
+    if (searchText.length)
+    {
+        patterns = @[searchText];
+    }
+    [self.dataSource searchWithPatterns:patterns];
+}
+
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     if (searchBar == _tableSearchBar)
@@ -231,6 +241,7 @@
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+    [self.dataSource searchWithPatterns:nil];
 }
 
 #pragma mark - UIScrollViewDelegate

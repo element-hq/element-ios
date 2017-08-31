@@ -27,6 +27,4 @@ typedef NS_ENUM(NSInteger, ShareDataSourceMode)
 
 - (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode;
 
-- (MXRoomSummary *)getRoomSummaryAtIndexPath:(NSIndexPath *)indexPath;
-
 @end

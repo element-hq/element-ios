@@ -59,17 +59,6 @@
     self.encryptedRoomIcon.hidden = !room.state.isEncrypted;
 }
 
-- (void)renderWithSummary:(MXRoomSummary *)roomSummary restClient:(MXRestClient *)restClient
-{
-    [self.avatarImageView setImageURL:[restClient urlOfContentThumbnail:roomSummary.avatar toFitViewSize:self.avatarImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:nil];
-    
-    self.titleLabel.text = roomSummary.displayname;
-    
-    self.directRoomBorderView.hidden = !roomSummary.isDirect;
-    
-    self.encryptedRoomIcon.hidden = !roomSummary.isEncrypted;
-}
-
 - (void)prepareForReuse
 {
     [super prepareForReuse];
