@@ -50,7 +50,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>The photo library is used to send photos and videos.</string>
 	<key>NSSiriUsageDescription</key>
-	<string>Siri is used to perform calls even from the lock screen</string>
+	<string>Siri is used to perform calls even from the lock screen.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
