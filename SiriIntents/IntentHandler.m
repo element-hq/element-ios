@@ -164,7 +164,7 @@
         NSString *selectedUserId;
         
         // Check if the user has selected right room among several direct rooms from previous resolution process run
-        if (callee.customIdentifier && callee.customIdentifier.length)
+        if (callee.customIdentifier.length)
         {
             // If callee will have the same name as one of the contact in the system contacts app
             // Siri will pass us this contact in the intent.contacts array and we must provide the same count of
