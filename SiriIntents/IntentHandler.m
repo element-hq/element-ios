@@ -66,7 +66,7 @@
     else
     {
         // User hasn't logged in
-        response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeFailureRequiringAppLaunch userActivity:nil];
+        response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeFailureAppConfigurationRequired userActivity:nil];
     }
     
     completion(response);
@@ -291,6 +291,10 @@
                     }
                 } failure:nil];
             } failure:nil];
+        }
+        else
+        {
+            completion(@[[INPersonResolutionResult notRequired]]);
         }
     }
 }
