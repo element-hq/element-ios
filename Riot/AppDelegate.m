@@ -2388,23 +2388,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (currentCallViewController && callViewController == currentCallViewController)
     {
-        if (_incomingCallNotification)
-        {
-            // The user was prompted for an incoming call which ended
-            // The call view controller was not presented yet.
-            [_incomingCallNotification dismissViewControllerAnimated:NO completion:nil];
-            _incomingCallNotification = nil;
-            
-            // Release properly
-            [currentCallViewController destroy];
-            currentCallViewController = nil;
-            
-            if (completion)
-            {
-                completion();
-            }
-        }
-        else if (callViewController.isBeingPresented)
+        if (callViewController.isBeingPresented)
         {
             // Here the presentation of the call view controller is in progress
             // Postpone the dismiss
