@@ -453,6 +453,8 @@
 
 // Events formatter
 "event_formatter_member_updates" = "%tu membership changes";
+"event_formatter_jitsi_widget_added" = "VoIP conference added by %@";
+"event_formatter_jitsi_widget_removed" = "VoIP conference removed by %@";
 
 // Others
 "or" = "or";
@@ -476,6 +478,8 @@
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";
 "call_incoming_video_prompt" = "Incoming video call from %@";
+"call_incoming_voice" = "Incoming call...";
+"call_incoming_video" = "Incoming video call...";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
 

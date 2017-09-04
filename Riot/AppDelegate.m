@@ -171,7 +171,6 @@ static NSString *const kShortcutItemTypeSearch = @"shortcut_item_type_search";
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
-@property (strong, nonatomic) UIAlertController *incomingCallNotification;
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
@@ -642,13 +641,7 @@ static NSString *const kShortcutItemTypeSearch = @"shortcut_item_type_search";
                 // Enable error notifications
                 isErrorNotificationSuspended = NO;
                 
-                // Restore call alert if any
-                if (_incomingCallNotification)
-                {
-                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible incoming call alert");
-                    [self showNotificationAlert:_incomingCallNotification];
-                }
-                else if (noCallSupportAlert)
+                if (noCallSupportAlert)
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
                     [self showNotificationAlert:noCallSupportAlert];
@@ -1566,6 +1559,9 @@ static NSString *const kShortcutItemTypeSearch = @"shortcut_item_type_search";
     
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
+
+    // Get modular widget events in rooms histories
+    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
@@ -1614,6 +1610,11 @@ static NSString *const kShortcutItemTypeSearch = @"shortcut_item_type_search";
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
+
+            // Send read receipts for modular widgets events too
+            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
+            [acknowledgableEventTypes addObject:kWidgetEventTypeString];
+            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1917,81 +1918,8 @@ static NSString *const kShortcutItemTypeSearch = @"shortcut_item_type_search";
             currentCallViewController = [CallViewController callViewController:mxCall];
             currentCallViewController.delegate = self;
             
-            if (mxCall.isIncoming)
-            {
-                // Prompt user before presenting the call view controller
-                NSString *callPromptFormat = mxCall.isVideoCall ? NSLocalizedStringFromTable(@"call_incoming_video_prompt", @"Vector", nil) : NSLocalizedStringFromTable(@"call_incoming_voice_prompt", @"Vector", nil);
-                NSString *callerName = currentCallViewController.peer.displayname;
-                if (!callerName.length)
-                {
-                    callerName = currentCallViewController.peer.userId;
-                }
-                NSString *callPrompt = [NSString stringWithFormat:callPromptFormat, callerName];
-                
-                __weak typeof(self) weakSelf = self;
-                
-                // Removing existing notification (if any)
-                [_incomingCallNotification dismissViewControllerAnimated:NO completion:nil];
-                
-                
-                
-                _incomingCallNotification = [UIAlertController alertControllerWithTitle:callPrompt
-                                                                                message:nil
-                                                                         preferredStyle:UIAlertControllerStyleAlert];
-                
-                [_incomingCallNotification addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
-                                                                              style:UIAlertActionStyleDefault
-                                                                            handler:^(UIAlertAction * action) {
-                                                                                
-                                                                                if (weakSelf)
-                                                                                {
-                                                                                    typeof(self) self = weakSelf;
-                                                                                    
-                                                                                    // Reject the call.
-                                                                                    // Note: Do not reset the incoming call notification before this operation, because it is used to release properly the dismissed call view controller.
-                                                                                    if (self->currentCallViewController)
-                                                                                    {
-                                                                                        [self->currentCallViewController onButtonPressed:self->currentCallViewController.rejectCallButton];
-                                                                                        
-                                                                                        currentCallViewController = nil;
-                                                                                    }
-                                                                                    
-                                                                                    self.incomingCallNotification = nil;
-                                                                                    
-                                                                                    mxCall.delegate = nil;
-                                                                                }
-                                                                                
-                                                                            }]];
-                
-                [_incomingCallNotification addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"accept", @"Vector", nil)
-                                                                              style:UIAlertActionStyleDefault
-                                                                            handler:^(UIAlertAction * action) {
-                                                                                
-                                                                                if (weakSelf)
-                                                                                {
-                                                                                    typeof(self) self = weakSelf;
-                                                                                    
-                                                                                    self.incomingCallNotification = nil;
-                                                                                    
-                                                                                    if (self->currentCallViewController)
-                                                                                    {
-                                                                                        [self->currentCallViewController onButtonPressed:self->currentCallViewController.answerCallButton];
-                                                                                        
-                                                                                        [self presentCallViewController:nil];
-                                                                                    }
-                                                                                }
-                                                                                
-                                                                            }]];
-                
-                [_incomingCallNotification mxk_setAccessibilityIdentifier:@"AppDelegateIncomingCallAlert"];
-                [self showNotificationAlert:_incomingCallNotification];
-            }
-            else
-            {
-                [self presentCallViewController:nil];
-            }
+            [self presentCallViewController:nil];
         }
-        
     }];
 }
 
@@ -2546,6 +2474,7 @@ static NSString *const kShortcutItemTypeSearch = @"shortcut_item_type_search";
             
             // Release properly
             [currentCallViewController destroy];
+            currentCallViewController = nil;
             
             if (completion)
             {
