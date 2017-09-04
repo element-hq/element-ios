@@ -27,7 +27,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -79,6 +79,7 @@
 		714F6391AC0AA86C0AEB3F43 /* libPods-SiriIntents.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5666C1236223F54D4C635C54 /* libPods-SiriIntents.a */; };
 		92324BE31F4F66D3009DE194 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE21F4F66D3009DE194 /* IncomingCallView.m */; };
 		92324BE61F4F6A60009DE194 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE51F4F6A60009DE194 /* CircleButton.m */; };
+		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
 		92726A471F58737A004AD26F /* IntentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 92726A461F58737A004AD26F /* IntentHandler.m */; };
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
@@ -667,6 +668,8 @@
 		92324BE21F4F66D3009DE194 /* IncomingCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallView.m; sourceTree = "<group>"; };
 		92324BE41F4F6A60009DE194 /* CircleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleButton.h; sourceTree = "<group>"; };
 		92324BE51F4F6A60009DE194 /* CircleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleButton.m; sourceTree = "<group>"; };
+		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
+		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
 		92726A431F58737A004AD26F /* SiriIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SiriIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		92726A451F58737A004AD26F /* IntentHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntentHandler.h; sourceTree = "<group>"; };
 		92726A461F58737A004AD26F /* IntentHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntentHandler.m; sourceTree = "<group>"; };
@@ -1798,6 +1801,8 @@
 				F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */,
 				F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */,
 				F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */,
+				926FA53D1F4C132000F826C2 /* MXSession+Riot.h */,
+				926FA53E1F4C132000F826C2 /* MXSession+Riot.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2534,7 +2539,7 @@
 				24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */,
 				24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
+				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3246,6 +3251,7 @@
 				F083BDF81E7009ED00A9B29C /* RoomDataSource.m in Sources */,
 				F083BE371E7009ED00A9B29C /* RoomActivitiesView.m in Sources */,
 				F083BE131E7009ED00A9B29C /* HomeMessagesSearchViewController.m in Sources */,
+				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				F083BE8C1E7009ED00A9B29C /* PreviewRoomTitleView.m in Sources */,
 				F083BE271E7009ED00A9B29C /* SettingsViewController.m in Sources */,
 				F083BE9A1E7009ED00A9B29C /* TableViewCellWithButton.m in Sources */,

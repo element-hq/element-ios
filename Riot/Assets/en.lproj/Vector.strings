@@ -328,6 +328,7 @@
 "settings_fail_to_update_profile" = "Fail to update profile";
 
 "settings_enable_push_notif" = "Notifications on this device";
+"settings_show_decrypted_content" = "Show decrypted content";
 "settings_global_settings_info" = "Global notification settings are available on your %@ web client";
 "settings_pin_rooms_with_missed_notif" = "Pin rooms with missed notifications";
 "settings_pin_rooms_with_unread" = "Pin rooms with unread messages";
