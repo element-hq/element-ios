@@ -156,6 +156,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSMutableDictionary *callEventsListeners;
     
     /**
+     The notification listener blocks.
+     There is one block per MXSession.
+     The key is an identifier of the MXSession. The value, the listener block.
+     */
+    NSMutableDictionary <NSNumber *, MXOnNotification> *notificationListenerBlocks;
+    
+    /**
      Currently displayed "Call not supported" alert.
      */
     UIAlertController *noCallSupportAlert;
@@ -179,13 +186,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 
 @property (nonatomic, strong) PKPushRegistry *pushRegistry;
-
-@property (nonatomic, getter=isHandlingPushNotification) BOOL handlingPushNotification;
-@property (nonatomic) NSUInteger pushNotificationHandlingTaskIdentifier;
-
-@property (nonatomic, nullable) MXOnNotification notificationListenerBlock;
-@property (nonatomic, nullable) dispatch_block_t pushNotificationHandlingCompletionBlock;
-@property (nonatomic, nullable) dispatch_block_t pushNotificationHandlingTimeoutBlock;
+@property (nonatomic) BOOL hasPendingLocalNotifications;
 
 @end
 
@@ -326,6 +327,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
+    notificationListenerBlocks = [NSMutableDictionary dictionary];
     
     // To simplify navigation into the app, we retrieve here the main navigation controller and the tab bar controller.
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
@@ -474,6 +476,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
+    
+    _hasPendingLocalNotifications = NO;
     
     // Check if there is crash log to send
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
@@ -1045,168 +1049,43 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
 {
-    // If it isn't a first push
-    if (self.isHandlingPushNotification)
-    {
-        // If we have processed push notification and we're waiting to complete after a timeout
-        if (self.pushNotificationHandlingCompletionBlock)
-        {
-            // Cancel completion of previous push notification.
-            // The new completion block will be created when this push notification will be processed if timeout block wouldn't be called
-            dispatch_block_cancel(self.pushNotificationHandlingCompletionBlock);
-            self.pushNotificationHandlingCompletionBlock = nil;
-        }
-        
-        // On every new push cancel timeout block if any.
-        // This situation is possible when we sequentially receive a series of push notifications in a short amount of time.
-        if (self.pushNotificationHandlingTimeoutBlock)
-        {
-            dispatch_block_cancel(self.pushNotificationHandlingTimeoutBlock);
-            self.pushNotificationHandlingTimeoutBlock = nil;
-        }
-        
-        // Create and run timeout block since we don't know how much time will take a new sync request
-        // There is also a case when we receive push event earlier than push and we need to stop execution somehow
-        // so timeoutBlock will help us in this situation
-        dispatch_block_t timeoutBlock = [self createPushNotificationHandlingStateCleaningBlock];
-        self.pushNotificationHandlingTimeoutBlock = timeoutBlock;
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(120 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            timeoutBlock();
-        });
-        
-        return;
-    }
-    
-    UIApplication *application = [UIApplication sharedApplication];
-    
-    if (application.applicationState == UIApplicationStateActive || application.applicationState == UIApplicationStateInactive)
-        return;
-    
-    MXSession *session = mxSessionArray.firstObject;
-    
-    if (session.state == MXSessionStateHomeserverNotReachable)
-        return;
-    
-    if (session.state == MXSessionStatePaused)
-        [session resume:^{}];
-    
-    self.handlingPushNotification = YES;
-    
-    id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
-    self.pushNotificationHandlingTaskIdentifier = [handler startBackgroundTaskWithName:nil completion:^{
-        // Maybe do smth here...
-    }];
-    
-    // Listen events from MXNotificationCenter 
-    __block MXOnNotification notificationsListenerBlock = nil;
-    
-    // This variable will be point to notificationsListenerBlock but won't retain it.
-    // It's very important since notificationsListenerBlock is required in two another blocks which also
-    // are being referenced inside notificationsListenerBlock's body.
-    // So this weak variable allows us to avoid retain cycle.
-    __weak __block MXOnNotification weakNotificationsListenerBlock = nil;
-    
-    // The block which is called when a sync with server takes a lot of time
-    dispatch_block_t timeoutBlock = [self createPushNotificationHandlingStateCleaningBlock];
-    self.pushNotificationHandlingTimeoutBlock = timeoutBlock;
-    
-    __weak typeof(self) weakSelf = self;
-    
-    notificationsListenerBlock = ^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
-        if (weakSelf.pushNotificationHandlingTimeoutBlock)
-        {
-            dispatch_block_cancel(weakSelf.pushNotificationHandlingTimeoutBlock);
-            weakSelf.pushNotificationHandlingTimeoutBlock = nil;
-        }
-        
-        if (weakSelf.pushNotificationHandlingCompletionBlock)
-        {
-            dispatch_block_cancel(weakSelf.pushNotificationHandlingCompletionBlock);
-            weakSelf.pushNotificationHandlingCompletionBlock = nil;
-        }
-        
-        // For all type of event show local notifications besides the situation
-        // when the type of event is call invite and we have CallKit support
-        BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
-        if (!(event.eventType == MXEventTypeCallInvite && isCallKitActive))
-        {
-            BOOL isEventRoomDirect = [session roomWithRoomId:event.roomId].isDirect;
-            NSString *notificationBody = [weakSelf notificationBodyForEvent:event inDirectRoom:isEventRoomDirect withRoomState:roomState];
-            if (notificationBody)
-            {
-                UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                eventNotification.fireDate = [NSDate date];
-                eventNotification.alertBody = notificationBody;
-                eventNotification.userInfo = @{ @"room_id" : event.roomId };
-             
-                // Set sound name based on the value provided in action of MXPushRule
-                for (MXPushRuleAction *action in rule.actions)
-                {
-                    if (action.actionType == MXPushRuleActionTypeSetTweak)
-                    {
-                        if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
-                        {
-                            NSString *soundName = action.parameters[@"value"];
-                            if ([soundName isEqualToString:@"default"])
-                                soundName = UILocalNotificationDefaultSoundName;
-                            
-                            eventNotification.soundName = soundName;
-                        }     
-                    }
-                }
-                
-                [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
-            }
-        }
-        
-        dispatch_block_t completionBlock = [weakSelf createPushNotificationHandlingStateCleaningBlock];
-        weakSelf.pushNotificationHandlingCompletionBlock = completionBlock;
-        
-        // This delay will help us to process push events which we receive earlier than push notifications associated with them
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            completionBlock();
-        });
-    };
-    
-    weakNotificationsListenerBlock = notificationsListenerBlock;
-    self.notificationListenerBlock = notificationsListenerBlock;
-    
-    [session.notificationCenter listenToNotifications:notificationsListenerBlock];
-    
-    // Run timeout block
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(120.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        timeoutBlock();
-    });
+    // Handle the local notifications by triggering a background sync.
+    [self handleLocalNotifications];
 }
 
-/**
- Create and return a block which clean all state associated wiht push notifications handling
- */
-- (dispatch_block_t)createPushNotificationHandlingStateCleaningBlock
+- (void)handleLocalNotifications
 {
-    __weak typeof(self) weakSelf = self;
-    MXSession *session = mxSessionArray.firstObject;
+    _hasPendingLocalNotifications = NO;
     
-    return dispatch_block_create(0, ^{
-        [session.notificationCenter removeListener:weakSelf.notificationListenerBlock];
+    // Check whether the application is running in background.
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground)
+        return;
+    
+    // Launch a background sync for all existing matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    for (MXKAccount *account in mxAccounts)
+    {
+        // Check the current session state
+        if (account.mxSession.state != MXSessionStatePaused)
+        {
+            NSLog(@"[AppDelegate] handleLocalNotifications: delay the background sync");
+            // Turn on the flag used to trigger a new background sync when a session is paused.
+            _hasPendingLocalNotifications = YES;
+        }
         
-        // Update icon badge number
-        [UIApplication sharedApplication].applicationIconBadgeNumber = [session riot_missedDiscussionsCount];
-        
-        id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
-        
-        NSUInteger identifier = weakSelf.pushNotificationHandlingTaskIdentifier;
-        
-        weakSelf.handlingPushNotification = NO;
-        weakSelf.pushNotificationHandlingTaskIdentifier = [handler invalidIdentifier];
-        
-        weakSelf.notificationListenerBlock = nil;
-        weakSelf.pushNotificationHandlingTimeoutBlock = nil;
-        weakSelf.pushNotificationHandlingCompletionBlock = nil;
-        
-        [handler endBackgrounTaskWithIdentifier:identifier];
-    });
+        [account backgroundSync:20000 success:^{
+            
+            NSLog(@"[AppDelegate] handleLocalNotifications: the background sync succeeds");
+            
+            // Update icon badge number
+            [UIApplication sharedApplication].applicationIconBadgeNumber = [account.mxSession riot_missedDiscussionsCount];
+            
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[AppDelegate] handleLocalNotifications: the background sync fails");
+            
+        }];
+    }
 }
 
 - (nullable NSString *)notificationBodyForEvent:(MXEvent *)event inDirectRoom:(BOOL)isDirect withRoomState:(MXRoomState *)roomState
@@ -1775,6 +1654,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
+            // Enable local notifications
+            [self enableLocalNotificationsFromMatrixSession:mxSession];
+            
             // Check whether the app user wants inApp notifications on new events for this session
             NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
             for (MXKAccount *account in mxAccounts)
@@ -1789,6 +1671,31 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         else if (mxSession.state == MXSessionStateClosed)
         {
             [self removeMatrixSession:mxSession];
+        }
+        // Consider here the case where the app is running in background.
+        else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
+        {
+            if (mxSession.state == MXSessionStateRunning)
+            {
+                // Pause the session in background task
+                NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+                for (MXKAccount *account in mxAccounts)
+                {
+                    if (account.mxSession == mxSession)
+                    {
+                        [account pauseInBackgroundTask];
+                        break;
+                    }
+                }
+            }
+            else if (mxSession.state == MXSessionStatePaused)
+            {
+                // Check whether some local notifications must be handled by triggering a background sync.
+                if (_hasPendingLocalNotifications)
+                {
+                    [self handleLocalNotifications];
+                }
+            }
         }
         
         // Restore call observer only if all session are running
@@ -1895,19 +1802,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     accountManager.storeClass = [MXFileStore class];
     
     // Observers have been defined, we can start a matrix session for each enabled accounts.
-    // except if the app is still in background.
-    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
-    {
-        NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts");
-        [accountManager prepareSessionForActiveAccounts];
-    }
-    else
-    {
-        // The app is launched in background as a result of a remote notification.
-        // Presently we are not able to initialize the matrix session(s) in background. (FIXME: initialize matrix session(s) in case of a background launch).
-        // Patch: the account session(s) will be opened when the app will enter foreground.
-        NSLog(@"[AppDelegate] initMatrixSessions: The application has been launched in background");
-    }
+    NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts (app state: %tu)", [[UIApplication sharedApplication] applicationState]);
+    [accountManager prepareSessionForActiveAccounts];
     
     // Check whether we're already logged in
     NSArray *mxAccounts = accountManager.accounts;
@@ -1976,6 +1872,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
+    
+    // Disable local notifications from this session
+    [self disableLocalNotificationsFromMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
 }
@@ -2371,6 +2270,65 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         callManager.callKitAdapter = nil;
     }
 }
+
+- (void)enableLocalNotificationsFromMatrixSession:(MXSession*)mxSession
+{
+    __weak typeof(self) weakSelf = self;
+    
+    MXOnNotification notificationListenerBlock = ^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
+        
+        if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
+        {
+            // Do not display local notification if the app is not running in background.
+            return;
+        }
+        
+        // For all type of event show local notifications besides the situation
+        // when the type of event is call invite and we have CallKit support
+        BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
+        if (!(event.eventType == MXEventTypeCallInvite && isCallKitActive))
+        {
+            BOOL isEventRoomDirect = [mxSession roomWithRoomId:event.roomId].isDirect;
+            NSString *notificationBody = [weakSelf notificationBodyForEvent:event inDirectRoom:isEventRoomDirect withRoomState:roomState];
+            if (notificationBody)
+            {
+                UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                eventNotification.fireDate = [NSDate date];
+                eventNotification.alertBody = notificationBody;
+                eventNotification.userInfo = @{ @"room_id" : event.roomId };
+                
+                // Set sound name based on the value provided in action of MXPushRule
+                for (MXPushRuleAction *action in rule.actions)
+                {
+                    if (action.actionType == MXPushRuleActionTypeSetTweak)
+                    {
+                        if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                        {
+                            NSString *soundName = action.parameters[@"value"];
+                            if ([soundName isEqualToString:@"default"])
+                                soundName = UILocalNotificationDefaultSoundName;
+                            
+                            eventNotification.soundName = soundName;
+                        }
+                    }
+                }
+                
+                [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+            }
+        }
+    };
+    
+    [mxSession.notificationCenter listenToNotifications:notificationListenerBlock];
+    callEventsListeners[@(mxSession.hash)] = notificationListenerBlock;
+}
+
+- (void)disableLocalNotificationsFromMatrixSession:(MXSession*)mxSession
+{
+    // Stop listening to notification of this session
+    [mxSession.notificationCenter removeListener:notificationListenerBlocks[@(mxSession.hash)]];
+    [notificationListenerBlocks removeObjectForKey:@(mxSession.hash)];
+}
+
 
 #pragma mark -
 
