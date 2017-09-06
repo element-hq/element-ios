@@ -181,10 +181,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     NSString *confId = [room.roomId substringWithRange:NSMakeRange(1, [room.roomId rangeOfString:@":"].location - 1)];
     confId = [confId stringByAppendingString:widgetSessionId];
 
-    // TODO: This url may come from modular API
+    // TODO: This url should come from modular API
     // Note: this url can be used as is inside a web container (like iframe for Riot-web)
     // Riot-iOS does not directly use it but extracts params from it (see `[JitsiViewController openWidget:withVideo:]`)
-    NSString *url = [NSString stringWithFormat:@"https://scalar-staging.riot.im/scalar/api/widgets/jitsi.html?confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id@", confId, video ? @"false" : @"true"];
+    NSString *modularRestUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
+    NSString *url = [NSString stringWithFormat:@"%@/widgets/jitsi.html?confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id@", modularRestUrl, confId, video ? @"false" : @"true"];
 
     NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
     successBlockForWidgetCreation[hash][widgetId] = success;
