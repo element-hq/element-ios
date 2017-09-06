@@ -17,6 +17,9 @@
 
 #import "AppDelegate.h"
 
+#import <Intents/Intents.h>
+#import <PushKit/PushKit.h>
+
 #import "RecentsDataSource.h"
 #import "RoomDataSource.h"
 
@@ -41,7 +44,15 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+
+// Calls
 #import "CallViewController.h"
+
+#import <MatrixSDK/MXCallKitAdapter.h>
+#import <MatrixSDK/MXCallKitConfiguration.h>
+
+#import "MXSession+Riot.h"
 
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
@@ -52,9 +63,10 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
-#include <MatrixSDK/MXJingleCallStack.h>
-
-#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+#ifdef MX_CALL_STACK_JINGLE
+#import <MatrixSDK/MXJingleCallStack.h>
+#import <MatrixSDK/MXJingleCallAudioSessionConfigurator.h>
+#endif
 
 #define CALL_STATUS_BAR_HEIGHT 44
 
@@ -64,7 +76,7 @@
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
-@interface AppDelegate ()
+@interface AppDelegate () <PKPushRegistryDelegate>
 {
     /**
      Reachability observer
@@ -106,11 +118,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      Array of `MXSession` instances.
      */
     NSMutableArray *mxSessionArray;
-    
-    /**
-     The room id of the current handled remote notification (if any)
-     */
-    NSString *remoteNotificationRoomId;
     
     /**
      The fragment of the universal link being processing.
@@ -167,6 +174,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
 @property (strong, nonatomic) UIAlertController *incomingCallNotification;
+
+@property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
+
+
+@property (nonatomic, strong) PKPushRegistry *pushRegistry;
+
+@property (nonatomic, getter=isHandlingPushNotification) BOOL handlingPushNotification;
+@property (nonatomic) NSUInteger pushNotificationHandlingTaskIdentifier;
+
+@property (nonatomic, nullable) MXOnNotification notificationListenerBlock;
+@property (nonatomic, nullable) dispatch_block_t pushNotificationHandlingCompletionBlock;
+@property (nonatomic, nullable) dispatch_block_t pushNotificationHandlingTimeoutBlock;
 
 @end
 
@@ -443,10 +462,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
-    // cancel any background sync before resuming
-    // i.e. warn IOS that there is no new data with any received push.
-    [self cancelBackgroundSync];
-    
     // Open account session(s) if this is not already done (see [initMatrixSessions] in case of background launch).
     [[MXKAccountManager sharedManager] prepareSessionForActiveAccounts];
     
@@ -459,8 +474,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
-    
-    remoteNotificationRoomId = nil;
     
     // Check if there is crash log to send
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
@@ -536,6 +549,67 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         continueUserActivity = [self handleUniversalLink:userActivity];
     }
+    else if ([userActivity.activityType isEqualToString:INStartAudioCallIntentIdentifier] ||
+             [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier])
+    {
+        INInteraction *interaction = userActivity.interaction;
+        
+        // roomID provided by Siri intent
+        NSString *roomID = userActivity.userInfo[@"roomID"];
+        
+        // We've launched from calls history list
+        if (!roomID)
+        {
+            INPerson *person;
+            
+            if ([interaction.intent isKindOfClass:INStartAudioCallIntent.class])
+            {
+                person = [[(INStartAudioCallIntent *)(interaction.intent) contacts] firstObject];
+            }
+            else if ([interaction.intent isKindOfClass:INStartVideoCallIntent.class])
+            {
+                person = [[(INStartVideoCallIntent *)(interaction.intent) contacts] firstObject];
+            }
+            
+            roomID = person.personHandle.value;
+        }
+        
+        BOOL isVideoCall = [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier];
+        
+        UIApplication *application = UIApplication.sharedApplication;
+        NSNumber *backgroundTaskIdentifier;
+        
+        // Start background task since we need time for MXSession preparasion because our app can be launched in the background
+        if (application.applicationState == UIApplicationStateBackground)
+            backgroundTaskIdentifier = @([application beginBackgroundTaskWithExpirationHandler:^{}]);
+
+        MXSession *session = mxSessionArray.firstObject;
+        [session.callManager placeCallInRoom:roomID
+                                   withVideo:isVideoCall
+                                     success:^(MXCall *call) {
+                                         if (application.applicationState == UIApplicationStateBackground)
+                                         {
+                                             __weak NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
+                                             __block id token =
+                                             [center addObserverForName:kMXCallStateDidChange
+                                                                 object:call
+                                                                  queue:nil
+                                                             usingBlock:^(NSNotification * _Nonnull note) {
+                                                                 if (call.state == MXCallStateEnded)
+                                                                 {
+                                                                     [application endBackgroundTask:backgroundTaskIdentifier.unsignedIntegerValue];
+                                                                     [center removeObserver:token];
+                                                                 }
+                                                             }];
+                                         }
+                                     }
+                                     failure:^(NSError *error) {
+                                         if (backgroundTaskIdentifier)
+                                             [application endBackgroundTask:backgroundTaskIdentifier.unsignedIntegerValue];
+                                     }];
+        
+        continueUserActivity = YES;
+    }
     
     return continueUserActivity;
 }
@@ -563,13 +637,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Enable error notifications
                 isErrorNotificationSuspended = NO;
                 
-                // Restore call alert if any
-                if (_incomingCallNotification)
-                {
-                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible incoming call alert");
-                    [self showNotificationAlert:_incomingCallNotification];
-                }
-                else if (noCallSupportAlert)
+                if (noCallSupportAlert)
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
                     [self showNotificationAlert:noCallSupportAlert];
@@ -897,51 +965,25 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
+{
+    self.registrationForRemoteNotificationsCompletion = completion;
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
-    // Register for remote notifications only if user provide access to notification feature
-    if (notificationSettings.types != UIUserNotificationTypeNone)
-    {
-        [application registerForRemoteNotifications];
-    }
-}
-
-- (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
-{
-    NSUInteger len = ((deviceToken.length > 8) ? 8 : deviceToken.length / 2);
-    NSLog(@"[AppDelegate] Got APNS token! (%@ ...)", [deviceToken subdataWithRange:NSMakeRange(0, len)]);
+    if (notificationSettings.types == UIUserNotificationTypeNone)
+        return;
     
-    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    [accountManager setApnsDeviceToken:deviceToken];
-    
-    isAPNSRegistered = YES;
+    self.pushRegistry = [[PKPushRegistry alloc] initWithQueue:nil];
+    self.pushRegistry.delegate = self;
+    self.pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
 }
 
-- (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
-}
-
-- (void)cancelBackgroundSync
-{
-    if (_completionHandler)
-    {
-        _completionHandler(UIBackgroundFetchResultNoData);
-        _completionHandler = nil;
-    }
-}
-
-- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
-{
-#ifdef DEBUG
-    // log the full userInfo only in DEBUG
-    NSLog(@"[AppDelegate] didReceiveRemoteNotification: %@", userInfo);
-#else
-    NSLog(@"[AppDelegate] didReceiveRemoteNotification");
-#endif
-    
-    // Look for the room id
-    NSString* roomId = [userInfo objectForKey:@"room_id"];
+    NSString* roomId = notification.userInfo[@"room_id"];
     if (roomId.length)
     {
         // TODO retrieve the right matrix session
@@ -971,71 +1013,266 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // sanity checks
         if (dedicatedAccount && dedicatedAccount.mxSession)
         {
-            UIApplicationState state = [UIApplication sharedApplication].applicationState;
+            NSLog(@"[AppDelegate] didReceiveLocalNotification: open the roomViewController %@", roomId);
             
-            // Jump to the concerned room only if the app is transitioning from the background
-            if (state == UIApplicationStateInactive)
-            {
-                // Check whether another remote notification is not already processed
-                if (!remoteNotificationRoomId)
-                {
-                    remoteNotificationRoomId = roomId;
-                    
-                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: open the roomViewController %@", roomId);
-                    
-                    [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
-                }
-                else
-                {
-                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: busy");
-                }
-            }
-            else if (!_completionHandler && (state == UIApplicationStateBackground))
-            {
-                _completionHandler = completionHandler;
-                
-                NSLog(@"[AppDelegate] didReceiveRemoteNotification: starts a background sync");
-                
-                [dedicatedAccount backgroundSync:20000 success:^{
-                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: the background sync succeeds");
-                    
-                    if (_completionHandler)
-                    {
-                        _completionHandler(UIBackgroundFetchResultNewData);
-                        _completionHandler = nil;
-                    }
-                } failure:^(NSError *error) {
-                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: the background sync fails");
-                    
-                    if (_completionHandler)
-                    {
-                        _completionHandler(UIBackgroundFetchResultNoData);
-                        _completionHandler = nil;
-                    }
-                }];
-                
-                // wait that the background sync is done
-                return;
-            }
+            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {
-            NSLog(@"[AppDelegate] didReceiveRemoteNotification : no linked session / account has been found.");
+            NSLog(@"[AppDelegate] didReceiveLocalNotification : no linked session / account has been found.");
         }
     }
-    completionHandler(UIBackgroundFetchResultNoData);
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
 {
-    // iOS 10 (at least up to GM beta release) does not call application:didReceiveRemoteNotification:fetchCompletionHandler:
-    // when the user clicks on a notification but it calls this deprecated version
-    // of didReceiveRemoteNotification.
-    // Use this method as a workaround as adviced at http://stackoverflow.com/a/39419245
-    NSLog(@"[AppDelegate] didReceiveRemoteNotification (deprecated version)");
+    NSData *token = credentials.token;
     
-    [self application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:^(UIBackgroundFetchResult result) {
+    NSUInteger len = ((token.length > 8) ? 8 : token.length / 2);
+    NSLog(@"[AppDelegate] Got APNS token! (%@ ...)", [token subdataWithRange:NSMakeRange(0, len)]);
+    
+    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    [accountManager setApnsDeviceToken:token];
+    
+    isAPNSRegistered = YES;
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
+{
+    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    [accountManager setApnsDeviceToken:nil];
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
+{
+    // If it isn't a first push
+    if (self.isHandlingPushNotification)
+    {
+        // If we have processed push notification and we're waiting to complete after a timeout
+        if (self.pushNotificationHandlingCompletionBlock)
+        {
+            // Cancel completion of previous push notification.
+            // The new completion block will be created when this push notification will be processed if timeout block wouldn't be called
+            dispatch_block_cancel(self.pushNotificationHandlingCompletionBlock);
+            self.pushNotificationHandlingCompletionBlock = nil;
+        }
+        
+        // On every new push cancel timeout block if any.
+        // This situation is possible when we sequentially receive a series of push notifications in a short amount of time.
+        if (self.pushNotificationHandlingTimeoutBlock)
+        {
+            dispatch_block_cancel(self.pushNotificationHandlingTimeoutBlock);
+            self.pushNotificationHandlingTimeoutBlock = nil;
+        }
+        
+        // Create and run timeout block since we don't know how much time will take a new sync request
+        // There is also a case when we receive push event earlier than push and we need to stop execution somehow
+        // so timeoutBlock will help us in this situation
+        dispatch_block_t timeoutBlock = [self createPushNotificationHandlingStateCleaningBlock];
+        self.pushNotificationHandlingTimeoutBlock = timeoutBlock;
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(120 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            timeoutBlock();
+        });
+        
+        return;
+    }
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    
+    if (application.applicationState == UIApplicationStateActive || application.applicationState == UIApplicationStateInactive)
+        return;
+    
+    MXSession *session = mxSessionArray.firstObject;
+    
+    if (session.state == MXSessionStateHomeserverNotReachable)
+        return;
+    
+    if (session.state == MXSessionStatePaused)
+        [session resume:^{}];
+    
+    self.handlingPushNotification = YES;
+    
+    id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
+    self.pushNotificationHandlingTaskIdentifier = [handler startBackgroundTaskWithName:nil completion:^{
+        // Maybe do smth here...
     }];
+    
+    // Listen events from MXNotificationCenter 
+    __block MXOnNotification notificationsListenerBlock = nil;
+    
+    // This variable will be point to notificationsListenerBlock but won't retain it.
+    // It's very important since notificationsListenerBlock is required in two another blocks which also
+    // are being referenced inside notificationsListenerBlock's body.
+    // So this weak variable allows us to avoid retain cycle.
+    __weak __block MXOnNotification weakNotificationsListenerBlock = nil;
+    
+    // The block which is called when a sync with server takes a lot of time
+    dispatch_block_t timeoutBlock = [self createPushNotificationHandlingStateCleaningBlock];
+    self.pushNotificationHandlingTimeoutBlock = timeoutBlock;
+    
+    __weak typeof(self) weakSelf = self;
+    
+    notificationsListenerBlock = ^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
+        if (weakSelf.pushNotificationHandlingTimeoutBlock)
+        {
+            dispatch_block_cancel(weakSelf.pushNotificationHandlingTimeoutBlock);
+            weakSelf.pushNotificationHandlingTimeoutBlock = nil;
+        }
+        
+        if (weakSelf.pushNotificationHandlingCompletionBlock)
+        {
+            dispatch_block_cancel(weakSelf.pushNotificationHandlingCompletionBlock);
+            weakSelf.pushNotificationHandlingCompletionBlock = nil;
+        }
+        
+        // For all type of event show local notifications besides the situation
+        // when the type of event is call invite and we have CallKit support
+        BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
+        if (!(event.eventType == MXEventTypeCallInvite && isCallKitActive))
+        {
+            BOOL isEventRoomDirect = [session roomWithRoomId:event.roomId].isDirect;
+            NSString *notificationBody = [weakSelf notificationBodyForEvent:event inDirectRoom:isEventRoomDirect withRoomState:roomState];
+            if (notificationBody)
+            {
+                UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                eventNotification.fireDate = [NSDate date];
+                eventNotification.alertBody = notificationBody;
+                eventNotification.userInfo = @{ @"room_id" : event.roomId };
+             
+                // Set sound name based on the value provided in action of MXPushRule
+                for (MXPushRuleAction *action in rule.actions)
+                {
+                    if (action.actionType == MXPushRuleActionTypeSetTweak)
+                    {
+                        if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                        {
+                            NSString *soundName = action.parameters[@"value"];
+                            if ([soundName isEqualToString:@"default"])
+                                soundName = UILocalNotificationDefaultSoundName;
+                            
+                            eventNotification.soundName = soundName;
+                        }     
+                    }
+                }
+                
+                [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+            }
+        }
+        
+        dispatch_block_t completionBlock = [weakSelf createPushNotificationHandlingStateCleaningBlock];
+        weakSelf.pushNotificationHandlingCompletionBlock = completionBlock;
+        
+        // This delay will help us to process push events which we receive earlier than push notifications associated with them
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            completionBlock();
+        });
+    };
+    
+    weakNotificationsListenerBlock = notificationsListenerBlock;
+    self.notificationListenerBlock = notificationsListenerBlock;
+    
+    [session.notificationCenter listenToNotifications:notificationsListenerBlock];
+    
+    // Run timeout block
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(120.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        timeoutBlock();
+    });
+}
+
+/**
+ Create and return a block which clean all state associated wiht push notifications handling
+ */
+- (dispatch_block_t)createPushNotificationHandlingStateCleaningBlock
+{
+    __weak typeof(self) weakSelf = self;
+    MXSession *session = mxSessionArray.firstObject;
+    
+    return dispatch_block_create(0, ^{
+        [session.notificationCenter removeListener:weakSelf.notificationListenerBlock];
+        
+        // Update icon badge number
+        [UIApplication sharedApplication].applicationIconBadgeNumber = [session riot_missedDiscussionsCount];
+        
+        id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
+        
+        NSUInteger identifier = weakSelf.pushNotificationHandlingTaskIdentifier;
+        
+        weakSelf.handlingPushNotification = NO;
+        weakSelf.pushNotificationHandlingTaskIdentifier = [handler invalidIdentifier];
+        
+        weakSelf.notificationListenerBlock = nil;
+        weakSelf.pushNotificationHandlingTimeoutBlock = nil;
+        weakSelf.pushNotificationHandlingCompletionBlock = nil;
+        
+        [handler endBackgrounTaskWithIdentifier:identifier];
+    });
+}
+
+- (nullable NSString *)notificationBodyForEvent:(MXEvent *)event inDirectRoom:(BOOL)isDirect withRoomState:(MXRoomState *)roomState
+{
+    if (!event.content || !event.content.count)
+        return nil;
+    
+    NSString *notificationBody;
+    NSString *eventSenderName = [roomState memberName:event.sender];
+    
+    if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
+    {
+        NSString *msgType = event.content[@"msgtype"];
+        NSString *content = event.content[@"body"];
+        
+        if (!isDirect)
+        {
+            NSString *roomDisplayName = roomState.displayname;
+            
+            if ([msgType isEqualToString:@"m.text"])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_WITH_CONTENT", nil), eventSenderName,roomDisplayName, content];
+            else if ([msgType isEqualToString:@"m.emote"])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, content];
+            else if ([msgType isEqualToString:@"m.image"])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER_IN_ROOM", nil), eventSenderName, content, roomDisplayName];
+            else
+                // Unencrypted messages falls here
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
+        }
+        else
+        {
+            if ([msgType isEqualToString:@"m.text"])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_WITH_CONTENT", nil), eventSenderName, content];
+            else if ([msgType isEqualToString:@"m.emote"])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, content];
+            else if ([msgType isEqualToString:@"m.image"])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER", nil), eventSenderName, content];
+            else
+                // Unencrypted messages falls here
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
+        }
+    }
+    else if (event.eventType == MXEventTypeCallInvite)
+    {
+        NSString *sdp = event.content[@"offer"][@"sdp"];
+        BOOL isVideoCall = [sdp rangeOfString:@"m=video"].location != NSNotFound;
+        
+        if (!isVideoCall)
+            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VOICE_CALL_FROM_USER", nil), eventSenderName];
+        else
+            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VIDEO_CALL_FROM_USER", nil), eventSenderName];
+    }
+    else if (event.eventType == MXEventTypeRoomMember)
+    {
+        NSString *roomName = roomState.name;
+        NSString *roomAlias = roomState.aliases.firstObject;
+        
+        if (roomName)
+            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_NAMED_ROOM", nil), eventSenderName, roomName];
+        else if (roomAlias)
+            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_NAMED_ROOM", nil), eventSenderName, roomAlias];
+        else
+            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_CHAT", nil), eventSenderName];
+    }
+    
+    return notificationBody;
 }
 
 - (void)refreshApplicationIconBadgeNumber
@@ -1446,6 +1683,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     
+    // Set the App Group identifier.
+    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+    
     // Define the media cache version
     sdkOptions.mediaCacheAppVersion = 0;
     
@@ -1460,6 +1700,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
+
+    // Get modular widget events in rooms histories
+    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
+    
+    // Use shared container to share data with app extensions
+    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
@@ -1499,6 +1745,19 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (callStack)
             {
                 [mxSession enableVoIPWithCallStack:callStack];
+
+                // Setup CallKit
+                if ([MXCallKitAdapter callKitAvailable])
+                {
+                    BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+                    [self enableCallKit:isCallKitEnabled forCallManager:mxSession.callManager];
+                    
+                    // Register for changes performed by the user
+                    [[MXKAppSettings standardAppSettings] addObserver:self
+                                                           forKeyPath:@"enableCallKit"
+                                                              options:NSKeyValueObservingOptionNew
+                                                              context:NULL];
+                }
             }
             else
             {
@@ -1508,6 +1767,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
+
+            // Send read receipts for modular widgets events too
+            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
+            [acknowledgableEventTypes addObject:kWidgetEventTypeString];
+            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1621,8 +1885,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
     }];
     
-    // Apply the application group name, and add observer on settings changes.
-    [MXKAppSettings standardAppSettings].applicationGroup = @"group.im.vector";
+    // Add observer on settings changes.
     [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
     // Prepare account manager
@@ -1751,7 +2014,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)logout
 {
-    [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+    self.pushRegistry = nil;
     isAPNSRegistered = NO;
     
     // Clear cache
@@ -1791,6 +2054,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [self enableInAppNotificationsForAccount:(MXKAccount*)object];
     }
+    else if (object == [MXKAppSettings standardAppSettings] && [keyPath isEqualToString:@"enableCallKit"])
+    {
+        BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+        MXCallManager *callManager = [[[[[MXKAccountManager sharedManager] activeAccounts] firstObject] mxSession] callManager];
+        [self enableCallKit:isCallKitEnabled forCallManager:callManager];
+    }
 }
 
 - (void)addMatrixCallObserver
@@ -1801,18 +2070,55 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     // Register call observer in order to handle new opened session
-    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
+    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall
+                                                                           object:nil
+                                                                            queue:[NSOperationQueue mainQueue]
+                                                                       usingBlock:^(NSNotification *notif)
+    {
         // Ignore the call if a call is already in progress
         if (!currentCallViewController && !_jitsiViewController)
         {
             MXCall *mxCall = (MXCall*)notif.object;
             
-            // Prepare the call view controller
-            currentCallViewController = [CallViewController callViewController:mxCall];
-            currentCallViewController.delegate = self;
+            BOOL isCallKitAvailable = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
             
-            if (mxCall.isIncoming)
+            // Prepare the call view controller
+            currentCallViewController = [CallViewController callViewController:nil];
+            currentCallViewController.playRingtone = !isCallKitAvailable;
+            currentCallViewController.mxCall = mxCall;
+            currentCallViewController.delegate = self;
+
+            UIApplicationState applicationState = UIApplication.sharedApplication.applicationState;
+            
+            // App has been woken by PushKit notification in the background
+            if (applicationState == UIApplicationStateBackground && mxCall.isIncoming)
+            {
+                // Create backgound task.
+                // Without CallKit this will allow us to play vibro until the call was ended
+                // With CallKit we'll inform the system when the call is ended to let the system terminate our app to save resources
+                id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
+                NSUInteger callTaskIdentifier = [handler startBackgroundTaskWithName:nil completion:^{}];
+                
+                // Start listening for call state change notifications
+                __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                __block id token = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange
+                                                                                     object:mxCall
+                                                                                      queue:nil
+                                                                                 usingBlock:^(NSNotification * _Nonnull note) {
+                                                                                     MXCall *call = (MXCall *)note.object;
+                                                                                     
+                                                                                     if (call.state == MXCallStateEnded)
+                                                                                     {
+                                                                                         // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
+                                                                                         currentCallViewController = nil;
+                                                                                         [notificationCenter removeObserver:token];
+                                                                                         
+                                                                                         [handler endBackgrounTaskWithIdentifier:callTaskIdentifier];
+                                                                                     }
+                                                                                 }];
+            }
+            
+            if (mxCall.isIncoming && !isCallKitAvailable)
             {
                 // Prompt user before presenting the call view controller
                 NSString *callPromptFormat = mxCall.isVideoCall ? NSLocalizedStringFromTable(@"call_incoming_video_prompt", @"Vector", nil) : NSLocalizedStringFromTable(@"call_incoming_voice_prompt", @"Vector", nil);
@@ -1823,16 +2129,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 }
                 NSString *callPrompt = [NSString stringWithFormat:callPromptFormat, callerName];
                 
-                __weak typeof(self) weakSelf = self;
-                
                 // Removing existing notification (if any)
                 [_incomingCallNotification dismissViewControllerAnimated:NO completion:nil];
-                
-                
                 
                 _incomingCallNotification = [UIAlertController alertControllerWithTitle:callPrompt
                                                                                 message:nil
                                                                          preferredStyle:UIAlertControllerStyleAlert];
+
+                __weak typeof(self) weakSelf = self;
                 
                 [_incomingCallNotification addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
                                                                               style:UIAlertActionStyleDefault
@@ -1886,7 +2190,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 [self presentCallViewController:nil];
             }
         }
-        
     }];
 }
 
@@ -2043,6 +2346,29 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         [launchAnimationContainerView removeFromSuperview];
         launchAnimationContainerView = nil;
+    }
+}
+
+- (void)enableCallKit:(BOOL)enable forCallManager:(MXCallManager *)callManager
+{
+    if (enable)
+    {
+        // Create adapter with default configuration for a while
+        MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] init];
+        
+        id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
+        
+#ifdef MX_CALL_STACK_JINGLE
+        audioSessionConfigurator = [[MXJingleCallAudioSessionConfigurator alloc] init];
+#endif
+        
+        callKitAdapter.audioSessionConfigurator = audioSessionConfigurator;
+        
+        callManager.callKitAdapter = callKitAdapter;
+    }
+    else
+    {
+        callManager.callKitAdapter = nil;
     }
 }
 
@@ -2441,6 +2767,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Release properly
             [currentCallViewController destroy];
+            currentCallViewController = nil;
             
             if (completion)
             {

@@ -21,7 +21,7 @@
 #import "Widget.h"
 
 /**
- The type of matrix event used for scalar widgets.
+ The type of matrix event used for modular widgets.
  */
 FOUNDATION_EXPORT NSString *const kWidgetEventTypeString;
 
@@ -50,7 +50,7 @@ WidgetManagerErrorCode;
 
 
 /**
- The `WidgetManager` helps to handle scalar widgets.
+ The `WidgetManager` helps to handle modular widgets.
  */
 @interface WidgetManager : NSObject
 
@@ -80,7 +80,7 @@ WidgetManagerErrorCode;
 
 
 /**
- Add a scalar widget to a room.
+ Add a modular widget to a room.
 
  @param widgetId the id of the widget.
  @param widgetContent the widget content.

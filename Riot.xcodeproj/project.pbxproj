@@ -27,7 +27,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -76,6 +76,13 @@
 		32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */; };
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
+		714F6391AC0AA86C0AEB3F43 /* libPods-SiriIntents.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5666C1236223F54D4C635C54 /* libPods-SiriIntents.a */; };
+		92324BE31F4F66D3009DE194 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE21F4F66D3009DE194 /* IncomingCallView.m */; };
+		92324BE61F4F6A60009DE194 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE51F4F6A60009DE194 /* CircleButton.m */; };
+		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
+		92726A471F58737A004AD26F /* IntentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 92726A461F58737A004AD26F /* IntentHandler.m */; };
+		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		A27ECCE3FC4971745D2CB78D /* libPods-RiotShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */; };
 		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
@@ -532,6 +539,13 @@
 			remoteGlobalIDString = 24CBEC4D1F0EAD310093EABB;
 			remoteInfo = "Riot Share Extension";
 		};
+		92726A491F58737A004AD26F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92726A421F58737A004AD26F;
+			remoteInfo = SiriIntents;
+		};
 		F094A9BF1B78D8F000B1FBBF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
@@ -549,6 +563,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */,
+				92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -643,9 +658,24 @@
 		32FD0A3A1EB0CD9B0072B066 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
+		397BCA987893439918EBF330 /* Pods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiriIntents.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
+		4D1164C2F07EF74950DCDA7A /* Pods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiriIntents.release.xcconfig"; path = "Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
+		5666C1236223F54D4C635C54 /* libPods-SiriIntents.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SiriIntents.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RiotShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		765F5104DB3EC39713DEB3A4 /* Pods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		839BB91240D350D5607D55BA /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
+		92324BE11F4F66D3009DE194 /* IncomingCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallView.h; sourceTree = "<group>"; };
+		92324BE21F4F66D3009DE194 /* IncomingCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallView.m; sourceTree = "<group>"; };
+		92324BE41F4F6A60009DE194 /* CircleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleButton.h; sourceTree = "<group>"; };
+		92324BE51F4F6A60009DE194 /* CircleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleButton.m; sourceTree = "<group>"; };
+		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
+		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
+		92726A431F58737A004AD26F /* SiriIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SiriIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		92726A451F58737A004AD26F /* IntentHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntentHandler.h; sourceTree = "<group>"; };
+		92726A461F58737A004AD26F /* IntentHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntentHandler.m; sourceTree = "<group>"; };
+		92726A481F58737A004AD26F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92726A4F1F587393004AD26F /* SiriIntents.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SiriIntents.entitlements; sourceTree = "<group>"; };
+		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
@@ -1231,6 +1261,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92726A401F58737A004AD26F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92726A511F587410004AD26F /* Intents.framework in Frameworks */,
+				714F6391AC0AA86C0AEB3F43 /* libPods-SiriIntents.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F094A99F1B78D8F000B1FBBF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1395,8 +1434,10 @@
 		5FC42FA41F5186AFFB6A2404 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				92726A501F587410004AD26F /* Intents.framework */,
 				FD9D0BDE9232898950554DD5 /* libPods-Riot.a */,
 				7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */,
+				5666C1236223F54D4C635C54 /* libPods-SiriIntents.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1408,8 +1449,32 @@
 				C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */,
 				12AA0005C8B3D8D8162584C5 /* Pods-RiotShareExtension.debug.xcconfig */,
 				765F5104DB3EC39713DEB3A4 /* Pods-RiotShareExtension.release.xcconfig */,
+				397BCA987893439918EBF330 /* Pods-SiriIntents.debug.xcconfig */,
+				4D1164C2F07EF74950DCDA7A /* Pods-SiriIntents.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		92324BE01F4F668F009DE194 /* Calls */ = {
+			isa = PBXGroup;
+			children = (
+				92324BE11F4F66D3009DE194 /* IncomingCallView.h */,
+				92324BE21F4F66D3009DE194 /* IncomingCallView.m */,
+				92324BE41F4F6A60009DE194 /* CircleButton.h */,
+				92324BE51F4F6A60009DE194 /* CircleButton.m */,
+			);
+			path = Calls;
+			sourceTree = "<group>";
+		};
+		92726A441F58737A004AD26F /* SiriIntents */ = {
+			isa = PBXGroup;
+			children = (
+				92726A4F1F587393004AD26F /* SiriIntents.entitlements */,
+				92726A451F58737A004AD26F /* IntentHandler.h */,
+				92726A461F58737A004AD26F /* IntentHandler.m */,
+				92726A481F58737A004AD26F /* Info.plist */,
+			);
+			path = SiriIntents;
 			sourceTree = "<group>";
 		};
 		F083BB021E7005FD00A9B29C /* RiotTests */ = {
@@ -1736,6 +1801,8 @@
 				F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */,
 				F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */,
 				F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */,
+				926FA53D1F4C132000F826C2 /* MXSession+Riot.h */,
+				926FA53E1F4C132000F826C2 /* MXSession+Riot.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1920,6 +1987,7 @@
 		F083BC571E7009EC00A9B29C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				92324BE01F4F668F009DE194 /* Calls */,
 				F0B4CBAD1F4215E3008E99C5 /* Event */,
 				F083BC581E7009EC00A9B29C /* Authentication */,
 				F083BC5F1E7009EC00A9B29C /* Contact */,
@@ -2270,6 +2338,7 @@
 				F083BB081E7009EC00A9B29C /* Riot */,
 				F083BB021E7005FD00A9B29C /* RiotTests */,
 				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
+				92726A441F58737A004AD26F /* SiriIntents */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				7471DF3720D498384A068DA7 /* Pods */,
 				5FC42FA41F5186AFFB6A2404 /* Frameworks */,
@@ -2282,6 +2351,7 @@
 				F094A9A21B78D8F000B1FBBF /* Riot.app */,
 				F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */,
 				24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */,
+				92726A431F58737A004AD26F /* SiriIntents.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2318,6 +2388,25 @@
 			productReference = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		92726A421F58737A004AD26F /* SiriIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92726A4E1F58737A004AD26F /* Build configuration list for PBXNativeTarget "SiriIntents" */;
+			buildPhases = (
+				6AA0024D4D5FAE30C2E1F311 /* [CP] Check Pods Manifest.lock */,
+				92726A3F1F58737A004AD26F /* Sources */,
+				92726A401F58737A004AD26F /* Frameworks */,
+				92726A411F58737A004AD26F /* Resources */,
+				807A0ABF153A23C2FC22F977 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SiriIntents;
+			productName = SiriIntents;
+			productReference = 92726A431F58737A004AD26F /* SiriIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		F094A9A11B78D8F000B1FBBF /* Riot */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Riot" */;
@@ -2335,6 +2424,7 @@
 			);
 			dependencies = (
 				242661F61F12B1BA00D3FC08 /* PBXTargetDependency */,
+				92726A4A1F58737A004AD26F /* PBXTargetDependency */,
 			);
 			name = Riot;
 			productName = Vector;
@@ -2370,6 +2460,16 @@
 				TargetAttributes = {
 					24CBEC4D1F0EAD310093EABB = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 7J4U792NQT;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+					92726A421F58737A004AD26F = {
+						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 7J4U792NQT;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -2418,6 +2518,7 @@
 				F094A9A11B78D8F000B1FBBF /* Riot */,
 				F094A9BD1B78D8F000B1FBBF /* RiotTests */,
 				24CBEC4D1F0EAD310093EABB /* RiotShareExtension */,
+				92726A421F58737A004AD26F /* SiriIntents */,
 			);
 		};
 /* End PBXProject section */
@@ -2438,7 +2539,14 @@
 				24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */,
 				24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
+				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92726A411F58737A004AD26F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2811,13 +2919,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Riot-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3051A9ED306E05F8AE91C906 /* [CP] Check Pods Manifest.lock */ = {
@@ -2826,13 +2937,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RiotShareExtension-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		68D6013FA64A4507DC9DB95B /* [CP] Copy Pods Resources */ = {
@@ -2841,13 +2955,95 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-resources.sh",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAccountDetailsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAttachmentsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAuthenticationViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKCallViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactDetailsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactListViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKCountryPickerViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKLanguagePickerViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRecentListViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomMemberDetailsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomMemberListViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomSettingsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKSearchViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Account/MXKAccountTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Authentication/MXKAuthInputsEmailCodeBasedView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Authentication/MXKAuthInputsPasswordBasedView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Contact/MXKContactTableCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/DeviceView/MXKDeviceView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/EncryptionInfoView/MXKEncryptionInfoView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKCollectionViewCell/MXKMediaCollectionViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKEventDetailsView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKPieChartHUD.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKRoomCreationView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithButton.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndButton.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndImageView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndMXKImageView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSlider.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSubLabel.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSwitch.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndTextField.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelTextFieldAndButton.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithPicker.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithSearchBar.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextFieldAndButton.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/PushRule/MXKPushRuleCreationTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/PushRule/MXKPushRuleTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/ReadReceipts/MXKReadReceiptTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomEmptyBubbleTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIOSOutgoingBubbleTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithHPGrowingText.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithSimpleTextView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKInterleavedRecentTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKPublicRoomTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKRecentTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomMemberList/MXKRoomMemberTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
+				$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle,
+				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6AA0024D4D5FAE30C2E1F311 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SiriIntents-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7FFD40AA75DB32D83350D225 /* [CP] Embed Pods Frameworks */ = {
@@ -2856,13 +3052,34 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-frameworks.sh",
+				"${PODS_ROOT}/WebRTC/WebRTC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		807A0ABF153A23C2FC22F977 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents-resources.sh",
+				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8EA19F5011654D3BD5EDAC33 /* [CP] Copy Pods Resources */ = {
@@ -2871,9 +3088,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension-resources.sh",
+				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2902,6 +3122,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92726A3F1F58737A004AD26F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F094A99E1B78D8F000B1FBBF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2917,6 +3145,7 @@
 				F083BE9C1E7009ED00A9B29C /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				32471CE11F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDFE1E7009ED00A9B29C /* RecentCellData.m in Sources */,
+				92324BE61F4F6A60009DE194 /* CircleButton.m in Sources */,
 				F083BE3A1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				3205ED841E97725E003D65FA /* DirectoryServerTableViewCell.m in Sources */,
 				F083BEA21E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m in Sources */,
@@ -2950,6 +3179,7 @@
 				F083BE481E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				F06CDD691EF01E3900870B75 /* RoomEmptyBubbleCell.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
+				92324BE31F4F66D3009DE194 /* IncomingCallView.m in Sources */,
 				F083BE6A1E7009ED00A9B29C /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				F083BE761E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
@@ -3021,6 +3251,7 @@
 				F083BDF81E7009ED00A9B29C /* RoomDataSource.m in Sources */,
 				F083BE371E7009ED00A9B29C /* RoomActivitiesView.m in Sources */,
 				F083BE131E7009ED00A9B29C /* HomeMessagesSearchViewController.m in Sources */,
+				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				F083BE8C1E7009ED00A9B29C /* PreviewRoomTitleView.m in Sources */,
 				F083BE271E7009ED00A9B29C /* SettingsViewController.m in Sources */,
 				F083BE9A1E7009ED00A9B29C /* TableViewCellWithButton.m in Sources */,
@@ -3063,6 +3294,11 @@
 			isa = PBXTargetDependency;
 			target = 24CBEC4D1F0EAD310093EABB /* RiotShareExtension */;
 			targetProxy = 242661F51F12B1BA00D3FC08 /* PBXContainerItemProxy */;
+		};
+		92726A4A1F58737A004AD26F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92726A421F58737A004AD26F /* SiriIntents */;
+			targetProxy = 92726A491F58737A004AD26F /* PBXContainerItemProxy */;
 		};
 		F094A9C01B78D8F000B1FBBF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3219,7 +3455,7 @@
 				INFOPLIST_FILE = RiotShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.share.extension;
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -3242,7 +3478,48 @@
 				INFOPLIST_FILE = RiotShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.share.extension;
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		92726A4C1F58737A004AD26F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 397BCA987893439918EBF330 /* Pods-SiriIntents.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = SiriIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		92726A4D1F58737A004AD26F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D1164C2F07EF74950DCDA7A /* Pods-SiriIntents.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = SiriIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -3424,6 +3701,15 @@
 			buildConfigurations = (
 				24CBEC5A1F0EAD310093EABB /* Debug */,
 				24CBEC5B1F0EAD310093EABB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92726A4E1F58737A004AD26F /* Build configuration list for PBXNativeTarget "SiriIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92726A4C1F58737A004AD26F /* Debug */,
+				92726A4D1F58737A004AD26F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

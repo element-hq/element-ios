@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Aram Sargsyan
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,9 +14,15 @@
  limitations under the License.
  */
 
-#import <Social/Social.h>
-#import <MatrixKit/MatrixKit.h>
+#import <Foundation/Foundation.h>
 
-@interface ShareViewController : MXKViewController
+#import <MatrixSDK/MXSession.h>
+
+@interface MXSession (Riot)
+
+/**
+ The current number of rooms with missed notifications, including the invites.
+ */
+- (NSUInteger)riot_missedDiscussionsCount;
 
 @end

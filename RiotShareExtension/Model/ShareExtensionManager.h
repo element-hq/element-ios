@@ -18,6 +18,7 @@
 #import <MatrixKit/MatrixKit.h>
 
 @class ShareExtensionManager;
+@class SharePresentingViewController;
 
 /**
  Posted when the matrix session has been changed.
@@ -63,6 +64,11 @@ extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
  The share extension context that represents a user's sharing request, also stores the content to be shared
  */
 @property (nonatomic) NSExtensionContext *shareExtensionContext;
+
+/**
+ The share app extension’s primary view controller.
+ */
+@property (nonatomic) SharePresentingViewController *primaryViewController;
 
 /**
  The associated matrix session (nil by default).

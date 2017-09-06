@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Riot.im</string>
+	<string>SiriIntents</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,29 +17,25 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.5.3</string>
+	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSExtension</key>
 	<dict>
-		<key>NSExtensionPrincipalClass</key>
-		<string>SharePresentingViewController</string>
 		<key>NSExtensionAttributes</key>
 		<dict>
-			<key>NSExtensionActivationRule</key>
-			<dict>
-				<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-				<integer>0</integer>
-				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>0</integer>
-				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-				<integer>0</integer>
-				<key>NSExtensionActivationSupportsText</key>
-				<false/>
-			</dict>
+			<key>IntentsRestrictedWhileLocked</key>
+			<array/>
+			<key>IntentsSupported</key>
+			<array>
+				<string>INStartAudioCallIntent</string>
+				<string>INStartVideoCallIntent</string>
+			</array>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.share-services</string>
+		<string>com.apple.intents-service</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>IntentHandler</string>
 	</dict>
 </dict>
 </plist>
