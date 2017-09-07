@@ -1596,13 +1596,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         MXSession *mxSession = (MXSession*)notif.object;
         
-        // Remove by default potential call observer on matrix session state change
-        if (matrixCallObserver)
-        {
-            [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
-            matrixCallObserver = nil;
-        }
-        
         // Check whether the concerned session is a new one
         if (mxSession.state == MXSessionStateInitialised)
         {
@@ -1654,6 +1647,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
+            // A new call observer may be added here
+            [self addMatrixCallObserver];
+            
             // Enable local notifications
             [self enableLocalNotificationsFromMatrixSession:mxSession];
             
@@ -1696,24 +1692,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     [self handleLocalNotifications];
                 }
             }
-        }
-        
-        // Restore call observer only if all session are running
-        NSArray *mxSessions = self.mxSessions;
-        BOOL shouldAddMatrixCallObserver = (mxSessions.count);
-        for (mxSession in mxSessions)
-        {
-            if (mxSession.state != MXSessionStateRunning)
-            {
-                shouldAddMatrixCallObserver = NO;
-                break;
-            }
-        }
-        
-        if (shouldAddMatrixCallObserver)
-        {
-            // A new call observer may be added here
-            [self addMatrixCallObserver];
         }
         
         [self handleLaunchAnimation];
@@ -1877,6 +1855,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self disableLocalNotificationsFromMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
+    
+    if (!mxSessionArray.count && matrixCallObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
+        matrixCallObserver = nil;
+    }
 }
 
 - (void)markAllMessagesAsRead
@@ -1965,10 +1949,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (matrixCallObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
+        return;
     }
     
-    // Register call observer in order to handle new opened session
+    // Register call observer in order to handle incoming calls
     matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall
                                                                            object:nil
                                                                             queue:[NSOperationQueue mainQueue]
@@ -2319,7 +2303,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     };
     
     [mxSession.notificationCenter listenToNotifications:notificationListenerBlock];
-    callEventsListeners[@(mxSession.hash)] = notificationListenerBlock;
+    notificationListenerBlocks[@(mxSession.hash)] = notificationListenerBlock;
 }
 
 - (void)disableLocalNotificationsFromMatrixSession:(MXSession*)mxSession
