@@ -139,4 +139,34 @@ WidgetManagerErrorCode;
 - (void)addMatrixSession:(MXSession*)mxSession;
 - (void)removeMatrixSession:(MXSession*)mxSession;
 
+// TODO
+//- (void)deleteMatrixSession;
+
+#pragma mark - Modular interface
+
+/**
+ Make sure there is a scalar token for the given Matrix session.
+ 
+ If no token was gotten and stored before, the operation will make http requests
+ to get one.
+
+ @param mxSession the session to check.
+ 
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+ */
+- (MXHTTPOperation *)getScalarTokenForMXSession:(MXSession*)mxSession
+                                        success:(void (^)(NSString *scalarToken))success
+                                        failure:(void (^)(NSError *error))failure;
+
+/**
+ The current scalar token for the given Matrix session.
+
+ It may be nil if `getScalarTokenForMXSession` was never called before.
+ 
+ @param mxSession the session to check.
+ @return the current scalar token .
+ */
+- (NSString *)scalarTokenForMXSession:(MXSession*)mxSession;
+
 @end
