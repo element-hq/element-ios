@@ -39,10 +39,10 @@
 /** Image Messages **/
 
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ sent you a picture";
+"IMAGE_FROM_USER" = "%@ sent you a picture %@";
 
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ posted a picture in %@";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ posted a picture %@ in %@";
 
 /** Coalesced messages **/
 
