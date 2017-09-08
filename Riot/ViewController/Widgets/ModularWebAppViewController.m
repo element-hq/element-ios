@@ -18,28 +18,7 @@
 
 #import "WidgetManager.h"
 
-// Generic method to make a bridge between JS and the UIWebView
-NSString *kJavascriptSendObjectMessage = @"                                     \
-    window.riotIOS = {};                                                        \
-    window.riotIOS.sendObjectMessage = function(parameters) {                   \
-        var iframe = document.createElement('iframe');                          \
-        iframe.setAttribute('src', 'js:' + JSON.stringify(parameters));         \
-        \
-        document.documentElement.appendChild(iframe);                           \
-        iframe.parentNode.removeChild(iframe);                                  \
-        iframe = null;                                                          \
-    };                                                                          \
-";
-
-// The function to listen to the Modular webapp messages
-NSString *kJavascriptListenToModularMessages = @"                               \
-    window.riotIOS.onMessage = function(event) {                                \
-        sendObjectMessage({                                                     \
-            'event.data': event.data,                                           \
-        });                                                                     \
-    };                                                                          \
-    window.addEventListener('message', riotIOS.onMessage, false);               \
-";
+NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 
 @interface ModularWebAppViewController ()
@@ -163,9 +142,10 @@ NSString *kJavascriptListenToModularMessages = @"                               
 
 -(void)webViewDidFinishLoad:(UIWebView *)theWebView
 {
-    // Setup Objs-JS bridging methods
-    [webView stringByEvaluatingJavaScriptFromString:kJavascriptSendObjectMessage];
-    [webView stringByEvaluatingJavaScriptFromString:kJavascriptListenToModularMessages];
+    // Setup js code
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"ModularWebApp" ofType:@"js"];
+    NSString *js = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -272,9 +252,13 @@ NSString *kJavascriptListenToModularMessages = @"                               
     return YES;
 }
 
-- (void)sendResponse:(NSString*)response toEvent:(NSDictionary*)eventData
+- (void)sendBoolResponse:(BOOL)response toEvent:(NSDictionary*)eventData
 {
+    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
+                    eventData[@"_id"],
+                    response ? @"true" : @"false"];
 
+    [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
 #pragma mark - Modular postMessage API
@@ -324,7 +308,7 @@ NSString *kJavascriptListenToModularMessages = @"                               
 
         if (canSend)
         {
-            [self sendResponse:@"true" toEvent:eventData];
+            [self sendBoolResponse:YES toEvent:eventData];
         }
         else
         {
