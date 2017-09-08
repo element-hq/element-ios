@@ -24,6 +24,10 @@
 	<string>https://riot.im/beta</string>
 	<key>webAppUrl</key>
 	<string>https://riot.im/app</string>
+	<key>integrationsUiUrl</key>
+	<string>https://scalar.vector.im/</string>
+	<key>integrationsRestUrl</key>
+	<string>https://scalar.vector.im/api</string>
 	<key>apnsDeviceToken</key>
 	<string></string>
 	<key>showAllEventsInRoomHistory</key>
