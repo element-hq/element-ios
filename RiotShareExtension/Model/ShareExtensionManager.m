@@ -8,8 +8,7 @@
  http://www.apache.org/licenses/LICENSE-2.0
  
  Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on
- an "AS IS" BASIS,
+ distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
@@ -21,7 +20,6 @@
 @import MobileCoreServices;
 #import "objc/runtime.h"
 
-NSString *const kShareExtensionManagerDidChangeMXSessionNotification = @"kShareExtensionManagerDidChangeMXSessionNotification";
 
 typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
@@ -31,9 +29,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     ImageCompressionModeLarge
 };
 
+
 @interface ShareExtensionManager ()
 
-@property (nonatomic, readwrite) MXKAccount *account;
+@property (nonatomic, readwrite) MXKAccount *userAccount;
 
 @property (nonatomic) NSMutableArray <NSData *> *pendingImages;
 @property (nonatomic) NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
@@ -59,6 +58,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(onMediaUploadProgress:) name:kMXMediaUploadProgressNotification object:nil];
         
+        // Add observer to handle logout
+        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:kMXKAccountManagerDidRemoveAccountNotification object:nil];
+        
+        // Add observer on the Extension host
+        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
+        
         MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
         // Apply the application group
         sdkOptions.applicationGroupIdentifier = @"group.im.vector";
@@ -69,10 +74,35 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [[MXKAccountManager sharedManager] forceReloadAccounts];
         
         // Save the first active account
-        sharedInstance.account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        sharedInstance.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         
     });
     return sharedInstance;
+}
+
+- (void)checkUserAccount
+{
+    // Force account manager to reload account from the local storage.
+    [[MXKAccountManager sharedManager] forceReloadAccounts];
+    
+    if (self.userAccount)
+    {
+        // Check whether the used account is still the first active one
+        MXKAccount *firstAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        // Compare the access token
+        if (!firstAccount || ![self.userAccount.mxCredentials.accessToken isEqualToString:firstAccount.mxCredentials.accessToken])
+        {
+            // Remove this account
+            self.userAccount = nil;
+        }
+    }
+    
+    if (self.userAccount)
+    {
+        // Resume the matrix session
+        [self.userAccount resume];
+    }
 }
 
 

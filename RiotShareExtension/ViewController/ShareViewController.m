@@ -43,13 +43,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.shareExtensionManagerDidChangeMXSessionObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidChangeMXSessionNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self configureViews];
-        
-    }];
-    
     [self configureViews];
 }
 
@@ -94,7 +87,7 @@
     
     [self resetContentView];
     
-    if ([MXKAccountManager sharedManager].activeAccounts.count)
+    if ([ShareExtensionManager sharedManager].userAccount)
     {
         self.tittleLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), @""];
         [self configureSegmentedViewController];

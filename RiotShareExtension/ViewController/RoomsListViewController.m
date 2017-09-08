@@ -143,8 +143,6 @@
     
     UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        //With the new datasource, we can't get MXRoom instance.
-        
         MXRoom *selectedRoom = [self.dataSource getRoomAtIndexPath:indexPath];
         
         [ShareExtensionManager sharedManager].delegate = self;

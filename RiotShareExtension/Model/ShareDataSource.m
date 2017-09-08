@@ -47,8 +47,8 @@
 
 - (void)updateRooms
 {
-    MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:[ShareExtensionManager sharedManager].account.mxCredentials];
-    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].account.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+    MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials];
+    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
     
     __weak MXSession *weakSession = session;
     [session setStore:fileStore success:^{

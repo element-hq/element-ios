@@ -20,11 +20,6 @@
 @class ShareExtensionManager;
 @class SharePresentingViewController;
 
-/**
- Posted when the matrix session has been changed.
- The notification object is the matrix session.
- */
-extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
 
 /**
  The protocol for the manager's delegate
@@ -75,8 +70,10 @@ extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
  */
 @property (nonatomic) SharePresentingViewController *primaryViewController;
 
-@property (nonatomic, readonly) MXKAccount *account;
-@property (nonatomic, readonly) MXRestClient *mxRestClient;
+/**
+ The current user account
+ */
+@property (nonatomic, readonly) MXKAccount *userAccount;
 
 /**
  A delegate used to notify about needed UI changes when sharing
