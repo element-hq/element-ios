@@ -18,6 +18,8 @@
 
 #import "WidgetManager.h"
 
+#import <JavaScriptCore/JavaScriptCore.h>
+
 NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 
@@ -142,6 +144,12 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 -(void)webViewDidFinishLoad:(UIWebView *)theWebView
 {
+    // Setup debug
+    JSContext *ctx = [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    ctx[@"console"][@"log"] = ^(JSValue * msg) {
+        NSLog(@"----------- JavaScript: %@", msg);
+    };
+
     // Setup js code
     NSString *path = [[NSBundle mainBundle] pathForResource:@"ModularWebApp" ofType:@"js"];
     NSString *js = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
@@ -207,7 +215,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
             }
             else if ([@"get_widgets" isEqualToString:action])
             {
-                //getWidgets(event, roomId);
+                [self getWidgets:eventData];
             }
             else if ([@"can_send_event" isEqualToString:action])
             {
@@ -224,7 +232,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
             if ([@"membership_state" isEqualToString:action])
             {
-                //getMembershipState(event, roomId, userId);
+                [self getMembershipState:userId eventData:eventData];
             }
             else if ([@"invite" isEqualToString:action])
             {
@@ -261,6 +269,34 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
+- (void)sendNSObjectResponse:(NSObject*)response toEvent:(NSDictionary*)eventData
+{
+    NSString *jsString;
+
+    if (response)
+    {
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:response
+                                                           options:0
+                                                             error:0];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+        jsString = [NSString stringWithFormat:@"JSON.parse('%@')", jsonString];
+    }
+    else
+    {
+        jsString = @"null";
+    }
+
+    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
+                    eventData[@"_id"],
+                    jsString];
+
+
+    NSLog(@"sendNSObjectResponse:\n%@", js);
+
+    [webView stringByEvaluatingJavaScriptFromString:js];
+}
+
 #pragma mark - Modular postMessage API
 
 - (MXRoom *)roomCheckWithEvent:(NSDictionary*)eventData
@@ -272,6 +308,25 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     }
 
     return room;
+}
+
+- (void)getWidgets:(NSDictionary*)eventData
+{
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+
+    if (room)
+    {
+        NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsInRoom:room];
+
+        NSMutableArray<NSDictionary*> *widgetStateEvents = [NSMutableArray arrayWithCapacity:widgets.count];
+
+        for (Widget *widget in widgets)
+        {
+            [widgetStateEvents addObject:widget.widgetEvent.JSONDictionary];
+        }
+
+        [self sendNSObjectResponse:widgetStateEvents toEvent:eventData];
+    }
 }
 
 - (void)canSendEvent:(NSDictionary*)eventData
@@ -314,6 +369,17 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
         {
             //sendError(event, _t('You do not have permission to do that in this room.'));
         }
+    }
+}
+
+- (void)getMembershipState:(NSString*)userId eventData:(NSDictionary*)eventData
+{
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+
+    if (room)
+    {
+        MXRoomMember *member = [room.state memberWithUserId:userId];
+        [self sendNSObjectResponse:member.originalEvent.JSONDictionary toEvent:eventData];
     }
 }
 

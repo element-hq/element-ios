@@ -36,6 +36,10 @@ window.riotIOS.onMessage = function(event) {
         return;
     }
 
+    if (!event.origin) { // stupid chrome
+        event.origin = event.originalEvent.origin;
+    }
+
     // Keep this event for future usage
     riotIOS.events[event.data._id] = event;
 
@@ -52,7 +56,7 @@ window.riotIOS.sendResponse = function(eventId, res) {
     // Retrieve the correspong JS event
     var event = riotIOS.events[eventId];
 
-    console.log(eventId + ": " + event);
+    console.log("sendResponse to " + event.data.action + " for "+ eventId + ": " + JSON.stringify(res));
 
     var data = JSON.parse(JSON.stringify(event.data));
     data.response = res;
