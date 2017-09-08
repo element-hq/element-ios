@@ -24,7 +24,7 @@
 {
     if (![widgetEvent.type isEqualToString:kWidgetEventTypeString])
     {
-        // The Widget class works only with scalar, aka "im.vector.modular.widgets", widgets
+        // The Widget class works only with modular, aka "im.vector.modular.widgets", widgets
         return nil;
     }
 

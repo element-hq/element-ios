@@ -158,7 +158,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     }
 
     // Send a state event with the widget data
-    // TODO: This API will be shortly replaced by a pure scalar API
+    // TODO: This API will be shortly replaced by a pure modular API
     return [room sendStateEventOfType:kWidgetEventTypeString
                               content:widgetContent
                              stateKey:widgetId
@@ -181,7 +181,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     NSString *confId = [room.roomId substringWithRange:NSMakeRange(1, [room.roomId rangeOfString:@":"].location - 1)];
     confId = [confId stringByAppendingString:widgetSessionId];
 
-    // TODO: This url may come from scalar API
+    // TODO: This url may come from modular API
     // Note: this url can be used as is inside a web container (like iframe for Riot-web)
     // Riot-iOS does not directly use it but extracts params from it (see `[JitsiViewController openWidget:withVideo:]`)
     NSString *url = [NSString stringWithFormat:@"https://scalar-staging.riot.im/scalar/api/widgets/jitsi.html?confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id@", confId, video ? @"false" : @"true"];
@@ -216,7 +216,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     }
 
     // Send a state event with an empty content to disable the widget
-    // TODO: This API will be shortly replaced by a pure scalar API
+    // TODO: This API will be shortly replaced by a pure modular API
     return [room sendStateEventOfType:kWidgetEventTypeString
                               content:@{}
                              stateKey:widgetId
