@@ -1088,7 +1088,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (nullable NSString *)notificationBodyForEvent:(MXEvent *)event inDirectRoom:(BOOL)isDirect withRoomState:(MXRoomState *)roomState
+- (nullable NSString *)notificationBodyForEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState inAccount:(MXKAccount*)account
 {
     if (!event.content || !event.content.count)
         return nil;
@@ -1098,8 +1098,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
     {
+        BOOL isDirect = [account.mxSession roomWithRoomId:event.roomId].isDirect;
+        
         NSString *msgType = event.content[@"msgtype"];
         NSString *content = event.content[@"body"];
+        
+        if (event.isEncrypted && !account.showDecryptedContentInNotifications)
+        {
+            // Hide the content
+            msgType = nil;
+        }
         
         if (!isDirect)
         {
@@ -1112,7 +1120,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             else if ([msgType isEqualToString:@"m.image"])
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER_IN_ROOM", nil), eventSenderName, content, roomDisplayName];
             else
-                // Unencrypted messages falls here
+                // Encrypted messages falls here
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
         }
         else
@@ -1124,7 +1132,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             else if ([msgType isEqualToString:@"m.image"])
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER", nil), eventSenderName, content];
             else
-                // Unencrypted messages falls here
+                // Encrypted messages falls here
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
         }
     }
@@ -1653,12 +1661,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Enable local notifications
             [self enableLocalNotificationsFromMatrixSession:mxSession];
             
-            // Check whether the app user wants inApp notifications on new events for this session
+            // Look for the account related to this session.
             NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
             for (MXKAccount *account in mxAccounts)
             {
                 if (account.mxSession == mxSession)
                 {
+                    // Enable inApp notifications (if they are allowed for this account).
                     [self enableInAppNotificationsForAccount:account];
                     break;
                 }
@@ -2205,6 +2214,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     __weak typeof(self) weakSelf = self;
     
+    // Look for the account related to this session.
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    MXKAccount *account;
+    for (account in mxAccounts)
+    {
+        if (account.mxSession == mxSession)
+        {
+            break;
+        }
+        account = nil;
+    }
+    
     MXOnNotification notificationListenerBlock = ^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
         
         if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
@@ -2218,8 +2239,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
         if (!(event.eventType == MXEventTypeCallInvite && isCallKitActive))
         {
-            BOOL isEventRoomDirect = [mxSession roomWithRoomId:event.roomId].isDirect;
-            NSString *notificationBody = [weakSelf notificationBodyForEvent:event inDirectRoom:isEventRoomDirect withRoomState:roomState];
+            NSString *notificationBody = [weakSelf notificationBodyForEvent:event withRoomState:roomState inAccount:account];
             if (notificationBody)
             {
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
