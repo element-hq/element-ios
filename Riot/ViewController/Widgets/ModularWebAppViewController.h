@@ -22,7 +22,7 @@
  `ModularWebAppViewController` displays the Modular integration manager webapp
  into a webview.
  */
-@interface ModularWebAppViewController : WebViewViewController
+@interface ModularWebAppViewController : WebViewViewController <UIWebViewDelegate>
 
 /**
  Initialise with params for the Modular interface webapp.

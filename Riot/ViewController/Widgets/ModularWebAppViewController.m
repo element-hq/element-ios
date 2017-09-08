@@ -18,6 +18,30 @@
 
 #import "WidgetManager.h"
 
+// Generic method to make a bridge between JS and the UIWebView
+NSString *kJavascriptSendObjectMessage = @"                                     \
+    window.riotIOS = {};                                                        \
+    window.riotIOS.sendObjectMessage = function(parameters) {                   \
+        var iframe = document.createElement('iframe');                          \
+        iframe.setAttribute('src', 'js:' + JSON.stringify(parameters));         \
+        \
+        document.documentElement.appendChild(iframe);                           \
+        iframe.parentNode.removeChild(iframe);                                  \
+        iframe = null;                                                          \
+    };                                                                          \
+";
+
+// The function to listen to the Modular webapp messages
+NSString *kJavascriptListenToModularMessages = @"                               \
+    window.riotIOS.onMessage = function(event) {                                \
+        sendObjectMessage({                                                     \
+            'event.data': event.data,                                           \
+        });                                                                     \
+    };                                                                          \
+    window.addEventListener('message', riotIOS.onMessage, false);               \
+";
+
+
 @interface ModularWebAppViewController ()
 {
     MXSession *mxSession;
@@ -59,6 +83,8 @@
     [super viewDidLoad];
 
     webView.scalesPageToFit = NO;
+
+    webView.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,6 +97,7 @@
 
         [self startActivityIndicator];
 
+        // Make sure we a scalar token
         operation = [[WidgetManager sharedManager] getScalarTokenForMXSession:mxSession success:^(NSString *theScalarToken) {
 
             typeof(self) self = weakSelf;
@@ -82,6 +109,7 @@
 
                 scalarToken = theScalarToken;
 
+                // Launch the webview on the right modular webapp page
                 self.URL = [self interfaceUrl];
             }
 
@@ -101,7 +129,7 @@
 #pragma mark - Private methods
 
 /**
- Get the URL to use in the Modular interface webapp.
+ Build the URL to use in the Modular interface webapp.
  */
 - (NSString *)interfaceUrl
 {
@@ -129,6 +157,180 @@
     }
     
     return url;
+}
+
+#pragma mark - UIWebViewDelegate
+
+-(void)webViewDidFinishLoad:(UIWebView *)theWebView
+{
+    // Setup Objs-JS bridging methods
+    [webView stringByEvaluatingJavaScriptFromString:kJavascriptSendObjectMessage];
+    [webView stringByEvaluatingJavaScriptFromString:kJavascriptListenToModularMessages];
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSString *urlString = [[request URL] absoluteString];
+
+    if ([urlString hasPrefix:@"js:"])
+    {
+        // Listen only to scheme of the JS-UIWebView bridge
+        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+
+        NSError *error;
+        NSDictionary *parameters = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers
+                                                                     error:&error];
+
+        NSLog(@"++++ parameters: %@", parameters);
+
+        if (!error)
+        {
+            NSDictionary *eventData;
+            MXJSONModelSetDictionary(eventData, parameters[@"event.data"]);
+
+            NSString *roomIdInEvent, *userId, *action;
+
+            MXJSONModelSetString(roomIdInEvent, eventData[@"room_id"]);
+            MXJSONModelSetString(userId, eventData[@"user_id"]);
+            MXJSONModelSetString(action, eventData[@"action"]);
+
+            if (!roomIdInEvent)
+            {
+                //sendError(event, _t('Missing room_id in request'));
+                return NO;
+            }
+
+            if (![roomIdInEvent isEqualToString:roomId])
+            {
+                //sendError(event, _t('Room %(roomId)s not visible', {roomId: roomId}));
+                return NO;
+            }
+
+
+            // These APIs don't require userId
+            if ([@"join_rules_state" isEqualToString:action])
+            {
+                //getJoinRules(event, roomId);
+            }
+            else if ([@"set_plumbing_state" isEqualToString:action])
+            {
+                //setPlumbingState(event, roomId, event.data.status);
+            }
+            else if ([@"get_membership_count" isEqualToString:action])
+            {
+                //getMembershipCount(event, roomId);
+            }
+            else if ([@"set_widget" isEqualToString:action])
+            {
+                //setWidget(event, roomId);
+            }
+            else if ([@"get_widgets" isEqualToString:action])
+            {
+                //getWidgets(event, roomId);
+            }
+            else if ([@"can_send_event" isEqualToString:action])
+            {
+                [self canSendEvent:eventData];
+                //canSendEvent(event, roomId);
+            }
+
+
+            if (!userId)
+            {
+                //sendError(event, _t('Missing user_id in request'));
+                return NO;
+            }
+
+            if ([@"membership_state" isEqualToString:action])
+            {
+                //getMembershipState(event, roomId, userId);
+            }
+            else if ([@"invite" isEqualToString:action])
+            {
+                //inviteUser(event, roomId, userId);
+            }
+            else if ([@"bot_options" isEqualToString:action])
+            {
+                //botOptions(event, roomId, userId);
+            }
+            else if ([@"set_bot_options" isEqualToString:action])
+            {
+                //setBotOptions(event, roomId, userId);
+            }
+            else if ([@"set_bot_power" isEqualToString:action])
+            {
+                //setBotPower(event, roomId, userId, event.data.level);
+            }
+            else
+            {
+                NSLog(@"[ModularWebAppViewController] Unhandled postMessage event with action %@: %@", action, parameters);
+            }
+        }
+        return NO;
+    }
+    return YES;
+}
+
+- (void)sendResponse:(NSString*)response toEvent:(NSDictionary*)eventData
+{
+
+}
+
+#pragma mark - Modular postMessage API
+
+- (MXRoom *)roomCheckWithEvent:(NSDictionary*)eventData
+{
+    MXRoom *room = [mxSession roomWithRoomId:roomId];
+    if (!room)
+    {
+        //sendError(event, _t('This room is not recognised.'));
+    }
+
+    return room;
+}
+
+- (void)canSendEvent:(NSDictionary*)eventData
+{
+    NSString *eventType;
+    BOOL isState = NO;
+
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+
+    if (room)
+    {
+        if (room.state.membership != MXMembershipJoin)
+        {
+            // sendError(event, _t('You are not in this room.'));
+            return;
+        }
+
+        MXJSONModelSetString(eventType, eventData[@"event_type"]);
+        MXJSONModelSetBoolean(isState, eventData[@"is_state"]);
+
+        MXRoomPowerLevels *powerLevels = room.state.powerLevels;
+        NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxSession.myUser.userId];
+
+        BOOL canSend = NO;
+
+        if (isState)
+        {
+            canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:eventType]);
+        }
+        else
+        {
+            canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:eventType]);
+        }
+
+        if (canSend)
+        {
+            [self sendResponse:@"true" toEvent:eventData];
+        }
+        else
+        {
+            //sendError(event, _t('You do not have permission to do that in this room.'));
+        }
+    }
 }
 
 @end
