@@ -147,7 +147,7 @@
         }
         
         // Notify unreads and bing
-        if (roomCellData.hasUnread )
+        if (roomCellData.hasUnread)
         {
             if (0 < roomCellData.notificationCount)
             {

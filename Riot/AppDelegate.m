@@ -568,17 +568,6 @@ static NSString *const kShortcutItemTypeSearch = @"shortcut_item_type_search";
     completionHandler([self handleShortcut:shortcutItem]);
 }
 
-- (void)onSessionSync:(NSNotification *)notification
-{
-    NSArray <MXRoom *> *rooms = ((MXSession *)self.mxSessions.firstObject).rooms;
-    
-    if (rooms.count)
-    {
-        //UIApplicationShortcutItem *firstDynamicItem = [[UIApplicationShortcutItem alloc] initWithType:kShortcutItemTypeRecentRoom localizedTitle:rooms[0].riotDisplayname localizedSubtitle:nil icon:nil userInfo:@{@"roomID" : rooms[0].roomId}];
-        //[UIApplication sharedApplication].shortcutItems = @[firstDynamicItem];
-    }
-}
-
 - (BOOL)handleShortcut:(UIApplicationShortcutItem *)shortcut
 {
     if ([shortcut.type isEqualToString:kShortcutItemTypeFavourites])
