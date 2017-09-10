@@ -972,17 +972,25 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
 {
     self.registrationForRemoteNotificationsCompletion = completion;
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-}
-
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
-{
-    if (notificationSettings.types == UIUserNotificationTypeNone)
-        return;
     
     self.pushRegistry = [[PKPushRegistry alloc] initWithQueue:nil];
     self.pushRegistry.delegate = self;
     self.pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    // Register for remote notifications only if user provide access to notification feature
+    if (notificationSettings.types != UIUserNotificationTypeNone)
+    {
+        [self registerForRemoteNotificationsWithCompletion:nil];
+    }
+    else
+    {
+        // Clear existing token
+        MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+        [accountManager setApnsDeviceToken:nil];
+    }
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -1039,6 +1047,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [accountManager setApnsDeviceToken:token];
     
     isAPNSRegistered = YES;
+    
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(nil);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
