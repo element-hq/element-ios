@@ -19,10 +19,10 @@
 #import <MatrixSDK/MatrixSDK.h>
 
 /**
- `ModularWebAppViewController` displays the Modular integration manager webapp
+ `IntegrationManagerViewController` displays the Modular integration manager webapp
  into a webview.
  */
-@interface ModularWebAppViewController : WebViewViewController <UIWebViewDelegate>
+@interface IntegrationManagerViewController : WebViewViewController <UIWebViewDelegate>
 
 /**
  Initialise with params for the Modular interface webapp.

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "ModularWebAppViewController.h"
+#import "IntegrationManagerViewController.h"
 
 #import "WidgetManager.h"
 
@@ -23,7 +23,7 @@
 NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 
-@interface ModularWebAppViewController ()
+@interface IntegrationManagerViewController ()
 {
     MXSession *mxSession;
     NSString *roomId;
@@ -36,7 +36,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 @end
 
-@implementation ModularWebAppViewController
+@implementation IntegrationManagerViewController
 
 - (instancetype)initForMXSession:(MXSession *)theMXSession inRoom:(NSString *)theRoomId screen:(NSString *)theScreen widgetId:(NSString *)theWidgetId
 {
@@ -159,7 +159,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     [self enableDebug];
 
     // Setup js code
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"ModularWebApp" ofType:@"js"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"IntegrationManager" ofType:@"js"];
     NSString *js = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
@@ -274,7 +274,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     }
     else
     {
-        NSLog(@"[ModularWebAppViewController] Unhandled postMessage event with action %@: %@", action, JSData);
+        NSLog(@"[IntegrationManagerViewControllerVC] Unhandled postMessage event with action %@: %@", action, JSData);
     }
 }
 
