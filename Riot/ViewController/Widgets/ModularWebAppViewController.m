@@ -140,15 +140,23 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     return url;
 }
 
+- (void)enableDebug
+{
+    // Setup console.log() -> NSLog() route
+    JSContext *ctx = [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    ctx[@"console"][@"log"] = ^(JSValue * msg) {
+        NSLog(@"-- JavaScript: %@", msg);
+    };
+
+    // Redirect all console.* logging methods to console.log
+    [webView stringByEvaluatingJavaScriptFromString:@"console.debug = console.log; console.info = console.log; console.warn = console.log; console.error = console.log;"];
+}
+
 #pragma mark - UIWebViewDelegate
 
 -(void)webViewDidFinishLoad:(UIWebView *)theWebView
 {
-    // Setup debug
-    JSContext *ctx = [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
-    ctx[@"console"][@"log"] = ^(JSValue * msg) {
-        NSLog(@"----------- JavaScript: %@", msg);
-    };
+    [self enableDebug];
 
     // Setup js code
     NSString *path = [[NSBundle mainBundle] pathForResource:@"ModularWebApp" ofType:@"js"];
@@ -169,99 +177,110 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
         NSError *error;
         NSDictionary *parameters = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers
                                                                      error:&error];
-
-        NSLog(@"++++ parameters: %@", parameters);
-
         if (!error)
         {
-            NSDictionary *eventData;
-            MXJSONModelSetDictionary(eventData, parameters[@"event.data"]);
-
-            NSString *roomIdInEvent, *userId, *action;
-
-            MXJSONModelSetString(roomIdInEvent, eventData[@"room_id"]);
-            MXJSONModelSetString(userId, eventData[@"user_id"]);
-            MXJSONModelSetString(action, eventData[@"action"]);
-
-            if (!roomIdInEvent)
-            {
-                //sendError(event, _t('Missing room_id in request'));
-                return NO;
-            }
-
-            if (![roomIdInEvent isEqualToString:roomId])
-            {
-                //sendError(event, _t('Room %(roomId)s not visible', {roomId: roomId}));
-                return NO;
-            }
-
-
-            // These APIs don't require userId
-            if ([@"join_rules_state" isEqualToString:action])
-            {
-                //getJoinRules(event, roomId);
-            }
-            else if ([@"set_plumbing_state" isEqualToString:action])
-            {
-                //setPlumbingState(event, roomId, event.data.status);
-            }
-            else if ([@"get_membership_count" isEqualToString:action])
-            {
-                //getMembershipCount(event, roomId);
-            }
-            else if ([@"set_widget" isEqualToString:action])
-            {
-                //setWidget(event, roomId);
-            }
-            else if ([@"get_widgets" isEqualToString:action])
-            {
-                [self getWidgets:eventData];
-            }
-            else if ([@"can_send_event" isEqualToString:action])
-            {
-                [self canSendEvent:eventData];
-                //canSendEvent(event, roomId);
-            }
-
-
-            if (!userId)
-            {
-                //sendError(event, _t('Missing user_id in request'));
-                return NO;
-            }
-
-            if ([@"membership_state" isEqualToString:action])
-            {
-                [self getMembershipState:userId eventData:eventData];
-            }
-            else if ([@"invite" isEqualToString:action])
-            {
-                //inviteUser(event, roomId, userId);
-            }
-            else if ([@"bot_options" isEqualToString:action])
-            {
-                //botOptions(event, roomId, userId);
-            }
-            else if ([@"set_bot_options" isEqualToString:action])
-            {
-                //setBotOptions(event, roomId, userId);
-            }
-            else if ([@"set_bot_power" isEqualToString:action])
-            {
-                //setBotPower(event, roomId, userId, event.data.level);
-            }
-            else
-            {
-                NSLog(@"[ModularWebAppViewController] Unhandled postMessage event with action %@: %@", action, parameters);
-            }
+            [self onMessage:parameters];
         }
+
         return NO;
     }
     return YES;
 }
 
+#pragma mark - Modular postMessage API
+
+- (void)onMessage:(NSDictionary*)JSData
+{
+    NSDictionary *eventData;
+    MXJSONModelSetDictionary(eventData, JSData[@"event.data"]);
+
+    NSString *roomIdInEvent, *userId, *action;
+
+    MXJSONModelSetString(roomIdInEvent, eventData[@"room_id"]);
+    MXJSONModelSetString(userId, eventData[@"user_id"]);
+    MXJSONModelSetString(action, eventData[@"action"]);
+
+    if (!roomIdInEvent)
+    {
+        [self sendLocalisedError:@"widget_integration_missing_room_id" toEvent:eventData];
+        return;
+    }
+
+    if (![roomIdInEvent isEqualToString:roomId])
+    {
+        [self sendError:[NSString stringWithFormat:NSLocalizedStringFromTable(@"widget_integration_room_not_visible", @"Vector", nil), roomIdInEvent] toEvent:eventData];
+        return;
+    }
+
+
+    // These APIs don't require userId
+    if ([@"join_rules_state" isEqualToString:action])
+    {
+        //getJoinRules(event, roomId);
+        return;
+    }
+    else if ([@"set_plumbing_state" isEqualToString:action])
+    {
+        //setPlumbingState(event, roomId, event.data.status);
+        return;
+    }
+    else if ([@"get_membership_count" isEqualToString:action])
+    {
+        //getMembershipCount(event, roomId);
+        return;
+    }
+    else if ([@"set_widget" isEqualToString:action])
+    {
+        //setWidget(event, roomId);
+        return;
+    }
+    else if ([@"get_widgets" isEqualToString:action])
+    {
+        [self getWidgets:eventData];
+        return;
+    }
+    else if ([@"can_send_event" isEqualToString:action])
+    {
+        [self canSendEvent:eventData];
+        return;
+    }
+
+
+    if (!userId)
+    {
+        [self sendLocalisedError:@"widget_integration_missing_user_id" toEvent:eventData];
+        return;
+    }
+
+    if ([@"membership_state" isEqualToString:action])
+    {
+        [self getMembershipState:userId eventData:eventData];
+    }
+    else if ([@"invite" isEqualToString:action])
+    {
+        //inviteUser(event, roomId, userId);
+    }
+    else if ([@"bot_options" isEqualToString:action])
+    {
+        //botOptions(event, roomId, userId);
+    }
+    else if ([@"set_bot_options" isEqualToString:action])
+    {
+        //setBotOptions(event, roomId, userId);
+    }
+    else if ([@"set_bot_power" isEqualToString:action])
+    {
+        //setBotPower(event, roomId, userId, event.data.level);
+    }
+    else
+    {
+        NSLog(@"[ModularWebAppViewController] Unhandled postMessage event with action %@: %@", action, JSData);
+    }
+}
+
 - (void)sendBoolResponse:(BOOL)response toEvent:(NSDictionary*)eventData
 {
+    // Convert BOOL to "true" or "false"
     NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
                     eventData[@"_id"],
                     response ? @"true" : @"false"];
@@ -275,6 +294,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
     if (response)
     {
+        // Convert response into a JS object through a JSON string
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:response
                                                            options:0
                                                              error:0];
@@ -291,20 +311,33 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
                     eventData[@"_id"],
                     jsString];
 
-
-    NSLog(@"sendNSObjectResponse:\n%@", js);
-
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
-#pragma mark - Modular postMessage API
+- (void)sendError:(NSString*)message toEvent:(NSDictionary*)eventData
+{
+    // TODO: JS has an additional optional parameter: nestedError
+    [self sendNSObjectResponse:@{
+                                 @"error": @{
+                                         @"message": message
+                                         }
+                                 }
+                       toEvent:eventData];
+}
+
+- (void)sendLocalisedError:(NSString*)errorKey toEvent:(NSDictionary*)eventData
+{
+    [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toEvent:eventData];
+}
+
+#pragma mark - Modular postMessage Implementation
 
 - (MXRoom *)roomCheckWithEvent:(NSDictionary*)eventData
 {
     MXRoom *room = [mxSession roomWithRoomId:roomId];
     if (!room)
     {
-        //sendError(event, _t('This room is not recognised.'));
+        [self sendLocalisedError:@"widget_integration_room_not_recognised" toEvent:eventData];
     }
 
     return room;
@@ -340,7 +373,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     {
         if (room.state.membership != MXMembershipJoin)
         {
-            // sendError(event, _t('You are not in this room.'));
+            [self sendLocalisedError:@"widget_integration_must_be_in_room" toEvent:eventData];
             return;
         }
 
@@ -367,7 +400,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
         }
         else
         {
-            //sendError(event, _t('You do not have permission to do that in this room.'));
+            [self sendLocalisedError:@"widget_integration_no_permission_in_room" toEvent:eventData];
         }
     }
 }
