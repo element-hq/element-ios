@@ -139,6 +139,7 @@
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.overlayView.backgroundColor = kRiotOverlayColor;
     self.overlayView.alpha = 1.0;

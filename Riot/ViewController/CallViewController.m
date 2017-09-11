@@ -101,6 +101,7 @@
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.callerNameLabel.textColor = kRiotPrimaryTextColor;
     self.callStatusLabel.textColor = kRiotTopicTextColor;
