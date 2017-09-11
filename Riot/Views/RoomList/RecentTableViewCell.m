@@ -111,7 +111,7 @@
             }
             else
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = kRiotColorSilver;
+                self.missedNotifAndUnreadIndicator.backgroundColor = kRiotAuxiliaryColor;
             }
             
             // Use bold font for the room title

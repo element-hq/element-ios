@@ -34,6 +34,8 @@
 @property (nonatomic) BOOL sendLogs;
 @property (nonatomic) BOOL sendScreenshot;
 
+@property (weak, nonatomic) IBOutlet UIView *overlayView;
+
 @end
 
 @implementation BugReportViewController
@@ -137,6 +139,9 @@
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    
+    self.overlayView.backgroundColor = kRiotOverlayColor;
+    self.overlayView.alpha = 1.0;
     
     self.containerView.backgroundColor = kRiotPrimaryBgColor;
     self.sendingContainer.backgroundColor = kRiotPrimaryBgColor;

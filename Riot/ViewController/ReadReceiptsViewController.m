@@ -97,6 +97,9 @@
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
     
+    self.overlayView.backgroundColor = kRiotOverlayColor;
+    self.overlayView.alpha = 1.0;
+    
     self.titleLabel.textColor = kRiotPrimaryTextColor;
     self.containerView.backgroundColor = kRiotPrimaryBgColor;
     

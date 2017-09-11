@@ -26,6 +26,8 @@ UIColor *kRiotSecondaryTextColor;
 UIColor *kRiotPlaceholderTextColor;
 UIColor *kRiotTopicTextColor;
 UIColor *kRiotSelectedBgColor;
+UIColor *kRiotAuxiliaryColor;
+UIColor *kRiotOverlayColor;
 
 // Riot Colors
 UIColor *kRiotColorGreen;
@@ -135,6 +137,9 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
         kRiotDesignStatusBarStyle = UIStatusBarStyleLightContent;
         kRiotDesignSearchBarStyle = UIBarStyleBlack;
         kRiotDesignSearchBarTintColor = kRiotColorGreen;
+        
+        kRiotAuxiliaryColor = kRiotTextColorGray;
+        kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
     }
     else
     {
@@ -150,6 +155,9 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
         kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
         kRiotDesignSearchBarStyle = UIBarStyleDefault;
         kRiotDesignSearchBarTintColor = nil; // Default tint color.
+        
+        kRiotAuxiliaryColor = kRiotColorSilver;
+        kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
