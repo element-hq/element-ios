@@ -71,11 +71,11 @@
  @param viewControllers the list of viewControllers to display.
  @param defaultSelected index of the default selected UIViewController in the list.
  */
-- (void)initWithTitles:(NSArray*)titles viewControllers:(NSArray*)someViewControllers defaultSelected:(NSUInteger)index
+- (void)initWithTitles:(NSArray*)titles viewControllers:(NSArray*)someViewControllers defaultSelected:(NSUInteger)defaultSelected
 {
     viewControllers = someViewControllers;
     sectionTitles = titles;
-    _selectedIndex = index;
+    _selectedIndex = defaultSelected;
 }
 
 - (void)destroy

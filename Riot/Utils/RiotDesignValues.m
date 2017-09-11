@@ -28,6 +28,7 @@ UIColor *kRiotTopicTextColor;
 UIColor *kRiotSelectedBgColor;
 UIColor *kRiotAuxiliaryColor;
 UIColor *kRiotOverlayColor;
+UIColor *kRiotKeyboardColor;
 
 // Riot Colors
 UIColor *kRiotColorGreen;
@@ -44,6 +45,8 @@ UIColor *kRiotBgColorWhite;
 UIColor *kRiotBgColorBlack;
 UIColor *kRiotColorLightGrey;
 UIColor *kRiotColorLightBlack;
+UIColor *kRiotColorLightKeyboard;
+UIColor *kRiotColorDarkKeyboard;
 
 // Riot Text Colors
 UIColor *kRiotTextColorBlack;
@@ -92,6 +95,9 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
     
     kRiotColorLightGrey = UIColorFromRGB(0xF2F2F2);
     kRiotColorLightBlack = UIColorFromRGB(0x353535);
+    
+    kRiotColorLightKeyboard = UIColorFromRGB(0xE7E7E7);
+    kRiotColorDarkKeyboard = UIColorFromRGB(0x7E7E7E);
 
     kRiotTextColorBlack = UIColorFromRGB(0x3C3C3C);
     kRiotTextColorDarkGray = UIColorFromRGB(0x4A4A4A);
@@ -140,6 +146,7 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
         
         kRiotAuxiliaryColor = kRiotTextColorGray;
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
+        kRiotKeyboardColor = kRiotColorDarkKeyboard;
     }
     else
     {
@@ -158,6 +165,7 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
         
         kRiotAuxiliaryColor = kRiotColorSilver;
         kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
+        kRiotKeyboardColor = kRiotColorLightKeyboard;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];

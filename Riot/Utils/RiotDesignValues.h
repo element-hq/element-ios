@@ -41,6 +41,7 @@ extern UIColor *kRiotTopicTextColor;
 extern UIColor *kRiotSelectedBgColor; // nil is used to keep the default color.
 extern UIColor *kRiotAuxiliaryColor; // kRiotColorSilver by default.
 extern UIColor *kRiotOverlayColor; // fading behind dialog modals. This color includes the transparency value.
+extern UIColor *kRiotKeyboardColor;
 
 #pragma mark - Riot Colors
 extern UIColor *kRiotColorGreen;
