@@ -169,6 +169,10 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         return nil;
     }
 
+    NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
+    successBlockForWidgetCreation[hash][widgetId] = success;
+    failureBlockForWidgetCreation[hash][widgetId] = failure;
+
     // Send a state event with the widget data
     // TODO: This API will be shortly replaced by a pure modular API
     return [room sendStateEventOfType:kWidgetEventTypeString
@@ -198,10 +202,6 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // Riot-iOS does not directly use it but extracts params from it (see `[JitsiViewController openWidget:withVideo:]`)
     NSString *modularRestUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
     NSString *url = [NSString stringWithFormat:@"%@/widgets/jitsi.html?confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id@", modularRestUrl, confId, video ? @"false" : @"true"];
-
-    NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
-    successBlockForWidgetCreation[hash][widgetId] = success;
-    failureBlockForWidgetCreation[hash][widgetId] = failure;
 
     return [self createWidget:widgetId
                   withContent:@{
