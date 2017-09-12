@@ -134,7 +134,8 @@
 
 - (void)addBackgroundImageViewToView:(UIView*)view
 {
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search_bg"]];
+    UIImage *searchBgImage = [MXKTools paintImage:[UIImage imageNamed:@"search_bg"] withColor:kRiotKeyboardColor];
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:searchBgImage];
     backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [view addSubview:backgroundImageView];

@@ -209,6 +209,7 @@
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.memberHeaderView.backgroundColor = kRiotSecondaryBgColor;
     self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;

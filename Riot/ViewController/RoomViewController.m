@@ -417,6 +417,7 @@
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadBannerContainer.backgroundColor = kRiotPrimaryBgColor;
