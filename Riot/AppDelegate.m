@@ -358,6 +358,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     _isAppForeground = NO;
     
+    // We use now Pushkit, unregister for all remote notifications received via Apple Push Notification service.
+    [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+    
     // Retrieve custom configuration
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
