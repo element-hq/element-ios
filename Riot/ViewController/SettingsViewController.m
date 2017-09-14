@@ -1256,6 +1256,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.alpha = 1.0f;
     cell.userInteractionEnabled = YES;
     
+    [cell layoutIfNeeded];
+    
     return cell;
 }
 
@@ -1267,6 +1269,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    
+    // Force layout before reusing a cell (fix switch displayed outside the screen)
+    [cell layoutIfNeeded];
     
     return cell;
 }
