@@ -1318,6 +1318,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             signOutCell = [[MXKTableViewCellWithButton alloc] init];
         }
+        else
+        {
+            // Fix https://github.com/vector-im/riot-ios/issues/1354
+            // Do not move this line in prepareForReuse because of https://github.com/vector-im/riot-ios/issues/1323
+            signOutCell.mxkButton.titleLabel.text = nil;
+        }
         
         NSString* title = NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil);
         
@@ -1861,6 +1867,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 markAllBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                markAllBtnCell.mxkButton.titleLabel.text = nil;
+            }
             
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_mark_all_as_read", @"Vector", nil);
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
@@ -1881,6 +1892,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                clearCacheBtnCell.mxkButton.titleLabel.text = nil;
+            }
             
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil);
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
@@ -1900,6 +1916,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!reportBugBtnCell)
             {
                 reportBugBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                reportBugBtnCell.mxkButton.titleLabel.text = nil;
             }
 
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
@@ -2003,6 +2024,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!exportKeysBtnCell)
             {
                 exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                exportKeysBtnCell.mxkButton.titleLabel.text = nil;
             }
 
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
