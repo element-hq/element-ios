@@ -130,7 +130,8 @@
 
 - (void)showShareAlertForRoomPath:(NSIndexPath *)indexPath
 {
-    NSString *receipantName = [self.dataSource getRoomAtIndexPath:indexPath].riotDisplayname;
+    // @TODO: the room should be instanciated here (only the room summary should be available from dataSource).
+    NSString *receipantName = [self.dataSource getRoomAtIndexPath:indexPath].summary.displayname;
     if (!receipantName.length)
     {
         receipantName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

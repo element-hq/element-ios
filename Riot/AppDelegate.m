@@ -34,7 +34,6 @@
 #import "MatrixSDK/MatrixSDK.h"
 
 #import "Tools.h"
-#import "MXRoom+Riot.h"
 #import "WidgetManager.h"
 
 #import "AFNetworkReachabilityManager.h"
@@ -2459,7 +2458,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
 
             MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
-            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.riotDisplayname];
+            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.summary.displayname];
             [self addCallStatusBar:btnTitle];
 
             if (completion)

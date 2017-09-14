@@ -17,8 +17,6 @@
 
 #import "FilesSearchCellData.h"
 
-#import "MXRoom+Riot.h"
-
 @implementation FilesSearchCellData
 @synthesize roomId, senderDisplayName;
 @synthesize searchResult, title, message, date, shouldShowRoomDisplayName, roomDisplayName, attachment, isAttachmentWithThumbnail, attachmentIcon;
@@ -82,7 +80,7 @@
         MXRoom *room = [searchDataSource.mxSession roomWithRoomId:roomId];
         if (room)
         {
-            roomDisplayName = room.riotDisplayname;
+            roomDisplayName = room.summary.displayname;
             if (!roomDisplayName.length)
             {
                 roomDisplayName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

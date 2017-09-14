@@ -19,8 +19,6 @@
 
 #import "RiotDesignValues.h"
 
-#import "MXRoom+Riot.h"
-
 @implementation MessagesSearchResultAttachmentBubbleCell
 
 - (void)customizeTableViewCellRendering
@@ -43,7 +41,7 @@
         MXRoom* room = [bubbleData.mxSession roomWithRoomId:bubbleData.roomId];
         if (room)
         {
-            self.roomNameLabel.text = room.riotDisplayname;
+            self.roomNameLabel.text = room.summary.displayname;
             if (!self.roomNameLabel.text.length)
             {
                 self.roomNameLabel.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

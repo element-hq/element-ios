@@ -17,8 +17,6 @@
 
 #import "RoomPreviewData.h"
 
-#import "MXRoom+Riot.h"
-
 @implementation RoomPreviewData
 
 - (instancetype)initWithRoomId:(NSString *)roomId andSession:(MXSession *)mxSession
@@ -88,8 +86,8 @@
         [_roomDataSource finalizeInitialization];
         _roomDataSource.markTimelineInitialEvent = YES;
 
-        _roomName = peekingRoom.riotDisplayname;
-        _roomAvatarUrl = peekingRoom.state.avatar;
+        _roomName = peekingRoom.summary.displayname;
+        _roomAvatarUrl = peekingRoom.summary.avatar;
         
         _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.state.topic];;
         _roomAliases = peekingRoom.state.aliases;

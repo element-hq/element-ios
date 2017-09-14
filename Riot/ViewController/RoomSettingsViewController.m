@@ -26,6 +26,7 @@
 #import "Tools.h"
 
 #import "MXRoom+Riot.h"
+#import "MXRoomSummary+Riot.h"
 
 #import "AppDelegate.h"
 
@@ -1998,7 +1999,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else
             {
-                [mxRoom setRoomAvatarImageIn:roomPhotoCell.mxkImageView];
+                [mxRoom.summary setRoomAvatarImageIn:roomPhotoCell.mxkImageView];
                 
                 roomPhotoCell.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomAvatar]);
                 roomPhotoCell.mxkImageView.alpha = roomPhotoCell.userInteractionEnabled ? 1.0f : 0.5f;
