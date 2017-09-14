@@ -216,22 +216,22 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     // These APIs don't require userId
     if ([@"join_rules_state" isEqualToString:action])
     {
-        //getJoinRules(event, roomId);
+        [self getJoinRules:eventData];
         return;
     }
     else if ([@"set_plumbing_state" isEqualToString:action])
     {
-        //setPlumbingState(event, roomId, event.data.status);
+        [self setPlumbingState:eventData];
         return;
     }
     else if ([@"get_membership_count" isEqualToString:action])
     {
-        //getMembershipCount(event, roomId);
+        [self getMembershipCount:eventData];
         return;
     }
     else if ([@"set_widget" isEqualToString:action])
     {
-        //setWidget(event, roomId);
+        [self setWidget:eventData];
         return;
     }
     else if ([@"get_widgets" isEqualToString:action])
@@ -258,19 +258,19 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     }
     else if ([@"invite" isEqualToString:action])
     {
-        //inviteUser(event, roomId, userId);
+        [self inviteUser:userId eventData:eventData];
     }
     else if ([@"bot_options" isEqualToString:action])
     {
-        //botOptions(event, roomId, userId);
+        [self getBotOptions:userId eventData:eventData];
     }
     else if ([@"set_bot_options" isEqualToString:action])
     {
-        //setBotOptions(event, roomId, userId);
+        [self setBotOptions:userId eventData:eventData];
     }
     else if ([@"set_bot_power" isEqualToString:action])
     {
-        //setBotPower(event, roomId, userId, event.data.level);
+        [self setBotPower:userId eventData:eventData];
     }
     else
     {
@@ -284,6 +284,15 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
                     eventData[@"_id"],
                     response ? @"true" : @"false"];
+
+    [webView stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (void)sendIntegerResponse:(NSUInteger)response toEvent:(NSDictionary*)eventData
+{
+    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
+                    eventData[@"_id"],
+                    @(response)];
 
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
@@ -316,6 +325,8 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 - (void)sendError:(NSString*)message toEvent:(NSDictionary*)eventData
 {
+    NSLog(@"[IntegrationManagerVC] sendError: Action %@ failed with message: %@", eventData[@"action"], message);
+
     // TODO: JS has an additional optional parameter: nestedError
     [self sendNSObjectResponse:@{
                                  @"error": @{
@@ -341,6 +352,20 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
     }
 
     return room;
+}
+
+- (void)inviteUser:(NSString*)userId eventData:(NSDictionary*)eventData
+{
+    NSLog(@"[IntegrationManagerVC] Received request to invite %@ into room %@.", userId, roomId);
+
+    NSAssert(NO, @"TODO");
+}
+
+- (void)setWidget:(NSDictionary*)eventData
+{
+    NSLog(@"[IntegrationManagerVC] Received request to set widget in room %@.", roomId);
+
+    NSAssert(NO, @"TODO");
 }
 
 - (void)getWidgets:(NSDictionary*)eventData
@@ -407,12 +432,63 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 - (void)getMembershipState:(NSString*)userId eventData:(NSDictionary*)eventData
 {
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    NSLog(@"[IntegrationManagerVC] membership_state of %@ in room %@ requested.", userId, roomId);
 
+    MXRoom *room = [self roomCheckWithEvent:eventData];
     if (room)
     {
         MXRoomMember *member = [room.state memberWithUserId:userId];
         [self sendNSObjectResponse:member.originalEvent.JSONDictionary toEvent:eventData];
+    }
+}
+
+- (void)getJoinRules:(NSDictionary*)eventData
+{
+    NSLog(@"[IntegrationManagerVC] join_rules of %@ requested.", roomId);
+
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+    if (room)
+    {
+        MXEvent *event = [room.state stateEventsWithType:kMXEventTypeStringRoomJoinRules].lastObject;
+        [self sendNSObjectResponse:event.JSONDictionary toEvent:eventData];
+    }
+}
+
+- (void)setPlumbingState:(NSDictionary*)eventData
+{
+    NSLog(@"[IntegrationManagerVC] Received request to set plumbing state to status %@ in room %@.", eventData[@"status"], roomId);
+
+    NSAssert(NO, @"TODO");
+}
+
+- (void)getBotOptions:(NSString*)userId eventData:(NSDictionary*)eventData
+{
+    NSLog(@"[IntegrationManagerVC] Received request to get options for bot %@ in room %@", userId, roomId);
+
+    NSAssert(NO, @"TODO");
+}
+
+- (void)setBotOptions:(NSString*)userId eventData:(NSDictionary*)eventData
+{
+    NSLog(@"[IntegrationManagerVC] Received request to set options for bot %@ in room %@", userId, roomId);
+
+    NSAssert(NO, @"TODO");
+}
+
+- (void)setBotPower:(NSString*)userId eventData:(NSDictionary*)eventData
+{
+    NSLog(@"[IntegrationManagerVC] Received request to set power level to %@ for bot %@ in room %@.", eventData[@"level"], userId, roomId);
+
+    NSAssert(NO, @"TODO");
+}
+
+- (void)getMembershipCount:(NSDictionary*)eventData
+{
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+    if (room)
+    {
+        NSUInteger membershipCount = room.state.joinedMembers.count;
+        [self sendIntegerResponse:membershipCount toEvent:eventData];
     }
 }
 
