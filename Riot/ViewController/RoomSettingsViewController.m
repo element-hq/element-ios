@@ -1965,6 +1965,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             cell = roomNotifCell;
+            
+            // Force layout before reusing a cell (fix switch displayed outside the screen)
+            [cell layoutIfNeeded];
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO)
         {
@@ -2182,6 +2185,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             directoryVisibilitySwitch.enabled = (oneSelfPowerLevel >= powerLevels.stateDefault);
             
             cell = directoryToggleCell;
+            
+            // Force layout before reusing a cell (fix switch displayed outside the screen)
+            [cell layoutIfNeeded];
         }
         else if (indexPath.row == missingAddressWarningIndex)
         {
@@ -2492,6 +2498,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 roomEncryptionBlacklistUnverifiedDevicesSwitch.on = blacklistUnverifiedDevices;
                 
                 cell = roomBlacklistUnverifiedDevicesCell;
+                
+                // Force layout before reusing a cell (fix switch displayed outside the screen)
+                [cell layoutIfNeeded];
             }
             else if (indexPath.row == 2)
             {
@@ -2548,6 +2557,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 roomEncryptionSwitch.on = ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey] != nil);
                 
                 cell = roomEncryptionCell;
+                
+                // Force layout before reusing a cell (fix switch displayed outside the screen)
+                [cell layoutIfNeeded];
             }
             else
             {
