@@ -389,7 +389,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
                 typeof(self) self = weakSelf;
                 if (self)
                 {
-                    [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                    [self sendLocalisedError:@"widget_integration_need_to_be_able_to_invite" toEvent:eventData];
                 }
             }];
         }
@@ -712,6 +712,7 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
         else
         {
             NSLog(@"[IntegrationManagerVC] setBotPower. Power level must be positive integer.");
+            [self sendLocalisedError:@"widget_integration_positive_power_level" toEvent:eventData];
         }
     }
 }

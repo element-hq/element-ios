@@ -511,7 +511,6 @@
 "widget_creation_failure" = "Widget creation has failed";
 
 // Widget Integration Manager
-"widget_integration_need_login" = "You need to be logged in.";
 "widget_integration_need_to_be_able_to_invite" = "You need to be able to invite users to do that.";
 "widget_integration_unable_to_create" = "Unable to create widget.";
 "widget_integration_failed_to_send_request" = "Failed to send request.";
