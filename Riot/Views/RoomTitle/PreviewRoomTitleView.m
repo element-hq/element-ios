@@ -19,8 +19,6 @@
 
 #import "RiotDesignValues.h"
 
-#import "MXRoom+Riot.h"
-
 @implementation PreviewRoomTitleView
 
 + (UINib *)nib
@@ -64,7 +62,7 @@
     self.backgroundColor = kRiotPrimaryBgColor;
     self.mainHeaderBackground.backgroundColor = kRiotSecondaryBgColor;
     
-    self.displayNameTextField.textColor = (self.mxRoom.riotDisplayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
     
     self.roomTopic.textColor = kRiotTopicTextColor;
     self.roomTopic.numberOfLines = 0;
@@ -145,7 +143,7 @@
     else if (self.mxRoom)
     {
         // The user is here invited to join a room (This invitation has been received from server sync)
-        self.displayNameTextField.text = self.mxRoom.riotDisplayname;
+        self.displayNameTextField.text = self.mxRoom.summary.displayname;
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

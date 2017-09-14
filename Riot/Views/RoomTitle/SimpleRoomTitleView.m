@@ -19,8 +19,6 @@
 
 #import "RiotDesignValues.h"
 
-#import "MXRoom+Riot.h"
-
 @implementation SimpleRoomTitleView
 
 + (UINib *)nib
@@ -70,7 +68,7 @@
 {
     [super customizeViewRendering];
     
-    self.displayNameTextField.textColor = (self.mxRoom.riotDisplayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
 }
 
 - (void)refreshDisplay
@@ -79,7 +77,7 @@
     
     if (self.mxRoom)
     {
-        self.displayNameTextField.text = self.mxRoom.riotDisplayname;
+        self.displayNameTextField.text = self.mxRoom.summary.displayname;
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

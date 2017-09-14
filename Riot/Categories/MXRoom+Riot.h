@@ -23,11 +23,6 @@
 @interface MXRoom (Riot)
 
 /**
- The Riot displayname of the room
- */
-@property(nonatomic, readonly) NSString* riotDisplayname;
-
-/**
  Tell whether all the notifications are disabled for the room.
  */
 @property(nonatomic, readonly, getter=isMute) BOOL mute;
@@ -46,17 +41,6 @@
  Observer when a rules deletion succeeds.
  */
 @property (nonatomic) id notificationCenterDidUpdateObserver;
-
-/**
- Set the room avatar in the dedicated MXKImageView.
- The vector style implies to use in order :
- 1 - the default avatar if there is one
- 2 - the member avatar for < 3 members rooms
- 3 - the first later of the room name.
- 
- @param mxkImageView the destinated MXKImageView.
- */
-- (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView;
 
 /**
  Update the room tag.
