@@ -491,6 +491,7 @@
 		F0B4CBB11F4215E3008E99C5 /* EventDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */; };
 		F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */; };
 		F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */; };
+		F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
 		F0D869ED1EC455A100BB0A2B /* create_direct_chat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */; };
@@ -1188,6 +1189,8 @@
 		F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsView.m; sourceTree = "<group>"; };
 		F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailsView.xib; sourceTree = "<group>"; };
 		F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
+		F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoomSummary+Riot.h"; sourceTree = "<group>"; };
+		F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoomSummary+Riot.m"; sourceTree = "<group>"; };
 		F0D869E81EC455A100BB0A2B /* create_direct_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_direct_chat.png; sourceTree = "<group>"; };
 		F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@2x.png"; sourceTree = "<group>"; };
 		F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@3x.png"; sourceTree = "<group>"; };
@@ -1749,6 +1752,8 @@
 				F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */,
 				F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */,
 				F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */,
+				F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */,
+				F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */,
 				F083BBE91E7009EC00A9B29C /* UINavigationController+Riot.h */,
 				F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */,
 				F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */,
@@ -3068,6 +3073,7 @@
 				F083BE6E1E7009ED00A9B29C /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				3233F7311F31F4BF006ACA81 /* JitsiViewController.m in Sources */,
 				F083BE2A1E7009ED00A9B29C /* UsersDevicesViewController.m in Sources */,
+				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				F083BE2D1E7009ED00A9B29C /* ForgotPasswordInputsView.m in Sources */,
 				F083BE7E1E7009ED00A9B29C /* InviteRecentTableViewCell.m in Sources */,
 				F083BE3C1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
