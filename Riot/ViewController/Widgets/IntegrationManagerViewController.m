@@ -358,14 +358,115 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 {
     NSLog(@"[IntegrationManagerVC] Received request to invite %@ into room %@.", userId, roomId);
 
-    NSAssert(NO, @"TODO");
+    MXRoom *room = [mxSession roomWithRoomId:roomId];
+    if (!room)
+    {
+        MXRoomMember *member = [room.state memberWithUserId:userId];
+        if (member && member.membership == MXMembershipJoin)
+        {
+            [self sendNSObjectResponse:@{
+                                         @"success": @(YES)
+                                         }
+                               toEvent:eventData];
+        }
+        else
+        {
+            __weak __typeof__(self) weakSelf = self;
+
+            [room inviteUser:userId success:^{
+
+                typeof(self) self = weakSelf;
+                if (self)
+                {
+                    [self sendNSObjectResponse:@{
+                                                 @"success": @(YES)
+                                                 }
+                                       toEvent:eventData];
+                }
+
+            } failure:^(NSError *error) {
+
+                typeof(self) self = weakSelf;
+                if (self)
+                {
+                    [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                }
+            }];
+        }
+    }
 }
 
 - (void)setWidget:(NSDictionary*)eventData
 {
     NSLog(@"[IntegrationManagerVC] Received request to set widget in room %@.", roomId);
 
-    NSAssert(NO, @"TODO");
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+
+    if (room)
+    {
+        NSString *widget_id, *widgetType, *widgetUrl;
+        NSString *widgetName; // optional
+        NSDictionary *widgetData ; // optional
+
+        MXJSONModelSetString(widget_id, eventData[@"widget_id"]);
+        MXJSONModelSetString(widgetType, eventData[@"type"]);
+        MXJSONModelSetString(widgetUrl, eventData[@"url"]);
+        MXJSONModelSetString(widgetName, eventData[@"name"]);
+        MXJSONModelSetDictionary(widgetData, eventData[@"data"]);
+
+        if (!widget_id)
+        {
+            [self sendLocalisedError:@"widget_integration_unable_to_create" toEvent:eventData]; // new Error("Missing required widget fields."));
+            return;
+        }
+
+        NSMutableDictionary *widgetEventContent = [NSMutableDictionary dictionary];
+        if (widgetUrl)
+        {
+            if (!widgetType)
+            {
+                [self sendLocalisedError:@"widget_integration_unable_to_create" toEvent:eventData];
+                return;
+            }
+
+            widgetEventContent[@"type"] = widgetType;
+            widgetEventContent[@"url"] = widgetUrl;
+
+            if (widgetName)
+            {
+                widgetEventContent[@"name"] = widgetName;
+            }
+            if (widgetData)
+            {
+                widgetEventContent[@"data"] = widgetData;
+            }
+        }
+
+        __weak __typeof__(self) weakSelf = self;
+
+        [room sendStateEventOfType:kWidgetEventTypeString
+                           content:widgetEventContent
+                          stateKey:widget_id
+                           success:^(NSString *eventId) {
+
+                               typeof(self) self = weakSelf;
+                               if (self)
+                               {
+                                   [self sendNSObjectResponse:@{
+                                                                @"success": @(YES)
+                                                                }
+                                                      toEvent:eventData];
+                               }
+                           }
+                           failure:^(NSError *error) {
+
+                               typeof(self) self = weakSelf;
+                               if (self)
+                               {
+                                   [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                               }
+                           }];
+    }
 }
 
 - (void)getWidgets:(NSDictionary*)eventData
@@ -458,28 +559,161 @@ NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 {
     NSLog(@"[IntegrationManagerVC] Received request to set plumbing state to status %@ in room %@.", eventData[@"status"], roomId);
 
-    NSAssert(NO, @"TODO");
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+    if (room)
+    {
+        NSString *status;
+        MXJSONModelSetString(status, eventData[@"status"]);
+
+        if (status)
+        {
+             __weak __typeof__(self) weakSelf = self;
+            
+            [room sendStateEventOfType:kMXEventTypeStringRoomPlumbing
+                               content:@{
+                                         @"status": status
+                                         }
+                              stateKey:nil
+                               success:^(NSString *eventId) {
+
+                                   typeof(self) self = weakSelf;
+                                   if (self)
+                                   {
+                                       [self sendNSObjectResponse:@{
+                                                                    @"success": @(YES)
+                                                                    }
+                                                          toEvent:eventData];
+                                   }
+                               }
+                               failure:^(NSError *error) {
+
+                                   typeof(self) self = weakSelf;
+                                   if (self)
+                                   {
+                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                                   }
+                               }];
+        }
+        else
+        {
+            NSLog(@"[IntegrationManagerVC] setPlumbingState. Error: Plumbing state status should be a string.");
+        }
+    }
 }
 
 - (void)getBotOptions:(NSString*)userId eventData:(NSDictionary*)eventData
 {
     NSLog(@"[IntegrationManagerVC] Received request to get options for bot %@ in room %@", userId, roomId);
 
-    NSAssert(NO, @"TODO");
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+    if (room)
+    {
+        NSString *stateKey = [NSString stringWithFormat:@"_%@", userId];
+
+        NSArray<MXEvent*> *stateEvents = [room.state stateEventsWithType:kMXEventTypeStringRoomBotOptions];
+
+        MXEvent *botOptionsEvent;
+
+        for (MXEvent *stateEvent in stateEvents)
+        {
+            if ([stateEvent.stateKey isEqualToString:stateKey])
+            {
+                if (!botOptionsEvent || stateEvent.ageLocalTs > botOptionsEvent.ageLocalTs)
+                {
+                     botOptionsEvent = stateEvent;
+                }
+            }
+        }
+
+        [self sendNSObjectResponse:botOptionsEvent.JSONDictionary toEvent:eventData];
+    }
 }
 
 - (void)setBotOptions:(NSString*)userId eventData:(NSDictionary*)eventData
 {
     NSLog(@"[IntegrationManagerVC] Received request to set options for bot %@ in room %@", userId, roomId);
 
-    NSAssert(NO, @"TODO");
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+    if (room)
+    {
+        NSDictionary *content;
+        MXJSONModelSetDictionary(content, eventData[@"content"]);
+
+        if (content)
+        {
+            __weak __typeof__(self) weakSelf = self;
+
+            NSString *stateKey = [NSString stringWithFormat:@"_%@", userId];
+
+            [room sendStateEventOfType:kMXEventTypeStringRoomBotOptions
+                               content:content
+                              stateKey:stateKey
+                               success:^(NSString *eventId) {
+
+                                   typeof(self) self = weakSelf;
+                                   if (self)
+                                   {
+                                       [self sendNSObjectResponse:@{
+                                                                    @"success": @(YES)
+                                                                    }
+                                                          toEvent:eventData];
+                                   }
+                               }
+                               failure:^(NSError *error) {
+
+                                   typeof(self) self = weakSelf;
+                                   if (self)
+                                   {
+                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                                   }
+                               }];
+        }
+        else
+        {
+            NSLog(@"[IntegrationManagerVC] setBotOptions. Error: options should be a dict.");
+        }
+    }
 }
 
 - (void)setBotPower:(NSString*)userId eventData:(NSDictionary*)eventData
 {
     NSLog(@"[IntegrationManagerVC] Received request to set power level to %@ for bot %@ in room %@.", eventData[@"level"], userId, roomId);
 
-    NSAssert(NO, @"TODO");
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+    if (room)
+    {
+        NSInteger level = -1;
+        MXJSONModelSetInteger(level, eventData[@"level"]);
+
+        if (level >= 0)
+        {
+            __weak __typeof__(self) weakSelf = self;
+
+            [room setPowerLevelOfUserWithUserID:userId powerLevel:level success:^{
+
+                typeof(self) self = weakSelf;
+                if (self)
+                {
+                    [self sendNSObjectResponse:@{
+                                                 @"success": @(YES)
+                                                 }
+                                       toEvent:eventData];
+                }
+
+            } failure:^(NSError *error) {
+
+                typeof(self) self = weakSelf;
+                if (self)
+                {
+                    [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                }
+            }];
+        }
+        else
+        {
+            NSLog(@"[IntegrationManagerVC] setBotPower. Power level must be positive integer.");
+        }
+    }
 }
 
 - (void)getMembershipCount:(NSDictionary*)eventData
