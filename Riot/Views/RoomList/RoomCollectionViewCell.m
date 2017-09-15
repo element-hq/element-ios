@@ -20,7 +20,7 @@
 
 #import "RiotDesignValues.h"
 
-#import "MXRoom+Riot.h"
+#import "MXRoomSummary+Riot.h"
 
 #import "MXTools.h"
 
@@ -171,7 +171,7 @@
         
         self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.isEncrypted;
         
-        [roomCellData.roomSummary.room setRoomAvatarImageIn:self.roomAvatar];
+        [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
     }
 }
 

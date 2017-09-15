@@ -95,7 +95,7 @@
 
     [super viewDidLoad];
 
-    // Add the Vector background image when search bar is empty
+    // Add the Riot background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];
     
     // Initialize here the data sources if a matrix session has been already set.
@@ -105,6 +105,18 @@
     self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     
     [super showSearch:NO];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    [super userInterfaceThemeDidChange];
+    
+    UIImageView *backgroundImageView = self.backgroundImageView;
+    if (backgroundImageView)
+    {
+        UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:kRiotKeyboardColor];
+        backgroundImageView.image = image;
+    }
 }
 
 - (void)destroy

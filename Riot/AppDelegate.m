@@ -34,7 +34,6 @@
 #import "MatrixSDK/MatrixSDK.h"
 
 #import "Tools.h"
-#import "MXRoom+Riot.h"
 #import "WidgetManager.h"
 
 #import "AFNetworkReachabilityManager.h"
@@ -166,7 +165,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
-@property (strong, nonatomic) UIAlertController *incomingCallNotification;
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
@@ -565,13 +563,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Enable error notifications
                 isErrorNotificationSuspended = NO;
                 
-                // Restore call alert if any
-                if (_incomingCallNotification)
-                {
-                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible incoming call alert");
-                    [self showNotificationAlert:_incomingCallNotification];
-                }
-                else if (noCallSupportAlert)
+                if (noCallSupportAlert)
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
                     [self showNotificationAlert:noCallSupportAlert];
@@ -1489,6 +1481,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
+
+    // Get modular widget events in rooms histories
+    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
@@ -1537,6 +1532,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
+
+            // Send read receipts for modular widgets events too
+            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
+            [acknowledgableEventTypes addObject:kWidgetEventTypeString];
+            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1624,6 +1624,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Remove inApp notifications toggle change
         MXKAccount *account = notif.object;
         [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
+
+        // Clear Modular data
+        [[WidgetManager sharedManager] deleteDataForUser:account.mxCredentials.userId];
         
         // Logout the app when there is no available account
         if (![MXKAccountManager sharedManager].accounts.count)
@@ -1840,81 +1843,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             currentCallViewController = [CallViewController callViewController:mxCall];
             currentCallViewController.delegate = self;
             
-            if (mxCall.isIncoming)
-            {
-                // Prompt user before presenting the call view controller
-                NSString *callPromptFormat = mxCall.isVideoCall ? NSLocalizedStringFromTable(@"call_incoming_video_prompt", @"Vector", nil) : NSLocalizedStringFromTable(@"call_incoming_voice_prompt", @"Vector", nil);
-                NSString *callerName = currentCallViewController.peer.displayname;
-                if (!callerName.length)
-                {
-                    callerName = currentCallViewController.peer.userId;
-                }
-                NSString *callPrompt = [NSString stringWithFormat:callPromptFormat, callerName];
-                
-                __weak typeof(self) weakSelf = self;
-                
-                // Removing existing notification (if any)
-                [_incomingCallNotification dismissViewControllerAnimated:NO completion:nil];
-                
-                
-                
-                _incomingCallNotification = [UIAlertController alertControllerWithTitle:callPrompt
-                                                                                message:nil
-                                                                         preferredStyle:UIAlertControllerStyleAlert];
-                
-                [_incomingCallNotification addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
-                                                                              style:UIAlertActionStyleDefault
-                                                                            handler:^(UIAlertAction * action) {
-                                                                                
-                                                                                if (weakSelf)
-                                                                                {
-                                                                                    typeof(self) self = weakSelf;
-                                                                                    
-                                                                                    // Reject the call.
-                                                                                    // Note: Do not reset the incoming call notification before this operation, because it is used to release properly the dismissed call view controller.
-                                                                                    if (self->currentCallViewController)
-                                                                                    {
-                                                                                        [self->currentCallViewController onButtonPressed:self->currentCallViewController.rejectCallButton];
-                                                                                        
-                                                                                        currentCallViewController = nil;
-                                                                                    }
-                                                                                    
-                                                                                    self.incomingCallNotification = nil;
-                                                                                    
-                                                                                    mxCall.delegate = nil;
-                                                                                }
-                                                                                
-                                                                            }]];
-                
-                [_incomingCallNotification addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"accept", @"Vector", nil)
-                                                                              style:UIAlertActionStyleDefault
-                                                                            handler:^(UIAlertAction * action) {
-                                                                                
-                                                                                if (weakSelf)
-                                                                                {
-                                                                                    typeof(self) self = weakSelf;
-                                                                                    
-                                                                                    self.incomingCallNotification = nil;
-                                                                                    
-                                                                                    if (self->currentCallViewController)
-                                                                                    {
-                                                                                        [self->currentCallViewController onButtonPressed:self->currentCallViewController.answerCallButton];
-                                                                                        
-                                                                                        [self presentCallViewController:nil];
-                                                                                    }
-                                                                                }
-                                                                                
-                                                                            }]];
-                
-                [_incomingCallNotification mxk_setAccessibilityIdentifier:@"AppDelegateIncomingCallAlert"];
-                [self showNotificationAlert:_incomingCallNotification];
-            }
-            else
-            {
-                [self presentCallViewController:nil];
-            }
+            [self presentCallViewController:nil];
         }
-        
     }];
 }
 
@@ -1993,60 +1923,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                                       constant:0];
                 
                 [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
-                
-                
-                // In addition, show a spinner under this giffy animation
-                UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-                activityIndicator.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-                activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-                activityIndicator.hidesWhenStopped = YES;
-                
-                CGRect frame = activityIndicator.frame;
-                frame.size.width += 30;
-                frame.size.height += 30;
-                activityIndicator.bounds = frame;
-                [activityIndicator.layer setCornerRadius:5];
-                
-                activityIndicator.center = CGPointMake(launchAnimationContainerView.center.x, 6 * launchAnimationContainerView.center.y / 4);
-                [launchAnimationContainerView addSubview:activityIndicator];
-                
-                activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-                
-                NSLayoutConstraint* widthConstraint2 = [NSLayoutConstraint constraintWithItem:activityIndicator
-                                                                                    attribute:NSLayoutAttributeWidth
-                                                                                    relatedBy:NSLayoutRelationEqual
-                                                                                       toItem:nil
-                                                                                    attribute:NSLayoutAttributeNotAnAttribute
-                                                                                   multiplier:1
-                                                                                     constant:frame.size.width];
-                
-                NSLayoutConstraint* heightConstraint2 = [NSLayoutConstraint constraintWithItem:activityIndicator
-                                                                                     attribute:NSLayoutAttributeHeight
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:nil
-                                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                                    multiplier:1
-                                                                                      constant:frame.size.height];
-                
-                NSLayoutConstraint* centerXConstraint2 = [NSLayoutConstraint constraintWithItem:activityIndicator
-                                                                                      attribute:NSLayoutAttributeCenterX
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:launchAnimationContainerView
-                                                                                      attribute:NSLayoutAttributeCenterX
-                                                                                     multiplier:1
-                                                                                       constant:0];
-                
-                NSLayoutConstraint* centerYConstraint2 = [NSLayoutConstraint constraintWithItem:activityIndicator
-                                                                                      attribute:NSLayoutAttributeCenterY
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:launchAnimationContainerView
-                                                                                      attribute:NSLayoutAttributeCenterY
-                                                                                     multiplier:6.0/4.0
-                                                                                       constant:0];
-                
-                [NSLayoutConstraint activateConstraints:@[widthConstraint2, heightConstraint2, centerXConstraint2, centerYConstraint2]];
-                
-                [activityIndicator startAnimating];
                 
                 launchAnimationStart = [NSDate date];
             }
@@ -2460,22 +2336,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (currentCallViewController && callViewController == currentCallViewController)
     {
-        if (_incomingCallNotification)
-        {
-            // The user was prompted for an incoming call which ended
-            // The call view controller was not presented yet.
-            [_incomingCallNotification dismissViewControllerAnimated:NO completion:nil];
-            _incomingCallNotification = nil;
-            
-            // Release properly
-            [currentCallViewController destroy];
-            
-            if (completion)
-            {
-                completion();
-            }
-        }
-        else if (callViewController.isBeingPresented)
+        if (callViewController.isBeingPresented)
         {
             // Here the presentation of the call view controller is in progress
             // Postpone the dismiss
@@ -2600,7 +2461,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
 
             MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
-            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.riotDisplayname];
+            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.summary.displayname];
             [self addCallStatusBar:btnTitle];
 
             if (completion)

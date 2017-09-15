@@ -19,7 +19,7 @@
 #import <MatrixSDK/MatrixSDK.h>
 
 /**
- The `Widget` class represents scalar widget information.
+ The `Widget` class represents modular widget information.
  */
 @interface Widget : NSObject
 

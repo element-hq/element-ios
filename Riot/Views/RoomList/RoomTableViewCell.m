@@ -18,7 +18,7 @@
 #import "RoomTableViewCell.h"
 
 #import "RiotDesignValues.h"
-#import "MXRoom+Riot.h"
+#import "MXRoomSummary+Riot.h"
 
 @implementation RoomTableViewCell
 
@@ -50,9 +50,9 @@
 
 - (void)render:(MXRoom *)room
 {
-    [room setRoomAvatarImageIn:self.avatarImageView];
+    [room.summary setRoomAvatarImageIn:self.avatarImageView];
     
-    self.titleLabel.text = room.riotDisplayname;
+    self.titleLabel.text = room.summary.displayname;
     
     self.directRoomBorderView.hidden = !room.isDirect;
     

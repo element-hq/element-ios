@@ -82,7 +82,7 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = kRiotColorSilver;
+    self.separatorView.backgroundColor = kRiotAuxiliaryColor;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;

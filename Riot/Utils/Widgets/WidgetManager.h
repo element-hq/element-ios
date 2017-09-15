@@ -21,7 +21,7 @@
 #import "Widget.h"
 
 /**
- The type of matrix event used for scalar widgets.
+ The type of matrix event used for modular widgets.
  */
 FOUNDATION_EXPORT NSString *const kWidgetEventTypeString;
 
@@ -50,7 +50,7 @@ WidgetManagerErrorCode;
 
 
 /**
- The `WidgetManager` helps to handle scalar widgets.
+ The `WidgetManager` helps to handle modular widgets.
  */
 @interface WidgetManager : NSObject
 
@@ -80,7 +80,7 @@ WidgetManagerErrorCode;
 
 
 /**
- Add a scalar widget to a room.
+ Add a modular widget to a room.
 
  @param widgetId the id of the widget.
  @param widgetContent the widget content.
@@ -138,5 +138,39 @@ WidgetManagerErrorCode;
  */
 - (void)addMatrixSession:(MXSession*)mxSession;
 - (void)removeMatrixSession:(MXSession*)mxSession;
+
+/**
+ Delete the data associated with an user.
+ 
+@param userId the id of the user.
+ */
+- (void)deleteDataForUser:(NSString*)userId;
+
+#pragma mark - Modular interface
+
+/**
+ Make sure there is a scalar token for the given Matrix session.
+ 
+ If no token was gotten and stored before, the operation will make http requests
+ to get one.
+
+ @param mxSession the session to check.
+ 
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+ */
+- (MXHTTPOperation *)getScalarTokenForMXSession:(MXSession*)mxSession
+                                        success:(void (^)(NSString *scalarToken))success
+                                        failure:(void (^)(NSError *error))failure;
+
+/**
+ The current scalar token for the given Matrix session.
+
+ It may be nil if `getScalarTokenForMXSession` was never called before.
+ 
+ @param mxSession the session to check.
+ @return the current scalar token .
+ */
+- (NSString *)scalarTokenForMXSession:(MXSession*)mxSession;
 
 @end
