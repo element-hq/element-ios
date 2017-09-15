@@ -339,6 +339,12 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     [failureBlockForWidgetCreation removeObjectForKey:hash];
 }
 
+- (void)deleteDataForUser:(NSString *)userId
+{
+    [scalarTokens removeObjectForKey:userId];
+    [self save];
+}
+
 #pragma mark - Modular interface
 
 - (NSString *)scalarTokenForMXSession:(MXSession *)mxSession
@@ -418,7 +424,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 - (void)load
 {
     NSUserDefaults *userDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
-    scalarTokens = [userDefaults objectForKey:@"scalarTokens"];
+    scalarTokens = [NSMutableDictionary dictionaryWithDictionary:[userDefaults objectForKey:@"scalarTokens"]];
 }
 
 - (void)save

@@ -1625,6 +1625,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Remove inApp notifications toggle change
         MXKAccount *account = notif.object;
         [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
+
+        // Clear Modular data
+        [[WidgetManager sharedManager] deleteDataForUser:account.mxCredentials.userId];
         
         // Logout the app when there is no available account
         if (![MXKAccountManager sharedManager].accounts.count)

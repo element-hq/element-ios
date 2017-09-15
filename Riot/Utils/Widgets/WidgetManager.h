@@ -139,8 +139,12 @@ WidgetManagerErrorCode;
 - (void)addMatrixSession:(MXSession*)mxSession;
 - (void)removeMatrixSession:(MXSession*)mxSession;
 
-// TODO
-//- (void)deleteMatrixSession;
+/**
+ Delete the data associated with an user.
+ 
+@param userId the id of the user.
+ */
+- (void)deleteDataForUser:(NSString*)userId;
 
 #pragma mark - Modular interface
 
