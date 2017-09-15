@@ -109,6 +109,8 @@
 
 #import "MXRoom+Riot.h"
 
+#import "IntegrationManagerViewController.h"
+
 @interface RoomViewController ()
 {
     // The expanded header
@@ -180,9 +182,9 @@
     // Tell whether the view controller is appeared or not.
     BOOL isAppeared;
     
-    // The search bar buttom item back up.
-    UIBarButtonItem *searchBarButtonItem;
-    
+    // The right bar button items back up.
+    NSArray<UIBarButtonItem *> *rightBarButtonItems;
+
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
@@ -360,9 +362,12 @@
     [self setEventDetailsViewClass:EventDetailsView.class];
     
     // Update navigation bar items
-    self.navigationItem.rightBarButtonItem.target = self;
-    self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
-    
+    for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
+    {
+        barButtonItem.target = self;
+        barButtonItem.action = @selector(onButtonPressed:);
+    }
+
     // Prepare missed dicussion badge
     missedDiscussionsBarButtonCustomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
     missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
@@ -1047,8 +1052,11 @@
 
 - (void)destroy
 {
-    searchBarButtonItem = nil;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    rightBarButtonItems = nil;
+    for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
+    {
+        barButtonItem.enabled = NO;
+    }
     
     if (currentAlert)
     {
@@ -1151,17 +1159,20 @@
 
 - (void)refreshRoomTitle
 {
-    if (searchBarButtonItem && !self.navigationItem.rightBarButtonItem)
+    if (rightBarButtonItems && !self.navigationItem.rightBarButtonItems)
     {
         // Restore by default the search bar button.
-        self.navigationItem.rightBarButtonItem = searchBarButtonItem;
+        self.navigationItem.rightBarButtonItems = rightBarButtonItems;
     }
     
     // Set the right room title view
     if (self.isRoomPreview)
     {
-        // Disable the search button
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        // Disable the right buttons
+        for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
+        {
+            barButtonItem.enabled = NO;
+        }
         
         [self showPreviewHeader:YES];
     }
@@ -1171,8 +1182,18 @@
         
         if (self.roomDataSource.isLive)
         {
-            // Enable the search button
-            self.navigationItem.rightBarButtonItem.enabled = YES;
+            // Enable the right buttons (Search and Integrations)
+            for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
+            {
+                barButtonItem.enabled = YES;
+            }
+
+            BOOL matrixAppsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
+            if (!matrixAppsEnabled && self.navigationItem.rightBarButtonItems.count == 2)
+            {
+                // If the setting is disabled, do not show the icon
+                self.navigationItem.rightBarButtonItems = @[self.navigationItem.rightBarButtonItem];
+            }
             
             // Do not change title view class here if the expanded header is visible.
             if (self.expandedHeaderContainer.hidden)
@@ -1192,8 +1213,8 @@
         else
         {
             // Remove the search button temporarily
-            searchBarButtonItem = self.navigationItem.rightBarButtonItem;
-            self.navigationItem.rightBarButtonItem = nil;
+            rightBarButtonItems = self.navigationItem.rightBarButtonItems;
+            self.navigationItem.rightBarButtonItems = nil;
             
             [self setRoomTitleViewClass:SimpleRoomTitleView.class];
             self.titleView.editable = NO;
@@ -2851,9 +2872,20 @@
 
 - (IBAction)onButtonPressed:(id)sender
 {
+    // Search button
     if (sender == self.navigationItem.rightBarButtonItem)
     {
         [self performSegueWithIdentifier:@"showRoomSearch" sender:self];
+    }
+    // Matrix Apps button
+    else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
+    {
+        IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
+                                                                                                          inRoom:self.roomDataSource.roomId
+                                                                                                          screen:kIntegrationManagerMainScreen
+                                                                                                        widgetId:nil];
+
+        [self presentViewController:modularVC animated:NO completion:nil];
     }
     else if (sender == self.jumpToLastUnreadButton)
     {

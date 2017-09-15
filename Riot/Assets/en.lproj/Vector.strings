@@ -350,6 +350,7 @@
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
+"settings_labs_matrix_apps" = "Matrix Apps";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 
 "settings_version" = "Version %@";
@@ -509,4 +510,16 @@
 // Widget
 "widget_no_power_to_manage" = "You need permission to manage widgets in this room";
 "widget_creation_failure" = "Widget creation has failed";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "You need to be able to invite users to do that.";
+"widget_integration_unable_to_create" = "Unable to create widget.";
+"widget_integration_failed_to_send_request" = "Failed to send request.";
+"widget_integration_room_not_recognised" = "This room is not recognised.";
+"widget_integration_positive_power_level" = "Power level must be positive integer.";
+"widget_integration_must_be_in_room" = "You are not in this room.";
+"widget_integration_no_permission_in_room" = "You do not have permission to do that in this room.";
+"widget_integration_missing_room_id" = "Missing room_id in request.";
+"widget_integration_missing_user_id" = "Missing user_id in request.";
+"widget_integration_room_not_visible" = "Room %@ is not visible.";
 
