@@ -23,7 +23,7 @@
 NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
-const NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
+NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 
 @interface IntegrationManagerViewController ()
@@ -67,6 +67,7 @@ const NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     [super viewDidLoad];
 
     webView.scalesPageToFit = NO;
+    webView.scrollView.bounces = NO;
 
     webView.delegate = self;
 }
