@@ -206,6 +206,7 @@ const NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     if ([action isEqualToString:@"close_scalar"])
     {
         [self withdrawViewControllerAnimated:YES completion:nil];
+        return;
     }
 
     if (!roomIdInEvent)
