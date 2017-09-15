@@ -2884,7 +2884,7 @@
                                                                                                           screen:kIntegrationManagerMainScreen
                                                                                                         widgetId:nil];
 
-        [self.navigationController pushViewController:modularVC animated:YES];
+        [self presentViewController:modularVC animated:NO completion:nil];
     }
     else if (sender == self.jumpToLastUnreadButton)
     {

@@ -203,6 +203,11 @@ const NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     MXJSONModelSetString(userId, eventData[@"user_id"]);
     MXJSONModelSetString(action, eventData[@"action"]);
 
+    if ([action isEqualToString:@"close_scalar"])
+    {
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }
+
     if (!roomIdInEvent)
     {
         [self sendLocalisedError:@"widget_integration_missing_room_id" toEvent:eventData];
