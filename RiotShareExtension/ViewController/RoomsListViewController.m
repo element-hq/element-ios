@@ -15,7 +15,7 @@
  */
 
 #import "RoomsListViewController.h"
-#import "RoomTableViewCell.h"
+#import "RecentRoomTableViewCell.h"
 #import "NSBundle+MatrixKit.h"
 #import "ShareExtensionManager.h"
 #import "RecentCellData.h"
@@ -73,7 +73,7 @@
 {
     [super viewDidLoad];
     
-    [self.recentsTableView registerNib:[RoomTableViewCell nib] forCellReuseIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
+    [self.recentsTableView registerNib:[RecentRoomTableViewCell nib] forCellReuseIdentifier:[RecentRoomTableViewCell defaultReuseIdentifier]];
     
     [self configureSearchBar];
 }
@@ -173,7 +173,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [RoomTableViewCell cellHeight];
+    return [RecentRoomTableViewCell cellHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -189,7 +189,7 @@
 {
     if ([cellData isKindOfClass:[RecentCellData class]])
     {
-        return [RoomTableViewCell class];
+        return [RecentRoomTableViewCell class];
     }
     return nil;
 }
@@ -198,7 +198,7 @@
 {
     if ([cellData isKindOfClass:[MXKRecentCellData class]])
     {
-        return [RoomTableViewCell defaultReuseIdentifier];
+        return [RecentRoomTableViewCell defaultReuseIdentifier];
     }
     return nil;
 }

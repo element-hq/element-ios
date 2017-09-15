@@ -271,12 +271,24 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     self.primaryViewController = nil;
 }
 
+- (void)roomFromRoomSummary:(MXRoomSummary *)roomSummary store:(MXFileStore *)fileStore session:(MXSession *)session
+{
+    [fileStore asyncAccountDataOfRoom:roomSummary.roomId success:^(MXRoomAccountData * _Nonnull accountData) {
+        [fileStore asyncStateEventsOfRoom:roomSummary.roomId success:^(NSArray<MXEvent *> * _Nonnull roomStateEvents) {
+            MXRoom *room = [[MXRoom alloc] initWithRoomId:roomSummary.roomId andMatrixSession:session andStateEvents:roomStateEvents andAccountData:accountData];
+        } failure:^(NSError * _Nonnull error) {
+            //sjh
+        }];
+    } failure:^(NSError * _Nonnull error) {
+        //shj
+    }];
+    
+}
+
 #pragma mark - Private
 
 - (void)completeRequestReturningItems:(nullable NSArray *)items completionHandler:(void(^ __nullable)(BOOL expired))completionHandler;
 {
-    //[self suspendSession];
-    
     [self.shareExtensionContext completeRequestReturningItems:items completionHandler:completionHandler];
     
     [self.primaryViewController destroy];
