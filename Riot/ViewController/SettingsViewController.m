@@ -98,8 +98,9 @@ enum
 
 enum
 {
-#ifdef USE_JITSI_WIDGET
     LABS_MATRIX_APPS_INDEX = 0,
+#ifdef USE_JITSI_WIDGET
+    LABS_USE_JITSI_WIDGET_INDEX,
 #endif
     LABS_CRYPTO_INDEX,
     LABS_COUNT
@@ -1916,8 +1917,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-#ifdef USE_JITSI_WIDGET
         if (row == LABS_MATRIX_APPS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_matrix_apps", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
+
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsMatrixApps:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
+#ifdef USE_JITSI_WIDGET
+        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2662,6 +2675,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
+    }
+}
+
+- (void)toggleLabsMatrixApps:(id)sender
+{
+    if (sender && [sender isKindOfClass:UISwitch.class])
+    {
+        UISwitch *switchButton = (UISwitch*)sender;
+
+        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"matrixApps"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        [self.tableView reloadData];
     }
 }
 
