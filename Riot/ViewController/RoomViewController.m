@@ -367,7 +367,7 @@
         barButtonItem.target = self;
         barButtonItem.action = @selector(onButtonPressed:);
     }
-    
+
     // Prepare missed dicussion badge
     missedDiscussionsBarButtonCustomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
     missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
@@ -2881,7 +2881,7 @@
     {
         IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
                                                                                                           inRoom:self.roomDataSource.roomId
-                                                                                                          screen:@"add_integ"
+                                                                                                          screen:kIntegrationManagerMainScreen
                                                                                                         widgetId:nil];
 
         [self.navigationController pushViewController:modularVC animated:YES];

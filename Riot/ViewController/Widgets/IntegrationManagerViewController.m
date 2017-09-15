@@ -20,7 +20,10 @@
 
 #import <JavaScriptCore/JavaScriptCore.h>
 
-NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
+NSString *const kIntegrationManagerMainScreen = nil;
+NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
+
+const NSString *kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 
 @interface IntegrationManagerViewController ()

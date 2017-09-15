@@ -18,6 +18,9 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
+FOUNDATION_EXPORT NSString *const kIntegrationManagerMainScreen;
+FOUNDATION_EXPORT NSString *const kIntegrationManagerAddIntegrationScreen;
+
 /**
  `IntegrationManagerViewController` displays the Modular integration manager webapp
  into a webview.
