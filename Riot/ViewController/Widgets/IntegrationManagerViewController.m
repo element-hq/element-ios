@@ -368,8 +368,9 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 {
     NSLog(@"[IntegrationManagerVC] Received request to invite %@ into room %@.", userId, roomId);
 
-    MXRoom *room = [mxSession roomWithRoomId:roomId];
-    if (!room)
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+    
+    if (room)
     {
         MXRoomMember *member = [room.state memberWithUserId:userId];
         if (member && member.membership == MXMembershipJoin)
@@ -549,7 +550,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     if (room)
     {
         MXRoomMember *member = [room.state memberWithUserId:userId];
-        [self sendNSObjectResponse:member.originalEvent.JSONDictionary toEvent:eventData];
+        [self sendNSObjectResponse:member.originalEvent.content toEvent:eventData];
     }
 }
 
