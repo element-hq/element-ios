@@ -81,6 +81,7 @@
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
 		92324BE31F4F66D3009DE194 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE21F4F66D3009DE194 /* IncomingCallView.m */; };
+		83711A7C1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */; };
 		92324BE61F4F6A60009DE194 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE51F4F6A60009DE194 /* CircleButton.m */; };
 		A27ECCE3FC4971745D2CB78D /* libPods-RiotShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */; };
 		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
@@ -658,6 +659,7 @@
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RiotShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		765F5104DB3EC39713DEB3A4 /* Pods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardGrowingTextView.m; sourceTree = "<group>"; };
 		839BB91240D350D5607D55BA /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		92324BE11F4F66D3009DE194 /* IncomingCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallView.h; sourceTree = "<group>"; };
 		92324BE21F4F66D3009DE194 /* IncomingCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallView.m; sourceTree = "<group>"; };
@@ -2193,6 +2195,7 @@
 				F083BCD91E7009EC00A9B29C /* RoomInputToolbarView.h */,
 				F083BCDA1E7009EC00A9B29C /* RoomInputToolbarView.m */,
 				F083BCDB1E7009EC00A9B29C /* RoomInputToolbarView.xib */,
+				83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */,
 			);
 			path = RoomInputToolbar;
 			sourceTree = "<group>";
@@ -3092,6 +3095,7 @@
 				3205ED7D1E976C8A003D65FA /* DirectoryServerPickerViewController.m in Sources */,
 				F083BE7C1E7009ED00A9B29C /* DirectoryRecentTableViewCell.m in Sources */,
 				F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */,
+				83711A7C1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m in Sources */,
 				F083BE801E7009ED00A9B29C /* PublicRoomTableViewCell.m in Sources */,
 				322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
