@@ -110,6 +110,7 @@
 #import "MXRoom+Riot.h"
 
 #import "IntegrationManagerViewController.h"
+#import "WidgetViewController.h"
 
 @interface RoomViewController ()
 {
@@ -2880,12 +2881,26 @@
     // Matrix Apps button
     else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
     {
-        IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
-                                                                                                          inRoom:self.roomDataSource.roomId
-                                                                                                          screen:kIntegrationManagerMainScreen
-                                                                                                        widgetId:nil];
+        // Temporary code to test `WidgetViewController`
+        // TODO: remove it
+//        NSArray<Widget *> *widgets = [[WidgetManager sharedManager] widgetsInRoom:self.roomDataSource.room];
+//        if (widgets.count)
+//        {
+//            // Hide back button title
+//            self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+//
+//            WidgetViewController *widgetVC = [[WidgetViewController alloc] initForWidget:widgets[0]];
+//            [self.navigationController pushViewController:widgetVC animated:YES];
+//        }
+//        else
+        {
+            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
+                                                                                                              inRoom:self.roomDataSource.roomId
+                                                                                                              screen:kIntegrationManagerMainScreen
+                                                                                                            widgetId:nil];
 
-        [self presentViewController:modularVC animated:NO completion:nil];
+            [self presentViewController:modularVC animated:NO completion:nil];
+        }
     }
     else if (sender == self.jumpToLastUnreadButton)
     {
