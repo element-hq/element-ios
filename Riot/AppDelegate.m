@@ -357,9 +357,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     _isAppForeground = NO;
     
-    // We use now Pushkit, unregister for all remote notifications received via Apple Push Notification service.
-    [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-    
     // Retrieve custom configuration
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
@@ -959,11 +956,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-#pragma mark - APNS methods
+#pragma mark - Push notifications
 
 - (void)registerUserNotificationSettings
 {
-    if (!isAPNSRegistered)
+    if (!isPushRegistered)
     {
         // Registration on iOS 8 and later
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:nil];
@@ -991,7 +988,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         // Clear existing token
         MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-        [accountManager setApnsDeviceToken:nil];
+        [accountManager setPushDeviceToken:nil withPushOptions:nil];
     }
 }
 
@@ -1043,12 +1040,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSData *token = credentials.token;
     
     NSUInteger len = ((token.length > 8) ? 8 : token.length / 2);
-    NSLog(@"[AppDelegate] Got APNS token! (%@ ...)", [token subdataWithRange:NSMakeRange(0, len)]);
+    NSLog(@"[AppDelegate] Got Push token! (%@ ...)", [token subdataWithRange:NSMakeRange(0, len)]);
     
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    [accountManager setApnsDeviceToken:token];
+    [accountManager setPushDeviceToken:token withPushOptions:@{@"format": @"event_id_only"}];
     
-    isAPNSRegistered = YES;
+    isPushRegistered = YES;
     
     if (self.registrationForRemoteNotificationsCompletion)
     {
@@ -1060,7 +1057,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
 {
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    [accountManager setApnsDeviceToken:nil];
+    [accountManager setPushDeviceToken:nil withPushOptions:nil];
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
@@ -1737,10 +1734,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Set the push gateway URL.
             account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
             
-            if (isAPNSRegistered)
+            if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
-                account.enablePushNotifications = YES;
+                account.enablePushKitNotifications = YES;
             }
             else
             {
@@ -1806,6 +1803,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Use MXFileStore as MXStore to permanently store events.
     accountManager.storeClass = [MXFileStore class];
+    
+    // Disable APNS use.
+    if (accountManager.apnsDeviceToken)
+    {
+        // We use now Pushkit, unregister for all remote notifications received via Apple Push Notification service.
+        [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+        [accountManager setApnsDeviceToken:nil];
+    }
     
     // Observers have been defined, we can start a matrix session for each enabled accounts.
     NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts (app state: %tu)", [[UIApplication sharedApplication] applicationState]);
@@ -1926,7 +1931,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)logout
 {
     self.pushRegistry = nil;
-    isAPNSRegistered = NO;
+    isPushRegistered = NO;
     
     // Clear cache
     [MXMediaManager clearCache];
