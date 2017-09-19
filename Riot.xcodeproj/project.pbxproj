@@ -496,6 +496,7 @@
 		F0B4CBAC1F41F090008E99C5 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */; };
 		F0B4CBB11F4215E3008E99C5 /* EventDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */; };
 		F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */; };
+		F0B5430A1F70FF8F00D29293 /* back_icon@4x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0B543091F70FF8F00D29293 /* back_icon@4x.png */; };
 		F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */; };
 		F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
@@ -1202,6 +1203,7 @@
 		F0B4CBAE1F4215E3008E99C5 /* EventDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsView.h; sourceTree = "<group>"; };
 		F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsView.m; sourceTree = "<group>"; };
 		F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailsView.xib; sourceTree = "<group>"; };
+		F0B543091F70FF8F00D29293 /* back_icon@4x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_icon@4x.png"; sourceTree = "<group>"; };
 		F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
 		F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoomSummary+Riot.h"; sourceTree = "<group>"; };
 		F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoomSummary+Riot.m"; sourceTree = "<group>"; };
@@ -1577,6 +1579,7 @@
 				F083BB211E7009EC00A9B29C /* back_icon.png */,
 				F083BB221E7009EC00A9B29C /* back_icon@2x.png */,
 				F083BB231E7009EC00A9B29C /* back_icon@3x.png */,
+				F0B543091F70FF8F00D29293 /* back_icon@4x.png */,
 				F083BB241E7009EC00A9B29C /* bubbles_bg_landscape.png */,
 				F083BB251E7009EC00A9B29C /* bubbles_bg_landscape@2x.png */,
 				F083BB261E7009EC00A9B29C /* bubbles_bg_landscape@3x.png */,
@@ -2792,6 +2795,7 @@
 				F083BE771E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BDA71E7009ED00A9B29C /* notificationsOff.png in Resources */,
 				F06CDD6A1EF01E3900870B75 /* RoomEmptyBubbleCell.xib in Resources */,
+				F0B5430A1F70FF8F00D29293 /* back_icon@4x.png in Resources */,
 				F083BDBD1E7009ED00A9B29C /* riot_icon@2x.png in Resources */,
 				F083BDDE1E7009ED00A9B29C /* upload_icon@2x.png in Resources */,
 				F083BE8B1E7009ED00A9B29C /* ExpandedRoomTitleView.xib in Resources */,
