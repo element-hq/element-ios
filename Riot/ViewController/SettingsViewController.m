@@ -133,7 +133,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // listener
     id removedAccountObserver;
     id accountUserInfoObserver;
-    id apnsInfoUpdateObserver;
+    id pushInfoUpdateObserver;
     
     id notificationCenterWillUpdateObserver;
     id notificationCenterDidUpdateObserver;
@@ -283,8 +283,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
     }];
     
-    // Add observer to apns
-    apnsInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    // Add observer to push settings
+    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountPushKitActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self stopActivityIndicator];
         
@@ -533,10 +533,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         accountUserInfoObserver = nil;
     }
     
-    if (apnsInfoUpdateObserver)
+    if (pushInfoUpdateObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:apnsInfoUpdateObserver];
-        apnsInfoUpdateObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver];
+        pushInfoUpdateObserver = nil;
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -1633,7 +1633,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
+            labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
@@ -1646,7 +1646,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.showDecryptedContentInNotifications;
-            labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
+            labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
             [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -2713,9 +2713,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
         MXKAccount* account = accountManager.activeAccounts.firstObject;
         
-        if (accountManager.apnsDeviceToken)
+        if (accountManager.pushDeviceToken)
         {
-            [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
+            [account setEnablePushKitNotifications:!account.isPushKitNotificationActive];
         }
         else
         {
@@ -2728,7 +2728,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 }
                 else
                 {
-                    [account setEnablePushNotifications:YES];
+                    [account setEnablePushKitNotifications:YES];
                 }
             }];
         }
