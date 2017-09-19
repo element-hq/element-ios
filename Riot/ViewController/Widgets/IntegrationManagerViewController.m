@@ -188,6 +188,14 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
         return NO;
     }
+
+    if (navigationType == UIWebViewNavigationTypeLinkClicked )
+    {
+        // Open links outside the app
+        [[UIApplication sharedApplication] openURL:[request URL]];
+        return NO;
+    }
+
     return YES;
 }
 
