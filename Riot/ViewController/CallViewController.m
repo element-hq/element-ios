@@ -21,8 +21,6 @@
 
 #import "AvatarGenerator.h"
 
-#import "MXRoom+Riot.h"
-
 #import "UsersDevicesViewController.h"
 
 #import "RiotNavigationController.h"
@@ -101,6 +99,7 @@
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.callerNameLabel.textColor = kRiotPrimaryTextColor;
     self.callStatusLabel.textColor = kRiotTopicTextColor;
@@ -358,7 +357,7 @@
     }
     else if (self.mxCall.room)
     {
-        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.riotDisplayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.summary.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
     }
     
     return [UIImage imageNamed:@"placeholder"];
@@ -387,7 +386,7 @@
     }
     else if (self.mxCall.isConferenceCall)
     {
-        peerDisplayName = self.mxCall.room.riotDisplayname;
+        peerDisplayName = self.mxCall.room.summary.displayname;
         peerAvatarURL = self.mxCall.room.state.avatar;
     }
     

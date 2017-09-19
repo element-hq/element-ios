@@ -148,7 +148,7 @@
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = kRiotColorSilver;
+    _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
     
     // Check the table view style to select its bg color.
     self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);

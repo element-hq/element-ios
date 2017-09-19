@@ -37,7 +37,6 @@
 #import "MatrixSDK/MatrixSDK.h"
 
 #import "Tools.h"
-#import "MXRoom+Riot.h"
 #import "WidgetManager.h"
 
 #import "AFNetworkReachabilityManager.h"
@@ -1770,6 +1769,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Remove inApp notifications toggle change
         MXKAccount *account = notif.object;
         [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
+
+        // Clear Modular data
+        [[WidgetManager sharedManager] deleteDataForUser:account.mxCredentials.userId];
         
         // Logout the app when there is no available account
         if (![MXKAccountManager sharedManager].accounts.count)
@@ -2808,7 +2810,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
 
             MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
-            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.riotDisplayname];
+            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.summary.displayname];
             [self addCallStatusBar:btnTitle];
 
             if (completion)

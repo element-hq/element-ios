@@ -46,6 +46,9 @@
                                                withString:mxSession.myUser.displayname ? mxSession.myUser.displayname : mxSession.myUser.userId];
         _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_avatar_url"
                                                withString:mxSession.myUser.avatarUrl ? mxSession.myUser.avatarUrl : @""];
+
+        // And their scalar token
+        _url = [_url stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", [[WidgetManager sharedManager] scalarTokenForMXSession:mxSession]]];
     }
 
     return self;

@@ -57,7 +57,7 @@
 - (void)update
 {
     [super update];
-    roomDisplayname = self.roomSummary.room.riotDisplayname;
+    roomDisplayname = self.roomSummary.displayname;
     if (!roomDisplayname.length)
     {
         roomDisplayname = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);

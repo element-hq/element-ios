@@ -159,6 +159,7 @@
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Use the primary bg color for the recents table view in plain style.
     self.recentsTableView.backgroundColor = kRiotPrimaryBgColor;

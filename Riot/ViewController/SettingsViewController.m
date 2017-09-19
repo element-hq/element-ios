@@ -105,8 +105,9 @@ enum
 
 enum
 {
-#ifdef USE_JITSI_WIDGET
     LABS_MATRIX_APPS_INDEX = 0,
+#ifdef USE_JITSI_WIDGET
+    LABS_USE_JITSI_WIDGET_INDEX,
 #endif
     LABS_CRYPTO_INDEX,
     LABS_COUNT
@@ -314,6 +315,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
@@ -1269,6 +1271,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.alpha = 1.0f;
     cell.userInteractionEnabled = YES;
     
+    [cell layoutIfNeeded];
+    
     return cell;
 }
 
@@ -1280,6 +1284,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    
+    // Force layout before reusing a cell (fix switch displayed outside the screen)
+    [cell layoutIfNeeded];
     
     return cell;
 }
@@ -1330,6 +1337,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         if (!signOutCell)
         {
             signOutCell = [[MXKTableViewCellWithButton alloc] init];
+        }
+        else
+        {
+            // Fix https://github.com/vector-im/riot-ios/issues/1354
+            // Do not move this line in prepareForReuse because of https://github.com/vector-im/riot-ios/issues/1323
+            signOutCell.mxkButton.titleLabel.text = nil;
         }
         
         NSString* title = NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil);
@@ -1909,6 +1922,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 markAllBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                markAllBtnCell.mxkButton.titleLabel.text = nil;
+            }
             
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_mark_all_as_read", @"Vector", nil);
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
@@ -1928,6 +1946,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!clearCacheBtnCell)
             {
                 clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                clearCacheBtnCell.mxkButton.titleLabel.text = nil;
             }
             
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil);
@@ -1949,6 +1972,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 reportBugBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                reportBugBtnCell.mxkButton.titleLabel.text = nil;
+            }
 
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
@@ -1965,8 +1993,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-#ifdef USE_JITSI_WIDGET
         if (row == LABS_MATRIX_APPS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_matrix_apps", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
+
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsMatrixApps:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
+#ifdef USE_JITSI_WIDGET
+        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2051,6 +2091,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             if (!exportKeysBtnCell)
             {
                 exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                exportKeysBtnCell.mxkButton.titleLabel.text = nil;
             }
 
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
@@ -2744,6 +2789,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
+    }
+}
+
+- (void)toggleLabsMatrixApps:(id)sender
+{
+    if (sender && [sender isKindOfClass:UISwitch.class])
+    {
+        UISwitch *switchButton = (UISwitch*)sender;
+
+        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"matrixApps"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        [self.tableView reloadData];
     }
 }
 
