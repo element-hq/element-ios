@@ -36,6 +36,9 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     NSString *scalarToken;
 
     MXHTTPOperation *operation;
+
+    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -61,6 +64,12 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
     [operation cancel];
     operation = nil;
+
+    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
+        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+    }
 }
 
 - (void)viewDidLoad
@@ -71,6 +80,23 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     webView.scrollView.bounces = NO;
 
     webView.delegate = self;
+
+    // Observe user interface theme change.
+    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        [self userInterfaceThemeDidChange];
+
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+    webView.backgroundColor = kRiotPrimaryBgColor;
+    webView.opaque = NO;
+    
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
