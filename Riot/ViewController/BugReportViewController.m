@@ -89,9 +89,6 @@
     {
         _titleLabel.text = NSLocalizedStringFromTable(@"bug_report_title", @"Vector", nil);
         _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_description", @"Vector", nil);
-
-        // Allow to send empty description for crash report but not for bug report
-        _sendButton.enabled = NO;
     }
     
     [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateNormal];
