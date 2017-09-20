@@ -48,7 +48,16 @@
                                                withString:mxSession.myUser.avatarUrl ? mxSession.myUser.avatarUrl : @""];
 
         // And their scalar token
-        _url = [_url stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", [[WidgetManager sharedManager] scalarTokenForMXSession:mxSession]]];
+        NSString *scalarToken = [[WidgetManager sharedManager] scalarTokenForMXSession:mxSession];
+        if (scalarToken)
+        {
+            _url = [_url stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", scalarToken]];
+        }
+        else
+        {
+            // Some widget can live without scalar token (ex: Jitsi widget)
+            NSLog(@"[Widget] Note: There is no scalar token for %@", self);
+        }
     }
 
     return self;
