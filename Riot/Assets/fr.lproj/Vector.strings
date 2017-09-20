@@ -313,6 +313,7 @@
 "room_details_favourite_tag" = "Favoris";
 "room_details_low_priority_tag" = "Priorité basse";
 "room_details_mute_notifs" = "Désactiver les notifications";
+"room_details_direct_chat" = "Discussion directe";
 "room_details_access_section" = "Qui peut accéder à ce salon ?";
 "room_details_access_section_invited_only" = "Seulement les personnes qui ont été invitées";
 "room_details_access_section_anyone_apart_from_guest" = "N'importe qui ayant un lien vers le salon, hormis les visiteurs";
@@ -352,6 +353,7 @@
 "room_details_fail_to_add_room_aliases" = "Impossible d'ajouter les nouvelles adresses au salon";
 "room_details_fail_to_remove_room_aliases" = "Impossible de supprimer les adresses du salon";
 "room_details_fail_to_update_room_canonical_alias" = "Impossible de modifier l'adresse principale";
+"room_details_fail_to_update_room_direct" = "Impossible de modifier l'état de discussion directe";
 "room_details_fail_to_enable_encryption" = "Impossible d'activer le chiffrement sur ce salon";
 "room_details_save_changes_prompt" = "Voulez-vous enregistrer les changements ?";
 "room_details_set_main_address" = "Configurer comme adresse principale";
