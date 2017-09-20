@@ -389,6 +389,7 @@
 "room_details_favourite_tag" = "Favourite";
 "room_details_low_priority_tag" = "Low priority";
 "room_details_mute_notifs" = "Mute notifications";
+"room_details_direct_chat" = "Direct Chat";
 "room_details_access_section"="Who can access this room?";
 "room_details_access_section_invited_only"="Only people who have been invited";
 "room_details_access_section_anyone_apart_from_guest"="Anyone who knows the room's link, apart from guests";
@@ -428,6 +429,7 @@
 "room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
 "room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
 "room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
+"room_details_fail_to_update_room_direct" = "Fail to update the direct flag of this room";
 "room_details_fail_to_enable_encryption" = "Fail to enable encryption in this room";
 "room_details_save_changes_prompt" = "Do you want to save changes?";
 "room_details_set_main_address" = "Set as Main Address";
