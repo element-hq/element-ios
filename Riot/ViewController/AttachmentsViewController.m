@@ -61,6 +61,11 @@
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    
+    self.navigationBar.tintColor = kRiotSecondaryBgColor;
+    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
+    self.backButton.tintColor = kRiotColorGreen;
 }
 
 - (void)viewWillAppear:(BOOL)animated

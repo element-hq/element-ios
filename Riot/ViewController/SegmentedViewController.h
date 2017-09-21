@@ -20,7 +20,7 @@ limitations under the License.
 #import "UIViewController+RiotSearch.h"
 
 /**
- This view controller manages several uiviewcontrollers like UISegmentedControlled manages uiTableView
+ This view controller manages several uiviewcontrollers like UISegmentedController manages uiTableView
  except that the managed items are custom UIViewControllers.
  It uses a Vector design.
  */
@@ -77,6 +77,11 @@ limitations under the License.
  @param viewControllers the list of viewControllers to display.
  @param defaultSelected index of the default selected UIViewController in the list.
  */
-- (void)initWithTitles:(NSArray*)titles viewControllers:(NSArray*)viewControllers defaultSelected:(NSUInteger)index;
+- (void)initWithTitles:(NSArray*)titles viewControllers:(NSArray*)viewControllers defaultSelected:(NSUInteger)defaultSelected;
+
+/**
+ Callback used to take into account the change of the user interface theme.
+ */
+- (void)userInterfaceThemeDidChange;
 
 @end

@@ -23,7 +23,7 @@
 
 #import "RiotDesignValues.h"
 
-#import "MXRoom+Riot.h"
+#import "MXRoomSummary+Riot.h"
 
 @implementation RecentTableViewCell
 
@@ -111,7 +111,7 @@
             }
             else
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = kRiotColorSilver;
+                self.missedNotifAndUnreadIndicator.backgroundColor = kRiotAuxiliaryColor;
             }
             
             // Use bold font for the room title
@@ -143,7 +143,7 @@
 
         self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.isEncrypted;
 
-        [roomCellData.roomSummary.room setRoomAvatarImageIn:self.roomAvatar];
+        [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
     }
     else
     {

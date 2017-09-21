@@ -49,6 +49,8 @@
 "later" = "Later";
 "rename" = "Rename";
 "collapse" = "collapse";
+"send_to" = "Send to %@";
+"sending" = "Sending";
 
 // Authentication
 "auth_login" = "Log in";
@@ -104,6 +106,7 @@
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
 "auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
+"auth_share_extension_prompt" = "Login in the main app to share content";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -255,6 +258,7 @@
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
+"room_event_failed_to_send" = "Failed to send";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
@@ -346,6 +350,7 @@
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
+"settings_labs_matrix_apps" = "Matrix Apps";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 
 "settings_version" = "Version %@";
@@ -384,6 +389,7 @@
 "room_details_favourite_tag" = "Favourite";
 "room_details_low_priority_tag" = "Low priority";
 "room_details_mute_notifs" = "Mute notifications";
+"room_details_direct_chat" = "Direct Chat";
 "room_details_access_section"="Who can access this room?";
 "room_details_access_section_invited_only"="Only people who have been invited";
 "room_details_access_section_anyone_apart_from_guest"="Anyone who knows the room's link, apart from guests";
@@ -423,6 +429,7 @@
 "room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
 "room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
 "room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
+"room_details_fail_to_update_room_direct" = "Fail to update the direct flag of this room";
 "room_details_fail_to_enable_encryption" = "Fail to enable encryption in this room";
 "room_details_save_changes_prompt" = "Do you want to save changes?";
 "room_details_set_main_address" = "Set as Main Address";
@@ -449,6 +456,8 @@
 
 // Events formatter
 "event_formatter_member_updates" = "%tu membership changes";
+"event_formatter_jitsi_widget_added" = "VoIP conference added by %@";
+"event_formatter_jitsi_widget_removed" = "VoIP conference removed by %@";
 
 // Others
 "or" = "or";
@@ -472,6 +481,8 @@
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";
 "call_incoming_video_prompt" = "Incoming video call from %@";
+"call_incoming_voice" = "Incoming call...";
+"call_incoming_video" = "Incoming video call...";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
 
@@ -501,4 +512,16 @@
 // Widget
 "widget_no_power_to_manage" = "You need permission to manage widgets in this room";
 "widget_creation_failure" = "Widget creation has failed";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "You need to be able to invite users to do that.";
+"widget_integration_unable_to_create" = "Unable to create widget.";
+"widget_integration_failed_to_send_request" = "Failed to send request.";
+"widget_integration_room_not_recognised" = "This room is not recognised.";
+"widget_integration_positive_power_level" = "Power level must be positive integer.";
+"widget_integration_must_be_in_room" = "You are not in this room.";
+"widget_integration_no_permission_in_room" = "You do not have permission to do that in this room.";
+"widget_integration_missing_room_id" = "Missing room_id in request.";
+"widget_integration_missing_user_id" = "Missing user_id in request.";
+"widget_integration_room_not_visible" = "Room %@ is not visible.";
 

@@ -73,6 +73,7 @@
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.searchBar.barStyle = kRiotDesignSearchBarStyle;
     self.searchBar.tintColor = kRiotDesignSearchBarTintColor;

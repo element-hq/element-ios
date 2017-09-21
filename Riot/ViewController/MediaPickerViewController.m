@@ -183,6 +183,7 @@ static void *RecordingContext = &RecordingContext;
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.cameraVideoCaptureProgressView.progressColor = kRiotPrimaryBgColor;
     self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
