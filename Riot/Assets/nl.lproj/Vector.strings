@@ -440,8 +440,6 @@
 "contacts_user_directory_offline_section" = "GEBRUIKERSADRESBOEK (offline)";
 "settings_user_interface" = "GEBRUIKERSINTERFACE";
 "settings_ui_language" = "Taal";
-"settings_ui_light_theme" = "Lichte thema";
-"settings_ui_dark_theme" = "Donkere thema";
 // Read Receipts
 "read_receipts_list" = "Leesbewijzen Lijst";
 "receipt_status_read" = "Lees: ";

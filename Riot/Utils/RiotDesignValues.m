@@ -112,8 +112,10 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[RiotDesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
     [[RiotDesignValues sharedInstance] userInterfaceThemeDidChange];
-}
 
+    // Observe "Invert Colours" settings changes (available since iOS 11)
+    [[NSNotificationCenter defaultCenter] addObserver:[RiotDesignValues sharedInstance] selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -123,10 +125,25 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
     }
 }
 
+- (void)accessibilityInvertColorsStatusDidChange
+{
+    // Refresh the theme only for "auto"
+    NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+    if (!theme || [theme isEqualToString:@"auto"])
+    {
+        [self userInterfaceThemeDidChange];
+    }
+}
+
 - (void)userInterfaceThemeDidChange
 {
-    // Retrieve the current selected theme ("light" if none).
+    // Retrieve the current selected theme ("light" if none. "auto" is used as default from iOS 11).
     NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+
+    if (!theme || [theme isEqualToString:@"auto"])
+    {
+        theme = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+    }
     
     // Currently only 2 themes is supported
     if ([theme isEqualToString:@"dark"])
