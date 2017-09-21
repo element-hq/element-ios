@@ -21,11 +21,11 @@
 
 #import "AvatarGenerator.h"
 
-#import "MXRoom+Riot.h"
-
 #import "UsersDevicesViewController.h"
 
 #import "RiotNavigationController.h"
+
+#import "IncomingCallView.h"
 
 @interface CallViewController ()
 {
@@ -99,6 +99,7 @@
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.callerNameLabel.textColor = kRiotPrimaryTextColor;
     self.callStatusLabel.textColor = kRiotTopicTextColor;
@@ -194,6 +195,37 @@
     
     [gradientMaskLayer removeFromSuperlayer];
     gradientMaskLayer = nil;
+}
+
+- (UIView *)createIncomingCallView
+{
+    NSString *avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.peer.avatarUrl
+                                                                          toFitViewSize:IncomingCallView.callerAvatarSize
+                                                                             withMethod:MXThumbnailingMethodCrop];
+    
+    NSString *callInfo;
+    if (self.mxCall.isVideoCall)
+        callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
+    else
+        callInfo = NSLocalizedStringFromTable(@"call_incoming_voice", @"Vector", nil);
+    
+    IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatarURL:avatarThumbURL
+                                                                          placeholderImage:self.picturePlaceholder
+                                                                                callerName:self.peer.displayname
+                                                                                  callInfo:callInfo];
+    
+    // Incoming call is retained by call vc so use weak to avoid retain cycle
+    __weak typeof(self) weakSelf = self;
+    
+    incomingCallView.onAnswer = ^{
+        [weakSelf onButtonPressed:weakSelf.answerCallButton];
+    };
+    
+    incomingCallView.onReject = ^{
+        [weakSelf onButtonPressed:weakSelf.rejectCallButton];
+    };
+    
+    return incomingCallView;
 }
 
 #pragma mark - MXCallDelegate
@@ -325,7 +357,7 @@
     }
     else if (self.mxCall.room)
     {
-        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.riotDisplayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.summary.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
     }
     
     return [UIImage imageNamed:@"placeholder"];
@@ -354,7 +386,7 @@
     }
     else if (self.mxCall.isConferenceCall)
     {
-        peerDisplayName = self.mxCall.room.riotDisplayname;
+        peerDisplayName = self.mxCall.room.summary.displayname;
         peerAvatarURL = self.mxCall.room.state.avatar;
     }
     

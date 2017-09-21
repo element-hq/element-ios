@@ -24,7 +24,7 @@
 {
     if (![widgetEvent.type isEqualToString:kWidgetEventTypeString])
     {
-        // The Widget class works only with scalar, aka "im.vector.modular.widgets", widgets
+        // The Widget class works only with modular, aka "im.vector.modular.widgets", widgets
         return nil;
     }
 
@@ -46,6 +46,18 @@
                                                withString:mxSession.myUser.displayname ? mxSession.myUser.displayname : mxSession.myUser.userId];
         _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_avatar_url"
                                                withString:mxSession.myUser.avatarUrl ? mxSession.myUser.avatarUrl : @""];
+
+        // And their scalar token
+        NSString *scalarToken = [[WidgetManager sharedManager] scalarTokenForMXSession:mxSession];
+        if (scalarToken)
+        {
+            _url = [_url stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", scalarToken]];
+        }
+        else
+        {
+            // Some widget can live without scalar token (ex: Jitsi widget)
+            NSLog(@"[Widget] Note: There is no scalar token for %@", self);
+        }
     }
 
     return self;
