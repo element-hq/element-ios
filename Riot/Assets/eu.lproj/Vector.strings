@@ -422,3 +422,14 @@
 "bug_report_progress_zipping" = "Egunkariak biltzen";
 "bug_report_progress_uploading" = "Txostena igotzen";
 "room_details_advanced_e2e_encryption_prompt_message" = "Muturretik muturrerako zifratzea esperimentala da eta agian ez dabil behar bezala.\n\nEz zenuke datuak babesteko erabili behar oraindik.\n\nGailuek ezin izango dute gelara elakrtu aurreko historiala deszifratu.\n\nBehin gela batean zifratzea aktibatuta ez dago gero desaktibatzerik (oraingoz).\n\nZifratutako mezuak ezin izango dira ikusi oraindik zifratzea onartzen ez duten bezeroetan.";
+"auth_home_server_placeholder" = "URL (adib. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (adib. https://matrix.org)";
+"room_ongoing_conference_call_with_close" = "Konferentzia deia abian. elkartu %@ edo %@ gisa. %@.";
+"room_ongoing_conference_call_close" = "Itxi";
+"room_conference_call_no_power" = "Baimena behar duzu konferentzia deia kudeatzeko gela honetan";
+"settings_labs_create_conference_with_jitsi" = "Sortu konferentzia deia jitsi erabiliz";
+"call_already_displayed" = "Badago de bat abian.";
+"call_jitsi_error" = "Hutsegitea konferentzia deia elkartzean.";
+// Widget
+"widget_no_power_to_manage" = "Baimena behar duzu trepetak kudeatzeko gela honetan";
+"widget_creation_failure" = "Trepetaren sorrerak huts egin du";
