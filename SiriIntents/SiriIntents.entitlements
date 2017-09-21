@@ -6,7 +6,5 @@
 	<array>
 		<string>group.im.vector</string>
 	</array>
-	<key>com.apple.developer.siri</key>
-	<true/>
 </dict>
 </plist>
