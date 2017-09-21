@@ -16,6 +16,8 @@
 
 #import "WidgetManager.h"
 
+#import "MXKAppSettings.h"
+
 #pragma mark - Contants
 
 NSString *const kWidgetEventTypeString = @"im.vector.modular.widgets";
@@ -40,6 +42,9 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // MXSession kind of hash -> (Widget id -> `createWidget:` failure block).
     NSMutableDictionary<NSString*,
         NSMutableDictionary<NSString*, void (^)(NSError *error)>*> *failureBlockForWidgetCreation;
+
+    // User id -> scalar token
+    NSMutableDictionary<NSString*, NSString*> *scalarTokens;
 }
 
 @end
@@ -66,6 +71,13 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         widgetEventListener = [NSMutableDictionary dictionary];
         successBlockForWidgetCreation = [NSMutableDictionary dictionary];
         failureBlockForWidgetCreation = [NSMutableDictionary dictionary];
+
+        [self load];
+
+        if (!scalarTokens)
+        {
+            scalarTokens = [NSMutableDictionary dictionary];
+        }
     }
     return self;
 }
@@ -157,8 +169,12 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         return nil;
     }
 
+    NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
+    successBlockForWidgetCreation[hash][widgetId] = success;
+    failureBlockForWidgetCreation[hash][widgetId] = failure;
+
     // Send a state event with the widget data
-    // TODO: This API will be shortly replaced by a pure scalar API
+    // TODO: This API will be shortly replaced by a pure modular API
     return [room sendStateEventOfType:kWidgetEventTypeString
                               content:widgetContent
                              stateKey:widgetId
@@ -181,14 +197,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     NSString *confId = [room.roomId substringWithRange:NSMakeRange(1, [room.roomId rangeOfString:@":"].location - 1)];
     confId = [confId stringByAppendingString:widgetSessionId];
 
-    // TODO: This url may come from scalar API
+    // TODO: This url should come from modular API
     // Note: this url can be used as is inside a web container (like iframe for Riot-web)
     // Riot-iOS does not directly use it but extracts params from it (see `[JitsiViewController openWidget:withVideo:]`)
-    NSString *url = [NSString stringWithFormat:@"https://scalar-staging.riot.im/scalar/api/widgets/jitsi.html?confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id@", confId, video ? @"false" : @"true"];
-
-    NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
-    successBlockForWidgetCreation[hash][widgetId] = success;
-    failureBlockForWidgetCreation[hash][widgetId] = failure;
+    NSString *modularRestUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
+    NSString *url = [NSString stringWithFormat:@"%@/widgets/jitsi.html?confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id@", modularRestUrl, confId, video ? @"false" : @"true"];
 
     return [self createWidget:widgetId
                   withContent:@{
@@ -216,7 +229,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     }
 
     // Send a state event with an empty content to disable the widget
-    // TODO: This API will be shortly replaced by a pure scalar API
+    // TODO: This API will be shortly replaced by a pure modular API
     return [room sendStateEventOfType:kWidgetEventTypeString
                               content:@{}
                              stateKey:widgetId
@@ -324,6 +337,102 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     [widgetEventListener removeObjectForKey:hash];
     [successBlockForWidgetCreation removeObjectForKey:hash];
     [failureBlockForWidgetCreation removeObjectForKey:hash];
+}
+
+- (void)deleteDataForUser:(NSString *)userId
+{
+    [scalarTokens removeObjectForKey:userId];
+    [self save];
+}
+
+#pragma mark - Modular interface
+
+- (NSString *)scalarTokenForMXSession:(MXSession *)mxSession
+{
+    return scalarTokens[mxSession.myUser.userId];
+}
+
+- (MXHTTPOperation *)getScalarTokenForMXSession:(MXSession*)mxSession
+                                        success:(void (^)(NSString *scalarToken))success
+                                        failure:(void (^)(NSError *error))failure;
+{
+    MXHTTPOperation *operation;
+
+    __block NSString *scalarToken = [self scalarTokenForMXSession:mxSession];
+    if (scalarToken)
+    {
+        success(scalarToken);
+    }
+    else
+    {
+        __weak __typeof__(self) weakSelf = self;
+
+        operation = [mxSession.matrixRestClient openIdToken:^(MXOpenIdToken *tokenObject) {
+
+            typeof(self) self = weakSelf;
+
+            if (self)
+            {
+                // Exchange the token for a scalar token
+                NSString *modularRestUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
+
+                MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:modularRestUrl andOnUnrecognizedCertificateBlock:nil];
+
+                MXHTTPOperation *operation2 = [httpClient requestWithMethod:@"POST"
+                                                                       path:@"register"
+                                                                 parameters:tokenObject.JSONDictionary
+                                                                    success:^(NSDictionary *JSONResponse) {
+
+                                                                        MXJSONModelSetString(scalarToken, JSONResponse[@"scalar_token"])
+                                                                        self->scalarTokens[mxSession.myUser.userId] = scalarToken;
+
+                                                                        [self save];
+
+                                                                        if (success)
+                                                                        {
+                                                                            success(scalarToken);
+                                                                        }
+
+                                                                    } failure:^(NSError *error) {
+                                                                        NSLog(@"[WidgetManager] getScalarTokenForMXSession. Error in modular/register request");
+
+                                                                        if (failure)
+                                                                        {
+                                                                            failure(error);
+                                                                        }
+                                                                    }];
+
+                [operation mutateTo:operation2];
+
+            }
+
+        } failure:^(NSError *error) {
+            NSLog(@"[WidgetManager] getScalarTokenForMXSession. Error in openIdToken request");
+
+            if (failure)
+            {
+                failure(error);
+            }
+        }];
+    }
+
+    return operation;
+}
+
+#pragma mark - Private methods
+
+- (void)load
+{
+    NSUserDefaults *userDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+    scalarTokens = [NSMutableDictionary dictionaryWithDictionary:[userDefaults objectForKey:@"scalarTokens"]];
+}
+
+- (void)save
+{
+    NSUserDefaults *userDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+
+    [userDefaults setObject:scalarTokens forKey:@"scalarTokens"];
+    [userDefaults synchronize];
 }
 
 @end

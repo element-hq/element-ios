@@ -29,7 +29,7 @@
 /**
  Update the information displayed by the cell.
  
- @param rooom the room to render.
+ @param room the room to render.
  */
 - (void)render:(MXRoom *)room;
 

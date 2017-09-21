@@ -1,3 +1,20 @@
+Changes in 0.5.3 (2017-08-25)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.6.2).
+ * Support dark theme (vector-im/riot-meta#22).
+ * Set the application group identifier to be able to share userDefaults object.
+ 
+Bug Fixes:
+ * SettingsViewController: Release correctly the pushed view controller.
+ * App have crashed whilst uploading photos (#1445).
+ * Register for remote notifications only if user provides access to notification feature, thanks to @aramsargsyan (#1467).
+ * Improvements in notification registration flow, thanks to @aramsargsyan (#1472).
+ 
+Translations:
+ * Enable Russian.
+
 Changes in 0.5.2 (2017-08-01)
 ===============================================
 

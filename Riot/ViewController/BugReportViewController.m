@@ -34,6 +34,8 @@
 @property (nonatomic) BOOL sendLogs;
 @property (nonatomic) BOOL sendScreenshot;
 
+@property (weak, nonatomic) IBOutlet UIView *overlayView;
+
 @end
 
 @implementation BugReportViewController
@@ -87,9 +89,6 @@
     {
         _titleLabel.text = NSLocalizedStringFromTable(@"bug_report_title", @"Vector", nil);
         _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_description", @"Vector", nil);
-
-        // Allow to send empty description for crash report but not for bug report
-        _sendButton.enabled = NO;
     }
     
     [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateNormal];
@@ -137,6 +136,10 @@
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    
+    self.overlayView.backgroundColor = kRiotOverlayColor;
+    self.overlayView.alpha = 1.0;
     
     self.containerView.backgroundColor = kRiotPrimaryBgColor;
     self.sendingContainer.backgroundColor = kRiotPrimaryBgColor;

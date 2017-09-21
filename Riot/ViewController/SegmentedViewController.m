@@ -17,7 +17,7 @@
 
 #import "SegmentedViewController.h"
 
-#import "AppDelegate.h"
+#import "RiotDesignValues.h"
 
 @interface SegmentedViewController ()
 {
@@ -71,11 +71,11 @@
  @param viewControllers the list of viewControllers to display.
  @param defaultSelected index of the default selected UIViewController in the list.
  */
-- (void)initWithTitles:(NSArray*)titles viewControllers:(NSArray*)someViewControllers defaultSelected:(NSUInteger)index
+- (void)initWithTitles:(NSArray*)titles viewControllers:(NSArray*)someViewControllers defaultSelected:(NSUInteger)defaultSelected
 {
     viewControllers = someViewControllers;
     sectionTitles = titles;
-    _selectedIndex = index;
+    _selectedIndex = defaultSelected;
 }
 
 - (void)destroy
@@ -129,7 +129,6 @@
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)viewDidLoad
@@ -173,6 +172,7 @@
 {
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.view.backgroundColor = kRiotPrimaryBgColor;
 }

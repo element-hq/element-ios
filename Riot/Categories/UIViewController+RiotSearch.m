@@ -19,6 +19,8 @@
 
 #import <objc/runtime.h>
 
+#import "RiotDesignValues.h"
+
 /**
  `UIViewControllerRiotSearchInternals` is the internal single point storage for the search feature.
  
@@ -91,6 +93,10 @@
         // Reset searches
         self.searchBar.text = @"";
         
+        // Customize search bar
+        self.searchBar.barStyle = kRiotDesignSearchBarStyle;
+        self.searchBar.tintColor = kRiotDesignSearchBarTintColor;
+        
         // Remove navigation buttons
         self.navigationItem.hidesBackButton = YES;
         self.navigationItem.rightBarButtonItem = nil;
@@ -128,7 +134,8 @@
 
 - (void)addBackgroundImageViewToView:(UIView*)view
 {
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search_bg"]];
+    UIImage *searchBgImage = [MXKTools paintImage:[UIImage imageNamed:@"search_bg"] withColor:kRiotKeyboardColor];
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:searchBgImage];
     backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [view addSubview:backgroundImageView];

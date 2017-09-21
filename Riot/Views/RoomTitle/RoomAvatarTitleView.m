@@ -19,7 +19,7 @@
 
 #import "RiotDesignValues.h"
 
-#import "MXRoom+Riot.h"
+#import "MXRoomSummary+Riot.h"
 
 @implementation RoomAvatarTitleView
 
@@ -71,7 +71,7 @@
     
     if (self.mxRoom)
     {
-        [self.mxRoom setRoomAvatarImageIn:self.roomAvatar];
+        [self.mxRoom.summary setRoomAvatarImageIn:self.roomAvatar];
     }
     else if (self.roomAvatarURL)
     {

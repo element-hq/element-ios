@@ -114,6 +114,7 @@
     self.assetsCollectionView.backgroundColor = kRiotPrimaryBgColor;
     self.defaultBarTintColor = kRiotSecondaryBgColor;
     self.barTitleColor = kRiotPrimaryTextColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
