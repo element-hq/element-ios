@@ -417,8 +417,12 @@
 "auth_phone_in_use" = "Ce numéro de téléphone est déjà utilisé";
 "auth_email_not_found" = "Échec lors de l'envoi de l'e-mail : Cette adresse e-mail n'a pas pu être trouvée";
 "settings_ui_language" = "Langue";
-"settings_ui_light_theme" = "Thème clair";
-"settings_ui_dark_theme" = "Thème sombre";
+"settings_ui_theme" = "Thème";
+"settings_ui_theme_auto" = "Auto";
+"settings_ui_theme_light" = "Clair";
+"settings_ui_theme_dark" = "Sombre";
+"settings_ui_theme_picker_title" = "Selectionnez un thème";
+"settings_ui_theme_picker_message" = "\"Auto\" utilise le paramètre \"Inverser les couleurs\" de votre appareil";
 "collapse" = "réduire";
 "auth_untrusted_id_server" = "Le serveur d'identité n'est pas fiable";
 "settings_user_interface" = "INTERFACE UTILISATEUR";

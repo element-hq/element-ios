@@ -340,8 +340,12 @@
 //"settings_call_invitations" = "Call invitations";
 
 "settings_ui_language" = "Language";
-"settings_ui_light_theme" = "Light theme";
-"settings_ui_dark_theme" = "Dark theme";
+"settings_ui_theme" = "Theme";
+"settings_ui_theme_auto" = "Auto";
+"settings_ui_theme_light" = "Light";
+"settings_ui_theme_dark" = "Dark";
+"settings_ui_theme_picker_title" = "Select a theme";
+"settings_ui_theme_picker_message" = "\"Auto\" uses your device \"Invert Colours\" settings";
 
 "settings_unignore_user" = "Show all messages from %@?";
 

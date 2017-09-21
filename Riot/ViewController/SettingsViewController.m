@@ -1695,36 +1695,39 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == USER_INTERFACE_THEME_INDEX)
         {
-            uiThemeCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
-            
-            uiThemeCell.mainContainerLeadingConstraint.constant = uiThemeCell.separatorInset.left;
-            
-            uiThemeCell.checkBoxesNumber = 2;
-            
-            uiThemeCell.allowsMultipleSelection = NO;
-            uiThemeCell.delegate = self;
-            
-            NSArray *labels = uiThemeCell.labels;
-            UILabel *label;
-            label = labels[0];
-            label.textColor = kRiotPrimaryTextColor;
-            label.text = NSLocalizedStringFromTable(@"settings_ui_light_theme", @"Vector", nil);
-            label = labels[1];
-            label.textColor = kRiotPrimaryTextColor;
-            label.text = NSLocalizedStringFromTable(@"settings_ui_dark_theme", @"Vector", nil);
-            
-            NSString *selectedTheme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];            
-            if (selectedTheme && [selectedTheme isEqualToString:@"dark"])
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            if (!cell)
             {
-                [uiThemeCell setCheckBoxValue:YES atIndex:1];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
             }
-            else
+
+            NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+            if (!theme)
             {
-                // Consider the light theme by default.
-                [uiThemeCell setCheckBoxValue:YES atIndex:0];
+                if (@available(iOS 11.0, *))
+                {
+                    // "auto" is used the default value from iOS 11
+                    theme = @"auto";
+                }
+                else
+                {
+                    // Use "light" for older version
+                    theme = @"light";
+                }
             }
-            
-            cell = uiThemeCell;
+
+            theme = [NSString stringWithFormat:@"settings_ui_theme_%@", theme];
+            NSString *i18nTheme = NSLocalizedStringFromTable(theme,
+                                                              @"Vector",
+                                                             nil);
+
+            cell.textLabel.textColor = kRiotPrimaryTextColor;
+
+            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
+            cell.detailTextLabel.text = i18nTheme;
+
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
@@ -2269,6 +2272,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 languagePickerViewController.selectedLanguage = [NSBundle mxk_language];
                 languagePickerViewController.delegate = self;
                 [self pushViewController:languagePickerViewController];
+            }
+            else if (row == USER_INTERFACE_THEME_INDEX)
+            {
+                [self showThemePicker];
             }
         }
         else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
@@ -3430,6 +3437,87 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
+- (void)showThemePicker
+{
+    __weak typeof(self) weakSelf = self;
+
+    __block UIAlertAction *autoAction, *lightAction, *darkAction;
+    NSString *themePickerMessage;
+
+    void (^actionBlock)(UIAlertAction *action) = ^(UIAlertAction * action) {
+
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+
+            NSString *newTheme;
+            if (action == autoAction)
+            {
+                newTheme = @"auto";
+            }
+            else  if (action == lightAction)
+            {
+                newTheme = @"light";
+            }
+            else if (action == darkAction)
+            {
+                newTheme = @"dark";
+            }
+
+            NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+            if (newTheme && ![newTheme isEqualToString:theme])
+            {
+                // Clear fake Riot Avatars based on the previous theme.
+                [AvatarGenerator clear];
+
+                // The user wants to select this theme
+                [[NSUserDefaults standardUserDefaults] setObject:newTheme forKey:@"userInterfaceTheme"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+
+                [self.tableView reloadData];
+            }
+        }
+    };
+
+    if (@available(iOS 11.0, *))
+    {
+        // Show "auto" only from iOS 11
+        autoAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_auto", @"Vector", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:actionBlock];
+
+        // Explain what is "auto"
+        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message", @"Vector", nil);
+    }
+
+    lightAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_light", @"Vector", nil)
+                                          style:UIAlertActionStyleDefault
+                                        handler:actionBlock];
+
+    darkAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_dark", @"Vector", nil)
+                                           style:UIAlertActionStyleDefault
+                                         handler:actionBlock];
+
+    // Ask the user the kind of the call: voice or video?
+    UIAlertController *themePicker = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_picker_title", @"Vector", nil)
+                                                                         message:themePickerMessage
+                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+
+    if (autoAction)
+    {
+        [themePicker addAction:autoAction];
+    }
+    [themePicker addAction:lightAction];
+    [themePicker addAction:darkAction];
+
+    // Cancel button
+    [themePicker addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+
+    [self presentViewController:themePicker animated:YES completion:nil];
+}
+
 #pragma mark - MediaPickerViewController Delegate
 
 - (void)dismissMediaPicker
@@ -3773,21 +3861,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)tableViewCellWithCheckBoxes:(TableViewCellWithCheckBoxes *)tableViewCellWithCheckBoxes didTapOnCheckBoxAtIndex:(NSUInteger)index
 {
-    if (tableViewCellWithCheckBoxes == uiThemeCell)
-    {
-        NSString *theme = (index == 0) ? @"light" : @"dark";
-        BOOL isCurrentlySelected = [uiThemeCell checkBoxValueAtIndex:index];
-        
-        if (!isCurrentlySelected)
-        {
-            // Clear fake Riot Avatars based on the previous theme.
-            [AvatarGenerator clear];
-            
-            // The user wants to select this theme
-            [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"userInterfaceTheme"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-    }
 }
 
 @end
