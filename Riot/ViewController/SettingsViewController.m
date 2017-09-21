@@ -205,9 +205,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     BOOL keepNewEmailEditing;
     BOOL keepNewPhoneNumberEditing;
     
-    // The user interface theme cell
-    TableViewCellWithCheckBoxes *uiThemeCell;
-    
     // The current pushed view controller
     UIViewController *pushedViewController;
 }
@@ -250,7 +247,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
-    [self.tableView registerClass:TableViewCellWithCheckBoxes.class forCellReuseIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -3498,7 +3494,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                            style:UIAlertActionStyleDefault
                                          handler:actionBlock];
 
-    // Ask the user the kind of the call: voice or video?
     UIAlertController *themePicker = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_picker_title", @"Vector", nil)
                                                                          message:themePickerMessage
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
@@ -3514,6 +3509,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [themePicker addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                         style:UIAlertActionStyleDefault
                                                       handler:nil]];
+
+    UIView *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:USER_INTERFACE_THEME_INDEX inSection:SETTINGS_SECTION_USER_INTERFACE_INDEX]];
+    [themePicker popoverPresentationController].sourceView = fromCell;
+    [themePicker popoverPresentationController].sourceRect = fromCell.bounds;
 
     [self presentViewController:themePicker animated:YES completion:nil];
 }
@@ -3855,12 +3854,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [[AppDelegate theDelegate] reloadMatrixSessions:NO];
         });
     }
-}
-
-#pragma mark - TableViewCellWithCheckBoxesDelegate
-
-- (void)tableViewCellWithCheckBoxes:(TableViewCellWithCheckBoxes *)tableViewCellWithCheckBoxes didTapOnCheckBoxAtIndex:(NSUInteger)index
-{
 }
 
 @end
