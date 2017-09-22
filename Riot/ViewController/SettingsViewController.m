@@ -40,6 +40,8 @@
 
 #import "OLMKit/OLMKit.h"
 
+#import "GBDeviceInfo_iOS.h"
+
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
@@ -1700,7 +1702,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
             if (!theme)
             {
-                if (@available(iOS 11.0, *))
+                if ([GBDeviceInfo deviceInfo].osVersion.major >= 11) //(@available(iOS 11.0, *)) requires Xcode 9
                 {
                     // "auto" is used the default value from iOS 11
                     theme = @"auto";
@@ -3475,7 +3477,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
     };
 
-    if (@available(iOS 11.0, *))
+    if ([GBDeviceInfo deviceInfo].osVersion.major >= 11) //(@available(iOS 11.0, *)) requires Xcode 9
     {
         // Show "auto" only from iOS 11
         autoAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_auto", @"Vector", nil)
