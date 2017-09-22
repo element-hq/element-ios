@@ -517,10 +517,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     _isAppForeground = YES;
 
-    if (@available(iOS 11.0, *))
+//    if (@available(iOS 11.0, *)) // Requires Xcode 9
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    if ([window respondsToSelector:@selector(accessibilityIgnoresInvertColors)])
     {
         // Riot has its own dark theme. Prevent iOS from applying its one
-        [[UIApplication sharedApplication] keyWindow].accessibilityIgnoresInvertColors = YES;
+        window.accessibilityIgnoresInvertColors = YES;
     }
     
     [self handleLaunchAnimation];
