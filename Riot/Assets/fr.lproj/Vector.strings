@@ -435,3 +435,10 @@
 // Widget
 "widget_no_power_to_manage" = "Permissions requises pour gérer les widgets dans ce salon";
 "widget_creation_failure" = "Impossible de créer la widget";
+"send_to" = "Envoyer à %@";
+"sending" = "Envoi";
+"call_incoming_voice" = "Appel entrant...";
+"call_incoming_video" = "Appel vidéo entrant...";
+"widget_integration_must_be_in_room" = "Vous n'êtes pas dans ce salon.";
+"widget_integration_no_permission_in_room" = "Vous n’avez pas la permission de poster dans ce salon.";
+"widget_integration_room_not_visible" = "Le salon %@ n'est pas visible.";
