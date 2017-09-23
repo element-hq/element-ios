@@ -11,9 +11,9 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@：* %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ 傳送給您一張圖片";
+"IMAGE_FROM_USER" = "%@ 傳送給您一張圖片 %@";
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ 貼出一張圖片在 %@";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ 貼出一張圖片 %@ 在 %@";
 /* Multiple unread messages in a room */
 "UNREAD_IN_ROOM" = "%@ 個新訊息在 %@";
 /* Multiple unread messages from a specific person, not referencing a room */
