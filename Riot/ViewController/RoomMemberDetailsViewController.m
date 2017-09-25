@@ -118,6 +118,58 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    if (@available(iOS 11.0, *))
+    {
+        // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
+        memberTitleView = [RoomMemberTitleView roomMemberTitleView];
+        self.navigationItem.titleView = memberTitleView;
+    }
+    else
+    {
+        self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
+        
+        memberTitleView = [RoomMemberTitleView roomMemberTitleView];
+        
+        // Add the title view and define edge constraints
+        memberTitleView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.navigationItem.titleView addSubview:memberTitleView];
+        
+        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.navigationItem.titleView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f];
+        NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:self.navigationItem.titleView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                           multiplier:1.0f
+                                                                             constant:0.0f];
+        NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
+                                                                             attribute:NSLayoutAttributeLeading
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.navigationItem.titleView
+                                                                             attribute:NSLayoutAttributeLeading
+                                                                            multiplier:1.0f
+                                                                              constant:0.0f];
+        NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
+                                                                              attribute:NSLayoutAttributeTrailing
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:self.navigationItem.titleView
+                                                                              attribute:NSLayoutAttributeTrailing
+                                                                             multiplier:1.0f
+                                                                               constant:0.0f];
+        
+        [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
+    }
+    
+    // Handle the member avatar at the view controller level.
+    self.memberThumbnail = memberTitleView.memberAvatar;
+    
+    // Add tap gesture on member's name
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
@@ -125,11 +177,6 @@
     [self.roomMemberNameLabelMask addGestureRecognizer:tap];
     self.roomMemberNameLabelMask.userInteractionEnabled = YES;
     
-    self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
-    
-    memberTitleView = [RoomMemberTitleView roomMemberTitleView];
-    self.memberThumbnail = memberTitleView.memberAvatar;
-
     // Add tap to show the room member avatar in fullscreen
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -146,40 +193,6 @@
     [tap setDelegate:self];
     [self.roomMemberAvatarMask addGestureRecognizer:tap];
     self.roomMemberAvatarMask.userInteractionEnabled = YES;
-
-    // Add the title view and define edge constraints
-    memberTitleView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.navigationItem.titleView addSubview:memberTitleView];
-    
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
-                                                                        attribute:NSLayoutAttributeTop
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.navigationItem.titleView
-                                                                        attribute:NSLayoutAttributeTop
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.navigationItem.titleView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
-                                                                     attribute:NSLayoutAttributeLeading
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.navigationItem.titleView
-                                                                     attribute:NSLayoutAttributeLeading
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f];
-    NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
-                                                                        attribute:NSLayoutAttributeTrailing
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.navigationItem.titleView
-                                                                        attribute:NSLayoutAttributeTrailing
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
     
     // Register collection view cell class
     [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
