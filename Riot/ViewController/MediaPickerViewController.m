@@ -1000,6 +1000,12 @@ static void *RecordingContext = &RecordingContext;
         NSLog(@"[MediaPickerVC] Attemping to setup AVCapture when it is already started!");
         return;
     }
+    if (!cameraQueue)
+    {
+        NSLog(@"[MediaPickerVC] Attemping to setup AVCapture when it is being destroyed!");
+        return;
+    }
+
     isCaptureSessionSetupInProgress = YES;
     
     [self.cameraActivityIndicator startAnimating];
@@ -1192,6 +1198,12 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)tearDownAVCapture
 {
+    if (!cameraQueue)
+    {
+        NSLog(@"[MediaPickerVC] Attemping to tear down AVCapture when it is being destroyed!");
+        return;
+    }
+
     dispatch_sync(cameraQueue, ^{
         frontCameraInput = nil;
         backCameraInput = nil;
