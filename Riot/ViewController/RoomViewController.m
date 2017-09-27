@@ -374,6 +374,14 @@
     missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
     missedDiscussionsBarButtonCustomView.clipsToBounds = NO;
     
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBarButtonCustomView
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:nil
+                                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                                        multiplier:1.0
+                                                                          constant:21];
+    
     missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
     [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
     
@@ -399,7 +407,7 @@
                                                                         multiplier:1.0
                                                                           constant:0];
     
-    [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
+    [NSLayoutConstraint activateConstraints:@[heightConstraint, centerXConstraint, centerYConstraint]];
     
     // Set up the room title view according to the data source (if any)
     [self refreshRoomTitle];
@@ -3700,15 +3708,6 @@
         
         if (missedCount)
         {
-            // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-            UINavigationController *mainNavigationController = self.navigationController;
-            if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-            {
-                mainNavigationController = self.splitViewController.viewControllers.firstObject;
-            }
-            UINavigationItem *backItem = mainNavigationController.navigationBar.backItem;
-            UIBarButtonItem *backButton = backItem.backBarButtonItem;
-            
             // Refresh missed discussions count label
             if (missedCount > 99)
             {
@@ -3724,25 +3723,33 @@
             // Update the label background view frame
             CGRect frame = missedDiscussionsBadgeLabelBgView.frame;
             frame.size.width = round(missedDiscussionsBadgeLabel.frame.size.width + 18);
-            if (backButton && !backButton.title.length)
+            
+            if ([GBDeviceInfo deviceInfo].osVersion.major < 11)
             {
-                // Shift the badge on the left to be close the back icon
-                frame.origin.x = ([GBDeviceInfo deviceInfo].displayInfo.display > GBDeviceDisplay4Inch ? -35 : -25);
+                // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+                UINavigationController *mainNavigationController = self.navigationController;
+                if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+                {
+                    mainNavigationController = self.splitViewController.viewControllers.firstObject;
+                }
+                UINavigationItem *backItem = mainNavigationController.navigationBar.backItem;
+                UIBarButtonItem *backButton = backItem.backBarButtonItem;
+                
+                if (backButton && !backButton.title.length)
+                {
+                    // Shift the badge on the left to be close the back icon
+                    frame.origin.x = ([GBDeviceInfo deviceInfo].displayInfo.display > GBDeviceDisplay4Inch ? -35 : -25);
+                }
+                else
+                {
+                    frame.origin.x = 0;
+                }
             }
-            else
-            {
-                frame.origin.x = 0;
-            }
+            
             // Caution: set label background view frame only in case of changes to prevent from looping on 'viewDidLayoutSubviews'.
             if (!CGRectEqualToRect(missedDiscussionsBadgeLabelBgView.frame, frame))
             {
                 missedDiscussionsBadgeLabelBgView.frame = frame;
-                
-                // Adjust the custom view width of the associated bar button
-                CGRect bgFrame = missedDiscussionsBarButtonCustomView.frame;
-                CGFloat width = frame.size.width + frame.origin.x;
-                bgFrame.size.width = (width > 0 ? width : 0);
-                missedDiscussionsBarButtonCustomView.frame = bgFrame;
             }
             
             // Set the right background color
