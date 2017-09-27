@@ -1207,6 +1207,11 @@
 
                     self.navigationItem.rightBarButtonItems[1].image = icon;
                 }
+                else
+                {
+                    // Reset original icon
+                    self.navigationItem.rightBarButtonItems[1].image = [UIImage imageNamed:@"apps-icon"];
+                }
             }
 
             // Do not change title view class here if the expanded header is visible.
@@ -3455,6 +3460,7 @@
             // Update the bar
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
+            [self refreshRoomTitle];
         }
     }];
 }
