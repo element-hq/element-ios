@@ -33,7 +33,7 @@
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface RoomMemberDetailsViewController ()
+@interface RoomMemberDetailsViewController () <RoomMemberTitleViewDelegate>
 {
     RoomMemberTitleView* memberTitleView;
     
@@ -118,17 +118,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    memberTitleView = [RoomMemberTitleView roomMemberTitleView];
+    memberTitleView.delegate = self;
+    
     if (@available(iOS 11.0, *))
     {
         // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
-        memberTitleView = [RoomMemberTitleView roomMemberTitleView];
         self.navigationItem.titleView = memberTitleView;
     }
     else
     {
         self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
-        
-        memberTitleView = [RoomMemberTitleView roomMemberTitleView];
         
         // Add the title view and define edge constraints
         memberTitleView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -336,7 +336,8 @@
         }
     }
     
-    if (memberTitleView)
+    // Check whether the title view has been created and rendered.
+    if (memberTitleView && memberTitleView.superview)
     {
         // Adjust the header height by taking into account the actual position of the member avatar in title view
         // This position depends automatically on the screen orientation.
@@ -1058,6 +1059,13 @@
                                                         [self updateMemberInfo];
                                                     } failure:nil];
     }
+}
+
+#pragma mark - RoomMemberTitleViewDelegate
+
+- (void)roomMemberTitleViewDidLayoutSubview:(RoomMemberTitleView*)titleView
+{
+    [self viewDidLayoutSubviews];
 }
 
 @end

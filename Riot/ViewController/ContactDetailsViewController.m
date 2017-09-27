@@ -35,7 +35,7 @@
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface ContactDetailsViewController ()
+@interface ContactDetailsViewController () <RoomMemberTitleViewDelegate>
 {
     RoomMemberTitleView* contactTitleView;
     MXKImageView *contactAvatar;
@@ -132,19 +132,62 @@
     actionsArray = [[NSMutableArray alloc] init];
     directChatsArray = [[NSMutableArray alloc] init];
     
+    contactTitleView = [RoomMemberTitleView roomMemberTitleView];
+    contactTitleView.delegate = self;
+    contactAvatar = contactTitleView.memberAvatar;
+    contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
+    contactAvatar.defaultBackgroundColor = [UIColor clearColor];
+    
+    if (@available(iOS 11.0, *))
+    {
+        // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
+        self.navigationItem.titleView = contactTitleView;
+    }
+    else
+    {
+        self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
+        
+        // Add the title view and define edge constraints
+        contactTitleView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.navigationItem.titleView addSubview:contactTitleView];
+        
+        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.navigationItem.titleView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f];
+        NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:self.navigationItem.titleView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                           multiplier:1.0f
+                                                                             constant:0.0f];
+        NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
+                                                                             attribute:NSLayoutAttributeLeading
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.navigationItem.titleView
+                                                                             attribute:NSLayoutAttributeLeading
+                                                                            multiplier:1.0f
+                                                                              constant:0.0f];
+        NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
+                                                                              attribute:NSLayoutAttributeTrailing
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:self.navigationItem.titleView
+                                                                              attribute:NSLayoutAttributeTrailing
+                                                                             multiplier:1.0f
+                                                                               constant:0.0f];
+        [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
+    }
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
     [self.contactNameLabelMask addGestureRecognizer:tap];
     self.contactNameLabelMask.userInteractionEnabled = YES;
-    
-    self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
-    
-    contactTitleView = [RoomMemberTitleView roomMemberTitleView];
-    contactAvatar = contactTitleView.memberAvatar;
-    contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
-    contactAvatar.defaultBackgroundColor = [UIColor clearColor];
 
     // Add tap to show the contact avatar in fullscreen
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
@@ -162,40 +205,6 @@
     [tap setDelegate:self];
     [self.contactAvatarMask addGestureRecognizer:tap];
     self.contactAvatarMask.userInteractionEnabled = YES;
-
-    // Add the title view and define edge constraints
-    contactTitleView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.navigationItem.titleView addSubview:contactTitleView];
-    
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
-                                                                        attribute:NSLayoutAttributeTop
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.navigationItem.titleView
-                                                                        attribute:NSLayoutAttributeTop
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.navigationItem.titleView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
-                                                                     attribute:NSLayoutAttributeLeading
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.navigationItem.titleView
-                                                                     attribute:NSLayoutAttributeLeading
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f];
-    NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
-                                                                        attribute:NSLayoutAttributeTrailing
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.navigationItem.titleView
-                                                                        attribute:NSLayoutAttributeTrailing
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
     
     // Register collection view cell class
     [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
@@ -354,7 +363,8 @@
 {
     [super viewDidLayoutSubviews];
     
-    if (contactTitleView)
+    // Check whether the title view has been created and rendered.
+    if (contactTitleView && contactTitleView.superview)
     {
         // Adjust the header height by taking into account the actual position of the member avatar in title view
         // This position depends automatically on the screen orientation.
@@ -1175,6 +1185,13 @@
         // Trigger status bar update
         [self setNeedsStatusBarAppearanceUpdate];
     }
+}
+
+#pragma mark - RoomMemberTitleViewDelegate
+
+- (void)roomMemberTitleViewDidLayoutSubview:(RoomMemberTitleView*)titleView
+{
+    [self viewDidLayoutSubviews];
 }
 
 @end
