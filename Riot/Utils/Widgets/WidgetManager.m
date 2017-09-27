@@ -87,7 +87,17 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return [self widgetsOfTypes:nil inRoom:room];
 }
 
-- (NSArray<Widget *> *)widgetsOfTypes:(NSArray<NSString *> *)widgetTypes inRoom:(MXRoom *)room
+- (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes inRoom:(MXRoom*)room;
+{
+    return [self widgetsOfTypes:widgetTypes butNotTypesOf:nil inRoom:room];
+}
+
+- (NSArray<Widget*> *)widgetsNotOfTypes:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room
+{
+    return [self widgetsOfTypes:nil butNotTypesOf:notWidgetTypes inRoom:room];
+}
+
+- (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes butNotTypesOf:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room;
 {
     // Widget id -> widget
     NSMutableDictionary <NSString*, Widget *> *widgets = [NSMutableDictionary dictionary];
@@ -118,14 +128,21 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     for (MXEvent *widgetEvent in widgetEvents)
     {
         // Filter widget types if required
-        if (widgetTypes)
+        if (widgetTypes || notWidgetTypes)
         {
             NSString *widgetType;
             MXJSONModelSetString(widgetType, widgetEvent.content[@"type"]);
 
-            if (widgetType && NSNotFound == [widgetTypes indexOfObject:widgetType])
+            if (widgetType)
             {
-                continue;
+                if (widgetTypes && NSNotFound == [widgetTypes indexOfObject:widgetType])
+                {
+                    continue;
+                }
+                if (notWidgetTypes && NSNotFound != [notWidgetTypes indexOfObject:widgetType])
+                {
+                     continue;
+                }
             }
         }
 

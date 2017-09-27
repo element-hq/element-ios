@@ -110,7 +110,7 @@
 #import "MXRoom+Riot.h"
 
 #import "IntegrationManagerViewController.h"
-#import "WidgetViewController.h"
+#import "WidgetPickerViewController.h"
 
 @interface RoomViewController ()
 {
@@ -1189,13 +1189,26 @@
                 barButtonItem.enabled = YES;
             }
 
-            BOOL matrixAppsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
-            if (!matrixAppsEnabled && self.navigationItem.rightBarButtonItems.count == 2)
+            if (self.navigationItem.rightBarButtonItems.count == 2)
             {
-                // If the setting is disabled, do not show the icon
-                self.navigationItem.rightBarButtonItems = @[self.navigationItem.rightBarButtonItem];
+                BOOL matrixAppsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
+                if (!matrixAppsEnabled)
+                {
+                    // If the setting is disabled, do not show the icon
+                    self.navigationItem.rightBarButtonItems = @[self.navigationItem.rightBarButtonItem];
+                }
+                else if (self.widgetsCount)
+                {
+                    // Show there are widgets by changing the "apps" icon color
+                    // TODO: Design must be reviewed
+                    UIImage *icon = self.navigationItem.rightBarButtonItems[1].image;
+                    icon = [MXKTools paintImage:icon withColor:kRiotColorPinkRed];
+                    icon = [icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
+                    self.navigationItem.rightBarButtonItems[1].image = icon;
+                }
             }
-            
+
             // Do not change title view class here if the expanded header is visible.
             if (self.expandedHeaderContainer.hidden)
             {
@@ -2881,19 +2894,16 @@
     // Matrix Apps button
     else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
     {
-        // Temporary code to test `WidgetViewController`
-        // TODO: remove it
-//        NSArray<Widget *> *widgets = [[WidgetManager sharedManager] widgetsInRoom:self.roomDataSource.room];
-//        if (widgets.count)
-//        {
-//            // Hide back button title
-//            self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-//
-//            WidgetViewController *widgetVC = [[WidgetViewController alloc] initForWidget:widgets[0]];
-//            [self.navigationController pushViewController:widgetVC animated:YES];
-//        }
-//        else
+        if (self.widgetsCount)
         {
+            WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
+                                                                                                     inRoom:self.roomDataSource.roomId];
+
+            [widgetPicker showInViewController:self];
+        }
+        else
+        {
+            // No widgets -> Directly show the integration manager
             IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
                                                                                                               inRoom:self.roomDataSource.roomId
                                                                                                               screen:kIntegrationManagerMainScreen
@@ -3463,6 +3473,12 @@
 
     // Alert user
     [[AppDelegate theDelegate] showErrorAsAlert:error];
+}
+
+- (NSUInteger)widgetsCount
+{
+    return [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
+                                                     inRoom:self.roomDataSource.room].count;
 }
 
 #pragma mark - Unreachable Network Handling

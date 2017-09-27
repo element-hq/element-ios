@@ -72,12 +72,20 @@ WidgetManagerErrorCode;
 /**
  List all active widgets of a given type in a room.
 
- @param widgetType the types of widget to search.
+ @param widgetTypes the types of widget to search. Nil means all types.
  @param room the room to check.
  @return a list of widgets.
  */
 - (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes inRoom:(MXRoom*)room;
 
+/**
+ List all active widgets of a given type in a room, excluding some types.
+
+ @param notWidgetTypes the types of widget to not consider. Nil means all types.
+ @param room the room to check.
+ @return a list of widgets.
+ */
+- (NSArray<Widget*> *)widgetsNotOfTypes:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room;
 
 /**
  Add a modular widget to a room.
