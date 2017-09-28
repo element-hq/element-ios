@@ -374,6 +374,14 @@
     missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
     missedDiscussionsBarButtonCustomView.clipsToBounds = NO;
     
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBarButtonCustomView
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:nil
+                                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                                        multiplier:1.0
+                                                                          constant:21];
+    
     missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
     [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
     
@@ -399,7 +407,7 @@
                                                                         multiplier:1.0
                                                                           constant:0];
     
-    [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
+    [NSLayoutConstraint activateConstraints:@[heightConstraint, centerXConstraint, centerYConstraint]];
     
     // Set up the room title view according to the data source (if any)
     [self refreshRoomTitle];
@@ -491,7 +499,7 @@
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.contentInset.left, -self.bubblesTableView.contentInset.top) animated:YES];
+        [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
 }
@@ -683,7 +691,7 @@
         CGRect frame = expandedHeader.bottomBorderView.frame;
         self.expandedHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
-        self.bubblesTableViewTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+        self.bubblesTableViewTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
         self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant;
     }
     // Check whether the preview header is visible
@@ -710,12 +718,12 @@
         CGRect frame = previewHeader.bottomBorderView.frame;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
-        self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+        self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
         self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
     }
     else
     {
-        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.contentInset.top;
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top;
     }
     
     [self refreshMissedDiscussionsCount:YES];
@@ -1366,8 +1374,8 @@
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
                              
-                             self.bubblesTableViewTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top : 0);
-                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : self.bubblesTableView.contentInset.top);
+                             self.bubblesTableViewTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top : 0);
+                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : self.bubblesTableView.mxk_adjustedContentInset.top);
                              
                              if (roomAvatarView)
                              {
@@ -1482,7 +1490,7 @@
                              animations:^{
                                  
                                  self.bubblesTableViewTopConstraint.constant = 0;
-                                 self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.contentInset.top;
+                                 self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top;
                                  
                                  // Force to render the view
                                  [self forceLayoutRefresh];
@@ -1573,7 +1581,7 @@
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
                              
-                             self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+                             self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
                              self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
                              
                              if (roomAvatarView)
@@ -2993,7 +3001,7 @@
     // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
     if (!self.roomDataSource.isLive && ![self isRoomPreview])
     {
-        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.contentInset.bottom;
+        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.mxk_adjustedContentInset.bottom;
         if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
         {
             [self goBackToLive];
@@ -3700,15 +3708,6 @@
         
         if (missedCount)
         {
-            // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-            UINavigationController *mainNavigationController = self.navigationController;
-            if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-            {
-                mainNavigationController = self.splitViewController.viewControllers.firstObject;
-            }
-            UINavigationItem *backItem = mainNavigationController.navigationBar.backItem;
-            UIBarButtonItem *backButton = backItem.backBarButtonItem;
-            
             // Refresh missed discussions count label
             if (missedCount > 99)
             {
@@ -3724,25 +3723,33 @@
             // Update the label background view frame
             CGRect frame = missedDiscussionsBadgeLabelBgView.frame;
             frame.size.width = round(missedDiscussionsBadgeLabel.frame.size.width + 18);
-            if (backButton && !backButton.title.length)
+            
+            if ([GBDeviceInfo deviceInfo].osVersion.major < 11)
             {
-                // Shift the badge on the left to be close the back icon
-                frame.origin.x = ([GBDeviceInfo deviceInfo].displayInfo.display > GBDeviceDisplay4Inch ? -35 : -25);
+                // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+                UINavigationController *mainNavigationController = self.navigationController;
+                if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+                {
+                    mainNavigationController = self.splitViewController.viewControllers.firstObject;
+                }
+                UINavigationItem *backItem = mainNavigationController.navigationBar.backItem;
+                UIBarButtonItem *backButton = backItem.backBarButtonItem;
+                
+                if (backButton && !backButton.title.length)
+                {
+                    // Shift the badge on the left to be close the back icon
+                    frame.origin.x = ([GBDeviceInfo deviceInfo].displayInfo.display > GBDeviceDisplay4Inch ? -35 : -25);
+                }
+                else
+                {
+                    frame.origin.x = 0;
+                }
             }
-            else
-            {
-                frame.origin.x = 0;
-            }
+            
             // Caution: set label background view frame only in case of changes to prevent from looping on 'viewDidLayoutSubviews'.
             if (!CGRectEqualToRect(missedDiscussionsBadgeLabelBgView.frame, frame))
             {
                 missedDiscussionsBadgeLabelBgView.frame = frame;
-                
-                // Adjust the custom view width of the associated bar button
-                CGRect bgFrame = missedDiscussionsBarButtonCustomView.frame;
-                CGFloat width = frame.size.width + frame.origin.x;
-                bgFrame.size.width = (width > 0 ? width : 0);
-                missedDiscussionsBarButtonCustomView.frame = bgFrame;
             }
             
             // Set the right background color
@@ -4075,12 +4082,12 @@
     if (readMarkerTableViewCell && isAppeared && !self.isBubbleTableViewDisplayInTransition)
     {
         // Check whether the read marker is visible
-        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
+        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.mxk_adjustedContentInset.top;
         CGFloat readMarkerViewPosY = readMarkerTableViewCell.frame.origin.y + readMarkerTableViewCell.readMarkerView.frame.origin.y;
         if (contentTopPosY <= readMarkerViewPosY)
         {
             // Compute the max vertical position visible according to contentOffset
-            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.contentInset.bottom;
+            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.mxk_adjustedContentInset.bottom;
             if (readMarkerViewPosY <= contentBottomPosY)
             {
                 // Launch animation
@@ -4162,7 +4169,7 @@
                 // The read marker display is still enabled (see roomDataSource.showReadMarker flag),
                 // this means the read marker was not been visible yet.
                 // We show the banner if the marker is located in the top hidden part of the cell.
-                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.contentInset.top;
+                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.mxk_adjustedContentInset.top;
                 CGFloat readMarkerViewPosY = roomBubbleTableViewCell.frame.origin.y + roomBubbleTableViewCell.readMarkerView.frame.origin.y;
                 self.jumpToLastUnreadBannerContainer.hidden = (contentTopPosY < readMarkerViewPosY);
             }

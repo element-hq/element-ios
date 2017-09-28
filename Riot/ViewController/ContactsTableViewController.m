@@ -163,7 +163,7 @@
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.contentInset.left, -self.contactsTableView.contentInset.top) animated:YES];
+        [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.mxk_adjustedContentInset.left, -self.contactsTableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
     
@@ -285,7 +285,7 @@
 - (void)scrollToTop:(BOOL)animated
 {
     // Scroll to the top
-    [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.contentInset.left, -self.contactsTableView.contentInset.top) animated:animated];
+    [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.mxk_adjustedContentInset.left, -self.contactsTableView.mxk_adjustedContentInset.top) animated:animated];
 }
 
 #pragma mark - UITableView delegate
