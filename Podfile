@@ -8,7 +8,7 @@ target "Riot" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Riot has been built
-#pod 'MatrixKit', '0.6.2'
+pod 'MatrixKit', '0.6.2'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
@@ -19,8 +19,8 @@ target "Riot" do
 
 # The one used for developing both MatrixSDK and MatrixKit
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
-pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
-pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+#pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
+#pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
 pod 'GBDeviceInfo', '~> 4.3.0'
 
@@ -53,7 +53,7 @@ pod 'OLMKit'
 pod 'Realm', '~> 2.8.1'
 
 # The tagged version on which this version of Riot share extension has been built
-#pod 'MatrixKit/AppExtension', '0.6.2'
+pod 'MatrixKit/AppExtension', '0.6.2'
 
 # The lastest release available on the CocoaPods repository
 #pod 'MatrixKit/AppExtension'
@@ -64,8 +64,8 @@ pod 'Realm', '~> 2.8.1'
 
 # The one used for developing both MatrixSDK and MatrixKit
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
-pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
-pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kit/MatrixKit.podspec'
+#pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+#pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kit/MatrixKit.podspec'
 
 # Remove warnings from "bad" pods
 pod 'OLMKit', :inhibit_warnings => true

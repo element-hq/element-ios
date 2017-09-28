@@ -29,7 +29,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -677,7 +677,6 @@
 		92324BE21F4F66D3009DE194 /* IncomingCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallView.m; sourceTree = "<group>"; };
 		92324BE41F4F6A60009DE194 /* CircleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleButton.h; sourceTree = "<group>"; };
 		92324BE51F4F6A60009DE194 /* CircleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleButton.m; sourceTree = "<group>"; };
-		9E07AE9A3C5A90D68D90B6F9 /* Pods-RiotTodayWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotTodayWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotTodayWidget/Pods-RiotTodayWidget.release.xcconfig"; sourceTree = "<group>"; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
@@ -1296,18 +1295,6 @@
 			name = Views;
 			path = RiotShareExtension/Views;
 			sourceTree = SOURCE_ROOT;
-		};
-		246B30B81F5300A0009ED3AD /* RiotTodayWidget */ = {
-			isa = PBXGroup;
-			children = (
-				246B30C81F530C84009ED3AD /* RiotTodayWidget.entitlements */,
-				246B30BF1F5300A0009ED3AD /* Info.plist */,
-				246B30B91F5300A0009ED3AD /* TodayViewController.h */,
-				246B30BA1F5300A0009ED3AD /* TodayViewController.m */,
-				246B30C61F5300F2009ED3AD /* TodayViewController.xib */,
-			);
-			path = RiotTodayWidget;
-			sourceTree = "<group>";
 		};
 		24CBEC4F1F0EAD310093EABB /* RiotShareExtension */ = {
 			isa = PBXGroup;
@@ -2534,7 +2521,7 @@
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
 				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
 				2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
+				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3009,7 +2996,7 @@
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
-				$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle,
+				"$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle",
 				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -3046,7 +3033,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension-resources.sh",
-				"${PODS_ROOT}/../../matrix-ios-sdk/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
+				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
