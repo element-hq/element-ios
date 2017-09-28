@@ -75,13 +75,16 @@
 		32AE61F21F0D2183007255F4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61EC1F0D2183007255F4 /* InfoPlist.strings */; };
 		32AE61F31F0D2183007255F4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61EE1F0D2183007255F4 /* Localizable.strings */; };
 		32AE61F41F0D2183007255F4 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61F01F0D2183007255F4 /* Vector.strings */; };
+		32C2356F1F7B871800E38FC5 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */; };
 		32D392181EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */; };
 		32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */; };
 		32E84FA11F6BD32700CA0B89 /* apps-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84F9E1F6BD32700CA0B89 /* apps-icon.png */; };
 		32E84FA21F6BD32700CA0B89 /* apps-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84F9F1F6BD32700CA0B89 /* apps-icon@2x.png */; };
 		32E84FA31F6BD32700CA0B89 /* apps-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84FA01F6BD32700CA0B89 /* apps-icon@3x.png */; };
+		32F3AE1A1F6FF4E600F0F004 /* WidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */; };
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
+		83711A7C1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */; };
 		92324BE31F4F66D3009DE194 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE21F4F66D3009DE194 /* IncomingCallView.m */; };
 		92324BE61F4F6A60009DE194 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE51F4F6A60009DE194 /* CircleButton.m */; };
 		A27ECCE3FC4971745D2CB78D /* libPods-RiotShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */; };
@@ -497,6 +500,7 @@
 		F0B4CBAC1F41F090008E99C5 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBAB1F41F090008E99C5 /* EncryptionInfoView.xib */; };
 		F0B4CBB11F4215E3008E99C5 /* EventDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */; };
 		F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */; };
+		F0B5430A1F70FF8F00D29293 /* back_icon@4x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0B543091F70FF8F00D29293 /* back_icon@4x.png */; };
 		F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */; };
 		F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
@@ -652,17 +656,22 @@
 		32AE61ED1F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32AE61EF1F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Localizable.strings; sourceTree = "<group>"; };
 		32AE61F11F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Vector.strings; sourceTree = "<group>"; };
+		32C2356D1F7B871800E38FC5 /* WidgetPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WidgetPickerViewController.h; sourceTree = "<group>"; };
+		32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WidgetPickerViewController.m; sourceTree = "<group>"; };
 		32D392151EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerDetailTableViewCell.h; sourceTree = "<group>"; };
 		32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerDetailTableViewCell.m; sourceTree = "<group>"; };
 		32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerDetailTableViewCell.xib; sourceTree = "<group>"; };
 		32E84F9E1F6BD32700CA0B89 /* apps-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon.png"; sourceTree = "<group>"; };
 		32E84F9F1F6BD32700CA0B89 /* apps-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon@2x.png"; sourceTree = "<group>"; };
 		32E84FA01F6BD32700CA0B89 /* apps-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon@3x.png"; sourceTree = "<group>"; };
+		32F3AE181F6FF4E600F0F004 /* WidgetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetViewController.h; sourceTree = "<group>"; };
+		32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidgetViewController.m; sourceTree = "<group>"; };
 		32FD0A3A1EB0CD9B0072B066 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RiotShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		765F5104DB3EC39713DEB3A4 /* Pods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardGrowingTextView.m; sourceTree = "<group>"; };
 		839BB91240D350D5607D55BA /* Pods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		92324BE11F4F66D3009DE194 /* IncomingCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallView.h; sourceTree = "<group>"; };
 		92324BE21F4F66D3009DE194 /* IncomingCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallView.m; sourceTree = "<group>"; };
@@ -1205,6 +1214,7 @@
 		F0B4CBAE1F4215E3008E99C5 /* EventDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsView.h; sourceTree = "<group>"; };
 		F0B4CBAF1F4215E3008E99C5 /* EventDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsView.m; sourceTree = "<group>"; };
 		F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailsView.xib; sourceTree = "<group>"; };
+		F0B543091F70FF8F00D29293 /* back_icon@4x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_icon@4x.png"; sourceTree = "<group>"; };
 		F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
 		F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoomSummary+Riot.h"; sourceTree = "<group>"; };
 		F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoomSummary+Riot.m"; sourceTree = "<group>"; };
@@ -1367,11 +1377,15 @@
 		3233F72D1F31F47E006ACA81 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				32F3AE181F6FF4E600F0F004 /* WidgetViewController.h */,
+				32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */,
 				32935CAF1F6056FD006888C8 /* IntegrationManagerViewController.h */,
 				32935CB01F6056FD006888C8 /* IntegrationManagerViewController.m */,
 				3233F72E1F31F4BF006ACA81 /* JitsiViewController.h */,
 				3233F72F1F31F4BF006ACA81 /* JitsiViewController.m */,
 				3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */,
+				32C2356D1F7B871800E38FC5 /* WidgetPickerViewController.h */,
+				32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -1602,6 +1616,7 @@
 				F083BB211E7009EC00A9B29C /* back_icon.png */,
 				F083BB221E7009EC00A9B29C /* back_icon@2x.png */,
 				F083BB231E7009EC00A9B29C /* back_icon@3x.png */,
+				F0B543091F70FF8F00D29293 /* back_icon@4x.png */,
 				F083BB241E7009EC00A9B29C /* bubbles_bg_landscape.png */,
 				F083BB251E7009EC00A9B29C /* bubbles_bg_landscape@2x.png */,
 				F083BB261E7009EC00A9B29C /* bubbles_bg_landscape@3x.png */,
@@ -2223,6 +2238,7 @@
 				F083BCD91E7009EC00A9B29C /* RoomInputToolbarView.h */,
 				F083BCDA1E7009EC00A9B29C /* RoomInputToolbarView.m */,
 				F083BCDB1E7009EC00A9B29C /* RoomInputToolbarView.xib */,
+				83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */,
 			);
 			path = RoomInputToolbar;
 			sourceTree = "<group>";
@@ -2819,6 +2835,7 @@
 				F083BE771E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BDA71E7009ED00A9B29C /* notificationsOff.png in Resources */,
 				F06CDD6A1EF01E3900870B75 /* RoomEmptyBubbleCell.xib in Resources */,
+				F0B5430A1F70FF8F00D29293 /* back_icon@4x.png in Resources */,
 				F083BDBD1E7009ED00A9B29C /* riot_icon@2x.png in Resources */,
 				F083BDDE1E7009ED00A9B29C /* upload_icon@2x.png in Resources */,
 				F083BE8B1E7009ED00A9B29C /* ExpandedRoomTitleView.xib in Resources */,
@@ -2932,68 +2949,68 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-resources.sh",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAccountDetailsViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAttachmentsViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKAuthenticationViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKCallViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKContactDetailsViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKContactListViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKCountryPickerViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKLanguagePickerViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRecentListViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomMemberDetailsViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomMemberListViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomSettingsViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKRoomViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Controllers/MXKSearchViewController.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Account/MXKAccountTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Authentication/MXKAuthInputsEmailCodeBasedView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Authentication/MXKAuthInputsPasswordBasedView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Contact/MXKContactTableCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/DeviceView/MXKDeviceView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/EncryptionInfoView/MXKEncryptionInfoView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKCollectionViewCell/MXKMediaCollectionViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKEventDetailsView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKPieChartHUD.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKRoomCreationView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithButton.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndButton.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndImageView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndMXKImageView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSlider.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSubLabel.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSwitch.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndTextField.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelTextFieldAndButton.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithPicker.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithSearchBar.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextFieldAndButton.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/PushRule/MXKPushRuleCreationTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/PushRule/MXKPushRuleTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/ReadReceipts/MXKReadReceiptTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomEmptyBubbleTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentBubbleCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgBubbleCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomIOSOutgoingBubbleTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentBubbleCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgBubbleCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithHPGrowingText.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithSimpleTextView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKInterleavedRecentTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKPublicRoomTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomList/MXKRecentTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomMemberList/MXKRoomMemberTableViewCell.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
-				"${PODS_ROOT}/../../matrix-ios-kit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
-				"$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle",
-				"${PODS_ROOT}/../../matrix-ios-sdk/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAccountDetailsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAttachmentsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAuthenticationViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKCallViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactDetailsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactListViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKCountryPickerViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKLanguagePickerViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRecentListViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomMemberDetailsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomMemberListViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomSettingsViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKSearchViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Account/MXKAccountTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Authentication/MXKAuthInputsEmailCodeBasedView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Authentication/MXKAuthInputsPasswordBasedView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Contact/MXKContactTableCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/DeviceView/MXKDeviceView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/EncryptionInfoView/MXKEncryptionInfoView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKCollectionViewCell/MXKMediaCollectionViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKEventDetailsView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKPieChartHUD.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKRoomCreationView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithButton.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndButton.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndImageView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndMXKImageView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSlider.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSubLabel.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSwitch.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndTextField.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelTextFieldAndButton.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithPicker.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithSearchBar.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextFieldAndButton.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/PushRule/MXKPushRuleCreationTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/PushRule/MXKPushRuleTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/ReadReceipts/MXKReadReceiptTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomEmptyBubbleTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIOSOutgoingBubbleTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithHPGrowingText.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithSimpleTextView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKInterleavedRecentTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKPublicRoomTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKRecentTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomMemberList/MXKRoomMemberTableViewCell.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
+				$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle,
+				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -3099,6 +3116,7 @@
 				32471CDC1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE2B1E7009ED00A9B29C /* AuthInputsView.m in Sources */,
 				321082B21F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
+				32C2356F1F7B871800E38FC5 /* WidgetPickerViewController.m in Sources */,
 				F083BE661E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE141E7009ED00A9B29C /* HomeViewController.m in Sources */,
 				F083BDFB1E7009ED00A9B29C /* RoomSearchDataSource.m in Sources */,
@@ -3125,6 +3143,7 @@
 				3205ED7D1E976C8A003D65FA /* DirectoryServerPickerViewController.m in Sources */,
 				F083BE7C1E7009ED00A9B29C /* DirectoryRecentTableViewCell.m in Sources */,
 				F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */,
+				83711A7C1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m in Sources */,
 				F083BE801E7009ED00A9B29C /* PublicRoomTableViewCell.m in Sources */,
 				322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
@@ -3135,6 +3154,7 @@
 				F083BE6E1E7009ED00A9B29C /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				3233F7311F31F4BF006ACA81 /* JitsiViewController.m in Sources */,
 				F083BE2A1E7009ED00A9B29C /* UsersDevicesViewController.m in Sources */,
+				32F3AE1A1F6FF4E600F0F004 /* WidgetViewController.m in Sources */,
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				F083BE2D1E7009ED00A9B29C /* ForgotPasswordInputsView.m in Sources */,
 				F083BE7E1E7009ED00A9B29C /* InviteRecentTableViewCell.m in Sources */,

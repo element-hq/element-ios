@@ -16,6 +16,20 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+// We add here a protocol to handle title view layout update.
+@class RoomMemberTitleView;
+@protocol RoomMemberTitleViewDelegate <NSObject>
+
+@optional
+/**
+ Tells the delegate that the layout has been updated.
+ 
+ @param titleView the room member title view.
+ */
+- (void)roomMemberTitleViewDidLayoutSubview:(RoomMemberTitleView*)titleView;
+
+@end
+
 @interface RoomMemberTitleView : MXKView
 
 /**
@@ -37,5 +51,10 @@
 @property (weak, nonatomic) IBOutlet MXKImageView *memberAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *memberBadge;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *memberAvatarCenterXConstraint;
+
+/**
+ The delegate.
+ */
+@property (nonatomic) id<RoomMemberTitleViewDelegate> delegate;
 
 @end

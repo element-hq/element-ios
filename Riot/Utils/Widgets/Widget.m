@@ -41,11 +41,26 @@
         MXJSONModelSetDictionary(_data, widgetEvent.content[@"data"]);
 
         // Format the url string with user data
-        _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:mxSession.myUser.userId];
-        _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_display_name"
-                                               withString:mxSession.myUser.displayname ? mxSession.myUser.displayname : mxSession.myUser.userId];
-        _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_avatar_url"
-                                               withString:mxSession.myUser.avatarUrl ? mxSession.myUser.avatarUrl : @""];
+        if (_url)
+        {
+            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:mxSession.myUser.userId];
+            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_display_name"
+                                                   withString:mxSession.myUser.displayname ? mxSession.myUser.displayname : mxSession.myUser.userId];
+            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_avatar_url"
+                                                   withString:mxSession.myUser.avatarUrl ? mxSession.myUser.avatarUrl : @""];
+
+            // And their scalar token
+            NSString *scalarToken = [[WidgetManager sharedManager] scalarTokenForMXSession:mxSession];
+            if (scalarToken)
+            {
+                _url = [_url stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", scalarToken]];
+            }
+            else
+            {
+                // Some widget can live without scalar token (ex: Jitsi widget)
+                NSLog(@"[Widget] Note: There is no scalar token for %@", self);
+            }
+        }
     }
 
     return self;

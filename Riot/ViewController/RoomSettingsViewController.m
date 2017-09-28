@@ -46,9 +46,10 @@
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_NAME                1
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC               2
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_TAG                 3
-#define ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS  4
-#define ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE               5
-#define ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT               6
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT         4
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS  5
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE               6
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT               7
 
 #define ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY            0
 #define ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST 1
@@ -71,6 +72,7 @@ NSString *const kRoomSettingsNameKey = @"kRoomSettingsNameKey";
 NSString *const kRoomSettingsTopicKey = @"kRoomSettingsTopicKey";
 NSString *const kRoomSettingsTagKey = @"kRoomSettingsTagKey";
 NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
+NSString *const kRoomSettingsDirectChatKey = @"kRoomSettingsDirectChatKey";
 NSString *const kRoomSettingsJoinRuleKey = @"kRoomSettingsJoinRuleKey";
 NSString *const kRoomSettingsGuestAccessKey = @"kRoomSettingsGuestAccessKey";
 NSString *const kRoomSettingsDirectoryKey = @"kRoomSettingsDirectoryKey";
@@ -137,11 +139,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     // picker
     MediaPickerViewController* mediaPicker;
-    
-    // switches
-    UISwitch *roomNotifSwitch;
-    UISwitch *roomEncryptionSwitch;
-    UISwitch *roomEncryptionBlacklistUnverifiedDevicesSwitch;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id appDelegateDidTapStatusBarNotificationObserver;
@@ -281,7 +278,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // Observe appDelegateDidTapStatusBarNotificationObserver.
     appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
 }
@@ -1598,7 +1595,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
         {
-            if (roomNotifSwitch.on)
+            if (((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey]).boolValue)
             {
                 [mxRoom mentionsOnly:^{
                     
@@ -1626,6 +1623,45 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 }];
             }
+            return;
+        }
+        
+        if ([updatedItemsDict objectForKey:kRoomSettingsDirectChatKey])
+        {
+            pendingOperation = [mxRoom setIsDirect:((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectChatKey]).boolValue withUserId:nil success:^{
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    self->pendingOperation = nil;
+                    [self->updatedItemsDict removeObjectForKey:kRoomSettingsDirectChatKey];
+                    [self onSave:nil];
+                }
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[RoomSettingsViewController] Altering DMness failed");
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    self->pendingOperation = nil;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        NSString* message = error.localizedDescription;
+                        if (!message.length)
+                        {
+                            message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_direct", @"Vector", nil);
+                        }
+                        [self onSaveFailed:message withKey:kRoomSettingsDirectChatKey];
+                        
+                    });
+                }
+                
+            }];
             return;
         }
         
@@ -1944,31 +1980,41 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS)
         {
-            MXKTableViewCellWithLabelAndSwitch *roomNotifCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
-            
-            roomNotifCell.mxkLabelLeadingConstraint.constant = roomNotifCell.separatorInset.left;
-            roomNotifCell.mxkSwitchTrailingConstraint.constant = 15;
-            
-            [roomNotifCell.mxkSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
-            roomNotifCell.mxkSwitch.onTintColor = kRiotColorGreen;
+            MXKTableViewCellWithLabelAndSwitch *roomNotifCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            [roomNotifCell.mxkSwitch addTarget:self action:@selector(toggleRoomNotification:) forControlEvents:UIControlEventValueChanged];
             
             roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
-            roomNotifCell.mxkLabel.textColor = kRiotPrimaryTextColor;
-            roomNotifSwitch = roomNotifCell.mxkSwitch;
             
             if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
             {
-                roomNotifSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey]).boolValue;
+                roomNotifCell.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey]).boolValue;
             }
             else
             {
-                roomNotifSwitch.on = mxRoom.isMute || mxRoom.isMentionsOnly;
+                roomNotifCell.mxkSwitch.on = mxRoom.isMute || mxRoom.isMentionsOnly;
             }
             
             cell = roomNotifCell;
+        }
+        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT)
+        {
+            MXKTableViewCellWithLabelAndSwitch *roomDirectChat = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            // Force layout before reusing a cell (fix switch displayed outside the screen)
-            [cell layoutIfNeeded];
+            [roomDirectChat.mxkSwitch addTarget:self action:@selector(toggleDirectChat:) forControlEvents:UIControlEventValueChanged];
+            
+            roomDirectChat.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_direct_chat", @"Vector", nil);
+            
+            if ([updatedItemsDict objectForKey:kRoomSettingsDirectChatKey])
+            {
+                roomDirectChat.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectChatKey]).boolValue;
+            }
+            else
+            {
+                roomDirectChat.mxkSwitch.on = mxRoom.isDirect;
+            }
+            
+            cell = roomDirectChat;
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO)
         {
@@ -2144,51 +2190,29 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         if (indexPath.row == directoryVisibilityIndex)
         {
-            MXKTableViewCellWithLabelAndSwitch *directoryToggleCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
-            
-            directoryToggleCell.mxkLabelLeadingConstraint.constant = directoryToggleCell.separatorInset.left;
-            directoryToggleCell.mxkSwitchTrailingConstraint.constant = 15;
+            MXKTableViewCellWithLabelAndSwitch *directoryToggleCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle", @"Vector", nil);
-            directoryToggleCell.mxkLabel.textColor = kRiotPrimaryTextColor;
             
-            directoryVisibilitySwitch = directoryToggleCell.mxkSwitch;
-            
-            // Workaround to avoid mixing between switches
-            // TODO: this is a design issue with switch within UITableViewCell that must fix everywhere
-            if (roomEncryptionSwitch == directoryVisibilitySwitch)
-            {
-                roomEncryptionSwitch = nil;
-            }
-            else if (roomNotifSwitch == directoryVisibilitySwitch)
-            {
-                roomNotifSwitch = nil;
-            }
-            else if (roomEncryptionBlacklistUnverifiedDevicesSwitch == directoryVisibilitySwitch)
-            {
-                roomEncryptionBlacklistUnverifiedDevicesSwitch = nil;
-            }
-            
-            [directoryVisibilitySwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
-            directoryVisibilitySwitch.onTintColor = kRiotColorGreen;
+            [directoryToggleCell.mxkSwitch addTarget:self action:@selector(toggleDirectoryVisibility:) forControlEvents:UIControlEventValueChanged];
             
             if ([updatedItemsDict objectForKey:kRoomSettingsDirectoryKey])
             {
-                directoryVisibilitySwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectoryKey]).boolValue;
+                directoryToggleCell.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectoryKey]).boolValue;
             }
             else
             {
                 // Use the last retrieved value if any
-                directoryVisibilitySwitch.on = actualDirectoryVisibility ? [actualDirectoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic] : NO;
+                directoryToggleCell.mxkSwitch.on = actualDirectoryVisibility ? [actualDirectoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic] : NO;
             }
             
             // Check whether the user can change this option
-            directoryVisibilitySwitch.enabled = (oneSelfPowerLevel >= powerLevels.stateDefault);
+            directoryToggleCell.mxkSwitch.enabled = (oneSelfPowerLevel >= powerLevels.stateDefault);
+            
+            // Store the switch to be able to update it
+            directoryVisibilitySwitch = directoryToggleCell.mxkSwitch;
             
             cell = directoryToggleCell;
-            
-            // Force layout before reusing a cell (fix switch displayed outside the screen)
-            [cell layoutIfNeeded];
         }
         else if (indexPath.row == missingAddressWarningIndex)
         {
@@ -2443,33 +2467,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             if (indexPath.row == 1)
             {
-                MXKTableViewCellWithLabelAndSwitch *roomBlacklistUnverifiedDevicesCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+                MXKTableViewCellWithLabelAndSwitch *roomBlacklistUnverifiedDevicesCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
-                roomBlacklistUnverifiedDevicesCell.mxkLabelLeadingConstraint.constant = roomBlacklistUnverifiedDevicesCell.separatorInset.left;
-                roomBlacklistUnverifiedDevicesCell.mxkSwitchTrailingConstraint.constant = 15;
-                
-                [roomBlacklistUnverifiedDevicesCell.mxkSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
+                [roomBlacklistUnverifiedDevicesCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevice:) forControlEvents:UIControlEventValueChanged];
                 roomBlacklistUnverifiedDevicesCell.mxkSwitch.onTintColor = kRiotColorGreen;
                 
                 roomBlacklistUnverifiedDevicesCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_blacklist_unverified_devices", @"Vector", nil);
-                roomBlacklistUnverifiedDevicesCell.mxkLabel.textColor = kRiotPrimaryTextColor;
-                
-                roomEncryptionBlacklistUnverifiedDevicesSwitch = roomBlacklistUnverifiedDevicesCell.mxkSwitch;
-                
-                // Workaround to avoid mixing between switches
-                // TODO: this is a design issue with switch within UITableViewCell that must fix everywhere
-                if (directoryVisibilitySwitch == roomEncryptionBlacklistUnverifiedDevicesSwitch)
-                {
-                    directoryVisibilitySwitch = nil;
-                }
-                else if (roomNotifSwitch == roomEncryptionBlacklistUnverifiedDevicesSwitch)
-                {
-                    roomNotifSwitch = nil;
-                }
-                else if (roomEncryptionSwitch == roomEncryptionBlacklistUnverifiedDevicesSwitch)
-                {
-                    roomEncryptionSwitch = nil;
-                }
                 
                 // For the switch value, use by order:
                 // - the MXCrypto.globalBlacklistUnverifiedDevices if its value is YES
@@ -2480,11 +2483,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 if (mxRoom.mxSession.crypto.globalBlacklistUnverifiedDevices)
                 {
                     blacklistUnverifiedDevices = YES;
-                    roomEncryptionBlacklistUnverifiedDevicesSwitch.enabled = NO;
+                    roomBlacklistUnverifiedDevicesCell.mxkSwitch.enabled = NO;
                 }
                 else
                 {
-                    roomEncryptionBlacklistUnverifiedDevicesSwitch.enabled = YES;
+                    roomBlacklistUnverifiedDevicesCell.mxkSwitch.enabled = YES;
                     
                     if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
                     {
@@ -2496,7 +2499,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     }
                 }
                 
-                roomEncryptionBlacklistUnverifiedDevicesSwitch.on = blacklistUnverifiedDevices;
+                roomBlacklistUnverifiedDevicesCell.mxkSwitch.on = blacklistUnverifiedDevices;
                 
                 cell = roomBlacklistUnverifiedDevicesCell;
                 
@@ -2527,40 +2530,15 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomEncryption])
             {
-                MXKTableViewCellWithLabelAndSwitch *roomEncryptionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+                MXKTableViewCellWithLabelAndSwitch *roomEncryptionCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
-                roomEncryptionCell.mxkLabelLeadingConstraint.constant = roomEncryptionCell.separatorInset.left;
-                roomEncryptionCell.mxkSwitchTrailingConstraint.constant = 15;
-                
-                [roomEncryptionCell.mxkSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
-                roomEncryptionCell.mxkSwitch.onTintColor = kRiotColorGreen;
+                [roomEncryptionCell.mxkSwitch addTarget:self action:@selector(toggleEncryption:) forControlEvents:UIControlEventValueChanged];
                 
                 roomEncryptionCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_enable_e2e_encryption", @"Vector", nil);
-                roomEncryptionCell.mxkLabel.textColor = kRiotPrimaryTextColor;
                 
-                roomEncryptionSwitch = roomEncryptionCell.mxkSwitch;
-                
-                // Workaround to avoid mixing between switches
-                // TODO: this is a design issue with switch within UITableViewCell that must fix everywhere
-                if (directoryVisibilitySwitch == roomEncryptionSwitch)
-                {
-                    directoryVisibilitySwitch = nil;
-                }
-                else if (roomNotifSwitch == roomEncryptionSwitch)
-                {
-                    roomNotifSwitch = nil;
-                }
-                else if (roomEncryptionBlacklistUnverifiedDevicesSwitch == roomEncryptionSwitch)
-                {
-                    roomEncryptionBlacklistUnverifiedDevicesSwitch = nil;
-                }
-                
-                roomEncryptionSwitch.on = ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey] != nil);
+                roomEncryptionCell.mxkSwitch.on = ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey] != nil);
                 
                 cell = roomEncryptionCell;
-                
-                // Force layout before reusing a cell (fix switch displayed outside the screen)
-                [cell layoutIfNeeded];
             }
             else
             {
@@ -2606,6 +2584,30 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     // iOS8 requires this method to enable editing (see editActionsForRowAtIndexPath).
+}
+
+- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+    
+    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkSwitchTrailingConstraint.constant = 15;
+    
+    cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    
+    cell.mxkSwitch.onTintColor = kRiotColorGreen;
+    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+    
+    // Reset the stored `directoryVisibilitySwitch` if the corresponding cell is reused.
+    if (cell.mxkSwitch == directoryVisibilitySwitch)
+    {
+        directoryVisibilitySwitch = nil;
+    }
+    
+    // Force layout before reusing a cell (fix switch displayed outside the screen)
+    [cell layoutIfNeeded];
+    
+    return cell;
 }
 
 #pragma mark - UITableViewDelegate
@@ -3136,102 +3138,123 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)onSwitchUpdate:(UISwitch*)theSwitch
+- (void)toggleRoomNotification:(UISwitch*)theSwitch
 {
-    if (theSwitch == roomNotifSwitch)
+    if (theSwitch.on == (mxRoom.isMute || mxRoom.isMentionsOnly))
     {
-        if (roomNotifSwitch.on == (mxRoom.isMute || mxRoom.isMentionsOnly))
-        {
-            [updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
-        }
-        else
-        {
-            [updatedItemsDict setObject:[NSNumber numberWithBool:roomNotifSwitch.on] forKey:kRoomSettingsMuteNotifKey];
-        }
+        [updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
     }
-    else if (theSwitch == directoryVisibilitySwitch)
+    else
     {
-        MXRoomDirectoryVisibility visibility = directoryVisibilitySwitch.on ? kMXRoomDirectoryVisibilityPublic : kMXRoomDirectoryVisibilityPrivate;
+        [updatedItemsDict setObject:[NSNumber numberWithBool:theSwitch.on] forKey:kRoomSettingsMuteNotifKey];
+    }
+    
+    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+}
+
+- (void)toggleDirectChat:(UISwitch*)theSwitch
+{
+    if (theSwitch.on == mxRoom.isDirect)
+    {
+        [updatedItemsDict removeObjectForKey:kRoomSettingsDirectChatKey];
+    }
+    else
+    {
+        [updatedItemsDict setObject:[NSNumber numberWithBool:theSwitch.on] forKey:kRoomSettingsDirectChatKey];
+    }
+    
+    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+}
+
+- (void)toggleEncryption:(UISwitch*)theSwitch
+{
+    if (theSwitch.on)
+    {
+        // Prompt here user before turning on the data encryption
+        __weak typeof(self) weakSelf = self;
         
-        // Check whether the actual settings has been retrieved
-        if (actualDirectoryVisibility)
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
+        
+        currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
+                                                           message:NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_prompt_message", @"Vector", nil)
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               self->currentAlert = nil;
+                                                           }
+                                                           
+                                                           // Reset switch change
+                                                           theSwitch.on = NO;
+                                                           
+                                                       }]];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               self->currentAlert = nil;
+                                                               
+                                                               [self->updatedItemsDict setObject:@(YES) forKey:kRoomSettingsEncryptionKey];
+                                                               
+                                                               [self getNavigationItem].rightBarButtonItem.enabled = self->updatedItemsDict.count;
+                                                           }
+                                                           
+                                                       }]];
+        
+        [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCEnableEncryptionAlert"];
+        [self presentViewController:currentAlert animated:YES completion:nil];
+    }
+    else
+    {
+        [updatedItemsDict removeObjectForKey:kRoomSettingsEncryptionKey];
+    }
+    
+    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+}
+
+- (void)toggleBlacklistUnverifiedDevice:(UISwitch*)theSwitch
+{
+    if ([mxRoom.mxSession.crypto isBlacklistUnverifiedDevicesInRoom:mxRoom.roomId] != theSwitch.on)
+    {
+        updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey] = @(theSwitch.on);
+    }
+    else
+    {
+        [updatedItemsDict removeObjectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey];
+    }
+    
+    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+}
+
+
+- (void)toggleDirectoryVisibility:(UISwitch*)theSwitch
+{
+    MXRoomDirectoryVisibility visibility = theSwitch.on ? kMXRoomDirectoryVisibilityPublic : kMXRoomDirectoryVisibilityPrivate;
+    
+    // Check whether the actual settings has been retrieved
+    if (actualDirectoryVisibility)
+    {
+        if ([visibility isEqualToString:actualDirectoryVisibility])
         {
-            if ([visibility isEqualToString:actualDirectoryVisibility])
-            {
-                [updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
-            }
-            else
-            {
-                [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
-            }
+            [updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
         }
         else
         {
             [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
         }
     }
-    else if (theSwitch == roomEncryptionSwitch)
+    else
     {
-        if (roomEncryptionSwitch.on)
-        {
-            // Prompt here user before turning on the data encryption
-            __weak typeof(self) weakSelf = self;
-            
-            [currentAlert dismissViewControllerAnimated:NO completion:nil];
-            
-            currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
-                                                               message:NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_prompt_message", @"Vector", nil)
-                                                        preferredStyle:UIAlertControllerStyleAlert];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                               }
-                                                               
-                                                               // Reset switch change
-                                                               theSwitch.on = NO;
-                                                               
-                                                           }]];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                                   
-                                                                   [self->updatedItemsDict setObject:@(YES) forKey:kRoomSettingsEncryptionKey];
-                                                                   
-                                                                   [self getNavigationItem].rightBarButtonItem.enabled = self->updatedItemsDict.count;
-                                                               }
-                                                               
-                                                           }]];
-            
-            [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCEnableEncryptionAlert"];
-            [self presentViewController:currentAlert animated:YES completion:nil];
-        }
-        else
-        {
-            [updatedItemsDict removeObjectForKey:kRoomSettingsEncryptionKey];
-        }
-    }
-    else if (theSwitch == roomEncryptionBlacklistUnverifiedDevicesSwitch)
-    {
-        if ([mxRoom.mxSession.crypto isBlacklistUnverifiedDevicesInRoom:mxRoom.roomId] != roomEncryptionBlacklistUnverifiedDevicesSwitch.on)
-        {
-            updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey] = @(roomEncryptionBlacklistUnverifiedDevicesSwitch.on);
-        }
-        else
-        {
-            [updatedItemsDict removeObjectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey];
-        }
+        [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);

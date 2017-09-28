@@ -17,6 +17,7 @@
 #import "IntegrationManagerViewController.h"
 
 #import "WidgetManager.h"
+#import "AppDelegate.h"
 
 #import <JavaScriptCore/JavaScriptCore.h>
 
@@ -69,6 +70,9 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     webView.scalesPageToFit = NO;
     webView.scrollView.bounces = NO;
 
+    // Disable opacity so that the webview background uses the current interface theme
+    webView.opaque = NO;
+
     webView.delegate = self;
 }
 
@@ -90,7 +94,6 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
             if (self)
             {
                 self->operation = nil;
-                [self stopActivityIndicator];
 
                 scalarToken = theScalarToken;
 
@@ -156,6 +159,43 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     [webView stringByEvaluatingJavaScriptFromString:@"console.debug = console.log; console.info = console.log; console.warn = console.log; console.error = console.log;"];
 }
 
+- (void)showErrorAsAlert:(NSError*)error
+{
+    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    if (!title)
+    {
+        if (msg)
+        {
+            title = msg;
+            msg = nil;
+        }
+        else
+        {
+            title = [NSBundle mxk_localizedStringForKey:@"error"];
+        }
+    }
+
+    __weak __typeof__(self) weakSelf = self;
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+
+                                                typeof(self) self = weakSelf;
+
+                                                if (self)
+                                                {
+                                                    // Leave this Intergrations Manager VC
+                                                    [self withdrawViewControllerAnimated:YES completion:nil];
+                                                }
+
+                                            }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 #pragma mark - UIWebViewDelegate
 
 -(void)webViewDidFinishLoad:(UIWebView *)theWebView
@@ -166,6 +206,22 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     NSString *path = [[NSBundle mainBundle] pathForResource:@"IntegrationManager" ofType:@"js"];
     NSString *js = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [webView stringByEvaluatingJavaScriptFromString:js];
+
+    [self stopActivityIndicator];
+
+    // Check connectivity
+    if ([AppDelegate theDelegate].isOffline)
+    {
+        // The web page may be in the cache, so its loading will be successful
+        // but we cannot go further, it often leads to a blank screen.
+        // So, display an error so that the user can escape.
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:NSURLErrorNotConnectedToInternet
+                                         userInfo:@{
+                                                    NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"network_offline_prompt", @"Vector", nil)
+                                                    }];
+        [self showErrorAsAlert:error];
+    }
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -188,7 +244,32 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
         return NO;
     }
+
+    if (navigationType == UIWebViewNavigationTypeLinkClicked )
+    {
+        // Open links outside the app
+        [[UIApplication sharedApplication] openURL:[request URL]];
+        return NO;
+    }
+
     return YES;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    // Filter out the users's scalar token
+    NSString *errorDescription = error.description;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"scalar_token=\\w*"
+                                                                           options:NSRegularExpressionCaseInsensitive error:nil];
+    errorDescription = [regex stringByReplacingMatchesInString:errorDescription
+                                                       options:0
+                                                         range:NSMakeRange(0, errorDescription.length)
+                                                  withTemplate:@"scalar_token=..."];
+
+    NSLog(@"[IntegrationManagerVC] didFailLoadWithError: %@", errorDescription);
+
+    [self stopActivityIndicator];
+    [self showErrorAsAlert:error];
 }
 
 #pragma mark - Modular postMessage API
@@ -368,8 +449,9 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 {
     NSLog(@"[IntegrationManagerVC] Received request to invite %@ into room %@.", userId, roomId);
 
-    MXRoom *room = [mxSession roomWithRoomId:roomId];
-    if (!room)
+    MXRoom *room = [self roomCheckWithEvent:eventData];
+    
+    if (room)
     {
         MXRoomMember *member = [room.state memberWithUserId:userId];
         if (member && member.membership == MXMembershipJoin)
@@ -549,7 +631,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     if (room)
     {
         MXRoomMember *member = [room.state memberWithUserId:userId];
-        [self sendNSObjectResponse:member.originalEvent.JSONDictionary toEvent:eventData];
+        [self sendNSObjectResponse:member.originalEvent.content toEvent:eventData];
     }
 }
 

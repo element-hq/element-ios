@@ -1,12 +1,12 @@
 /*
  Copyright 2017 Vector Creations Ltd
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,18 +14,35 @@
  limitations under the License.
  */
 
-#import "RoomEmptyBubbleCell.h"
+#import "WidgetViewController.h"
 
-@implementation RoomEmptyBubbleCell
-
-- (void)prepareForReuse
+@interface WidgetViewController ()
 {
-    [super prepareForReuse];
+    Widget  *widget;
+}
 
-    if (self.heightConstraint != 0)
+@end
+
+@implementation WidgetViewController
+
+- (instancetype)initForWidget:(Widget*)theWidget
+{
+    self = [super initWithURL:theWidget.url];
+    if (self)
     {
-        self.heightConstraint = 0;
+        widget = theWidget;
     }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    webView.scalesPageToFit = NO;
+    webView.scrollView.bounces = NO;
+
+    self.navigationItem.title = widget.name;
 }
 
 @end

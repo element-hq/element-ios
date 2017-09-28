@@ -73,35 +73,59 @@
     
     if (self.superview)
     {
-        // Center horizontally the display name into the navigation bar
-        CGRect frame = self.superview.frame;
-
-        // Look for the navigation bar.
-        UINavigationBar *navigationBar;
-        UIView *superView = self;
-        while (superView.superview)
+        if (@available(iOS 11.0, *))
         {
-            if ([superView.superview isKindOfClass:[UINavigationBar class]])
-            {
-                navigationBar = (UINavigationBar*)superView.superview;
-                break;
-            }
+            // Force the title view layout by adding 2 new constraints on the UINavigationBarContentView instance.
+            NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.superview
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0f
+                                                                              constant:0.0f];
+            NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                                 attribute:NSLayoutAttributeCenterX
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.superview
+                                                                                 attribute:NSLayoutAttributeCenterX
+                                                                                multiplier:1.0f
+                                                                                  constant:0.0f];
             
-            superView = superView.superview;
+            [NSLayoutConstraint activateConstraints:@[topConstraint, centerXConstraint]];
+            
         }
-        
-        if (navigationBar)
+        else
         {
-            CGSize navBarSize = navigationBar.frame.size;
-            CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
+            // Center horizontally the display name into the navigation bar
+            CGRect frame = self.superview.frame;
             
-            // Check whether the view is not moving away (see navigation between view controllers).
-            if (superviewCenterX < navBarSize.width)
+            // Look for the navigation bar.
+            UINavigationBar *navigationBar;
+            UIView *superView = self;
+            while (superView.superview)
             {
-                // Center the display name
-                self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+                if ([superView.superview isKindOfClass:[UINavigationBar class]])
+                {
+                    navigationBar = (UINavigationBar*)superView.superview;
+                    break;
+                }
+                
+                superView = superView.superview;
             }
-        }        
+            
+            if (navigationBar)
+            {
+                CGSize navBarSize = navigationBar.frame.size;
+                CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
+                
+                // Check whether the view is not moving away (see navigation between view controllers).
+                if (superviewCenterX < navBarSize.width)
+                {
+                    // Center the display name
+                    self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+                }
+            }  
+        }
     }
 }
 
