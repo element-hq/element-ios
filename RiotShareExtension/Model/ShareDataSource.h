@@ -27,4 +27,12 @@ typedef NS_ENUM(NSInteger, ShareDataSourceMode)
 
 - (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode;
 
+/**
+ Returns the cell data at the index path
+ 
+ @param indexPath the index of the cell
+ @return the MXKRecentCellData instance if it exists
+ */
+- (MXKRecentCellData *)cellDataAtIndexPath:(NSIndexPath *)indexPath;
+
 @end

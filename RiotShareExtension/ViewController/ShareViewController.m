@@ -30,7 +30,7 @@
 
 @property (nonatomic) SegmentedViewController *segmentedViewController;
 
-@property (nonatomic) id shareExtensionManagerDidChangeMXSessionObserver;
+@property (nonatomic) id shareExtensionManagerDidUpdateAccountDataObserver;
 
 
 @end
@@ -43,6 +43,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.shareExtensionManagerDidUpdateAccountDataObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidUpdateAccountDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self configureViews];
+    
+    }];
+    
     [self configureViews];
 }
 
@@ -50,10 +57,10 @@
 {
     [super destroy];
     
-    if (self.shareExtensionManagerDidChangeMXSessionObserver)
+    if (self.shareExtensionManagerDidUpdateAccountDataObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.shareExtensionManagerDidChangeMXSessionObserver];
-        self.shareExtensionManagerDidChangeMXSessionObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:self.shareExtensionManagerDidUpdateAccountDataObserver];
+        self.shareExtensionManagerDidUpdateAccountDataObserver = nil;
     }
     
     [self resetContentView];

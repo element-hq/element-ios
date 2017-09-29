@@ -17,7 +17,6 @@
 #import "ShareDataSource.h"
 #import "ShareExtensionManager.h"
 #import "RecentRoomTableViewCell.h"
-//#import "MXRoom+Riot.h"
 
 @interface ShareDataSource ()
 
@@ -36,81 +35,73 @@
     if (self)
     {
         self.dataSourceMode = dataSourceMode;
-        _recentCellDatas = [NSMutableArray array];
-        [self updateRooms];
+        
+        [self loadCellData];
     }
     return self;
 }
 
+- (void)destroy
+{
+    [super destroy];
+    
+    _recentCellDatas = nil;
+    _visibleRoomCellDatas = nil;
+}
 
 #pragma mark - Private
-
-- (void)updateRooms
-{
-    MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials];
-    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
-    
-    __weak MXSession *weakSession = session;
-    [session setStore:fileStore success:^{
-        if (weakSession)
-        {
-            //__strong MXSession *session = weakSession;
-            [self getCellDatasFromStore:fileStore];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"[ShareDataSource failed to set store]");
-    }];
-}
      
-- (void)getCellDatasFromStore:(MXFileStore *)fileStore
+- (void)loadCellData
 {
-    NSMutableArray *cellDatas = [NSMutableArray array];
-    [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+    [[ShareExtensionManager sharedManager].fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+        
+        NSMutableArray *cellData = [NSMutableArray array];
+        
         for (MXRoomSummary *roomSummary in roomsSummaries)
         {
             MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary andRecentListDataSource:nil];
             
-            
             if ((self.dataSourceMode == DataSourceModeRooms) ^ roomSummary.isDirect)
             {
-                [cellDatas addObject:recentCellData];
+                [cellData addObject:recentCellData];
             }
-            
-            if ([roomsSummaries indexOfObject:roomSummary] == roomsSummaries.count - 1)
-            {
-                self.recentCellDatas = cellDatas;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate dataSource:self didCellChange:nil];
-                });
-            }
-            
         }
+        
+        // TODO: Sort rooms by origin_server_ts
+//        NSComparator comparator = ^NSComparisonResult(MXKRecentCellData *recentCellData1, MXKRecentCellData *recentCellData2) {
+//            
+//            NSComparisonResult result = NSOrderedAscending;
+//            if (recentCellData2.lastEvent.originServerTs > recentCellData1.lastEvent.originServerTs)
+//            {
+//                result = NSOrderedDescending;
+//            }
+//            else if (recentCellData2.lastEvent.originServerTs == recentCellData1.lastEvent.originServerTs)
+//            {
+//                result = NSOrderedSame;
+//            }
+//            return result;
+//        };
+//        [cellData sortUsingComparator:comparator];
+        
+        self.recentCellDatas = cellData;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.delegate dataSource:self didCellChange:nil];
+            
+        });
+        
     } failure:^(NSError * _Nonnull error) {
+        
         NSLog(@"[ShareDataSource failed to get room summaries]");
+        
     }];
 }
 
 #pragma mark - MXKRecentsDataSource
 
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+- (MXKRecentCellData *)cellDataAtIndexPath:(NSIndexPath *)indexPath
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.delegate dataSource:dataSource didCellChange:nil];
-    });
-}
-
-- (MXRoom *)getRoomAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"vori");
-    /*if (self.visibleRoomCellDatas)
-    {
-        return self.visibleRoomCellDatas[indexPath.row];
-    }
-    return self.visibleRoomCellDatas[indexPath.row];*/
-    return nil;
-}
-
-- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath {
     if (self.visibleRoomCellDatas)
     {
         return self.visibleRoomCellDatas[indexPath.row];

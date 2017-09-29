@@ -20,6 +20,12 @@
 @class ShareExtensionManager;
 @class SharePresentingViewController;
 
+/**
+ Posted when the matrix user account and his data has been checked and updated.
+ The notification object is the MXKAccount instance.
+ */
+extern NSString *const kShareExtensionManagerDidUpdateAccountDataNotification;
+
 
 /**
  The protocol for the manager's delegate
@@ -76,6 +82,11 @@
 @property (nonatomic, readonly) MXKAccount *userAccount;
 
 /**
+ The shared file store
+ */
+@property (nonatomic, readonly) MXFileStore *fileStore;
+
+/**
  A delegate used to notify about needed UI changes when sharing
  */
 @property (nonatomic) id<ShareExtensionManagerDelegate> delegate;
@@ -89,9 +100,9 @@
  Send the content that the user has chosen to a room
  @param room the room to send the content to
  @param failureBlock the code to be executed when sharing has failed for whatever reason
- note: there is no "successBlock" parameter because when the sharing succeds, the extension needs to close itself
+ note: there is no "successBlock" parameter because when the sharing succeeds, the extension needs to close itself
  */
-- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock;
+- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock;
 
 /**
  Checks if there is an image in the user chosen content

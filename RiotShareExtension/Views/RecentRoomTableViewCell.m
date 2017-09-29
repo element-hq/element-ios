@@ -16,14 +16,14 @@
 
 #import "RecentRoomTableViewCell.h"
 
+#import "MXRoomSummary+Riot.h"
+
 @interface RecentRoomTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet MXKImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UIView *directRoomBorderView;
 @property (weak, nonatomic) IBOutlet UILabel *roomTitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
-
-
 
 @end
 
@@ -44,34 +44,40 @@
     return nil;
 }
 
-- (void)render:(MXKRecentCellData *)cellData
+- (void)layoutSubviews
 {
+    [super layoutSubviews];
     
-    //NSString *imageUrl = [self.matrixRestClient urlOfContentThumbnail:cellData toFitViewSize:mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop];
-    //[self.avatarImageView setImageURL:nil withType:nil andImageOrientation:UIImageOrientationUp previewImage:nil];
+    // Round room avatars
+    [self.avatarImageView.layer setCornerRadius:self.avatarImageView.frame.size.width / 2];
+    self.avatarImageView.clipsToBounds = YES;
+}
+
+- (void)render:(MXKCellData *)cellData
+{
+    // Sanity check: accept only object of MXKRecentCellData classes or sub-classes
+    NSParameterAssert([cellData isKindOfClass:[MXKRecentCellData class]]);
     
-    self.roomTitleLabel.text = cellData.roomDisplayname;
-    
-    self.directRoomBorderView.hidden = !cellData.roomSummary.isDirect;
-    
-    self.encryptedRoomIcon.hidden = !cellData.roomSummary.isEncrypted;
-    
+    roomCellData = (id<MXKRecentCellDataStoring>)cellData;
+    if (roomCellData)
+    {
+        [roomCellData.roomSummary setRoomAvatarImageIn:self.avatarImageView];
+        
+        self.roomTitleLabel.text = roomCellData.roomSummary.displayname;
+        if (!self.roomTitleLabel.text.length)
+        {
+            self.roomTitleLabel.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+        }  
+        
+        self.directRoomBorderView.hidden = !roomCellData.roomSummary.isDirect;
+        
+        self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.isEncrypted;
+    }
 }
 
 + (CGFloat)cellHeight
 {
     return 74;
 }
-
-/*- (void)render:(MXRoom *)room
-{
-    [room setRoomAvatarImageIn:self.avatarImageView];
-    
-    self.titleLabel.text = room.riotDisplayname;
-    
-    self.directRoomBorderView.hidden = !room.isDirect;
-    
-    self.encryptedRoomIcon.hidden = !room.state.isEncrypted;
-}*/
 
 @end

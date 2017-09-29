@@ -20,6 +20,7 @@
 @import MobileCoreServices;
 #import "objc/runtime.h"
 
+NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
 typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
@@ -51,6 +52,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     static ShareExtensionManager *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        
         sharedInstance = [[self alloc] init];
         
         sharedInstance.pendingImages = [NSMutableArray array];
@@ -69,12 +71,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         sdkOptions.applicationGroupIdentifier = @"group.im.vector";
         // Disable identicon use
         sdkOptions.disableIdenticonUseForUserAvatar = YES;
-        
-        // Force account manager to reload account from the local storage.
-        [[MXKAccountManager sharedManager] forceReloadAccounts];
-        
-        // Save the first active account
-        sharedInstance.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        // Enable e2e encryption for newly created MXSession
+        sdkOptions.enableCryptoWhenStartingMXSession = YES;
         
     });
     return sharedInstance;
@@ -98,22 +96,40 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
     }
     
+    if (!self.userAccount)
+    {
+        // We consider the first enabled account.
+        // TODO: Handle multiple accounts
+        self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    }
+    
+    // Reset the file store to reload the room data.
+    if (_fileStore)
+    {
+        [_fileStore close];
+        _fileStore = nil;
+    }
+    
     if (self.userAccount)
     {
-        // Resume the matrix session
-        [self.userAccount resume];
+        _fileStore = [[MXFileStore alloc] initWithCredentials:self.userAccount.mxCredentials];
     }
+    
+    // Post notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShareExtensionManagerDidUpdateAccountDataNotification object:self.userAccount userInfo:nil];
 }
-
 
 #pragma mark - Public
 
 - (void)setShareExtensionContext:(NSExtensionContext *)shareExtensionContext
 {
     _shareExtensionContext = shareExtensionContext;
+    
+    // Check the current matrix user.
+    [self checkUserAccount];
 }
 
-- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock
+- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock
 {
     NSString *UTTypeText = (__bridge NSString *)kUTTypeText;
     NSString *UTTypeURL = (__bridge NSString *)kUTTypeURL;
@@ -488,7 +504,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 #pragma mark - Sharing
 
-- (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!text)
@@ -496,7 +512,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(nil);
         }
         return;
     }
@@ -512,12 +528,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] sendTextMessage failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(error);
         }
     }];
 }
 
-- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!fileUrl)
@@ -525,7 +541,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(nil);
         }
         return;
     }
@@ -547,13 +563,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] sendFile failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(error);
         }
     } keepActualFilename:YES];
 }
 
 
-- (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:( void(^)())failureBlock
+- (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     
@@ -568,7 +584,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
             if (failureBlock)
             {
-                failureBlock();
+                failureBlock(nil);
                 failureBlock = nil;
             }
             return;
@@ -639,7 +655,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             {
                 if (failureBlock)
                 {
-                    failureBlock();
+                    failureBlock(error);
                 }
             }
             
@@ -648,7 +664,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
 }
 
-- (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!videoLocalUrl)
@@ -656,7 +672,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(nil);
         }
         return;
     }
@@ -683,7 +699,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] sendVideo failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(error);
         }
     }];
 }
