@@ -47,6 +47,6 @@ else
 </dict>
 </plist>
 EOD
-	xcodebuild -exportArchive -archivePath "out/Riot.xcarchive" -exportPath out -exportOptionsPlist "$exportOptionsPlist"
+	xcodebuild -exportArchive -allowProvisioningUpdates -archivePath "out/Riot.xcarchive" -exportPath out -exportOptionsPlist "$exportOptionsPlist"
 	rm "$exportOptionsPlist"
 fi
