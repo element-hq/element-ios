@@ -106,7 +106,6 @@
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
 "auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
-"auth_share_extension_prompt" = "Login in the main app to share content";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -530,4 +529,8 @@
 "widget_integration_missing_room_id" = "Missing room_id in request.";
 "widget_integration_missing_user_id" = "Missing user_id in request.";
 "widget_integration_room_not_visible" = "Room %@ is not visible.";
+
+// Share extension
+"share_extension_auth_prompt" = "Login in the main app to share content";
+"share_extension_failed_to_encrypt" = "Failed to send. Check in the main app the encryption settings for this room";
 

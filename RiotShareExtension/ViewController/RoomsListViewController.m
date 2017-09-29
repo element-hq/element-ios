@@ -15,15 +15,13 @@
  */
 
 #import "RoomsListViewController.h"
-#import "RoomTableViewCell.h"
+#import "RecentRoomTableViewCell.h"
 #import "NSBundle+MatrixKit.h"
 #import "ShareExtensionManager.h"
 #import "RecentCellData.h"
 #import "RiotDesignValues.h"
 #import "MXKPieChartView.h"
 #import "MXKPieChartHUD.h"
-
-
 
 @interface RoomsListViewController () <ShareExtensionManagerDelegate>
 
@@ -34,7 +32,6 @@
 @property (nonatomic) UISearchBar *tableSearchBar;
 
 @end
-
 
 @implementation RoomsListViewController
 
@@ -73,7 +70,7 @@
 {
     [super viewDidLoad];
     
-    [self.recentsTableView registerNib:[RoomTableViewCell nib] forCellReuseIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
+    [self.recentsTableView registerNib:[RecentRoomTableViewCell nib] forCellReuseIdentifier:[RecentRoomTableViewCell defaultReuseIdentifier]];
     
     [self configureSearchBar];
 }
@@ -130,35 +127,78 @@
 
 - (void)showShareAlertForRoomPath:(NSIndexPath *)indexPath
 {
-    // @TODO: the room should be instanciated here (only the room summary should be available from dataSource).
-    NSString *receipantName = [self.dataSource getRoomAtIndexPath:indexPath].summary.displayname;
-    if (!receipantName.length)
+    MXKRecentCellData *recentCellData = [self.dataSource cellDataAtIndexPath:indexPath];
+    NSString *roomName = recentCellData.roomSummary.displayname;
+    if (!roomName.length)
     {
-        receipantName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+        roomName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
     }
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), receipantName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), roomName] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancelAction];
     
     UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        MXRoom *selectedRoom = [self.dataSource getRoomAtIndexPath:indexPath];
         
-        [ShareExtensionManager sharedManager].delegate = self;
-        
-        [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^{
-            [self showFailureAlert];
+        // The selected room is instanciated here.
+        [[ShareExtensionManager sharedManager].fileStore asyncAccountDataOfRoom:recentCellData.roomSummary.roomId success:^(MXRoomAccountData * _Nonnull accountData) {
+            
+            [[ShareExtensionManager sharedManager].fileStore asyncStateEventsOfRoom:recentCellData.roomSummary.roomId success:^(NSArray<MXEvent *> * _Nonnull roomStateEvents) {
+                
+                MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+                
+                // To handle correctly the crypto, we have to set a store (use a fake store)
+                __weak MXSession *weakSession = session;
+                [session setStore:[[MXNoStore alloc] init] success:^{
+                    
+                    if (weakSession)
+                    {
+                        __strong MXSession *session = weakSession;
+                        
+                        MXRoom *selectedRoom = [[MXRoom alloc] initWithRoomId:recentCellData.roomSummary.roomId andMatrixSession:session andStateEvents:roomStateEvents andAccountData:accountData];
+                        
+                        [ShareExtensionManager sharedManager].delegate = self;
+                        
+                        [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^(NSError* error) {
+                            
+                            NSString *title;
+                            if ([error.domain isEqualToString:MXEncryptingErrorDomain])
+                            {
+                                title = NSLocalizedStringFromTable(@"share_extension_failed_to_encrypt", @"Vector", nil);
+                            }
+                            
+                            [self showFailureAlert:title];
+                        }];
+                    }
+                    
+                } failure:^(NSError *error) {
+                    
+                    NSLog(@"[RoomsListViewController] failed to prepare matrix session]");
+                    
+                }];
+                
+            } failure:^(NSError * _Nonnull error) {
+                
+                NSLog(@"[RoomsListViewController] failed to get state events");
+                
+            }];
+            
+        } failure:^(NSError * _Nonnull error) {
+            
+            NSLog(@"[RoomsListViewController] failed to get account data");
+            
         }];
     }];
+    
     [alertController addAction:sendAction];
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)showFailureAlert
+- (void)showFailureAlert:(NSString *)title
 {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title.length ? title : NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (self.failureBlock)
         {
@@ -173,7 +213,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [RoomTableViewCell cellHeight];
+    return [RecentRoomTableViewCell cellHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -189,7 +229,7 @@
 {
     if ([cellData isKindOfClass:[RecentCellData class]])
     {
-        return [RoomTableViewCell class];
+        return [RecentRoomTableViewCell class];
     }
     return nil;
 }
@@ -198,12 +238,22 @@
 {
     if ([cellData isKindOfClass:[MXKRecentCellData class]])
     {
-        return [RoomTableViewCell defaultReuseIdentifier];
+        return [RecentRoomTableViewCell defaultReuseIdentifier];
     }
     return nil;
 }
 
 #pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    NSArray *patterns = nil;
+    if (searchText.length)
+    {
+        patterns = @[searchText];
+    }
+    [self.dataSource searchWithPatterns:patterns];
+}
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
@@ -229,6 +279,7 @@
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+    [self.dataSource searchWithPatterns:nil];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -264,9 +315,12 @@
 
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(MXRoom *)room
 {
-    self.parentViewController.view.userInteractionEnabled = NO;
-    self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
-    [self.hudView setProgress:0.0];
+    if (!self.hudView)
+    {
+        self.parentViewController.view.userInteractionEnabled = NO;
+        self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
+        [self.hudView setProgress:0.0];
+    }
 }
 
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager mediaUploadProgress:(CGFloat)progress

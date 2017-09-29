@@ -14,12 +14,10 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
-#import "MXRoom+Riot.h"
-#import "ShareDataSource.h"
+#import <MatrixKit/MatrixKit.h>
 
-@interface RoomsListViewController : MXKRecentListViewController
+@interface RecentRoomTableViewCell : MXKRecentTableViewCell
 
-@property (copy) void (^failureBlock)();
++ (CGFloat)cellHeight;
 
 @end
