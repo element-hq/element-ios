@@ -46,7 +46,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
                             <rect key="frame" x="62" y="4" width="443" height="38"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="HPGrowingTextView">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="KeyboardGrowingTextView">
                                     <rect key="frame" x="0.0" y="0.0" width="443" height="38"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="GrowingTextView"/>

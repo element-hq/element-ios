@@ -18,8 +18,9 @@
 #import "SharePresentingViewController.h"
 #import "MXKPieChartHUD.h"
 @import MobileCoreServices;
+#import "objc/runtime.h"
 
-NSString *const kShareExtensionManagerDidChangeMXSessionNotification = @"kShareExtensionManagerDidChangeMXSessionNotification";
+NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
 typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
@@ -29,13 +30,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     ImageCompressionModeLarge
 };
 
+
 @interface ShareExtensionManager ()
 
-// The current user account
-@property (nonatomic) MXKAccount *userAccount;
+@property (nonatomic, readwrite) MXKAccount *userAccount;
 
-@property ImageCompressionMode imageCompressionMode;
-@property CGFloat actualLargeSize;
+@property (nonatomic) NSMutableArray <NSData *> *pendingImages;
+@property (nonatomic) NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
+@property (nonatomic) ImageCompressionMode imageCompressionMode;
+@property (nonatomic) CGFloat actualLargeSize;
 
 @end
 
@@ -52,6 +55,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         sharedInstance = [[self alloc] init];
         
+        sharedInstance.pendingImages = [NSMutableArray array];
+        sharedInstance.imageUploadProgresses = [NSMutableDictionary dictionary];
+        
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(onMediaUploadProgress:) name:kMXMediaUploadProgressNotification object:nil];
         
         // Add observer to handle logout
@@ -59,14 +65,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         // Add observer on the Extension host
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(suspendSession) name:NSExtensionHostDidEnterBackgroundNotification object:nil];
         
         MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-        
         // Apply the application group
         sdkOptions.applicationGroupIdentifier = @"group.im.vector";
         // Disable identicon use
         sdkOptions.disableIdenticonUseForUserAvatar = YES;
+        // Enable e2e encryption for newly created MXSession
+        sdkOptions.enableCryptoWhenStartingMXSession = YES;
+        
     });
     return sharedInstance;
 }
@@ -85,48 +92,31 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         if (!firstAccount || ![self.userAccount.mxCredentials.accessToken isEqualToString:firstAccount.mxCredentials.accessToken])
         {
             // Remove this account
-            [self.userAccount closeSession:YES];
             self.userAccount = nil;
-            _mxSession = nil;
-            
-            // Post notification
-            [[NSNotificationCenter defaultCenter] postNotificationName:kShareExtensionManagerDidChangeMXSessionNotification object:_mxSession userInfo:nil];
         }
+    }
+    
+    if (!self.userAccount)
+    {
+        // We consider the first enabled account.
+        // TODO: Handle multiple accounts
+        self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    }
+    
+    // Reset the file store to reload the room data.
+    if (_fileStore)
+    {
+        [_fileStore close];
+        _fileStore = nil;
     }
     
     if (self.userAccount)
     {
-        // Resume the matrix session
-        [self.userAccount resume];
+        _fileStore = [[MXFileStore alloc] initWithCredentials:self.userAccount.mxCredentials];
     }
-    else
-    {
-        // Prepare a new session if a new account is available.
-        [self prepareSession];
-    }
-}
-
-- (void)prepareSession
-{    
-    // We consider the first enabled account.
-    // TODO: Handle multiple accounts
-    self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    if (self.userAccount)
-    {
-        NSLog(@"[ShareExtensionManager] openSession for %@ account", self.userAccount.mxCredentials.userId);
-        // Use MXFileStore as MXStore to permanently store events.
-        [self.userAccount openSessionWithStore:[[MXFileStore alloc] init]];
-        
-        _mxSession = self.userAccount.mxSession;
-        
-        // Post notification
-        [[NSNotificationCenter defaultCenter] postNotificationName:kShareExtensionManagerDidChangeMXSessionNotification object:_mxSession userInfo:nil];
-    }
-}
-
-- (void)suspendSession
-{
-    [self.userAccount pauseInBackgroundTask];
+    
+    // Post notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShareExtensionManagerDidUpdateAccountDataNotification object:self.userAccount userInfo:nil];
 }
 
 #pragma mark - Public
@@ -135,11 +125,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
     _shareExtensionContext = shareExtensionContext;
     
-    // Prepare or resume the matrix session.
+    // Check the current matrix user.
     [self checkUserAccount];
 }
 
-- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock
+- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock
 {
     NSString *UTTypeText = (__bridge NSString *)kUTTypeText;
     NSString *UTTypeURL = (__bridge NSString *)kUTTypeURL;
@@ -149,6 +139,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     NSString *UTTypeMovie = (__bridge NSString *)kUTTypeMovie;
     
     __weak typeof(self) weakSelf = self;
+    
+    [self.pendingImages removeAllObjects];
     
     for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
     {
@@ -207,30 +199,24 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
             {
-                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(NSData *imageData, NSError * _Null_unspecified error) {
-                    
-                     // Switch back on the main thread to handle correctly the UI change
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            UIImage *image = [[UIImage alloc] initWithData:imageData];
-                            
-                            UIAlertController *compressionPrompt = [self compressionPromptForImage:image shareBlock:^{
-                                
-                                [self sendImage:image withProvider:itemProvider toRoom:room extensionItem:item failureBlock:failureBlock];
-                                
-                            }];
-                            
-                            if (compressionPrompt)
-                            {
-                                [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
-                            }
-                        }
+                itemProvider.isLoaded = NO;
+                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(NSData *imageData, NSError * _Null_unspecified error)
+                 {
+                     if (weakSelf)
+                     {
+                         itemProvider.isLoaded = YES;
+                         [self.pendingImages addObject:imageData];
                          
-                     });
-                    
+                         if ([self areAttachmentsFullyLoaded])
+                         {
+                             UIImage *firstImage = [UIImage imageWithData:self.pendingImages.firstObject];
+                             UIAlertController *compressionPrompt = [self compressionPromptForImage:firstImage shareBlock:^{
+                                 [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
+                             }];
+                             
+                             [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
+                         }
+                     }
                  }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeVideo])
@@ -288,8 +274,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)terminateExtensionCanceled:(BOOL)canceled
 {
-    [self suspendSession];
-    
     if (canceled)
     {
         [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
@@ -303,12 +287,24 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     self.primaryViewController = nil;
 }
 
+- (void)roomFromRoomSummary:(MXRoomSummary *)roomSummary store:(MXFileStore *)fileStore session:(MXSession *)session
+{
+    [fileStore asyncAccountDataOfRoom:roomSummary.roomId success:^(MXRoomAccountData * _Nonnull accountData) {
+        [fileStore asyncStateEventsOfRoom:roomSummary.roomId success:^(NSArray<MXEvent *> * _Nonnull roomStateEvents) {
+            MXRoom *room = [[MXRoom alloc] initWithRoomId:roomSummary.roomId andMatrixSession:session andStateEvents:roomStateEvents andAccountData:accountData];
+        } failure:^(NSError * _Nonnull error) {
+            //sjh
+        }];
+    } failure:^(NSError * _Nonnull error) {
+        //shj
+    }];
+    
+}
+
 #pragma mark - Private
 
 - (void)completeRequestReturningItems:(nullable NSArray *)items completionHandler:(void(^ __nullable)(BOOL expired))completionHandler;
 {
-    [self suspendSession];
-    
     [self.shareExtensionContext completeRequestReturningItems:items completionHandler:completionHandler];
     
     [self.primaryViewController destroy];
@@ -471,19 +467,44 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
 }
 
+- (BOOL)areAttachmentsFullyLoaded
+{
+    for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
+    {
+        for (NSItemProvider *itemProvider in item.attachments)
+        {
+            if (itemProvider.isLoaded == NO)
+            {
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
 #pragma mark - Notifications
 
 - (void)onMediaUploadProgress:(NSNotification *)notification
 {
+    self.imageUploadProgresses[notification.object] = (NSNumber *)notification.userInfo[kMXMediaLoaderProgressValueKey];
+    
     if ([self.delegate respondsToSelector:@selector(shareExtensionManager:mediaUploadProgress:)])
     {
-        [self.delegate shareExtensionManager:self mediaUploadProgress:((NSNumber *)notification.userInfo[kMXMediaLoaderProgressValueKey]).floatValue];
+        const NSInteger totalImagesCount = self.pendingImages.count;
+        CGFloat totalProgress = 0.0;
+        
+        for (NSNumber *progress in self.imageUploadProgresses.allValues)
+        {
+            totalProgress += progress.floatValue/totalImagesCount;
+        }
+        
+        [self.delegate shareExtensionManager:self mediaUploadProgress:totalProgress];
     }
 }
 
 #pragma mark - Sharing
 
-- (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!text)
@@ -491,13 +512,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(nil);
         }
         return;
     }
     
     __weak typeof(self) weakSelf = self;
-    
     [room sendTextMessage:text success:^(NSString *eventId) {
         if (weakSelf)
         {
@@ -508,12 +528,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] sendTextMessage failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(error);
         }
     }];
 }
 
-- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!fileUrl)
@@ -521,7 +541,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(nil);
         }
         return;
     }
@@ -543,85 +563,108 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] sendFile failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(error);
         }
     } keepActualFilename:YES];
 }
 
-- (void)sendImage:(UIImage *)image withProvider:(NSItemProvider*)itemProvider toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+
+- (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
-    if (!image)
+    
+    for (NSInteger index = 0; index < imageDatas.count; index++)
     {
-        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
-        if (failureBlock)
+        NSItemProvider *itemProvider = itemProviders[index];
+        NSData *imageData = imageDatas[index];
+        UIImage *image = [UIImage imageWithData:imageData];
+        
+        if (!imageData)
         {
-            failureBlock();
+            NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+            if (failureBlock)
+            {
+                failureBlock(nil);
+                failureBlock = nil;
+            }
+            return;
         }
-        return;
-    }
-    
-    // Prepare the image
-    NSData *imageData;
-    
-    if (self.imageCompressionMode == ImageCompressionModeSmall)
-    {
-        image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE)];
-    }
-    else if (self.imageCompressionMode == ImageCompressionModeMedium)
-    {
-        image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE)];
-    }
-    else if (self.imageCompressionMode == ImageCompressionModeLarge)
-    {
-        image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(self.actualLargeSize, self.actualLargeSize)];
-    }
-    
-    // Make sure the uploaded image orientation is up
-    image = [MXKTools forceImageOrientationUp:image];
-    
-    NSString *mimeType;
-    if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
-    {
-        mimeType = @"image/png";
-        imageData = UIImagePNGRepresentation(image);
-    }
-    else
-    {
-        // Use jpeg format by default.
-        mimeType = @"image/jpeg";
-        imageData = UIImageJPEGRepresentation(image, 0.9);
-    }
-    
-    UIImage *thumbnail = nil;
-    // Thumbnail is useful only in case of encrypted room
-    if (room.state.isEncrypted)
-    {
-        thumbnail = [MXKTools reduceImage:image toFitInSize:CGSizeMake(800, 600)];
-        if (thumbnail == image)
+        
+        // Prepare the image
+        NSData *convertedImageData;
+        
+        if (self.imageCompressionMode == ImageCompressionModeSmall)
         {
-            thumbnail = nil;
+            image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE)];
         }
+        else if (self.imageCompressionMode == ImageCompressionModeMedium)
+        {
+            image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE)];
+        }
+        else if (self.imageCompressionMode == ImageCompressionModeLarge)
+        {
+            image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(self.actualLargeSize, self.actualLargeSize)];
+        }
+        
+        // Make sure the uploaded image orientation is up
+        image = [MXKTools forceImageOrientationUp:image];
+        
+        NSString *mimeType;
+        if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
+        {
+            mimeType = @"image/png";
+            convertedImageData = UIImagePNGRepresentation(image);
+        }
+        else
+        {
+            // Use jpeg format by default.
+            mimeType = @"image/jpeg";
+            convertedImageData = UIImageJPEGRepresentation(image, 0.9);
+        }
+        
+        UIImage *thumbnail = nil;
+        // Thumbnail is useful only in case of encrypted room
+        if (room.state.isEncrypted)
+        {
+            thumbnail = [MXKTools reduceImage:image toFitInSize:CGSizeMake(800, 600)];
+            if (thumbnail == image)
+            {
+                thumbnail = nil;
+            }
+        }
+        
+        __weak typeof(self) weakSelf = self;
+        
+        [room sendImage:convertedImageData withImageSize:image.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                [imageDatas removeObject:imageData];
+                
+                if (!imageDatas.count)
+                {
+                    [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+                }
+                
+            }
+        } failure:^(NSError *error) {
+            NSLog(@"[ShareExtensionManager] sendImage failed.");
+            [imageDatas removeObject:imageData];
+            
+            if (!imageDatas.count)
+            {
+                if (failureBlock)
+                {
+                    failureBlock(error);
+                }
+            }
+            
+        }];
     }
     
-    __weak typeof(self) weakSelf = self;
-    
-    [room sendImage:imageData withImageSize:image.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"[ShareExtensionManager] sendImage failed.");
-        if (failureBlock)
-        {
-            failureBlock();
-        }
-    }];
 }
 
-- (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)())failureBlock
+- (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!videoLocalUrl)
@@ -629,7 +672,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(nil);
         }
         return;
     }
@@ -656,10 +699,27 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         NSLog(@"[ShareExtensionManager] sendVideo failed.");
         if (failureBlock)
         {
-            failureBlock();
+            failureBlock(error);
         }
     }];
 }
 
+
+@end
+
+
+@implementation NSItemProvider (ShareExtensionManager)
+
+- (void)setIsLoaded:(BOOL)isLoaded
+{
+    NSNumber *number = [NSNumber numberWithBool:isLoaded];
+    objc_setAssociatedObject(self, @selector(isLoaded), number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)isLoaded
+{
+    NSNumber *number = objc_getAssociatedObject(self, @selector(isLoaded));
+    return number.boolValue;
+}
 
 @end

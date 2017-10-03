@@ -45,6 +45,8 @@
 
 - (void)prepareForReuse
 {
+    [super prepareForReuse];
+
     if (self.pictureViewTopConstraint.constant != xibPictureViewTopConstraintConstant)
     {
         self.pictureViewTopConstraint.constant = xibPictureViewTopConstraintConstant;

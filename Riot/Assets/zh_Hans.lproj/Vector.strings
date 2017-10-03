@@ -421,3 +421,9 @@
 "settings_ui_dark_theme" = "暗色主题";
 // Events formatter
 "event_formatter_member_updates" = "%tu 的成员身份变化";
+"auth_home_server_placeholder" = "URL（例如 https://matrix.org）";
+"auth_identity_server_placeholder" = "URL（例如 https://matrix.org）";
+"contacts_user_directory_section" = "用户目录";
+"contacts_user_directory_offline_section" = "用户目录（离线）";
+"room_ongoing_conference_call_with_close" = "收到会议通话。以 %@ 或 %@.%@ 加入。";
+"room_ongoing_conference_call_close" = "关闭";
