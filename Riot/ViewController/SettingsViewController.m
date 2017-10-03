@@ -101,9 +101,7 @@ enum
 enum
 {
     LABS_MATRIX_APPS_INDEX = 0,
-#ifdef USE_JITSI_WIDGET
     LABS_USE_JITSI_WIDGET_INDEX,
-#endif
     LABS_CRYPTO_INDEX,
     LABS_COUNT
 };
@@ -1957,7 +1955,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             cell = labelAndSwitchCell;
         }
-#ifdef USE_JITSI_WIDGET
         else if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -1970,9 +1967,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             cell = labelAndSwitchCell;
         }
-        else
-#endif
-        if (row == LABS_CRYPTO_INDEX)
+        else if (row == LABS_CRYPTO_INDEX)
         {
             MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
 
