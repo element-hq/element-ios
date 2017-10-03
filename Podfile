@@ -8,7 +8,7 @@ target "Riot" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Riot has been built
-pod 'MatrixKit', '0.6.2'
+pod 'MatrixKit', '0.6.3'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
@@ -53,7 +53,7 @@ pod 'OLMKit'
 pod 'Realm', '~> 2.10.2'
 
 # The tagged version on which this version of Riot share extension has been built
-pod 'MatrixKit/AppExtension', '0.6.2'
+pod 'MatrixKit/AppExtension', '0.6.3'
 
 # The lastest release available on the CocoaPods repository
 #pod 'MatrixKit/AppExtension'
