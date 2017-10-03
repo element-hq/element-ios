@@ -262,8 +262,6 @@
 "settings_global_settings_info" = "Глобальные настройки уведомлений доступны в вашем %@ веб-клиенте";
 "settings_on_denied_notification" = "Уведомления для %@ запрещены, пожалуйста, разрешите их в настройках вашего устройства";
 "settings_ui_language" = "Язык";
-"settings_ui_light_theme" = "Светлая тема";
-"settings_ui_dark_theme" = "Темная тема";
 "settings_unignore_user" = "Показать все сообщения от %@?";
 "settings_labs_e2e_encryption" = "Сквозное шифрование";
 "settings_labs_e2e_encryption_prompt_message" = "Чтобы завершить настройку шифрования, вы должны войти в систему еще раз.";

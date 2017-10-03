@@ -22,7 +22,7 @@ pod 'MatrixKit', '0.6.2'
 #pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
 #pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
-pod 'GBDeviceInfo', '~> 4.3.0'
+pod 'GBDeviceInfo', '~> 4.4.0'
 
 pod 'GoogleAnalytics'
 
@@ -32,7 +32,7 @@ pod 'WebRTC', '58.17.16937'
 # OLMKit for crypto
 pod 'OLMKit'
 #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
-pod 'Realm', '~> 2.8.1'
+pod 'Realm', '~> 2.10.2'
 
 # Remove warnings from "bad" pods
 pod 'OLMKit', :inhibit_warnings => true
@@ -50,7 +50,7 @@ pod 'WebRTC', '58.17.16937'
 # OLMKit for crypto
 pod 'OLMKit'
 #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
-pod 'Realm', '~> 2.8.1'
+pod 'Realm', '~> 2.10.2'
 
 # The tagged version on which this version of Riot share extension has been built
 pod 'MatrixKit/AppExtension', '0.6.2'

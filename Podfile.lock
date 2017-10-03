@@ -15,18 +15,18 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
-  - DTCoreText (1.6.20):
-    - DTCoreText/Core (= 1.6.20)
+  - DTCoreText (1.6.21):
+    - DTCoreText/Core (= 1.6.21)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.20):
+  - DTCoreText/Core (1.6.21):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Extension (1.6.20):
+  - DTCoreText/Extension (1.6.21):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
@@ -91,7 +91,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   cmark: ec0275215b504780287b6fca360224e384368af8
-  DTCoreText: 51904f2374af443e0d270d6fdc76035ab6f9ef8a
+  DTCoreText: e5d688cffc9f6a61eddd1a4f94e2046851230de3
   DTFoundation: 26a164ef510877387906fb92bff524a792db4bf8
   GBDeviceInfo: caae36532afcc209b51ac62bba547aadab9e88f2
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
