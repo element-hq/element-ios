@@ -11,9 +11,9 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ erabiltzaileak irudi bat bidali dizu";
+"IMAGE_FROM_USER" = "%@ erabiltzaileak irudi bat bidali dizu %@";
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ erabiltzaileak irudi bat bidali du %@ gelara";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ erabiltzaileak irudi %@ bat bidali du %@ gelara";
 /* Multiple unread messages in a room */
 "UNREAD_IN_ROOM" = "%@ mezu berri %@ gelan";
 /* Multiple unread messages from a specific person, not referencing a room */
