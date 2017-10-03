@@ -21,10 +21,11 @@
 @class SharePresentingViewController;
 
 /**
- Posted when the matrix session has been changed.
- The notification object is the matrix session.
+ Posted when the matrix user account and his data has been checked and updated.
+ The notification object is the MXKAccount instance.
  */
-extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
+extern NSString *const kShareExtensionManagerDidUpdateAccountDataNotification;
+
 
 /**
  The protocol for the manager's delegate
@@ -42,6 +43,11 @@ extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
 
 @optional
 
+/**
+ Called when the manager starts sending the content to a room
+ @param extensionManager the ShareExtensionManager object that called the method
+ @param room the room where content will be sent
+ */
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(MXRoom *)room;
 
 /**
@@ -71,9 +77,14 @@ extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
 @property (nonatomic) SharePresentingViewController *primaryViewController;
 
 /**
- The associated matrix session (nil by default).
+ The current user account
  */
-@property (nonatomic, readonly) MXSession *mxSession;
+@property (nonatomic, readonly) MXKAccount *userAccount;
+
+/**
+ The shared file store
+ */
+@property (nonatomic, readonly) MXFileStore *fileStore;
 
 /**
  A delegate used to notify about needed UI changes when sharing
@@ -89,9 +100,9 @@ extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
  Send the content that the user has chosen to a room
  @param room the room to send the content to
  @param failureBlock the code to be executed when sharing has failed for whatever reason
- note: there is no "successBlock" parameter because when the sharing succeds, the extension needs to close itself
+ note: there is no "successBlock" parameter because when the sharing succeeds, the extension needs to close itself
  */
-- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)())failureBlock;
+- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock;
 
 /**
  Checks if there is an image in the user chosen content
@@ -104,5 +115,12 @@ extern NSString *const kShareExtensionManagerDidChangeMXSessionNotification;
  @param canceled YES if the user chose to cancel the sharing, NO otherwise
  */
 - (void)terminateExtensionCanceled:(BOOL)canceled;
+
+@end
+
+
+@interface NSItemProvider (ShareExtensionManager)
+
+@property BOOL isLoaded;
 
 @end

@@ -16,14 +16,23 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-typedef NS_ENUM(NSInteger, ShareRecentsDataSourceMode)
+typedef NS_ENUM(NSInteger, ShareDataSourceMode)
 {
-    RecentsDataSourceModePeople,
-    RecentsDataSourceModeRooms
+    DataSourceModePeople,
+    DataSourceModeRooms
 };
 
-@interface ShareRecentsDataSource : MXKRecentsDataSource
 
-- (instancetype)initWithMatrixSession:(MXSession *)mxSession dataSourceMode:(ShareRecentsDataSourceMode)dataSourceMode;
+@interface ShareDataSource : MXKRecentsDataSource
+
+- (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode;
+
+/**
+ Returns the cell data at the index path
+ 
+ @param indexPath the index of the cell
+ @return the MXKRecentCellData instance if it exists
+ */
+- (MXKRecentCellData *)cellDataAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

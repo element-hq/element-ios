@@ -516,6 +516,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self refreshLocalContacts];
     
     _isAppForeground = YES;
+
+    if (@available(iOS 11.0, *))
+    {
+        // Riot has its own dark theme. Prevent iOS from applying its one
+        [[UIApplication sharedApplication] keyWindow].accessibilityIgnoresInvertColors = YES;
+    }
     
     [self handleLaunchAnimation];
 }

@@ -46,25 +46,52 @@
     {
         NSString *displayText;
 
-        // Prepare the display name of the sender
-        NSString *senderDisplayName = roomState ? [self senderDisplayNameForEvent:event withRoomState:roomState] : event.sender;
+        Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
+        if (widget)
+        {
+            // Prepare the display name of the sender
+            NSString *senderDisplayName = roomState ? [self senderDisplayNameForEvent:event withRoomState:roomState] : event.sender;
 
-        if ([event.content[@"type"] isEqualToString:kWidgetTypeJitsi])
-        {
-            // This is an alive jitsi widget
-            displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added", @"Vector", nil), senderDisplayName];
-        }
-        else if (event.content.count == 0)
-        {
-            // This is a closed widget
-            // Check if it corresponds to a jitsi widget by looking at other state events for
-            // this jitsi widget (widget id = event.stateKey).
-            for (MXEvent *widgetStateEvent in [roomState stateEventsWithType:kWidgetEventTypeString])
+            if (widget.isActive)
             {
-                if ([widgetStateEvent.stateKey isEqualToString:event.stateKey] && [widgetStateEvent.content[@"type"] isEqualToString:kWidgetTypeJitsi])
+                if ([widget.type isEqualToString:kWidgetTypeJitsi])
                 {
-                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
-                    break;
+                    // This is an alive jitsi widget
+                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added", @"Vector", nil), senderDisplayName];
+                }
+                else
+                {
+                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_added", @"Vector", nil),
+                                   widget.name ? widget.name : widget.type,
+                                   senderDisplayName];
+                }
+            }
+            else
+            {
+                // This is a closed widget
+                // Check if it corresponds to a jitsi widget by looking at other state events for
+                // this jitsi widget (widget id = event.stateKey).
+                for (MXEvent *widgetStateEvent in [roomState stateEventsWithType:kWidgetEventTypeString])
+                {
+                    if ([widgetStateEvent.stateKey isEqualToString:widget.widgetId])
+                    {
+                        Widget *activeWidget = [[Widget alloc] initWithWidgetEvent:widgetStateEvent inMatrixSession:mxSession];
+                        if (activeWidget.isActive)
+                        {
+                            if ([activeWidget.type isEqualToString:kWidgetTypeJitsi])
+                            {
+                                // This was a jitsi widget
+                                displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
+                            }
+                            else
+                            {
+                                displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_removed", @"Vector", nil),
+                                               activeWidget.name ? activeWidget.name : activeWidget.type,
+                                               senderDisplayName];
+                            }
+                            break;
+                        }
+                    }
                 }
             }
         }

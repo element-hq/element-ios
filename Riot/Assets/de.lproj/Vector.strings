@@ -416,9 +416,18 @@
 "auth_email_not_found" = "Fehler beim Senden der E-Mail: Die E-Mail-Adresse wurde nicht gefunden";
 "settings_user_interface" = "BENUTZEROBERFLÄCHE";
 "settings_ui_language" = "Sprache";
-"settings_ui_light_theme" = "Helles Design";
-"settings_ui_dark_theme" = "Dunkles Design";
 // Events formatter
 "event_formatter_member_updates" = "%tu Änderungen der Mitgliedschaft";
 "contacts_user_directory_section" = "NUTZER VERZEICHNIS";
 "contacts_user_directory_offline_section" = "NUTZER VERZEICHNIS (offline)";
+"auth_home_server_placeholder" = "URL (z.B. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (z.B. https://matrix.org)";
+"room_ongoing_conference_call_close" = "Schließen";
+"room_conference_call_no_power" = "Du brauchst die Berechtigung Konferenzgespräche in diesem Raum zu verwalten";
+"settings_labs_create_conference_with_jitsi" = "Erstelle Konferenzgespräche mit Jitsi";
+"call_already_displayed" = "Es existiert bereits ein Gespräch.";
+"call_jitsi_error" = "Konferenzgespräch konnte nicht betreten werden.";
+// Widget
+"widget_no_power_to_manage" = "Du brauchst die Berechtigung um Widgets in diesem Raum zu verwalten";
+"widget_creation_failure" = "Widget-Erstellung fehlgeschlagen";
+"room_ongoing_conference_call_with_close" = "Laufendes Konferenzgespräch. Trete mit %@ oder %@ bei. %@ es.";

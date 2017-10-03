@@ -45,6 +45,8 @@
 
 - (void)prepareForReuse
 {
+    [super prepareForReuse];
+
     // Reset avatars
     for (UIView *avatarView in self.avatarsView.subviews)
     {

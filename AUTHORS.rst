@@ -27,3 +27,6 @@ Denis Morozov <dmorozkn at gmail.com>
 Aram Sargsyan <aram.sargsyan.1997 at gmail.com>
  * PR #1341: Read receipts details
  
+Vivian Lim <vivvnlim at gmail.com>
+ * PR #1513 Return key on hardware keyboards now sends messages
+ 
