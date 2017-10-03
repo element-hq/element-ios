@@ -431,3 +431,8 @@
 "widget_no_power_to_manage" = "Du brauchst die Berechtigung um Widgets in diesem Raum zu verwalten";
 "widget_creation_failure" = "Widget-Erstellung fehlgeschlagen";
 "room_ongoing_conference_call_with_close" = "Laufendes Konferenzgespräch. Trete mit %@ oder %@ bei. %@ es.";
+"settings_ui_theme" = "Thema";
+"settings_ui_theme_auto" = "Auto";
+"settings_ui_theme_light" = "Hell";
+"settings_ui_theme_dark" = "Dunkel";
+"settings_ui_theme_picker_title" = "Thema wählen";
