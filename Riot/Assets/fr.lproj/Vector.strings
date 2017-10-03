@@ -257,7 +257,7 @@
 "settings_sign_out_confirmation" = "Êtes-vous sûr(e) ?";
 "settings_sign_out_e2e_warn" = "Vous perdrez vos clés de chiffrement de bout en bout. Cela signifie que vous ne pourrez plus lire les anciens messages des salons chiffrés depuis cet appareil.";
 "settings_profile_picture" = "Image de profil";
-"settings_display_name" = "Nom affiché";
+"settings_display_name" = "Nom d'affichage";
 "settings_first_name" = "Prénom";
 "settings_surname" = "Nom";
 "settings_remove_prompt_title" = "Confirmation";
