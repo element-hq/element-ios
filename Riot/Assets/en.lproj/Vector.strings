@@ -253,7 +253,7 @@
 "room_event_action_save" = "Save";
 "room_event_action_resend" = "Resend";
 "room_event_action_delete" = "Delete";
-"room_event_action_cancel_upload" = "Cancel Upload";
+"room_event_action_cancel_send" = "Cancel Send";
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
