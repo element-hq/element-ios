@@ -431,3 +431,25 @@
 // Widget
 "widget_no_power_to_manage" = "Вам нужно разрешение на управление виджетами в этой комнате";
 "widget_creation_failure" = "Не удалось создать виджет";
+"send_to" = "Отправить %@";
+"sending" = "Отправка";
+"auth_share_extension_prompt" = "Войти в основное приложение для совместного использования контента";
+"room_event_failed_to_send" = "Не удалось отправить";
+"settings_labs_matrix_apps" = "Приложения Matrix";
+"room_details_direct_chat" = "Прямой чат";
+"room_details_fail_to_update_room_direct" = "Не удается обновить прямой флаг этой комнаты";
+"event_formatter_jitsi_widget_added" = "Конференция добавлена %@";
+"event_formatter_jitsi_widget_removed" = "Конференция удалена %@";
+"call_incoming_voice" = "Входящий звонок...";
+"call_incoming_video" = "Входящий видеозвонок...";
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Вам нужно иметь возможность приглашать пользователей, чтобы сделать это.";
+"widget_integration_unable_to_create" = "Не удалось создать виджет.";
+"widget_integration_failed_to_send_request" = "Не удалось отправить запрос.";
+"widget_integration_room_not_recognised" = "Эта комната не распознана.";
+"widget_integration_positive_power_level" = "Уровень доступа должен быть положительным целым числом.";
+"widget_integration_must_be_in_room" = "Вас нет в этой комнате.";
+"widget_integration_no_permission_in_room" = "У вас нет полномочий в этой комнате.";
+"widget_integration_missing_room_id" = "Отсутствует room_id в запросе.";
+"widget_integration_missing_user_id" = "Отсутствует user_id в запросе.";
+"widget_integration_room_not_visible" = "Комната %@ не видна.";
