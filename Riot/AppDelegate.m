@@ -448,7 +448,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self cancelBackgroundSync];
     
     // Open account session(s) if this is not already done (see [initMatrixSessions] in case of background launch).
-    [[MXKAccountManager sharedManager] prepareSessionForActiveAccounts];
+    [self prepareSessionForActiveAccounts];
     
     _isAppForeground = YES;
     
@@ -1662,18 +1662,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Add observer on settings changes.
     [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
-    // Prepare account manager
-    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
-    
-    // Use MXFileStore as MXStore to permanently store events.
-    accountManager.storeClass = [MXFileStore class];
-    
     // Observers have been defined, we can start a matrix session for each enabled accounts.
     // except if the app is still in background.
     if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
     {
-        NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts");
-        [accountManager prepareSessionForActiveAccounts];
+        [self prepareSessionForActiveAccounts];
     }
     else
     {
@@ -1682,11 +1675,25 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Patch: the account session(s) will be opened when the app will enter foreground.
         NSLog(@"[AppDelegate] initMatrixSessions: The application has been launched in background");
     }
+}
+
+- (void)prepareSessionForActiveAccounts
+{
+    // Prepare account manager
+    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
-    // Check whether we're already logged in
-    NSArray *mxAccounts = accountManager.accounts;
-    if (mxAccounts.count)
+    // Use MXFileStore as MXStore to permanently store events.
+    accountManager.storeClass = [MXFileStore class];
+    
+    // Check the first active account to know whether we have to prepare a matrix session for each account.
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    MXKAccount *firstActiveAccount = mxAccounts.firstObject;
+    if (firstActiveAccount && !firstActiveAccount.mxSession)
     {
+        NSLog(@"[AppDelegate] prepareSessionForActiveAccounts");
+        
+        [accountManager prepareSessionForActiveAccounts];
+        
         for (MXKAccount *account in mxAccounts)
         {
             // Replace default room summary updater
