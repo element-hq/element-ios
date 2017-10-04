@@ -366,6 +366,7 @@
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Third-party Notices";
 "settings_send_crash_report" = "Send anon crash & usage data";
+"settings_enable_rageshake" = "Rage shake to report bug";
 "settings_clear_cache" = "Clear cache";
 
 "settings_change_password" = "Change password";
@@ -473,6 +474,7 @@
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
+"do_not_ask_again" = "Do not ask again";
 "camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
 "large_badge_value_k_format" = "%.1fK";
 
