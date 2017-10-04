@@ -1,3 +1,12 @@
+Changes in 0.5.5 (2017-10-04)
+===============================================
+
+Improvements:
+ * Rageshake: Add a setting to enable (disable) it (PR #1552).
+
+Bug Fix:
+ * Some rooms have gone nameless after upgrade (PR #1551).
+
 Changes in 0.5.4 (2017-10-03)
 ===============================================
 
