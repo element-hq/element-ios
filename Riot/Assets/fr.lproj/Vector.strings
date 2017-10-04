@@ -290,6 +290,7 @@
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Licences tierces";
 "settings_send_crash_report" = "Envoyer des rapports d'erreur anonymes et des statistiques d'utilisation";
+"settings_enable_rageshake" = "Secouer l'appareil pour signaler un bug";
 "settings_clear_cache" = "Vider le cache";
 "settings_change_password" = "Changer de mot de passe";
 "settings_old_password" = "ancien mot de passe";
@@ -383,6 +384,7 @@
 "public_room_section_title" = "Salons publics (sur %@) :";
 "bug_report_prompt" = "L'application s'est terminée brusquement la dernière fois. Voulez-vous envoyer un rapport d'erreur ?";
 "rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d'erreur ?";
+"do_not_ask_again" = "Ne plus demander";
 "camera_access_not_granted" = "%@ n'a pas la permission pour utiliser l'appareil photo, veuillez modifier les options de vie privée";
 "large_badge_value_k_format" = "%.1fK";
 // room display name

@@ -92,6 +92,7 @@ enum
     OTHER_PRIVACY_INDEX,
     OTHER_THIRD_PARTY_INDEX,
     OTHER_CRASH_REPORT_INDEX,
+    OTHER_ENABLE_RAGESHAKE_INDEX,
     OTHER_MARK_ALL_AS_READ_INDEX,
     OTHER_CLEAR_CACHE_INDEX,
     OTHER_REPORT_BUG_INDEX,
@@ -1865,6 +1866,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = sendCrashReportCell;
         }
+        else if (row == OTHER_ENABLE_RAGESHAKE_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* enableRageShakeCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            enableRageShakeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_rageshake", @"Vector", nil);
+            enableRageShakeCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableRageShake"];
+            enableRageShakeCell.mxkSwitch.enabled = YES;
+            [enableRageShakeCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [enableRageShakeCell.mxkSwitch addTarget:self action:@selector(toggleEnableRageShake:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = enableRageShakeCell;
+        }
         else if (row == OTHER_MARK_ALL_AS_READ_INDEX)
         {
             MXKTableViewCellWithButton *markAllBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -2707,6 +2720,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
+    }
+}
+
+- (void)toggleEnableRageShake:(id)sender
+{
+    if (sender && [sender isKindOfClass:UISwitch.class])
+    {
+        UISwitch *switchButton = (UISwitch*)sender;
+
+        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"enableRageShake"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        [self.tableView reloadData];
     }
 }
 
