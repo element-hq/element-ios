@@ -463,9 +463,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
-    // Open account session(s) if this is not already done (see [initMatrixSessions] in case of background launch).
-    [[MXKAccountManager sharedManager] prepareSessionForActiveAccounts];
-    
     _isAppForeground = YES;
     
     // GA: Start a new session. The next hit from this tracker will be the first in a new session.
@@ -532,6 +529,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self refreshLocalContacts];
     
     _isAppForeground = YES;
+
+    if (@available(iOS 11.0, *))
+    {
+        // Riot has its own dark theme. Prevent iOS from applying its one
+        [[UIApplication sharedApplication] keyWindow].accessibilityIgnoresInvertColors = YES;
+    }
     
     [self handleLaunchAnimation];
 }
@@ -1817,7 +1820,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [accountManager prepareSessionForActiveAccounts];
     
     // Check whether we're already logged in
-    NSArray *mxAccounts = accountManager.accounts;
+    NSArray *mxAccounts = accountManager.activeAccounts;
     if (mxAccounts.count)
     {
         for (MXKAccount *account in mxAccounts)

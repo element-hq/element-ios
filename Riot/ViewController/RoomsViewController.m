@@ -156,34 +156,47 @@
         NSArray<NSString*> *roomDirectoryServers = [[NSUserDefaults standardUserDefaults] objectForKey:@"roomDirectoryServers"];
         directoryServersDataSource.roomDirectoryServers = roomDirectoryServers;
 
+        __weak typeof(self) weakSelf = self;
+
         [directoryServerPickerViewController displayWithDataSource:directoryServersDataSource onComplete:^(id<MXKDirectoryServerCellDataStoring> cellData) {
-            if (cellData)
+            if (weakSelf && cellData)
             {
+                typeof(self) self = weakSelf;
+
                 // Use the selected directory server
                 if (cellData.thirdPartyProtocolInstance)
                 {
-                    recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance;
+                    self->recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance;
                 }
                 else if (cellData.homeserver)
                 {
-                    recentsDataSource.publicRoomsDirectoryDataSource.includeAllNetworks = cellData.includeAllNetworks;
-                    recentsDataSource.publicRoomsDirectoryDataSource.homeserver = cellData.homeserver;
+                    self->recentsDataSource.publicRoomsDirectoryDataSource.includeAllNetworks = cellData.includeAllNetworks;
+                    self->recentsDataSource.publicRoomsDirectoryDataSource.homeserver = cellData.homeserver;
                 }
 
                 // Refresh data
                 [self addSpinnerFooterView];
 
-                [recentsDataSource.publicRoomsDirectoryDataSource paginate:^(NSUInteger roomsAdded) {
+                [self->recentsDataSource.publicRoomsDirectoryDataSource paginate:^(NSUInteger roomsAdded) {
 
-                    // The table view is automatically filled
-                    [self removeSpinnerFooterView];
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
 
-                    // Make the directory section appear full-page
-                    [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:recentsDataSource.directorySection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                        // The table view is automatically filled
+                        [self removeSpinnerFooterView];
+
+                        // Make the directory section appear full-page
+                        [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self->recentsDataSource.directorySection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                    }
 
                 } failure:^(NSError *error) {
 
-                    [self removeSpinnerFooterView];
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        [self removeSpinnerFooterView];
+                    }
                 }];
             }
         }];

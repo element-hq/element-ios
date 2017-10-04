@@ -18,7 +18,7 @@
 #import "SegmentedViewController.h"
 #import "RoomsListViewController.h"
 #import "FallbackViewController.h"
-#import "ShareRecentsDataSource.h"
+#import "ShareDataSource.h"
 #import "ShareExtensionManager.h"
 
 
@@ -30,7 +30,7 @@
 
 @property (nonatomic) SegmentedViewController *segmentedViewController;
 
-@property (nonatomic) id shareExtensionManagerDidChangeMXSessionObserver;
+@property (nonatomic) id shareExtensionManagerDidUpdateAccountDataObserver;
 
 
 @end
@@ -44,10 +44,10 @@
 {
     [super viewDidLoad];
     
-    self.shareExtensionManagerDidChangeMXSessionObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidChangeMXSessionNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    self.shareExtensionManagerDidUpdateAccountDataObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidUpdateAccountDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self configureViews];
-        
+    
     }];
     
     [self configureViews];
@@ -57,10 +57,10 @@
 {
     [super destroy];
     
-    if (self.shareExtensionManagerDidChangeMXSessionObserver)
+    if (self.shareExtensionManagerDidUpdateAccountDataObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.shareExtensionManagerDidChangeMXSessionObserver];
-        self.shareExtensionManagerDidChangeMXSessionObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:self.shareExtensionManagerDidUpdateAccountDataObserver];
+        self.shareExtensionManagerDidUpdateAccountDataObserver = nil;
     }
     
     [self resetContentView];
@@ -94,7 +94,7 @@
     
     [self resetContentView];
     
-    if ([ShareExtensionManager sharedManager].mxSession)
+    if ([ShareExtensionManager sharedManager].userAccount)
     {
         self.tittleLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), @""];
         [self configureSegmentedViewController];
@@ -120,12 +120,12 @@
         }];
     };
     
-    ShareRecentsDataSource *roomsDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:[ShareExtensionManager sharedManager].mxSession dataSourceMode:RecentsDataSourceModeRooms];
+    ShareDataSource *roomsDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModeRooms];
     RoomsListViewController *roomsViewController = [RoomsListViewController recentListViewController];
     roomsViewController.failureBlock = failureBlock;
     [roomsViewController displayList:roomsDataSource];
     
-    ShareRecentsDataSource *peopleDataSource = [[ShareRecentsDataSource alloc] initWithMatrixSession:[ShareExtensionManager sharedManager].mxSession dataSourceMode:RecentsDataSourceModePeople];
+    ShareDataSource *peopleDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModePeople];
     RoomsListViewController *peopleViewController = [RoomsListViewController recentListViewController];
     peopleViewController.failureBlock = failureBlock;
     [peopleViewController displayList:peopleDataSource];

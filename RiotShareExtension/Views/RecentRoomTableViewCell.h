@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Vector Creations Ltd
+ Copyright 2017 Aram Sargsyan
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,18 +14,10 @@
  limitations under the License.
  */
 
-#import "RoomEmptyBubbleCell.h"
+#import <MatrixKit/MatrixKit.h>
 
-@implementation RoomEmptyBubbleCell
+@interface RecentRoomTableViewCell : MXKRecentTableViewCell
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-
-    if (self.heightConstraint != 0)
-    {
-        self.heightConstraint = 0;
-    }
-}
++ (CGFloat)cellHeight;
 
 @end

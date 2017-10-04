@@ -29,7 +29,7 @@
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ nouveaux messages dans %@, %@ et d'autres";
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ vous a invité";
+"USER_INVITE_TO_CHAT" = "%@ vous a invité dans une discussion";
 /* A user has invited you to an (unamed) group chat */
 "USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ vous a invité dans un salon";
 /* A user has invited you to a named room */
@@ -39,10 +39,10 @@
 /* Incoming one-to-one video call */
 "VIDEO_CALL_FROM_USER" = "Appel vidéo de %@";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "Appel groupé depuis %@";
+"VOICE_CONF_FROM_USER" = "Téléconférence vocale de %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Appel vidéo groupé depuis %@";
+"VIDEO_CONF_FROM_USER" = "Téléconférence vidéo de %@";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "Appel groupé de %@ : '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "Téléconférence vocale de %@ : '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Appel vidéo groupé de %@ : '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Téléconférence vidéo de %@ : '%@'";

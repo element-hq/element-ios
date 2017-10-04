@@ -440,11 +440,20 @@
 "contacts_user_directory_offline_section" = "GEBRUIKERSADRESBOEK (offline)";
 "settings_user_interface" = "GEBRUIKERSINTERFACE";
 "settings_ui_language" = "Taal";
-"settings_ui_light_theme" = "Lichte thema";
-"settings_ui_dark_theme" = "Donkere thema";
 // Read Receipts
 "read_receipts_list" = "Leesbewijzen Lijst";
 "receipt_status_read" = "Lees: ";
 // Events formatter
 "event_formatter_member_updates" = "%tu lidmaatschap aanpassingen";
 "bug_report_send" = "Stuur";
+"auth_home_server_placeholder" = "URL (bv. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (bv. https://matrix.org)";
+"room_ongoing_conference_call_with_close" = "Lopend vergadergesprek. Neem deel als %@ of %@. %@ het.";
+"room_ongoing_conference_call_close" = "Sluiten";
+"room_conference_call_no_power" = "Je hebt permissie nodig om het vergadergesprek in deze ruimte te beheren";
+"settings_labs_create_conference_with_jitsi" = "Maak vergadergesprekken met jitsi";
+"call_already_displayed" = "Er is al een gesprek aan de gang.";
+"call_jitsi_error" = "Het is niet gelukt om aan het vergadergesprek deel te nemen.";
+// Widget
+"widget_no_power_to_manage" = "Je hebt permissie nodig om widgets in deze ruimte te beheren";
+"widget_creation_failure" = "Het creëren van de widget is fout gegaan";
