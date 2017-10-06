@@ -1947,6 +1947,34 @@
         
         if (level == 0)
         {
+            // Check status of the selected event
+            if (selectedEvent.sentState == MXEventSentStatePreparing ||
+                selectedEvent.sentState == MXEventSentStateEncrypting ||
+                selectedEvent.sentState == MXEventSentStateSending)
+            {
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_send", @"Vector", nil)
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action)
+                                             {
+                                                 if (weakSelf)
+                                                 {
+                                                     typeof(self) self = weakSelf;
+
+                                                     self->currentAlert = nil;
+
+                                                     // Cancel and remove the outgoing message
+                                                     [self.roomDataSource.room cancelSendingOperation:selectedEvent.eventId];
+                                                     [self.roomDataSource removeEventWithEventId:selectedEvent.eventId];
+ 
+                                                     [self cancelEventSelection];
+                                                 }
+
+                                             }]];
+            }
+        }
+
+        if (level == 0)
+        {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
@@ -2087,18 +2115,17 @@
             // Check status of the selected event
             if (selectedEvent.sentState == MXEventSentStatePreparing ||
                 selectedEvent.sentState == MXEventSentStateEncrypting ||
-                selectedEvent.sentState == MXEventSentStateUploading)
+                selectedEvent.sentState == MXEventSentStateUploading ||
+                selectedEvent.sentState == MXEventSentStateSending)
             {
                 // Upload id is stored in attachment url (nasty trick)
                 NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
                 if ([MXMediaManager existingUploaderWithId:uploadId])
                 {
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_upload", @"Vector", nil)
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_send", @"Vector", nil)
                                                                      style:UIAlertActionStyleDefault
                                                                    handler:^(UIAlertAction * action) {
-                                                                       
-                                                                       // TODO cancel the attachment encryption if it is in progress.
-                                                                       
+
                                                                        // Get again the loader
                                                                        MXMediaLoader *loader = [MXMediaManager existingUploaderWithId:uploadId];
                                                                        if (loader)
@@ -2117,6 +2144,9 @@
                                                                            // Remove the outgoing message and its related cached file.
                                                                            [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath error:nil];
                                                                            [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheThumbnailPath error:nil];
+
+                                                                           // Cancel and remove the outgoing message
+                                                                           [self.roomDataSource.room cancelSendingOperation:selectedEvent.eventId];
                                                                            [self.roomDataSource removeEventWithEventId:selectedEvent.eventId];
                                                                            
                                                                            [self cancelEventSelection];
