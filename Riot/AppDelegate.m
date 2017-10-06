@@ -962,11 +962,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
+    NSLog(@"[AppDelegate] didReceiveRemoteNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
+
 #ifdef DEBUG
     // log the full userInfo only in DEBUG
     NSLog(@"[AppDelegate] didReceiveRemoteNotification: %@", userInfo);
-#else
-    NSLog(@"[AppDelegate] didReceiveRemoteNotification");
 #endif
     
     // Look for the room id
@@ -1052,7 +1052,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSLog(@"[AppDelegate] didReceiveRemoteNotification : no linked session / account has been found.");
         }
     }
+
+    NSLog(@"[AppDelegate] didReceiveRemoteNotification: BEFORE completionHandler");
     completionHandler(UIBackgroundFetchResultNoData);
+    NSLog(@"[AppDelegate] didReceiveRemoteNotification: AFTER completionHandler");
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
