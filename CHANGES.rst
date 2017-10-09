@@ -2,7 +2,7 @@ Changes in 0.5.6 (2017-10-05)
 ===============================================
 
 Improvements:
- * SettingsL Pin rooms with missed notifs and unread msg by default (PR #1556**).**
+ * Settings: Pin rooms with missed notifs and unread msg by default (PR #1556).
 
 Bug Fix:
  * Fix RAM peak usage when doing an initial sync with large rooms (PR #1553).
