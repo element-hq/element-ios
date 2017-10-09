@@ -1053,9 +1053,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
     }
 
-    NSLog(@"[AppDelegate] didReceiveRemoteNotification: BEFORE completionHandler");
-    completionHandler(UIBackgroundFetchResultNoData);
-    NSLog(@"[AppDelegate] didReceiveRemoteNotification: AFTER completionHandler");
+    // Possible workaround for https://github.com/vector-im/riot-ios/issues/1522
+    // iOS 11 ignores us when we say that we will not display a local notification
+    // making the app crash in background.
+    // So, try to send the information a bit later with a dispatch_async :/
+    NSLog(@"[AppDelegate] didReceiveRemoteNotification: BEFORE completionHandler #1");
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        NSLog(@"[AppDelegate] didReceiveRemoteNotification: BEFORE completionHandler #2");
+        completionHandler(UIBackgroundFetchResultNoData);
+        NSLog(@"[AppDelegate] didReceiveRemoteNotification: AFTER completionHandler");
+    });
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
