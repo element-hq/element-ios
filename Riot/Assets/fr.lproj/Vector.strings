@@ -210,7 +210,7 @@
 "room_event_action_save" = "Enregistrer";
 "room_event_action_resend" = "Renvoyer";
 "room_event_action_delete" = "Supprimer";
-"room_event_action_cancel_upload" = "Annuler l'envoi";
+"room_event_action_cancel_send" = "Annuler l'envoi";
 "room_event_action_cancel_download" = "Annuler le téléchargement";
 "room_event_action_view_encryption" = "Informations sur le chiffrement";
 "room_warning_about_encryption" = "Le chiffrement de bout en bout est en version bêta et peut ne pas être fiable.\n\nIl ne doit pas être considéré comme fiable pour sécuriser des données.\n\nLes appareils ne pourront pas encore déchiffrer l'historique de messages d'avant leur arrivée sur le salon.\n\nLes messages chiffrés ne seront pas visibles sur les clients qui n'ont pas encore implémenté le chiffrement.";

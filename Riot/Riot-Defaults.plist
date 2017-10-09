@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>pinRoomsWithMissedNotif</key>
-	<false/>
+	<true/>
 	<key>pinRoomsWithUnread</key>
-	<false/>
+	<true/>
 	<key>pushGatewayURL</key>
 	<string>https://matrix.org/_matrix/push/v1/notify</string>
 	<key>pusherAppIdDev</key>

@@ -547,6 +547,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self stopGoogleAnalytics];
 }
 
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+    NSLog(@"[AppDelegate] applicationDidReceiveMemoryWarning");
+}
+
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
     BOOL continueUserActivity = NO;
@@ -997,6 +1002,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+    NSLog(@"[AppDelegate] didReceiveLocalNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
+    
     NSString* roomId = notification.userInfo[@"room_id"];
     if (roomId.length)
     {
