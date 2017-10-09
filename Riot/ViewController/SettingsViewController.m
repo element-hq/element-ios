@@ -17,13 +17,14 @@
 
 #import "SettingsViewController.h"
 
-#import "AppDelegate.h"
-
-#import "AvatarGenerator.h"
-
-#import <Photos/Photos.h>
+#import <MatrixSDK/MXCallKitAdapter.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <OLMKit/OLMKit.h>
+#import <Photos/Photos.h>
+
+#import "AppDelegate.h"
+#import "AvatarGenerator.h"
 
 #import "MXKEncryptionKeysExportView.h"
 #import "BugReportViewController.h"
@@ -32,16 +33,13 @@
 
 #import "CountryPickerViewController.h"
 #import "LanguagePickerViewController.h"
-#import "TableViewCellWithPhoneNumberTextField.h"
 
 #import "NBPhoneNumberUtil.h"
-
-#import "AvatarGenerator.h"
-
-#import "OLMKit/OLMKit.h"
+#import "RageShakeManager.h"
+#import "RiotDesignValues.h"
+#import "TableViewCellWithPhoneNumberTextField.h"
 
 #import "GBDeviceInfo_iOS.h"
-
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
@@ -50,6 +48,7 @@ enum
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
+    SETTINGS_SECTION_CALLS_INDEX,
     SETTINGS_SECTION_USER_INTERFACE_INDEX,
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
@@ -64,6 +63,7 @@ enum
 enum
 {
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
+    NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT,
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
     NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
@@ -74,6 +74,13 @@ enum
     //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
     //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
     NOTIFICATION_SETTINGS_COUNT
+};
+
+enum
+{
+    CALLS_ENABLE_CALLKIT_INDEX = 0,
+    CALLS_DESCRIPTION_INDEX,
+    CALLS_COUNT
 };
 
 enum
@@ -127,7 +134,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // listener
     id removedAccountObserver;
     id accountUserInfoObserver;
-    id apnsInfoUpdateObserver;
+    id pushInfoUpdateObserver;
     
     id notificationCenterWillUpdateObserver;
     id notificationCenterDidUpdateObserver;
@@ -273,8 +280,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
     }];
     
-    // Add observer to apns
-    apnsInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    // Add observer to push settings
+    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountPushKitActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self stopActivityIndicator];
         
@@ -523,10 +530,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         accountUserInfoObserver = nil;
     }
     
-    if (apnsInfoUpdateObserver)
+    if (pushInfoUpdateObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:apnsInfoUpdateObserver];
-        apnsInfoUpdateObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver];
+        pushInfoUpdateObserver = nil;
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -1175,6 +1182,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if ([MXCallKitAdapter callKitAvailable])
+        {
+            count = CALLS_COUNT;
+        }
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         count = USER_INTERFACE_COUNT;
@@ -1616,10 +1630,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
+            labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = account.showDecryptedContentInNotifications;
+            labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
         }
@@ -1659,6 +1685,29 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
+        }
+    }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if (row == CALLS_ENABLE_CALLKIT_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == CALLS_DESCRIPTION_INDEX)
+        {
+            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
+            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
+            globalInfoCell.textLabel.numberOfLines = 0;
+            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell = globalInfoCell;
         }
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
@@ -2085,6 +2134,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if ([MXCallKitAdapter callKitAvailable])
+        {
+            return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
+        }
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
@@ -2209,6 +2265,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
         }
     }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if (![MXCallKitAdapter callKitAvailable])
+        {
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
+    }
     
     return 24;
 }
@@ -2225,6 +2288,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 // Hide this section
                 return SECTION_TITLE_PADDING_WHEN_HIDDEN;
             }
+        }
+    }
+    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    {
+        if (![MXCallKitAdapter callKitAvailable])
+        {
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
 
@@ -2656,9 +2726,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
         MXKAccount* account = accountManager.activeAccounts.firstObject;
         
-        if (accountManager.apnsDeviceToken)
+        if (accountManager.pushDeviceToken)
         {
-            [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
+            [account setEnablePushKitNotifications:!account.isPushKitNotificationActive];
         }
         else
         {
@@ -2671,11 +2741,23 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 }
                 else
                 {
-                    [account setEnablePushNotifications:YES];
+                    [account setEnablePushKitNotifications:YES];
                 }
             }];
         }
     }
+}
+
+- (void)toggleCallKit:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    [MXKAppSettings standardAppSettings].enableCallKit = switchButton.isOn;
+}
+
+- (void)toggleShowDecodedContent:(id)sender
+{
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    account.showDecryptedContentInNotifications = !account.showDecryptedContentInNotifications;
 }
 
 - (void)toggleLocalContactsSync:(id)sender

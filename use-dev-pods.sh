@@ -12,5 +12,5 @@ rm -f Podfile.lock
 sed -i '' -E "s!^(pod)(.*MatrixSDK)!#\1\2!g" Podfile
 sed -i '' -E "s!^(pod)(.*MatrixKit)!#\1\2!g" Podfile
 # And enable the develop ones
-sed -i '' -E "s!^(#pod)(.*MatrixSDK)(.*develop)!pod\2\3!g" Podfile
-sed -i '' -E "s!^(#pod)(.*MatrixKit)(.*develop)!pod\2\3!g" Podfile
+sed -i '' -E "s!^(#pod)(.*MatrixSDK)(.*callkit)!pod\2\3!g" Podfile
+sed -i '' -E "s!^(#pod)(.*MatrixKit)(.*callkit)!pod\2\3!g" Podfile

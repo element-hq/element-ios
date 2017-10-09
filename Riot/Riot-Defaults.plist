@@ -12,6 +12,8 @@
 	<string>im.vector.app.ios.dev</string>
 	<key>pusherAppIdProd</key>
 	<string>im.vector.app.ios.prod</string>
+	<key>pushKitAppIdProd</key>
+	<string>im.vector.app.ios.voip.prod</string>
 	<key>identityserverurl</key>
 	<string>https://vector.im</string>
 	<key>homeserverurl</key>
@@ -28,8 +30,6 @@
 	<string>https://scalar-staging.riot.im/scalar-web/</string>
 	<key>integrationsRestUrl</key>
 	<string>https://scalar-staging.riot.im/scalar/api</string>
-	<key>apnsDeviceToken</key>
-	<string></string>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>

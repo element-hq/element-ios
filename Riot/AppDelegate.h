@@ -43,7 +43,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
 {
-    BOOL isAPNSRegistered;
+    BOOL isPushRegistered;
     
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
@@ -112,7 +112,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 - (void)startGoogleAnalytics;
 - (void)stopGoogleAnalytics;
 
-#pragma mark - APNS methods
+#pragma mark - Push notifications
 
 - (void)registerUserNotificationSettings;
 
