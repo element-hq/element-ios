@@ -96,6 +96,9 @@
     [_sendButton setTitle:NSLocalizedStringFromTable(@"bug_report_send", @"Vector", nil) forState:UIControlStateNormal];
     [_sendButton setTitle:NSLocalizedStringFromTable(@"bug_report_send", @"Vector", nil) forState:UIControlStateHighlighted];
 
+    // Do not send empty report
+    _sendButton.enabled = NO;;
+    
     _sendingContainer.hidden = YES;
 
     self.sendLogs = YES;
