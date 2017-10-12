@@ -1112,7 +1112,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (nullable NSString *)notificationBodyForEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState inAccount:(MXKAccount*)account
+- (nullable NSString *)notificationBodyForEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account
 {
     if (!event.content || !event.content.count)
         return nil;
@@ -1124,10 +1124,34 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
         
-        if (room.isMentionsOnly && !event.mxkIsHighlighted)
+        if (room.isMentionsOnly)
         {
-            // Do not display local notification here.
-            return nil;
+            // A local notification will be displayed only for highlighted notification.
+            BOOL isHighlighted = NO;
+            
+            // Check whether is there an highlight tweak on it
+            for (MXPushRuleAction *ruleAction in rule.actions)
+            {
+                if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
+                {
+                    if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"highlight"])
+                    {
+                        // Check the highlight tweak "value"
+                        // If not present, highlight. Else check its value before highlighting
+                        if (nil == ruleAction.parameters[@"value"] || YES == [ruleAction.parameters[@"value"] boolValue])
+                        {
+                            isHighlighted = YES;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if (!isHighlighted)
+            {
+                // Ignore this notif.
+                return nil;
+            }
         }
         
         BOOL isDirect = room.isDirect;
@@ -2282,7 +2306,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
         if (!(event.eventType == MXEventTypeCallInvite && isCallKitActive))
         {
-            NSString *notificationBody = [weakSelf notificationBodyForEvent:event withRoomState:roomState inAccount:account];
+            NSString *notificationBody = [weakSelf notificationBodyForEvent:event withRoomState:roomState pushRule:rule inAccount:account];
             if (notificationBody)
             {
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
