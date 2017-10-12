@@ -52,6 +52,7 @@
 #import <MatrixSDK/MXCallKitConfiguration.h>
 
 #import "MXSession+Riot.h"
+#import "MXRoom+Riot.h"
 
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
@@ -1121,7 +1122,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
     {
-        BOOL isDirect = [account.mxSession roomWithRoomId:event.roomId].isDirect;
+        MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
+        
+        if (room.isMentionsOnly && !event.mxkIsHighlighted)
+        {
+            // Do not display local notification here.
+            return nil;
+        }
+        
+        BOOL isDirect = room.isDirect;
         
         NSString *msgType = event.content[@"msgtype"];
         NSString *content = event.content[@"body"];
