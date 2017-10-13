@@ -2295,9 +2295,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     MXOnNotification notificationListenerBlock = ^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
         
+        // Do not display local notification if the app is not running in background.
         if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
         {
-            // Do not display local notification if the app is not running in background.
+            return;
+        }
+        
+        // Do not display local notifications during the initial sync.
+        if (!account.mxSession.isEventStreamInitialised)
+        {
             return;
         }
         
