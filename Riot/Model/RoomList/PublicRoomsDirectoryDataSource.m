@@ -356,8 +356,15 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         }
         else
         {
-            // Show nothing while loading and in other cases
-            tableViewCell.textLabel.text = @"";
+            if (_searchPattern.length)
+            {
+                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_in_progress", @"Vector", nil);
+            }
+            else
+            {
+                // Show nothing in other cases
+                tableViewCell.textLabel.text = @"";
+            }
         }
         
         return tableViewCell;
