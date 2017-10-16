@@ -2452,10 +2452,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                             }
                         }
                         
-                        MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
+                        MXRoomSummary *roomSummary = [account.mxSession roomSummaryWithRoomId:event.roomId];
                         
                         __weak typeof(self) weakSelf = self;
-                        self.mxInAppNotification = [UIAlertController alertControllerWithTitle:room.summary.displayname
+                        self.mxInAppNotification = [UIAlertController alertControllerWithTitle:roomSummary.displayname
                                                                                        message:messageText
                                                                                 preferredStyle:UIAlertControllerStyleAlert];
                         
