@@ -1154,8 +1154,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
         }
         
-        BOOL isDirect = room.isDirect;
-        
         NSString *msgType = event.content[@"msgtype"];
         NSString *content = event.content[@"body"];
         
@@ -1165,10 +1163,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             msgType = nil;
         }
         
-        if (!isDirect)
+        NSString *roomDisplayName = room.summary.displayname;
+        
+        // Display the room name only if it is different than the sender name
+        if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
         {
-            NSString *roomDisplayName = roomState.displayname;
-            
             if ([msgType isEqualToString:@"m.text"])
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_WITH_CONTENT", nil), eventSenderName,roomDisplayName, content];
             else if ([msgType isEqualToString:@"m.emote"])
@@ -2316,7 +2315,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (notificationBody)
             {
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                eventNotification.fireDate = [NSDate date];
+                eventNotification.fireDate = [NSDate dateWithTimeIntervalSince1970:event.originServerTs / 1000];
                 eventNotification.alertBody = notificationBody;
                 eventNotification.userInfo = @{ @"room_id" : event.roomId };
                 
@@ -2434,7 +2433,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
                     if (messageText.length && (error == MXKEventFormatterErrorNone))
                     {
-                        
                         // Removing existing notification (if any)
                         if (self.mxInAppNotification)
                         {
@@ -2454,8 +2452,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                             }
                         }
                         
+                        MXRoomSummary *roomSummary = [account.mxSession roomSummaryWithRoomId:event.roomId];
+                        
                         __weak typeof(self) weakSelf = self;
-                        self.mxInAppNotification = [UIAlertController alertControllerWithTitle:roomState.displayname
+                        self.mxInAppNotification = [UIAlertController alertControllerWithTitle:roomSummary.displayname
                                                                                        message:messageText
                                                                                 preferredStyle:UIAlertControllerStyleAlert];
                         
