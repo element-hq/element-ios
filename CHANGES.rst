@@ -1,3 +1,57 @@
+Changes in 0.5.6 (2017-10-05)
+===============================================
+
+Improvements:
+ * Settings: Pin rooms with missed notifs and unread msg by default (PR #1556).
+
+Bug Fix:
+ * Fix RAM peak usage when doing an initial sync with large rooms (PR #1553).
+
+Changes in 0.5.5 (2017-10-04)
+===============================================
+
+Improvements:
+ * Rageshake: Add a setting to enable (disable) it (PR #1552).
+
+Bug Fix:
+ * Some rooms have gone nameless after upgrade (PR #1551).
+
+Changes in 0.5.4 (2017-10-03)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.6.3).
+ * Show the "Integrations Manager" into a webview (PR #1511).
+ * Widgets: list active widgets in a room (#1535).
+ * Jitsi widget: Add notices for jitsi widget in rooms histories (PR #1488).
+ * Add screen for incoming calls, thanks to @morozkin (PR #1477).
+ * Update strings for push notifications, thanks to @morozkin (PR #1486).
+ * Handle the room display name and its avatar at the room summary level (PR #1510).
+ * Create DM with Riot-bot on new account creation (vector-im/riot-meta#94).
+ * Add WidgetViewController (PR #1514).
+ * BugReportVC: Force users to add a description in crash reports (PR #1520).
+ * Jitsi: Enable the "Create conference calls with jitsi" settings by default (PR #1549).
+ 
+Bug Fixes:
+ * Fix inbound video calls don't have speakerphone turned on by default (#933).
+ * Room settings: the displayed room access settings is wrong (#1494).
+ * When receiving an invite tagged as DM it's filed in rooms (#1308).
+ * Altering DMness of rooms is broken (#1370).
+ * Alert about incoming call isn't displayed (#1480), thanks to @morozkin (#1481).
+ * Dark theme - Improvements (#1444).
+ * Settings: some of the labels push the switch controls off screen (#1506).
+ * Settings: The "Sign out" button and other buttons of this page sometimes blinks (#1354).
+ * [iOS11] "Smart [colors] Invert" renders badly in the app (#1524).
+ * [iOS11] Room member details: the member's avatar is cropped in the header (#1531).
+ * [iOS11] Fix layout disruptions (PR #1537).
+ * Return key on hardware keyboards now sends messages, thanks to @vivlim (PR #1513).
+ * MediaPickerViewController: Add sanity checks to avoid crashes (#1532).
+ * RoomsViewController: Crash in [RoomsViewController prepareForSegue:… (#1533).
+ 
+Translations:
+ * Enable Basque, thanks to @osoitz.
+ * Enable Simplified Chinese, thanks to @tonghuix (Note: the push notifications are not translated yet).
+
 Changes in 0.5.3 (2017-08-25)
 ===============================================
 

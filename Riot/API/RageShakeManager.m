@@ -109,7 +109,11 @@ static RageShakeManager* sharedInstance = nil;
 - (void)startShaking:(UIResponder*)responder {
     
     // Start only if the application is in foreground
-    if ([AppDelegate theDelegate].isAppForeground && !confirmationAlert) {
+    // And if the rageshake user setting is enabled
+    if ([AppDelegate theDelegate].isAppForeground
+        && [[NSUserDefaults standardUserDefaults] boolForKey:@"enableRageShake"]
+        && !confirmationAlert)
+    {
         NSLog(@"[RageShakeManager] Start shaking with [%@]", [responder class]);
         
         startShakingTimeStamp = [[NSDate date] timeIntervalSince1970];
@@ -129,18 +133,6 @@ static RageShakeManager* sharedInstance = nil;
             confirmationAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
             
             __weak typeof(self) weakSelf = self;
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                                  style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction * action) {
-                                                                    
-                                                                    if (weakSelf)
-                                                                    {
-                                                                        typeof(self) self = weakSelf;
-                                                                        self->confirmationAlert = nil;
-                                                                    }
-                                                                    
-                                                                }]];
-            
             [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
@@ -159,6 +151,34 @@ static RageShakeManager* sharedInstance = nil;
                                                                         [bugReportViewController showInViewController:controller];
                                                                     }
                                                                     
+                                                                }]];
+
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"do_not_ask_again"]
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+
+                                                                    if (weakSelf)
+                                                                    {
+                                                                        typeof(self) self = weakSelf;
+                                                                        self->confirmationAlert = nil;
+
+                                                                        // Disable rageshake user setting
+                                                                        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableRageShake"];
+                                                                        [[NSUserDefaults standardUserDefaults] synchronize];
+                                                                    }
+
+                                                                }]];
+
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+
+                                                                    if (weakSelf)
+                                                                    {
+                                                                        typeof(self) self = weakSelf;
+                                                                        self->confirmationAlert = nil;
+                                                                    }
+
                                                                 }]];
             
             [(UIViewController*)responder presentViewController:confirmationAlert animated:YES completion:nil];

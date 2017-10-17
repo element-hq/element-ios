@@ -3,15 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>pinRoomsWithMissedNotif</key>
-	<false/>
+	<true/>
 	<key>pinRoomsWithUnread</key>
-	<false/>
+	<true/>
 	<key>pushGatewayURL</key>
 	<string>https://matrix.org/_matrix/push/v1/notify</string>
 	<key>pusherAppIdDev</key>
 	<string>im.vector.app.ios.dev</string>
 	<key>pusherAppIdProd</key>
 	<string>im.vector.app.ios.prod</string>
+	<key>pushKitAppIdProd</key>
+	<string>im.vector.app.ios.voip.prod</string>
 	<key>identityserverurl</key>
 	<string>https://vector.im</string>
 	<key>homeserverurl</key>
@@ -28,8 +30,6 @@
 	<string>https://scalar-staging.riot.im/scalar-web/</string>
 	<key>integrationsRestUrl</key>
 	<string>https://scalar-staging.riot.im/scalar/api</string>
-	<key>apnsDeviceToken</key>
-	<string></string>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>
@@ -42,6 +42,10 @@
 	<false/>
 	<key>syncLocalContacts</key>
 	<false/>
+	<key>createConferenceCallsWithJitsi</key>
+	<true/>
+	<key>enableRageShake</key>
+	<true/>
 	<key>maxAllowedMediaCacheSize</key>
 	<integer>1073741824</integer>
 	<key>presenceColorForOnlineUser</key>

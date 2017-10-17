@@ -117,6 +117,8 @@
 "search_default_placeholder" = "Recherche";
 "search_people_placeholder" = "Rechercher par identifiant, nom ou e-mail";
 "search_no_result" = "Aucun résultat";
+"search_in_progress" = "Recherche en cours…";
+
 // Directory
 "directory_cell_title" = "Parcourir le répertoire";
 "directory_cell_description" = "%tu salons";
@@ -210,7 +212,7 @@
 "room_event_action_save" = "Enregistrer";
 "room_event_action_resend" = "Renvoyer";
 "room_event_action_delete" = "Supprimer";
-"room_event_action_cancel_upload" = "Annuler l'envoi";
+"room_event_action_cancel_send" = "Annuler l'envoi";
 "room_event_action_cancel_download" = "Annuler le téléchargement";
 "room_event_action_view_encryption" = "Informations sur le chiffrement";
 "room_warning_about_encryption" = "Le chiffrement de bout en bout est en version bêta et peut ne pas être fiable.\n\nIl ne doit pas être considéré comme fiable pour sécuriser des données.\n\nLes appareils ne pourront pas encore déchiffrer l'historique de messages d'avant leur arrivée sur le salon.\n\nLes messages chiffrés ne seront pas visibles sur les clients qui n'ont pas encore implémenté le chiffrement.";
@@ -257,7 +259,7 @@
 "settings_sign_out_confirmation" = "Êtes-vous sûr(e) ?";
 "settings_sign_out_e2e_warn" = "Vous perdrez vos clés de chiffrement de bout en bout. Cela signifie que vous ne pourrez plus lire les anciens messages des salons chiffrés depuis cet appareil.";
 "settings_profile_picture" = "Image de profil";
-"settings_display_name" = "Nom affiché";
+"settings_display_name" = "Nom d'affichage";
 "settings_first_name" = "Prénom";
 "settings_surname" = "Nom";
 "settings_remove_prompt_title" = "Confirmation";
@@ -290,6 +292,7 @@
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Licences tierces";
 "settings_send_crash_report" = "Envoyer des rapports d'erreur anonymes et des statistiques d'utilisation";
+"settings_enable_rageshake" = "Secouer l'appareil pour signaler un bug";
 "settings_clear_cache" = "Vider le cache";
 "settings_change_password" = "Changer de mot de passe";
 "settings_old_password" = "ancien mot de passe";
@@ -383,6 +386,7 @@
 "public_room_section_title" = "Salons publics (sur %@) :";
 "bug_report_prompt" = "L'application s'est terminée brusquement la dernière fois. Voulez-vous envoyer un rapport d'erreur ?";
 "rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d'erreur ?";
+"do_not_ask_again" = "Ne plus demander";
 "camera_access_not_granted" = "%@ n'a pas la permission pour utiliser l'appareil photo, veuillez modifier les options de vie privée";
 "large_badge_value_k_format" = "%.1fK";
 // room display name

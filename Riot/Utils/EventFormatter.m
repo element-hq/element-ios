@@ -224,9 +224,9 @@
     BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents];
     
     // Check whether the room display name and/or the room avatar url should be updated at Riot level.
-    NSString *riotRoomDisplayName;
-    NSString *riotRoomAvatarURL;
-    
+    BOOL refreshRiotRoomDisplayName = NO;
+    BOOL refreshRiotRoomAvatarURL = NO;
+
     for (MXEvent *event in stateEvents)
     {
         switch (event.eventType)
@@ -235,45 +235,50 @@
             case MXEventTypeRoomAliases:
             case MXEventTypeRoomCanonicalAlias:
             {
-                if (!riotRoomDisplayName.length)
-                {
-                    riotRoomDisplayName = [self riotRoomDisplayNameFromRoomState:summary.room.state];
-                }
+                refreshRiotRoomDisplayName = YES;
                 break;
             }
             case MXEventTypeRoomMember:
             {
-                if (!riotRoomDisplayName.length)
-                {
-                    riotRoomDisplayName = [self riotRoomDisplayNameFromRoomState:summary.room.state];
-                }
+                refreshRiotRoomDisplayName = YES;
                 // Do not break here to check avatar url too.
             }
             case MXEventTypeRoomAvatar:
             {
-                if (!riotRoomAvatarURL.length)
-                {
-                    riotRoomAvatarURL = [self riotRoomAvatarURLFromRoomState:summary.room.state];
-                }
+                refreshRiotRoomAvatarURL = YES;
                 break;
             }
             default:
                 break;
         }
+
+        if (refreshRiotRoomDisplayName && refreshRiotRoomAvatarURL)
+        {
+            break;
+        }
     }
-    
-    if (riotRoomDisplayName.length && ![summary.displayname isEqualToString:riotRoomDisplayName])
+
+    if (refreshRiotRoomDisplayName)
     {
-        summary.displayname = riotRoomDisplayName;
-        ret = YES;
+        NSString *riotRoomDisplayName = [self riotRoomDisplayNameFromRoomState:summary.room.state];
+
+        if (riotRoomDisplayName.length && ![summary.displayname isEqualToString:riotRoomDisplayName])
+        {
+            summary.displayname = riotRoomDisplayName;
+            ret = YES;
+        }
     }
-    
-    if (riotRoomAvatarURL.length && ![summary.avatar isEqualToString:riotRoomAvatarURL])
+    if (refreshRiotRoomAvatarURL)
     {
-        summary.avatar = riotRoomAvatarURL;
-        ret = YES;
+        NSString *riotRoomAvatarURL = [self riotRoomAvatarURLFromRoomState:summary.room.state];
+
+        if (riotRoomAvatarURL.length && ![summary.avatar isEqualToString:riotRoomAvatarURL])
+        {
+            summary.avatar = riotRoomAvatarURL;
+            ret = YES;
+        }
     }
-    
+
     return ret;
 }
 

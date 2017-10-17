@@ -29,7 +29,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -84,12 +84,22 @@
 		32F3AE1A1F6FF4E600F0F004 /* WidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */; };
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
+		714F6391AC0AA86C0AEB3F43 /* libPods-SiriIntents.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5666C1236223F54D4C635C54 /* libPods-SiriIntents.a */; };
 		83711A7C1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */; };
 		92324BE31F4F66D3009DE194 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE21F4F66D3009DE194 /* IncomingCallView.m */; };
 		92324BE61F4F6A60009DE194 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE51F4F6A60009DE194 /* CircleButton.m */; };
+		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
+		92726A471F58737A004AD26F /* IntentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 92726A461F58737A004AD26F /* IntentHandler.m */; };
+		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		A27ECCE3FC4971745D2CB78D /* libPods-RiotShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */; };
 		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
+		F04AF26A1F83A4C100D20F4D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF25F1F83A4C000D20F4D /* InfoPlist.strings */; };
+		F04AF26B1F83A4C100D20F4D /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2611F83A4C000D20F4D /* Vector.strings */; };
+		F04AF26C1F83A4C100D20F4D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2641F83A4C000D20F4D /* InfoPlist.strings */; };
+		F04AF26D1F83A4C100D20F4D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2661F83A4C000D20F4D /* Localizable.strings */; };
+		F04AF26E1F83A4C100D20F4D /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2681F83A4C000D20F4D /* Vector.strings */; };
 		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
 		F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */; };
 		F0614A0D1EDDCCE700F5DC9A /* jump_to_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A0A1EDDCCE700F5DC9A /* jump_to_unread.png */; };
@@ -550,6 +560,13 @@
 			remoteGlobalIDString = 24CBEC4D1F0EAD310093EABB;
 			remoteInfo = "Riot Share Extension";
 		};
+		92726A491F58737A004AD26F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92726A421F58737A004AD26F;
+			remoteInfo = SiriIntents;
+		};
 		F094A9BF1B78D8F000B1FBBF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
@@ -567,6 +584,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */,
+				92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -673,6 +691,9 @@
 		32FD0A3A1EB0CD9B0072B066 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
+		397BCA987893439918EBF330 /* Pods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiriIntents.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
+		4D1164C2F07EF74950DCDA7A /* Pods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiriIntents.release.xcconfig"; path = "Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
+		5666C1236223F54D4C635C54 /* libPods-SiriIntents.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SiriIntents.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RiotShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		765F5104DB3EC39713DEB3A4 /* Pods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardGrowingTextView.m; sourceTree = "<group>"; };
@@ -681,11 +702,24 @@
 		92324BE21F4F66D3009DE194 /* IncomingCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallView.m; sourceTree = "<group>"; };
 		92324BE41F4F6A60009DE194 /* CircleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleButton.h; sourceTree = "<group>"; };
 		92324BE51F4F6A60009DE194 /* CircleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleButton.m; sourceTree = "<group>"; };
+		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
+		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
+		92726A431F58737A004AD26F /* SiriIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SiriIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		92726A451F58737A004AD26F /* IntentHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntentHandler.h; sourceTree = "<group>"; };
+		92726A461F58737A004AD26F /* IntentHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntentHandler.m; sourceTree = "<group>"; };
+		92726A481F58737A004AD26F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92726A4F1F587393004AD26F /* SiriIntents.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SiriIntents.entitlements; sourceTree = "<group>"; };
+		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		F02C1A841E8EB04C0045A404 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
+		F04AF2601F83A4C000D20F4D /* zh_Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_Hans; path = InfoPlist.strings; sourceTree = "<group>"; };
+		F04AF2621F83A4C000D20F4D /* zh_Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_Hans; path = Vector.strings; sourceTree = "<group>"; };
+		F04AF2651F83A4C000D20F4D /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = InfoPlist.strings; sourceTree = "<group>"; };
+		F04AF2671F83A4C000D20F4D /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = Localizable.strings; sourceTree = "<group>"; };
+		F04AF2691F83A4C000D20F4D /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = Vector.strings; sourceTree = "<group>"; };
 		F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
 		F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchViewController.m; sourceTree = "<group>"; };
 		F05BD79F1E7C0E4500C69941 /* MasterTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTabBarController.h; sourceTree = "<group>"; };
@@ -1270,6 +1304,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92726A401F58737A004AD26F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92726A511F587410004AD26F /* Intents.framework in Frameworks */,
+				714F6391AC0AA86C0AEB3F43 /* libPods-SiriIntents.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F094A99F1B78D8F000B1FBBF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1460,8 +1503,10 @@
 		5FC42FA41F5186AFFB6A2404 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				92726A501F587410004AD26F /* Intents.framework */,
 				FD9D0BDE9232898950554DD5 /* libPods-Riot.a */,
 				7246451C668D6782166E22EC /* libPods-RiotShareExtension.a */,
+				5666C1236223F54D4C635C54 /* libPods-SiriIntents.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1473,6 +1518,8 @@
 				C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */,
 				12AA0005C8B3D8D8162584C5 /* Pods-RiotShareExtension.debug.xcconfig */,
 				765F5104DB3EC39713DEB3A4 /* Pods-RiotShareExtension.release.xcconfig */,
+				397BCA987893439918EBF330 /* Pods-SiriIntents.debug.xcconfig */,
+				4D1164C2F07EF74950DCDA7A /* Pods-SiriIntents.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1486,6 +1533,36 @@
 				92324BE51F4F6A60009DE194 /* CircleButton.m */,
 			);
 			path = Calls;
+			sourceTree = "<group>";
+		};
+		92726A441F58737A004AD26F /* SiriIntents */ = {
+			isa = PBXGroup;
+			children = (
+				92726A4F1F587393004AD26F /* SiriIntents.entitlements */,
+				92726A451F58737A004AD26F /* IntentHandler.h */,
+				92726A461F58737A004AD26F /* IntentHandler.m */,
+				92726A481F58737A004AD26F /* Info.plist */,
+			);
+			path = SiriIntents;
+            sourceTree = "<group>";
+        };
+		F04AF25E1F83A4C000D20F4D /* zh_Hans.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				F04AF25F1F83A4C000D20F4D /* InfoPlist.strings */,
+				F04AF2611F83A4C000D20F4D /* Vector.strings */,
+			);
+			path = zh_Hans.lproj;
+			sourceTree = "<group>";
+		};
+		F04AF2631F83A4C000D20F4D /* eu.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				F04AF2641F83A4C000D20F4D /* InfoPlist.strings */,
+				F04AF2661F83A4C000D20F4D /* Localizable.strings */,
+				F04AF2681F83A4C000D20F4D /* Vector.strings */,
+			);
+			path = eu.lproj;
 			sourceTree = "<group>";
 		};
 		F083BB021E7005FD00A9B29C /* RiotTests */ = {
@@ -1539,6 +1616,8 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F04AF2631F83A4C000D20F4D /* eu.lproj */,
+				F04AF25E1F83A4C000D20F4D /* zh_Hans.lproj */,
 				32918EA41F473BDB0076CA16 /* ru.lproj */,
 				327382A71F276AD200356143 /* de.lproj */,
 				327382BB1F276AED00356143 /* en.lproj */,
@@ -1819,6 +1898,8 @@
 				F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */,
 				F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */,
 				F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */,
+				926FA53D1F4C132000F826C2 /* MXSession+Riot.h */,
+				926FA53E1F4C132000F826C2 /* MXSession+Riot.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2355,6 +2436,7 @@
 				F083BB081E7009EC00A9B29C /* Riot */,
 				F083BB021E7005FD00A9B29C /* RiotTests */,
 				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
+				92726A441F58737A004AD26F /* SiriIntents */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				7471DF3720D498384A068DA7 /* Pods */,
 				5FC42FA41F5186AFFB6A2404 /* Frameworks */,
@@ -2367,6 +2449,7 @@
 				F094A9A21B78D8F000B1FBBF /* Riot.app */,
 				F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */,
 				24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */,
+				92726A431F58737A004AD26F /* SiriIntents.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2403,6 +2486,25 @@
 			productReference = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		92726A421F58737A004AD26F /* SiriIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92726A4E1F58737A004AD26F /* Build configuration list for PBXNativeTarget "SiriIntents" */;
+			buildPhases = (
+				6AA0024D4D5FAE30C2E1F311 /* [CP] Check Pods Manifest.lock */,
+				92726A3F1F58737A004AD26F /* Sources */,
+				92726A401F58737A004AD26F /* Frameworks */,
+				92726A411F58737A004AD26F /* Resources */,
+				807A0ABF153A23C2FC22F977 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SiriIntents;
+			productName = SiriIntents;
+			productReference = 92726A431F58737A004AD26F /* SiriIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		F094A9A11B78D8F000B1FBBF /* Riot */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Riot" */;
@@ -2420,6 +2522,7 @@
 			);
 			dependencies = (
 				242661F61F12B1BA00D3FC08 /* PBXTargetDependency */,
+				92726A4A1F58737A004AD26F /* PBXTargetDependency */,
 			);
 			name = Riot;
 			productName = Vector;
@@ -2463,6 +2566,16 @@
 							};
 						};
 					};
+					92726A421F58737A004AD26F = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 7J4U792NQT;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 7J4U792NQT;
@@ -2494,6 +2607,8 @@
 				de,
 				fr,
 				ru,
+				zh_Hans,
+				eu,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -2503,6 +2618,7 @@
 				F094A9A11B78D8F000B1FBBF /* Riot */,
 				F094A9BD1B78D8F000B1FBBF /* RiotTests */,
 				24CBEC4D1F0EAD310093EABB /* RiotShareExtension */,
+				92726A421F58737A004AD26F /* SiriIntents */,
 			);
 		};
 /* End PBXProject section */
@@ -2526,9 +2642,16 @@
 				24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */,
 				F0A895601F7D404B00BD6C2A /* e2e_verified.png in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
+				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
 				2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
+				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92726A411F58737A004AD26F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2601,6 +2724,7 @@
 				F083BD991E7009ED00A9B29C /* logo@2x.png in Resources */,
 				F083BD331E7009ED00A9B29C /* call_audio_mute_off_icon.png in Resources */,
 				F083BD691E7009ED00A9B29C /* directChatOn@2x.png in Resources */,
+				F04AF26E1F83A4C100D20F4D /* Vector.strings in Resources */,
 				F083BD3E1E7009ED00A9B29C /* call_hangup_icon@3x.png in Resources */,
 				32AE61F21F0D2183007255F4 /* InfoPlist.strings in Resources */,
 				F083BDB91E7009ED00A9B29C /* remove_icon_pink.png in Resources */,
@@ -2633,6 +2757,7 @@
 				F0E05A3D1EA0F9EB004B83FB /* tab_people_selected@2x.png in Resources */,
 				F0E05A451EA0F9EB004B83FB /* tab_rooms.png in Resources */,
 				F083BE751E7009ED00A9B29C /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				F04AF26A1F83A4C100D20F4D /* InfoPlist.strings in Resources */,
 				F083BD261E7009ED00A9B29C /* admin_icon@2x.png in Resources */,
 				3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */,
 				F083BD761E7009ED00A9B29C /* e2e_verified@3x.png in Resources */,
@@ -2722,6 +2847,7 @@
 				F083BDB41E7009ED00A9B29C /* priorityLow@2x.png in Resources */,
 				F083BD671E7009ED00A9B29C /* directChatOff@3x.png in Resources */,
 				F083BE791E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
+				F04AF26C1F83A4C100D20F4D /* InfoPlist.strings in Resources */,
 				F0E05A321EA0F9EB004B83FB /* tab_favourites_selected@3x.png in Resources */,
 				F083BD4D1E7009ED00A9B29C /* camera_capture@3x.png in Resources */,
 				F083BDB11E7009ED00A9B29C /* priorityHigh@2x.png in Resources */,
@@ -2735,6 +2861,7 @@
 				F083BE831E7009ED00A9B29C /* RecentTableViewCell.xib in Resources */,
 				F083BDB71E7009ED00A9B29C /* remove_icon@2x.png in Resources */,
 				F083BDD31E7009ED00A9B29C /* settings_icon@3x.png in Resources */,
+				F04AF26B1F83A4C100D20F4D /* Vector.strings in Resources */,
 				F083BDBA1E7009ED00A9B29C /* remove_icon_pink@2x.png in Resources */,
 				F083BDC91E7009ED00A9B29C /* search_icon@2x.png in Resources */,
 				F083BE381E7009ED00A9B29C /* RoomActivitiesView.xib in Resources */,
@@ -2858,6 +2985,7 @@
 				F083BD221E7009ED00A9B29C /* add_participant.png in Resources */,
 				F083BDC61E7009ED00A9B29C /* search_bg@2x.png in Resources */,
 				F083BD421E7009ED00A9B29C /* call_speaker_on_icon.png in Resources */,
+				F04AF26D1F83A4C100D20F4D /* Localizable.strings in Resources */,
 				F083BD9A1E7009ED00A9B29C /* logo@3x.png in Resources */,
 				327382BA1F276AD200356143 /* Vector.strings in Resources */,
 				327382C41F276AED00356143 /* Vector.strings in Resources */,
@@ -3003,7 +3131,7 @@
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
-				"$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle,
 				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -3013,6 +3141,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6AA0024D4D5FAE30C2E1F311 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SiriIntents-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7FFD40AA75DB32D83350D225 /* [CP] Embed Pods Frameworks */ = {
@@ -3031,6 +3177,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Riot/Pods-Riot-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		807A0ABF153A23C2FC22F977 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents-resources.sh",
+				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8EA19F5011654D3BD5EDAC33 /* [CP] Copy Pods Resources */ = {
@@ -3072,6 +3236,14 @@
 				2439DD621F6BBE760090F42D /* RecentRoomTableViewCell.m in Sources */,
 				245FC3ED1F3D079A00603C6A /* ShareExtensionManager.m in Sources */,
 				24EEE5B41F2607C000B3C705 /* SegmentedViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92726A3F1F58737A004AD26F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3200,6 +3372,7 @@
 				F083BDF81E7009ED00A9B29C /* RoomDataSource.m in Sources */,
 				F083BE371E7009ED00A9B29C /* RoomActivitiesView.m in Sources */,
 				F083BE131E7009ED00A9B29C /* HomeMessagesSearchViewController.m in Sources */,
+				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				F083BE8C1E7009ED00A9B29C /* PreviewRoomTitleView.m in Sources */,
 				F083BE271E7009ED00A9B29C /* SettingsViewController.m in Sources */,
 				F083BE9A1E7009ED00A9B29C /* TableViewCellWithButton.m in Sources */,
@@ -3243,6 +3416,11 @@
 			isa = PBXTargetDependency;
 			target = 24CBEC4D1F0EAD310093EABB /* RiotShareExtension */;
 			targetProxy = 242661F51F12B1BA00D3FC08 /* PBXContainerItemProxy */;
+		};
+		92726A4A1F58737A004AD26F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92726A421F58737A004AD26F /* SiriIntents */;
+			targetProxy = 92726A491F58737A004AD26F /* PBXContainerItemProxy */;
 		};
 		F094A9C01B78D8F000B1FBBF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3372,6 +3550,46 @@
 			name = Vector.strings;
 			sourceTree = "<group>";
 		};
+		F04AF25F1F83A4C000D20F4D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F04AF2601F83A4C000D20F4D /* zh_Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		F04AF2611F83A4C000D20F4D /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F04AF2621F83A4C000D20F4D /* zh_Hans */,
+			);
+			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		F04AF2641F83A4C000D20F4D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F04AF2651F83A4C000D20F4D /* eu */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		F04AF2661F83A4C000D20F4D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F04AF2671F83A4C000D20F4D /* eu */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F04AF2681F83A4C000D20F4D /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F04AF2691F83A4C000D20F4D /* eu */,
+			);
+			name = Vector.strings;
+			sourceTree = "<group>";
+		};
 		F083BBE21E7009EC00A9B29C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3423,6 +3641,47 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		92726A4C1F58737A004AD26F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 397BCA987893439918EBF330 /* Pods-SiriIntents.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = SiriIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		92726A4D1F58737A004AD26F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D1164C2F07EF74950DCDA7A /* Pods-SiriIntents.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = SiriIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -3604,6 +3863,15 @@
 			buildConfigurations = (
 				24CBEC5A1F0EAD310093EABB /* Debug */,
 				24CBEC5B1F0EAD310093EABB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92726A4E1F58737A004AD26F /* Build configuration list for PBXNativeTarget "SiriIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92726A4C1F58737A004AD26F /* Debug */,
+				92726A4D1F58737A004AD26F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
