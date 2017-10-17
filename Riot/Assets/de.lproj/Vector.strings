@@ -463,3 +463,11 @@
 "share_extension_auth_prompt" = "Melde dich in der Haupt-App an um Inhalte zu teilen";
 "share_extension_failed_to_encrypt" = "Senden fehlgeschlagen. Prüfe in der Hauptapp die Verschlüsselungseinstellungen für diesen Raum";
 "settings_ui_theme_picker_message" = "\"Auto\" nutzt die \"Farben invertieren\"-Einstellung deines Geräts";
+"search_in_progress" = "Suche…";
+"room_event_action_cancel_send" = "Senden abbrechen";
+"settings_calls_settings" = "ANRUFE";
+"settings_show_decrypted_content" = "Zeige entschlüsselten Inhalt";
+"settings_enable_callkit" = "Eingebettetes Anrufen";
+"settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Riot-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
+"settings_enable_rageshake" = "Schüttle stark um einen Fehler zu melden";
+"do_not_ask_again" = "Nicht erneut fragen";
