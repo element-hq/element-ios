@@ -29,9 +29,6 @@ abstract_target 'RiotPods' do
         # The tagged version on which this version of Riot has been built
         pod 'MatrixKit', '0.6.3'
 
-        # The lastest release available on the CocoaPods repository 
-        #pod 'MatrixKit'
-
         # The develop branch version
         #pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
         #pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
@@ -49,9 +46,6 @@ abstract_target 'RiotPods' do
         # The tagged version on which this version of Riot share extension has been built
         pod 'MatrixKit/AppExtension', '0.6.3'
 
-        # The lastest release available on the CocoaPods repository
-        #pod 'MatrixKit/AppExtension'
-
         # The develop branch version
         #pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
         #pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
@@ -68,9 +62,6 @@ abstract_target 'RiotPods' do
 
         # The tagged version on which this version of Riot share extension has been built
         #pod 'MatrixKit/AppExtension', '0.6.3'
-
-        # The lastest release available on the CocoaPods repository
-        #pod 'MatrixKit/AppExtension'
 
         # The develop branch version
         #pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
