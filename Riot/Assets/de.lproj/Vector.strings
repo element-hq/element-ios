@@ -437,7 +437,7 @@
 "settings_ui_theme_dark" = "Dunkel";
 "settings_ui_theme_picker_title" = "Thema wählen";
 "send_to" = "Sende an %@";
-"sending" = "Sende...";
+"sending" = "Sende…";
 "room_event_failed_to_send" = "Senden fehlgeschlagen";
 "settings_labs_matrix_apps" = "Matrix Apps";
 "room_details_direct_chat" = "Direkter Chat";
