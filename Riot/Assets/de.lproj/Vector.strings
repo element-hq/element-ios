@@ -431,3 +431,35 @@
 "widget_no_power_to_manage" = "Du brauchst die Berechtigung um Widgets in diesem Raum zu verwalten";
 "widget_creation_failure" = "Widget-Erstellung fehlgeschlagen";
 "room_ongoing_conference_call_with_close" = "Laufendes Konferenzgespräch. Trete mit %@ oder %@ bei. %@ es.";
+"settings_ui_theme" = "Thema";
+"settings_ui_theme_auto" = "Auto";
+"settings_ui_theme_light" = "Hell";
+"settings_ui_theme_dark" = "Dunkel";
+"settings_ui_theme_picker_title" = "Thema wählen";
+"send_to" = "Sende an %@";
+"sending" = "Sende...";
+"room_event_failed_to_send" = "Senden fehlgeschlagen";
+"settings_labs_matrix_apps" = "Matrix Apps";
+"room_details_direct_chat" = "Direkter Chat";
+"room_details_fail_to_update_room_direct" = "Setzen der Direkt-Kennzeichnung in diesem Raum fehlgeschlagen";
+"event_formatter_widget_added" = "Widget %@ wurde von %@ hinzugefügt";
+"event_formatter_widget_removed" = "Widget %@ wurde von %@ entfernt";
+"event_formatter_jitsi_widget_added" = "VoIP-Konferenz von %@ hinzugefügt";
+"event_formatter_jitsi_widget_removed" = "VoIP-Konferenz von %@ entfernt";
+"call_incoming_voice" = "Eingehender Anruf...";
+"call_incoming_video" = "Eingehender Video-Anruf...";
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Du musst Benutzer einladen können um das zu tun.";
+"widget_integration_unable_to_create" = "Erstellen des Widgets nicht möglich.";
+"widget_integration_failed_to_send_request" = "Senden der Anfrage fehlgeschlagen.";
+"widget_integration_room_not_recognised" = "Dieser Raum wurde nicht erkannt.";
+"widget_integration_positive_power_level" = "Berechtigungslevel muss eine positive Zahl sein.";
+"widget_integration_must_be_in_room" = "Du bist nicht in diesem Raum.";
+"widget_integration_no_permission_in_room" = "Du hast keine Berechtigung dies in diesem Raum zu tun.";
+"widget_integration_missing_room_id" = "room_id fehlt in der Anfrage.";
+"widget_integration_missing_user_id" = "user_id fehlt in der Anfrage.";
+"widget_integration_room_not_visible" = "Raum %@ ist nicht sichtbar.";
+// Share extension
+"share_extension_auth_prompt" = "Melde dich in der Haupt-App an um Inhalte zu teilen";
+"share_extension_failed_to_encrypt" = "Senden fehlgeschlagen. Prüfe in der Hauptapp die Verschlüsselungseinstellungen für diesen Raum";
+"settings_ui_theme_picker_message" = "\"Auto\" nutzt die \"Farben invertieren\"-Einstellung deines Geräts";
