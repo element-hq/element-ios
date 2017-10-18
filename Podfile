@@ -58,7 +58,7 @@ abstract_target 'RiotPods' do
     # OLMKit for crypto
     pod 'OLMKit'
     #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
-    pod 'Realm', '~> 2.10.2'
+    pod 'Realm', '~> 3.0.0'
 
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true
