@@ -53,7 +53,7 @@ abstract_target 'RiotPods' do
     pod 'GoogleAnalytics'
 
     # The Google WebRTC stack
-    pod 'WebRTC', '58.17.16937'
+    pod 'WebRTC', '61.5.19063'
 
     # OLMKit for crypto
     pod 'OLMKit'
