@@ -1068,16 +1068,25 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
 {
-    NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload: %@", payload.dictionaryPayload);
-    
     // Display local notifications only when the app is running in background.
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
-        // Store the payload dictionary
-        [self.incomingPushDictionaryPayloads addObject:payload.dictionaryPayload];
+        NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload while app is in background");
         
-        // Handle the local notifications by triggering a background sync.
-        [self handleLocalNotifications];
+        // Sanity check: consider only push payload with event id and room id.
+        NSDictionary *dictionaryPayload = payload.dictionaryPayload;
+        if (dictionaryPayload[@"event_id"] && dictionaryPayload[@"room_id"])
+        {
+            // Store the payload dictionary
+            [self.incomingPushDictionaryPayloads addObject:dictionaryPayload];
+            
+            // Handle the local notifications by triggering a background sync.
+            [self handleLocalNotifications];
+        }
+        else
+        {
+            NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload - Unexpected payload %@", dictionaryPayload);
+        }
     }
 }
 
