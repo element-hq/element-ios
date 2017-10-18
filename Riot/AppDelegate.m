@@ -156,13 +156,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSMutableDictionary *callEventsListeners;
     
     /**
-     The notification listener blocks.
-     There is one block per MXSession.
-     The key is an identifier of the MXSession. The value, the listener block.
-     */
-    NSMutableDictionary <NSNumber *, MXOnNotification> *notificationListenerBlocks;
-    
-    /**
      Currently displayed "Call not supported" alert.
      */
     UIAlertController *noCallSupportAlert;
@@ -185,7 +178,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 
 @property (nonatomic, strong) PKPushRegistry *pushRegistry;
-@property (nonatomic) BOOL hasPendingLocalNotifications;
+@property (nonatomic) NSMutableArray <NSDictionary *> *incomingPushDictionaryPayloads;
 
 @end
 
@@ -326,7 +319,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
-    notificationListenerBlocks = [NSMutableDictionary dictionary];
     
     // To simplify navigation into the app, we retrieve here the main navigation controller and the tab bar controller.
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
@@ -366,6 +358,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Configure Google Analytics here if the option is enabled
     [self startGoogleAnalytics];
+    
+    // Prepare Pushkit handling
+    _incomingPushDictionaryPayloads = [NSMutableArray array];
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -461,6 +456,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     NSLog(@"[AppDelegate] applicationWillEnterForeground");
     
+    // Flush all the pending push notifications.
+    [self.incomingPushDictionaryPayloads removeAllObjects];
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
     _isAppForeground = YES;
@@ -472,8 +470,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
-    
-    _hasPendingLocalNotifications = NO;
     
     // Check if there is crash log to send
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
@@ -1072,57 +1068,176 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
 {
-    // Handle the local notifications by triggering a background sync.
-    [self handleLocalNotifications];
+    // Display local notifications only when the app is running in background.
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+    {
+        NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload while app is in background");
+        
+        // Sanity check: consider only push payload with event id and room id.
+        NSDictionary *dictionaryPayload = payload.dictionaryPayload;
+        if (dictionaryPayload[@"event_id"] && dictionaryPayload[@"room_id"])
+        {
+            // Store the payload dictionary
+            [self.incomingPushDictionaryPayloads addObject:dictionaryPayload];
+            
+            // Handle the local notifications by triggering a background sync.
+            [self handleLocalNotifications];
+        }
+        else
+        {
+            NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload - Unexpected payload %@", dictionaryPayload);
+        }
+    }
 }
 
 - (void)handleLocalNotifications
 {
-    _hasPendingLocalNotifications = NO;
-    
-    // Check whether the application is running in background.
-    if ([UIApplication sharedApplication].applicationState != UIApplicationStateBackground)
-        return;
-    
     // Launch a background sync for all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
         // Check the current session state
-        if (account.mxSession.state != MXSessionStatePaused)
+        if (account.mxSession.state == MXSessionStatePaused)
         {
-            NSLog(@"[AppDelegate] handleLocalNotifications: delay the background sync");
-            // Turn on the flag used to trigger a new background sync when a session is paused.
-            _hasPendingLocalNotifications = YES;
+            NSLog(@"[AppDelegate] handleLocalNotifications: run a background sync");
+            __weak typeof(self) weakSelf = self;
+            
+            [account backgroundSync:20000 success:^{
+                
+                // Sanity check
+                if (!weakSelf)
+                {
+                    return;
+                }
+                typeof(self) self = weakSelf;
+                
+                NSLog(@"[AppDelegate] handleLocalNotifications: the background sync succeeds");
+                
+                // The call invite are handled here only when the callkit is not active.
+                BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
+                
+                // Display a local notification for each incoming push when the corresponding event has been retrieved during the bg sync.
+                for (NSUInteger index = 0; index < self.incomingPushDictionaryPayloads.count; )
+                {
+                    NSDictionary *payload = self.incomingPushDictionaryPayloads[index];
+                    NSString *eventId = payload[@"event_id"];
+                    NSString *roomId = payload[@"room_id"];
+                    BOOL checkReadEvent = YES;
+                    MXEvent *event;
+                    
+                    if (eventId && roomId)
+                    {
+                        event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
+                    }
+                    
+                    if (event)
+                    {
+                        // Remove this pending push.
+                        [self.incomingPushDictionaryPayloads removeObjectAtIndex:index];
+                        
+                        // Ignore redacted event.
+                        if (event.isRedactedEvent)
+                        {
+                            continue;
+                        }
+                        
+                        // Consider here the call invites
+                        if (event.eventType == MXEventTypeCallInvite)
+                        {
+                            // Ignore call invite when callkit is active.
+                            if (isCallKitActive)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                // Retrieve the current call state from the call manager
+                                MXCallInviteEventContent *callInviteEventContent = [MXCallInviteEventContent modelFromJSON:event.content];
+                                MXCall *call = [account.mxSession.callManager callWithCallId:callInviteEventContent.callId];
+                                
+                                if (call.state <= MXCallStateRinging)
+                                {
+                                    // Keep display a local notification even if the event has been read on another device.
+                                    checkReadEvent = NO;
+                                }
+                            }
+                        }
+                        
+                        if (checkReadEvent)
+                        {
+                            // Ignore event which has been read on another device.
+                            MXReceiptData *readReceipt = [account.mxSession.store getReceiptInRoom:roomId forUserId:account.mxCredentials.userId];
+                            if (readReceipt)
+                            {
+                                MXEvent *readReceiptEvent = [account.mxSession.store eventWithEventId:readReceipt.eventId inRoom:roomId];
+                                if (event.originServerTs <= readReceiptEvent.originServerTs)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                        
+                        // Prepare the local notification
+                        MXPushRule *rule = [account.mxSession.notificationCenter ruleMatchingEvent:event];
+                        
+                        NSString *notificationBody = [self notificationBodyForEvent:event pushRule:rule inAccount:account];
+                        if (notificationBody)
+                        {
+                            UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                            eventNotification.alertBody = notificationBody;
+                            eventNotification.userInfo = @{ @"room_id" : event.roomId };
+                            
+                            // Set sound name based on the value provided in action of MXPushRule
+                            for (MXPushRuleAction *action in rule.actions)
+                            {
+                                if (action.actionType == MXPushRuleActionTypeSetTweak)
+                                {
+                                    if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                                    {
+                                        NSString *soundName = action.parameters[@"value"];
+                                        if ([soundName isEqualToString:@"default"])
+                                            soundName = UILocalNotificationDefaultSoundName;
+                                        
+                                        eventNotification.soundName = soundName;
+                                    }
+                                }
+                            }
+                            
+                            [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+                        }
+                    }
+                    else
+                    {
+                        // Keep this push payload
+                        index++;
+                    }
+                }
+                
+                // Update icon badge number
+                [UIApplication sharedApplication].applicationIconBadgeNumber = [account.mxSession riot_missedDiscussionsCount];
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[AppDelegate] handleLocalNotifications: the background sync fails");
+                
+            }];
         }
-        
-        [account backgroundSync:20000 success:^{
-            
-            NSLog(@"[AppDelegate] handleLocalNotifications: the background sync succeeds");
-            
-            // Update icon badge number
-            [UIApplication sharedApplication].applicationIconBadgeNumber = [account.mxSession riot_missedDiscussionsCount];
-            
-        } failure:^(NSError *error) {
-            
-            NSLog(@"[AppDelegate] handleLocalNotifications: the background sync fails");
-            
-        }];
     }
 }
 
-- (nullable NSString *)notificationBodyForEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account
+- (nullable NSString *)notificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account
 {
     if (!event.content || !event.content.count)
         return nil;
+    
+    MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
+    MXRoomState *roomState = room.state;
     
     NSString *notificationBody;
     NSString *eventSenderName = [roomState memberName:event.sender];
     
     if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
     {
-        MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
-        
         if (room.isMentionsOnly)
         {
             // A local notification will be displayed only for highlighted notification.
@@ -1712,9 +1827,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // A new call observer may be added here
             [self addMatrixCallObserver];
             
-            // Enable local notifications
-            [self enableLocalNotificationsFromMatrixSession:mxSession];
-            
             // Look for the account related to this session.
             NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
             for (MXKAccount *account in mxAccounts)
@@ -1750,7 +1862,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             else if (mxSession.state == MXSessionStatePaused)
             {
                 // Check whether some local notifications must be handled by triggering a background sync.
-                if (_hasPendingLocalNotifications)
+                if (self.incomingPushDictionaryPayloads.count)
                 {
                     [self handleLocalNotifications];
                 }
@@ -1925,9 +2037,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
     
-    // Disable local notifications from this session
-    [self disableLocalNotificationsFromMatrixSession:mxSession];
-    
     [mxSessionArray removeObject:mxSession];
     
     if (!mxSessionArray.count && matrixCallObserver)
@@ -1973,6 +2082,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     self.pushRegistry = nil;
     isPushRegistered = NO;
+    [self.incomingPushDictionaryPayloads removeAllObjects];
     
     // Clear cache
     [MXMediaManager clearCache];
@@ -2229,82 +2339,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         callManager.callKitAdapter = nil;
     }
 }
-
-- (void)enableLocalNotificationsFromMatrixSession:(MXSession*)mxSession
-{
-    __weak typeof(self) weakSelf = self;
-    
-    // Look for the account related to this session.
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-    MXKAccount *account;
-    for (account in mxAccounts)
-    {
-        if (account.mxSession == mxSession)
-        {
-            break;
-        }
-        account = nil;
-    }
-    
-    MXOnNotification notificationListenerBlock = ^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
-        
-        // Do not display local notification if the app is not running in background.
-        if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
-        {
-            return;
-        }
-        
-        // Do not display local notifications during the initial sync.
-        if (!account.mxSession.isEventStreamInitialised)
-        {
-            return;
-        }
-        
-        // For all type of event show local notifications besides the situation
-        // when the type of event is call invite and we have CallKit support
-        BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
-        if (!(event.eventType == MXEventTypeCallInvite && isCallKitActive))
-        {
-            NSString *notificationBody = [weakSelf notificationBodyForEvent:event withRoomState:roomState pushRule:rule inAccount:account];
-            if (notificationBody)
-            {
-                UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                eventNotification.fireDate = [NSDate dateWithTimeIntervalSince1970:event.originServerTs / 1000];
-                eventNotification.alertBody = notificationBody;
-                eventNotification.userInfo = @{ @"room_id" : event.roomId };
-                
-                // Set sound name based on the value provided in action of MXPushRule
-                for (MXPushRuleAction *action in rule.actions)
-                {
-                    if (action.actionType == MXPushRuleActionTypeSetTweak)
-                    {
-                        if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
-                        {
-                            NSString *soundName = action.parameters[@"value"];
-                            if ([soundName isEqualToString:@"default"])
-                                soundName = UILocalNotificationDefaultSoundName;
-                            
-                            eventNotification.soundName = soundName;
-                        }
-                    }
-                }
-                
-                [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
-            }
-        }
-    };
-    
-    [mxSession.notificationCenter listenToNotifications:notificationListenerBlock];
-    notificationListenerBlocks[@(mxSession.hash)] = notificationListenerBlock;
-}
-
-- (void)disableLocalNotificationsFromMatrixSession:(MXSession*)mxSession
-{
-    // Stop listening to notification of this session
-    [mxSession.notificationCenter removeListener:notificationListenerBlocks[@(mxSession.hash)]];
-    [notificationListenerBlocks removeObjectForKey:@(mxSession.hash)];
-}
-
 
 #pragma mark -
 
