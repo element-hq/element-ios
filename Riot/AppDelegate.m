@@ -1098,7 +1098,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         else
         {
-            NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload - Unexpected payload %@", dictionaryPayload);
+            NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload - Unexpected payload %@", payload.dictionaryPayload);
         }
         
         // Handle the local notifications by triggering a background sync.
@@ -2336,8 +2336,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (enable)
     {
-        // Create adapter with default configuration for a while
-        MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] init];
+        // Create adapter for Riot
+        MXCallKitConfiguration *callKitConfiguration = [[MXCallKitConfiguration alloc] init];
+        callKitConfiguration.iconName = @"riot_icon_callkit";
+        MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] initWithConfiguration:callKitConfiguration];
         
         id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
         
