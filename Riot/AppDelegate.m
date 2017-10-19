@@ -1101,12 +1101,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload - Unexpected payload %@", payload.dictionaryPayload);
         }
         
-        // Handle the local notifications by triggering a background sync.
-        [self handleLocalNotifications];
+        // Trigger a background sync to handle notifications.
+        [self launchBackgroundSync];
     }
 }
 
-- (void)handleLocalNotifications
+- (void)launchBackgroundSync
 {
     // Launch a background sync for all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -1115,7 +1115,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Check the current session state
         if (account.mxSession.state == MXSessionStatePaused)
         {
-            NSLog(@"[AppDelegate] handleLocalNotifications: run a background sync");
+            NSLog(@"[AppDelegate] launchBackgroundSync");
             __weak typeof(self) weakSelf = self;
             
             [account backgroundSync:20000 success:^{
@@ -1127,114 +1127,126 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 }
                 typeof(self) self = weakSelf;
                 
-                NSLog(@"[AppDelegate] handleLocalNotifications: the background sync succeeds");
+                NSLog(@"[AppDelegate] launchBackgroundSync: the background sync succeeds");
                 
-                // The call invite are handled here only when the callkit is not active.
-                BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
+                // Trigger local notifcations
+                [self handleLocalNotificationsForAccount:account];
                 
-                NSMutableArray *eventsArray = eventsToNotify[@(account.mxSession.hash)];
-                
-                // Display a local notification for each event retrieved by the bg sync.
-                for (NSUInteger index = 0; index < eventsArray.count; index++)
-                {
-                    NSDictionary *eventDict = eventsArray[index];
-                    NSString *eventId = eventDict[@"event_id"];
-                    NSString *roomId = eventDict[@"room_id"];
-                    BOOL checkReadEvent = YES;
-                    MXEvent *event;
-                    
-                    if (eventId && roomId)
-                    {
-                        event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
-                    }
-                    
-                    if (event)
-                    {
-                        // Ignore redacted event.
-                        if (event.isRedactedEvent)
-                        {
-                            continue;
-                        }
-                        
-                        // Consider here the call invites
-                        if (event.eventType == MXEventTypeCallInvite)
-                        {
-                            // Ignore call invite when callkit is active.
-                            if (isCallKitActive)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                // Retrieve the current call state from the call manager
-                                MXCallInviteEventContent *callInviteEventContent = [MXCallInviteEventContent modelFromJSON:event.content];
-                                MXCall *call = [account.mxSession.callManager callWithCallId:callInviteEventContent.callId];
-                                
-                                if (call.state <= MXCallStateRinging)
-                                {
-                                    // Keep display a local notification even if the event has been read on another device.
-                                    checkReadEvent = NO;
-                                }
-                            }
-                        }
-                        
-                        if (checkReadEvent)
-                        {
-                            // Ignore event which has been read on another device.
-                            MXReceiptData *readReceipt = [account.mxSession.store getReceiptInRoom:roomId forUserId:account.mxCredentials.userId];
-                            if (readReceipt)
-                            {
-                                MXEvent *readReceiptEvent = [account.mxSession.store eventWithEventId:readReceipt.eventId inRoom:roomId];
-                                if (event.originServerTs <= readReceiptEvent.originServerTs)
-                                {
-                                    continue;
-                                }
-                            }
-                        }
-                        
-                        // Prepare the local notification
-                        MXPushRule *rule = eventDict[@"push_rule"];
-                        
-                        NSString *notificationBody = [self notificationBodyForEvent:event pushRule:rule inAccount:account];
-                        if (notificationBody)
-                        {
-                            UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                            eventNotification.alertBody = notificationBody;
-                            eventNotification.userInfo = @{ @"room_id" : event.roomId };
-                            
-                            // Set sound name based on the value provided in action of MXPushRule
-                            for (MXPushRuleAction *action in rule.actions)
-                            {
-                                if (action.actionType == MXPushRuleActionTypeSetTweak)
-                                {
-                                    if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
-                                    {
-                                        NSString *soundName = action.parameters[@"value"];
-                                        if ([soundName isEqualToString:@"default"])
-                                            soundName = UILocalNotificationDefaultSoundName;
-                                        
-                                        eventNotification.soundName = soundName;
-                                    }
-                                }
-                            }
-                            
-                            [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
-                        }
-                    }
-                }
-                
-                [eventsArray removeAllObjects];
-                
-                // Update icon badge number
-                [UIApplication sharedApplication].applicationIconBadgeNumber = [account.mxSession riot_missedDiscussionsCount];
+                // Update app icon badge number
+                [self refreshApplicationIconBadgeNumber];
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[AppDelegate] handleLocalNotifications: the background sync fails");
+                NSLog(@"[AppDelegate] launchBackgroundSync: the background sync fails");
                 
             }];
         }
     }
+}
+
+- (void)handleLocalNotificationsForAccount:(MXKAccount*)account
+{
+    NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: %@", account.mxCredentials.userId);
+    
+    // The call invite are handled here only when the callkit is not active.
+    BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
+    
+    NSMutableArray *eventsArray = eventsToNotify[@(account.mxSession.hash)];
+    
+    // Display a local notification for each event retrieved by the bg sync.
+    for (NSUInteger index = 0; index < eventsArray.count; index++)
+    {
+        NSDictionary *eventDict = eventsArray[index];
+        NSString *eventId = eventDict[@"event_id"];
+        NSString *roomId = eventDict[@"room_id"];
+        BOOL checkReadEvent = YES;
+        MXEvent *event;
+        
+        if (eventId && roomId)
+        {
+            event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
+        }
+        
+        if (event)
+        {
+            // Ignore redacted event.
+            if (event.isRedactedEvent)
+            {
+                continue;
+            }
+            
+            // Consider here the call invites
+            if (event.eventType == MXEventTypeCallInvite)
+            {
+                // Ignore call invite when callkit is active.
+                if (isCallKitActive)
+                {
+                    continue;
+                }
+                else
+                {
+                    // Retrieve the current call state from the call manager
+                    MXCallInviteEventContent *callInviteEventContent = [MXCallInviteEventContent modelFromJSON:event.content];
+                    MXCall *call = [account.mxSession.callManager callWithCallId:callInviteEventContent.callId];
+                    
+                    if (call.state <= MXCallStateRinging)
+                    {
+                        // Keep display a local notification even if the event has been read on another device.
+                        checkReadEvent = NO;
+                    }
+                }
+            }
+            
+            if (checkReadEvent)
+            {
+                // Ignore event which has been read on another device.
+                MXReceiptData *readReceipt = [account.mxSession.store getReceiptInRoom:roomId forUserId:account.mxCredentials.userId];
+                if (readReceipt)
+                {
+                    MXEvent *readReceiptEvent = [account.mxSession.store eventWithEventId:readReceipt.eventId inRoom:roomId];
+                    if (event.originServerTs <= readReceiptEvent.originServerTs)
+                    {
+                        continue;
+                    }
+                }
+            }
+            
+            // Prepare the local notification
+            MXPushRule *rule = eventDict[@"push_rule"];
+            
+            NSString *notificationBody = [self notificationBodyForEvent:event pushRule:rule inAccount:account];
+            if (notificationBody)
+            {
+                // Printf style escape characters are stripped from the string prior to display;
+                // to include a percent symbol (%) in the message, use two percent symbols (%%).
+                notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
+                
+                UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                eventNotification.alertBody = notificationBody;
+                eventNotification.userInfo = @{ @"room_id" : event.roomId };
+                
+                // Set sound name based on the value provided in action of MXPushRule
+                for (MXPushRuleAction *action in rule.actions)
+                {
+                    if (action.actionType == MXPushRuleActionTypeSetTweak)
+                    {
+                        if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                        {
+                            NSString *soundName = action.parameters[@"value"];
+                            if ([soundName isEqualToString:@"default"])
+                                soundName = UILocalNotificationDefaultSoundName;
+                            
+                            eventNotification.soundName = soundName;
+                        }
+                    }
+                }
+                
+                [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+            }
+        }
+    }
+    
+    [eventsArray removeAllObjects];
 }
 
 - (nullable NSString *)notificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account
@@ -1867,16 +1879,23 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     if (account.mxSession == mxSession)
                     {
                         [account pauseInBackgroundTask];
+                        
+                        // Trigger local notifcations (Indeed the app finishs here an initial sync in background, the user has missed some notifcations)
+                        [self handleLocalNotificationsForAccount:account];
+                        
+                        // Update app icon badge number
+                        [self refreshApplicationIconBadgeNumber];
+                        
                         break;
                     }
                 }
             }
             else if (mxSession.state == MXSessionStatePaused)
             {
-                // Check whether some local notifications must be handled by triggering a background sync.
+                // Check whether some push notifications are pending.
                 if (self.incomingPushEventIds.count)
                 {
-                    [self handleLocalNotifications];
+                    [self launchBackgroundSync];
                 }
             }
         }
