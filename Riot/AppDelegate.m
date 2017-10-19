@@ -1098,7 +1098,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         else
         {
-            NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload - Unexpected payload %@", dictionaryPayload);
+            NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload - Unexpected payload %@", payload.dictionaryPayload);
         }
         
         // Handle the local notifications by triggering a background sync.
