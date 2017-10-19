@@ -69,6 +69,9 @@
 		32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA71F473BDB0076CA16 /* Vector.strings */; };
 		32935CB11F6056FD006888C8 /* IntegrationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32935CB01F6056FD006888C8 /* IntegrationManagerViewController.m */; };
 		32935CB41F628BCE006888C8 /* IntegrationManager.js in Resources */ = {isa = PBXBuildFile; fileRef = 32935CB31F628BCE006888C8 /* IntegrationManager.js */; };
+		329DCE191F988F8100468420 /* riot_icon_callkit.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE161F988F8100468420 /* riot_icon_callkit.png */; };
+		329DCE1A1F988F8100468420 /* riot_icon_callkit@2.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE171F988F8100468420 /* riot_icon_callkit@2.png */; };
+		329DCE1B1F988F8100468420 /* riot_icon_callkit@3.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE181F988F8100468420 /* riot_icon_callkit@3.png */; };
 		32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */; };
 		32AE61E51F0A971B007255F4 /* RoomMembershipBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */; };
 		32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E71F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m */; };
@@ -670,6 +673,9 @@
 		32935CAF1F6056FD006888C8 /* IntegrationManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntegrationManagerViewController.h; sourceTree = "<group>"; };
 		32935CB01F6056FD006888C8 /* IntegrationManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegrationManagerViewController.m; sourceTree = "<group>"; };
 		32935CB31F628BCE006888C8 /* IntegrationManager.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = IntegrationManager.js; sourceTree = "<group>"; };
+		329DCE161F988F8100468420 /* riot_icon_callkit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = riot_icon_callkit.png; sourceTree = "<group>"; };
+		329DCE171F988F8100468420 /* riot_icon_callkit@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon_callkit@2.png"; sourceTree = "<group>"; };
+		329DCE181F988F8100468420 /* riot_icon_callkit@3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon_callkit@3.png"; sourceTree = "<group>"; };
 		32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCell.h; sourceTree = "<group>"; };
 		32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipBubbleCell.m; sourceTree = "<group>"; };
 		32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipBubbleCell.xib; sourceTree = "<group>"; };
@@ -1845,6 +1851,9 @@
 				F083BBAD1E7009EC00A9B29C /* remove_icon_pink.png */,
 				F083BBAE1E7009EC00A9B29C /* remove_icon_pink@2x.png */,
 				F083BBAF1E7009EC00A9B29C /* remove_icon_pink@3x.png */,
+				329DCE161F988F8100468420 /* riot_icon_callkit.png */,
+				329DCE171F988F8100468420 /* riot_icon_callkit@2.png */,
+				329DCE181F988F8100468420 /* riot_icon_callkit@3.png */,
 				F083BBB01E7009EC00A9B29C /* riot_icon.png */,
 				F083BBB11E7009EC00A9B29C /* riot_icon@2x.png */,
 				F083BBB21E7009EC00A9B29C /* riot_icon@3x.png */,
@@ -2714,6 +2723,7 @@
 				F083BD3D1E7009ED00A9B29C /* call_hangup_icon@2x.png in Resources */,
 				F083BE551E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				32471CDD1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
+				329DCE191F988F8100468420 /* riot_icon_callkit.png in Resources */,
 				3233F7321F31F4BF006ACA81 /* JitsiViewController.xib in Resources */,
 				F083BD301E7009ED00A9B29C /* bubbles_bg_landscape.png in Resources */,
 				F083BDA41E7009ED00A9B29C /* notifications.png in Resources */,
@@ -2777,6 +2787,7 @@
 				F083BE751E7009ED00A9B29C /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F04AF26A1F83A4C100D20F4D /* InfoPlist.strings in Resources */,
 				F083BD261E7009ED00A9B29C /* admin_icon@2x.png in Resources */,
+				329DCE1B1F988F8100468420 /* riot_icon_callkit@3.png in Resources */,
 				3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */,
 				F083BD761E7009ED00A9B29C /* e2e_verified@3x.png in Resources */,
 				F083BE181E7009ED00A9B29C /* MediaPickerViewController.xib in Resources */,
@@ -2871,6 +2882,7 @@
 				F083BDB11E7009ED00A9B29C /* priorityHigh@2x.png in Resources */,
 				F0614A0E1EDDCCE700F5DC9A /* jump_to_unread@2x.png in Resources */,
 				F083BDC21E7009ED00A9B29C /* scrollup.png in Resources */,
+				329DCE1A1F988F8100468420 /* riot_icon_callkit@2.png in Resources */,
 				F083BD521E7009ED00A9B29C /* camera_stop@2x.png in Resources */,
 				327382C21F276AED00356143 /* InfoPlist.strings in Resources */,
 				327382B81F276AD200356143 /* InfoPlist.strings in Resources */,
