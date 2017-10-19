@@ -1217,6 +1217,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSString *notificationBody = [self notificationBodyForEvent:event pushRule:rule inAccount:account];
             if (notificationBody)
             {
+                // Printf style escape characters are stripped from the string prior to display;
+                // to include a percent symbol (%) in the message, use two percent symbols (%%).
+                notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
+                
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
                 eventNotification.alertBody = notificationBody;
                 eventNotification.userInfo = @{ @"room_id" : event.roomId };
