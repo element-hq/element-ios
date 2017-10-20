@@ -37,6 +37,7 @@
         // NSLog -> console.log file when not debugging the app
         if (!isatty(STDERR_FILENO))
         {
+            [MXLogger setSubLogName:@"siri"];
             [MXLogger redirectNSLogToFiles:YES];
         }
     }
