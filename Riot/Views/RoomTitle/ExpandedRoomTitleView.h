@@ -18,6 +18,7 @@
 
 @interface ExpandedRoomTitleView : RoomTitleView
 
+@property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UIView *roomAvatarHeaderBackground;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomAvatarHeaderBackgroundHeightConstraint;
 

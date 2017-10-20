@@ -19,6 +19,8 @@
 
 #import "RiotDesignValues.h"
 
+#import "MXRoomSummary+Riot.h"
+
 @implementation ExpandedRoomTitleView
 
 + (UINib *)nib
@@ -47,6 +49,8 @@
     
     if (self.mxRoom)
     {
+        [self.mxRoom.summary setRoomAvatarImageIn:self.roomAvatar];
+        
         self.displayNameTextField.text = self.mxRoom.summary.displayname;
         if (!self.displayNameTextField.text.length)
         {
@@ -104,9 +108,17 @@
     }
     else
     {
+        self.roomAvatar.image = nil;
+        
         self.roomTopic.text = nil;
         self.roomMembers.text = nil;
     }
+    
+    // Round image view for thumbnail
+    self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
+    self.roomAvatar.clipsToBounds = YES;
+    
+    self.roomAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
     
     // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
     [self layoutIfNeeded];
