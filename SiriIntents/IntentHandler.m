@@ -33,6 +33,12 @@
     if (self)
     {
         [MXSDKOptions sharedInstance].applicationGroupIdentifier = @"group.im.vector";
+
+        // NSLog -> console.log file when not debugging the app
+        if (!isatty(STDERR_FILENO))
+        {
+            [MXLogger redirectNSLogToFiles:YES];
+        }
     }
     return self;
 }
