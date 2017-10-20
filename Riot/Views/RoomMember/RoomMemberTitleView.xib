@@ -1,51 +1,50 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="BkF-x3-7fX" customClass="RoomMemberTitleView">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="117"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7U9-Y6-cEm" customClass="MXKImageView">
-                    <rect key="frame" x="258" y="11" width="84" height="84"/>
-                    <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <accessibility key="accessibilityConfiguration" identifier="MemberAvatar"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="7U9-Y6-cEm" secondAttribute="height" multiplier="1:1" id="9ct-O9-7am"/>
-                        <constraint firstAttribute="width" constant="84" id="BeT-JY-cq1"/>
-                    </constraints>
-                </view>
                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f6h-pw-FvU">
-                    <rect key="frame" x="322" y="6" width="30" height="32"/>
+                    <rect key="frame" x="209" y="6" width="30" height="32"/>
                     <accessibility key="accessibilityConfiguration" identifier="MemberBadge"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="Rz8-gR-gAm"/>
                         <constraint firstAttribute="height" constant="32" id="dHM-zo-WVT"/>
                     </constraints>
                 </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VJM-ib-LUP">
+                    <rect key="frame" x="132" y="11" width="110" height="33"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCAvatarMask"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="110" id="IYH-gQ-dbK"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomMemberTitleView"/>
             <constraints>
-                <constraint firstItem="7U9-Y6-cEm" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" id="C5g-ho-90L"/>
-                <constraint firstItem="7U9-Y6-cEm" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" constant="11" id="Kwt-Sd-REk"/>
-                <constraint firstItem="f6h-pw-FvU" firstAttribute="trailing" secondItem="7U9-Y6-cEm" secondAttribute="trailing" constant="10" id="V4L-tJ-obt"/>
-                <constraint firstItem="7U9-Y6-cEm" firstAttribute="top" secondItem="f6h-pw-FvU" secondAttribute="top" constant="5" id="lPk-ot-k5l"/>
+                <constraint firstItem="f6h-pw-FvU" firstAttribute="top" secondItem="VJM-ib-LUP" secondAttribute="top" constant="-5" id="0pn-Nk-1zK"/>
+                <constraint firstAttribute="bottom" secondItem="VJM-ib-LUP" secondAttribute="bottom" id="5EZ-YP-0he"/>
+                <constraint firstItem="VJM-ib-LUP" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" id="I5C-UZ-BnC"/>
+                <constraint firstItem="VJM-ib-LUP" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" constant="11" id="gGL-UL-DHn"/>
+                <constraint firstItem="f6h-pw-FvU" firstAttribute="trailing" secondItem="VJM-ib-LUP" secondAttribute="trailing" constant="-3" id="ilt-qd-gIW"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="memberAvatar" destination="7U9-Y6-cEm" id="8PP-8r-xoI"/>
-                <outlet property="memberAvatarCenterXConstraint" destination="C5g-ho-90L" id="ILx-zG-Dbj"/>
+                <outlet property="memberAvatarMask" destination="VJM-ib-LUP" id="cnl-NC-4DH"/>
+                <outlet property="memberAvatarMaskCenterXConstraint" destination="I5C-UZ-BnC" id="rc9-oe-GrK"/>
                 <outlet property="memberBadge" destination="f6h-pw-FvU" id="pDM-O6-238"/>
             </connections>
         </view>
