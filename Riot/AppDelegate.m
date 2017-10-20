@@ -2387,17 +2387,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             return;
         }
         
-        // Check whether this event corresponds to a pending push.
-        NSUInteger index = [self.incomingPushEventIds indexOfObject:event.eventId];
-        if (index != NSNotFound)
+        // Sanity check
+        if (event.eventId && event.roomId && rule)
         {
-            // Remove it from the pending list.
-            [self.incomingPushEventIds removeObjectAtIndex:index];
+            // Check whether this event corresponds to a pending push.
+            NSUInteger index = [self.incomingPushEventIds indexOfObject:event.eventId];
+            if (index != NSNotFound)
+            {
+                // Remove it from the pending list.
+                [self.incomingPushEventIds removeObjectAtIndex:index];
+            }
+            
+            // Add it to the list of the events to notify.
+            [eventsToNotify[@(mxSession.hash)] addObject:@{@"event_id": event.eventId, @"room_id": event.roomId, @"push_rule": rule}];
         }
-        
-        // Add it to the list of the events to notify.
-        [eventsToNotify[@(mxSession.hash)] addObject:@{@"event_id": event.eventId, @"room_id": event.roomId, @"push_rule": rule}];
-        
+        else
+        {
+            NSLog(@"WARNING: wrong event to notify %@ %@ %@", event, event.roomId, rule);
+        }
     };
     
     eventsToNotify[@(mxSession.hash)] = [NSMutableArray array];
