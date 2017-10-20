@@ -1760,9 +1760,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     
-    // Set the App Group identifier.
-    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-    
     // Define the media cache version
     sdkOptions.mediaCacheAppVersion = 0;
     
@@ -1780,9 +1777,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     // Get modular widget events in rooms histories
     [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
-    
-    // Use shared container to share data with app extensions
-    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
