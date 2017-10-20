@@ -302,6 +302,14 @@
     userInfo[@"default_app_language"] = [[NSBundle mainBundle] preferredLocalizations][0]; // The language chosen by the OS
     userInfo[@"app_language"] = [NSBundle mxk_language] ? [NSBundle mxk_language] : userInfo[@"default_app_language"]; // The language chosen by the user
 
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    userInfo[@"local_time"] = [dateFormatter stringFromDate:currentDate];
+
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    userInfo[@"utc_time"] = [dateFormatter stringFromDate:currentDate];
+
     bugReportRestClient.others = userInfo;
 
     // Screenshot
