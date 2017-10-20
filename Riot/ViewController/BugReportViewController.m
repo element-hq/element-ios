@@ -308,7 +308,6 @@
     userInfo[@"local_time"] = [dateFormatter stringFromDate:currentDate];
 
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     userInfo[@"utc_time"] = [dateFormatter stringFromDate:currentDate];
 
     bugReportRestClient.others = userInfo;
