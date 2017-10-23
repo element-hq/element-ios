@@ -86,8 +86,8 @@
         [_roomDataSource finalizeInitialization];
         _roomDataSource.markTimelineInitialEvent = YES;
 
-        _roomName = peekingRoom.summary.displayname;
-        _roomAvatarUrl = peekingRoom.summary.avatar;
+        _roomName = peekingRoom.state.name;
+        _roomAvatarUrl = peekingRoom.state.avatar;
         
         _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.state.topic];;
         _roomAliases = peekingRoom.state.aliases;

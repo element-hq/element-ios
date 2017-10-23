@@ -19,6 +19,8 @@
 
 #import "RiotDesignValues.h"
 
+#import "MXRoomSummary+Riot.h"
+
 @implementation PreviewRoomTitleView
 
 + (UINib *)nib
@@ -93,6 +95,15 @@
     // Consider in priority the preview data (if any)
     if (self.roomPreviewData)
     {
+        if (self.roomAvatarURL)
+        {
+            [self.roomAvatar setImageURL:self.roomAvatarURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
+        }
+        else
+        {
+            self.roomAvatar.image = self.roomAvatarPlaceholder;
+        }
+        
         // Room topic
         self.roomTopic.text = self.roomPreviewData.roomTopic;
         
@@ -142,6 +153,8 @@
     }
     else if (self.mxRoom)
     {
+        [self.mxRoom.summary setRoomAvatarImageIn:self.roomAvatar];
+        
         // The user is here invited to join a room (This invitation has been received from server sync)
         self.displayNameTextField.text = self.mxRoom.summary.displayname;
         if (!self.displayNameTextField.text.length)
@@ -206,13 +219,35 @@
     }
     else
     {
+        self.roomAvatar.image = self.roomAvatarPlaceholder;
+        
         self.roomMembers.text = nil;
         self.roomTopic.text = nil;
         self.previewLabel.text = nil;
     }
     
+    // Round image view for thumbnail
+    self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
+    self.roomAvatar.clipsToBounds = YES;
+    
+    self.roomAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
+    
     // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
     [self layoutIfNeeded];
+}
+
+- (void)setRoomAvatarURL:(NSString *)roomAvatarURL
+{
+    _roomAvatarURL = roomAvatarURL;
+    
+    [self refreshDisplay];
+}
+
+- (void)setRoomAvatarPlaceholder:(UIImage *)roomAvatarPlaceholder
+{
+    _roomAvatarPlaceholder = roomAvatarPlaceholder;
+    
+    [self refreshDisplay];
 }
 
 @end

@@ -85,7 +85,7 @@
                 CGSize navBarSize = navigationBar.frame.size;
                 CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
                 
-                self.memberAvatarCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+                self.memberAvatarMaskCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
             }
         }
     }

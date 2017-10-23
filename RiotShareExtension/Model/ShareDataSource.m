@@ -57,12 +57,17 @@
         
         NSMutableArray *cellData = [NSMutableArray array];
         
+        // Add a fake matrix session to each room summary to provide it a REST client (used to handle correctly the room avatar).
+        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+        
         for (MXRoomSummary *roomSummary in roomsSummaries)
         {
-            MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary andRecentListDataSource:nil];
-            
             if ((self.dataSourceMode == DataSourceModeRooms) ^ roomSummary.isDirect)
             {
+                [roomSummary setMatrixSession:session];
+                
+                MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary andRecentListDataSource:nil];
+                
                 [cellData addObject:recentCellData];
             }
         }

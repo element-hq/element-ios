@@ -669,14 +669,14 @@
     if (self.expandedHeaderContainer.isHidden == NO)
     {
         // Adjust the expanded header height by taking into account the actual position of the room avatar
-        // This position depends automaticcaly on the screen orientation.
+        // This position depends automatically on the screen orientation.
         if ([self.titleView isKindOfClass:[RoomAvatarTitleView class]])
         {
             RoomAvatarTitleView *avatarTitleView = (RoomAvatarTitleView*)self.titleView;
-            CGRect roomAvatarFrame = avatarTitleView.roomAvatar.frame;
-            CGPoint roomAvatarActualPosition = [avatarTitleView convertPoint:roomAvatarFrame.origin toView:self.view];
+            CGPoint roomAvatarOriginInTitleView = avatarTitleView.roomAvatarMask.frame.origin;
+            CGPoint roomAvatarActualPosition = [avatarTitleView convertPoint:roomAvatarOriginInTitleView toView:self.view];
             
-            CGFloat avatarHeaderHeight = roomAvatarActualPosition.y + roomAvatarFrame.size.height;
+            CGFloat avatarHeaderHeight = roomAvatarActualPosition.y + expandedHeader.roomAvatar.frame.size.height;
             if (expandedHeader.roomAvatarHeaderBackgroundHeightConstraint.constant != avatarHeaderHeight)
             {
                 expandedHeader.roomAvatarHeaderBackgroundHeightConstraint.constant = avatarHeaderHeight;
@@ -1358,15 +1358,13 @@
         // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
         // image will be used regardless of the value of this property.
         UIImage *shadowImage = nil;
-        MXKImageView *roomAvatarView = nil;
         
         if (isVisible)
         {
             [self setRoomTitleViewClass:RoomAvatarTitleView.class];
             // Note the avatar title view does not define tap gesture.
             
-            roomAvatarView = ((RoomAvatarTitleView*)self.titleView).roomAvatar;
-            roomAvatarView.alpha = 0.0;
+            expandedHeader.roomAvatar.alpha = 0.0;
             
             shadowImage = [[UIImage alloc] init];
             
@@ -1395,10 +1393,7 @@
                              self.bubblesTableViewTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top : 0);
                              self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : self.bubblesTableView.mxk_adjustedContentInset.top);
                              
-                             if (roomAvatarView)
-                             {
-                                 roomAvatarView.alpha = 1;
-                             }
+                             expandedHeader.roomAvatar.alpha = 1;
                              
                              // Force to render the view
                              [self forceLayoutRefresh];
@@ -1554,23 +1549,22 @@
             
             RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
             
-            roomAvatarView = roomAvatarTitleView.roomAvatar;
-            roomAvatarView.alpha = 0.0;
+            previewHeader.roomAvatar.alpha = 0.0;
             
             // Set the avatar provided in preview data
             if (roomPreviewData.roomAvatarUrl)
             {
-                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
+                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:previewHeader.roomAvatar.frame.size withMethod:MXThumbnailingMethodCrop];
                 
-                roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
+                previewHeader.roomAvatarURL = roomAvatarUrl;
             }
             else if (roomPreviewData.roomId && roomPreviewData.roomName)
             {
-                roomAvatarTitleView.roomAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomPreviewData.roomId withDisplayName:roomPreviewData.roomName];
+                previewHeader.roomAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomPreviewData.roomId withDisplayName:roomPreviewData.roomName];
             }
             else
             {
-                roomAvatarTitleView.roomAvatarPlaceholder = [UIImage imageNamed:@"placeholder"];
+                previewHeader.roomAvatarPlaceholder = [UIImage imageNamed:@"placeholder"];
             }
         }
         
@@ -1602,10 +1596,7 @@
                              self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
                              self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
                              
-                             if (roomAvatarView)
-                             {
-                                 roomAvatarView.alpha = 1;
-                             }
+                             previewHeader.roomAvatar.alpha = 1;
                              
                              // Force to render the view
                              [self forceLayoutRefresh];
@@ -3186,11 +3177,9 @@
                     // Starting to move the local preview view
                     selectedRoomSettingsField = RoomSettingsViewControllerFieldTopic;
                 }
-                else if ([self.titleView isKindOfClass:[RoomAvatarTitleView class]])
+                else
                 {
-                    RoomAvatarTitleView *avatarTitleView = (RoomAvatarTitleView*)self.titleView;
-                    CGRect roomAvatarFrame = avatarTitleView.roomAvatar.frame;
-                    roomAvatarFrame.origin = [avatarTitleView convertPoint:roomAvatarFrame.origin toView:self.expandedHeaderContainer];
+                    CGRect roomAvatarFrame = expandedHeader.roomAvatar.frame;
                     if (CGRectContainsPoint(roomAvatarFrame, point))
                     {
                         // Starting to move the local preview view
