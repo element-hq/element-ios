@@ -118,7 +118,6 @@
 "search_people_placeholder" = "Rechercher par identifiant, nom ou e-mail";
 "search_no_result" = "Aucun résultat";
 "search_in_progress" = "Recherche en cours…";
-
 // Directory
 "directory_cell_title" = "Parcourir le répertoire";
 "directory_cell_description" = "%tu salons";
@@ -463,3 +462,12 @@
 "widget_integration_positive_power_level" = "Le rang doit être un entier positif.";
 "widget_integration_missing_room_id" = "Absence du room_id dans la requête.";
 "widget_integration_missing_user_id" = "Absence du user_id dans la requête.";
+"settings_calls_settings" = "APPELS";
+"settings_show_decrypted_content" = "Afficher les messages chiffrés en clair";
+"settings_enable_callkit" = "Appels intégrés";
+"settings_callkit_info" = "Recevez les appels entrants sur votre écran de verrouillage. Voir vos appels Riot dans l'historique des appels du système. Si iCloud est activé, cet historique d'appels sera partagé avec Apple.";
+"event_formatter_widget_added" = "Widget %@ ajoutée par %@";
+"event_formatter_widget_removed" = "Widget %@ supprimée par %@";
+// Share extension
+"share_extension_auth_prompt" = "Connectez vous dans l'application pour partager du contenu";
+"share_extension_failed_to_encrypt" = "Echec d'envoi. Vérifiez les paramètres de chiffrement de ce salon dans l'application";
