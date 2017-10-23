@@ -38,7 +38,6 @@
 @interface ContactDetailsViewController () <RoomMemberTitleViewDelegate>
 {
     RoomMemberTitleView* contactTitleView;
-    MXKImageView *contactAvatar;
     
     // HTTP Request
     MXHTTPOperation *roomCreationRequest;
@@ -134,9 +133,9 @@
     
     contactTitleView = [RoomMemberTitleView roomMemberTitleView];
     contactTitleView.delegate = self;
-    contactAvatar = contactTitleView.memberAvatar;
-    contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
-    contactAvatar.defaultBackgroundColor = [UIColor clearColor];
+    
+    self.contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
+    self.contactAvatar.defaultBackgroundColor = [UIColor clearColor];
     
     if (@available(iOS 11.0, *))
     {
@@ -194,17 +193,16 @@
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
-    [contactAvatar addGestureRecognizer:tap];
-    contactAvatar.userInteractionEnabled = YES;
-
-    // Need to listen tap gesture on the area part of the avatar image that is outside
-    // of the navigation bar, its parent but smaller view.
+    [self.contactAvatarMask addGestureRecognizer:tap];
+    self.contactAvatarMask.userInteractionEnabled = YES;
+    
+    // Need to listen to the tap gesture in the title view too.
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
-    [self.contactAvatarMask addGestureRecognizer:tap];
-    self.contactAvatarMask.userInteractionEnabled = YES;
+    [contactTitleView.memberAvatarMask addGestureRecognizer:tap];
+    contactTitleView.memberAvatarMask.userInteractionEnabled = YES;
     
     // Register collection view cell class
     [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
@@ -368,10 +366,10 @@
     {
         // Adjust the header height by taking into account the actual position of the member avatar in title view
         // This position depends automatically on the screen orientation.
-        CGRect memberAvatarFrame = contactTitleView.memberAvatar.frame;
-        CGPoint memberAvatarActualPosition = [contactTitleView convertPoint:memberAvatarFrame.origin toView:self.view];
+        CGPoint memberAvatarOriginInTitleView = contactTitleView.memberAvatarMask.frame.origin;
+        CGPoint memberAvatarActualPosition = [contactTitleView convertPoint:memberAvatarOriginInTitleView toView:self.view];
         
-        CGFloat avatarHeaderHeight = memberAvatarActualPosition.y + memberAvatarFrame.size.height;
+        CGFloat avatarHeaderHeight = memberAvatarActualPosition.y + self.contactAvatar.frame.size.height;
         if (_contactAvatarHeaderBackgroundHeightConstraint.constant != avatarHeaderHeight)
         {
             _contactAvatarHeaderBackgroundHeightConstraint.constant = avatarHeaderHeight;
@@ -496,7 +494,7 @@
 
 - (void)refreshContactThumbnail
 {
-    UIImage* image = [_contact thumbnailWithPreferedSize:contactAvatar.frame.size];
+    UIImage* image = [_contact thumbnailWithPreferedSize:self.contactAvatar.frame.size];
     
     if (!image)
     {
@@ -512,9 +510,9 @@
         }
     }
     
-    contactAvatar.image = image;
-    [contactAvatar.layer setCornerRadius:contactAvatar.frame.size.width / 2];
-    [contactAvatar setClipsToBounds:YES];
+    self.contactAvatar.image = image;
+    [self.contactAvatar.layer setCornerRadius:self.contactAvatar.frame.size.width / 2];
+    [self.contactAvatar setClipsToBounds:YES];
 }
 
 - (void)refreshContactDisplayName
@@ -1148,7 +1146,7 @@
             self.contactNameLabel.text = _contact.displayName;
         }
     }
-    else if (view == contactAvatar || view == self.contactAvatarMask)
+    else if (view == contactTitleView.memberAvatarMask || view == self.contactAvatarMask)
     {
         // Show the avatar in full screen
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
@@ -1177,7 +1175,7 @@
         [avatarFullScreenView setImageURL:avatarURL
                                  withType:nil
                       andImageOrientation:UIImageOrientationUp
-                             previewImage:contactAvatar.image];
+                             previewImage:self.contactAvatar.image];
 
         [avatarFullScreenView showFullScreen];
         isStatusBarHidden = YES;

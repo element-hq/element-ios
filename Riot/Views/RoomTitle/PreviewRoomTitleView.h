@@ -23,6 +23,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *mainHeaderContainer;
 
+@property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UILabel *roomTopic;
 @property (weak, nonatomic) IBOutlet UILabel *roomMembers;
 @property (weak, nonatomic) IBOutlet UIView *roomMembersDetailsIcon;
@@ -33,5 +34,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @property (weak, nonatomic) IBOutlet UILabel *subNoticeLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomBorderView;
+
+@property (nonatomic) NSString *roomAvatarURL;
+@property (nonatomic) UIImage  *roomAvatarPlaceholder;
 
 @end
