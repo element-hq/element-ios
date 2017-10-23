@@ -34,6 +34,7 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contactAvatarHeaderBackgroundHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet MXKImageView *contactAvatar;
 @property (weak, nonatomic) IBOutlet UIView *contactAvatarMask;
 @property (weak, nonatomic) IBOutlet UILabel *contactNameLabel;
 @property (weak, nonatomic) IBOutlet UIView *contactNameLabelMask;

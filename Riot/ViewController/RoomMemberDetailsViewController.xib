@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,6 +14,7 @@
             <connections>
                 <outlet property="bottomImageView" destination="7Dc-jk-9sT" id="BVN-bt-VXI"/>
                 <outlet property="memberHeaderView" destination="YXr-As-Mqh" id="Eqb-qr-iAo"/>
+                <outlet property="memberThumbnail" destination="GQ1-rP-ckr" id="abr-hr-C3p"/>
                 <outlet property="roomMemberAvatarHeaderBackground" destination="ouj-VM-zdT" id="YeD-zt-8y5"/>
                 <outlet property="roomMemberAvatarHeaderBackgroundHeightConstraint" destination="dBL-G6-Yec" id="QXZ-ZP-0Rn"/>
                 <outlet property="roomMemberAvatarMask" destination="MAS-3M-3cg" id="nLI-7d-5Hu"/>
@@ -41,9 +43,22 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MAS-3M-3cg">
                             <rect key="frame" x="137.5" y="0.0" width="100" height="125"/>
+                            <subviews>
+                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GQ1-rP-ckr" customClass="MXKImageView">
+                                    <rect key="frame" x="7.5" y="31" width="84" height="84"/>
+                                    <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MemberAvatar"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="84" id="HfP-Pj-zLa"/>
+                                        <constraint firstAttribute="width" secondItem="GQ1-rP-ckr" secondAttribute="height" multiplier="1:1" id="a1T-Y0-Iic"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCAvatarMask"/>
                             <constraints>
+                                <constraint firstAttribute="bottom" secondItem="GQ1-rP-ckr" secondAttribute="bottom" constant="10" id="3pC-So-WvO"/>
+                                <constraint firstItem="GQ1-rP-ckr" firstAttribute="centerX" secondItem="MAS-3M-3cg" secondAttribute="centerX" id="ZGI-nR-gGx"/>
                                 <constraint firstAttribute="width" constant="100" id="fwv-qE-IV1"/>
                             </constraints>
                         </view>
@@ -82,13 +97,11 @@
                         <constraint firstItem="wEo-Mk-SgZ" firstAttribute="centerY" secondItem="92g-hC-6jB" secondAttribute="centerY" id="3Zt-MD-sZK"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="top" secondItem="92g-hC-6jB" secondAttribute="bottom" constant="7" id="5zX-1T-n38"/>
                         <constraint firstItem="92g-hC-6jB" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="7Is-d0-FZp"/>
-                        <constraint firstItem="MAS-3M-3cg" firstAttribute="centerY" secondItem="YXr-As-Mqh" secondAttribute="centerY" id="Ciw-T9-XBe"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="92g-hC-6jB" secondAttribute="trailing" constant="32" id="Eyx-UF-fYc"/>
                         <constraint firstAttribute="trailing" secondItem="ouj-VM-zdT" secondAttribute="trailing" id="FRy-TL-gS2"/>
                         <constraint firstItem="wEo-Mk-SgZ" firstAttribute="centerX" secondItem="92g-hC-6jB" secondAttribute="centerX" id="K1f-RX-kpp"/>
                         <constraint firstItem="wEo-Mk-SgZ" firstAttribute="width" secondItem="YXr-As-Mqh" secondAttribute="width" id="P5e-q6-OIS"/>
                         <constraint firstItem="92g-hC-6jB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YXr-As-Mqh" secondAttribute="leading" constant="32" id="QZB-ue-Sih"/>
-                        <constraint firstItem="MAS-3M-3cg" firstAttribute="centerY" secondItem="YXr-As-Mqh" secondAttribute="centerY" id="Vh6-q9-uJZ"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="bmA-Fq-uxO"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YXr-As-Mqh" secondAttribute="leading" constant="42" id="ioz-jk-jrE"/>
                         <constraint firstAttribute="bottom" secondItem="5le-5e-Vml" secondAttribute="bottom" constant="18" id="j10-rX-tMf"/>
@@ -99,15 +112,7 @@
                         <constraint firstItem="MAS-3M-3cg" firstAttribute="bottom" secondItem="92g-hC-6jB" secondAttribute="top" id="rgU-C1-YMW"/>
                         <constraint firstItem="ouj-VM-zdT" firstAttribute="top" secondItem="YXr-As-Mqh" secondAttribute="top" id="srY-tD-AhJ"/>
                         <constraint firstItem="MAS-3M-3cg" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="vNM-7Z-K2b"/>
-                        <constraint firstAttribute="bottom" secondItem="MAS-3M-3cg" secondAttribute="bottom" id="xEt-kv-tJd"/>
                     </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="Ciw-T9-XBe"/>
-                            <exclude reference="Vh6-q9-uJZ"/>
-                            <exclude reference="xEt-kv-tJd"/>
-                        </mask>
-                    </variation>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RBF-EK-dhz">
                     <rect key="frame" x="0.0" y="317" width="375" height="33"/>
