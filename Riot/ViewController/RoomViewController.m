@@ -1519,8 +1519,6 @@
 {
     if (previewHeader)
     {
-        MXKImageView *roomAvatarView = nil;
-        
         if (isLandscapeOriented)
         {
             CGRect frame = self.navigationController.navigationBar.frame;
@@ -1546,8 +1544,6 @@
             
             [self setRoomTitleViewClass:RoomAvatarTitleView.class];
             // Note the avatar title view does not define tap gesture.
-            
-            RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
             
             previewHeader.roomAvatar.alpha = 0.0;
             
