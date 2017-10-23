@@ -453,3 +453,22 @@
 "widget_integration_missing_room_id" = "Отсутствует room_id в запросе.";
 "widget_integration_missing_user_id" = "Отсутствует user_id в запросе.";
 "widget_integration_room_not_visible" = "Комната %@ не видна.";
+"search_in_progress" = "Поиск…";
+"room_event_action_cancel_send" = "Отменить отправку";
+"settings_calls_settings" = "ВЫЗОВЫ";
+"settings_show_decrypted_content" = "Показать расшифрованное содержимое";
+"settings_enable_callkit" = "Интегрированный вызов";
+"settings_callkit_info" = "Прием входящих звонков на экране блокировки. Журнал вызовов Riot будет доступен в истории звонков вашего телефона. Если включен iCloud , то журнал вызовов будет доступен в том числе и Apple.";
+"settings_ui_theme" = "Тема";
+"settings_ui_theme_auto" = "Авто";
+"settings_ui_theme_light" = "Светлая";
+"settings_ui_theme_dark" = "Темная";
+"settings_ui_theme_picker_title" = "Выберите тему";
+"settings_ui_theme_picker_message" = "\"Авто\" использует параметры устройства \"Инверсия цветов\"";
+"settings_enable_rageshake" = "Встряхните устройство, чтобы сообщить об ошибке";
+"event_formatter_widget_added" = "%@ виджет добавлен %@";
+"event_formatter_widget_removed" = "%@ виджет удален %@";
+"do_not_ask_again" = "Больше не спрашивать";
+// Share extension
+"share_extension_auth_prompt" = "Вход в основное приложение для совместного использования контента";
+"share_extension_failed_to_encrypt" = "Не удалось отправить. Проверьте в основном приложении параметры шифрования для этой комнаты";
