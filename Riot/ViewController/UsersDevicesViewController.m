@@ -169,6 +169,11 @@
 
         cell = deviceCell;
     }
+    else
+    {
+        // Return a fake cell to prevent app from crashing.
+        cell = [[UITableViewCell alloc] init];
+    }
 
     return cell;
 }

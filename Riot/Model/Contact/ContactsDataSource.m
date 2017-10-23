@@ -640,8 +640,6 @@
         }
         return tableViewCell;
     }
-    
-    return nil;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
