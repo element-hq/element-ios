@@ -473,7 +473,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] applicationWillEnterForeground");
     
     // Flush all the pending push notifications.
-    for (NSMutableArray *array in self.incomingPushEventIds)
+    for (NSMutableArray *array in self.incomingPushEventIds.allValues)
     {
         [array removeAllObjects];
     }
@@ -1097,7 +1097,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         if (eventId)
         {
             // Add this event identifier in the pending push array for each session.
-            for (NSMutableArray *array in self.incomingPushEventIds)
+            for (NSMutableArray *array in self.incomingPushEventIds.allValues)
             {
                 [array addObject:eventId];
             }
