@@ -126,8 +126,8 @@
 "directory_cell_title" = "浏览目录";
 "directory_cell_description" = "%tu 个聊天室";
 "directory_search_results_title" = "浏览目录结果";
-"directory_search_results" = "为  %@ 找到 %tu 个结果";
-"directory_search_results_more_than" = "> 为  %@ 找到 %tu 个结果";
+"directory_search_results" = "为  %2$@ 找到 %1$tu 个结果";
+"directory_search_results_more_than" = "> 为  %2$@ 找到 %1$tu 个结果";
 "directory_searching_title" = "正在搜索目录…";
 "directory_search_fail" = "获取数据失败";
 // Contacts

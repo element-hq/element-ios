@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,6 +28,15 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BkF-x3-7fX">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="215"/>
                     <subviews>
+                        <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="4yt-FK-V2Z" customClass="MXKImageView">
+                            <rect key="frame" x="258" y="34" width="84" height="84"/>
+                            <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="MemberAvatar"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="84" id="bVm-6i-oVQ"/>
+                                <constraint firstAttribute="width" secondItem="4yt-FK-V2Z" secondAttribute="height" multiplier="1:1" id="hvA-vY-Mhn"/>
+                            </constraints>
+                        </view>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Name" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6uH-I3-RQg">
                             <rect key="frame" x="249" y="126" width="103" height="22"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -72,8 +82,10 @@
                         <constraint firstItem="S3Y-wJ-HOe" firstAttribute="leading" secondItem="ou0-3Z-weL" secondAttribute="trailing" constant="7" id="JrS-kW-PJv"/>
                         <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" constant="126" id="Piq-rp-Pae"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Tk0-pA-9a0" secondAttribute="trailing" constant="31" id="RNL-2W-QLd"/>
+                        <constraint firstItem="4yt-FK-V2Z" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" id="Scs-DA-3V9"/>
                         <constraint firstAttribute="bottom" secondItem="ou0-3Z-weL" secondAttribute="bottom" constant="14" id="Sxa-8V-tnQ"/>
                         <constraint firstItem="Tk0-pA-9a0" firstAttribute="top" secondItem="6uH-I3-RQg" secondAttribute="bottom" constant="5" id="TUS-xE-O6O"/>
+                        <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="4yt-FK-V2Z" secondAttribute="bottom" constant="8" id="Wsd-KT-hxy"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6uH-I3-RQg" secondAttribute="trailing" constant="31" id="aK3-vQ-EVu"/>
                         <constraint firstItem="ou0-3Z-weL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="31" id="c9h-h2-VEs"/>
                         <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="31" id="gnq-cO-l4Y"/>
@@ -174,6 +186,7 @@
                 <outlet property="mainHeaderContainer" destination="BkF-x3-7fX" id="1fp-xz-ETJ"/>
                 <outlet property="previewLabel" destination="gIX-nY-f6M" id="Bxi-6M-rTb"/>
                 <outlet property="rightButton" destination="461-vO-hLZ" id="u8R-Rg-WAv"/>
+                <outlet property="roomAvatar" destination="4yt-FK-V2Z" id="epr-4f-7cE"/>
                 <outlet property="roomMembers" destination="ou0-3Z-weL" id="lRs-fz-QXc"/>
                 <outlet property="roomMembersDetailsIcon" destination="S3Y-wJ-HOe" id="QjQ-wY-EOS"/>
                 <outlet property="roomTopic" destination="Tk0-pA-9a0" id="iAe-bC-f6X"/>

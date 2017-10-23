@@ -85,52 +85,10 @@
                 CGSize navBarSize = navigationBar.frame.size;
                 CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
                 
-                self.roomAvatarCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+                self.roomAvatarMaskCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
             }
         }
     }
-}
-
-- (void)refreshDisplay
-{
-    [super refreshDisplay];
-    
-    if (self.mxRoom)
-    {
-        [self.mxRoom.summary setRoomAvatarImageIn:self.roomAvatar];
-    }
-    else if (self.roomAvatarURL)
-    {
-        [self.roomAvatar setImageURL:self.roomAvatarURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
-    }
-    else if (self.roomAvatarPlaceholder)
-    {
-        self.roomAvatar.image = self.roomAvatarPlaceholder;
-    }
-    else
-    {
-        self.roomAvatar.image = nil;
-    }
-    
-    // Round image view for thumbnail
-    self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
-    self.roomAvatar.clipsToBounds = YES;
-    
-    self.roomAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
-}
-
-- (void)setRoomAvatarURL:(NSString *)roomAvatarURL
-{
-    _roomAvatarURL = roomAvatarURL;
-    
-    [self refreshDisplay];
-}
-
-- (void)setRoomAvatarPlaceholder:(UIImage *)roomAvatarPlaceholder
-{
-    _roomAvatarPlaceholder = roomAvatarPlaceholder;
-    
-    [self refreshDisplay];
 }
 
 @end

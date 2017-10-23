@@ -8,9 +8,5 @@ echo Moving Podfile to develop Matrix pods
 # Podfile.lock will be obsolete reset it 
 rm -f Podfile.lock
 
-# Disable the active pods
-sed -i '' -E "s!^(pod)(.*MatrixSDK)!#\1\2!g" Podfile
-sed -i '' -E "s!^(pod)(.*MatrixKit)!#\1\2!g" Podfile
-# And enable the develop ones
-sed -i '' -E "s!^(#pod)(.*MatrixSDK)(.*develop)!pod\2\3!g" Podfile
-sed -i '' -E "s!^(#pod)(.*MatrixKit)(.*develop)!pod\2\3!g" Podfile
+# Enable the develop one
+sed -i '' -E "s!^(#)(.*'develop')!\2!g" Podfile

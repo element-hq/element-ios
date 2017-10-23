@@ -166,9 +166,6 @@
         [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
     }
     
-    // Handle the member avatar at the view controller level.
-    self.memberThumbnail = memberTitleView.memberAvatar;
-    
     // Add tap gesture on member's name
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -182,17 +179,16 @@
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
-    [self.memberThumbnail addGestureRecognizer:tap];
-    self.memberThumbnail.userInteractionEnabled = YES;
-
-    // Need to listen tap gesture on the area part of the avatar image that is outside
-    // of the navigation bar, its parent but smaller view.
+    [self.roomMemberAvatarMask addGestureRecognizer:tap];
+    self.roomMemberAvatarMask.userInteractionEnabled = YES;
+    
+    // Need to listen to the tap gesture in the title view too.
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
-    [self.roomMemberAvatarMask addGestureRecognizer:tap];
-    self.roomMemberAvatarMask.userInteractionEnabled = YES;
+    [memberTitleView.memberAvatarMask addGestureRecognizer:tap];
+    memberTitleView.memberAvatarMask.userInteractionEnabled = YES;
     
     // Register collection view cell class
     [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
@@ -341,10 +337,10 @@
     {
         // Adjust the header height by taking into account the actual position of the member avatar in title view
         // This position depends automatically on the screen orientation.
-        CGRect memberAvatarFrame = memberTitleView.memberAvatar.frame;
-        CGPoint memberAvatarActualPosition = [memberTitleView convertPoint:memberAvatarFrame.origin toView:self.view];
+        CGPoint memberAvatarOriginInTitleView = memberTitleView.memberAvatarMask.frame.origin;
+        CGPoint memberAvatarActualPosition = [memberTitleView convertPoint:memberAvatarOriginInTitleView toView:self.view];
         
-        CGFloat avatarHeaderHeight = memberAvatarActualPosition.y + memberAvatarFrame.size.height;
+        CGFloat avatarHeaderHeight = memberAvatarActualPosition.y + self.memberThumbnail.frame.size.height;
         if (_roomMemberAvatarHeaderBackgroundHeightConstraint.constant != avatarHeaderHeight)
         {
             _roomMemberAvatarHeaderBackgroundHeightConstraint.constant = avatarHeaderHeight;
@@ -955,7 +951,7 @@
             self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
         }
     }
-    else if (view == self.memberThumbnail || view == self.roomMemberAvatarMask)
+    else if (view == memberTitleView.memberAvatarMask || view == self.roomMemberAvatarMask)
     {
         __weak typeof(self) weakSelf = self;
         

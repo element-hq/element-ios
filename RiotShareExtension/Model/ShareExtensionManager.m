@@ -73,7 +73,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         sdkOptions.disableIdenticonUseForUserAvatar = YES;
         // Enable e2e encryption for newly created MXSession
         sdkOptions.enableCryptoWhenStartingMXSession = YES;
-        
+
+        // NSLog -> console.log file when not debugging the app
+        if (!isatty(STDERR_FILENO))
+        {
+            [MXLogger setSubLogName:@"share"];
+            [MXLogger redirectNSLogToFiles:YES];
+        }
     });
     return sharedInstance;
 }
