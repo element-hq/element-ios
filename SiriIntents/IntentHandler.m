@@ -19,9 +19,10 @@
 #import "MXKAccount.h"
 #import "MXKAccountManager.h"
 #import "MXFileStore.h"
+#import "MXRestClient.h"
 #import "MXSession.h"
 
-@interface IntentHandler () <INStartAudioCallIntentHandling, INStartVideoCallIntentHandling>
+@interface IntentHandler () <INStartAudioCallIntentHandling, INStartVideoCallIntentHandling, INSendMessageIntentHandling>
 
 @end
 
@@ -64,7 +65,7 @@
     if (account)
     {
 #if defined MX_CALL_STACK_OPENWEBRTC || defined MX_CALL_STACK_ENDPOINT || defined MX_CALL_STACK_JINGLE
-        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass(INStartAudioCallIntent.class)];
+        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INStartAudioCallIntent class])];
         response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeReady userActivity:userActivity];
 #else
         response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeFailureCallingServiceNotAvailable userActivity:nil];
@@ -115,7 +116,7 @@
     if (account)
     {
 #if defined MX_CALL_STACK_OPENWEBRTC || defined MX_CALL_STACK_ENDPOINT || defined MX_CALL_STACK_JINGLE
-        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass(INStartVideoCallIntent.class)];
+        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INStartVideoCallIntent class])];
         response = [[INStartVideoCallIntentResponse alloc] initWithCode:INStartVideoCallIntentResponseCodeReady userActivity:userActivity];
 #else
         response = [[INStartVideoCallIntentResponse alloc] initWithCode:INStartVideoCallIntentResponseCodeFailureCallingServiceNotAvailable userActivity:nil];
@@ -149,6 +150,94 @@
     }
     
     completion(response);
+}
+
+#pragma mark - INSendMessageIntentHandling
+
+- (void)resolveRecipientsForSendMessage:(INSendMessageIntent *)intent withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
+{
+    [self resolveContacts:intent.recipients withCompletion:completion];
+}
+
+- (void)resolveContentForSendMessage:(INSendMessageIntent *)intent withCompletion:(void (^)(INStringResolutionResult * _Nonnull))completion
+{
+    NSString *message = intent.content;
+    if (message && ![message isEqualToString:@""])
+        completion([INStringResolutionResult successWithResolvedString:message]);
+    else
+        completion([INStringResolutionResult needsValue]);
+}
+
+- (void)confirmSendMessage:(INSendMessageIntent *)intent completion:(void (^)(INSendMessageIntentResponse * _Nonnull))completion
+{
+    INSendMessageIntentResponse *response = nil;
+    
+    MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    if (account)
+    {
+        NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INSendMessageIntent class])];
+        response = [[INSendMessageIntentResponse alloc] initWithCode:INSendMessageIntentResponseCodeReady userActivity:userActivity];
+    }
+    else
+    {
+        // User hasn't logged in
+        response = [[INSendMessageIntentResponse alloc] initWithCode:INSendMessageIntentResponseCodeFailureRequiringAppLaunch userActivity:nil];
+    }
+    
+    completion(response);
+}
+
+- (void)handleSendMessage:(INSendMessageIntent *)intent completion:(void (^)(INSendMessageIntentResponse * _Nonnull))completion
+{
+    void (^completeWithCode)(INSendMessageIntentResponseCode) = ^(INSendMessageIntentResponseCode code) {
+        NSUserActivity *userActivity = nil;
+        if (code == INSendMessageIntentResponseCodeSuccess)
+            userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INSendMessageIntent class])];
+        INSendMessageIntentResponse *response = [[INSendMessageIntentResponse alloc] initWithCode:INSendMessageIntentResponseCodeSuccess
+                                                                                     userActivity:userActivity];
+        completion(response);
+    };
+    
+    INPerson *person = intent.recipients.firstObject;
+    if (person && person.customIdentifier)
+    {
+        MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
+        [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+                                    NSString *roomID = person.customIdentifier;
+            
+                                    BOOL isEncrypted = NO;
+                                    for (MXRoomSummary *roomSummary in roomsSummaries)
+                                    {
+                                        if ([roomSummary.roomId isEqualToString:roomID])
+                                        {
+                                            isEncrypted = roomSummary.isEncrypted;
+                                            break;
+                                        }
+                                    }
+            
+                                    if (isEncrypted)
+                                    {
+                                        completeWithCode(INSendMessageIntentResponseCodeFailureMessageServiceNotAvailable);
+                                        return;
+                                    }
+            
+                                    [account.mxRestClient sendTextMessageToRoom:roomID
+                                                                           text:intent.content
+                                                                        success:^(NSString *eventId) {
+                                                                            completeWithCode(INSendMessageIntentResponseCodeSuccess);
+                                                                        }
+                                                                        failure:^(NSError *error) {
+                                                                            completeWithCode(INSendMessageIntentResponseCodeFailure);
+                                                                        }];
+            
+                               }
+                               failure:nil];
+    }
+    else
+    {
+        completeWithCode(INSendMessageIntentResponseCodeFailure);
+    }
 }
 
 #pragma mark - Private
