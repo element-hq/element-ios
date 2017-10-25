@@ -52,27 +52,30 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
     // Extract the jitsi conference id from the widget url
     NSString *confId;
     NSURL *url = [NSURL URLWithString:_widget.url];
-    NSURLComponents *components = [[NSURLComponents new] initWithURL:url resolvingAgainstBaseURL:NO];
-    NSArray *queryItems = [components queryItems];
-
-    for (NSURLQueryItem *item in queryItems)
+    if (url)
     {
-        if ([item.name isEqualToString:@"confId"])
+        NSURLComponents *components = [[NSURLComponents new] initWithURL:url resolvingAgainstBaseURL:NO];
+        NSArray *queryItems = [components queryItems];
+
+        for (NSURLQueryItem *item in queryItems)
         {
-            confId = item.value;
-            break;
+            if ([item.name isEqualToString:@"confId"])
+            {
+                confId = item.value;
+                break;
+            }
         }
-    }
 
-    // And build from it the url to use in jitsi-meet sdk
-    if (confId)
-    {
-        jitsiUrl = [NSString stringWithFormat:@"%@%@", kJitsiServerUrl, confId];
+        // And build from it the url to use in jitsi-meet sdk
+        if (confId)
+        {
+            jitsiUrl = [NSString stringWithFormat:@"%@%@", kJitsiServerUrl, confId];
+        }
     }
 
     if (!jitsiUrl)
     {
-        NSLog(@"[JitsiVC] Failed to load widget: %@", widget);
+        NSLog(@"[JitsiVC] Failed to load widget: %@. Widget event: %@", widget, widget.widgetEvent);
     }
 
     return (jitsiUrl != nil);
