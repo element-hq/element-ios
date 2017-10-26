@@ -43,11 +43,18 @@
         // Format the url string with user data
         if (_url)
         {
-            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:mxSession.myUser.userId];
-            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_display_name"
-                                                   withString:mxSession.myUser.displayname ? mxSession.myUser.displayname : mxSession.myUser.userId];
-            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_avatar_url"
-                                                   withString:mxSession.myUser.avatarUrl ? mxSession.myUser.avatarUrl : @""];
+            NSString *userId = mxSession.myUser.userId;
+            NSString *displayName = mxSession.myUser.displayname ? mxSession.myUser.displayname : mxSession.myUser.userId;
+            NSString *avatarUrl = mxSession.myUser.avatarUrl ? mxSession.myUser.avatarUrl : @"";
+
+            // Escape everything to build a valid URL string
+            userId = [userId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            displayName = [displayName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            avatarUrl = [avatarUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:userId];
+            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_display_name" withString:displayName];
+            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_avatar_url" withString:avatarUrl];
 
             // And their scalar token
             NSString *scalarToken = [[WidgetManager sharedManager] scalarTokenForMXSession:mxSession];
