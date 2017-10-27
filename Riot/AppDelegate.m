@@ -2238,13 +2238,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                                  usingBlock:^(NSNotification * _Nonnull note) {
                                                                                      MXCall *call = (MXCall *)note.object;
 
-                                                                                     NSLog(@"XXXX call.state: %@", call);
+                                                                                     NSLog(@"[AppDelegate] call.state: %@", call);
 
                                                                                      if (call.state == MXCallStateCreateAnswer)
                                                                                      {
                                                                                          [notificationCenter removeObserver:token];
 
-                                                                                         NSLog(@"XXXX presentCallViewController");
+                                                                                         NSLog(@"[AppDelegate] presentCallViewController");
                                                                                          [self presentCallViewController:NO completion:nil];
                                                                                      }
                                                                                  }];
@@ -2853,7 +2853,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 currentCallViewController = nil;
             }
         }
-        else
+        else if (_callStatusBarWindow)
         {
             // Here the call view controller was not presented.
             NSLog(@"Call view controller was not presented");
