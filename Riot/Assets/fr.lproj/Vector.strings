@@ -469,5 +469,5 @@
 "event_formatter_widget_added" = "Widget %@ ajoutée par %@";
 "event_formatter_widget_removed" = "Widget %@ supprimée par %@";
 // Share extension
-"share_extension_auth_prompt" = "Connectez vous dans l'application pour partager du contenu";
-"share_extension_failed_to_encrypt" = "Echec d'envoi. Vérifiez les paramètres de chiffrement de ce salon dans l'application";
+"share_extension_auth_prompt" = "Connectez-vous dans l'application pour partager du contenu";
+"share_extension_failed_to_encrypt" = "Échec d'envoi. Vérifiez les paramètres de chiffrement de ce salon dans l'application";
