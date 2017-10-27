@@ -1,3 +1,28 @@
+Changes in 0.6.0 (2017-10-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.0).
+ * Add Riot to the system share options, thanks to @aramsargsyan.
+ * Add support of Callkit, thanks to @morozkin
+   - Matrix incoming calls are displayed by the system including on the lock screen.
+   - Matrix Calls are listed in the system call history.
+ * Add support of Pushkit, thanks to @morozkin: 
+   - Message content in notifications does not go anymore through Apple service.
+   - Riot can display decrypted message.
+   - Riot shows the system incoming screen on Matrix incoming call notifications.
+ * RoomVC: Add the ability to cancel the sending of a room message and improve the cancellation of a media upload (PR #1550).
+ * BugReportVC: Do not send empty report (bis) (PR #1573).
+ * Refactor the Podfile to make extensions management easier (PR #1586).
+ * Logs: Logs app extensions into separate files (console-share.log & console-siri.log) (PR #1602).
+ * Add message sending to non-e2e rooms via Siri, thanks to @morozkin (PR #1606).
+
+Bug Fix:
+ * Switching network filter in room directory is ignored when searching the dir (part of #1496, PR #1584).
+ * Search in directory: Fix crash in Simplified Chinese (PR #1588).
+ * Member Info page avatars are systematically cropped (iOS 11) (#1590, PR #1604).
+ * Room Preview: the room name and avatar are missing for somepublic rooms (#1603, PR #1605).
+
 Changes in 0.5.6 (2017-10-05)
 ===============================================
 

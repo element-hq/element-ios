@@ -192,7 +192,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 
 @property (nonatomic, strong) PKPushRegistry *pushRegistry;
-@property (nonatomic) NSMutableArray <NSString *> *incomingPushEventIds;
+@property (nonatomic) NSMutableDictionary <NSNumber *, NSMutableArray <NSString *> *> *incomingPushEventIds;
 
 @end
 
@@ -376,7 +376,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self startGoogleAnalytics];
     
     // Prepare Pushkit handling
-    _incomingPushEventIds = [NSMutableArray array];
+    _incomingPushEventIds = [NSMutableDictionary dictionary];
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -473,7 +473,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] applicationWillEnterForeground");
     
     // Flush all the pending push notifications.
-    [self.incomingPushEventIds removeAllObjects];
+    for (NSMutableArray *array in self.incomingPushEventIds.allValues)
+    {
+        [array removeAllObjects];
+    }
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
@@ -1093,8 +1096,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSString *eventId = payload.dictionaryPayload[@"event_id"];
         if (eventId)
         {
-            // Store the event identifier.
-            [self.incomingPushEventIds addObject:eventId];
+            // Add this event identifier in the pending push array for each session.
+            for (NSMutableArray *array in self.incomingPushEventIds.allValues)
+            {
+                [array addObject:eventId];
+            }
         }
         else
         {
@@ -1117,6 +1123,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             NSLog(@"[AppDelegate] launchBackgroundSync");
             __weak typeof(self) weakSelf = self;
+            
+            // Flush all the pending push notifications for this session.
+            [self.incomingPushEventIds[@(account.mxSession.hash)] removeAllObjects];
             
             [account backgroundSync:20000 success:^{
                 
@@ -1886,9 +1895,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
             else if (mxSession.state == MXSessionStatePaused)
             {
-                // Check whether some push notifications are pending.
-                if (self.incomingPushEventIds.count)
+                // Check whether some push notifications are pending for this session.
+                if (self.incomingPushEventIds[@(mxSession.hash)].count)
                 {
+                    NSLog(@"[AppDelegate] relaunch a background sync for the kMXSessionStateDidChangeNotificationpending incoming push");
                     [self launchBackgroundSync];
                 }
             }
@@ -2046,6 +2056,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
+        
+        // Add an array to handle incoming push
+        self.incomingPushEventIds[@(mxSession.hash)] = [NSMutableArray array];
     }
 }
 
@@ -2072,6 +2085,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
         matrixCallObserver = nil;
     }
+    
+    [self.incomingPushEventIds removeObjectForKey:@(mxSession.hash)];
 }
 
 - (void)markAllMessagesAsRead
@@ -2110,7 +2125,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     self.pushRegistry = nil;
     isPushRegistered = NO;
-    [self.incomingPushEventIds removeAllObjects];
     
     // Clear cache
     [MXMediaManager clearCache];
@@ -2224,13 +2238,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                                  usingBlock:^(NSNotification * _Nonnull note) {
                                                                                      MXCall *call = (MXCall *)note.object;
 
-                                                                                     NSLog(@"XXXX call.state: %@", call);
+                                                                                     NSLog(@"[AppDelegate] call.state: %@", call);
 
                                                                                      if (call.state == MXCallStateCreateAnswer)
                                                                                      {
                                                                                          [notificationCenter removeObserver:token];
 
-                                                                                         NSLog(@"XXXX presentCallViewController");
+                                                                                         NSLog(@"[AppDelegate] presentCallViewController");
                                                                                          [self presentCallViewController:NO completion:nil];
                                                                                      }
                                                                                  }];
@@ -2384,12 +2398,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Sanity check
         if (event.eventId && event.roomId && rule)
         {
-            // Check whether this event corresponds to a pending push.
-            NSUInteger index = [self.incomingPushEventIds indexOfObject:event.eventId];
+            // Check whether this event corresponds to a pending push for this session.
+            NSUInteger index = [self.incomingPushEventIds[@(mxSession.hash)] indexOfObject:event.eventId];
             if (index != NSNotFound)
             {
                 // Remove it from the pending list.
-                [self.incomingPushEventIds removeObjectAtIndex:index];
+                [self.incomingPushEventIds[@(mxSession.hash)] removeObjectAtIndex:index];
             }
             
             // Add it to the list of the events to notify.
@@ -2839,7 +2853,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 currentCallViewController = nil;
             }
         }
-        else
+        else if (_callStatusBarWindow)
         {
             // Here the call view controller was not presented.
             NSLog(@"Call view controller was not presented");
