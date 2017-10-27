@@ -6,7 +6,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.7.0'
+$matrixKitVersion = '0.7.1'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -58,7 +58,7 @@ abstract_target 'RiotPods' do
     # OLMKit for crypto
     pod 'OLMKit'
     #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
-    pod 'Realm', '~> 3.0.0'
+    pod 'Realm', '~> 3.0.1'
 
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true

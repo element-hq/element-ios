@@ -44,27 +44,27 @@ PODS:
   - GZIP (1.2.1)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.9.12)
-  - MatrixKit (0.7.0):
+  - MatrixKit (0.7.1):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
-    - MatrixKit/Core (= 0.7.0)
-    - MatrixSDK (= 0.10.0)
-  - MatrixKit/AppExtension (0.7.0):
+    - MatrixKit/Core (= 0.7.1)
+    - MatrixSDK (= 0.10.1)
+  - MatrixKit/AppExtension (0.7.1):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
-    - MatrixSDK (= 0.10.0)
-  - MatrixKit/Core (0.7.0):
+    - MatrixSDK (= 0.10.1)
+  - MatrixKit/Core (0.7.1):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
-    - MatrixSDK (= 0.10.0)
-  - MatrixSDK (0.10.0):
+    - MatrixSDK (= 0.10.1)
+  - MatrixSDK (0.10.1):
     - AFNetworking (~> 3.1.0)
     - GZIP (~> 1.2.1)
   - OLMKit (2.2.2):
@@ -72,9 +72,9 @@ PODS:
     - OLMKit/olmcpp (= 2.2.2)
   - OLMKit/olmc (2.2.2)
   - OLMKit/olmcpp (2.2.2)
-  - Realm (3.0.0):
-    - Realm/Headers (= 3.0.0)
-  - Realm/Headers (3.0.0)
+  - Realm (3.0.1):
+    - Realm/Headers (= 3.0.1)
+  - Realm/Headers (3.0.1)
   - WebRTC (61.5.19063)
 
 DEPENDENCIES:
@@ -82,10 +82,10 @@ DEPENDENCIES:
   - DTCoreText
   - GBDeviceInfo (~> 4.4.0)
   - GoogleAnalytics
-  - MatrixKit (= 0.7.0)
-  - MatrixKit/AppExtension (= 0.7.0)
+  - MatrixKit (= 0.7.1)
+  - MatrixKit/AppExtension (= 0.7.1)
   - OLMKit
-  - Realm (~> 3.0.0)
+  - Realm (~> 3.0.1)
   - WebRTC (= 61.5.19063)
 
 SPEC CHECKSUMS:
@@ -98,12 +98,12 @@ SPEC CHECKSUMS:
   GZIP: 7ee835f989fb3c6ea79005fc90b8fa6af710a70d
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: b8a1038a101c78616c4df87815ac1556349faf98
-  MatrixKit: 90b615acc35ff570a14264aa42aaf2136ae82bac
-  MatrixSDK: 100443a3f7a34232b1a3c4f89ab2d51ddfabb02f
+  MatrixKit: 32525c51dd8646a3338ebca7d528b0b04efd5483
+  MatrixSDK: f6e05dd3061dd687f500d379483225b17c37e718
   OLMKit: b9d8c0ffee9ea8c45bc0aaa9afb47f93fba7efbd
-  Realm: dec0de73be8c57506e39db72694d513c189493b3
+  Realm: ba6144c74f835f7497791f6599d63a7755377b83
   WebRTC: 141474ba648e0b940a70696c183451b4a3b2b10f
 
-PODFILE CHECKSUM: 7a5d279285ccaba22b78a9f4bae96554207c8753
+PODFILE CHECKSUM: fdb05558507dc165abd602ca91138a3ef11ad02d
 
 COCOAPODS: 1.3.1
