@@ -146,7 +146,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     __weak typeof(self) weakSelf = self;
     
-    [self.pendingImages removeAllObjects];
+    [self resetPendingData];
     
     for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
     {
@@ -215,8 +215,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          
                          if ([self areAttachmentsFullyLoaded])
                          {
-                             UIImage *firstImage = [UIImage imageWithData:self.pendingImages.firstObject];
-                             UIAlertController *compressionPrompt = [self compressionPromptForImage:firstImage shareBlock:^{
+                             UIAlertController *compressionPrompt = [self compressionPromptForImage:self.pendingImages.firstObject shareBlock:^{
                                  [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
                              }];
                              
@@ -293,21 +292,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     self.primaryViewController = nil;
 }
 
-- (void)roomFromRoomSummary:(MXRoomSummary *)roomSummary store:(MXFileStore *)fileStore session:(MXSession *)session
-{
-    [fileStore asyncAccountDataOfRoom:roomSummary.roomId success:^(MXRoomAccountData * _Nonnull accountData) {
-        [fileStore asyncStateEventsOfRoom:roomSummary.roomId success:^(NSArray<MXEvent *> * _Nonnull roomStateEvents) {
-            MXRoom *room = [[MXRoom alloc] initWithRoomId:roomSummary.roomId andMatrixSession:session andStateEvents:roomStateEvents andAccountData:accountData];
-        } failure:^(NSError * _Nonnull error) {
-            //sjh
-        }];
-    } failure:^(NSError * _Nonnull error) {
-        //shj
-    }];
-    
-}
-
 #pragma mark - Private
+
+- (void)resetPendingData
+{
+    [self.pendingImages removeAllObjects];
+    [self.imageUploadProgresses removeAllObjects];
+}
 
 - (void)completeRequestReturningItems:(nullable NSArray *)items completionHandler:(void(^ __nullable)(BOOL expired))completionHandler;
 {
@@ -317,12 +308,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     self.primaryViewController = nil;
 }
 
-- (UIAlertController *)compressionPromptForImage:(UIImage *)image shareBlock:(void(^)())shareBlock
+- (UIAlertController *)compressionPromptForImage:(NSData *)imageData shareBlock:(void(^)())shareBlock
 {
     UIAlertController *compressionPrompt;
+    UIImage *image = [UIImage imageWithData:imageData];
     
     // Get available sizes for this image
-    MXKImageCompressionSizes compressionSizes = [MXKTools availableCompressionSizesForImage:image];
+    MXKImageCompressionSizes compressionSizes = [MXKTools availableCompressionSizesForImage:image originalFileSize:imageData.length];
     
     // Apply the compression mode
     if (compressionSizes.small.fileSize || compressionSizes.medium.fileSize || compressionSizes.large.fileSize)
@@ -579,13 +571,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
     [self didStartSendingToRoom:room];
     
+    __block NSUInteger count = imageDatas.count;
+    
     for (NSInteger index = 0; index < imageDatas.count; index++)
     {
         NSItemProvider *itemProvider = itemProviders[index];
         NSData *imageData = imageDatas[index];
         UIImage *image = [UIImage imageWithData:imageData];
         
-        if (!imageData)
+        if (!image)
         {
             NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
             if (failureBlock)
@@ -597,43 +591,49 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         
         // Prepare the image
-        NSData *convertedImageData;
+        UIImage *convertedImage = image;
         
         if (self.imageCompressionMode == ImageCompressionModeSmall)
         {
-            image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE)];
+            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE)];
         }
         else if (self.imageCompressionMode == ImageCompressionModeMedium)
         {
-            image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE)];
+            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE)];
         }
         else if (self.imageCompressionMode == ImageCompressionModeLarge)
         {
-            image = [MXKTools reduceImage:image toFitInSize:CGSizeMake(self.actualLargeSize, self.actualLargeSize)];
+            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(self.actualLargeSize, self.actualLargeSize)];
         }
         
         // Make sure the uploaded image orientation is up
-        image = [MXKTools forceImageOrientationUp:image];
+        convertedImage = [MXKTools forceImageOrientationUp:convertedImage];
         
         NSString *mimeType;
         if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
         {
             mimeType = @"image/png";
-            convertedImageData = UIImagePNGRepresentation(image);
+            if (convertedImage != image)
+            {
+                imageData = UIImagePNGRepresentation(convertedImage);
+            }
         }
-        else
+        else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
         {
             // Use jpeg format by default.
             mimeType = @"image/jpeg";
-            convertedImageData = UIImageJPEGRepresentation(image, 0.9);
+            if (convertedImage != image)
+            {
+                imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
+            }
         }
         
         UIImage *thumbnail = nil;
         // Thumbnail is useful only in case of encrypted room
         if (room.state.isEncrypted)
         {
-            thumbnail = [MXKTools reduceImage:image toFitInSize:CGSizeMake(800, 600)];
-            if (thumbnail == image)
+            thumbnail = [MXKTools reduceImage:convertedImage toFitInSize:CGSizeMake(800, 600)];
+            if (thumbnail == convertedImage)
             {
                 thumbnail = nil;
             }
@@ -641,33 +641,26 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         __weak typeof(self) weakSelf = self;
         
-        [room sendImage:convertedImageData withImageSize:image.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
-            if (weakSelf)
+        [room sendImage:imageData withImageSize:convertedImage.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+            
+            if (!--count && weakSelf)
             {
                 typeof(self) self = weakSelf;
-                [imageDatas removeObject:imageData];
                 
-                if (!imageDatas.count)
-                {
-                    [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
-                }
-                
+                [self resetPendingData];
+                [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
             }
-        } failure:^(NSError *error) {
-            NSLog(@"[ShareExtensionManager] sendImage failed.");
-            [imageDatas removeObject:imageData];
             
-            if (!imageDatas.count)
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[ShareExtensionManager] sendImage failed.");
+            if (failureBlock)
             {
-                if (failureBlock)
-                {
-                    failureBlock(error);
-                }
+                failureBlock(error);
             }
             
         }];
     }
-    
 }
 
 - (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
