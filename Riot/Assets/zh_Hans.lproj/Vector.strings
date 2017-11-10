@@ -427,3 +427,7 @@
 "contacts_user_directory_offline_section" = "用户目录（离线）";
 "room_ongoing_conference_call_with_close" = "收到会议通话。以 %@ 或 %@.%@ 加入。";
 "room_ongoing_conference_call_close" = "关闭";
+"send_to" = "发送到 %@";
+"sending" = "发送中";
+"search_in_progress" = "正在搜索…";
+"room_conference_call_no_power" = "你需要此聊天室的管理会议通话的权限";
