@@ -105,9 +105,8 @@
     // Check conditions to display the fake search bar into the table header
     if (self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
     {
-        // Add the search bar by hiding it by default.
+        // Add the search bar by showing it by default.
         self.recentsTableView.tableHeaderView = _tableSearchBar;
-        self.recentsTableView.contentOffset = CGPointMake(0, self.recentsTableView.contentOffset.y + _tableSearchBar.frame.size.height);
     }
 }
 
@@ -279,7 +278,6 @@
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
-    [self.dataSource searchWithPatterns:nil];
 }
 
 #pragma mark - UIScrollViewDelegate
