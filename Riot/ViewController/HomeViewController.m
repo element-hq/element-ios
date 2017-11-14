@@ -277,7 +277,8 @@
         if (indexPath.section == selectedSection)
         {
             // Show edition menu
-            tableViewCell.editionViewHeightConstraint.constant = 65;
+            tableViewCell.editionViewHeightConstraint.constant = 60;
+            tableViewCell.editionViewBottomConstraint.constant = 5;
             tableViewCell.editionView.hidden = NO;
             
             MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
@@ -334,7 +335,7 @@
     }
     
     // Retrieve the fixed height of the collection view cell used to display a room.
-    CGFloat height = [RoomCollectionViewCell defaultCellSize].height;
+    CGFloat height = [RoomCollectionViewCell defaultCellSize].height + 1;
     
     // Check the conditions to display the edition menu
     if (editedRoomId && indexPath.section == selectedSection)
