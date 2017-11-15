@@ -3376,7 +3376,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
 
                 // The key request has been probably cancelled, remove the popup
-                [roomKeyRequestViewController.alertController removeFromParentViewController];
                 [roomKeyRequestViewController hide];
                 roomKeyRequestViewController = nil;
             }

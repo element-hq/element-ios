@@ -61,6 +61,8 @@
 
                                                                if (weakSelf)
                                                                {
+                                                                   typeof(self) self = weakSelf;
+
                                                                    self->_alertController = nil;
                                                                    [self showVerificationView];
                                                                }
@@ -79,8 +81,6 @@
                                                                    // Accept the received requests from this device
                                                                    [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 
-                                                                       [self.alertController removeFromParentViewController];
-
                                                                        onComplete();
                                                                    }];
                                                                }
@@ -90,11 +90,17 @@
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
 
-                                                               self->_alertController = nil;
-
                                                                if (weakSelf)
                                                                {
-                                                                   onComplete();
+                                                                   typeof(self) self = weakSelf;
+
+                                                                   self->_alertController = nil;
+
+                                                                   // Ignore all pending requests from this device
+                                                                   [self.mxSession.crypto ignoreAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
+
+                                                                       onComplete();
+                                                                   }];
                                                                }
                                                            }]];
 
@@ -106,7 +112,7 @@
 {
     if (_alertController)
     {
-        [_alertController removeFromParentViewController];
+        [_alertController dismissViewControllerAnimated:YES completion:nil];
         _alertController = nil;
     }
 
@@ -184,17 +190,17 @@
         // As the device is now verified, all other key requests will be automatically accepted.
         [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 
-            [self.alertController removeFromParentViewController];
-
             onComplete();
         }];
     }
-    else
-    {
-        // Else it means the user pressed cancel
-        // Just come back to self.alertController. Reopen it
-        [self show];
-    }
+}
+
+- (void)encryptionInfoViewDidClose:(MXKEncryptionInfoView *)theEncryptionInfoView
+{
+    encryptionInfoView = nil;
+
+    // Come back to self.alertController - ie, reopen it
+    [self show];
 }
 
 @end
