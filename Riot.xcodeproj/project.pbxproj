@@ -65,6 +65,7 @@
 		327382C21F276AED00356143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BC1F276AED00356143 /* InfoPlist.strings */; };
 		327382C31F276AED00356143 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BE1F276AED00356143 /* Localizable.strings */; };
 		327382C41F276AED00356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
+		3284D7FF1FBB34B70090AA80 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */; };
 		32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA51F473BDB0076CA16 /* Localizable.strings */; };
 		32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA71F473BDB0076CA16 /* Vector.strings */; };
 		32935CB11F6056FD006888C8 /* IntegrationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32935CB01F6056FD006888C8 /* IntegrationManagerViewController.m */; };
@@ -668,6 +669,8 @@
 		327382BD1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		327382BF1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		327382C11F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vector.strings; sourceTree = "<group>"; };
+		3284D7FD1FBB34B70090AA80 /* RoomKeyRequestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomKeyRequestViewController.h; sourceTree = "<group>"; };
+		3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomKeyRequestViewController.m; sourceTree = "<group>"; };
 		32918EA61F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
 		32918EA81F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Vector.strings; sourceTree = "<group>"; };
 		32935CAF1F6056FD006888C8 /* IntegrationManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntegrationManagerViewController.h; sourceTree = "<group>"; };
@@ -2074,6 +2077,8 @@
 				F083BC3B1E7009EC00A9B29C /* RoomFilesSearchViewController.m */,
 				F083BC3C1E7009EC00A9B29C /* RoomFilesViewController.h */,
 				F083BC3D1E7009EC00A9B29C /* RoomFilesViewController.m */,
+				3284D7FD1FBB34B70090AA80 /* RoomKeyRequestViewController.h */,
+				3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */,
 				F083BC3E1E7009EC00A9B29C /* RoomMemberDetailsViewController.h */,
 				F083BC3F1E7009EC00A9B29C /* RoomMemberDetailsViewController.m */,
 				F083BC401E7009EC00A9B29C /* RoomMemberDetailsViewController.xib */,
@@ -3300,6 +3305,7 @@
 				F083BE111E7009ED00A9B29C /* DirectoryViewController.m in Sources */,
 				F0B4CBB11F4215E3008E99C5 /* EventDetailsView.m in Sources */,
 				F083BE1E1E7009ED00A9B29C /* RoomMessagesSearchViewController.m in Sources */,
+				3284D7FF1FBB34B70090AA80 /* RoomKeyRequestViewController.m in Sources */,
 				F083BE231E7009ED00A9B29C /* RoomViewController.m in Sources */,
 				F083BE9E1E7009ED00A9B29C /* TableViewCellWithCheckBoxes.m in Sources */,
 				32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */,

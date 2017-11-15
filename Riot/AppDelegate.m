@@ -32,6 +32,7 @@
 #import "ContactDetailsViewController.h"
 
 #import "BugReportViewController.h"
+#import "RoomKeyRequestViewController.h"
 
 #import "NSBundle+MatrixKit.h"
 #import "MatrixSDK/MatrixSDK.h"
@@ -108,7 +109,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      The current call view controller (if any).
      */
     CallViewController *currentCallViewController;
-    
+
+    /**
+     Incoming room key requests observers
+     */
+    id roomKeyRequestObserver;
+    id roomKeyRequestCancellationObserver;
+
+    /**
+     If any the currently displayed sharing key dialog
+     */
+    RoomKeyRequestViewController *roomKeyRequestViewController;
+
     /**
      Account picker used in case of multiple account.
      */
@@ -552,6 +564,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     [self handleLaunchAnimation];
+
+    // Check if we need to display a key share dialog
+    [self checkPendingRoomKeyRequests];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -2059,6 +2074,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         // Add an array to handle incoming push
         self.incomingPushEventIds[@(mxSession.hash)] = [NSMutableArray array];
+
+        // Enable listening of incoming key share requests
+        [self enableRoomKeyRequestObserver:mxSession];
     }
 }
 
@@ -2077,6 +2095,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Disable local notifications from this session
     [self disableLocalNotificationsFromMatrixSession:mxSession];
+
+    // Disable listening of incoming key share requests
+    [self disableRoomKeyRequestObserver:mxSession];
     
     [mxSessionArray removeObject:mxSession];
     
@@ -3286,6 +3307,111 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Stop listening to the call events of this session 
     [mxSession removeListener:callEventsListeners[@(mxSession.hash)]];
     [callEventsListeners removeObjectForKey:@(mxSession.hash)];
+}
+
+#pragma mark - Incoming room key requests handling
+
+- (void)enableRoomKeyRequestObserver:(MXSession*)mxSession
+{
+    roomKeyRequestObserver =
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMXCryptoRoomKeyRequestNotification
+                                                      object:mxSession.crypto
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification *notif)
+     {
+         [self checkPendingRoomKeyRequestsInSession:mxSession];
+     }];
+
+    roomKeyRequestCancellationObserver  =
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMXCryptoRoomKeyRequestCancellationNotification
+                                                      object:mxSession.crypto
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification *notif)
+     {
+         [self checkPendingRoomKeyRequestsInSession:mxSession];
+     }];
+}
+
+- (void)disableRoomKeyRequestObserver:(MXSession*)mxSession
+{
+    if (roomKeyRequestObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:roomKeyRequestObserver];
+        roomKeyRequestObserver = nil;
+    }
+
+    if (roomKeyRequestCancellationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:roomKeyRequestCancellationObserver];
+        roomKeyRequestCancellationObserver = nil;
+    }
+}
+
+// Check if a key share dialog must be displayed for the given session
+- (void)checkPendingRoomKeyRequestsInSession:(MXSession*)mxSession
+{
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
+    {
+        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while the app is not active. Ignore it.");
+        return;
+    }
+
+    [mxSession.crypto pendingKeyRequests:^(MXUsersDevicesMap<NSArray<MXIncomingRoomKeyRequest *> *> *pendingKeyRequests) {
+
+        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
+              @(pendingKeyRequests.count),
+              roomKeyRequestViewController ? @"YES" : @"NO");
+
+        if (roomKeyRequestViewController)
+        {
+            // Check if the current RoomKeyRequestViewController is still valid
+            MXSession *currentMXSession = roomKeyRequestViewController.mxSession;
+            NSString *currentUser = roomKeyRequestViewController.device.userId;
+            NSString *currentDevice = roomKeyRequestViewController.device.deviceId;
+
+            NSArray<MXIncomingRoomKeyRequest *> *currentPendingRequest = [pendingKeyRequests objectForDevice:currentDevice forUser:currentUser];
+
+            if (currentMXSession == mxSession && currentPendingRequest.count == 0)
+            {
+                NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
+
+                // The key request has been probably cancelled, remove the popup
+                [roomKeyRequestViewController hide];
+                roomKeyRequestViewController = nil;
+            }
+        }
+
+        if (!roomKeyRequestViewController && pendingKeyRequests.count)
+        {
+            // Pick the first coming user/device pair
+            NSString *user = pendingKeyRequests.userIds.firstObject;
+            NSString *device = [pendingKeyRequests deviceIdsForUser:user].firstObject;
+
+            [mxSession.crypto deviceWithDeviceId:device ofUser:user complete:^(MXDeviceInfo *device) {
+
+                NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog");
+
+                roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:device andMatrixSession:mxSession onComplete:^{
+
+                    roomKeyRequestViewController = nil;
+
+                    // Check next pending key request, if any
+                    [self checkPendingRoomKeyRequests];
+                }];
+
+                [roomKeyRequestViewController show];
+            }];
+        }
+    }];
+}
+
+// Check all opened MXSessions for key share dialog 
+- (void)checkPendingRoomKeyRequests
+{
+    for (MXSession *mxSession in mxSessionArray)
+    {
+        [self checkPendingRoomKeyRequestsInSession:mxSession];
+    }
 }
 
 @end
