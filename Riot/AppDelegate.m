@@ -310,6 +310,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark - UIApplicationDelegate
 
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
+{
+    // Set the App Group identifier.
+    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
+    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+    
+    // Redirect NSLogs to files only if we are not debugging
+    if (!isatty(STDERR_FILENO)) {
+        [MXLogger redirectNSLogToFiles:YES];
+    }
+
+    NSLog(@"[AppDelegate] willFinishLaunchingWithOptions");
+    
+    return YES;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 #ifdef DEBUG
