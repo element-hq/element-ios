@@ -3384,8 +3384,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         if (!roomKeyRequestViewController && pendingKeyRequests.count)
         {
             // Pick the first coming user/device pair
-            NSString *user = pendingKeyRequests.userIds[0];
-            NSString *device = [pendingKeyRequests deviceIdsForUser:user][0];
+            NSString *user = pendingKeyRequests.userIds.firstObject;
+            NSString *device = [pendingKeyRequests deviceIdsForUser:user].firstObject;
 
             [mxSession.crypto deviceWithDeviceId:device ofUser:user complete:^(MXDeviceInfo *device) {
 
