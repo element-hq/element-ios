@@ -580,9 +580,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     [self handleLaunchAnimation];
-
-    // Check if we need to display a key share dialog
-    [self checkPendingRoomKeyRequests];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -1932,6 +1929,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     NSLog(@"[AppDelegate] relaunch a background sync for the kMXSessionStateDidChangeNotificationpending incoming push");
                     [self launchBackgroundSync];
                 }
+            }
+        }
+        else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+        {
+            if (mxSession.state == MXSessionStateRunning)
+            {
+                // Check if we need to display a key share dialog
+                [self checkPendingRoomKeyRequests];
             }
         }
         
