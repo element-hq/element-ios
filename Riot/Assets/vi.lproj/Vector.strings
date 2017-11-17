@@ -1,3 +1,27 @@
 // Titles
 "title_home" = "Trang chủ";
 "title_favourites" = "Yêu thích";
+"title_people" = "Danh bạ";
+"title_rooms" = "Trò chuyện nhóm";
+// Actions
+"view" = "Xem";
+"next" = "Kế tiếp";
+"back" = "Trở về";
+"continue" = "Tiếp tục";
+"create" = "Tạo mới";
+"start" = "Bắt đầu";
+"leave" = "Rời khỏi";
+"remove" = "Gỡ bỏ";
+"invite" = "Mời";
+"retry" = "Thử lại";
+"on" = "Bật";
+"off" = "Tắt";
+"cancel" = "Huỷ";
+"save" = "Lưu";
+"join" = "Tham gia";
+"decline" = "Từ chối";
+"accept" = "Chấp nhận";
+"preview" = "Xem trước";
+"camera" = "Máy ảnh";
+"voice" = "Giọng nói";
+"video" = "Video";
