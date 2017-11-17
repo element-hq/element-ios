@@ -1,1 +1,5 @@
-
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Máy ảnh được sử dụng để chụp ảnh và quay phim, thực hiện các cuộc gọi video thoại.";
+"NSPhotoLibraryUsageDescription" = "Thư viện ảnh được dùng để gửi hình ảnh và videos.";
+"NSMicrophoneUsageDescription" = "Microphone được dùng để thực hiện quay video, thực hiện các cuộc gọi.";
+"NSContactsUsageDescription" = "Danh bạ được sử dụng để tìm kiếm người dùng bởi email hoặc số điện thoại trên Riot.";
