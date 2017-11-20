@@ -694,73 +694,167 @@ static void *RecordingContext = &RecordingContext;
         return;
     }
     
-    isValidationInProgress = YES;
-    PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
-    
-    [asset requestContentEditingInputWithOptions:editOptions
-                               completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-                                   
-                                   if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
-                                   {
-                                       dispatch_async(dispatch_get_main_queue(), ^{
-                                           
-                                           // Use displaySizeImage to validate the selection
-                                           [self validateSelectedImage:contentEditingInput.displaySizeImage responseHandler:^(BOOL isValidated) {
-                                               
-                                               if (isValidated)
-                                               {
-                                                   // Retrieve the fullSizeImage thanks to its local file path
-                                                   NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                                                   UIImage *image = [UIImage imageWithData:data];
-                                                   
-                                                   // Send the original image
-                                                   [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
-                                               }
-                                               
-                                               isValidationInProgress = NO;
-                                               
-                                           }];
-                                           
-                                       });
-                                       
-                                       return;
-                                   }
-                                   else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
-                                   {
-                                       if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
-                                       {
-                                           AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
-                                           
-                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                               
-                                               // Validate first the selected video
-                                               [self validateSelectedVideo:[avURLAsset URL] responseHandler:^(BOOL isValidated) {
-                                                   
-                                                   if (isValidated)
-                                                   {
-                                                       [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
-                                                   }
-                                                   
-                                                   isValidationInProgress = NO;
-                                                   
-                                               }];
-                                               
-                                           });
-                                           
-                                           return;
-                                       }
-                                       else
-                                       {
-                                           NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
-                                       }
-                                   }
-                                   
-                                   isValidationInProgress = NO;
-                               }];
+    if (asset.mediaType == PHAssetMediaTypeImage)
+    {
+        isValidationInProgress = YES;
+        
+        PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+        options.synchronous = NO;
+        options.networkAccessAllowed = YES;
+        
+        id topVC = self.navigationController.topViewController;
+        if ([topVC respondsToSelector:@selector(startActivityIndicator)])
+        {
+            [topVC startActivityIndicator];
+        }
+
+        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:self.view.frame.size contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+
+            if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
+            {
+                [topVC stopActivityIndicator];
+            }
+            
+            if (result)
+            {
+                // Validate the selection
+                [self validateSelectedImage:result responseHandler:^(BOOL isValidated) {
+                    
+                    if (isValidated)
+                    {
+                        // Note we can use `options.progressHandler` to display an animation during the potential download.
+                        
+                        if ([topVC respondsToSelector:@selector(startActivityIndicator)])
+                        {
+                            [topVC startActivityIndicator];
+                        }
+                        
+                        [[PHImageManager defaultManager] requestImageDataForAsset:asset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                            
+                            if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
+                            {
+                                [topVC stopActivityIndicator];
+                            }
+                            
+                            if (imageData)
+                            {
+                                NSLog(@"[MediaPickerVC] didSelectAsset: Got image data");
+                                
+                                CFStringRef uti = (__bridge CFStringRef)dataUTI;
+                                NSString *mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType);
+                                
+                                // Send the original image
+                                [self.delegate mediaPickerController:self didSelectImage:imageData withMimeType:mimeType isPhotoLibraryAsset:YES];
+                            }
+                            else
+                            {
+                                NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image data for asset");
+                                
+                                // Alert user
+                                NSError *error = info[@"PHImageErrorKey"];
+                                if (error.userInfo[NSUnderlyingErrorKey])
+                                {
+                                    error = error.userInfo[NSUnderlyingErrorKey];
+                                }
+                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            }
+                            
+                        }];
+                    }
+                    
+                    isValidationInProgress = NO;
+                }];
+            }
+            else
+            {
+                NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
+                isValidationInProgress = NO;
+                
+                // Alert user
+                NSError *error = info[@"PHImageErrorKey"];
+                if (error.userInfo[NSUnderlyingErrorKey])
+                {
+                    error = error.userInfo[NSUnderlyingErrorKey];
+                }
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }
+
+        }];
+    }
+    else if (asset.mediaType == PHAssetMediaTypeVideo)
+    {
+        isValidationInProgress = YES;
+        
+        PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+        options.networkAccessAllowed = YES;
+        
+        id topVC = self.navigationController.topViewController;
+        if ([topVC respondsToSelector:@selector(startActivityIndicator)])
+        {
+            [topVC startActivityIndicator];
+        }
+        
+        [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
+                {
+                    [topVC stopActivityIndicator];
+                }
+                
+                if (asset)
+                {
+                    if ([asset isKindOfClass:[AVURLAsset class]])
+                    {
+                        NSLog(@"[MediaPickerVC] didSelectAsset: Got AVAsset for video");
+                        AVURLAsset *avURLAsset = (AVURLAsset*)asset;
+                        
+                        // Validate first the selected video
+                        [self validateSelectedVideo:[avURLAsset URL] responseHandler:^(BOOL isValidated) {
+                            
+                            if (isValidated)
+                            {
+                                [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
+                            }
+                            
+                            isValidationInProgress = NO;
+                            
+                        }];
+                    }
+                    else
+                    {
+                        NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
+                        isValidationInProgress = NO;
+                    }
+                }
+                else
+                {
+                    NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
+                    isValidationInProgress = NO;
+                    
+                    // Alert user
+                    NSError *error = info[@"PHImageErrorKey"];
+                    if (error.userInfo[NSUnderlyingErrorKey])
+                    {
+                        error = error.userInfo[NSUnderlyingErrorKey];
+                    }
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }
+                
+            });
+        }];
+    }
+    else
+    {
+        NSLog(@"[MediaPickerVC] didSelectAsset: Unexpected media type");
+    }
 }
 
 - (void)validateSelectedImage:(UIImage*)selectedImage responseHandler:(void (^)(BOOL isValidated))handler
 {
+    [self dismissImageValidationView];
+    
     // Add a preview to let the user validates his selection
     __weak typeof(self) weakSelf = self;
     
@@ -798,6 +892,8 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)validateSelectedVideo:(NSURL*)selectedVideoURL responseHandler:(void (^)(BOOL isValidated))handler
 {
+    [self dismissImageValidationView];
+    
     // Add a preview to let the user validates his selection
     __weak typeof(self) weakSelf = self;
     
@@ -1376,8 +1472,8 @@ static void *RecordingContext = &RecordingContext;
                     
                     if (isValidated)
                     {
-                        // Send the original image by considering its asset url
-                        [self.delegate mediaPickerController:self didSelectImage:image withURL:nil];
+                        // Send the original image
+                        [self.delegate mediaPickerController:self didSelectImage:imageData withMimeType:@"image/jpeg" isPhotoLibraryAsset:NO];
                     }
                     
                 }];

@@ -3633,10 +3633,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
     [self dismissMediaPicker];
-    newAvatarImage = image;
+    
+    newAvatarImage = [UIImage imageWithData:imageData];
     
     [self.tableView reloadData];
 }
