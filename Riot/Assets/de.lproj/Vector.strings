@@ -153,8 +153,8 @@
 "room_one_user_is_typing" = "%@ tippt…";
 "room_two_users_are_typing" = "%@ & %@ tippen…";
 "room_many_users_are_typing" = "%@, %@ & andere tippen…";
-"room_message_placeholder" = "Sende eine Nachricht (unverschlüsselt)…";
-"encrypted_room_message_placeholder" = "Seine eine verschlüsselte Nachricht…";
+"room_message_placeholder" = "Nachricht senden (unverschlüsselt)…";
+"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht senden…";
 "room_message_short_placeholder" = "Sende eine Nachricht…";
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet. Jetzt %@ oder %@?";
