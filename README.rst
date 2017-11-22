@@ -30,14 +30,14 @@ Then, open ``Riot.xcworkspace`` with Xcode
 Developing
 ==========
 
-Uncomment the right definitions of ``pod 'MatrixSDK'`` and ``pod 'MatrixKit'``
-in ``Podfile`` for the versions you want to develop and build against, and
-``pod install``.
+Uncomment the right definitions of ``$matrixKitVersion`` for the version you want to develop and build against. For example, if you are trying to build the develop branch, uncomment ``$matrixKitVersion = 'develop'`` and make sure the more specific MatrixKit version is commented out. Once you are done editing the ``Podfile``, run ``pod install``.
+
+You may need to change the bundle identifier and app group identifier to be unique to get Xcode to build the app. Make sure to change the application group identifier everywhere by running a search for ``group.im.vector`` and changing every spot that identifier is used to your new identifier.
 
 Copyright & License
 ==================
 
-Copyright (c) 2014-2016 OpenMarket Ltd
+Copyright (c) 2014-2017 OpenMarket Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
 
