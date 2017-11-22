@@ -332,7 +332,7 @@
 "settings_crypto_export" = "Xuất khóa";
 "settings_crypto_blacklist_unverified_devices" = "Chỉ mã hóa để xác thực thiết bị";
 // Room Details
-"room_details_title" = "Chi tiết phòng";
+"room_details_title" = "Chi tiết phòng chat";
 "room_details_people" = "Thành viên";
 "room_details_files" = "Tập tin";
 "room_details_settings" = "Cài đặt";
