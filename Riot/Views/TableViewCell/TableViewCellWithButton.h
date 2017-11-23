@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKTableViewCellWithButton.h"
+#import <MatrixKit/MatrixKit.h>
 
 @interface TableViewCellWithButton : MXKTableViewCellWithButton
 

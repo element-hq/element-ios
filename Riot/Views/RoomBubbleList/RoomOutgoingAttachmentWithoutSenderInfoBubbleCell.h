@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
+#import <MatrixKit/MatrixKit.h>
 #import "RoomOutgoingAttachmentBubbleCell.h"
 
 /**

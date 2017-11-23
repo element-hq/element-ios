@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKTableViewCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  'MediaAlbumTableCell' is a base class for displaying a user album.

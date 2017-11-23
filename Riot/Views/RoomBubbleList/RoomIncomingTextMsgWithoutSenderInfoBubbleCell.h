@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  `RoomIncomingTextMsgWithoutSenderInfoBubbleCell` displays incoming message bubbles without sender's information.
