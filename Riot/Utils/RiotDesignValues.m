@@ -112,9 +112,7 @@ UIKeyboardAppearance kRiotKeyboard;
     // Colors copied from Vector web
     kRiotColorLightGreen = UIColorFromRGB(0x50e2c2);
     kRiotColorLightOrange = UIColorFromRGB(0xf4c371);
-    
-    kRiotKeyboard = UIKeyboardAppearanceLight;
-    
+
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[RiotDesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
     [[RiotDesignValues sharedInstance] userInterfaceThemeDidChange];
