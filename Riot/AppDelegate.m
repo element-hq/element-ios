@@ -64,9 +64,12 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
-#ifdef MX_CALL_STACK_JINGLE
+
+#if __has_include(<MatrixSDK/MXJingleCallStack.h>)
+#define CALL_STACK_JINGLE
+#endif
+#ifdef CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
-#import <MatrixSDK/MXJingleCallAudioSessionConfigurator.h>
 #endif
 
 #define CALL_STATUS_BAR_HEIGHT 44
@@ -1840,7 +1843,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 #ifdef MX_CALL_STACK_ENDPOINT
             callStack = [[MXEndpointCallStack alloc] initWithMatrixId:mxSession.myUser.userId];
 #endif
-#ifdef MX_CALL_STACK_JINGLE
+#ifdef CALL_STACK_JINGLE
             callStack = [[MXJingleCallStack alloc] init];
 #endif
             if (callStack)
@@ -2412,7 +2415,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
         
-#ifdef MX_CALL_STACK_JINGLE
+#ifdef CALL_STACK_JINGLE
         audioSessionConfigurator = [[MXJingleCallAudioSessionConfigurator alloc] init];
 #endif
         
