@@ -312,6 +312,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
+    // Check whether the content protection is active before going further.
+    // Should fix the spontaneous logout.
+    while(![application isProtectedDataAvailable])
+    {
+        NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: wait for protected data");
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5f]];
+    }
+    
     // Set the App Group identifier.
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     sdkOptions.applicationGroupIdentifier = @"group.im.vector";
