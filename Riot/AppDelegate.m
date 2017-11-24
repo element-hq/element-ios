@@ -584,7 +584,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (@available(iOS 11.0, *))
     {
         // Riot has its own dark theme. Prevent iOS from applying its one
-        [[UIApplication sharedApplication] keyWindow].accessibilityIgnoresInvertColors = YES;
+        [application keyWindow].accessibilityIgnoresInvertColors = YES;
     }
     
     [self handleLaunchAnimation];
@@ -1053,7 +1053,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSLog(@"[AppDelegate] didReceiveLocalNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
+    NSLog(@"[AppDelegate] didReceiveLocalNotification: applicationState: %@", @(application.applicationState));
     
     NSString* roomId = notification.userInfo[@"room_id"];
     if (roomId.length)
