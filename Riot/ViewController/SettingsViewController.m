@@ -17,6 +17,7 @@
 
 #import "SettingsViewController.h"
 
+#import <MatrixSDK/MXCallKitAdapter.h>
 #import <MatrixKit/MatrixKit.h>
 
 #import <MediaPlayer/MediaPlayer.h>
