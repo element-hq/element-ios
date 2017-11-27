@@ -92,6 +92,8 @@
     growingTextView.font = [UIFont systemFontOfSize:15];
     growingTextView.textColor = kRiotPrimaryTextColor;
     growingTextView.tintColor = kRiotColorGreen;
+    
+    growingTextView.internalTextView.keyboardAppearance = kRiotKeyboard;
 }
 
 #pragma mark -

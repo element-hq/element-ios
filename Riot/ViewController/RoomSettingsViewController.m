@@ -2081,6 +2081,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
             topicTextView.textColor = kRiotSecondaryTextColor;
             
+            topicTextView.keyboardAppearance = kRiotKeyboard;
+            
             cell = roomTopicCell;
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_NAME)

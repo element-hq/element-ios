@@ -3542,7 +3542,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     __weak typeof(self) weakSelf = self;
 
-    __block UIAlertAction *autoAction, *lightAction, *darkAction;
+    __block UIAlertAction *autoAction, *lightAction, *darkAction, *blackAction;
     NSString *themePickerMessage;
 
     void (^actionBlock)(UIAlertAction *action) = ^(UIAlertAction * action) {
@@ -3563,6 +3563,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             else if (action == darkAction)
             {
                 newTheme = @"dark";
+            }
+            else if (action == blackAction)
+            {
+                newTheme = @"black";
             }
 
             NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
@@ -3598,6 +3602,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     darkAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_dark", @"Vector", nil)
                                            style:UIAlertActionStyleDefault
                                          handler:actionBlock];
+    blackAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_black", @"Vector", nil)
+                                          style:UIAlertActionStyleDefault
+                                        handler:actionBlock];
+
 
     UIAlertController *themePicker = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_picker_title", @"Vector", nil)
                                                                          message:themePickerMessage
@@ -3609,6 +3617,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     [themePicker addAction:lightAction];
     [themePicker addAction:darkAction];
+    [themePicker addAction:blackAction];
 
     // Cancel button
     [themePicker addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
