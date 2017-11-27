@@ -34,8 +34,7 @@
 #import "BugReportViewController.h"
 #import "RoomKeyRequestViewController.h"
 
-#import "NSBundle+MatrixKit.h"
-#import "MatrixSDK/MatrixSDK.h"
+#import <MatrixKit/MatrixKit.h>
 
 #import "Tools.h"
 #import "WidgetManager.h"
@@ -48,9 +47,6 @@
 
 // Calls
 #import "CallViewController.h"
-
-#import <MatrixSDK/MXCallKitAdapter.h>
-#import <MatrixSDK/MXCallKitConfiguration.h>
 
 #import "MXSession+Riot.h"
 #import "MXRoom+Riot.h"

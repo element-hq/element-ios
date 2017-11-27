@@ -22,7 +22,7 @@
 #import "AppDelegate.h"
 #import "BugReportViewController.h"
 
-#import "NSBundle+MatrixKit.h"
+#import <MatrixKit/MatrixKit.h>
 
 static RageShakeManager* sharedInstance = nil;
 

@@ -17,7 +17,8 @@
 
 #import "SettingsViewController.h"
 
-#import <MatrixSDK/MXCallKitAdapter.h>
+#import <MatrixKit/MatrixKit.h>
+
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <OLMKit/OLMKit.h>
@@ -26,7 +27,6 @@
 #import "AppDelegate.h"
 #import "AvatarGenerator.h"
 
-#import "MXKEncryptionKeysExportView.h"
 #import "BugReportViewController.h"
 
 #import "WebViewViewController.h"

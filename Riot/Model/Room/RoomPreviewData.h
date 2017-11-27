@@ -16,8 +16,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <MatrixKit/MatrixKit.h>
 #import "RoomEmailInvitation.h"
-#import "MXSession.h"
 #import "RoomDataSource.h"
 
 /**

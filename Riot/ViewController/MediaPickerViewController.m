@@ -29,7 +29,7 @@
 
 #import "MediaAlbumTableCell.h"
 
-#import "MXKPieChartView.h"
+#import <MatrixKit/MatrixKit.h>
 
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;
