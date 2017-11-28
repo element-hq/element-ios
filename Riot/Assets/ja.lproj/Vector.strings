@@ -289,7 +289,7 @@
 "settings_enable_push_notif" = "この端末での通知";
 "settings_show_decrypted_content" = "復号化された文章を表示";
 "settings_global_settings_info" = "あなたの %@ webクライアント上で、全体の通知設定が可能です";
-"settings_pin_rooms_with_missed_notif" = "";
+"settings_pin_rooms_with_missed_notif" = "通知の届かなかった部屋をピン止めする";
 "settings_on_denied_notification" = "%@で通知されないように設定されています。あなたの端末設定で許可してください";
 "settings_callkit_info" = "画面がロックされているときに着信がありました。Riotの着信はシステムの通話履歴で確認してください。 iCloudが有効になっている場合、この通話履歴はAppleと共有されます。";
 "settings_ui_language" = "言語";
@@ -469,3 +469,4 @@
 "share_extension_failed_to_encrypt" = "送信に失敗しました。この部屋の暗号設定をメインの端末で確認して下さい";
 "room_details_advanced_e2e_encryption_prompt_message" = "End-to-end暗号化は実験的なものであり、信頼性が低い場合があります。\n\n発言を保護するためにはまだそれを信用すべきではありません。\n\n端末は、まだ参加する前の発言履歴を復号化することはできません。\n\n部屋の暗号化が今から有効になったら、もう無効にすることはできません。\n\n暗号化された発言は、まだ暗号化を実装していないアプリでは表示されません。";
 "settings_enable_callkit" = "呼び出しの統合";
+"settings_pin_rooms_with_unread" = "未読のある部屋をピン止めする";
