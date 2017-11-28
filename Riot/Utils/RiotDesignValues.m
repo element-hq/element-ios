@@ -56,6 +56,11 @@ UIColor *kRiotTextColorGray;
 UIColor *kRiotTextColorWhite;
 UIColor *kRiotTextColorDarkWhite;
 
+// Riot Text Fonts
+UIFont *kRiotTextFontBody;
+UIFont *kRiotTextFontBold;
+UIFont *kRiotTextFontEmphasized;
+
 NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
 
@@ -119,6 +124,26 @@ UIKeyboardAppearance kRiotKeyboard;
 
     // Observe "Invert Colours" settings changes (available since iOS 11)
     [[NSNotificationCenter defaultCenter] addObserver:[RiotDesignValues sharedInstance] selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+
+    // Observe Dynamic Type changes
+    [[NSNotificationCenter defaultCenter] addObserver:[RiotDesignValues sharedInstance] selector:@selector(userInterfaceContentSizeCategoryDidChange) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    [[RiotDesignValues sharedInstance] userInterfaceContentSizeCategoryDidChange];
+}
+
+- (void)userInterfaceContentSizeCategoryDidChange
+{
+    UIFontDescriptor *bodyDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
+    kRiotTextFontBody = [UIFont fontWithDescriptor:bodyDescriptor size:0.0];
+
+    UIFontDescriptor *boldDescriptor = [bodyDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+    kRiotTextFontBold = [UIFont fontWithDescriptor:boldDescriptor size:0.0];
+
+    UIFontDescriptor *italicDescriptor = [bodyDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+    kRiotTextFontEmphasized = [UIFont fontWithDescriptor:italicDescriptor size:0.0];
+
+    // Reuse the "theme changed" notification to let the rest of the app know
+    // that some theme-related thing (in this case the font size) changed.
+    [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

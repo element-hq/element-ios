@@ -53,6 +53,11 @@ extern UIColor *kRiotColorRed;
 extern UIColor *kRiotColorIndigo;
 extern UIColor *kRiotColorOrange;
 
+#pragma mark - Riot Fonts
+extern UIFont *kRiotTextFontBody;
+extern UIFont *kRiotTextFontBold;
+extern UIFont *kRiotTextFontEmphasized;
+
 #pragma mark - Riot Standard Room Member Power Level
 extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;

@@ -58,4 +58,9 @@
  */
 @property (nonatomic) BOOL activeCall;
 
+/**
+ Handles user interface theme and font-size changes.
+ */
+- (void)userInterfaceThemeDidChange;
+
 @end

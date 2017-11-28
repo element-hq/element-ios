@@ -62,14 +62,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         timeLabel.text = [bubbleData.eventFormatter timeStringFromDate:component.date];
         timeLabel.textAlignment = NSTextAlignmentRight;
         timeLabel.textColor = kRiotSecondaryTextColor;
-        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-        {
-             timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
-        }
-        else
-        {
-             timeLabel.font = [UIFont systemFontOfSize:12];
-        }
+        timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         timeLabel.adjustsFontSizeToFitWidth = YES;
 
         timeLabel.tag = componentIndex;
@@ -264,14 +257,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
         timeLabel.textColor = kRiotSecondaryTextColor;
-        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-        {
-            timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
-        }
-        else
-        {
-            timeLabel.font = [UIFont systemFontOfSize:12];
-        }
+        timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         timeLabel.adjustsFontSizeToFitWidth = YES;
         
         [timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];

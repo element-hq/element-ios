@@ -78,18 +78,22 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
-    
+
     self.separatorView.backgroundColor = kRiotAuxiliaryColor;
-    
+
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
     growingTextView.layer.borderWidth = 0;
     growingTextView.backgroundColor = [UIColor clearColor];
-    
-    growingTextView.font = [UIFont systemFontOfSize:15];
+
+    growingTextView.font = kRiotTextFontBody;
     growingTextView.textColor = kRiotPrimaryTextColor;
     growingTextView.tintColor = kRiotColorGreen;
     

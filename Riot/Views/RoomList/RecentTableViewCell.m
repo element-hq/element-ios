@@ -114,30 +114,16 @@
                 self.missedNotifAndUnreadIndicator.backgroundColor = kRiotAuxiliaryColor;
             }
             
-            // Use bold font for the room title
-            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-            {
-                self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
-            }
-            else
-            {
-                self.roomTitle.font = [UIFont boldSystemFontOfSize:17];
-            }
+            self.roomTitle.font = kRiotTextFontBold;
         }
         else
         {
             self.lastEventDate.textColor = kRiotSecondaryTextColor;
-            
-            // The room title is not bold anymore
-            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-            {
-                self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
-            }
-            else
-            {
-                self.roomTitle.font = [UIFont systemFontOfSize:17];
-            }
+
+            self.roomTitle.font = kRiotTextFontBody;
         }
+
+        self.lastEventDescription.font = kRiotTextFontBody;
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
 

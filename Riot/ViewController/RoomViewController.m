@@ -436,13 +436,14 @@
     // Prepare jump to last unread banner
     self.jumpToLastUnreadBannerContainer.backgroundColor = kRiotPrimaryBgColor;
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotPrimaryTextColor, NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
-    
+
+    [(RoomInputToolbarView*)self.inputToolbarView userInterfaceThemeDidChange];
     
     self.expandedHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
     self.previewHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
     
     missedDiscussionsBadgeLabel.textColor = kRiotPrimaryBgColor;
-    missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
+    missedDiscussionsBadgeLabel.font = kRiotTextFontBold;
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.

@@ -147,6 +147,11 @@
         
         // Use the secondary bg color to set the background color in the default CSS.
         NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+
+        // The system font used for the body is oversized in relation
+        // to the font used for pre/code, so we're making it a bit smaller.
+        CGFloat fontSizeCode = kRiotTextFontBody.pointSize/1.5;
+
         self.defaultCSS = [NSString stringWithFormat:@" \
                            pre,code { \
                            background-color: #%06lX; \
@@ -154,9 +159,9 @@
                            font-family: monospace; \
                            white-space: pre; \
                            -coretext-fontname: Menlo-Regular; \
-                           font-size: small; \
-                           }", (unsigned long)bgColor];
-        
+                           font-size: %fpt; \
+                           }", (unsigned long)bgColor, fontSizeCode];
+
         self.defaultTextColor = kRiotPrimaryTextColor;
         self.subTitleTextColor = kRiotSecondaryTextColor;
         self.prefixTextColor = kRiotSecondaryTextColor;
@@ -164,20 +169,13 @@
         self.encryptingTextColor = kRiotColorGreen;
         self.sendingTextColor = kRiotSecondaryTextColor;
         self.errorTextColor = kRiotColorRed;
-        
-        self.defaultTextFont = [UIFont systemFontOfSize:15];
-        self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
-        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-        {
-            self.bingTextFont = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
-        }
-        else
-        {
-            self.bingTextFont = [UIFont systemFontOfSize:15];
-        }
-        self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
-        self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
-        self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
+
+        self.defaultTextFont = kRiotTextFontBody;
+        self.prefixTextFont = kRiotTextFontBold;
+        self.bingTextFont = kRiotTextFontBody;
+        self.stateEventTextFont = kRiotTextFontEmphasized;
+        self.callNoticesTextFont = kRiotTextFontEmphasized;
+        self.encryptedMessagesTextFont = kRiotTextFontEmphasized;
         self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
     }
     return self;
