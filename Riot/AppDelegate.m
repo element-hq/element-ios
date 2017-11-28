@@ -20,9 +20,6 @@
 #import <Intents/Intents.h>
 #import <PushKit/PushKit.h>
 
-#import <MatrixSDK/MXCallKitAdapter.h>
-#import <MatrixSDK/MXCallKitConfiguration.h>
-
 #import "RecentsDataSource.h"
 #import "RoomDataSource.h"
 
