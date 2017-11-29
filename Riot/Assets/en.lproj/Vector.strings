@@ -348,6 +348,7 @@
 "settings_ui_theme_auto" = "Auto";
 "settings_ui_theme_light" = "Light";
 "settings_ui_theme_dark" = "Dark";
+"settings_ui_theme_black" = "Black";
 "settings_ui_theme_picker_title" = "Select a theme";
 "settings_ui_theme_picker_message" = "\"Auto\" uses your device \"Invert Colours\" settings";
 
@@ -540,4 +541,11 @@
 // Share extension
 "share_extension_auth_prompt" = "Login in the main app to share content";
 "share_extension_failed_to_encrypt" = "Failed to send. Check in the main app the encryption settings for this room";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "Encryption key request";
+"e2e_room_key_request_message" = "Your unverified device '%@' is requesting encryption keys.";
+"e2e_room_key_request_start_verification" = "Start verification...";
+"e2e_room_key_request_share_without_verifying" = "Share without verifying";
+"e2e_room_key_request_ignore_request" = "Ignore request";
 

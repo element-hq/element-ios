@@ -62,6 +62,8 @@ extern UIStatusBarStyle kRiotDesignStatusBarStyle;
 extern UIBarStyle kRiotDesignSearchBarStyle;
 extern UIColor *kRiotDesignSearchBarTintColor;
 
+extern UIKeyboardAppearance kRiotKeyboard;
+
 /**
  `RiotDesignValues` class manages the Riot design parameters
  */

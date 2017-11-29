@@ -43,6 +43,7 @@ UIColor *kRiotColorOrange;
 // Riot Background Colors
 UIColor *kRiotBgColorWhite;
 UIColor *kRiotBgColorBlack;
+UIColor *kRiotBgColorOLEDBlack;
 UIColor *kRiotColorLightGrey;
 UIColor *kRiotColorLightBlack;
 UIColor *kRiotColorLightKeyboard;
@@ -61,6 +62,8 @@ NSInteger const kRiotRoomAdminLevel = 100;
 UIStatusBarStyle kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
 UIBarStyle kRiotDesignSearchBarStyle = UIBarStyleDefault;
 UIColor *kRiotDesignSearchBarTintColor = nil;
+
+UIKeyboardAppearance kRiotKeyboard;
 
 @implementation RiotDesignValues
 
@@ -92,6 +95,7 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
     
     kRiotBgColorWhite = [UIColor whiteColor];
     kRiotBgColorBlack = UIColorFromRGB(0x2D2D2D);
+    kRiotBgColorOLEDBlack = [UIColor blackColor];
     
     kRiotColorLightGrey = UIColorFromRGB(0xF2F2F2);
     kRiotColorLightBlack = UIColorFromRGB(0x353535);
@@ -108,7 +112,7 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
     // Colors copied from Vector web
     kRiotColorLightGreen = UIColorFromRGB(0x50e2c2);
     kRiotColorLightOrange = UIColorFromRGB(0xf4c371);
-    
+
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[RiotDesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
     [[RiotDesignValues sharedInstance] userInterfaceThemeDidChange];
@@ -145,7 +149,6 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
         theme = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
     }
     
-    // Currently only 2 themes is supported
     if ([theme isEqualToString:@"dark"])
     {
         // Set dark theme colors
@@ -164,6 +167,31 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
         kRiotAuxiliaryColor = kRiotTextColorGray;
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
         kRiotKeyboardColor = kRiotColorDarkKeyboard;
+        
+        [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceDark;
+        kRiotKeyboard = UIKeyboardAppearanceDark;
+    }
+    else if ([theme isEqualToString:@"black"])
+    {
+        // Set black theme colors
+        kRiotPrimaryBgColor = kRiotBgColorOLEDBlack;
+        kRiotSecondaryBgColor = kRiotColorLightBlack;
+        kRiotPrimaryTextColor = kRiotTextColorWhite;
+        kRiotSecondaryTextColor = kRiotTextColorGray;
+        kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+        kRiotTopicTextColor = kRiotTextColorDarkWhite;
+        kRiotSelectedBgColor = [UIColor blackColor];
+        
+        kRiotDesignStatusBarStyle = UIStatusBarStyleLightContent;
+        kRiotDesignSearchBarStyle = UIBarStyleBlack;
+        kRiotDesignSearchBarTintColor = kRiotColorGreen;
+        
+        kRiotAuxiliaryColor = kRiotTextColorGray;
+        kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
+        kRiotKeyboardColor = kRiotColorDarkKeyboard;
+        
+        [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceDark;
+        kRiotKeyboard = UIKeyboardAppearanceDark;
     }
     else
     {
@@ -183,6 +211,9 @@ UIColor *kRiotDesignSearchBarTintColor = nil;
         kRiotAuxiliaryColor = kRiotColorSilver;
         kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
         kRiotKeyboardColor = kRiotColorLightKeyboard;
+                
+        [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceLight;
+        kRiotKeyboard = UIKeyboardAppearanceLight;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];

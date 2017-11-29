@@ -17,20 +17,8 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-#import <MXLogger.h>
-
 int main(int argc, char * argv[]) {
     @autoreleasepool {
-
-        // Set the App Group identifier.
-        MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-        sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-
-        // Redirect NSLogs to files only if we are not debugging
-        if (!isatty(STDERR_FILENO)) {
-            [MXLogger redirectNSLogToFiles:YES];
-        }
-
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }

@@ -20,8 +20,7 @@
 #import "ShareExtensionManager.h"
 #import "RecentCellData.h"
 #import "RiotDesignValues.h"
-#import "MXKPieChartView.h"
-#import "MXKPieChartHUD.h"
+#import <MatrixKit/MatrixKit.h>
 
 @interface RoomsListViewController () <ShareExtensionManagerDelegate>
 

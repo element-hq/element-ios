@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomIncomingAttachmentBubbleCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  `RoomIncomingAttachmentBubbleCell` displays incoming attachment bubbles with sender's information.

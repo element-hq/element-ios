@@ -17,7 +17,8 @@
 #import <Foundation/Foundation.h>
 #import <MatrixSDK/MatrixSDK.h>
 
-#import "MXKRecentCellData.h"
+#import <MatrixKit/MatrixKit.h>
+
 /**
  `RecentCellData` is Vector cuustomized MXKRecentCellData` cell.
  */

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  `RoomOutgoingTextMsgWithoutSenderInfoBubbleCell` displays outgoing message bubbles without user's name.
