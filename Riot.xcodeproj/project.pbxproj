@@ -98,6 +98,9 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
+		F0173EB51FCF346800B5F6A3 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EAF1FCF346800B5F6A3 /* Vector.strings */; };
+		F0173EB61FCF346800B5F6A3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EB11FCF346800B5F6A3 /* Localizable.strings */; };
+		F0173EB71FCF346800B5F6A3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EB31FCF346800B5F6A3 /* InfoPlist.strings */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
 		F04AF26A1F83A4C100D20F4D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF25F1F83A4C000D20F4D /* InfoPlist.strings */; };
 		F04AF26B1F83A4C100D20F4D /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2611F83A4C000D20F4D /* Vector.strings */; };
@@ -730,6 +733,9 @@
 		C5258DFF261AA3AB228A3F11 /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
+		F0173EB01FCF346800B5F6A3 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = Vector.strings; sourceTree = "<group>"; };
+		F0173EB21FCF346800B5F6A3 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = Localizable.strings; sourceTree = "<group>"; };
+		F0173EB41FCF346800B5F6A3 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = InfoPlist.strings; sourceTree = "<group>"; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		F02C1A841E8EB04C0045A404 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
 		F04AF2601F83A4C000D20F4D /* zh_Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_Hans; path = InfoPlist.strings; sourceTree = "<group>"; };
@@ -1573,6 +1579,16 @@
 			path = SiriIntents;
 			sourceTree = "<group>";
 		};
+		F0173EAE1FCF346800B5F6A3 /* vi.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				F0173EAF1FCF346800B5F6A3 /* Vector.strings */,
+				F0173EB11FCF346800B5F6A3 /* Localizable.strings */,
+				F0173EB31FCF346800B5F6A3 /* InfoPlist.strings */,
+			);
+			path = vi.lproj;
+			sourceTree = "<group>";
+		};
 		F04AF25E1F83A4C000D20F4D /* zh_Hans.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -1643,6 +1659,7 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F0173EAE1FCF346800B5F6A3 /* vi.lproj */,
 				F04AF2631F83A4C000D20F4D /* eu.lproj */,
 				F04AF25E1F83A4C000D20F4D /* zh_Hans.lproj */,
 				32918EA41F473BDB0076CA16 /* ru.lproj */,
@@ -2641,6 +2658,7 @@
 				ru,
 				zh_Hans,
 				eu,
+				vi,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -2707,6 +2725,7 @@
 				F083BDAB1E7009ED00A9B29C /* placeholder@2x.png in Resources */,
 				F083BE4D1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				24B510401EFA88CC004C6AD2 /* ReadReceiptsViewController.xib in Resources */,
+				F0173EB61FCF346800B5F6A3 /* Localizable.strings in Resources */,
 				F083BDC81E7009ED00A9B29C /* search_icon.png in Resources */,
 				F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */,
 				F083BE431E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
@@ -2997,6 +3016,7 @@
 				F083BE8B1E7009ED00A9B29C /* ExpandedRoomTitleView.xib in Resources */,
 				F083BE691E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				F083BDBC1E7009ED00A9B29C /* riot_icon.png in Resources */,
+				F0173EB71FCF346800B5F6A3 /* InfoPlist.strings in Resources */,
 				F083BE2E1E7009ED00A9B29C /* ForgotPasswordInputsView.xib in Resources */,
 				F083BDC71E7009ED00A9B29C /* search_bg@3x.png in Resources */,
 				F083BDBF1E7009ED00A9B29C /* scrolldown.png in Resources */,
@@ -3044,6 +3064,7 @@
 				F083BD561E7009ED00A9B29C /* camera_video_capture.png in Resources */,
 				F083BD651E7009ED00A9B29C /* directChatOff.png in Resources */,
 				F083BE811E7009ED00A9B29C /* PublicRoomTableViewCell.xib in Resources */,
+				F0173EB51FCF346800B5F6A3 /* Vector.strings in Resources */,
 				F083BE851E7009ED00A9B29C /* RoomIdOrAliasTableViewCell.xib in Resources */,
 				F083BD461E7009ED00A9B29C /* call_video_mute_off_icon@2x.png in Resources */,
 				F083BD311E7009ED00A9B29C /* bubbles_bg_landscape@2x.png in Resources */,
@@ -3584,6 +3605,30 @@
 				32AE61F11F0D2183007255F4 /* nl */,
 			);
 			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		F0173EAF1FCF346800B5F6A3 /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F0173EB01FCF346800B5F6A3 /* vi */,
+			);
+			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		F0173EB11FCF346800B5F6A3 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F0173EB21FCF346800B5F6A3 /* vi */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F0173EB31FCF346800B5F6A3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F0173EB41FCF346800B5F6A3 /* vi */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		F04AF25F1F83A4C000D20F4D /* InfoPlist.strings */ = {
