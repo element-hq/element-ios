@@ -17,7 +17,7 @@
 
 #import "ContactTableViewCell.h"
 
-#import "MXKContactManager.h"
+#import <MatrixKit/MatrixKit.h>
 
 #import "RiotDesignValues.h"
 

@@ -1,3 +1,25 @@
+Changes in 0.6.2 (2017-11-13)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.2).
+
+Bug Fix:
+ * Share extension silently fails on big pics - eg panoramas (#1627).
+ * Share extension improvements: display the search input by default,... (#1611).
+
+Changes in 0.6.1 (2017-10-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.1).
+ * Add support for sending messages via Siri in e2e rooms, thanks to @morozkin (PR #1613).
+
+Bug Fix:
+ * Jitsi: Crash if the user display name has several components (#1616).
+ * CallKit - When I reject or answer a call on one device, it should stop ringing on all other iOS devices (#1618).
+ * The Call View Controller is displayed whereas the call has been cancelled.
+
 Changes in 0.6.0 (2017-10-23)
 ===============================================
 

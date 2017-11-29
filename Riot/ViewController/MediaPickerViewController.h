@@ -29,10 +29,11 @@
  Tells the delegate that the user select an image.
  
  @param mediaPickerController the `MediaPickerViewController` instance.
- @param image the UIImage hosting the image data to send.
- @param imageURL the url that references the image in the file system or in the AssetsLibrary framework.
+ @param imageData the full-sized image data of the selected image.
+ @param mimetype the image MIME type (nil if unknown).
+ @param isPhotoLibraryAsset tell whether the image has been selected from the user's photos library or not.
  */
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL*)imageURL;
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset;
 
 /**
  Tells the delegate that the user select a video.

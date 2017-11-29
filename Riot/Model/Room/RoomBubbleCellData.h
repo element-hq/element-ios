@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomBubbleCellDataWithAppendingMode.h"
+#import <MatrixKit/MatrixKit.h>
 
 // Custom tags for MXKRoomBubbleCellDataStoring.tag
 typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)

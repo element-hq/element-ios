@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomOutgoingTextMsgBubbleCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  `RoomOutgoingTextMsgBubbleCell` displays outgoing message bubbles with user's picture and name.

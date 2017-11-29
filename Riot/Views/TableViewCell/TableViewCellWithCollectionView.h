@@ -22,6 +22,7 @@
 
 @property (strong, nonatomic) IBOutlet UIView *editionView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *editionViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *editionViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *directChatButton;
 @property (weak, nonatomic) IBOutlet UIImageView *directChatImageView;
 @property (weak, nonatomic) IBOutlet UIButton *notificationsButton;

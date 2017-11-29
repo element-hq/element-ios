@@ -2081,6 +2081,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
             topicTextView.textColor = kRiotSecondaryTextColor;
             
+            topicTextView.keyboardAppearance = kRiotKeyboard;
+            
             cell = roomTopicCell;
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_NAME)
@@ -3043,17 +3045,21 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
     [self dismissMediaPicker];
     
-    if (image)
+    if (imageData)
     {
-        [self getNavigationItem].rightBarButtonItem.enabled = YES;
-        
-        [updatedItemsDict setObject:image forKey:kRoomSettingsAvatarKey];
-        
-        [self refreshRoomSettings];
+        UIImage *image = [UIImage imageWithData:imageData];
+        if (image)
+        {
+            [self getNavigationItem].rightBarButtonItem.enabled = YES;
+            
+            [updatedItemsDict setObject:image forKey:kRoomSettingsAvatarKey];
+            
+            [self refreshRoomSettings];
+        }
     }
 }
 

@@ -16,7 +16,7 @@
 
 #import "WidgetManager.h"
 
-#import "MXKAppSettings.h"
+#import <MatrixKit/MatrixKit.h>
 
 #pragma mark - Contants
 

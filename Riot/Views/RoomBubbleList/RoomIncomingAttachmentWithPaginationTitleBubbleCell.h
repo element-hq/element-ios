@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomIncomingAttachmentBubbleCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  `RoomIncomingAttachmentWithPaginationTitleBubbleCell` displays incoming attachment bubbles with sender's information and a pagination title.
