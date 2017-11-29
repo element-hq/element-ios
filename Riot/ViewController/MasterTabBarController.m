@@ -120,6 +120,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    NSLog(@"[MasterTabBarController] viewDidAppear");
     [super viewDidAppear:animated];
     
     // Check whether we're not logged in
@@ -332,6 +333,8 @@
 
 - (void)showAuthenticationScreen
 {
+    NSLog(@"[MasterTabBarController] showAuthenticationScreen");
+    
     // Check whether an authentication screen is not already shown or preparing
     if (!self.authViewController && !isAuthViewControllerPreparing)
     {
