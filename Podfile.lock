@@ -44,27 +44,27 @@ PODS:
   - GZIP (1.2.1)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.9.12)
-  - MatrixKit (0.7.2):
+  - MatrixKit (0.7.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
-    - MatrixKit/Core (= 0.7.2)
-    - MatrixSDK (= 0.10.3)
-  - MatrixKit/AppExtension (0.7.2):
+    - MatrixKit/Core (= 0.7.3)
+    - MatrixSDK (= 0.10.4)
+  - MatrixKit/AppExtension (0.7.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
-    - MatrixSDK (= 0.10.3)
-  - MatrixKit/Core (0.7.2):
+    - MatrixSDK (= 0.10.4)
+  - MatrixKit/Core (0.7.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
-    - MatrixSDK (= 0.10.3)
-  - MatrixSDK (0.10.3):
+    - MatrixSDK (= 0.10.4)
+  - MatrixSDK (0.10.4):
     - AFNetworking (~> 3.1.0)
     - GZIP (~> 1.2.1)
   - OLMKit (2.2.2):
@@ -82,8 +82,8 @@ DEPENDENCIES:
   - DTCoreText
   - GBDeviceInfo (~> 4.4.0)
   - GoogleAnalytics
-  - MatrixKit (= 0.7.2)
-  - MatrixKit/AppExtension (= 0.7.2)
+  - MatrixKit (= 0.7.3)
+  - MatrixKit/AppExtension (= 0.7.3)
   - OLMKit
   - Realm (~> 3.0.1)
   - WebRTC (= 61.5.19063)
@@ -98,12 +98,12 @@ SPEC CHECKSUMS:
   GZIP: 7ee835f989fb3c6ea79005fc90b8fa6af710a70d
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: b8a1038a101c78616c4df87815ac1556349faf98
-  MatrixKit: d1e15f32b4475ca3ca4795036b3f7e77a2907e74
-  MatrixSDK: fb748691aadc4bdbf3b26ce3c0f0231041368b3a
+  MatrixKit: ca47e31127c483bc1717ece23834c42dd52dd3c6
+  MatrixSDK: 66bca5fec7ce03bd9872a42a7877473fcbf822e3
   OLMKit: b9d8c0ffee9ea8c45bc0aaa9afb47f93fba7efbd
   Realm: 6f23fd1f178a09342eac21bfa7c2bf4312a7a180
   WebRTC: 141474ba648e0b940a70696c183451b4a3b2b10f
 
-PODFILE CHECKSUM: 7f9dbb8da3d54f9176ad46ddcca746ade3e48bf1
+PODFILE CHECKSUM: 1beb6729176f4d8818ebb6c7c3989534997007fd
 
 COCOAPODS: 1.3.1
