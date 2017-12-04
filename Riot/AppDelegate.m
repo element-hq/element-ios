@@ -34,8 +34,7 @@
 #import "BugReportViewController.h"
 #import "RoomKeyRequestViewController.h"
 
-#import "NSBundle+MatrixKit.h"
-#import "MatrixSDK/MatrixSDK.h"
+#import <MatrixKit/MatrixKit.h>
 
 #import "Tools.h"
 #import "WidgetManager.h"
@@ -48,9 +47,6 @@
 
 // Calls
 #import "CallViewController.h"
-
-#import <MatrixSDK/MXCallKitAdapter.h>
-#import <MatrixSDK/MXCallKitConfiguration.h>
 
 #import "MXSession+Riot.h"
 #import "MXRoom+Riot.h"
@@ -315,6 +311,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
+    NSUInteger loopCount = 0;
+    
+    // Check whether the content protection is active before going further.
+    // Should fix the spontaneous logout.
+    while(![application isProtectedDataAvailable])
+    {
+        loopCount++;
+        // Wait for protected data.
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
+    }
+    
     // Set the App Group identifier.
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     sdkOptions.applicationGroupIdentifier = @"group.im.vector";
@@ -324,7 +331,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [MXLogger redirectNSLogToFiles:YES];
     }
 
-    NSLog(@"[AppDelegate] willFinishLaunchingWithOptions");
+    NSLog(@"[AppDelegate] willFinishLaunchingWithOptions (%tu)", loopCount);
     
     return YES;
 }
@@ -579,7 +586,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (@available(iOS 11.0, *))
     {
         // Riot has its own dark theme. Prevent iOS from applying its one
-        [[UIApplication sharedApplication] keyWindow].accessibilityIgnoresInvertColors = YES;
+        [application keyWindow].accessibilityIgnoresInvertColors = YES;
     }
     
     [self handleLaunchAnimation];
@@ -1048,7 +1055,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSLog(@"[AppDelegate] didReceiveLocalNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
+    NSLog(@"[AppDelegate] didReceiveLocalNotification: applicationState: %@", @(application.applicationState));
     
     NSString* roomId = notification.userInfo[@"room_id"];
     if (roomId.length)

@@ -23,7 +23,7 @@
 
 #import "MXRoom+Riot.h"
 
-#import "NSBundle+MatrixKit.h"
+#import <MatrixKit/MatrixKit.h>
 
 #import "RoomViewController.h"
 

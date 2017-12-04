@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKTableViewCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 @class TableViewCellWithCheckBoxes;
 

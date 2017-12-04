@@ -16,11 +16,7 @@
 
 #import "IntentHandler.h"
 
-#import "MXKAccount.h"
-#import "MXKAccountManager.h"
-#import "MXFileStore.h"
-#import "MXRestClient.h"
-#import "MXSession.h"
+#import <MatrixKit/MatrixKit.h>
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
 #define CALL_STACK_JINGLE

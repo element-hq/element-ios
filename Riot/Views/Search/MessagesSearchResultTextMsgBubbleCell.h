@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomBubbleTableViewCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  `MessagesSearchResultTextMsgBubbleCell` displays a message text with the information of the room and the sender.

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKRoomIncomingTextMsgBubbleCell.h"
+#import <MatrixKit/MatrixKit.h>
 
 /**
  `RoomIncomingTextMsgWithPaginationTitleBubbleCell` displays incoming message bubbles with sender's information.

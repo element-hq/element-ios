@@ -16,7 +16,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <HPGrowingTextView.h>
+#import <HPGrowingTextView/HPGrowingTextView.h>
 #import "RoomInputToolbarView.h"
 
 @interface KeyboardGrowingTextView: HPGrowingTextView

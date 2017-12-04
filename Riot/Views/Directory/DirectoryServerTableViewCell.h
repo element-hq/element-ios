@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "MXKDirectoryServerCellDataStoring.h"
-
 /**
  The `DirectoryServerTableViewCell` cell displays a server .
  */

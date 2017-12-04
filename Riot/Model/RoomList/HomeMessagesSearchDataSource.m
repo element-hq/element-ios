@@ -15,6 +15,8 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MatrixKit.h>
+
 #import "HomeMessagesSearchDataSource.h"
 
 #import "RoomBubbleCellData.h"

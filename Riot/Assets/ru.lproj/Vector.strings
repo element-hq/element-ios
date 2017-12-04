@@ -343,8 +343,8 @@
 "room_details_copy_room_address" = "Копировать адрес комнаты";
 "room_details_copy_room_url" = "Копировать URL-адрес комнаты";
 // Read Receipts
-"read_receipts_list" = "Чтение списка расписок";
-"receipt_status_read" = "Читать: ";
+"read_receipts_list" = "Список прочитавших";
+"receipt_status_read" = "Прочитано: ";
 // Media picker
 "media_picker_library" = "Библиотека";
 "media_picker_select" = "Выбор";
@@ -464,7 +464,7 @@
 "settings_ui_theme_light" = "Светлая";
 "settings_ui_theme_dark" = "Темная";
 "settings_ui_theme_picker_title" = "Выберите тему";
-"settings_ui_theme_picker_message" = "\"Авто\" использует параметры устройства \"Инверсия цветов\"";
+"settings_ui_theme_picker_message" = "\"Авто\" использует настройки \"Инверсия цветов\" вашего устройства";
 "settings_enable_rageshake" = "Встряхните устройство, чтобы сообщить об ошибке";
 "event_formatter_widget_added" = "%@ виджет добавлен %@";
 "event_formatter_widget_removed" = "%@ виджет удален %@";

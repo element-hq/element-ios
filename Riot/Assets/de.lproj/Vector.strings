@@ -153,8 +153,8 @@
 "room_one_user_is_typing" = "%@ tippt…";
 "room_two_users_are_typing" = "%@ & %@ tippen…";
 "room_many_users_are_typing" = "%@, %@ & andere tippen…";
-"room_message_placeholder" = "Sende eine Nachricht (unverschlüsselt)…";
-"encrypted_room_message_placeholder" = "Seine eine verschlüsselte Nachricht…";
+"room_message_placeholder" = "Nachricht senden (unverschlüsselt)…";
+"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht senden…";
 "room_message_short_placeholder" = "Sende eine Nachricht…";
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet. Jetzt %@ oder %@?";
@@ -308,7 +308,7 @@
 "room_ongoing_conference_call" = "Laufender Konferenz-Anruf. Trete bei als %@ oder %@.";
 "room_event_action_redact" = "Schwärzen";
 "room_warning_about_encryption" = "Ende-zu-Ende Verschlüsselung ist in Beta und ist evtl. nicht zuverlässig.\n\nMan sollte noch nicht darauf vertrauen, dass die Daten sicher sind.\n\nGeräte werden den Verlauf vor dem Beitritt des Raumes nicht entschlüsseln können.\n\nVerschlüsselte Nachrichten sind nicht lesbar auf Clients, die Verschlüsselung noch nicht implementiert haben.";
-"unknown_devices_alert" = "Dieser Raum enthält unbekannte Geräte die nicht verifiziert wurden.\nDas bedeutet es gibt keine Garantie, dass sie dem User gehören, der angegeben ist.\nWir empfehlen eine Überprüfung für jedes Gerät bevor du weitermachst, aber du kannst die Nachricht erneut senden ohne Verifikation.";
+"unknown_devices_alert" = "Dieser Raum enthält unbekannte Geräte, die nicht verifiziert wurden.\nDas bedeutet, es gibt keine Garantie, dass sie dem User gehören, der angegeben ist.\nWir empfehlen eine Überprüfung für jedes Gerät, bevor du weitermachst, aber du kannst die Nachricht erneut senden ohne Verifikation.";
 "room_preview_unlinked_email_warning" = "Diese Einladung wurde an %@ gesendet, die Adresse ist nicht mit diesem Konto verbunden. Du kannst dich mit einem anderen Konto anmelden, oder diese E-Mail-Adresse deinem Konto hinzufügen.";
 "room_preview_try_join_an_unknown_room" = "Du versuchst auf %@ zuzugreifen.  Möchtest du dem Raum beitreten um teilzunehmen?";
 "settings_config_identity_server" = "Identitätsserver ist %@";
@@ -437,7 +437,7 @@
 "settings_ui_theme_dark" = "Dunkel";
 "settings_ui_theme_picker_title" = "Thema wählen";
 "send_to" = "Sende an %@";
-"sending" = "Sende…";
+"sending" = "Senden";
 "room_event_failed_to_send" = "Senden fehlgeschlagen";
 "settings_labs_matrix_apps" = "Matrix Apps";
 "room_details_direct_chat" = "Direkter Chat";
