@@ -24,18 +24,21 @@
     void (^onComplete)();
 
     EncryptionInfoView *encryptionInfoView;
+
+    BOOL wasNewDevice;
 }
 @end
 
 @implementation RoomKeyRequestViewController
 
-- (instancetype)initWithDeviceInfo:(MXDeviceInfo *)deviceInfo andMatrixSession:(MXSession *)session onComplete:(void (^)())onCompleteBlock
+- (instancetype)initWithDeviceInfo:(MXDeviceInfo *)deviceInfo wasNewDevice:(BOOL)theWasNewDevice andMatrixSession:(MXSession *)session onComplete:(void (^)())onCompleteBlock
 {
     self = [super init];
     if (self)
     {
         _mxSession = session;
         _device = deviceInfo;
+        wasNewDevice = theWasNewDevice;
         onComplete = onCompleteBlock;
     }
     return self;
@@ -48,7 +51,16 @@
     if (rootViewController)
     {
         NSString *title = NSLocalizedStringFromTable(@"e2e_room_key_request_title", @"Vector", nil);
-        NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"e2e_room_key_request_message", @"Vector", nil), _device.displayName];
+        NSString *message;
+        if (wasNewDevice)
+        {
+            message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"e2e_room_key_request_message_new_device", @"Vector", nil), _device.displayName];
+        }
+        else
+        {
+            message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"e2e_room_key_request_message", @"Vector", nil), _device.displayName];
+        }
+
         _alertController = [UIAlertController alertControllerWithTitle:title
                                                                message:message
                                                         preferredStyle:UIAlertControllerStyleAlert];

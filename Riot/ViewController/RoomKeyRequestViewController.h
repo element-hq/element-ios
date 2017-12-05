@@ -38,11 +38,12 @@
  Initialise an `RoomKeyRequestViewController` instance.
 
  @param deviceInfo the device to share keys to.
+ @param wasNewDevice flag indicating whether this is the first time we meet the device.
  @param session the related matrix session.
  @param onComplete a block called when the the dialog is closed.
  @return the newly created instance.
  */
-- (instancetype)initWithDeviceInfo:(MXDeviceInfo*)deviceInfo andMatrixSession:(MXSession*)session onComplete:(void (^)())onComplete;
+- (instancetype)initWithDeviceInfo:(MXDeviceInfo*)deviceInfo wasNewDevice:(BOOL)wasNewDevice andMatrixSession:(MXSession*)session onComplete:(void (^)())onComplete;
 
 /**
  Show the dialog in a modal way.

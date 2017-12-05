@@ -544,6 +544,7 @@
 
 // Room key request dialog
 "e2e_room_key_request_title" = "Encryption key request";
+"e2e_room_key_request_message_new_device" = "You added a new device '%@', which is requesting encryption keys.";
 "e2e_room_key_request_message" = "Your unverified device '%@' is requesting encryption keys.";
 "e2e_room_key_request_start_verification" = "Start verification...";
 "e2e_room_key_request_share_without_verifying" = "Share without verifying";
