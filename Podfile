@@ -21,14 +21,18 @@ def import_MatrixKit
     if $matrixKitVersion == 'local'
         pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
         pod 'MatrixSDK/JingleCallStack', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+        pod 'MatrixSDK/GoogleAnalytics', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
         pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
     else
         if $matrixKitVersion == 'develop'
             pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
             pod 'MatrixSDK/JingleCallStack', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
+            pod 'MatrixSDK/GoogleAnalytics', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
             pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
         else
             pod 'MatrixKit', $matrixKitVersion
+            pod 'MatrixSDK/JingleCallStack'
+            pod 'MatrixSDK/GoogleAnalytics'
         end
     end 
 end
@@ -38,14 +42,18 @@ def import_MatrixKitAppExtension
     if $matrixKitVersion == 'local'
         pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
         pod 'MatrixSDK/JingleCallStack', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+        pod 'MatrixSDK/GoogleAnalytics', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
         pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kit/MatrixKit.podspec'
     else
         if $matrixKitVersion == 'develop'
             pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
             pod 'MatrixSDK/JingleCallStack', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
+            pod 'MatrixSDK/GoogleAnalytics', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
             pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
         else
             pod 'MatrixKit/AppExtension', $matrixKitVersion
+            pod 'MatrixSDK/JingleCallStack'
+            pod 'MatrixSDK/GoogleAnalytics'
         end
     end 
 end
