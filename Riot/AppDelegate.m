@@ -3415,22 +3415,58 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         if (!roomKeyRequestViewController && pendingKeyRequests.count)
         {
             // Pick the first coming user/device pair
-            NSString *user = pendingKeyRequests.userIds.firstObject;
-            NSString *device = [pendingKeyRequests deviceIdsForUser:user].firstObject;
+            NSString *userId = pendingKeyRequests.userIds.firstObject;
+            NSString *deviceId = [pendingKeyRequests deviceIdsForUser:userId].firstObject;
 
-            [mxSession.crypto deviceWithDeviceId:device ofUser:user complete:^(MXDeviceInfo *device) {
+            // Give the client a chance to refresh the device list
+            // Note: react-sdk does not do a force download
+            [mxSession.crypto downloadKeys:@[userId] success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
 
-                NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog");
+                MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
+                if (deviceInfo)
+                {
+                    BOOL wasNewDevice = (deviceInfo.verified == MXDeviceUnknown);
 
-                roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:device andMatrixSession:mxSession onComplete:^{
+                    void (^openDialog)() = ^void()
+                    {
+                        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
 
-                    roomKeyRequestViewController = nil;
+                        roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
 
-                    // Check next pending key request, if any
-                    [self checkPendingRoomKeyRequests];
-                }];
+                            roomKeyRequestViewController = nil;
 
-                [roomKeyRequestViewController show];
+                            // Check next pending key request, if any
+                            [self checkPendingRoomKeyRequests];
+                        }];
+
+                        [roomKeyRequestViewController show];
+                    };
+
+                    // If the device was new before, it's not any more.
+                    if (wasNewDevice)
+                    {
+                        [mxSession.crypto setDeviceVerification:MXDeviceUnverified forDevice:deviceId ofUser:userId success:openDialog failure:nil];
+                    }
+                    else
+                    {
+                        openDialog();
+                    }
+                }
+                else
+                {
+                    NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: No details found for device %@:%@", userId, deviceId);
+
+                    // Ignore this device to avoid to loop on it
+                    [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
+                        // And check next requests
+                        [self checkPendingRoomKeyRequests];
+                    }];
+                }
+
+            } failure:^(NSError *error) {
+                // Retry later
+                NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Failed to download device keys. Retry");
+                [self checkPendingRoomKeyRequests];
             }];
         }
     }];

@@ -1,3 +1,9 @@
+Changes in 0.6.4 (2017-12-05)
+===============================================
+
+Bug Fix:
+ * Crypto: The share key dialog can appear with a 'null' device (#1683).
+
 Changes in 0.6.3 (2017-11-30)
 ===============================================
 
