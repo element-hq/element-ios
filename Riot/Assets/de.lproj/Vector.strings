@@ -471,3 +471,10 @@
 "settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Riot-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
 "settings_enable_rageshake" = "Schüttle stark um einen Fehler zu melden";
 "do_not_ask_again" = "Nicht erneut fragen";
+"settings_ui_theme_black" = "Schwarz";
+// Room key request dialog
+"e2e_room_key_request_title" = "Verschlüsselungs-Schlüssel-Anfrage";
+"e2e_room_key_request_message" = "Dein nicht verifiziertes Gerät '%@' fragt Verschlüsselungs-Schlüssel an.";
+"e2e_room_key_request_start_verification" = "Starte Verifikation...";
+"e2e_room_key_request_share_without_verifying" = "Teile ohne zu verifizieren";
+"e2e_room_key_request_ignore_request" = "Ignoriere Anfrage";
