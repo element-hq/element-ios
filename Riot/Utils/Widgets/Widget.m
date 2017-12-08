@@ -67,6 +67,16 @@
                 // Some widget can live without scalar token (ex: Jitsi widget)
                 NSLog(@"[Widget] Note: There is no scalar token for %@", self);
             }
+
+            // Integrate widget data into widget url
+            for (NSString *key in _data)
+            {
+                NSString *paramKey = [NSString stringWithFormat:@"$%@", key];
+                NSString *value = [_data[key] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+                _url = [_url stringByReplacingOccurrencesOfString:paramKey
+                                                       withString:value];
+            }
         }
     }
 
