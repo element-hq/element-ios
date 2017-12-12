@@ -3183,7 +3183,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
 {
-    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController)
+    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController && !self.masterTabBarController.currentGroupDetailViewController)
     {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;

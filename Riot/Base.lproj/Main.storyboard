@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,7 +15,7 @@
             <objects>
                 <navigationController id="RMx-3f-FxP" userLabel="HomeNav" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -298,6 +298,8 @@
                         <segue destination="HnD-LA-psC" kind="relationship" relationship="viewControllers" id="zON-Qp-EVq"/>
                         <segue destination="IGB-jr-yFz" kind="relationship" relationship="viewControllers" id="CeF-yL-aO0"/>
                         <segue destination="HPQ-zg-lZR" kind="relationship" relationship="viewControllers" id="y12-eg-vhO"/>
+                        <segue destination="SLx-Wj-p7E" kind="relationship" relationship="viewControllers" id="MLn-VT-30W"/>
+                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showGroupDetails" id="fIR-e3-ssz"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k1S-FF-3Zu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -378,7 +380,7 @@
             <objects>
                 <navigationController id="qAW-wR-KyU" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="r5V-3P-3Lg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -412,7 +414,7 @@
             <objects>
                 <navigationController title="RoomNav" id="vC3-pB-5Vb" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="DjV-YW-jjY">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -451,6 +453,25 @@
             </objects>
             <point key="canvasLocation" x="-153" y="-1121"/>
         </scene>
+        <!--Groups View Controller-->
+        <scene sceneID="Rqp-Ti-qpu">
+            <objects>
+                <viewController id="SLx-Wj-p7E" customClass="GroupsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="N1j-ye-uQa"/>
+                        <viewControllerLayoutGuide type="bottom" id="FYD-2t-u4k"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Sl8-9u-7yE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="tab_groups.png" selectedImage="tab_groups_selected.png" id="5x2-xc-uIB"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xpc-LV-krz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="942" y="-1299"/>
+        </scene>
         <!--Rooms View Controller-->
         <scene sceneID="SDg-Pp-8Uj">
             <objects>
@@ -464,7 +485,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms.png" selectedImage="tab_rooms_selected.png" id="7eS-Ei-00V">
+                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms.png" selectedImage="tab_rooms.png" id="7eS-Ei-00V">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemRooms"/>
                         </userDefinedRuntimeAttributes>
@@ -484,7 +505,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="CtR-n9-ztG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -521,7 +542,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MHE-SG-tnL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -578,18 +599,19 @@
         <image name="settings_icon.png" width="24" height="24"/>
         <image name="tab_favourites.png" width="25" height="25"/>
         <image name="tab_favourites_selected.png" width="25" height="25"/>
+        <image name="tab_groups.png" width="25" height="25"/>
+        <image name="tab_groups_selected.png" width="25" height="25"/>
         <image name="tab_home.png" width="25" height="25"/>
         <image name="tab_home_selected.png" width="25" height="25"/>
         <image name="tab_people.png" width="25" height="25"/>
         <image name="tab_people_selected.png" width="25" height="25"/>
         <image name="tab_rooms.png" width="25" height="25"/>
-        <image name="tab_rooms_selected.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="bwO-oZ-2vj"/>
+        <segue reference="fIR-e3-ssz"/>
         <segue reference="f5u-Y1-7nt"/>
         <segue reference="vCz-dl-6xQ"/>
         <segue reference="cUw-vU-gJq"/>
-        <segue reference="tk8-vF-K4T"/>
-        <segue reference="Tfl-tq-LQp"/>
     </inferredMetricsTieBreakers>
 </document>

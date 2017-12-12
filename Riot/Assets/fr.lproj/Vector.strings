@@ -3,6 +3,7 @@
 "title_favourites" = "Favoris";
 "title_people" = "Personnes";
 "title_rooms" = "Salons";
+"title_groups" = "Communautés";
 "warning" = "Attention";
 // Actions
 "view" = "Voir";
@@ -109,6 +110,9 @@
 "people_no_conversation" = "Aucune discussion";
 // Rooms tab
 "room_directory_no_public_room" = "Aucun salon public disponible";
+// Groups tab
+"group_invite_section" = "INVITATIONS";
+"group_section" = "COMMUNAUTÉS";
 // Search
 "search_rooms" = "Salons";
 "search_messages" = "Messages";

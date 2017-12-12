@@ -20,6 +20,7 @@
 "title_favourites" = "Favourites";
 "title_people" = "People";
 "title_rooms" = "Rooms";
+"title_groups" = "Communities";
 "warning" = "Warning";
 
 // Actions
@@ -146,6 +147,10 @@
 
 // Rooms tab
 "room_directory_no_public_room" = "No public rooms available";
+
+// Groups tab
+"group_invite_section" = "INVITES";
+"group_section" = "COMMUNITIES";
 
 // Search
 "search_rooms" = "Rooms";

@@ -19,6 +19,7 @@
 #import "UnifiedSearchViewController.h"
 
 #import "RecentsDataSource.h"
+#import "GroupsDataSource.h"
 
 #import "AppDelegate.h"
 
@@ -53,6 +54,9 @@
     
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    // The groups data source
+    GroupsDataSource *groupsDataSource;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -71,9 +75,10 @@
     _favouritesViewController = [self.viewControllers objectAtIndex:TABBAR_FAVOURITES_INDEX];
     _peopleViewController = [self.viewControllers objectAtIndex:TABBAR_PEOPLE_INDEX];
     _roomsViewController = [self.viewControllers objectAtIndex:TABBAR_ROOMS_INDEX];
+    _groupsViewController = [self.viewControllers objectAtIndex:TABBAR_GROUPS_INDEX];
     
     // Sanity check
-    NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController, @"Something wrong in Main.storyboard");
+    NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController && _groupsViewController, @"Something wrong in Main.storyboard");
 
     // Adjust the display of the icons in the tabbar.
     for (UITabBarItem *tabBarItem in self.tabBar.items)
@@ -185,6 +190,7 @@
     _favouritesViewController = nil;
     _peopleViewController = nil;
     _roomsViewController = nil;
+    _groupsViewController = nil;
     
     if (currentAlert)
     {
@@ -255,6 +261,11 @@
         }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
         
+        // Init the recents data source
+        groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
+        [groupsDataSource finalizeInitialization];
+        [_groupsViewController displayList:groupsDataSource];
+        
         // Check whether there are others sessions
         NSArray* mxSessions = self.mxSessions;
         if (mxSessions.count > 1)
@@ -302,6 +313,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixSessionStateDidChange:) name:kMXSessionStateDidChangeNotification object:nil];
     }
     [mxSessionArray addObject:mxSession];
+    
+    // @TODO: handle multi sessions for groups
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
@@ -324,6 +337,8 @@
     }
     
     [mxSessionArray removeObject:mxSession];
+    
+    // @TODO: handle multi sessions for groups
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -407,6 +422,14 @@
     [self performSegueWithIdentifier:@"showContactDetails" sender:self];
 }
 
+- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
+{
+    _selectedGroup = group;
+    _selectedGroupSession = matrixSession;
+    
+    [self performSegueWithIdentifier:@"showGroupDetails" sender:self];
+}
+
 - (void)releaseSelectedItem
 {
     _selectedRoomId = nil;
@@ -436,6 +459,15 @@
     {
         [_currentContactDetailViewController destroy];
         _currentContactDetailViewController = nil;
+    }
+    
+    _selectedGroup = nil;
+    _selectedGroupSession = nil;
+    
+    if (_currentGroupDetailViewController)
+    {
+        [_currentGroupDetailViewController destroy];
+        _currentGroupDetailViewController = nil;
     }
 }
 
@@ -480,7 +512,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showRoomDetails"] || [[segue identifier] isEqualToString:@"showContactDetails"])
+    if ([[segue identifier] isEqualToString:@"showRoomDetails"] || [[segue identifier] isEqualToString:@"showContactDetails"] || [[segue identifier] isEqualToString:@"showGroupDetails"])
     {
         UINavigationController *navigationController = [segue destinationViewController];
         
@@ -504,6 +536,11 @@
         {
             [_currentContactDetailViewController destroy];
             _currentContactDetailViewController = nil;
+        }
+        else if (_currentGroupDetailViewController)
+        {
+            [_currentGroupDetailViewController destroy];
+            _currentGroupDetailViewController = nil;
         }
         
         if ([[segue identifier] isEqualToString:@"showRoomDetails"])
@@ -563,7 +600,7 @@
                 _selectedRoomPreviewData = nil;
             }
         }
-        else
+        else if ([[segue identifier] isEqualToString:@"showContactDetails"])
         {
             // Replace the rootviewcontroller with a contact details view controller
             _currentContactDetailViewController = [ContactDetailsViewController contactDetailsViewController];
@@ -571,6 +608,15 @@
             _currentContactDetailViewController.contact = _selectedContact;
             
             navigationController.viewControllers = @[_currentContactDetailViewController];
+        }
+        else
+        {
+            // Replace the rootviewcontroller with a group details view controller
+            _currentGroupDetailViewController = [GroupDetailsViewController groupDetailsViewController];
+            [_currentGroupDetailViewController addMatrixSession:_selectedGroupSession];
+            _currentGroupDetailViewController.group = _selectedGroup;
+            
+            navigationController.viewControllers = @[_currentGroupDetailViewController];
         }
         
         if (self.splitViewController)
@@ -583,10 +629,15 @@
                 _currentRoomViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
                 _currentRoomViewController.navigationItem.leftItemsSupplementBackButton = YES;
             }
-            else
+            else if (_currentContactDetailViewController)
             {
                 _currentContactDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
                 _currentContactDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+            }
+            else if (_currentGroupDetailViewController)
+            {
+                _currentGroupDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+                _currentGroupDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
             }
         }
     }
