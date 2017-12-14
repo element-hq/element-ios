@@ -14,27 +14,12 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "SegmentedViewController.h"
 
-@interface GroupDetailsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
+@interface GroupDetailsViewController : SegmentedViewController
 
-@property (weak, nonatomic) IBOutlet UIView *groupAvatarHeaderBackground;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupAvatarHeaderBackgroundHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *headerView;
-@property (weak, nonatomic) IBOutlet MXKImageView *groupAvatar;
-@property (weak, nonatomic) IBOutlet UIView *groupAvatarMask;
-@property (weak, nonatomic) IBOutlet UILabel *groupNameLabel;
-@property (weak, nonatomic) IBOutlet UIView *groupNameLabelMask;
-
-@property (weak, nonatomic) IBOutlet UILabel *groupDescriptionLabel;
-
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-/**
- The displayed group
- */
-@property (nonatomic) MXGroup *group;
+@property (strong, readonly, nonatomic) MXGroup *group;
+@property (strong, readonly, nonatomic) MXSession *mxSession;
 
 /**
  Returns the `UINib` object initialized for a `GroupDetailsViewController`.
@@ -51,6 +36,15 @@
  @return An initialized `GroupDetailsViewController` object if successful, `nil` otherwise.
  */
 + (instancetype)groupDetailsViewController;
+
+/**
+ Set the group for which the details are displayed.
+ Provide the related matrix session.
+ 
+ @param group
+ @param mxSession
+ */
+- (void)setGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession;
 
 @end
 

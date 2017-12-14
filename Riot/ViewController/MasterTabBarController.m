@@ -613,8 +613,7 @@
         {
             // Replace the rootviewcontroller with a group details view controller
             _currentGroupDetailViewController = [GroupDetailsViewController groupDetailsViewController];
-            [_currentGroupDetailViewController addMatrixSession:_selectedGroupSession];
-            _currentGroupDetailViewController.group = _selectedGroup;
+            [_currentGroupDetailViewController setGroup:_selectedGroup withMatrixSession:_selectedGroupSession];
             
             navigationController.viewControllers = @[_currentGroupDetailViewController];
         }

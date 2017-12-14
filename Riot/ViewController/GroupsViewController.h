@@ -23,6 +23,11 @@
 {
 @protected
     /**
+     The group identifier related to the cell which is in editing mode (if any).
+     */
+    NSString *editedGroupId;
+    
+    /**
      Current alert (if any).
      */
     UIAlertController *currentAlert;

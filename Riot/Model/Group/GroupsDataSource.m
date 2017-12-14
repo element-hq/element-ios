@@ -38,4 +38,10 @@
     return sectionTitle;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Enable edition only for the joined groups.
+    return (indexPath.section == self.joinedGroupsSection);
+}
+
 @end

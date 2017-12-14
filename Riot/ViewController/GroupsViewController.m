@@ -203,6 +203,8 @@
     }];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorBlue;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorBlue;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -216,6 +218,13 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    
+    if ([AppDelegate theDelegate].masterTabBarController.tabBar.tintColor == kRiotColorBlue)
+    {
+        // Restore default tintColor
+        [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;
+        [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
     }
 }
 
@@ -251,10 +260,20 @@
     
     isRefreshPending = NO;
     
-    if (self.groupsTableView.isEditing || self.isEditing)
+    if (editedGroupId)
     {
-        isRefreshPending = YES;
-        return;
+        // Check whether the user didn't leave the room
+        if ([self.dataSource cellIndexPathWithGroupId:editedGroupId])
+        {
+            isRefreshPending = YES;
+            return;
+        }
+        else
+        {
+            // Cancel the editing mode, a new refresh will be triggered.
+            [self cancelEditionMode:YES];
+            return;
+        }
     }
     
     [self.groupsTableView reloadData];
@@ -339,6 +358,9 @@
     }
     else if (forceRefresh)
     {
+        // Clean
+        editedGroupId = nil;
+        
         [self refreshGroupsTable];
     }
 }
@@ -430,7 +452,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 30.0f;
+    if (tableView.numberOfSections > 1)
+    {
+        return 30.0f;
+    }
+        
+    return 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -446,6 +473,38 @@
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
+}
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray* actions;
+    
+    // add the swipe to delete only on joined group
+    if (indexPath.section == self.dataSource.joinedGroupsSection)
+    {
+        // Store the identifier of the room related to the edited cell.
+        id<MXKGroupCellDataStoring> cellData = [self.dataSource cellDataAtIndex:indexPath];
+        editedGroupId = cellData.group.groupId;
+        
+        actions = [[NSMutableArray alloc] init];
+        
+        // Patch: Force the width of the button by adding whitespace characters into the title string.
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"        "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            
+            [self.dataSource leaveGroupAtIndexPath:indexPath];
+            
+        }];
+        
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
+        [actions insertObject:leaveAction atIndex:0];
+    }
+    
+    return actions;
+}
+    
+- (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self cancelEditionMode:isRefreshPending];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -481,7 +540,7 @@
     
     plusButtonImageView.backgroundColor = [UIColor clearColor];
     plusButtonImageView.contentMode = UIViewContentModeCenter;
-    plusButtonImageView.image = [UIImage imageNamed:@"create_room"];
+    plusButtonImageView.image = [UIImage imageNamed:@"create_group"];
     plusButtonImageView.layer.shadowOpacity = 0.3;
     plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
     

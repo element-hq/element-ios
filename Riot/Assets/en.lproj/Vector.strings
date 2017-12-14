@@ -453,6 +453,30 @@
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
 
+// Group Details
+"group_details_title" = "Community Details";
+"group_details_home" = "Home";
+"group_details_people" = "People";
+"group_details_rooms" = "Rooms";
+"group_invitation_format" = "%@ has invited you to join this community";
+
+// Group participants
+"group_participants_title" = "Participants";
+"group_participants_add_participant" = "Add participant";
+"group_participants_one_participant" = "1 member";
+"group_participants_multi_participants" = "%d members";
+"group_participants_leave_prompt_title" = "Leave group";
+"group_participants_leave_prompt_msg" = "Are you sure you want to leave the group?";
+"group_participants_remove_prompt_title" = "Confirmation";
+"group_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this group?";
+"group_participants_invite_prompt_title" = "Confirmation";
+"group_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this group?";
+"group_participants_filter_group_members" = "Filter group members";
+"group_participants_invite_another_user" = "Search / invite by User ID or Name";
+"group_participants_invite_malformed_id_title" = "Invite Error";
+"group_participants_invite_malformed_id" = "Malformed ID. Should be a Matrix ID like '@localpart:domain'";
+"group_participants_invited_section" = "INVITED";
+
 // Read Receipts
 "read_receipts_list" = "Read Receipts List";
 "receipt_status_read" = "Read: ";
