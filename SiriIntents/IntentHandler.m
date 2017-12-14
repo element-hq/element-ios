@@ -18,6 +18,10 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#if __has_include(<MatrixSDK/MXJingleCallStack.h>)
+#define CALL_STACK_JINGLE
+#endif
+
 @interface IntentHandler () <INStartAudioCallIntentHandling, INStartVideoCallIntentHandling, INSendMessageIntentHandling>
 
 @end
@@ -60,7 +64,7 @@
     MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     if (account)
     {
-#if defined MX_CALL_STACK_OPENWEBRTC || defined MX_CALL_STACK_ENDPOINT || defined MX_CALL_STACK_JINGLE
+#if defined MX_CALL_STACK_OPENWEBRTC || defined MX_CALL_STACK_ENDPOINT || defined CALL_STACK_JINGLE
         NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INStartAudioCallIntent class])];
         response = [[INStartAudioCallIntentResponse alloc] initWithCode:INStartAudioCallIntentResponseCodeReady userActivity:userActivity];
 #else
@@ -111,7 +115,7 @@
     MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     if (account)
     {
-#if defined MX_CALL_STACK_OPENWEBRTC || defined MX_CALL_STACK_ENDPOINT || defined MX_CALL_STACK_JINGLE
+#if defined MX_CALL_STACK_OPENWEBRTC || defined MX_CALL_STACK_ENDPOINT || defined CALL_STACK_JINGLE
         NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSStringFromClass([INStartVideoCallIntent class])];
         response = [[INStartVideoCallIntentResponse alloc] initWithCode:INStartVideoCallIntentResponseCodeReady userActivity:userActivity];
 #else
