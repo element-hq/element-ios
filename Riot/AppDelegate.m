@@ -1199,6 +1199,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: %@", account.mxCredentials.userId);
     
+    NSUInteger scheduledNotifications = 0;
+
     // The call invite are handled here only when the callkit is not active.
     BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
     
@@ -1223,6 +1225,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Ignore redacted event.
             if (event.isRedactedEvent)
             {
+                NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip redacted event");
                 continue;
             }
             
@@ -1232,6 +1235,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Ignore call invite when callkit is active.
                 if (isCallKitActive)
                 {
+                    NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip call event");
                     continue;
                 }
                 else
@@ -1257,6 +1261,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     MXEvent *readReceiptEvent = [account.mxSession.store eventWithEventId:readReceipt.eventId inRoom:roomId];
                     if (event.originServerTs <= readReceiptEvent.originServerTs)
                     {
+                        NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip already read event");
                         continue;
                     }
                 }
@@ -1291,19 +1296,29 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                         }
                     }
                 }
-                
+
                 [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+                scheduledNotifications++;
+            }
+            else
+            {
+                NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody");
             }
         }
     }
-    
+
+    NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Sent %tu local notifications for %tu events", scheduledNotifications, eventsArray.count);
+
     [eventsArray removeAllObjects];
 }
 
 - (nullable NSString *)notificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account
 {
     if (!event.content || !event.content.count)
+    {
+        NSLog(@"[AppDelegate] notificationBodyForEvent: empty event content. Event id: %@", event.eventId);
         return nil;
+    }
     
     MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
     MXRoomState *roomState = room.state;
@@ -1339,6 +1354,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (!isHighlighted)
             {
                 // Ignore this notif.
+                NSLog(@"[AppDelegate] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
                 return nil;
             }
         }
