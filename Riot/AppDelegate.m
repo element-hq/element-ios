@@ -1295,7 +1295,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
             else
             {
-                NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody");
+                NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
             }
         }
     }
@@ -1309,7 +1309,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (!event.content || !event.content.count)
     {
-        NSLog(@"[AppDelegate] notificationBodyForEvent: empty event content. Event id: %@", event.eventId);
+        NSLog(@"[AppDelegate] notificationBodyForEvent: empty event content");
         return nil;
     }
     
