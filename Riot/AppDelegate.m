@@ -1052,7 +1052,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSLog(@"[AppDelegate] didReceiveLocalNotification: applicationState: %@", @(application.applicationState));
+    NSLog(@"[AppDelegate][Push] didReceiveLocalNotification: applicationState: %@", @(application.applicationState));
     
     NSString* roomId = notification.userInfo[@"room_id"];
     if (roomId.length)
@@ -1084,13 +1084,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // sanity checks
         if (dedicatedAccount && dedicatedAccount.mxSession)
         {
-            NSLog(@"[AppDelegate] didReceiveLocalNotification: open the roomViewController %@", roomId);
+            NSLog(@"[AppDelegate][Push] didReceiveLocalNotification: open the roomViewController %@", roomId);
             
             [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {
-            NSLog(@"[AppDelegate] didReceiveLocalNotification : no linked session / account has been found.");
+            NSLog(@"[AppDelegate][Push] didReceiveLocalNotification : no linked session / account has been found.");
         }
     }
 }
@@ -1100,7 +1100,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSData *token = credentials.token;
     
     NSUInteger len = ((token.length > 8) ? 8 : token.length / 2);
-    NSLog(@"[AppDelegate] Got Push token! (%@ ...)", [token subdataWithRange:NSMakeRange(0, len)]);
+    NSLog(@"[AppDelegate][Push] Got Push token! (%@ ...)", [token subdataWithRange:NSMakeRange(0, len)]);
     
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setPushDeviceToken:token withPushOptions:@{@"format": @"event_id_only"}];
@@ -1122,10 +1122,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
 {
+    NSLog(@"[AppDelegate][Push] didReceiveIncomingPushWithPayload: applicationState: %tu - type: %@ - payload: %@", [UIApplication sharedApplication].applicationState, payload.type, payload.dictionaryPayload);
+
     // Display local notifications only when the app is running in background.
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
-        NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload while app is in background");
+        NSLog(@"[AppDelegate][Push] didReceiveIncomingPushWithPayload while app is in background");
         
         // Check whether an event id is provided.
         NSString *eventId = payload.dictionaryPayload[@"event_id"];
@@ -1139,7 +1141,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         else
         {
-            NSLog(@"[AppDelegate] didReceiveIncomingPushWithPayload - Unexpected payload %@", payload.dictionaryPayload);
+            NSLog(@"[AppDelegate][Push] didReceiveIncomingPushWithPayload - Unexpected payload %@", payload.dictionaryPayload);
         }
         
         // Trigger a background sync to handle notifications.
@@ -1156,7 +1158,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Check the current session state
         if (account.mxSession.state == MXSessionStatePaused)
         {
-            NSLog(@"[AppDelegate] launchBackgroundSync");
+            NSLog(@"[AppDelegate][Push] launchBackgroundSync");
             __weak typeof(self) weakSelf = self;
             
             // Flush all the pending push notifications for this session.
@@ -1171,7 +1173,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 }
                 typeof(self) self = weakSelf;
                 
-                NSLog(@"[AppDelegate] launchBackgroundSync: the background sync succeeds");
+                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync succeeds");
                 
                 // Trigger local notifcations
                 [self handleLocalNotificationsForAccount:account];
@@ -1181,7 +1183,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[AppDelegate] launchBackgroundSync: the background sync fails");
+                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync fails");
                 
             }];
         }
@@ -1190,8 +1192,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)handleLocalNotificationsForAccount:(MXKAccount*)account
 {
-    NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: %@", account.mxCredentials.userId);
-    
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: %@", account.mxCredentials.userId);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: eventsToNotify: %@", eventsToNotify[@(account.mxSession.hash)]);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: incomingPushEventIds: %@", self.incomingPushEventIds[@(account.mxSession.hash)]);
+
     NSUInteger scheduledNotifications = 0;
 
     // The call invite are handled here only when the callkit is not active.
@@ -1218,7 +1222,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Ignore redacted event.
             if (event.isRedactedEvent)
             {
-                NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip redacted event");
+                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event");
                 continue;
             }
             
@@ -1228,7 +1232,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Ignore call invite when callkit is active.
                 if (isCallKitActive)
                 {
-                    NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip call event");
+                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip call event");
                     continue;
                 }
                 else
@@ -1254,7 +1258,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     MXEvent *readReceiptEvent = [account.mxSession.store eventWithEventId:readReceipt.eventId inRoom:roomId];
                     if (event.originServerTs <= readReceiptEvent.originServerTs)
                     {
-                        NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip already read event");
+                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip already read event");
                         continue;
                     }
                 }
@@ -1290,17 +1294,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     }
                 }
 
+                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
                 [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
                 scheduledNotifications++;
             }
             else
             {
-                NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
+                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
             }
         }
     }
 
-    NSLog(@"[AppDelegate] handleLocalNotificationsForAccount: Sent %tu local notifications for %tu events", scheduledNotifications, eventsArray.count);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Sent %tu local notifications for %tu events", scheduledNotifications, eventsArray.count);
 
     [eventsArray removeAllObjects];
 }
@@ -1309,7 +1314,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (!event.content || !event.content.count)
     {
-        NSLog(@"[AppDelegate] notificationBodyForEvent: empty event content");
+        NSLog(@"[AppDelegate][Push] notificationBodyForEvent: empty event content");
         return nil;
     }
     
@@ -1347,7 +1352,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (!isHighlighted)
             {
                 // Ignore this notif.
-                NSLog(@"[AppDelegate] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
+                NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
                 return nil;
             }
         }
@@ -1924,6 +1929,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Consider here the case where the app is running in background.
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
         {
+            NSLog(@"[AppDelegate][Push] MXSession state changed while in background. mxSession.state: %tu - incomingPushEventIds: %@", mxSession.state, self.incomingPushEventIds[@(mxSession.hash)]);
             if (mxSession.state == MXSessionStateRunning)
             {
                 // Pause the session in background task
@@ -1949,7 +1955,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Check whether some push notifications are pending for this session.
                 if (self.incomingPushEventIds[@(mxSession.hash)].count)
                 {
-                    NSLog(@"[AppDelegate] relaunch a background sync for the kMXSessionStateDidChangeNotificationpending incoming push");
+                    NSLog(@"[AppDelegate][Push] relaunch a background sync for the kMXSessionStateDidChangeNotification pending incoming push");
                     [self launchBackgroundSync];
                 }
             }
@@ -2463,6 +2469,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Sanity check
         if (event.eventId && event.roomId && rule)
         {
+            NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: got event %@ to notify", event.eventId);
+
             // Check whether this event corresponds to a pending push for this session.
             NSUInteger index = [self.incomingPushEventIds[@(mxSession.hash)] indexOfObject:event.eventId];
             if (index != NSNotFound)
@@ -2476,7 +2484,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         else
         {
-            NSLog(@"WARNING: wrong event to notify %@ %@ %@", event, event.roomId, rule);
+            NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: WARNING: wrong event to notify %@ %@ %@", event, event.roomId, rule);
         }
     };
     
