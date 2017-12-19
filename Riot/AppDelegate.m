@@ -312,17 +312,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
-    NSUInteger loopCount = 0;
-    
-    // Check whether the content protection is active before going further.
-    // Should fix the spontaneous logout.
-    while(![application isProtectedDataAvailable])
-    {
-        loopCount++;
-        // Wait for protected data.
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
-    }
-    
+    NSLog(@"[AppDelegate] willFinishLaunchingWithOptions");
+
     // Set the App Group identifier.
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     sdkOptions.applicationGroupIdentifier = @"group.im.vector";
@@ -335,8 +326,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [MXLogger redirectNSLogToFiles:YES];
     }
 
-    NSLog(@"[AppDelegate] willFinishLaunchingWithOptions (%tu)", loopCount);
-    
+    NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
+
     return YES;
 }
 
@@ -348,7 +339,19 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 #else
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
-    
+
+    NSUInteger loopCount = 0;
+
+    // Check whether the content protection is active before going further.
+    // Should fix the spontaneous logout.
+    while (![application isProtectedDataAvailable])
+    {
+        // Wait for protected data.
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
+    }
+
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions (%tu)", loopCount);
+
     // Log app information
     NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
     NSString* appVersion = [AppDelegate theDelegate].appVersion;
