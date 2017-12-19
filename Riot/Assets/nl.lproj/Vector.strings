@@ -457,3 +457,8 @@
 // Widget
 "widget_no_power_to_manage" = "Je hebt permissie nodig om widgets in deze ruimte te beheren";
 "widget_creation_failure" = "Het creëren van de widget is fout gegaan";
+"send_to" = "Stuur naar %@";
+"sending" = "Aan het sturen";
+"search_in_progress" = "Aan het zoeken…";
+"room_event_action_cancel_send" = "Annuleer verzending";
+"room_event_failed_to_send" = "Verzenden is gefaald";
