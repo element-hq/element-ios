@@ -14,8 +14,6 @@
  limitations under the License.
  */
 
-//#import "SegmentedViewController.h"
-
 #import "ContactsTableViewController.h"
 
 @class Contact;
@@ -42,11 +40,6 @@
      The current list of invited members.
      */
     NSMutableArray<Contact*> *invitedParticipants;
-    
-    /**
-     The contact used to describe the current user (nil if the user is not a participant of the group).
-     */
-    Contact *userParticipant;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

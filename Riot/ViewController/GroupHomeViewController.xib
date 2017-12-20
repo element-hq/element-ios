@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -36,10 +36,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AKb-7n-nhQ">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="110"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kYc-LP-Nip">
-                            <rect key="frame" x="8" y="20" width="80" height="80"/>
+                            <rect key="frame" x="8" y="10" width="80" height="80"/>
                             <subviews>
                                 <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehl-88-DfA" customClass="MXKImageView">
                                     <rect key="frame" x="10" y="10" width="60" height="60"/>
@@ -61,20 +61,20 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5UX-lR-Ac5">
-                            <rect key="frame" x="92" y="28" width="45" height="21.5"/>
+                            <rect key="frame" x="92" y="18" width="45" height="21.5"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jXh-2B-Bso">
-                            <rect key="frame" x="92" y="55.5" width="36" height="17"/>
+                            <rect key="frame" x="92" y="45.5" width="36" height="17"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomTopic"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mKE-ro-fuy">
-                            <rect key="frame" x="87" y="25" width="55" height="26.5"/>
+                            <rect key="frame" x="87" y="15" width="55" height="26.5"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="ContactDetailsVCNameLabelMask"/>
                         </view>
@@ -82,9 +82,9 @@
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="jXh-2B-Bso" secondAttribute="bottom" constant="8" id="6hl-pO-UX7"/>
-                        <constraint firstItem="5UX-lR-Ac5" firstAttribute="top" secondItem="AKb-7n-nhQ" secondAttribute="top" constant="28" id="FlH-ol-0TP"/>
+                        <constraint firstItem="5UX-lR-Ac5" firstAttribute="top" secondItem="AKb-7n-nhQ" secondAttribute="top" constant="18" id="FlH-ol-0TP"/>
                         <constraint firstItem="mKE-ro-fuy" firstAttribute="centerX" secondItem="5UX-lR-Ac5" secondAttribute="centerX" id="G8w-Th-eCj"/>
-                        <constraint firstItem="kYc-LP-Nip" firstAttribute="top" secondItem="AKb-7n-nhQ" secondAttribute="top" constant="20" id="IJD-FB-fWm"/>
+                        <constraint firstItem="kYc-LP-Nip" firstAttribute="top" secondItem="AKb-7n-nhQ" secondAttribute="top" constant="10" id="IJD-FB-fWm"/>
                         <constraint firstAttribute="bottom" secondItem="kYc-LP-Nip" secondAttribute="bottom" priority="250" constant="10" id="Kkx-2w-Yo2"/>
                         <constraint firstItem="jXh-2B-Bso" firstAttribute="leading" secondItem="kYc-LP-Nip" secondAttribute="trailing" constant="4" id="Ot2-58-G82"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jXh-2B-Bso" secondAttribute="trailing" constant="8" id="QeR-3r-KrK"/>
@@ -98,7 +98,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nR4-eE-qJo">
-                    <rect key="frame" x="0.0" y="110" width="375" height="97.5"/>
+                    <rect key="frame" x="0.0" y="100" width="375" height="97.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHk-6Y-MSO">
                             <rect key="frame" x="167" y="8" width="41" height="19.5"/>
@@ -161,7 +161,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlP-kX-cll">
-                    <rect key="frame" x="0.0" y="208" width="375" height="1"/>
+                    <rect key="frame" x="0.0" y="198" width="375" height="1"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <accessibility key="accessibilityConfiguration" identifier="BottomBorderView"/>
                     <constraints>
@@ -169,7 +169,7 @@
                     </constraints>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oUL-bJ-tfM">
-                    <rect key="frame" x="8" y="209" width="359" height="450"/>
+                    <rect key="frame" x="8" y="199" width="359" height="460"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>

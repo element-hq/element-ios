@@ -154,8 +154,15 @@
     
     if (_group)
     {
-        // Force refresh
+        // Force a screen refresh
         [self refreshDisplayWithGroup:[self.mxSession groupWithGroupId:_group.groupId]];
+        
+        // Trigger a refresh on the group summary.
+        [self.mxSession updateGroupSummary:_group success:nil failure:^(NSError *error) {
+            
+            NSLog(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", _group.groupId);
+            
+        }];
     }
 }
 
@@ -200,13 +207,18 @@
 {
     [self cancelRegistrationOnGroupChangeNotifications];
     
-    //@TODO
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupSummary:) name:kMXSessionDidUpdateGroupSummaryNotification object:self.mxSession];
 }
 
 - (void)cancelRegistrationOnGroupChangeNotifications
 {
     // Remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)didUpdateGroupSummary:(NSNotification *)notif
+{
+    [self refreshDisplayWithGroup:[self.mxSession groupWithGroupId:_group.groupId]];
 }
 
 - (void)refreshDisplayWithGroup:(MXGroup*)group
@@ -261,7 +273,12 @@
             _separatorViewTopConstraint.constant = 0;
         }
         
-        _groupLongDescription.text = _group.summary.profile.longDescription;
+        if (_group.summary.profile.longDescription.length)
+        {
+            //@TODO: implement a specific html renderer to support h1/h2 and handle the Matrix media content URI (in the form of "mxc://...").
+            MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:self.mxSession];
+            _groupLongDescription.attributedText = [eventFormatter renderHTMLString:_group.summary.profile.longDescription forEvent:nil];
+        }
     }
     else
     {

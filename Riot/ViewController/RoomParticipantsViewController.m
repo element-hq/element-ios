@@ -1772,14 +1772,16 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    if (currentSearchText)
+    {
+        currentSearchText = nil;
+        filteredActualParticipants = nil;
+        filteredInvitedParticipants = nil;
+        
+        [self refreshTableView];
+    }
+    
     searchBar.text = nil;
-    
-    currentSearchText = nil;
-    filteredActualParticipants = nil;
-    filteredInvitedParticipants = nil;
-    
-    [self refreshTableView];
-    
     // Leave search
     [searchBar resignFirstResponder];
 }

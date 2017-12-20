@@ -23,14 +23,14 @@
 - (void)setGroupAvatarImageIn:(MXKImageView*)mxkImageView matrixSession:(MXSession*)mxSession
 {
     // Use the group display name to prepare the default avatar image.
-    NSString *avatarDisplayName = self.summary.profile.name;
+    NSString *avatarDisplayName = self.profile.name;
     UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:self.groupId withDisplayName:avatarDisplayName];
     
-    if (self.summary.profile.avatarUrl && mxSession)
+    if (self.profile.avatarUrl && mxSession)
     {
         mxkImageView.enableInMemoryCache = YES;
         
-        [mxkImageView setImageURL:[mxSession.matrixRestClient urlOfContentThumbnail:self.summary.profile.avatarUrl toFitViewSize:mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+        [mxkImageView setImageURL:[mxSession.matrixRestClient urlOfContentThumbnail:self.profile.avatarUrl toFitViewSize:mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
     }
     else
     {
