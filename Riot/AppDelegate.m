@@ -1878,6 +1878,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             {
                 [mxSession enableVoIPWithCallStack:callStack];
 
+                // Let's call invite be valid for 1 minute
+                mxSession.callManager.inviteLifetime = 60000;
+
                 // Setup CallKit
                 if ([MXCallKitAdapter callKitAvailable])
                 {
