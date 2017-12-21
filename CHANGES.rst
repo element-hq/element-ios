@@ -1,3 +1,10 @@
+Changes in 0.6.6 (2017-12-21)
+===============================================
+
+Bug Fix:
+ * Widget: Integrate widget data into widget URL (https://github.com/vector-im/riot-meta/issues/125).
+ * VoIP: increase call invite lifetime from 30 to 60s (https://github.com/vector-im/riot-meta/issues/129).
+
 Changes in 0.6.5 (2017-12-19)
 ===============================================
 
