@@ -265,12 +265,21 @@
             }
             
             [self.inviteContainer layoutIfNeeded];
-            _separatorViewTopConstraint.constant = self.inviteContainer.frame.size.height;
+            
+            if (_separatorViewTopConstraint.constant != self.inviteContainer.frame.size.height)
+            {
+                _separatorViewTopConstraint.constant = self.inviteContainer.frame.size.height;
+                [self.view layoutIfNeeded];
+            }
         }
         else
         {
             self.inviteContainer.hidden = YES;
-            _separatorViewTopConstraint.constant = 0;
+            if (_separatorViewTopConstraint.constant != 0)
+            {
+                _separatorViewTopConstraint.constant = 0;
+                [self.view layoutIfNeeded];
+            }
         }
         
         if (_group.summary.profile.longDescription.length)
@@ -278,6 +287,11 @@
             //@TODO: implement a specific html renderer to support h1/h2 and handle the Matrix media content URI (in the form of "mxc://...").
             MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:self.mxSession];
             _groupLongDescription.attributedText = [eventFormatter renderHTMLString:_group.summary.profile.longDescription forEvent:nil];
+            _groupLongDescription.contentOffset = CGPointZero;
+        }
+        else
+        {
+            _groupLongDescription.text = nil;
         }
     }
     else

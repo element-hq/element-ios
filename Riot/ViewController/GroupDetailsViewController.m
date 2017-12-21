@@ -155,4 +155,16 @@
     }
 }
 
+- (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
+{
+    [super withdrawViewControllerAnimated:animated completion:completion];
+    
+    // Fill the secondary navigation view controller of the split view controller if it is empty.
+    UINavigationController *secondaryNavigationController = [AppDelegate theDelegate].secondaryNavigationController;
+    if (secondaryNavigationController && !secondaryNavigationController.viewControllers.count)
+    {
+        [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
+    }
+}
+
 @end
