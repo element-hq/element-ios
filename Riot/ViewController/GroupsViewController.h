@@ -49,9 +49,4 @@
  */
 @property (nonatomic) BOOL enableSearchBar;
 
-/**
- The Google Analytics Instance screen name (Default is "Groups").
- */
-@property (nonatomic) NSString *screenName;
-
 @end

@@ -54,8 +54,6 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.screenName = @"Groups";
-    
     // Enable the search bar in the recents table, and remove the search option from the navigation bar.
     _enableSearchBar = YES;
     self.enableBarButtonSearch = NO;
@@ -180,13 +178,8 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:_screenName];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"Groups"];
     
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.groupsTableView indexPathForSelectedRow];

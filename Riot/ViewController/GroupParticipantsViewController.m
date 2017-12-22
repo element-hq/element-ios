@@ -206,13 +206,8 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"GroupParticipants"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"GroupDetailsPeople"];
     
     if (contactsPickerViewController)
     {
