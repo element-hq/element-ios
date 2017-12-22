@@ -124,8 +124,8 @@
     
     [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
     
-    // Add group creation button programmatically
-    [self addAddParticipantButton];
+    // @TODO: Add programmatically the button to add participant.
+    //[self addAddParticipantButton];
     
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {

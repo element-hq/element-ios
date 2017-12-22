@@ -94,8 +94,8 @@
     self.groupsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.groupsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     
-    // Add the (+) button programmatically
-    [self addPlusButton];
+    // @TODO: Add programmatically the (+) button.
+    //[self addPlusButton];
     
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
