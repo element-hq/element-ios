@@ -752,6 +752,36 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+- (void)restoreEmptyDetailsViewController
+{
+    UIViewController* rootViewController = self.window.rootViewController;
+    
+    if ([rootViewController isKindOfClass:[UISplitViewController class]])
+    {
+        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
+        
+        // Be sure that the primary is then visible too.
+        if (splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryHidden)
+        {
+            splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+        }
+        
+        if (splitViewController.viewControllers.count == 2)
+        {
+            UIViewController *mainViewController = splitViewController.viewControllers[0];
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
+            emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+            
+            splitViewController.viewControllers = @[mainViewController, emptyDetailsViewController];
+        }
+    }
+    
+    // Release the current selected item (room/contact/group...).
+    [_masterTabBarController releaseSelectedItem];
+}
+
 - (UIAlertController*)showErrorAsAlert:(NSError*)error
 {
     // Ignore fake error, or connection cancellation error
@@ -3236,7 +3266,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
 {
-    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController)
+    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController && !self.masterTabBarController.currentGroupDetailViewController)
     {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;

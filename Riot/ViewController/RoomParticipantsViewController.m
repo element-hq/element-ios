@@ -1297,7 +1297,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -1767,14 +1767,16 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    if (currentSearchText)
+    {
+        currentSearchText = nil;
+        filteredActualParticipants = nil;
+        filteredInvitedParticipants = nil;
+        
+        [self refreshTableView];
+    }
+    
     searchBar.text = nil;
-    
-    currentSearchText = nil;
-    filteredActualParticipants = nil;
-    filteredInvitedParticipants = nil;
-    
-    [self refreshTableView];
-    
     // Leave search
     [searchBar resignFirstResponder];
 }

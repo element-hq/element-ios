@@ -80,6 +80,11 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)restoreInitialDisplay:(void (^)())completion;
 
+/**
+ Replace the secondary view controller of the split view controller (if any) with the default empty details view controller.
+ */
+- (void)restoreEmptyDetailsViewController;
+
 - (UIAlertController*)showErrorAsAlert:(NSError*)error;
 
 #pragma mark - Matrix Sessions handling

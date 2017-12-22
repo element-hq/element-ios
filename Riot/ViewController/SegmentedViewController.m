@@ -129,6 +129,8 @@
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
+    
+    self.sectionHeaderTintColor = kRiotColorGreen;
 }
 
 - (void)viewDidLoad
@@ -244,7 +246,7 @@
         label.text = [sectionTitles objectAtIndex:index];
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = kRiotColorGreen;
+        label.textColor = _sectionHeaderTintColor;
         label.backgroundColor = [UIColor clearColor];
         label.accessibilityIdentifier = [NSString stringWithFormat:@"SegmentedVCSectionLabel%tu", index];
         
@@ -330,7 +332,7 @@
 
     // create the selected marker view
     selectedMarkerView = [[UIView alloc] init];
-    selectedMarkerView.backgroundColor = kRiotColorGreen;
+    selectedMarkerView.backgroundColor = _sectionHeaderTintColor;
     [selectedMarkerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.selectionContainer addSubview:selectedMarkerView];
     
