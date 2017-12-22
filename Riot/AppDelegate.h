@@ -18,11 +18,6 @@
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
 
-// Google Analytics
-#import "GAI.h"
-#import "GAIFields.h"
-#import "GAIDictionaryBuilder.h"
-
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"
 
@@ -112,10 +107,11 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
 
-#pragma mark - Crash reports handling
+#pragma mark - Analytics
 
-- (void)startGoogleAnalytics;
-- (void)stopGoogleAnalytics;
+- (void)startAnalytics;
+- (void)stopAnalytics;
+- (void)trackScreen:(NSString*)screenName;
 
 #pragma mark - Push notifications
 

@@ -394,14 +394,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"Settings"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"Settings"];
     
     // Release the potential pushed view controller
     [self releasePushedViewController];
@@ -2790,7 +2785,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[AppDelegate theDelegate] stopGoogleAnalytics];
+        [[AppDelegate theDelegate] stopAnalytics];
         
         // Remove potential crash file.
         [MXLogger deleteCrashLog];
@@ -2801,7 +2796,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[AppDelegate theDelegate] startGoogleAnalytics];
+        [[AppDelegate theDelegate] startAnalytics];
     }
 }
 
