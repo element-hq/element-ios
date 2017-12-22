@@ -135,14 +135,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"UnifiedSearch"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"UnifiedSearch"];
 
     // Let's child display the loading not the home view controller
     if (self.activityIndicator)

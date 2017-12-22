@@ -44,6 +44,11 @@
 #import <AudioToolbox/AudioToolbox.h>
 
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+
+// Google Analytics
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
 #include <MatrixSDK/MXGoogleAnalytics.h>
 
 // Calls
@@ -418,7 +423,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     // Configure Google Analytics here if the option is enabled
-    [self startGoogleAnalytics];
+    [self startAnalytics];
     
     // Prepare Pushkit handling
     _incomingPushEventIds = [NSMutableDictionary dictionary];
@@ -604,7 +609,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
-    [self stopGoogleAnalytics];
+    [self stopAnalytics];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
@@ -927,9 +932,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-#pragma mark - Crash report handling
+#pragma mark - Analytics
 
-- (void)startGoogleAnalytics
+- (void)startAnalytics
 {
     // Check whether the user has enabled the sending of crash reports.
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
@@ -973,7 +978,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)stopGoogleAnalytics
+- (void)stopAnalytics
 {
     GAI *gai = [GAI sharedInstance];
     
@@ -986,6 +991,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [gai removeTrackerByName:[gai defaultTracker].name];
     
     [MXLogger logCrashes:NO];
+}
+
+- (void)trackScreen:(NSString *)screenName
+{
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:screenName];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
 }
 
 // Check if there is a crash log to send to server

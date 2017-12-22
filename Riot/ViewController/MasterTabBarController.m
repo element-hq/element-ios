@@ -767,7 +767,7 @@
                                                            self->currentAlert = nil;
                                                        }
                                                        
-                                                       [[AppDelegate theDelegate] startGoogleAnalytics];
+                                                       [[AppDelegate theDelegate] startAnalytics];
                                                        
                                                    }]];
     
