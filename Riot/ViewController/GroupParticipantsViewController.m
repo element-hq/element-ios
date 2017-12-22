@@ -119,8 +119,6 @@
     // Search bar header is hidden when no group is provided
     _searchBarHeader.hidden = (self.group == nil);
     
-    [self setNavBarButtons];
-    
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
     
@@ -174,8 +172,6 @@
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    
-    [self setNavBarButtons];
 }
 
 - (void)destroy
@@ -417,14 +413,6 @@
     [self.tableView reloadData];
 }
 
-- (void)setNavBarButtons
-{
-    // Check whether the view controller is currently displayed inside a segmented view controller or not.
-    UIViewController* topViewController = ((self.parentViewController) ? self.parentViewController : self);
-    topViewController.navigationItem.rightBarButtonItem = nil;
-    topViewController.navigationItem.leftBarButtonItem = nil;
-}
-
 - (void)addAddParticipantButton
 {
     // Add blur mask programmatically
@@ -460,7 +448,7 @@
     
     addParticipantButtonImageView.backgroundColor = [UIColor clearColor];
     addParticipantButtonImageView.contentMode = UIViewContentModeCenter;
-    addParticipantButtonImageView.image = [UIImage imageNamed:@"add_participant"];
+    addParticipantButtonImageView.image = [UIImage imageNamed:@"add_group_participant"];
     
     CGFloat side = 78.0f;
     NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
@@ -907,7 +895,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -1120,8 +1108,8 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = kRiotColorGreen;
-    searchBar.tintColor = kRiotColorGreen;
+    searchBar.barTintColor = searchBar.tintColor = kRiotColorBlue;
+    searchBar.tintColor = kRiotColorBlue;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
@@ -1132,7 +1120,7 @@
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = kRiotColorGreen;
+    leftImageView.tintColor = kRiotColorBlue;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -1143,8 +1131,8 @@
     // place holder
     searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: kRiotColorGreen,
-                                                                                            NSForegroundColorAttributeName: kRiotColorGreen}];
+                                                                                            NSUnderlineColorAttributeName: kRiotColorBlue,
+                                                                                            NSForegroundColorAttributeName: kRiotColorBlue}];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

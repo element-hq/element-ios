@@ -2324,7 +2324,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
             }];
             
-            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(20, 18)];
+            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(24, 24)];
             [actions insertObject:leaveAction atIndex:0];
         }
     }

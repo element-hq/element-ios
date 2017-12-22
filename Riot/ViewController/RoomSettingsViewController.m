@@ -2899,7 +2899,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
             }];
             
-            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(25, 24)];
+            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
             [actions insertObject:removeAction atIndex:0];
         }
     }

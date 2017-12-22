@@ -436,39 +436,12 @@
     _selectedEventId = nil;
     _selectedRoomSession = nil;
     
-    if (_currentRoomViewController)
-    {
-        // If the displayed data is not a preview, let the manager release the room data source
-        // (except if the view controller has the room data source ownership).
-        if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
-        {
-            MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-            
-            // Let the manager release live room data sources where the user is in
-            [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
-        }
-        
-        [_currentRoomViewController destroy];
-        _currentRoomViewController = nil;
-    }
-    
     _selectedContact = nil;
-    
-    if (_currentContactDetailViewController)
-    {
-        [_currentContactDetailViewController destroy];
-        _currentContactDetailViewController = nil;
-    }
     
     _selectedGroup = nil;
     _selectedGroupSession = nil;
     
-    if (_currentGroupDetailViewController)
-    {
-        [_currentGroupDetailViewController destroy];
-        _currentGroupDetailViewController = nil;
-    }
+    [self releaseCurrentDetailsViewController];
 }
 
 - (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion
@@ -516,32 +489,7 @@
     {
         UINavigationController *navigationController = [segue destinationViewController];
         
-        // Release existing Room view controller (if any)
-        if (_currentRoomViewController)
-        {
-            // If the displayed data is not a preview, let the manager release the room data source
-            // (except if the view controller has the room data source ownership).
-            if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
-            {
-                MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
-                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-                
-                [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
-            }
-            
-            [_currentRoomViewController destroy];
-            _currentRoomViewController = nil;
-        }
-        else if (_currentContactDetailViewController)
-        {
-            [_currentContactDetailViewController destroy];
-            _currentContactDetailViewController = nil;
-        }
-        else if (_currentGroupDetailViewController)
-        {
-            [_currentGroupDetailViewController destroy];
-            _currentGroupDetailViewController = nil;
-        }
+        [self releaseCurrentDetailsViewController];
         
         if ([[segue identifier] isEqualToString:@"showRoomDetails"])
         {
@@ -698,6 +646,37 @@
     if ([selectedViewController respondsToSelector:@selector(refreshCurrentSelectedCell:)])
     {
         [(id)selectedViewController refreshCurrentSelectedCell:forceVisible];
+    }
+}
+
+- (void)releaseCurrentDetailsViewController
+{
+    // Release the existing details view controller (if any).
+    if (_currentRoomViewController)
+    {
+        // If the displayed data is not a preview, let the manager release the room data source
+        // (except if the view controller has the room data source ownership).
+        if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
+        {
+            MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+            
+            // Let the manager release live room data sources where the user is in
+            [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
+        }
+        
+        [_currentRoomViewController destroy];
+        _currentRoomViewController = nil;
+    }
+    else if (_currentContactDetailViewController)
+    {
+        [_currentContactDetailViewController destroy];
+        _currentContactDetailViewController = nil;
+    }
+    else if (_currentGroupDetailViewController)
+    {
+        [_currentGroupDetailViewController destroy];
+        _currentGroupDetailViewController = nil;
     }
 }
 

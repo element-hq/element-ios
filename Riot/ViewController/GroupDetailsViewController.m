@@ -68,6 +68,8 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
+    self.sectionHeaderTintColor = kRiotColorBlue;
+    
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
 }
@@ -131,6 +133,32 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+    UINavigationController *mainNavigationController = self.navigationController;
+    if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+    {
+        mainNavigationController = self.splitViewController.viewControllers.firstObject;
+    }
+    
+    if (mainNavigationController.navigationBar.tintColor == kRiotColorBlue)
+    {
+        // Restore default tintColor
+        mainNavigationController.navigationBar.tintColor = kRiotColorGreen;
+    }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+    UINavigationController *mainNavigationController = self.navigationController;
+    if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+    {
+        mainNavigationController = self.splitViewController.viewControllers.firstObject;
+    }
+    mainNavigationController.navigationBar.tintColor = kRiotColorBlue;
 }
 
 - (void)destroy
