@@ -22,4 +22,6 @@
 
 @property (nonatomic) MXRoomThirdPartyInvite* mxThirdPartyInvite;
 
+@property (nonatomic) MXGroupUser* mxGroupUser;
+
 @end

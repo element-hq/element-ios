@@ -191,14 +191,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"Authentication"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"Authentication"];
 }
 
 - (void)destroy

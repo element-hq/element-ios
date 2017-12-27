@@ -394,14 +394,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"Settings"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"Settings"];
     
     // Release the potential pushed view controller
     [self releasePushedViewController];
@@ -2324,7 +2319,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
             }];
             
-            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(20, 18)];
+            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(24, 24)];
             [actions insertObject:leaveAction atIndex:0];
         }
     }
@@ -2790,7 +2785,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[AppDelegate theDelegate] stopGoogleAnalytics];
+        [[AppDelegate theDelegate] stopAnalytics];
         
         // Remove potential crash file.
         [MXLogger deleteCrashLog];
@@ -2801,7 +2796,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[AppDelegate theDelegate] startGoogleAnalytics];
+        [[AppDelegate theDelegate] startAnalytics];
     }
 }
 
@@ -3958,8 +3953,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [NSBundle mxk_setLanguage:language];
 
         // Store user settings
-        [[NSUserDefaults standardUserDefaults] setObject:language forKey:@"appLanguage"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+        [sharedUserDefaults setObject:language forKey:@"appLanguage"];
+        [sharedUserDefaults synchronize];
 
         // Do a reload in order to recompute strings in the new language
         // Note that "reloadMatrixSessions:NO" will reset room summaries

@@ -73,6 +73,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         sdkOptions.disableIdenticonUseForUserAvatar = YES;
         // Enable e2e encryption for newly created MXSession
         sdkOptions.enableCryptoWhenStartingMXSession = YES;
+        
+        // Customize the localized string table
+        [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
 
         // NSLog -> console.log file when not debugging the app
         if (!isatty(STDERR_FILENO))
@@ -130,6 +133,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 - (void)setShareExtensionContext:(NSExtensionContext *)shareExtensionContext
 {
     _shareExtensionContext = shareExtensionContext;
+    
+    // Set up runtime language on each context update.
+    NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+    NSString *language = [sharedUserDefaults objectForKey:@"appLanguage"];
+    [NSBundle mxk_setLanguage:language];
+    [NSBundle mxk_setFallbackLanguage:@"en"];
     
     // Check the current matrix user.
     [self checkUserAccount];
