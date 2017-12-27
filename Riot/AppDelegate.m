@@ -333,17 +333,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
 
-    NSUInteger loopCount = 0;
+    // User credentials (in MXKAccount) are no more stored in NSUserDefaults but in a file
+    // as advised at https://forums.developer.apple.com/thread/15685#45849.
+    // So, there is no more need to loop (sometimes forever) until
+    // [application isProtectedDataAvailable] becomes YES.
+//    NSUInteger loopCount = 0;
 
-    // Check whether the content protection is active before going further.
-    // Should fix the spontaneous logout.
-    while (![application isProtectedDataAvailable])
-    {
-        // Wait for protected data.
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
-    }
-
-    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions (%tu)", loopCount);
+//    // Check whether the content protection is active before going further.
+//    // Should fix the spontaneous logout.
+//    while (![application isProtectedDataAvailable])
+//    {
+//        // Wait for protected data.
+//        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
+//    }
+//
+//    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions (%tu)", loopCount);
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     // Log app information
     NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
