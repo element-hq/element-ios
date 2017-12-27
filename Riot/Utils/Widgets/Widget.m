@@ -72,10 +72,27 @@
             for (NSString *key in _data)
             {
                 NSString *paramKey = [NSString stringWithFormat:@"$%@", key];
-                NSString *value = [_data[key] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-                _url = [_url stringByReplacingOccurrencesOfString:paramKey
-                                                       withString:value];
+                NSString *dataString;
+                MXJSONModelSetString(dataString, _data[key]);
+
+                // Fix number data instead of expected string data
+                if (!dataString && [_data[key] isKindOfClass:NSNumber.class])
+                {
+                    dataString = [((NSNumber*)_data[key]) stringValue];
+                }
+
+                if (dataString)
+                {
+                    NSString *value = [dataString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+                    _url = [_url stringByReplacingOccurrencesOfString:paramKey
+                                                           withString:value];
+                }
+                else
+                {
+                    NSLog(@"[Widget] Error: Invalid data field value in %@ for key %@ in data %@", self, key, _data);
+                }
             }
         }
     }
