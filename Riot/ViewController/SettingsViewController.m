@@ -3958,8 +3958,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [NSBundle mxk_setLanguage:language];
 
         // Store user settings
-        [[NSUserDefaults standardUserDefaults] setObject:language forKey:@"appLanguage"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+        [sharedUserDefaults setObject:language forKey:@"appLanguage"];
+        [sharedUserDefaults synchronize];
 
         // Do a reload in order to recompute strings in the new language
         // Note that "reloadMatrixSessions:NO" will reset room summaries

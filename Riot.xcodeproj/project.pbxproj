@@ -523,6 +523,13 @@
 		F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */; };
 		F0B5430A1F70FF8F00D29293 /* back_icon@4x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0B543091F70FF8F00D29293 /* back_icon@4x.png */; };
 		F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */; };
+		F0BFBDBA1FF3BDDF00C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382B31F276AD200356143 /* Vector.strings */; };
+		F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EAF1FCF346800B5F6A3 /* Vector.strings */; };
+		F0BFBDBC1FF3BFC100C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2681F83A4C000D20F4D /* Vector.strings */; };
+		F0BFBDBD1FF3BFC800C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2611F83A4C000D20F4D /* Vector.strings */; };
+		F0BFBDBE1FF3BFCD00C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA71F473BDB0076CA16 /* Vector.strings */; };
+		F0BFBDBF1FF3BFD200C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382AC1F276AD200356143 /* Vector.strings */; };
+		F0BFBDC01FF3BFE200C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61F01F0D2183007255F4 /* Vector.strings */; };
 		F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
@@ -2680,17 +2687,24 @@
 			files = (
 				24D6B35B1F3CA03300FC7A71 /* ShareViewController.xib in Resources */,
 				24EEE5B51F2607C500B3C705 /* SegmentedViewController.xib in Resources */,
+				F0BFBDBD1FF3BFC800C88726 /* Vector.strings in Resources */,
 				24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */,
 				F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */,
 				F0A895621F7D405000BD6C2A /* e2e_verified@3x.png in Resources */,
 				2435179C1F375B9400D0683E /* Info.plist in Resources */,
+				F0BFBDBE1FF3BFCD00C88726 /* Vector.strings in Resources */,
 				24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */,
 				2466B73E1F2DFAC100AE27B0 /* animatedLogo-4.png in Resources */,
 				2435179F1F375C0F00D0683E /* Vector.strings in Resources */,
 				24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */,
 				F0A895611F7D404E00BD6C2A /* e2e_verified@2x.png in Resources */,
+				F0BFBDBA1FF3BDDF00C88726 /* Vector.strings in Resources */,
 				24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */,
+				F0BFBDBC1FF3BFC100C88726 /* Vector.strings in Resources */,
 				F0A895601F7D404B00BD6C2A /* e2e_verified.png in Resources */,
+				F0BFBDC01FF3BFE200C88726 /* Vector.strings in Resources */,
+				F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */,
+				F0BFBDBF1FF3BFD200C88726 /* Vector.strings in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
 				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
 				2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */,
