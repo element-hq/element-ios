@@ -370,9 +370,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
 
-    // Set up runtime language and fallback
-    NSString *langage = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];;
-    [NSBundle mxk_setLanguage:langage];
+    // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
+    NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+    NSString *language = [sharedUserDefaults objectForKey:@"appLanguage"];
+    if (!language)
+    {
+        // Check whether a langage was only defined at the Riot application level.
+        language = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];
+        if (language)
+        {
+            // Move this setting into the shared userDefaults object to apply it to the extensions.
+            [sharedUserDefaults setObject:language forKey:@"appLanguage"];
+            [sharedUserDefaults synchronize];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"appLanguage"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
 
     // Define the navigation bar text color
