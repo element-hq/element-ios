@@ -345,17 +345,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
 
-    NSUInteger loopCount = 0;
+    // User credentials (in MXKAccount) are no more stored in NSUserDefaults but in a file
+    // as advised at https://forums.developer.apple.com/thread/15685#45849.
+    // So, there is no more need to loop (sometimes forever) until
+    // [application isProtectedDataAvailable] becomes YES.
+//    NSUInteger loopCount = 0;
 
-    // Check whether the content protection is active before going further.
-    // Should fix the spontaneous logout.
-    while (![application isProtectedDataAvailable])
-    {
-        // Wait for protected data.
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
-    }
-
-    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions (%tu)", loopCount);
+//    // Check whether the content protection is active before going further.
+//    // Should fix the spontaneous logout.
+//    while (![application isProtectedDataAvailable])
+//    {
+//        // Wait for protected data.
+//        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
+//    }
+//
+//    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions (%tu)", loopCount);
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     // Log app information
     NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
@@ -370,9 +375,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
 
-    // Set up runtime language and fallback
-    NSString *langage = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];;
-    [NSBundle mxk_setLanguage:langage];
+    // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
+    NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+    NSString *language = [sharedUserDefaults objectForKey:@"appLanguage"];
+    if (!language)
+    {
+        // Check whether a langage was only defined at the Riot application level.
+        language = [[NSUserDefaults standardUserDefaults] objectForKey:@"appLanguage"];
+        if (language)
+        {
+            // Move this setting into the shared userDefaults object to apply it to the extensions.
+            [sharedUserDefaults setObject:language forKey:@"appLanguage"];
+            [sharedUserDefaults synchronize];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"appLanguage"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
 
     // Define the navigation bar text color
