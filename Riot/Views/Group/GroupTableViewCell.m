@@ -31,15 +31,6 @@
     // Initialize unread count badge
     [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
-    
-    if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-    {
-        self.groupName.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
-    }
-    else
-    {
-        self.groupName.font = [UIFont systemFontOfSize:17];
-    }
 }
 
 - (void)customizeTableViewCellRendering
@@ -77,6 +68,8 @@
     }
 }
 
+// @TODO: Remove this method required by `MXKCellRendering` protocol.
+// It is not used for the groups table view.
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
