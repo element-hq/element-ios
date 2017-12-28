@@ -83,6 +83,10 @@
     // Hide line separators of empty cells
     self.groupsTableView.tableFooterView = [[UIView alloc] init];
     
+    // Enable self sizing cells
+    self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
+    self.groupsTableView.estimatedRowHeight = 74;
+    
     // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
