@@ -338,6 +338,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSDate *startDate = [NSDate date];
+    
 #ifdef DEBUG
     // log the full launchOptions only in DEBUG
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: %@", launchOptions);
@@ -450,7 +452,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
-    
+
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
+
     return YES;
 }
 
