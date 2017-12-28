@@ -218,7 +218,7 @@
     if (_group)
     {
         // Force refresh
-        [self refreshDisplayWithGroup:[self.mxSession groupWithGroupId:_group.groupId]];
+        [self didUpdateGroupUsers:nil];
         
         // Trigger a refresh on the group members and the invited users.
         [self.mxSession updateGroupUsers:_group success:nil failure:^(NSError *error) {
@@ -324,7 +324,10 @@
 
 - (void)didUpdateGroupUsers:(NSNotification *)notif
 {
-    [self refreshDisplayWithGroup:[self.mxSession groupWithGroupId:_group.groupId]];
+    // Update here the displayed group instance with the one stored in the session (if any).
+    MXGroup *group = [self.mxSession groupWithGroupId:_group.groupId];
+    
+    [self refreshDisplayWithGroup:(group ? group : _group)];
 }
 
 - (void)refreshDisplayWithGroup:(MXGroup *)group

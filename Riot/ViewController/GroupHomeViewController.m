@@ -122,11 +122,11 @@
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kRiotColorGreen;
+    self.leftButton.backgroundColor = kRiotColorBlue;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kRiotColorGreen;
+    self.rightButton.backgroundColor = kRiotColorBlue;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -150,12 +150,24 @@
     if (_group)
     {
         // Force a screen refresh
-        [self refreshDisplayWithGroup:[self.mxSession groupWithGroupId:_group.groupId]];
+        [self didUpdateGroupDetails:nil];
         
         // Trigger a refresh on the group summary.
         [self.mxSession updateGroupSummary:_group success:nil failure:^(NSError *error) {
             
             NSLog(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", _group.groupId);
+            
+        }];
+        // Trigger a refresh on the group members (ignore here the invited users).
+        [self.mxSession updateGroupUsers:_group success:nil failure:^(NSError *error) {
+            
+            NSLog(@"[GroupHomeViewController] viewWillAppear: group members update failed %@", _group.groupId);
+            
+        }];
+        // Trigger a refresh on the group rooms.
+        [self.mxSession updateGroupRooms:_group success:nil failure:^(NSError *error) {
+            
+            NSLog(@"[GroupHomeViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
             
         }];
     }
@@ -202,7 +214,9 @@
 {
     [self cancelRegistrationOnGroupChangeNotifications];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupSummary:) name:kMXSessionDidUpdateGroupSummaryNotification object:self.mxSession];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupSummaryNotification object:self.mxSession];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupUsersNotification object:self.mxSession];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupRoomsNotification object:self.mxSession];
 }
 
 - (void)cancelRegistrationOnGroupChangeNotifications
@@ -211,9 +225,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)didUpdateGroupSummary:(NSNotification *)notif
+- (void)didUpdateGroupDetails:(NSNotification *)notif
 {
-    [self refreshDisplayWithGroup:[self.mxSession groupWithGroupId:_group.groupId]];
+    // Update here the displayed group instance with the one stored in the session (if any).
+    MXGroup *group = [self.mxSession groupWithGroupId:_group.groupId];
+    
+    [self refreshDisplayWithGroup:(group ? group : _group)];
 }
 
 - (void)refreshDisplayWithGroup:(MXGroup*)group
@@ -234,6 +251,40 @@
         
         _groupDescription.text = _group.summary.profile.shortDescription;
         
+        if (_group.users.totalUserCountEstimate == 1)
+        {
+            _membersCountLabel.text = NSLocalizedStringFromTable(@"group_home_one_member_format", @"Vector", nil);
+            _membersCountContainer.hidden = NO;
+        }
+        else if (_group.users.totalUserCountEstimate > 1)
+        {
+            _membersCountLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_home_multi_members_format", @"Vector", nil), _group.users.totalUserCountEstimate];
+            _membersCountContainer.hidden = NO;
+        }
+        else
+        {
+            _membersCountLabel.text = nil;
+            _membersCountContainer.hidden = YES;
+        }
+        
+        if (_group.rooms.totalRoomCountEstimate == 1)
+        {
+            _roomsCountLabel.text = NSLocalizedStringFromTable(@"group_home_one_room_format", @"Vector", nil);
+            _roomsCountContainer.hidden = NO;
+        }
+        else if (_group.rooms.totalRoomCountEstimate > 1)
+        {
+            _roomsCountLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_home_multi_rooms_format", @"Vector", nil), _group.rooms.totalRoomCountEstimate];
+            _roomsCountContainer.hidden = NO;
+        }
+        else
+        {
+            _roomsCountLabel.text = nil;
+            _roomsCountContainer.hidden = YES;
+        }
+        
+        _countsContainer.hidden = (_membersCountContainer.isHidden && _roomsCountContainer.isHidden);
+        
         if (_group.membership == MXMembershipInvite)
         {
             self.inviteContainer.hidden = NO;
@@ -252,7 +303,7 @@
                     }
                 }
                 
-                self.inviteLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_invitation_format", @"Vector", nil), _group.inviter];
+                self.inviteLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_invitation_format", @"Vector", nil), inviter];
             }
             else
             {
@@ -303,6 +354,10 @@
         
         _groupLongDescription.text = nil;
         _separatorViewTopConstraint.constant = 0;
+        
+        _membersCountLabel.text = nil;
+        _roomsCountLabel.text = nil;
+        _countsContainer.hidden = YES;
     }
     
     // Round image view for thumbnail
@@ -320,7 +375,7 @@
     {
         if (sender == self.rightButton)
         {
-            // Decline the invite
+            // Accept the invite
             __weak typeof(self) weakSelf = self;
             [self startActivityIndicator];
             
@@ -353,7 +408,7 @@
         }
         else if (sender == self.leftButton)
         {
-            // Accept the invite
+            // Decline the invite
             __weak typeof(self) weakSelf = self;
             [self startActivityIndicator];
             

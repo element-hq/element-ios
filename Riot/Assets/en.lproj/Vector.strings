@@ -458,13 +458,17 @@
 "group_details_home" = "Home";
 "group_details_people" = "People";
 "group_details_rooms" = "Rooms";
+
+// Group Home
+"group_home_one_member_format" = "1 member";
+"group_home_multi_members_format" = "%tu members";
+"group_home_one_room_format" = "1 room";
+"group_home_multi_rooms_format" = "%tu rooms";
 "group_invitation_format" = "%@ has invited you to join this community";
 
 // Group participants
 "group_participants_title" = "Participants";
 "group_participants_add_participant" = "Add participant";
-"group_participants_one_participant" = "1 member";
-"group_participants_multi_participants" = "%d members";
 "group_participants_leave_prompt_title" = "Leave group";
 "group_participants_leave_prompt_msg" = "Are you sure you want to leave the group?";
 "group_participants_remove_prompt_title" = "Confirmation";

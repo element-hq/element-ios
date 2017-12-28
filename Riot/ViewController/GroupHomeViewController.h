@@ -24,6 +24,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *groupName;
 @property (weak, nonatomic) IBOutlet UIView *groupNameMask;
 @property (weak, nonatomic) IBOutlet UILabel *groupDescription;
+@property (weak, nonatomic) IBOutlet UIView *countsContainer;
+@property (weak, nonatomic) IBOutlet UIView *membersCountContainer;
+@property (weak, nonatomic) IBOutlet UIView *roomsCountContainer;
+@property (weak, nonatomic) IBOutlet UILabel *membersCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *roomsCountLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *inviteContainer;
 @property (weak, nonatomic) IBOutlet UILabel *inviteLabel;

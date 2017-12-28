@@ -372,12 +372,15 @@
 "group_details_home" = "Accueil";
 "group_details_people" = "Membres";
 "group_details_rooms" = "Salons";
+// Group Home
+"group_home_one_member_format" = "1 membre";
+"group_home_multi_members_format" = "%tu membres";
+"group_home_one_room_format" = "1 salon";
+"group_home_multi_rooms_format" = "%tu salons";
 "group_invitation_format" = "%@ vous a invité à rejoindre cette communauté";
 // Group participants
 "group_participants_title" = "Membres";
 "group_participants_add_participant" = "Ajouter un membre";
-"group_participants_one_participant" = "1 membre";
-"group_participants_multi_participants" = "%d membres";
 "group_participants_leave_prompt_title" = "Quitter le groupe";
 "group_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter le groupe?";
 "group_participants_remove_prompt_title" = "Confirmation";
