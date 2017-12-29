@@ -1261,9 +1261,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         MXEvent *event;
 
         // Ignore event already notified to the user
-        if ([self displayedLimitedLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId])
+        if ([self displayedLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId type:nil])
         {
-            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a failed sync notif. Event id: %@", eventId);
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
             continue;
         }
         
@@ -1332,6 +1332,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
                 eventNotification.alertBody = notificationBody;
                 eventNotification.userInfo = @{
+                                               @"type": @"full",
                                                @"room_id": event.roomId,
                                                @"event_id": event.eventId,
                                                @"user_id": account.mxCredentials.userId
@@ -1501,15 +1502,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     for (NSString *eventId in events)
     {
-        if ([self displayedLimitedLocalNotificationForEvent:eventId andUser:userId])
+        // Ignore event already notified to the user
+        if ([self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
         {
-            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Notification for event %@ already exists", eventId);
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
             continue;
         }
 
         // Build notification user info
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                        @"type": @"failed_sync",
+                                                                                        @"type": @"limited",
                                                                                         @"event_id": eventId,
                                                                                         @"user_id": userId
                                                                                         }];
@@ -1572,20 +1574,21 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 /**
- Return the already displayed limited notification for an event.
+ Return the already displayed notification for an event.
 
  @param eventId the id of the event attached to the notification to find.
  @param userId the id of the user attached to the notification to find.
+ @param type the type of notification. @"full" or @"limited". nil for any type.
  @return the local notification if any.
  */
-- (UILocalNotification*)displayedLimitedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId
+- (UILocalNotification*)displayedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId type:(NSString*)type
 {
     UILocalNotification *limitedLocalNotification;
     for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
     {
-        if ([localNotification.userInfo[@"type"] isEqualToString:@"failed_sync"]
-            && [localNotification.userInfo[@"event_id"] isEqualToString:eventId]
-            && [localNotification.userInfo[@"user_id"] isEqualToString:userId])
+        if ([localNotification.userInfo[@"event_id"] isEqualToString:eventId]
+            && [localNotification.userInfo[@"user_id"] isEqualToString:userId]
+            && (!type || [localNotification.userInfo[@"type"] isEqualToString:type]))
         {
             limitedLocalNotification = localNotification;
             break;
