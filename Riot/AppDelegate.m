@@ -1210,8 +1210,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync fails");
-                
+                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync failed for %tu pending notifications. Error: %@ (%@)", self.incomingPushEventIds[@(account.mxSession.hash)].count, error.domain, @(error.code));
+
             }];
         }
     }
@@ -1249,7 +1249,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Ignore redacted event.
             if (event.isRedactedEvent)
             {
-                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event");
+                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event. Event id: %@", event.eventId);
                 continue;
             }
             
@@ -1259,7 +1259,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Ignore call invite when callkit is active.
                 if (isCallKitActive)
                 {
-                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip call event");
+                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip call event. Event id: %@", event.eventId);
                     continue;
                 }
                 else
@@ -1285,7 +1285,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     MXEvent *readReceiptEvent = [account.mxSession.store eventWithEventId:readReceipt.eventId inRoom:roomId];
                     if (event.originServerTs <= readReceiptEvent.originServerTs)
                     {
-                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip already read event");
+                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip already read event. Event id: %@", event.eventId);
                         continue;
                     }
                 }
@@ -1442,6 +1442,64 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     return notificationBody;
+}
+
+- (void)handleLocalNotificationsForFailedSync:(MXSession*)mxSession events:(NSArray<NSString *> *)events
+{
+    NSString *userId = mxSession.matrixRestClient.credentials.userId;
+
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: %@", userId);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: eventsToNotify: %@", eventsToNotify[@(mxSession.hash)]);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: incomingPushEventIds: %@", self.incomingPushEventIds[@(mxSession.hash)]);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: events: %@", events);
+
+    if (events.count)
+    {
+        return;
+    }
+
+    for (NSString *eventId in events)
+    {
+        if ([self displayedFailedSyncLocalNotificationForEvent:eventId andUser:userId])
+        {
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Notification for event %@ already exists", eventId);
+            continue;
+        }
+
+        UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
+        localNotificationForFailedSync.userInfo = @{
+                                                    @"type": @"failed_sync",
+                                                    @"event_id": eventId,
+                                                    @"user_id": userId
+                                                    };
+
+        localNotificationForFailedSync.alertBody = [self notificationBodyForFailedSyncEvent:eventId inMatrixSession:mxSession];
+
+        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotificationForFailedSync];
+    }
+}
+
+- (UILocalNotification*)displayedFailedSyncLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId
+{
+    UILocalNotification *localNotificationForFailedSync;
+    for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
+    {
+        if ([localNotification.userInfo[@"type"] isEqualToString:@"failed_sync"]
+            && [localNotification.userInfo[@"event_id"] isEqualToString:eventId]
+            && [localNotification.userInfo[@"user_id"] isEqualToString:userId])
+        {
+            localNotificationForFailedSync = localNotification;
+            break;
+        }
+    }
+
+    return localNotificationForFailedSync;
+}
+
+- (nullable NSString *)notificationBodyForFailedSyncEvent:(NSString *)eventId inMatrixSession:(MXSession*)mxSession
+{
+    return @"todo";
 }
 
 - (void)refreshApplicationIconBadgeNumber
@@ -1985,10 +2043,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Check whether some push notifications are pending for this session.
                 if (self.incomingPushEventIds[@(mxSession.hash)].count)
                 {
-                    NSLog(@"[AppDelegate][Push] relaunch a background sync for the kMXSessionStateDidChangeNotification pending incoming push");
+                    NSLog(@"[AppDelegate][Push] relaunch a background sync for %tu kMXSessionStateDidChangeNotification pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
                     [self launchBackgroundSync];
                 }
             }
+            else if (mxSession.state == MXSessionStateInitialSyncFailed)
+            {
+                // Display failure sync notifications for pending events if any
+                if (self.incomingPushEventIds[@(mxSession.hash)].count)
+                {
+                    NSLog(@"[AppDelegate][Push] initial sync failed with %tu pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
+
+                    // Trigger local notifications when the sync with HS fails
+                    [self handleLocalNotificationsForFailedSync:mxSession events:self.incomingPushEventIds[@(mxSession.hash)]];
+
+                    // Update app icon badge number
+                    [self refreshApplicationIconBadgeNumber];
+                }
+             }
         }
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
         {
