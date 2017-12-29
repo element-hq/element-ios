@@ -178,6 +178,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSMutableDictionary <NSNumber *, NSMutableArray <NSDictionary *> *> *eventsToNotify;
 
     /**
+     Cache for payloads received with incoming push notifications.
+     The key is the event id. The value, the payload.
+     Note: for the moment, objets in this dictionary are never removed but
+     the impact on memory is low.
+     */
+    NSMutableDictionary <NSString*, NSDictionary*> *incomingPushPayloads;
+
+    /**
      Currently displayed "Call not supported" alert.
      */
     UIAlertController *noCallSupportAlert;
@@ -395,6 +403,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     callEventsListeners = [NSMutableDictionary dictionary];
     notificationListenerBlocks = [NSMutableDictionary dictionary];
     eventsToNotify = [NSMutableDictionary dictionary];
+    incomingPushPayloads = [NSMutableDictionary dictionary];
     
     // To simplify navigation into the app, we retrieve here the main navigation controller and the tab bar controller.
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
@@ -1085,6 +1094,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (roomId.length)
     {
         // TODO retrieve the right matrix session
+        // We can use the "user_id" value in notification.userInfo
         
         //**************
         // Patch consider the first session which knows the room id
@@ -1165,6 +1175,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             {
                 [array addObject:eventId];
             }
+
+            // Cache payload for further usage
+            incomingPushPayloads[eventId] = payload.dictionaryPayload;
         }
         else
         {
@@ -1238,6 +1251,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSString *roomId = eventDict[@"room_id"];
         BOOL checkReadEvent = YES;
         MXEvent *event;
+
+        // Ignore event already notified to the user
+        if ([self displayedFailedSyncLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId])
+        {
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a failed sync notif. Event id: %@", eventId);
+            continue;
+        }
         
         if (eventId && roomId)
         {
@@ -1303,7 +1323,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
                 eventNotification.alertBody = notificationBody;
-                eventNotification.userInfo = @{ @"room_id" : event.roomId };
+                eventNotification.userInfo = @{
+                                               @"room_id": event.roomId,
+                                               @"event_id": event.eventId,
+                                               @"user_id": account.mxCredentials.userId
+                                               };
                 
                 // Set sound name based on the value provided in action of MXPushRule
                 for (MXPushRuleAction *action in rule.actions)
@@ -1444,6 +1468,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     return notificationBody;
 }
 
+/**
+ Display limited notifications for events the app was not able to get data
+ (because of /sync failure).
+
+ @param mxSession the matrix session where the /sync failed.
+ @param events the list of events id we did not get data.
+ */
 - (void)handleLocalNotificationsForFailedSync:(MXSession*)mxSession events:(NSArray<NSString *> *)events
 {
     NSString *userId = mxSession.matrixRestClient.credentials.userId;
@@ -1466,13 +1497,27 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             continue;
         }
 
-        UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
-        localNotificationForFailedSync.userInfo = @{
-                                                    @"type": @"failed_sync",
-                                                    @"event_id": eventId,
-                                                    @"user_id": userId
-                                                    };
+        // Build notification user info
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                        @"type": @"failed_sync",
+                                                                                        @"event_id": eventId,
+                                                                                        @"user_id": userId
+                                                                                        }];
 
+        // Add the room_id so that user will open the room when tapping on the notif
+        NSDictionary *payload = incomingPushPayloads[eventId];
+        NSString *roomId = payload[@"room_id"];
+        if (roomId)
+        {
+            userInfo[@"room_id"] = roomId;
+        }
+        else
+        {
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: room_id is missing for event %@ in payload %@", eventId, payload);
+        }
+
+        UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
+        localNotificationForFailedSync.userInfo = userInfo;
         localNotificationForFailedSync.alertBody = [self notificationBodyForFailedSyncEvent:eventId inMatrixSession:mxSession];
 
         NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
@@ -1480,6 +1525,50 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+/**
+ Build the body of the "limited" notification to display to the user.
+
+ @param eventId the id of the event the app failed to get data.
+ @param mxSession the matrix session where the /sync failed.
+ @return the string to display in the local notification.
+ */
+- (nullable NSString *)limited otificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account
+- (nullable NSString *)notificationBodyForFailedSyncEvent:(NSString *)eventId inMatrixSession:(MXSession*)mxSession
+{
+    NSString *notificationBody;
+
+    NSString *roomDisplayName;
+
+    NSDictionary *payload = incomingPushPayloads[eventId];
+    NSString *roomId = payload[@"room_id"];
+    if (roomId)
+    {
+        MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:roomId];
+        if (roomSummary)
+        {
+            roomDisplayName = roomSummary.displayname;
+        }
+    }
+
+    if (roomDisplayName.length)
+    {
+        [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD_IN_ROOM", nil), roomDisplayName];
+    }
+    else
+    {
+        [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD", nil), roomDisplayName];
+    }
+
+    return notificationBody;
+}
+
+/**
+ Return already displayed notification for a failed sync.
+
+ @param eventId the id of the event attached to the notification to find.
+ @param userId the id of the user attached to the notification to find.
+ @return the local notification if any.
+ */
 - (UILocalNotification*)displayedFailedSyncLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId
 {
     UILocalNotification *localNotificationForFailedSync;
@@ -1495,11 +1584,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 
     return localNotificationForFailedSync;
-}
-
-- (nullable NSString *)notificationBodyForFailedSyncEvent:(NSString *)eventId inMatrixSession:(MXSession*)mxSession
-{
-    return @"todo";
 }
 
 - (void)refreshApplicationIconBadgeNumber
