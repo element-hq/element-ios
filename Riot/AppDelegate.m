@@ -1200,9 +1200,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             NSLog(@"[AppDelegate][Push] launchBackgroundSync");
             __weak typeof(self) weakSelf = self;
+
+            NSMutableArray<NSString *> *incomingPushEventIds = self.incomingPushEventIds[@(account.mxSession.hash)];
+            NSMutableArray<NSString *> *incomingPushEventIdsCopy = [incomingPushEventIds copy];
             
             // Flush all the pending push notifications for this session.
-            [self.incomingPushEventIds[@(account.mxSession.hash)] removeAllObjects];
+            [incomingPushEventIds removeAllObjects];
             
             [account backgroundSync:20000 success:^{
                 
@@ -1223,7 +1226,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync failed for %tu pending notifications. Error: %@ (%@)", self.incomingPushEventIds[@(account.mxSession.hash)].count, error.domain, @(error.code));
+                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync failed. Error: %@ (%@). incomingPushEventIdsCopy: %@ - self.incomingPushEventIds: %@", error.domain, @(error.code), incomingPushEventIdsCopy, incomingPushEventIds);
+
+                // Trigger local notifications when the sync with HS fails
+                [self handleLimitedLocalNotifications:account.mxSession events:incomingPushEventIdsCopy];
+
+                // Update app icon badge number
+                [self refreshApplicationIconBadgeNumber];
 
             }];
         }
