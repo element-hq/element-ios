@@ -18,7 +18,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="600" height="73.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" customClass="MXKImageView">
                         <rect key="frame" x="13" y="16" width="42" height="42"/>
                         <color key="backgroundColor" red="0.89720267057418823" green="0.89720267057418823" blue="0.89720267057418823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="AvatarImageView"/>

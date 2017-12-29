@@ -119,10 +119,17 @@
     // Search bar header is hidden when no group is provided
     _searchBarHeader.hidden = (self.group == nil);
     
+    // Enable self-sizing cells and section headers.
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 74;
+    self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedSectionHeaderHeight = 30;
+    
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
     
     [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
+    [self.tableView registerNib:MXKTableViewHeaderFooterWithLabel.nib forHeaderFooterViewReuseIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
     
     // @TODO: Add programmatically the button to add participant.
     //[self addAddParticipantButton];
@@ -805,7 +812,22 @@
 
 #pragma mark - UITableView delegate
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return tableView.estimatedRowHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
+{
+    if (section == invitedSection)
+    {
+        return tableView.estimatedSectionHeaderHeight;
+    }
+    
+    return 0;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = kRiotPrimaryBgColor;
     
@@ -826,50 +848,32 @@
             cell.selectedBackgroundView.backgroundColor = nil;
         }
     }
+    
+    // Refresh here the estimated row height
+    tableView.estimatedRowHeight = cell.frame.size.height;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(nonnull UIView *)view forSection:(NSInteger)section
 {
-    CGFloat height = 0.0;
+    // Refresh here the estimated header height
+    tableView.estimatedSectionHeaderHeight = view.frame.size.height;
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    MXKTableViewHeaderFooterWithLabel *sectionHeader;
     
     if (section == invitedSection)
     {
-        height = 30.0;
-    }
-    
-    return height;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView* sectionHeader;
-    
-    if (section == invitedSection)
-    {
-        sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
-        sectionHeader.backgroundColor = kRiotSecondaryBgColor;
+        sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
+        sectionHeader.mxkContentView.backgroundColor = kRiotSecondaryBgColor;
+        sectionHeader.mxkLabel.textColor = kRiotPrimaryTextColor;
+        sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
-        CGRect frame = sectionHeader.frame;
-        frame.origin.x = 20;
-        frame.origin.y = 5;
-        frame.size.width = sectionHeader.frame.size.width - 10;
-        frame.size.height -= 10;
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-        headerLabel.textColor = kRiotPrimaryTextColor;
-        headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        headerLabel.backgroundColor = [UIColor clearColor];
-        
-        headerLabel.text = NSLocalizedStringFromTable(@"group_participants_invited_section", @"Vector", nil);
-        
-        [sectionHeader addSubview:headerLabel];
+        sectionHeader.mxkLabel.text = NSLocalizedStringFromTable(@"group_participants_invited_section", @"Vector", nil);
     }
     
     return sectionHeader;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 74.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

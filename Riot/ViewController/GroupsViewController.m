@@ -88,6 +88,7 @@
     self.groupsTableView.estimatedRowHeight = 74;
     self.groupsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
     self.groupsTableView.estimatedSectionHeaderHeight = 30;
+    self.groupsTableView.estimatedSectionFooterHeight = 0;
     
     // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -428,6 +429,8 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+    [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+    
     cell.backgroundColor = kRiotPrimaryBgColor;
     
     // Update the selected background view

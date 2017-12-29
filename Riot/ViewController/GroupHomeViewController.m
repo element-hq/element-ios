@@ -119,6 +119,7 @@
     self.separatorView.backgroundColor = kRiotSecondaryBgColor;
     
     _groupLongDescription.textColor = kRiotSecondaryTextColor;
+    _groupLongDescription.tintColor = kRiotColorBlue;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
