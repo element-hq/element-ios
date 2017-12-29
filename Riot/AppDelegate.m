@@ -1469,13 +1469,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 /**
- Display limited notifications for events the app was not able to get data
+ Display "limited" notifications for events the app was not able to get data
  (because of /sync failure).
+
+ In this situation, we are only able to display "You received a message in %@".
 
  @param mxSession the matrix session where the /sync failed.
  @param events the list of events id we did not get data.
  */
-- (void)handleLocalNotificationsForFailedSync:(MXSession*)mxSession events:(NSArray<NSString *> *)events
+- (void)handleLimitedLocalNotifications:(MXSession*)mxSession events:(NSArray<NSString *> *)events
 {
     NSString *userId = mxSession.matrixRestClient.credentials.userId;
 
@@ -1518,7 +1520,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
         UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
         localNotificationForFailedSync.userInfo = userInfo;
-        localNotificationForFailedSync.alertBody = [self notificationBodyForFailedSyncEvent:eventId inMatrixSession:mxSession];
+        localNotificationForFailedSync.alertBody = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
 
         NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotificationForFailedSync];
@@ -1532,8 +1534,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
  @param mxSession the matrix session where the /sync failed.
  @return the string to display in the local notification.
  */
-- (nullable NSString *)limited otificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account
-- (nullable NSString *)notificationBodyForFailedSyncEvent:(NSString *)eventId inMatrixSession:(MXSession*)mxSession
+- (nullable NSString *)limitedNotificationBodyForEvent:(NSString *)eventId inMatrixSession:(MXSession*)mxSession
 {
     NSString *notificationBody;
 
@@ -2139,7 +2140,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     NSLog(@"[AppDelegate][Push] initial sync failed with %tu pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
 
                     // Trigger local notifications when the sync with HS fails
-                    [self handleLocalNotificationsForFailedSync:mxSession events:self.incomingPushEventIds[@(mxSession.hash)]];
+                    [self handleLimitedLocalNotifications:mxSession events:self.incomingPushEventIds[@(mxSession.hash)]];
 
                     // Update app icon badge number
                     [self refreshApplicationIconBadgeNumber];
