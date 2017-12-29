@@ -187,6 +187,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSMutableDictionary <NSNumber *, NSMutableArray <NSDictionary *> *> *eventsToNotify;
 
     /**
+     Cache for payloads received with incoming push notifications.
+     The key is the event id. The value, the payload.
+     */
+    NSMutableDictionary <NSString*, NSDictionary*> *incomingPushPayloads;
+
+    /**
      Currently displayed "Call not supported" alert.
      */
     UIAlertController *noCallSupportAlert;
@@ -351,18 +357,19 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // as advised at https://forums.developer.apple.com/thread/15685#45849.
     // So, there is no more need to loop (sometimes forever) until
     // [application isProtectedDataAvailable] becomes YES.
-//    NSUInteger loopCount = 0;
+    // But, as we are not so sure, loop but no more than 10s.
+    // TODO: Remove this loop.
+    NSUInteger loopCount = 0;
 
-//    // Check whether the content protection is active before going further.
-//    // Should fix the spontaneous logout.
-//    while (![application isProtectedDataAvailable])
-//    {
-//        // Wait for protected data.
-//        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
-//    }
-//
-//    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions (%tu)", loopCount);
-    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
+    // Check whether the content protection is active before going further.
+    // Should fix the spontaneous logout.
+    while (![application isProtectedDataAvailable] && loopCount++ < 50)
+    {
+        // Wait for protected data.
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
+    }
+
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
 
     // Log app information
     NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
@@ -407,6 +414,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     callEventsListeners = [NSMutableDictionary dictionary];
     notificationListenerBlocks = [NSMutableDictionary dictionary];
     eventsToNotify = [NSMutableDictionary dictionary];
+    incomingPushPayloads = [NSMutableDictionary dictionary];
     
     // To simplify navigation into the app, we retrieve here the main navigation controller and the tab bar controller.
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
@@ -551,6 +559,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [array removeAllObjects];
     }
+    [incomingPushPayloads removeAllObjects];
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
@@ -1138,6 +1147,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (roomId.length)
     {
         // TODO retrieve the right matrix session
+        // We can use the "user_id" value in notification.userInfo
         
         //**************
         // Patch consider the first session which knows the room id
@@ -1218,6 +1228,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             {
                 [array addObject:eventId];
             }
+
+            // Cache payload for further usage
+            incomingPushPayloads[eventId] = payload.dictionaryPayload;
         }
         else
         {
@@ -1240,9 +1253,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             NSLog(@"[AppDelegate][Push] launchBackgroundSync");
             __weak typeof(self) weakSelf = self;
+
+            NSMutableArray<NSString *> *incomingPushEventIds = self.incomingPushEventIds[@(account.mxSession.hash)];
+            NSMutableArray<NSString *> *incomingPushEventIdsCopy = [incomingPushEventIds copy];
             
             // Flush all the pending push notifications for this session.
-            [self.incomingPushEventIds[@(account.mxSession.hash)] removeAllObjects];
+            [incomingPushEventIds removeAllObjects];
             
             [account backgroundSync:20000 success:^{
                 
@@ -1263,8 +1279,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync fails");
-                
+                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync failed. Error: %@ (%@). incomingPushEventIdsCopy: %@ - self.incomingPushEventIds: %@", error.domain, @(error.code), incomingPushEventIdsCopy, incomingPushEventIds);
+
+                // Trigger limited local notifications when the sync with HS fails
+                [self handleLimitedLocalNotifications:account.mxSession events:incomingPushEventIdsCopy];
+
+                // Update app icon badge number
+                [self refreshApplicationIconBadgeNumber];
+
             }];
         }
     }
@@ -1291,6 +1313,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSString *roomId = eventDict[@"room_id"];
         BOOL checkReadEvent = YES;
         MXEvent *event;
+
+        // Ignore event already notified to the user
+        if ([self displayedLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId type:nil])
+        {
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
+            continue;
+        }
         
         if (eventId && roomId)
         {
@@ -1302,7 +1331,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Ignore redacted event.
             if (event.isRedactedEvent)
             {
-                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event");
+                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event. Event id: %@", event.eventId);
                 continue;
             }
             
@@ -1312,7 +1341,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Ignore call invite when callkit is active.
                 if (isCallKitActive)
                 {
-                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip call event");
+                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip call event. Event id: %@", event.eventId);
                     continue;
                 }
                 else
@@ -1338,7 +1367,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     MXEvent *readReceiptEvent = [account.mxSession.store eventWithEventId:readReceipt.eventId inRoom:roomId];
                     if (event.originServerTs <= readReceiptEvent.originServerTs)
                     {
-                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip already read event");
+                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip already read event. Event id: %@", event.eventId);
                         continue;
                     }
                 }
@@ -1356,7 +1385,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
                 eventNotification.alertBody = notificationBody;
-                eventNotification.userInfo = @{ @"room_id" : event.roomId };
+                eventNotification.userInfo = @{
+                                               @"type": @"full",
+                                               @"room_id": event.roomId,
+                                               @"event_id": event.eventId,
+                                               @"user_id": account.mxCredentials.userId
+                                               };
                 
                 // Set sound name based on the value provided in action of MXPushRule
                 for (MXPushRuleAction *action in rule.actions)
@@ -1495,6 +1529,127 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     return notificationBody;
+}
+
+/**
+ Display "limited" notifications for events the app was not able to get data
+ (because of /sync failure).
+
+ In this situation, we are only able to display "You received a message in %@".
+
+ @param mxSession the matrix session where the /sync failed.
+ @param events the list of events id we did not get data.
+ */
+- (void)handleLimitedLocalNotifications:(MXSession*)mxSession events:(NSArray<NSString *> *)events
+{
+    NSString *userId = mxSession.matrixRestClient.credentials.userId;
+
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: %@", userId);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: eventsToNotify: %@", eventsToNotify[@(mxSession.hash)]);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: incomingPushEventIds: %@", self.incomingPushEventIds[@(mxSession.hash)]);
+    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: events: %@", events);
+
+    if (!events.count)
+    {
+        return;
+    }
+
+    for (NSString *eventId in events)
+    {
+        // Ignore event already notified to the user
+        if ([self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
+        {
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
+            continue;
+        }
+
+        // Build notification user info
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                        @"type": @"limited",
+                                                                                        @"event_id": eventId,
+                                                                                        @"user_id": userId
+                                                                                        }];
+
+        // Add the room_id so that user will open the room when tapping on the notif
+        NSDictionary *payload = incomingPushPayloads[eventId];
+        NSString *roomId = payload[@"room_id"];
+        if (roomId)
+        {
+            userInfo[@"room_id"] = roomId;
+        }
+        else
+        {
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: room_id is missing for event %@ in payload %@", eventId, payload);
+        }
+
+        UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
+        localNotificationForFailedSync.userInfo = userInfo;
+        localNotificationForFailedSync.alertBody = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
+
+        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotificationForFailedSync];
+    }
+}
+
+/**
+ Build the body for the "limited" notification to display to the user.
+
+ @param eventId the id of the event the app failed to get data.
+ @param mxSession the matrix session where the /sync failed.
+ @return the string to display in the local notification.
+ */
+- (nullable NSString *)limitedNotificationBodyForEvent:(NSString *)eventId inMatrixSession:(MXSession*)mxSession
+{
+    NSString *notificationBody;
+
+    NSString *roomDisplayName;
+
+    NSDictionary *payload = incomingPushPayloads[eventId];
+    NSString *roomId = payload[@"room_id"];
+    if (roomId)
+    {
+        MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:roomId];
+        if (roomSummary)
+        {
+            roomDisplayName = roomSummary.displayname;
+        }
+    }
+
+    if (roomDisplayName.length)
+    {
+        [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD_IN_ROOM", nil), roomDisplayName];
+    }
+    else
+    {
+        [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD", nil), roomDisplayName];
+    }
+
+    return notificationBody;
+}
+
+/**
+ Return the already displayed notification for an event.
+
+ @param eventId the id of the event attached to the notification to find.
+ @param userId the id of the user attached to the notification to find.
+ @param type the type of notification. @"full" or @"limited". nil for any type.
+ @return the local notification if any.
+ */
+- (UILocalNotification*)displayedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId type:(NSString*)type
+{
+    UILocalNotification *limitedLocalNotification;
+    for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
+    {
+        if ([localNotification.userInfo[@"event_id"] isEqualToString:eventId]
+            && [localNotification.userInfo[@"user_id"] isEqualToString:userId]
+            && (!type || [localNotification.userInfo[@"type"] isEqualToString:type]))
+        {
+            limitedLocalNotification = localNotification;
+            break;
+        }
+    }
+
+    return limitedLocalNotification;
 }
 
 - (void)refreshApplicationIconBadgeNumber
@@ -2038,10 +2193,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Check whether some push notifications are pending for this session.
                 if (self.incomingPushEventIds[@(mxSession.hash)].count)
                 {
-                    NSLog(@"[AppDelegate][Push] relaunch a background sync for the kMXSessionStateDidChangeNotification pending incoming push");
+                    NSLog(@"[AppDelegate][Push] relaunch a background sync for %tu kMXSessionStateDidChangeNotification pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
                     [self launchBackgroundSync];
                 }
             }
+            else if (mxSession.state == MXSessionStateInitialSyncFailed)
+            {
+                // Display failure sync notifications for pending events if any
+                if (self.incomingPushEventIds[@(mxSession.hash)].count)
+                {
+                    NSLog(@"[AppDelegate][Push] initial sync failed with %tu pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
+
+                    // Trigger limited local notifications when the sync with HS fails
+                    [self handleLimitedLocalNotifications:mxSession events:self.incomingPushEventIds[@(mxSession.hash)]];
+
+                    // Update app icon badge number
+                    [self refreshApplicationIconBadgeNumber];
+                }
+             }
         }
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
         {

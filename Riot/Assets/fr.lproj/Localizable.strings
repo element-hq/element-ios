@@ -14,6 +14,10 @@
 "IMAGE_FROM_USER" = "%@ vous a envoyé une image %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ a posté une image %@ dans %@";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Vous avez reçu un message dans %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Vous avez reçu un message";
 /* Multiple unread messages in a room */
 "UNREAD_IN_ROOM" = "%@ nouveaux messages dans %@";
 /* Multiple unread messages from a specific person, not referencing a room */
