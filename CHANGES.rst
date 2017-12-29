@@ -1,3 +1,16 @@
+Changes in 0.6.7 (2017-12-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.4).
+
+Bug Fix:
+ * Share extension is not localized? (#1701).
+ * Widget: Fix crash with unexpected widget data (#1703).
+ * Silent crash at startup in [MXKContactManager loadCachedMatrixContacts] (#1711).
+ * Should fix missing push notifications (#1696).
+ * Should fix the application crash on "Failed to grow buffer" when loading local phonebook contacts (https://github.com/matrix-org/riot-ios-rageshakes/issues/779).
+
 Changes in 0.6.6 (2017-12-21)
 ===============================================
 
