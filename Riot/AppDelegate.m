@@ -345,18 +345,19 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // as advised at https://forums.developer.apple.com/thread/15685#45849.
     // So, there is no more need to loop (sometimes forever) until
     // [application isProtectedDataAvailable] becomes YES.
-//    NSUInteger loopCount = 0;
+    // But, as we are not so sure, loop but no more than 10s.
+    // TODO: Remove this loop.
+    NSUInteger loopCount = 0;
 
-//    // Check whether the content protection is active before going further.
-//    // Should fix the spontaneous logout.
-//    while (![application isProtectedDataAvailable])
-//    {
-//        // Wait for protected data.
-//        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
-//    }
-//
-//    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions (%tu)", loopCount);
-    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
+    // Check whether the content protection is active before going further.
+    // Should fix the spontaneous logout.
+    while (![application isProtectedDataAvailable] && loopCount++ < 50)
+    {
+        // Wait for protected data.
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
+    }
+
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
 
     // Log app information
     NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
