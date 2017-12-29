@@ -180,8 +180,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     /**
      Cache for payloads received with incoming push notifications.
      The key is the event id. The value, the payload.
-     Note: for the moment, objects in this dictionary are never removed but
-     the impact on memory is low.
      */
     NSMutableDictionary <NSString*, NSDictionary*> *incomingPushPayloads;
 
@@ -548,6 +546,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [array removeAllObjects];
     }
+    [incomingPushPayloads removeAllObjects];
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
@@ -1495,7 +1494,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: incomingPushEventIds: %@", self.incomingPushEventIds[@(mxSession.hash)]);
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: events: %@", events);
 
-    if (events.count)
+    if (!events.count)
     {
         return;
     }
