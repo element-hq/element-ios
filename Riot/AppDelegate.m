@@ -180,7 +180,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     /**
      Cache for payloads received with incoming push notifications.
      The key is the event id. The value, the payload.
-     Note: for the moment, objets in this dictionary are never removed but
+     Note: for the moment, objects in this dictionary are never removed but
      the impact on memory is low.
      */
     NSMutableDictionary <NSString*, NSDictionary*> *incomingPushPayloads;
@@ -1228,7 +1228,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
                 NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync failed. Error: %@ (%@). incomingPushEventIdsCopy: %@ - self.incomingPushEventIds: %@", error.domain, @(error.code), incomingPushEventIdsCopy, incomingPushEventIds);
 
-                // Trigger local notifications when the sync with HS fails
+                // Trigger limited local notifications when the sync with HS fails
                 [self handleLimitedLocalNotifications:account.mxSession events:incomingPushEventIdsCopy];
 
                 // Update app icon badge number
@@ -1262,7 +1262,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         MXEvent *event;
 
         // Ignore event already notified to the user
-        if ([self displayedFailedSyncLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId])
+        if ([self displayedLimitedLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId])
         {
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a failed sync notif. Event id: %@", eventId);
             continue;
@@ -1502,7 +1502,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     for (NSString *eventId in events)
     {
-        if ([self displayedFailedSyncLocalNotificationForEvent:eventId andUser:userId])
+        if ([self displayedLimitedLocalNotificationForEvent:eventId andUser:userId])
         {
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Notification for event %@ already exists", eventId);
             continue;
@@ -1537,7 +1537,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 /**
- Build the body of the "limited" notification to display to the user.
+ Build the body for the "limited" notification to display to the user.
 
  @param eventId the id of the event the app failed to get data.
  @param mxSession the matrix session where the /sync failed.
@@ -1573,27 +1573,27 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 }
 
 /**
- Return already displayed notification for a failed sync.
+ Return the already displayed limited notification for an event.
 
  @param eventId the id of the event attached to the notification to find.
  @param userId the id of the user attached to the notification to find.
  @return the local notification if any.
  */
-- (UILocalNotification*)displayedFailedSyncLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId
+- (UILocalNotification*)displayedLimitedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId
 {
-    UILocalNotification *localNotificationForFailedSync;
+    UILocalNotification *limitedLocalNotification;
     for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
     {
         if ([localNotification.userInfo[@"type"] isEqualToString:@"failed_sync"]
             && [localNotification.userInfo[@"event_id"] isEqualToString:eventId]
             && [localNotification.userInfo[@"user_id"] isEqualToString:userId])
         {
-            localNotificationForFailedSync = localNotification;
+            limitedLocalNotification = localNotification;
             break;
         }
     }
 
-    return localNotificationForFailedSync;
+    return limitedLocalNotification;
 }
 
 - (void)refreshApplicationIconBadgeNumber
@@ -2148,7 +2148,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 {
                     NSLog(@"[AppDelegate][Push] initial sync failed with %tu pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
 
-                    // Trigger local notifications when the sync with HS fails
+                    // Trigger limited local notifications when the sync with HS fails
                     [self handleLimitedLocalNotifications:mxSession events:self.incomingPushEventIds[@(mxSession.hash)]];
 
                     // Update app icon badge number
