@@ -2533,6 +2533,15 @@
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
+        // Preview the clicked group
+        else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
+        {
+            shouldDoAction = NO;
+            
+            // Open the group or preview it
+            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        }
     }
     
     return shouldDoAction;
