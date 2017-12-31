@@ -110,9 +110,7 @@
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"group_participants_title", @"Vector", nil);
-    
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"group_participants_filter_group_members", @"Vector", nil);
+    _searchBarView.placeholder = NSLocalizedStringFromTable(@"group_participants_filter_members", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
@@ -350,8 +348,6 @@
     
     // Refresh the members list.
     [self refreshParticipantsList];
-    
-    [self refreshTableView];
 }
 
 - (void)startActivityIndicator
@@ -562,17 +558,8 @@
         actualParticipants = nil;
         invitedParticipants = nil;
     }
-}
-
-- (void)reloadSearchResult
-{
-    if (currentSearchText.length)
-    {
-        NSString *searchText = currentSearchText;
-        currentSearchText = nil;
-        
-        [self searchBar:_searchBarView textDidChange:searchText];
-    }
+    
+    [self finalizeParticipantsList];
 }
 
 - (void)finalizeParticipantsList
@@ -601,7 +588,17 @@
     [invitedParticipants sortUsingComparator:comparator];
     
     // Reload search result if any
-    [self reloadSearchResult];
+    if (currentSearchText.length)
+    {
+        NSString *searchText = currentSearchText;
+        currentSearchText = nil;
+        
+        [self searchBar:_searchBarView textDidChange:searchText];
+    }
+    else
+    {
+        [self refreshTableView];
+    }
 }
 
 - (void)addPendingActionMask

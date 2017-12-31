@@ -15,8 +15,10 @@
  */
 
 #import "GroupDetailsViewController.h"
+
 #import "GroupHomeViewController.h"
 #import "GroupParticipantsViewController.h"
+#import "GroupRoomsViewController.h"
 
 #import "AppDelegate.h"
 
@@ -24,6 +26,7 @@
 {
     GroupHomeViewController *groupHomeViewController;
     GroupParticipantsViewController *groupParticipantsViewController;
+    GroupRoomsViewController *groupRoomsViewController;
     
     /**
      mask view while processing a request
@@ -98,7 +101,13 @@
     [viewControllers addObject:groupParticipantsViewController];
     
     // Rooms tab
-    //[titles addObject: NSLocalizedStringFromTable(@"group_details_rooms", @"Vector", nil)];
+    [titles addObject: NSLocalizedStringFromTable(@"group_details_rooms", @"Vector", nil)];
+    groupRoomsViewController = [GroupRoomsViewController groupRoomsViewController];
+    if (_group)
+    {
+        [groupRoomsViewController setGroup:_group withMatrixSession:_mxSession];
+    }
+    [viewControllers addObject:groupRoomsViewController];
     
     self.title = NSLocalizedStringFromTable(@"group_details_title", @"Vector", nil);
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
@@ -175,6 +184,10 @@
     if (groupParticipantsViewController)
     {
         [groupParticipantsViewController setGroup:group withMatrixSession:mxSession];
+    }
+    if (groupRoomsViewController)
+    {
+        [groupRoomsViewController setGroup:group withMatrixSession:mxSession];
     }
 }
 

@@ -379,7 +379,6 @@
 "group_home_multi_rooms_format" = "%tu salons";
 "group_invitation_format" = "%@ vous a invité à rejoindre cette communauté";
 // Group participants
-"group_participants_title" = "Membres";
 "group_participants_add_participant" = "Ajouter un membre";
 "group_participants_leave_prompt_title" = "Quitter le groupe";
 "group_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter le groupe?";
@@ -387,11 +386,13 @@
 "group_participants_remove_prompt_msg" = "Voulez-vous vraiment exclure %@ de ce groupe?";
 "group_participants_invite_prompt_title" = "Confirmation";
 "group_participants_invite_prompt_msg" = "Voulez-vous vraiment inviter %@ dans ce groupe?";
-"group_participants_filter_group_members" = "Filtrer les membres du group";
+"group_participants_filter_members" = "Filtrer les membres de la communauté";
 "group_participants_invite_another_user" = "Rechercher/inviter par identifiant ou nom";
 "group_participants_invite_malformed_id_title" = "Erreur lors de l'invitation";
 "group_participants_invite_malformed_id" = "Identifiant au mauvais format. Un identifiant Matrix au format \"@utilisateur:domaine\" est attendu";
 "group_participants_invited_section" = "INVITÉS";
+// Group rooms
+"group_rooms_filter_rooms" = "Filtrer les salons de la communauté";
 // Read Receipts
 "read_receipts_list" = "Liste des accusés de lecture";
 "receipt_status_read" = "Lu : ";

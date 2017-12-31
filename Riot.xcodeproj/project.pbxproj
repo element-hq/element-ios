@@ -589,6 +589,10 @@
 		F0E05A451EA0F9EB004B83FB /* tab_rooms.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2D1EA0F9EB004B83FB /* tab_rooms.png */; };
 		F0E05A461EA0F9EB004B83FB /* tab_rooms@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2E1EA0F9EB004B83FB /* tab_rooms@2x.png */; };
 		F0E05A471EA0F9EB004B83FB /* tab_rooms@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2F1EA0F9EB004B83FB /* tab_rooms@3x.png */; };
+		F0E5D90E1FF6DDCF00560D7F /* GroupRoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E5D90C1FF6DDCF00560D7F /* GroupRoomsViewController.m */; };
+		F0E5D90F1FF6DDCF00560D7F /* GroupRoomsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E5D90D1FF6DDCF00560D7F /* GroupRoomsViewController.xib */; };
+		F0E5D9131FF6FF3F00560D7F /* GroupRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E5D9101FF6FF3E00560D7F /* GroupRoomTableViewCell.m */; };
+		F0E5D9141FF6FF3F00560D7F /* GroupRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E5D9111FF6FF3F00560D7F /* GroupRoomTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1380,6 +1384,12 @@
 		F0E05A2D1EA0F9EB004B83FB /* tab_rooms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_rooms.png; sourceTree = "<group>"; };
 		F0E05A2E1EA0F9EB004B83FB /* tab_rooms@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_rooms@2x.png"; sourceTree = "<group>"; };
 		F0E05A2F1EA0F9EB004B83FB /* tab_rooms@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_rooms@3x.png"; sourceTree = "<group>"; };
+		F0E5D90B1FF6DDCF00560D7F /* GroupRoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupRoomsViewController.h; sourceTree = "<group>"; };
+		F0E5D90C1FF6DDCF00560D7F /* GroupRoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupRoomsViewController.m; sourceTree = "<group>"; };
+		F0E5D90D1FF6DDCF00560D7F /* GroupRoomsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupRoomsViewController.xib; sourceTree = "<group>"; };
+		F0E5D9101FF6FF3E00560D7F /* GroupRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupRoomTableViewCell.m; sourceTree = "<group>"; };
+		F0E5D9111FF6FF3F00560D7F /* GroupRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupRoomTableViewCell.xib; sourceTree = "<group>"; };
+		F0E5D9121FF6FF3F00560D7F /* GroupRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupRoomTableViewCell.h; sourceTree = "<group>"; };
 		F546BCBBB9BBEE67DB28878A /* Pods-RiotPods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		FD9D0BDE9232898950554DD5 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -2115,6 +2125,9 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0E5D90B1FF6DDCF00560D7F /* GroupRoomsViewController.h */,
+				F0E5D90C1FF6DDCF00560D7F /* GroupRoomsViewController.m */,
+				F0E5D90D1FF6DDCF00560D7F /* GroupRoomsViewController.xib */,
 				F046DC7C1FE1A40F00E3DAF0 /* GroupParticipantsViewController.h */,
 				F046DC7B1FE1A40F00E3DAF0 /* GroupParticipantsViewController.m */,
 				F046DC7D1FE1A40F00E3DAF0 /* GroupParticipantsViewController.xib */,
@@ -2459,6 +2472,9 @@
 		F083BCDC1E7009EC00A9B29C /* RoomList */ = {
 			isa = PBXGroup;
 			children = (
+				F0E5D9121FF6FF3F00560D7F /* GroupRoomTableViewCell.h */,
+				F0E5D9101FF6FF3E00560D7F /* GroupRoomTableViewCell.m */,
+				F0E5D9111FF6FF3F00560D7F /* GroupRoomTableViewCell.xib */,
 				F075BED31EBB169C00A7B68A /* RoomCollectionViewCell.h */,
 				F075BED41EBB169C00A7B68A /* RoomCollectionViewCell.m */,
 				F075BED51EBB169C00A7B68A /* RoomCollectionViewCell.xib */,
@@ -3048,6 +3064,7 @@
 				F083BDDA1E7009ED00A9B29C /* typing.png in Resources */,
 				F083BE831E7009ED00A9B29C /* RecentTableViewCell.xib in Resources */,
 				F046DC731FE1786500E3DAF0 /* GroupHomeViewController.xib in Resources */,
+				F0E5D9141FF6FF3F00560D7F /* GroupRoomTableViewCell.xib in Resources */,
 				F083BDB71E7009ED00A9B29C /* remove_icon@2x.png in Resources */,
 				F083BDD31E7009ED00A9B29C /* settings_icon@3x.png in Resources */,
 				F04AF26B1F83A4C100D20F4D /* Vector.strings in Resources */,
@@ -3207,6 +3224,7 @@
 				F083BD311E7009ED00A9B29C /* bubbles_bg_landscape@2x.png in Resources */,
 				F0E05A371EA0F9EB004B83FB /* tab_home_selected@2x.png in Resources */,
 				F0D9F23E1FED1A05001D9A27 /* add_group_participant.png in Resources */,
+				F0E5D90F1FF6DDCF00560D7F /* GroupRoomsViewController.xib in Resources */,
 				F083BE651E7009ED00A9B29C /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F083BD6F1E7009ED00A9B29C /* e2e_blocked@2x.png in Resources */,
 			);
@@ -3272,6 +3290,7 @@
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactDetailsViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactListViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKCountryPickerViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKGroupListViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKLanguagePickerViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRecentListViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomMemberDetailsViewController.xib",
@@ -3285,6 +3304,7 @@
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Contact/MXKContactTableCell.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/DeviceView/MXKDeviceView.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/EncryptionInfoView/MXKEncryptionInfoView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Group/MXKGroupTableViewCell.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKCollectionViewCell/MXKMediaCollectionViewCell.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKEventDetailsView.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKPieChartHUD.xib",
@@ -3444,6 +3464,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0E5D9131FF6FF3F00560D7F /* GroupRoomTableViewCell.m in Sources */,
 				F083BE221E7009ED00A9B29C /* RoomSettingsViewController.m in Sources */,
 				F083BE171E7009ED00A9B29C /* MediaPickerViewController.m in Sources */,
 				F083BE421E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -3549,6 +3570,7 @@
 				3233F73F1F331F05006ACA81 /* Widget.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
 				F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */,
+				F0E5D90E1FF6DDCF00560D7F /* GroupRoomsViewController.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,
 				F083BE4C1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F075BEDB1EBB26F100A7B68A /* TableViewCellWithCollectionView.m in Sources */,
