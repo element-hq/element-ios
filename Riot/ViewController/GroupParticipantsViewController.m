@@ -204,6 +204,7 @@
     
     [self removePendingActionMask];
     
+    // Note: all observers are removed during super call.
     [super destroy];
 }
 
@@ -222,16 +223,31 @@
     
     if (_group)
     {
+        // Restore the listeners on the group update.
+        [self registerOnGroupChangeNotifications];
+        
+        // Check whether the selected group is stored in the user's session, or if it is a group preview.
+        // Replace the displayed group instance with the one stored in the session (if any).
+        MXGroup *storedGroup = [_mxSession groupWithGroupId:_group.groupId];
+        BOOL isPreview = (!storedGroup);
+        
         // Force refresh
-        [self didUpdateGroupUsers:nil];
+        [self refreshDisplayWithGroup:(isPreview ? _group : storedGroup)];
+        
+        // Prepare a block called on successful update in case of a group preview.
+        // Indeed the group update notifications are triggered by the matrix session only for the user's groups.
+        void (^success)(void) = ^void(void)
+        {
+            [self refreshDisplayWithGroup:_group];
+        };
         
         // Trigger a refresh on the group members and the invited users.
-        [self.mxSession updateGroupUsers:_group success:nil failure:^(NSError *error) {
+        [self.mxSession updateGroupUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
             NSLog(@"[GroupParticipantsViewController] viewWillAppear: group members update failed %@", _group.groupId);
             
         }];
-        [self.mxSession updateGroupInvitedUsers:_group success:nil failure:^(NSError *error) {
+        [self.mxSession updateGroupInvitedUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
             NSLog(@"[GroupParticipantsViewController] viewWillAppear: invited users update failed %@", _group.groupId);
             
@@ -242,6 +258,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self cancelRegistrationOnGroupChangeNotifications];
     
     if (currentAlert)
     {
@@ -305,7 +323,13 @@
     // Cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
     
-    _mxSession = mxSession;
+    if (_mxSession != mxSession)
+    {
+        [self cancelRegistrationOnGroupChangeNotifications];
+        _mxSession = mxSession;
+        
+        [self registerOnGroupChangeNotifications];
+    }
     
     [self addMatrixSession:mxSession];
     
@@ -316,23 +340,26 @@
 
 - (void)registerOnGroupChangeNotifications
 {
-    [self cancelRegistrationOnGroupChangeNotifications];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupUsers:) name:kMXSessionDidUpdateGroupUsersNotification object:self.mxSession];
+    if (_mxSession)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupUsers:) name:kMXSessionDidUpdateGroupUsersNotification object:_mxSession];
+    }
 }
 
 - (void)cancelRegistrationOnGroupChangeNotifications
 {
     // Remove any pending observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdateGroupUsersNotification object:_mxSession];
 }
 
 - (void)didUpdateGroupUsers:(NSNotification *)notif
 {
-    // Update here the displayed group instance with the one stored in the session (if any).
-    MXGroup *group = [self.mxSession groupWithGroupId:_group.groupId];
-    
-    [self refreshDisplayWithGroup:(group ? group : _group)];
+    MXGroup *group = notif.userInfo[kMXSessionNotificationGroupKey];
+    if (group && [group.groupId isEqualToString:_group.groupId])
+    {
+        // Update the current displayed group instance with the one stored in the session
+        [self refreshDisplayWithGroup:group];
+    }
 }
 
 - (void)refreshDisplayWithGroup:(MXGroup *)group
@@ -342,15 +369,11 @@
     if (_group)
     {
         _searchBarHeader.hidden = NO;
-        
-        [self registerOnGroupChangeNotifications];
     }
     else
     {
         // Search bar header is hidden when no group is provided
         _searchBarHeader.hidden = YES;
-        
-        [self cancelRegistrationOnGroupChangeNotifications];
     }
     
     // Refresh the members list.

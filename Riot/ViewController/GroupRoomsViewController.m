@@ -166,6 +166,7 @@
     
     groupRooms = nil;
     
+    // Note: all observers are removed during super call.
     [super destroy];
 }
 
@@ -178,11 +179,26 @@
     
     if (_group)
     {
+        // Restore the listeners on the group update.
+        [self registerOnGroupChangeNotifications];
+        
+        // Check whether the selected group is stored in the user's session, or if it is a group preview.
+        // Replace the displayed group instance with the one stored in the session (if any).
+        MXGroup *storedGroup = [_mxSession groupWithGroupId:_group.groupId];
+        BOOL isPreview = (!storedGroup);
+        
         // Force refresh
-        [self didUpdateGroupRooms:nil];
+        [self refreshDisplayWithGroup:(isPreview ? _group : storedGroup)];
+        
+        // Prepare a block called on successful update in case of a group preview.
+        // Indeed the group update notifications are triggered by the matrix session only for the user's groups.
+        void (^success)(void) = ^void(void)
+        {
+            [self refreshDisplayWithGroup:_group];
+        };
         
         // Trigger a refresh on the group rooms.
-        [self.mxSession updateGroupRooms:_group success:nil failure:^(NSError *error) {
+        [self.mxSession updateGroupRooms:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
             NSLog(@"[GroupRoomsViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
             
@@ -193,6 +209,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self cancelRegistrationOnGroupChangeNotifications];
     
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
@@ -216,7 +234,13 @@
     // Cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
     
-    _mxSession = mxSession;
+    if (_mxSession != mxSession)
+    {
+        [self cancelRegistrationOnGroupChangeNotifications];
+        _mxSession = mxSession;
+        
+        [self registerOnGroupChangeNotifications];
+    }
     
     [self addMatrixSession:mxSession];
     
@@ -227,23 +251,26 @@
 
 - (void)registerOnGroupChangeNotifications
 {
-    [self cancelRegistrationOnGroupChangeNotifications];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupRooms:) name:kMXSessionDidUpdateGroupRoomsNotification object:self.mxSession];
+    if (_mxSession)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupRooms:) name:kMXSessionDidUpdateGroupRoomsNotification object:_mxSession];
+    }
 }
 
 - (void)cancelRegistrationOnGroupChangeNotifications
 {
     // Remove any pending observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdateGroupRoomsNotification object:_mxSession];
 }
 
 - (void)didUpdateGroupRooms:(NSNotification *)notif
 {
-    // Update here the displayed group instance with the one stored in the session (if any).
-    MXGroup *group = [self.mxSession groupWithGroupId:_group.groupId];
-    
-    [self refreshDisplayWithGroup:(group ? group : _group)];
+    MXGroup *group = notif.userInfo[kMXSessionNotificationGroupKey];
+    if (group && [group.groupId isEqualToString:_group.groupId])
+    {
+        // Update the current displayed group instance with the one stored in the session.
+        [self refreshDisplayWithGroup:group];
+    }
 }
 
 - (void)refreshDisplayWithGroup:(MXGroup *)group
@@ -253,18 +280,12 @@
     if (_group)
     {
         _searchBarHeader.hidden = NO;
-        
-        [self registerOnGroupChangeNotifications];
-        
         groupRooms = _group.rooms.chunk;
     }
     else
     {
         // Search bar header is hidden when no group is provided
         _searchBarHeader.hidden = YES;
-        
-        [self cancelRegistrationOnGroupChangeNotifications];
-        
         groupRooms = nil;
     }
     

@@ -150,23 +150,38 @@
     
     if (_group)
     {
-        // Force a screen refresh
-        [self didUpdateGroupDetails:nil];
+        // Restore the listeners on the group update.
+        [self registerOnGroupChangeNotifications];
+        
+        // Check whether the selected group is stored in the user's session, or if it is a group preview.
+        // Replace the displayed group instance with the one stored in the session (if any).
+        MXGroup *storedGroup = [_mxSession groupWithGroupId:_group.groupId];
+        BOOL isPreview = (!storedGroup);
+        
+        // Force refresh
+        [self refreshDisplayWithGroup:(isPreview ? _group : storedGroup)];
+        
+        // Prepare a block called on successful update in case of a group preview.
+        // Indeed the group update notifications are triggered by the matrix session only for the user's groups.
+        void (^success)(void) = ^void(void)
+        {
+            [self refreshDisplayWithGroup:_group];
+        };
         
         // Trigger a refresh on the group summary.
-        [self.mxSession updateGroupSummary:_group success:nil failure:^(NSError *error) {
+        [self.mxSession updateGroupSummary:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
             NSLog(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", _group.groupId);
             
         }];
         // Trigger a refresh on the group members (ignore here the invited users).
-        [self.mxSession updateGroupUsers:_group success:nil failure:^(NSError *error) {
+        [self.mxSession updateGroupUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
             NSLog(@"[GroupHomeViewController] viewWillAppear: group members update failed %@", _group.groupId);
             
         }];
         // Trigger a refresh on the group rooms.
-        [self.mxSession updateGroupRooms:_group success:nil failure:^(NSError *error) {
+        [self.mxSession updateGroupRooms:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
             NSLog(@"[GroupHomeViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
             
@@ -183,6 +198,7 @@
 
 - (void)destroy
 {
+    // Note: all observers are removed during super call.
     [super destroy];
     
     _group = nil;
@@ -190,8 +206,6 @@
     
     [currentRequest cancel];
     currentRequest = nil;
-    
-    [self cancelRegistrationOnGroupChangeNotifications];
     
     if (kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
@@ -202,7 +216,13 @@
 
 - (void)setGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession
 {
-    _mxSession = mxSession;
+    if (_mxSession != mxSession)
+    {
+        [self cancelRegistrationOnGroupChangeNotifications];
+        _mxSession = mxSession;
+        
+        [self registerOnGroupChangeNotifications];
+    }
     
     [self addMatrixSession:mxSession];
     
@@ -213,25 +233,30 @@
 
 - (void)registerOnGroupChangeNotifications
 {
-    [self cancelRegistrationOnGroupChangeNotifications];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupSummaryNotification object:self.mxSession];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupUsersNotification object:self.mxSession];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupRoomsNotification object:self.mxSession];
+    if (_mxSession)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupSummaryNotification object:_mxSession];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupUsersNotification object:_mxSession];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroupDetails:) name:kMXSessionDidUpdateGroupRoomsNotification object:_mxSession];
+    }
 }
 
 - (void)cancelRegistrationOnGroupChangeNotifications
 {
     // Remove any pending observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdateGroupSummaryNotification object:_mxSession];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdateGroupUsersNotification object:_mxSession];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdateGroupRoomsNotification object:_mxSession];
 }
 
 - (void)didUpdateGroupDetails:(NSNotification *)notif
 {
-    // Update here the displayed group instance with the one stored in the session (if any).
-    MXGroup *group = [self.mxSession groupWithGroupId:_group.groupId];
-    
-    [self refreshDisplayWithGroup:(group ? group : _group)];
+    MXGroup *group = notif.userInfo[kMXSessionNotificationGroupKey];
+    if (group && [group.groupId isEqualToString:_group.groupId])
+    {
+        // Update the current displayed group instance with the one stored in the session
+        [self refreshDisplayWithGroup:group];
+    }
 }
 
 - (void)refreshDisplayWithGroup:(MXGroup*)group
@@ -240,8 +265,6 @@
     
     if (_group)
     {
-        [self registerOnGroupChangeNotifications];
-        
         [_group setGroupAvatarImageIn:_groupAvatar matrixSession:self.mxSession];
         
         _groupName.text = _group.summary.profile.name;
@@ -388,7 +411,7 @@
                     self->currentRequest = nil;
                     [self stopActivityIndicator];
                     
-                    [self refreshDisplayWithGroup:[self.mxSession groupWithGroupId:_group.groupId]];
+                    [self refreshDisplayWithGroup:[_mxSession groupWithGroupId:_group.groupId]];
                 }
                 
             } failure:^(NSError *error) {
