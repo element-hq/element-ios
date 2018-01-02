@@ -1594,9 +1594,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
  */
 - (UILocalNotification*)displayedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId type:(NSString*)type
 {
+    NSLog(@"[AppDelegate] displayedLocalNotificationForEvent: %@ andUser: %@. Current scheduledLocalNotifications: %@", eventId, userId, [[UIApplication sharedApplication] scheduledLocalNotifications]);
+
     UILocalNotification *limitedLocalNotification;
     for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
     {
+        NSLog(@"    - %@", localNotification.userInfo);
+
         if ([localNotification.userInfo[@"event_id"] isEqualToString:eventId]
             && [localNotification.userInfo[@"user_id"] isEqualToString:userId]
             && (!type || [localNotification.userInfo[@"type"] isEqualToString:type]))
@@ -1605,6 +1609,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             break;
         }
     }
+
+    NSLog(@"[AppDelegate] displayedLocalNotificationForEvent: found: %@", limitedLocalNotification);
 
     return limitedLocalNotification;
 }
