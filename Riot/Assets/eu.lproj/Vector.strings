@@ -307,7 +307,7 @@
 // Room Preview
 "room_preview_invitation_format" = "%@ erabiltzaileak gela honetara elkartzera gonbidatu zaitu";
 "room_preview_unlinked_email_warning" = "Zure gonbidapena bidali da %@ helbidera, hau ez dago kontu honetara lotuta.\nBeste kontu batekin hasi dezakezu saioa, edo e-mail hau kontu honetara gehitu.";
-"room_preview_try_join_an_unknown_room" = "%@ atzitzen saiatzen ari zara. Elkartu nahi duzu elkarrizketan parte hartzeko?";
+"room_preview_try_join_an_unknown_room" = "%@ gelan sartzen saiatzen ari zara. Elkartu nahi duzu elkarrizketan parte hartzeko?";
 // Settings
 "settings_title" = "Ezarpenak";
 "account_logout_all" = "Amaitu saioa kontu guztietan";
@@ -392,7 +392,7 @@
 "directory_server_all_native_rooms" = "Matrix gela natibo guztiak";
 "directory_server_placeholder" = "matrix.org";
 // Events formatter
-"event_formatter_member_updates" = "%tu kidetza aldaketak";
+"event_formatter_member_updates" = "%tu kidetza aldaketa";
 "you" = "Zu";
 "network_offline_prompt" = "Badirudi ez zaudela Internetera konektatuta.";
 "public_room_section_title" = "Gela publikoak (%@ zerbitzarian):";
@@ -433,3 +433,50 @@
 // Widget
 "widget_no_power_to_manage" = "Baimena behar duzu trepetak kudeatzeko gela honetan";
 "widget_creation_failure" = "Trepetaren sorrerak huts egin du";
+"send_to" = "Bidali honi: %@";
+"sending" = "Bidaltzen";
+"search_in_progress" = "Bilatzen…";
+"room_event_action_cancel_send" = "Utzi bidalketa";
+"room_event_failed_to_send" = "Bidalketak huts egin du";
+"settings_calls_settings" = "DEIAK";
+"settings_show_decrypted_content" = "Erakutsi deszifratutako edukia";
+"settings_enable_callkit" = "Dei integratuak";
+"settings_callkit_info" = "Jaso deiak zure blokeo-pantailan. Ikusi Riot deiak sistemaren deian historialean. Cloud gaituta badago, deien historiala Apple-ekin partekatuko da.";
+"settings_ui_theme" = "Gaia";
+"settings_ui_theme_auto" = "Automatikoa";
+"settings_ui_theme_light" = "Argia";
+"settings_ui_theme_dark" = "Iluna";
+"settings_ui_theme_black" = "Beltza";
+"settings_ui_theme_picker_title" = "Hautatu gai bat";
+"settings_ui_theme_picker_message" = "\"Automatikoa\"-k gailuaren \"alderantzikatu koloreak\" ezarpena erabiltzen du";
+"settings_labs_matrix_apps" = "Matrix aplikazioak";
+"settings_enable_rageshake" = "Astindu amorruz akatsaren berri emateko";
+"room_details_direct_chat" = "Txat zuzena";
+"event_formatter_widget_added" = "%@ trepeta gehitu du %@ erabiltzaileak";
+"event_formatter_widget_removed" = "%@ trepeta kendu du %@ erabiltzaileak";
+"event_formatter_jitsi_widget_added" = "VoIP konferentzia gehitu du %@ erabiltzaileak";
+"event_formatter_jitsi_widget_removed" = "VoIP konferentzia kendu du %@ erabiltzaileak";
+"do_not_ask_again" = "Ez galdetu berriro";
+"call_incoming_voice" = "Deia jasotzen...";
+"call_incoming_video" = "Bideo deia jasotzen...";
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Erabiltzaileak gonbidatzeko baimena izan behar duzu hori egin ahal izateko.";
+"widget_integration_unable_to_create" = "Ezin izan da trepeta sortu.";
+"widget_integration_failed_to_send_request" = "Huts egin du eskaera bidaltzean.";
+"widget_integration_room_not_recognised" = "Ez da gela hau ezagutzen.";
+"widget_integration_positive_power_level" = "Botere maila osozko zenbaki positibo bat izan behar da.";
+"widget_integration_must_be_in_room" = "Ez zaude gela honetan.";
+"widget_integration_no_permission_in_room" = "Ez duzu hori gela honetan egiteko baimena.";
+"widget_integration_missing_room_id" = "room_id falta da eskaeran.";
+"widget_integration_missing_user_id" = "user_id falta da eskaeran.";
+"widget_integration_room_not_visible" = "%@ gela ez dago ikusgai.";
+"room_details_fail_to_update_room_direct" = "Huts egin du gela honen bandera zuzena eguneratzean";
+// Share extension
+"share_extension_auth_prompt" = "Hasi saioa aplikazio nagusian edukia partekatzeko";
+"share_extension_failed_to_encrypt" = "Huts egin du bidaltzean. Egiaztatu aplikazio nagusian gela honen zifratze-ezarpenak";
+// Room key request dialog
+"e2e_room_key_request_title" = "Zifratze-gako eskaera";
+"e2e_room_key_request_message" = "Zure egiaztatu gabeko '%@' gailua zifratze-gakoak eskatzen ari da.";
+"e2e_room_key_request_start_verification" = "Hasi egiaztatzea...";
+"e2e_room_key_request_share_without_verifying" = "Partekatu egiaztatu gabe";
+"e2e_room_key_request_ignore_request" = "Ezikusi eskaera";
