@@ -1341,8 +1341,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
                 
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                eventNotification.fireDate = [NSDate date];
-                eventNotification.timeZone = [NSTimeZone localTimeZone];
                 eventNotification.alertBody = notificationBody;
                 eventNotification.userInfo = @{
                                                @"type": @"full",
@@ -1542,8 +1540,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
 
         UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
-        localNotificationForFailedSync.fireDate = [NSDate date];
-        localNotificationForFailedSync.timeZone = [NSTimeZone localTimeZone];
         localNotificationForFailedSync.userInfo = userInfo;
         localNotificationForFailedSync.alertBody = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
 
@@ -1596,6 +1592,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
  @param type the type of notification. @"full" or @"limited". nil for any type.
  @return the local notification if any.
  */
+// TODO: This method does not work: [[UIApplication sharedApplication] scheduledLocalNotifications] is not reliable
 - (UILocalNotification*)displayedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId type:(NSString*)type
 {
     NSLog(@"[AppDelegate] displayedLocalNotificationForEvent: %@ andUser: %@. Current scheduledLocalNotifications: %@", eventId, userId, [[UIApplication sharedApplication] scheduledLocalNotifications]);
