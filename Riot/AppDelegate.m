@@ -1391,6 +1391,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
                 
                 UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                eventNotification.fireDate = [NSDate date];
+                eventNotification.timeZone = [NSTimeZone localTimeZone];
                 eventNotification.alertBody = notificationBody;
                 eventNotification.userInfo = @{
                                                @"type": @"full",
@@ -1590,6 +1592,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
 
         UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
+        localNotificationForFailedSync.fireDate = [NSDate date];
+        localNotificationForFailedSync.timeZone = [NSTimeZone localTimeZone];
         localNotificationForFailedSync.userInfo = userInfo;
         localNotificationForFailedSync.alertBody = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
 
