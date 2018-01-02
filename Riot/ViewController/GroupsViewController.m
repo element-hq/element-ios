@@ -83,9 +83,12 @@
     // Hide line separators of empty cells
     self.groupsTableView.tableFooterView = [[UIView alloc] init];
     
-    // Enable self sizing cells
+    // Enable self-sizing cells and section headers.
     self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
     self.groupsTableView.estimatedRowHeight = 74;
+    self.groupsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
+    self.groupsTableView.estimatedSectionHeaderHeight = 30;
+    self.groupsTableView.estimatedSectionFooterHeight = 0;
     
     // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -426,6 +429,8 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+    [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+    
     cell.backgroundColor = kRiotPrimaryBgColor;
     
     // Update the selected background view
@@ -447,14 +452,36 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    MXKTableViewHeaderFooterWithLabel *sectionHeader;
+    
     if (tableView.numberOfSections > 1)
     {
-        return 30.0f;
-    }
+        sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
+        sectionHeader.mxkContentView.backgroundColor = kRiotSecondaryBgColor;
+        sectionHeader.mxkLabel.textColor = kRiotPrimaryTextColor;
+        sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
-    return 0;
+        NSString* title = [self.dataSource tableView:tableView titleForHeaderInSection:section];
+        NSUInteger count = [self.dataSource tableView:tableView numberOfRowsInSection:section];
+        if (count)
+        {
+            NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
+            NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                                    attributes:@{NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
+            [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
+                                                                                               attributes:@{NSForegroundColorAttributeName: kRiotAuxiliaryColor}]];
+
+            sectionHeader.mxkLabel.attributedText = mutableSectionTitle;
+        }
+        else
+        {
+            sectionHeader.mxkLabel.text = title;
+        }
+    }
+    
+    return sectionHeader;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
