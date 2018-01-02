@@ -1741,6 +1741,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSString *roomIdOrAlias;
     NSString *eventId;
     NSString *userId;
+    NSString *groupId;
     
     // Check permalink to room or event
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
@@ -1751,6 +1752,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Is it a link to an event of a room?
         eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
     }
+    else if ([pathParams[0] isEqualToString:@"group"] && pathParams.count >= 2)
+    {
+        // The link is the form of "/group/[groupId]"
+        groupId = pathParams[1];
+    }
     else if (([pathParams[0] hasPrefix:@"#"] || [pathParams[0] hasPrefix:@"!"]) && pathParams.count >= 1)
     {
         // The link is the form of "/#/[roomIdOrAlias]" or "/#/[roomIdOrAlias]/[eventId]"
@@ -1758,7 +1764,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         roomIdOrAlias = pathParams[0];
         eventId = (pathParams.count >= 2) ? pathParams[1] : nil;
     }
-
     // Check permalink to a user
     else if ([pathParams[0] isEqualToString:@"user"] && pathParams.count == 2)
     {
@@ -1964,6 +1969,44 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [self showContact:contact];
 
         continueUserActivity = YES;
+    }
+    else if (groupId)
+    {
+        // @FIXME: In case of multi-account, ask the user which one to use
+        MXKAccount* account = accountManager.activeAccounts.firstObject;
+        if (account)
+        {
+            MXGroup *group = [account.mxSession groupWithGroupId:groupId];
+            
+            if (!group)
+            {
+                // Create a group instance to display its preview
+                group = [[MXGroup alloc] initWithGroupId:groupId];
+            }
+            
+            // Display the group details
+            [self showGroup:group withMatrixSession:account.mxSession];
+            
+            continueUserActivity = YES;
+        }
+        else
+        {
+            // There is no account. The app will display the AuthenticationVC.
+            // Wait for a successful login
+            NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
+            universalLinkFragmentPending = fragment;
+            
+            // Register an observer in order to handle new account
+            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+                
+                // Check that 'fragment' has not been cancelled
+                if ([universalLinkFragmentPending isEqualToString:fragment])
+                {
+                    NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+                    [self handleUniversalLinkFragment:fragment];
+                }
+            }];
+        }
     }
     else if ([pathParams[0] isEqualToString:@"register"])
     {
@@ -3133,6 +3176,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Refresh the local contacts list.
         [[MXKContactManager sharedManager] refreshLocalContacts];
     }
+}
+
+#pragma mark - Matrix Groups handling
+
+- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession
+{
+    [self restoreInitialDisplay:^{
+        
+        // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)
+        [_masterTabBarController selectGroup:group inMatrixSession:mxSession];
+        
+    }];
 }
 
 #pragma mark - MXKCallViewControllerDelegate
