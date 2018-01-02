@@ -214,6 +214,26 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark -
 
++ (void)initialize
+{
+    NSLog(@"[AppDelegate] initialize");
+
+    // Set the App Group identifier.
+    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
+    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+
+    // Track SDK performance on Google analytics
+    sdkOptions.analyticsDelegate = [[MXGoogleAnalytics alloc] init];
+
+    // Redirect NSLogs to files only if we are not debugging
+    if (!isatty(STDERR_FILENO))
+    {
+        [MXLogger redirectNSLogToFiles:YES];
+    }
+
+    NSLog(@"[AppDelegate] initialize: Done");
+}
+
 + (AppDelegate*)theDelegate
 {
     return (AppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -314,17 +334,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
-    NSLog(@"[AppDelegate] willFinishLaunchingWithOptions");
-
-    // Set the App Group identifier.
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-    
-    // Redirect NSLogs to files only if we are not debugging
-    if (!isatty(STDERR_FILENO)) {
-        [MXLogger redirectNSLogToFiles:YES];
-    }
-
     NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
 
     return YES;
