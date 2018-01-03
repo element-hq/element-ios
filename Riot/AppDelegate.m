@@ -35,6 +35,7 @@
 #import "RoomKeyRequestViewController.h"
 
 #import <MatrixKit/MatrixKit.h>
+#import "MatrixSDK/MXGoogleAnalytics.h"
 
 #import "Tools.h"
 #import "WidgetManager.h"
