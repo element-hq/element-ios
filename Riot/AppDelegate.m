@@ -1574,11 +1574,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     if (roomDisplayName.length)
     {
-        [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD_IN_ROOM", nil), roomDisplayName];
+        notificationBody = [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD_IN_ROOM", nil), roomDisplayName];
     }
     else
     {
-        [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD", nil), roomDisplayName];
+        notificationBody = NSLocalizedString(@"SINGLE_UNREAD", nil);
     }
 
     return notificationBody;
