@@ -1,3 +1,13 @@
+Changes in 0.6.8 (2018-01-03)
+===============================================
+
+Improvements:
+ * AppDelegate: Enable log to file earlier.
+
+Bug Fix:
+ * AppDelegate: Disable again loop on [application isProtectedDataAvailable] because it sometimes makes an OS watchdog kill the app.
+ * Missing Push Notifications (#1696): Show a notification even if the app fails to sync with its hs.
+
 Changes in 0.6.7 (2017-12-27)
 ===============================================
 
