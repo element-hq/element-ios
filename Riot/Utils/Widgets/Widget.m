@@ -39,34 +39,36 @@
         MXJSONModelSetString(_url, widgetEvent.content[@"url"]);
         MXJSONModelSetString(_name, widgetEvent.content[@"name"]);
         MXJSONModelSetDictionary(_data, widgetEvent.content[@"data"]);
+    }
 
-        // Format the url string with user data
-        if (_url)
+    return self;
+}
+
+- (MXHTTPOperation *)widgetUrl:(void (^)(NSString * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
+{
+    // Format the url string with user data (including their scalar token)
+    __weak typeof(self) weakSelf = self;
+    return [[WidgetManager sharedManager] getScalarTokenForMXSession:_mxSession success:^(NSString *scalarToken) {
+
+        if (weakSelf)
         {
-            NSString *userId = mxSession.myUser.userId;
-            NSString *displayName = mxSession.myUser.displayname ? mxSession.myUser.displayname : mxSession.myUser.userId;
-            NSString *avatarUrl = mxSession.myUser.avatarUrl ? mxSession.myUser.avatarUrl : @"";
+            typeof(self) self = weakSelf;
+            NSString *userId = self.mxSession.myUser.userId;
+            NSString *displayName = self.mxSession.myUser.displayname ? self.mxSession.myUser.displayname : self.mxSession.myUser.userId;
+            NSString *avatarUrl = self.mxSession.myUser.avatarUrl ? self.mxSession.myUser.avatarUrl : @"";
 
             // Escape everything to build a valid URL string
             userId = [userId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             displayName = [displayName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             avatarUrl = [avatarUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:userId];
-            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_display_name" withString:displayName];
-            _url = [_url stringByReplacingOccurrencesOfString:@"$matrix_avatar_url" withString:avatarUrl];
+            NSString *widgetUrl = _url;
+            widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:userId];
+            widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_display_name" withString:displayName];
+            widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_avatar_url" withString:avatarUrl];
 
-            // And their scalar token
-            NSString *scalarToken = [[WidgetManager sharedManager] scalarTokenForMXSession:mxSession];
-            if (scalarToken)
-            {
-                _url = [_url stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", scalarToken]];
-            }
-            else
-            {
-                // Some widget can live without scalar token (ex: Jitsi widget)
-                NSLog(@"[Widget] Note: There is no scalar token for %@", self);
-            }
+            // And add the user scalar token
+            widgetUrl = [widgetUrl stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", scalarToken]];
 
             // Integrate widget data into widget url
             for (NSString *key in _data)
@@ -86,18 +88,19 @@
                 {
                     NSString *value = [dataString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-                    _url = [_url stringByReplacingOccurrencesOfString:paramKey
-                                                           withString:value];
+                    widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:paramKey
+                                                                     withString:value];
                 }
                 else
                 {
                     NSLog(@"[Widget] Error: Invalid data field value in %@ for key %@ in data %@", self, key, _data);
                 }
             }
-        }
-    }
 
-    return self;
+            success(widgetUrl);
+        }
+
+    } failure:failure];
 }
 
 - (BOOL)isActive

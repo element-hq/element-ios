@@ -52,9 +52,13 @@
  
  @param widget the jitsi widget.
  @param video to indicate voice or video call.
- @return YES if the operation is successful.
+
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
  */
-- (BOOL)openWidget:(Widget*)widget withVideo:(BOOL)video;
+- (void)openWidget:(Widget*)widget withVideo:(BOOL)video
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure;
 
 /**
  Hang up the jitsi conference call in progress.
