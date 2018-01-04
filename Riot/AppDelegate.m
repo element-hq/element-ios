@@ -3272,22 +3272,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         _jitsiViewController = [JitsiViewController jitsiViewController];
 
-        if ([_jitsiViewController openWidget:jitsiWidget withVideo:video])
-        {
+        [_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
+
             _jitsiViewController.delegate = self;
             [self presentJitsiViewController:nil];
-        }
-        else
-        {
+        
+        } failure:^(NSError *error) {
+
             _jitsiViewController = nil;
 
-            NSError *error = [NSError errorWithDomain:@""
-                                                 code:0
-                                             userInfo:@{
+            NSError *theError = [NSError errorWithDomain:@""
+                                                    code:0
+                                                userInfo:@{
                                                         NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)
                                                         }];
-            [self showErrorAsAlert:error];
-        }
+            [self showErrorAsAlert:theError];
+        }];
     }
     else
     {

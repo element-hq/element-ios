@@ -364,11 +364,6 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
 #pragma mark - Modular interface
 
-- (NSString *)scalarTokenForMXSession:(MXSession *)mxSession
-{
-    return scalarTokens[mxSession.myUser.userId];
-}
-
 - (MXHTTPOperation *)getScalarTokenForMXSession:(MXSession*)mxSession
                                         success:(void (^)(NSString *scalarToken))success
                                         failure:(void (^)(NSError *error))failure;
@@ -382,8 +377,9 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     }
     else
     {
-        __weak __typeof__(self) weakSelf = self;
+        NSLog(@"[WidgetManager] getScalarTokenForMXSession: Need to register to get a token");
 
+        __weak __typeof__(self) weakSelf = self;
         operation = [mxSession.matrixRestClient openIdToken:^(MXOpenIdToken *tokenObject) {
 
             typeof(self) self = weakSelf;
@@ -437,6 +433,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 }
 
 #pragma mark - Private methods
+
+- (NSString *)scalarTokenForMXSession:(MXSession *)mxSession
+{
+    return scalarTokens[mxSession.myUser.userId];
+}
 
 - (void)load
 {
