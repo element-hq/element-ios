@@ -35,7 +35,6 @@
 #import "RoomKeyRequestViewController.h"
 
 #import <MatrixKit/MatrixKit.h>
-#import "MatrixSDK/MXGoogleAnalytics.h"
 
 #import "Tools.h"
 #import "WidgetManager.h"
@@ -45,12 +44,6 @@
 #import <AudioToolbox/AudioToolbox.h>
 
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
-
-// Google Analytics
-#import "GAI.h"
-#import "GAIFields.h"
-#import "GAIDictionaryBuilder.h"
-#include <MatrixSDK/MXGoogleAnalytics.h>
 
 // Calls
 #import "CallViewController.h"
@@ -233,7 +226,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     sdkOptions.applicationGroupIdentifier = @"group.im.vector";
 
     // Track SDK performance on Google analytics
-    sdkOptions.analyticsDelegate = [[MXGoogleAnalytics alloc] init];
+    // TODO: needs the same tool
+    //sdkOptions.analyticsDelegate = [[MXGoogleAnalytics alloc] init];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -555,7 +549,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     _isAppForeground = NO;
     
     // GA: End a session while the app is in background
-    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"end"];
+    // @TODO
+//    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"end"];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -574,7 +569,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     _isAppForeground = YES;
     
     // GA: Start a new session. The next hit from this tracker will be the first in a new session.
-    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"start"];
+    // @TODO
+//    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"start"];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -1010,38 +1006,39 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Check whether the user has enabled the sending of crash reports.
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
     {
-        // Retrieve trackerId from GoogleService-Info.plist.
-        NSString *googleServiceInfoPath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist"];
-        NSDictionary *googleServiceInfo = [NSDictionary dictionaryWithContentsOfFile:googleServiceInfoPath];
-        NSString *gaTrackingID = [googleServiceInfo objectForKey:@"TRACKING_ID"];
-        if (gaTrackingID)
-        {
-            // Catch and log crashes
-            [MXLogger logCrashes:YES];
-            [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
-            
-            // Configure GAI options.
-            GAI *gai = [GAI sharedInstance];
-            
-            // Disable GA UncaughtException: their crash reports are quite limited (100 first chars of the stack trace)
-            // Let's MXLogger manage them
-            gai.trackUncaughtExceptions = NO;
-            
-            // Initialize it with the app tracker ID
-            [gai trackerWithTrackingId:gaTrackingID];
-            
-            // Set Google Analytics dispatch interval to e.g. 20 seconds.
-            gai.dispatchInterval = 20;
-            
-#ifdef DEBUG
-            // Disable GAI in debug as it pollutes stats and crashes in GA
-            gai.dryRun = YES;
-#endif
-        }
-        else
-        {
-            NSLog(@"[AppDelegate] Unable to find tracker id for Google Analytics");
-        }
+          // @TODO
+//        // Retrieve trackerId from GoogleService-Info.plist.
+//        NSString *googleServiceInfoPath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist"];
+//        NSDictionary *googleServiceInfo = [NSDictionary dictionaryWithContentsOfFile:googleServiceInfoPath];
+//        NSString *gaTrackingID = [googleServiceInfo objectForKey:@"TRACKING_ID"];
+//        if (gaTrackingID)
+//        {
+//            // Catch and log crashes
+//            [MXLogger logCrashes:YES];
+//            [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
+//
+//            // Configure GAI options.
+//            GAI *gai = [GAI sharedInstance];
+//
+//            // Disable GA UncaughtException: their crash reports are quite limited (100 first chars of the stack trace)
+//            // Let's MXLogger manage them
+//            gai.trackUncaughtExceptions = NO;
+//
+//            // Initialize it with the app tracker ID
+//            [gai trackerWithTrackingId:gaTrackingID];
+//
+//            // Set Google Analytics dispatch interval to e.g. 20 seconds.
+//            gai.dispatchInterval = 20;
+//
+//#ifdef DEBUG
+//            // Disable GAI in debug as it pollutes stats and crashes in GA
+//            gai.dryRun = YES;
+//#endif
+//        }
+//        else
+//        {
+//            NSLog(@"[AppDelegate] Unable to find tracker id for Google Analytics");
+//        }
     }
     else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
     {
@@ -1051,28 +1048,30 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)stopAnalytics
 {
-    GAI *gai = [GAI sharedInstance];
-    
-    // End a session. The next hit from this tracker will be the last in the current session.
-    [[gai defaultTracker] set:kGAISessionControl value:@"end"];
-    
-    // Flush pending GA messages
-    [gai dispatch];
-    
-    [gai removeTrackerByName:[gai defaultTracker].name];
-    
+    // @TODO
+//    GAI *gai = [GAI sharedInstance];
+//
+//    // End a session. The next hit from this tracker will be the last in the current session.
+//    [[gai defaultTracker] set:kGAISessionControl value:@"end"];
+//
+//    // Flush pending GA messages
+//    [gai dispatch];
+//
+//    [gai removeTrackerByName:[gai defaultTracker].name];
+
     [MXLogger logCrashes:NO];
 }
 
 - (void)trackScreen:(NSString *)screenName
 {
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:screenName];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+    // @TODO
+//    // Screen tracking (via Google Analytics)
+//    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+//    if (tracker)
+//    {
+//        [tracker set:kGAIScreenName value:screenName];
+//        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+//    }
 }
 
 // Check if there is a crash log to send to server
@@ -1094,17 +1093,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                    error:nil];
         
         NSLog(@"[AppDelegate] Send crash log to Google Analytics:\n%@", description);
-        
+
+        // @TODO
         // Send it via Google Analytics
         // The doc says the exception description must not exceeed 100 chars but it seems
         // to accept much more.
         // https://developers.google.com/analytics/devguides/collection/ios/v3/exceptions#overview
-        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-        [tracker send:[[GAIDictionaryBuilder
-                        createExceptionWithDescription:description
-                        withFatal:[NSNumber numberWithBool:YES]] build]];
-        [[GAI sharedInstance] dispatch];
-        
+//        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+//        [tracker send:[[GAIDictionaryBuilder
+//                        createExceptionWithDescription:description
+//                        withFatal:[NSNumber numberWithBool:YES]] build]];
+//        [[GAI sharedInstance] dispatch];
+
         // Ask the user to send a crash report by email too
         // The email will provide logs and thus more context to the crash
         [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
@@ -2728,11 +2728,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         if ([MXSDKOptions sharedInstance].enableGoogleAnalytics)
         {
-            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:kMXGoogleAnalyticsStartupCategory
-                                                                 interval:@((int)durationMs)
-                                                                     name:kMXGoogleAnalyticsStartupLaunchScreen
-                                                                    label:nil] build]];
+        // @TODO
+//            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+//            [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:kMXGoogleAnalyticsStartupCategory
+//                                                                 interval:@((int)durationMs)
+//                                                                     name:kMXGoogleAnalyticsStartupLaunchScreen
+//                                                                    label:nil] build]];
         }
         
         [launchAnimationContainerView removeFromSuperview];
