@@ -147,6 +147,8 @@
     self.containerView.backgroundColor = kRiotPrimaryBgColor;
     self.sendingContainer.backgroundColor = kRiotPrimaryBgColor;
     
+    self.bugReportDescriptionTextView.keyboardAppearance = kRiotKeyboard;
+    
     self.titleLabel.textColor = kRiotPrimaryTextColor;
     self.sendingLabel.textColor = kRiotPrimaryTextColor;
     self.descriptionLabel.textColor = kRiotPrimaryTextColor;
