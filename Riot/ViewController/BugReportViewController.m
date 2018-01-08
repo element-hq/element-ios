@@ -79,6 +79,7 @@
     _bugReportDescriptionTextView.layer.borderWidth = 1.0f;
     _bugReportDescriptionTextView.text = nil;
     _bugReportDescriptionTextView.delegate = self;
+    _bugReportDescriptionTextView.keyboardAppearance = kRiotKeyboard;
 
     if (_reportCrash)
     {
