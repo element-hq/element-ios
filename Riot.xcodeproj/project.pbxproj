@@ -2125,21 +2125,8 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				F0E5D90B1FF6DDCF00560D7F /* GroupRoomsViewController.h */,
-				F0E5D90C1FF6DDCF00560D7F /* GroupRoomsViewController.m */,
-				F0E5D90D1FF6DDCF00560D7F /* GroupRoomsViewController.xib */,
-				F046DC7C1FE1A40F00E3DAF0 /* GroupParticipantsViewController.h */,
-				F046DC7B1FE1A40F00E3DAF0 /* GroupParticipantsViewController.m */,
-				F046DC7D1FE1A40F00E3DAF0 /* GroupParticipantsViewController.xib */,
-				F046DC711FE1786500E3DAF0 /* GroupHomeViewController.h */,
-				F046DC721FE1786500E3DAF0 /* GroupHomeViewController.m */,
-				F046DC701FE1786500E3DAF0 /* GroupHomeViewController.xib */,
+				F0C9508E2003EC1D000997E7 /* Communities */,
 				3233F72D1F31F47E006ACA81 /* Widgets */,
-				F05927BE1FDEC2F6009F2A68 /* GroupDetailsViewController.h */,
-				F05927BC1FDEC2F6009F2A68 /* GroupDetailsViewController.m */,
-				F05927BD1FDEC2F6009F2A68 /* GroupDetailsViewController.xib */,
-				F05927B41FDEB15E009F2A68 /* GroupsViewController.h */,
-				F05927B51FDEB15F009F2A68 /* GroupsViewController.m */,
 				F0B4CBA81F41E71A008E99C5 /* RiotNavigationController.h */,
 				F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */,
 				F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */,
@@ -2641,6 +2628,27 @@
 				F0B8D0D71FE01FDF00F34524 /* GroupsDataSource.m */,
 			);
 			path = Group;
+			sourceTree = "<group>";
+		};
+		F0C9508E2003EC1D000997E7 /* Communities */ = {
+			isa = PBXGroup;
+			children = (
+				F0E5D90B1FF6DDCF00560D7F /* GroupRoomsViewController.h */,
+				F0E5D90C1FF6DDCF00560D7F /* GroupRoomsViewController.m */,
+				F0E5D90D1FF6DDCF00560D7F /* GroupRoomsViewController.xib */,
+				F046DC7C1FE1A40F00E3DAF0 /* GroupParticipantsViewController.h */,
+				F046DC7B1FE1A40F00E3DAF0 /* GroupParticipantsViewController.m */,
+				F046DC7D1FE1A40F00E3DAF0 /* GroupParticipantsViewController.xib */,
+				F046DC711FE1786500E3DAF0 /* GroupHomeViewController.h */,
+				F046DC721FE1786500E3DAF0 /* GroupHomeViewController.m */,
+				F046DC701FE1786500E3DAF0 /* GroupHomeViewController.xib */,
+				F05927BE1FDEC2F6009F2A68 /* GroupDetailsViewController.h */,
+				F05927BC1FDEC2F6009F2A68 /* GroupDetailsViewController.m */,
+				F05927BD1FDEC2F6009F2A68 /* GroupDetailsViewController.xib */,
+				F05927B41FDEB15E009F2A68 /* GroupsViewController.h */,
+				F05927B51FDEB15F009F2A68 /* GroupsViewController.m */,
+			);
+			path = Communities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
