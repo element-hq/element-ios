@@ -79,7 +79,6 @@
     _bugReportDescriptionTextView.layer.borderWidth = 1.0f;
     _bugReportDescriptionTextView.text = nil;
     _bugReportDescriptionTextView.delegate = self;
-    _bugReportDescriptionTextView.keyboardAppearance = kRiotKeyboard;
 
     if (_reportCrash)
     {
@@ -147,6 +146,8 @@
     
     self.containerView.backgroundColor = kRiotPrimaryBgColor;
     self.sendingContainer.backgroundColor = kRiotPrimaryBgColor;
+    
+    self.bugReportDescriptionTextView.keyboardAppearance = kRiotKeyboard;
     
     self.titleLabel.textColor = kRiotPrimaryTextColor;
     self.sendingLabel.textColor = kRiotPrimaryTextColor;
