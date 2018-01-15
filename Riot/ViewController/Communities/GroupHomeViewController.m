@@ -22,6 +22,8 @@
 
 #import "MXGroup+Riot.h"
 
+#import "DTCoreText.h"
+
 @interface GroupHomeViewController ()
 {
     MXHTTPOperation *currentRequest;
@@ -33,6 +35,10 @@
     
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    // The options used to load long description html content.
+    NSDictionary *options;
+    NSString *sanitisedGroupLongDescription;
 }
 @end
 
@@ -118,9 +124,6 @@
     
     self.separatorView.backgroundColor = kRiotSecondaryBgColor;
     
-    _groupLongDescription.textColor = kRiotSecondaryTextColor;
-    _groupLongDescription.tintColor = kRiotColorBlue;
-    
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
     self.leftButton.backgroundColor = kRiotColorBlue;
@@ -128,6 +131,35 @@
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     self.rightButton.backgroundColor = kRiotColorBlue;
+    
+    if (_groupLongDescription)
+    {
+        _groupLongDescription.textColor = kRiotSecondaryTextColor;
+        _groupLongDescription.tintColor = kRiotColorBlue;
+        
+        // Update HTML loading options
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        NSString *defaultCSS = [NSString stringWithFormat:@" \
+                      pre,code { \
+                      background-color: #%06lX; \
+                      display: inline; \
+                      font-family: monospace; \
+                      white-space: pre; \
+                      -coretext-fontname: Menlo-Regular; \
+                      font-size: small; \
+                      }", (unsigned long)bgColor];
+        
+        // Apply the css style
+        options = @{
+                    DTUseiOS6Attributes: @(YES),              // Enable it to be able to display the attributed string in a UITextView
+                    DTDefaultFontFamily: _groupLongDescription.font.familyName,
+                    DTDefaultFontName: _groupLongDescription.font.fontName,
+                    DTDefaultFontSize: @(_groupLongDescription.font.pointSize),
+                    DTDefaultTextColor: _groupLongDescription.textColor,
+                    DTDefaultLinkDecoration: @(NO),
+                    DTDefaultStyleSheet: [[DTCSSStylesheet alloc] initWithStyleBlock:defaultCSS]
+                    };
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -196,6 +228,14 @@
     [self cancelRegistrationOnGroupChangeNotifications];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    // Scroll to the top the long group description.
+    _groupLongDescription.contentOffset = CGPointZero;
+}
+
 - (void)destroy
 {
     // Note: all observers are removed during super call.
@@ -262,6 +302,12 @@
 - (void)refreshDisplayWithGroup:(MXGroup*)group
 {
     _group = group;
+    
+    // Check whether the view controller has been loaded
+    if (!self.view)
+    {
+        return;
+    }
     
     if (_group)
     {
@@ -339,7 +385,7 @@
             if (_separatorViewTopConstraint.constant != self.inviteContainer.frame.size.height)
             {
                 _separatorViewTopConstraint.constant = self.inviteContainer.frame.size.height;
-                [self.view layoutIfNeeded];
+                [self.view setNeedsLayout];
             }
         }
         else
@@ -348,21 +394,11 @@
             if (_separatorViewTopConstraint.constant != 0)
             {
                 _separatorViewTopConstraint.constant = 0;
-                [self.view layoutIfNeeded];
+                [self.view setNeedsLayout];
             }
         }
         
-        if (_group.summary.profile.longDescription.length)
-        {
-            //@TODO: implement a specific html renderer to support h1/h2 and handle the Matrix media content URI (in the form of "mxc://...").
-            MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:self.mxSession];
-            _groupLongDescription.attributedText = [eventFormatter renderHTMLString:_group.summary.profile.longDescription forEvent:nil];
-            _groupLongDescription.contentOffset = CGPointZero;
-        }
-        else
-        {
-            _groupLongDescription.text = nil;
-        }
+        [self refreshGroupLongDescription];
     }
     else
     {
@@ -376,7 +412,6 @@
         
         self.inviteContainer.hidden = YES;
         
-        _groupLongDescription.text = nil;
         _separatorViewTopConstraint.constant = 0;
         
         _membersCountLabel.text = nil;
@@ -389,6 +424,87 @@
     _groupAvatar.clipsToBounds = YES;
     
     _groupAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
+}
+
+- (void)refreshGroupLongDescription
+{
+    if (_group.summary.profile.longDescription.length)
+    {
+        // Render this html content in a text view.
+        NSArray <NSString*>* allowedHTMLTags = @[
+                                                 @"font", // custom to matrix for IRC-style font coloring
+                                                 @"del", // for markdown
+                                                 @"h1", @"h2", @"h3", @"h4", @"h5", @"h6", @"blockquote", @"p", @"a", @"ul", @"ol",
+                                                 @"nl", @"li", @"b", @"i", @"u", @"strong", @"em", @"strike", @"code", @"hr", @"br", @"div",
+                                                 @"table", @"thead", @"caption", @"tbody", @"tr", @"th", @"td", @"pre",
+                                                 @"img"
+                                                 ];
+        
+        // Do some sanitisation by handling the potential image
+        sanitisedGroupLongDescription = [MXKTools sanitiseHTML:_group.summary.profile.longDescription withAllowedHTMLTags:allowedHTMLTags imageHandler:^NSString *(NSString *sourceURL, CGFloat width, CGFloat height) {
+            
+            NSString *imageURL;
+            
+            if (width != -1 && height != -1)
+            {
+                CGSize size = CGSizeMake(width, height);
+                imageURL = [self.mxSession.matrixRestClient urlOfContentThumbnail:sourceURL toFitViewSize:size withMethod:MXThumbnailingMethodScale];
+            }
+            else
+            {
+                imageURL = [self.mxSession.matrixRestClient urlOfContent:sourceURL];
+            }
+            
+            NSString *mimeType = nil;
+            // Check if the extension could not be deduced from url
+            if (![imageURL pathExtension].length)
+            {
+                // Set default mime type if no information is available
+                mimeType = @"image/jpeg";
+            }
+            
+            NSString *cacheFilePath = [MXMediaManager cachePathForMediaWithURL:imageURL andType:mimeType inFolder:kMXMediaManagerDefaultCacheFolder];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
+            {
+                [MXMediaManager downloadMediaFromURL:imageURL andSaveAtFilePath:cacheFilePath success:^{
+                    
+                    [self renderGroupLongDescription];
+                    
+                } failure:nil];
+            }
+            
+            return [NSString stringWithFormat:@"file://%@", cacheFilePath];
+        }];
+    }
+    else
+    {
+        sanitisedGroupLongDescription = nil;
+    }
+    
+    [self renderGroupLongDescription];
+}
+
+- (void)renderGroupLongDescription
+{
+    if (sanitisedGroupLongDescription)
+    {
+        // Using DTCoreText, which renders static string, helps to avoid code injection attacks
+        // that could happen with the default HTML renderer of NSAttributedString which is a
+        // webview.
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:[sanitisedGroupLongDescription dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
+        
+        // Apply additional treatments
+        NSInteger mxIdsBitMask = (MXKTOOLS_USER_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_ALIAS_BITWISE | MXKTOOLS_EVENT_IDENTIFIER_BITWISE | MXKTOOLS_GROUP_IDENTIFIER_BITWISE);
+        [MXKTools createLinksInAttributedString:attributedString forEnabledMatrixIds:mxIdsBitMask];
+        
+        // Finalize the attributed string by removing DTCoreText artifacts (Trim trailing newlines, replace DTImageTextAttachments...)
+        _groupLongDescription.attributedText = [MXKTools removeDTCoreTextArtifacts:attributedString];
+        _groupLongDescription.contentOffset = CGPointZero;
+    }
+    else
+    {
+        _groupLongDescription.text = nil;
+    }
 }
 
 #pragma mark - Action
