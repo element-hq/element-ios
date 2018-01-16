@@ -251,6 +251,10 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
+    _showExpandedHeader = NO;
+    _showMissedDiscussionsBadge = YES;
+    
+    
     // Listen to the event sent state changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
 }
@@ -369,45 +373,8 @@
         barButtonItem.action = @selector(onButtonPressed:);
     }
 
-    // Prepare missed dicussion badge
-    missedDiscussionsBarButtonCustomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
-    missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
-    missedDiscussionsBarButtonCustomView.clipsToBounds = NO;
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBarButtonCustomView
-                                                                         attribute:NSLayoutAttributeHeight
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:nil
-                                                                         attribute:NSLayoutAttributeNotAnAttribute
-                                                                        multiplier:1.0
-                                                                          constant:21];
-    
-    missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
-    [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
-    
-    [missedDiscussionsBarButtonCustomView addSubview:missedDiscussionsBadgeLabelBgView];
-    missedDiscussionsBarButtonCustomView.accessibilityIdentifier = @"RoomVCMissedDiscussionsBarButton";
-    
-    missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
-    missedDiscussionsBadgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [missedDiscussionsBadgeLabelBgView addSubview:missedDiscussionsBadgeLabel];
-    
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:missedDiscussionsBadgeLabelBgView
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                        multiplier:1.0
-                                                                          constant:0];
-    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
-                                                                         attribute:NSLayoutAttributeCenterY
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:missedDiscussionsBadgeLabelBgView
-                                                                         attribute:NSLayoutAttributeCenterY
-                                                                        multiplier:1.0
-                                                                          constant:0];
-    
-    [NSLayoutConstraint activateConstraints:@[heightConstraint, centerXConstraint, centerYConstraint]];
+    // Prepare missed dicussion badge (if any)
+    self.showMissedDiscussionsBadge = _showMissedDiscussionsBadge;
     
     // Set up the room title view according to the data source (if any)
     [self refreshRoomTitle];
@@ -1132,6 +1099,60 @@
 {
     _showExpandedHeader = showExpandedHeader;
     [self showExpandedHeader:showExpandedHeader];
+}
+
+- (void)setShowMissedDiscussionsBadge:(BOOL)showMissedDiscussionsBadge
+{
+    _showMissedDiscussionsBadge = showMissedDiscussionsBadge;
+    
+    if (_showMissedDiscussionsBadge && !missedDiscussionsBarButtonCustomView)
+    {
+        // Prepare missed dicussion badge
+        missedDiscussionsBarButtonCustomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
+        missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
+        missedDiscussionsBarButtonCustomView.clipsToBounds = NO;
+        
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBarButtonCustomView
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:21];
+        
+        missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
+        [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
+        
+        [missedDiscussionsBarButtonCustomView addSubview:missedDiscussionsBadgeLabelBgView];
+        missedDiscussionsBarButtonCustomView.accessibilityIdentifier = @"RoomVCMissedDiscussionsBarButton";
+        
+        missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
+        missedDiscussionsBadgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [missedDiscussionsBadgeLabelBgView addSubview:missedDiscussionsBadgeLabel];
+        
+        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:missedDiscussionsBadgeLabelBgView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1.0
+                                                                              constant:0];
+        NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:missedDiscussionsBadgeLabelBgView
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                            multiplier:1.0
+                                                                              constant:0];
+        
+        [NSLayoutConstraint activateConstraints:@[heightConstraint, centerXConstraint, centerYConstraint]];
+    }
+    else
+    {
+        missedDiscussionsBarButtonCustomView = nil;
+        missedDiscussionsBadgeLabelBgView = nil;
+        missedDiscussionsBadgeLabel = nil;
+    }
 }
 
 #pragma mark - Internals
