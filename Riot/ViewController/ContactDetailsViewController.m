@@ -468,7 +468,7 @@
 - (void)refreshContactDetails
 {
     // Check whether the view is loaded
-    if (!self.contactAvatar)
+    if (!self.isViewLoaded)
     {
         return;
     }
