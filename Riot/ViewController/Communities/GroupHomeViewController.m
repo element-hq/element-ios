@@ -360,7 +360,7 @@
     _group = group;
     
     // Check whether the view controller has been loaded
-    if (!self.view)
+    if (!self.isViewLoaded)
     {
         return;
     }
