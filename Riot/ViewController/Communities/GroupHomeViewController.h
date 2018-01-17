@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface GroupHomeViewController : MXKViewController <UIGestureRecognizerDelegate>
+@interface GroupHomeViewController : MXKViewController <UIGestureRecognizerDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *mainHeaderContainer;
 @property (weak, nonatomic) IBOutlet MXKImageView *groupAvatar;

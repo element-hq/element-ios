@@ -19,6 +19,7 @@
 #import "AppDelegate.h"
 
 #import "RiotDesignValues.h"
+#import "Tools.h"
 
 #import "MXGroup+Riot.h"
 
@@ -39,6 +40,9 @@
     // The options used to load long description html content.
     NSDictionary *options;
     NSString *sanitisedGroupLongDescription;
+    
+    // The current pushed view controller
+    UIViewController *pushedViewController;
 }
 @end
 
@@ -180,6 +184,9 @@
     // Screen tracking
     [[AppDelegate theDelegate] trackScreen:@"GroupDetailsHome"];
     
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
+    
     if (_group)
     {
         // Restore the listeners on the group update.
@@ -238,6 +245,9 @@
 
 - (void)destroy
 {
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
+    
     // Note: all observers are removed during super call.
     [super destroy];
     
@@ -270,6 +280,52 @@
 }
 
 #pragma mark -
+
+- (void)pushViewController:(UIViewController*)viewController
+{
+    // Keep ref on pushed view controller
+    pushedViewController = viewController;
+    
+    // Check whether the view controller is displayed inside a segmented one.
+    if (self.parentViewController.navigationController)
+    {
+        // Hide back button title
+        self.parentViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        [self.parentViewController.navigationController pushViewController:viewController animated:YES];
+    }
+    else
+    {
+        // Hide back button title
+        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+}
+
+- (void)releasePushedViewController
+{
+    if (pushedViewController)
+    {
+        if ([pushedViewController isKindOfClass:[UINavigationController class]])
+        {
+            UINavigationController *navigationController = (UINavigationController*)pushedViewController;
+            for (id subViewController in navigationController.viewControllers)
+            {
+                if ([subViewController respondsToSelector:@selector(destroy)])
+                {
+                    [subViewController destroy];
+                }
+            }
+        }
+        else if ([pushedViewController respondsToSelector:@selector(destroy)])
+        {
+            [(id)pushedViewController destroy];
+        }
+        
+        pushedViewController = nil;
+    }
+}
 
 - (void)registerOnGroupChangeNotifications
 {
@@ -495,7 +551,7 @@
         
         // Apply additional treatments
         NSInteger mxIdsBitMask = (MXKTOOLS_USER_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_ALIAS_BITWISE | MXKTOOLS_EVENT_IDENTIFIER_BITWISE | MXKTOOLS_GROUP_IDENTIFIER_BITWISE);
-        [MXKTools createLinksInAttributedString:attributedString forEnabledMatrixIds:mxIdsBitMask];
+        attributedString = [MXKTools createLinksInAttributedString:attributedString forEnabledMatrixIds:mxIdsBitMask];
         
         // Finalize the attributed string by removing DTCoreText artifacts (Trim trailing newlines, replace DTImageTextAttachments...)
         _groupLongDescription.attributedText = [MXKTools removeDTCoreTextArtifacts:attributedString];
@@ -504,6 +560,46 @@
     else
     {
         _groupLongDescription.text = nil;
+    }
+}
+
+- (void)didSelectRoomId:(NSString*)roomId
+{
+    // Check first if the user already joined this room.
+    if ([self.mxSession roomWithRoomId:roomId])
+    {
+        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mxSession];
+        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:roomId create:YES];
+        
+        // Open this room
+        RoomViewController *roomViewController = [RoomViewController roomViewController];
+        roomViewController.showMissedDiscussionsBadge = NO;
+        [roomViewController displayRoom:roomDataSource];
+        [self pushViewController:roomViewController];
+    }
+    else
+    {
+        // Prepare a preview
+        RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomId andSession:self.mxSession];
+        __weak typeof(self) weakSelf = self;
+        [self startActivityIndicator];
+        
+        // Try to get more information about the room before opening its preview
+        [roomPreviewData peekInRoom:^(BOOL succeeded) {
+            
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                [self stopActivityIndicator];
+                
+                // Display the room preview
+                RoomViewController *roomViewController = [RoomViewController roomViewController];
+                roomViewController.showMissedDiscussionsBadge = NO;
+                [roomViewController displayRoomPreview:roomPreviewData];
+                [self pushViewController:roomViewController];
+            }
+            
+        }];
     }
 }
 
@@ -628,6 +724,112 @@
         // Trigger status bar update
         [self setNeedsStatusBarAppearanceUpdate];
     }
+}
+
+#pragma mark - UITextView delegate
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    BOOL shouldInteractWithURL = YES;
+    // Try to catch universal link supported by the app
+    
+    // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
+    // to be able to convert it into a legal URL string.
+    NSString *absoluteURLString = [URL.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    // If the link can be open it by the app, let it do
+    if ([Tools isUniversalLink:URL])
+    {
+        shouldInteractWithURL = NO;
+        
+        // iOS Patch: fix vector.im urls before using it
+        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:URL];
+        
+        [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
+    }
+    // Open a detail screen about the clicked user
+    else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
+    {
+        shouldInteractWithURL = NO;
+        
+        NSString *userId = absoluteURLString;
+        MXKContact *contact;
+        // Use the contact detail VC for other users
+        MXUser *user = [self.mxSession userWithUserId:userId];
+        if (user)
+        {
+            contact = [[MXKContact alloc] initMatrixContactWithDisplayName:((user.displayname.length > 0) ? user.displayname : user.userId) andMatrixID:user.userId];
+        }
+        else
+        {
+            contact = [[MXKContact alloc] initMatrixContactWithDisplayName:userId andMatrixID:userId];
+        }
+        
+        ContactDetailsViewController *contactDetailsViewController = [ContactDetailsViewController contactDetailsViewController];
+        contactDetailsViewController.enableVoipCall = NO;
+        contactDetailsViewController.contact = contact;
+        
+        [self pushViewController:contactDetailsViewController];
+    }
+    // Open the clicked room
+    else if ([MXTools isMatrixRoomIdentifier:absoluteURLString] || [MXTools isMatrixRoomAlias:absoluteURLString])
+    {
+        shouldInteractWithURL = NO;
+        
+        NSString *roomIdOrAlias = absoluteURLString;
+        NSString *roomId;
+        
+        if ([roomIdOrAlias hasPrefix:@"#"])
+        {
+            // Check whether the room alias can be translated locally into the room id.
+            MXRoom *room = [self.mxSession roomWithAlias:roomIdOrAlias];
+            if (room)
+            {
+                roomId = room.roomId;
+            }
+        }
+        else
+        {
+            roomId = roomIdOrAlias;
+        }
+        
+        if (roomId)
+        {
+            [self didSelectRoomId:roomId];
+        }
+        else
+        {
+            // The alias may be not part of user's rooms states
+            // Ask the HS to resolve the room alias into a room id and then retry
+            __weak typeof(self) weakSelf = self;
+            [self startActivityIndicator];
+            
+            [self.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
+                
+                if (roomId && weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self stopActivityIndicator];
+                    [self didSelectRoomId:roomId];
+                }
+                
+            } failure:^(NSError *error) {
+                NSLog(@"[GroupHomeViewController] Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+            }];
+        }
+    }
+    // Preview the clicked group
+    else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
+    {
+        shouldInteractWithURL = NO;
+        
+        // Open the group or preview it
+        NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+    }
+    
+    return shouldInteractWithURL;
 }
 
 @end
