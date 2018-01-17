@@ -28,6 +28,9 @@
     NSString *currentSearchText;
     NSMutableArray<MXGroupRoom*> *filteredGroupRooms;
     
+    // The current pushed view controller
+    UIViewController *pushedViewController;
+    
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
@@ -153,6 +156,9 @@
 
 - (void)destroy
 {
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
+    
     if (kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
@@ -176,6 +182,9 @@
     
     // Screen tracking
     [[AppDelegate theDelegate] trackScreen:@"GroupDetailsRooms"];
+    
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
     
     if (_group)
     {
@@ -344,6 +353,9 @@
 
 - (void)pushViewController:(UIViewController*)viewController
 {
+    // Keep ref on pushed view controller
+    pushedViewController = viewController;
+    
     // Check whether the view controller is displayed inside a segmented one.
     if (self.parentViewController.navigationController)
     {
@@ -358,6 +370,30 @@
         self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
         [self.navigationController pushViewController:viewController animated:YES];
+    }
+}
+
+- (void)releasePushedViewController
+{
+    if (pushedViewController)
+    {
+        if ([pushedViewController isKindOfClass:[UINavigationController class]])
+        {
+            UINavigationController *navigationController = (UINavigationController*)pushedViewController;
+            for (id subViewController in navigationController.viewControllers)
+            {
+                if ([subViewController respondsToSelector:@selector(destroy)])
+                {
+                    [subViewController destroy];
+                }
+            }
+        }
+        else if ([pushedViewController respondsToSelector:@selector(destroy)])
+        {
+            [(id)pushedViewController destroy];
+        }
+        
+        pushedViewController = nil;
     }
 }
 
@@ -476,6 +512,63 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    MXGroupRoom *room;
+    NSArray *rooms;
+    
+    if (currentSearchText.length)
+    {
+        rooms = filteredGroupRooms;
+    }
+    else
+    {
+        rooms = groupRooms;
+    }
+    
+    if (indexPath.row < rooms.count)
+    {
+        room = rooms[indexPath.row];
+    }
+    
+    if (room)
+    {
+        // Check first if the user already joined this room.
+        if ([self.mxSession roomWithRoomId:room.roomId])
+        {
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mxSession];
+            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:room.roomId create:YES];
+            
+            // Open this room
+            RoomViewController *roomViewController = [RoomViewController roomViewController];
+            roomViewController.showMissedDiscussionsBadge = NO;
+            [roomViewController displayRoom:roomDataSource];
+            [self pushViewController:roomViewController];
+        }
+        else
+        {
+            // Prepare a preview
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:room.roomId andSession:self.mxSession];
+            [self startActivityIndicator];
+            
+            // Try to get more information about the room before opening its preview
+            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                
+                [self stopActivityIndicator];
+                
+                // If no data is available for this room, we name it with the known information (if any).
+                if (!succeeded)
+                {
+                    roomPreviewData.roomName = (room.name.length ? room.name : room.canonicalAlias);
+                }
+                
+                // Display the room preview
+                RoomViewController *roomViewController = [RoomViewController roomViewController];
+                roomViewController.showMissedDiscussionsBadge = NO;
+                [roomViewController displayRoomPreview:roomPreviewData];
+                [self pushViewController:roomViewController];
+            }];
+        }
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
