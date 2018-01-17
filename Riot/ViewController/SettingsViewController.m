@@ -3499,7 +3499,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
                 [self->documentInteractionController setDelegate:self];
 
-                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
+                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES])
                 {
                     // We want to delete the temp keys file after it has been processed by the other app.
                     // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
