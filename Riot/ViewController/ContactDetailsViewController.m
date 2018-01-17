@@ -467,6 +467,12 @@
 
 - (void)refreshContactDetails
 {
+    // Check whether the view is loaded
+    if (!self.contactAvatar)
+    {
+        return;
+    }
+    
     [self refreshContactDisplayName];
     [self refreshContactPresence];
     [self refreshContactThumbnail];
