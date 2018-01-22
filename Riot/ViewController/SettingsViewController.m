@@ -990,7 +990,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Order alphabetically the groups
     [communitiesArray sortUsingComparator:^NSComparisonResult(MXGroup *group1, MXGroup *group2)
      {
-         if (group1.profile.name.length && group1.profile.name.length)
+         if (group1.profile.name.length && group2.profile.name.length)
          {
              return [group1.profile.name compare:group2.profile.name options:NSCaseInsensitiveSearch];
          }
@@ -998,7 +998,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
          {
              return NSOrderedAscending;
          }
-         else if (group1.profile.name.length)
+         else if (group2.profile.name.length)
          {
              return NSOrderedDescending;
          }
