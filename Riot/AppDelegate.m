@@ -2919,7 +2919,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                                 preferredStyle:UIAlertControllerStyleAlert];
                         
                         [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                                                     style:UIAlertActionStyleDefault
+                                                                                     style:UIAlertActionStyleCancel
                                                                                    handler:^(UIAlertAction * action) {
                                                                                        
                                                                                        if (weakSelf)
@@ -3002,7 +3002,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
         
         [accountPicker addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                          style:UIAlertActionStyleDefault
+                                                          style:UIAlertActionStyleCancel
                                                         handler:^(UIAlertAction * action) {
                                                             
                                                             if (weakSelf)

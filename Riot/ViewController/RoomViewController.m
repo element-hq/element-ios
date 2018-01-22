@@ -2411,7 +2411,7 @@
                                                                        
                                                                    }]];
                                                                    
-                                                                   [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
                                                                        
                                                                        if (weakSelf)
                                                                        {
@@ -2466,7 +2466,7 @@
     }
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
+                                                     style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
@@ -3918,7 +3918,7 @@
                                                                }]];
                 
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil)
-                                                                 style:UIAlertActionStyleDefault
+                                                                 style:UIAlertActionStyleCancel
                                                                handler:^(UIAlertAction * action) {
                                                                    
                                                                    if (weakSelf)
@@ -4282,7 +4282,7 @@
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleDefault
+                                                     style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
