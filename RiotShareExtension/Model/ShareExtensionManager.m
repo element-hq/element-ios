@@ -219,6 +219,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                  {
                      if (weakSelf)
                      {
+                         typeof(self) self = weakSelf;
                          itemProvider.isLoaded = YES;
                          [self.pendingImages addObject:imageData];
                          
