@@ -1,6 +1,9 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, "8.0"
 
+# Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
+use_frameworks!
+
 source 'https://github.com/CocoaPods/Specs.git'
 
 
@@ -80,5 +83,17 @@ abstract_target 'RiotPods' do
         import_MatrixKitAppExtension
     end
     
+end
+
+
+# Disable bitcode for each pod framework
+# Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
+# Plus the app does not enable it
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
 end
 
