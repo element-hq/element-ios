@@ -46,6 +46,12 @@
 
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 
+// Google Analytics
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
+#include <MatrixSDK/MXGoogleAnalytics.h>
+
 // Calls
 #import "CallViewController.h"
 
@@ -61,9 +67,12 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
-#ifdef MX_CALL_STACK_JINGLE
+
+#if __has_include(<MatrixSDK/MXJingleCallStack.h>)
+#define CALL_STACK_JINGLE
+#endif
+#ifdef CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
-#import <MatrixSDK/MXJingleCallAudioSessionConfigurator.h>
 #endif
 
 #define CALL_STATUS_BAR_HEIGHT 44
@@ -452,7 +461,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     // Configure Google Analytics here if the option is enabled
-    [self startGoogleAnalytics];
+    [self startAnalytics];
     
     // Prepare Pushkit handling
     _incomingPushEventIds = [NSMutableDictionary dictionary];
@@ -641,7 +650,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
-    [self stopGoogleAnalytics];
+    [self stopAnalytics];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
@@ -782,6 +791,36 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
         }];
     }
+}
+
+- (void)restoreEmptyDetailsViewController
+{
+    UIViewController* rootViewController = self.window.rootViewController;
+    
+    if ([rootViewController isKindOfClass:[UISplitViewController class]])
+    {
+        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
+        
+        // Be sure that the primary is then visible too.
+        if (splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryHidden)
+        {
+            splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+        }
+        
+        if (splitViewController.viewControllers.count == 2)
+        {
+            UIViewController *mainViewController = splitViewController.viewControllers[0];
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
+            emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+            
+            splitViewController.viewControllers = @[mainViewController, emptyDetailsViewController];
+        }
+    }
+    
+    // Release the current selected item (room/contact/group...).
+    [_masterTabBarController releaseSelectedItem];
 }
 
 - (UIAlertController*)showErrorAsAlert:(NSError*)error
@@ -964,9 +1003,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-#pragma mark - Crash report handling
+#pragma mark - Analytics
 
-- (void)startGoogleAnalytics
+- (void)startAnalytics
 {
     // Check whether the user has enabled the sending of crash reports.
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
@@ -1010,7 +1049,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)stopGoogleAnalytics
+- (void)stopAnalytics
 {
     GAI *gai = [GAI sharedInstance];
     
@@ -1023,6 +1062,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [gai removeTrackerByName:[gai defaultTracker].name];
     
     [MXLogger logCrashes:NO];
+}
+
+- (void)trackScreen:(NSString *)screenName
+{
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:screenName];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
 }
 
 // Check if there is a crash log to send to server
@@ -1705,6 +1755,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSString *roomIdOrAlias;
     NSString *eventId;
     NSString *userId;
+    NSString *groupId;
     
     // Check permalink to room or event
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
@@ -1715,6 +1766,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Is it a link to an event of a room?
         eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
     }
+    else if ([pathParams[0] isEqualToString:@"group"] && pathParams.count >= 2)
+    {
+        // The link is the form of "/group/[groupId]"
+        groupId = pathParams[1];
+    }
     else if (([pathParams[0] hasPrefix:@"#"] || [pathParams[0] hasPrefix:@"!"]) && pathParams.count >= 1)
     {
         // The link is the form of "/#/[roomIdOrAlias]" or "/#/[roomIdOrAlias]/[eventId]"
@@ -1722,7 +1778,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         roomIdOrAlias = pathParams[0];
         eventId = (pathParams.count >= 2) ? pathParams[1] : nil;
     }
-
     // Check permalink to a user
     else if ([pathParams[0] isEqualToString:@"user"] && pathParams.count == 2)
     {
@@ -1929,6 +1984,44 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
         continueUserActivity = YES;
     }
+    else if (groupId)
+    {
+        // @FIXME: In case of multi-account, ask the user which one to use
+        MXKAccount* account = accountManager.activeAccounts.firstObject;
+        if (account)
+        {
+            MXGroup *group = [account.mxSession groupWithGroupId:groupId];
+            
+            if (!group)
+            {
+                // Create a group instance to display its preview
+                group = [[MXGroup alloc] initWithGroupId:groupId];
+            }
+            
+            // Display the group details
+            [self showGroup:group withMatrixSession:account.mxSession];
+            
+            continueUserActivity = YES;
+        }
+        else
+        {
+            // There is no account. The app will display the AuthenticationVC.
+            // Wait for a successful login
+            NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
+            universalLinkFragmentPending = fragment;
+            
+            // Register an observer in order to handle new account
+            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+                
+                // Check that 'fragment' has not been cancelled
+                if ([universalLinkFragmentPending isEqualToString:fragment])
+                {
+                    NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+                    [self handleUniversalLinkFragment:fragment];
+                }
+            }];
+        }
+    }
     else if ([pathParams[0] isEqualToString:@"register"])
     {
         NSLog(@"[AppDelegate] Universal link with registration parameters");
@@ -2068,7 +2161,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 #ifdef MX_CALL_STACK_ENDPOINT
             callStack = [[MXEndpointCallStack alloc] initWithMatrixId:mxSession.myUser.userId];
 #endif
-#ifdef MX_CALL_STACK_JINGLE
+#ifdef CALL_STACK_JINGLE
             callStack = [[MXJingleCallStack alloc] init];
 #endif
             if (callStack)
@@ -2658,7 +2751,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
         
-#ifdef MX_CALL_STACK_JINGLE
+#ifdef CALL_STACK_JINGLE
         audioSessionConfigurator = [[MXJingleCallAudioSessionConfigurator alloc] init];
 #endif
         
@@ -3099,6 +3192,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+#pragma mark - Matrix Groups handling
+
+- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession
+{
+    [self restoreInitialDisplay:^{
+        
+        // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)
+        [_masterTabBarController selectGroup:group inMatrixSession:mxSession];
+        
+    }];
+}
+
 #pragma mark - MXKCallViewControllerDelegate
 
 - (void)dismissCallViewController:(MXKCallViewController *)callViewController completion:(void (^)())completion
@@ -3167,22 +3272,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         _jitsiViewController = [JitsiViewController jitsiViewController];
 
-        if ([_jitsiViewController openWidget:jitsiWidget withVideo:video])
-        {
+        [_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
+
             _jitsiViewController.delegate = self;
             [self presentJitsiViewController:nil];
-        }
-        else
-        {
+        
+        } failure:^(NSError *error) {
+
             _jitsiViewController = nil;
 
-            NSError *error = [NSError errorWithDomain:@""
-                                                 code:0
-                                             userInfo:@{
+            NSError *theError = [NSError errorWithDomain:@""
+                                                    code:0
+                                                userInfo:@{
                                                         NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)
                                                         }];
-            [self showErrorAsAlert:error];
-        }
+            [self showErrorAsAlert:theError];
+        }];
     }
     else
     {
@@ -3424,7 +3529,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
 {
-    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController)
+    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController && !self.masterTabBarController.currentGroupDetailViewController)
     {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;

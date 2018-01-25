@@ -118,11 +118,22 @@
 		F0173EB61FCF346800B5F6A3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EB11FCF346800B5F6A3 /* Localizable.strings */; };
 		F0173EB71FCF346800B5F6A3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EB31FCF346800B5F6A3 /* InfoPlist.strings */; };
 		F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1A841E8EB04C0045A404 /* PeopleViewController.m */; };
+		F046DC731FE1786500E3DAF0 /* GroupHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F046DC701FE1786500E3DAF0 /* GroupHomeViewController.xib */; };
+		F046DC741FE1786500E3DAF0 /* GroupHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F046DC721FE1786500E3DAF0 /* GroupHomeViewController.m */; };
+		F046DC781FE19F8E00E3DAF0 /* create_group@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F046DC751FE19F8D00E3DAF0 /* create_group@3x.png */; };
+		F046DC791FE19F8E00E3DAF0 /* create_group.png in Resources */ = {isa = PBXBuildFile; fileRef = F046DC761FE19F8D00E3DAF0 /* create_group.png */; };
+		F046DC7A1FE19F8E00E3DAF0 /* create_group@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F046DC771FE19F8D00E3DAF0 /* create_group@2x.png */; };
+		F046DC7E1FE1A40F00E3DAF0 /* GroupParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F046DC7B1FE1A40F00E3DAF0 /* GroupParticipantsViewController.m */; };
+		F046DC7F1FE1A40F00E3DAF0 /* GroupParticipantsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F046DC7D1FE1A40F00E3DAF0 /* GroupParticipantsViewController.xib */; };
 		F04AF26A1F83A4C100D20F4D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF25F1F83A4C000D20F4D /* InfoPlist.strings */; };
 		F04AF26B1F83A4C100D20F4D /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2611F83A4C000D20F4D /* Vector.strings */; };
 		F04AF26C1F83A4C100D20F4D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2641F83A4C000D20F4D /* InfoPlist.strings */; };
 		F04AF26D1F83A4C100D20F4D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2661F83A4C000D20F4D /* Localizable.strings */; };
 		F04AF26E1F83A4C100D20F4D /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2681F83A4C000D20F4D /* Vector.strings */; };
+		F05927B61FDEB15F009F2A68 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927B51FDEB15F009F2A68 /* GroupsViewController.m */; };
+		F05927BF1FDEC2F6009F2A68 /* GroupDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927BC1FDEC2F6009F2A68 /* GroupDetailsViewController.m */; };
+		F05927C01FDEC2F7009F2A68 /* GroupDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F05927BD1FDEC2F6009F2A68 /* GroupDetailsViewController.xib */; };
+		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */; };
 		F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05BD7A01E7C0E4500C69941 /* MasterTabBarController.m */; };
 		F0614A0D1EDDCCE700F5DC9A /* jump_to_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A0A1EDDCCE700F5DC9A /* jump_to_unread.png */; };
@@ -522,6 +533,12 @@
 		F083BEA21E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BD1B1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.m */; };
 		F083BEA31E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BD1C1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib */; };
 		F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
+		F09A66531FD5A7A6004B13B5 /* tab_groups_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = F09A664D1FD5A7A2004B13B5 /* tab_groups_selected.png */; };
+		F09A66541FD5A7A6004B13B5 /* tab_groups_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F09A664E1FD5A7A3004B13B5 /* tab_groups_selected@2x.png */; };
+		F09A66551FD5A7A6004B13B5 /* tab_groups_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F09A664F1FD5A7A3004B13B5 /* tab_groups_selected@3x.png */; };
+		F09A66561FD5A7A6004B13B5 /* tab_groups.png in Resources */ = {isa = PBXBuildFile; fileRef = F09A66501FD5A7A4004B13B5 /* tab_groups.png */; };
+		F09A66571FD5A7A6004B13B5 /* tab_groups@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F09A66511FD5A7A4004B13B5 /* tab_groups@2x.png */; };
+		F09A66581FD5A7A6004B13B5 /* tab_groups@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F09A66521FD5A7A5004B13B5 /* tab_groups@3x.png */; };
 		F0A4A1671EF7CB66003630DB /* members_list_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1641EF7CB66003630DB /* members_list_icon.png */; };
 		F0A4A1681EF7CB66003630DB /* members_list_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1651EF7CB66003630DB /* members_list_icon@2x.png */; };
 		F0A4A1691EF7CB66003630DB /* members_list_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */; };
@@ -537,6 +554,11 @@
 		F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */; };
 		F0B5430A1F70FF8F00D29293 /* back_icon@4x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0B543091F70FF8F00D29293 /* back_icon@4x.png */; };
 		F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */; };
+		F0B8D0D21FDFECB200F34524 /* GroupInviteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B8D0CC1FDFECB100F34524 /* GroupInviteTableViewCell.m */; };
+		F0B8D0D31FDFECB200F34524 /* GroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B8D0CD1FDFECB100F34524 /* GroupTableViewCell.m */; };
+		F0B8D0D41FDFECB200F34524 /* GroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B8D0CE1FDFECB100F34524 /* GroupTableViewCell.xib */; };
+		F0B8D0D51FDFECB200F34524 /* GroupInviteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B8D0D11FDFECB200F34524 /* GroupInviteTableViewCell.xib */; };
+		F0B8D0D91FE01FDF00F34524 /* GroupsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B8D0D71FE01FDF00F34524 /* GroupsDataSource.m */; };
 		F0BFBDBA1FF3BDDF00C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382B31F276AD200356143 /* Vector.strings */; };
 		F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EAF1FCF346800B5F6A3 /* Vector.strings */; };
 		F0BFBDBC1FF3BFC100C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2681F83A4C000D20F4D /* Vector.strings */; };
@@ -548,6 +570,12 @@
 		F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E81EC455A100BB0A2B /* create_direct_chat.png */; };
 		F0D869EC1EC455A100BB0A2B /* create_direct_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */; };
 		F0D869ED1EC455A100BB0A2B /* create_direct_chat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */; };
+		F0D9F23E1FED1A05001D9A27 /* add_group_participant.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D9F23B1FED1A04001D9A27 /* add_group_participant.png */; };
+		F0D9F23F1FED1A05001D9A27 /* add_group_participant@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D9F23C1FED1A04001D9A27 /* add_group_participant@3x.png */; };
+		F0D9F2401FED1A05001D9A27 /* add_group_participant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D9F23D1FED1A05001D9A27 /* add_group_participant@2x.png */; };
+		F0D9F2441FED1E57001D9A27 /* remove_icon_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D9F2411FED1E57001D9A27 /* remove_icon_blue@3x.png */; };
+		F0D9F2451FED1E57001D9A27 /* remove_icon_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D9F2421FED1E57001D9A27 /* remove_icon_blue.png */; };
+		F0D9F2461FED1E57001D9A27 /* remove_icon_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0D9F2431FED1E57001D9A27 /* remove_icon_blue@2x.png */; };
 		F0DD05D01F615ECF00CB5292 /* LaunchScreenRiot.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DD05CF1F615ECF00CB5292 /* LaunchScreenRiot.png */; };
 		F0E059FD1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E059FC1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m */; };
 		F0E05A021E963103004B83FB /* FavouritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E059FF1E963103004B83FB /* FavouritesViewController.m */; };
@@ -572,12 +600,13 @@
 		F0E05A3F1EA0F9EB004B83FB /* tab_people.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A271EA0F9EB004B83FB /* tab_people.png */; };
 		F0E05A401EA0F9EB004B83FB /* tab_people@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A281EA0F9EB004B83FB /* tab_people@2x.png */; };
 		F0E05A411EA0F9EB004B83FB /* tab_people@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A291EA0F9EB004B83FB /* tab_people@3x.png */; };
-		F0E05A421EA0F9EB004B83FB /* tab_rooms_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2A1EA0F9EB004B83FB /* tab_rooms_selected.png */; };
-		F0E05A431EA0F9EB004B83FB /* tab_rooms_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2B1EA0F9EB004B83FB /* tab_rooms_selected@2x.png */; };
-		F0E05A441EA0F9EB004B83FB /* tab_rooms_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2C1EA0F9EB004B83FB /* tab_rooms_selected@3x.png */; };
 		F0E05A451EA0F9EB004B83FB /* tab_rooms.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2D1EA0F9EB004B83FB /* tab_rooms.png */; };
 		F0E05A461EA0F9EB004B83FB /* tab_rooms@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2E1EA0F9EB004B83FB /* tab_rooms@2x.png */; };
 		F0E05A471EA0F9EB004B83FB /* tab_rooms@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E05A2F1EA0F9EB004B83FB /* tab_rooms@3x.png */; };
+		F0E5D90E1FF6DDCF00560D7F /* GroupRoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E5D90C1FF6DDCF00560D7F /* GroupRoomsViewController.m */; };
+		F0E5D90F1FF6DDCF00560D7F /* GroupRoomsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E5D90D1FF6DDCF00560D7F /* GroupRoomsViewController.xib */; };
+		F0E5D9131FF6FF3F00560D7F /* GroupRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E5D9101FF6FF3E00560D7F /* GroupRoomTableViewCell.m */; };
+		F0E5D9141FF6FF3F00560D7F /* GroupRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E5D9111FF6FF3F00560D7F /* GroupRoomTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -782,11 +811,27 @@
 		F0173EB41FCF346800B5F6A3 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = InfoPlist.strings; sourceTree = "<group>"; };
 		F02C1A831E8EB04C0045A404 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		F02C1A841E8EB04C0045A404 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
+		F046DC701FE1786500E3DAF0 /* GroupHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupHomeViewController.xib; sourceTree = "<group>"; };
+		F046DC711FE1786500E3DAF0 /* GroupHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupHomeViewController.h; sourceTree = "<group>"; };
+		F046DC721FE1786500E3DAF0 /* GroupHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupHomeViewController.m; sourceTree = "<group>"; };
+		F046DC751FE19F8D00E3DAF0 /* create_group@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_group@3x.png"; sourceTree = "<group>"; };
+		F046DC761FE19F8D00E3DAF0 /* create_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_group.png; sourceTree = "<group>"; };
+		F046DC771FE19F8D00E3DAF0 /* create_group@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_group@2x.png"; sourceTree = "<group>"; };
+		F046DC7B1FE1A40F00E3DAF0 /* GroupParticipantsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupParticipantsViewController.m; sourceTree = "<group>"; };
+		F046DC7C1FE1A40F00E3DAF0 /* GroupParticipantsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupParticipantsViewController.h; sourceTree = "<group>"; };
+		F046DC7D1FE1A40F00E3DAF0 /* GroupParticipantsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupParticipantsViewController.xib; sourceTree = "<group>"; };
 		F04AF2601F83A4C000D20F4D /* zh_Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_Hans; path = InfoPlist.strings; sourceTree = "<group>"; };
 		F04AF2621F83A4C000D20F4D /* zh_Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_Hans; path = Vector.strings; sourceTree = "<group>"; };
 		F04AF2651F83A4C000D20F4D /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = InfoPlist.strings; sourceTree = "<group>"; };
 		F04AF2671F83A4C000D20F4D /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = Localizable.strings; sourceTree = "<group>"; };
 		F04AF2691F83A4C000D20F4D /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = Vector.strings; sourceTree = "<group>"; };
+		F05927B41FDEB15E009F2A68 /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
+		F05927B51FDEB15F009F2A68 /* GroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsViewController.m; sourceTree = "<group>"; };
+		F05927BC1FDEC2F6009F2A68 /* GroupDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupDetailsViewController.m; sourceTree = "<group>"; };
+		F05927BD1FDEC2F6009F2A68 /* GroupDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupDetailsViewController.xib; sourceTree = "<group>"; };
+		F05927BE1FDEC2F6009F2A68 /* GroupDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupDetailsViewController.h; sourceTree = "<group>"; };
+		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
+		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F05BD79C1E7AEBF800C69941 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
 		F05BD79D1E7AEBF800C69941 /* UnifiedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchViewController.m; sourceTree = "<group>"; };
 		F05BD79F1E7C0E4500C69941 /* MasterTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTabBarController.h; sourceTree = "<group>"; };
@@ -1303,6 +1348,12 @@
 		F083BD1C1E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
 		F094A9A21B78D8F000B1FBBF /* Riot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Riot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RiotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F09A664D1FD5A7A2004B13B5 /* tab_groups_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_groups_selected.png; sourceTree = "<group>"; };
+		F09A664E1FD5A7A3004B13B5 /* tab_groups_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_groups_selected@2x.png"; sourceTree = "<group>"; };
+		F09A664F1FD5A7A3004B13B5 /* tab_groups_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_groups_selected@3x.png"; sourceTree = "<group>"; };
+		F09A66501FD5A7A4004B13B5 /* tab_groups.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_groups.png; sourceTree = "<group>"; };
+		F09A66511FD5A7A4004B13B5 /* tab_groups@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_groups@2x.png"; sourceTree = "<group>"; };
+		F09A66521FD5A7A5004B13B5 /* tab_groups@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_groups@3x.png"; sourceTree = "<group>"; };
 		F0A4A1641EF7CB66003630DB /* members_list_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = members_list_icon.png; sourceTree = "<group>"; };
 		F0A4A1651EF7CB66003630DB /* members_list_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "members_list_icon@2x.png"; sourceTree = "<group>"; };
 		F0A4A1661EF7CB66003630DB /* members_list_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "members_list_icon@3x.png"; sourceTree = "<group>"; };
@@ -1317,11 +1368,25 @@
 		F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailsView.xib; sourceTree = "<group>"; };
 		F0B543091F70FF8F00D29293 /* back_icon@4x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_icon@4x.png"; sourceTree = "<group>"; };
 		F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
+		F0B8D0CC1FDFECB100F34524 /* GroupInviteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupInviteTableViewCell.m; sourceTree = "<group>"; };
+		F0B8D0CD1FDFECB100F34524 /* GroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTableViewCell.m; sourceTree = "<group>"; };
+		F0B8D0CE1FDFECB100F34524 /* GroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupTableViewCell.xib; sourceTree = "<group>"; };
+		F0B8D0CF1FDFECB200F34524 /* GroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupTableViewCell.h; sourceTree = "<group>"; };
+		F0B8D0D01FDFECB200F34524 /* GroupInviteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupInviteTableViewCell.h; sourceTree = "<group>"; };
+		F0B8D0D11FDFECB200F34524 /* GroupInviteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupInviteTableViewCell.xib; sourceTree = "<group>"; };
+		F0B8D0D71FE01FDF00F34524 /* GroupsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsDataSource.m; sourceTree = "<group>"; };
+		F0B8D0D81FE01FDF00F34524 /* GroupsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsDataSource.h; sourceTree = "<group>"; };
 		F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoomSummary+Riot.h"; sourceTree = "<group>"; };
 		F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoomSummary+Riot.m"; sourceTree = "<group>"; };
 		F0D869E81EC455A100BB0A2B /* create_direct_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_direct_chat.png; sourceTree = "<group>"; };
 		F0D869E91EC455A100BB0A2B /* create_direct_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@2x.png"; sourceTree = "<group>"; };
 		F0D869EA1EC455A100BB0A2B /* create_direct_chat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "create_direct_chat@3x.png"; sourceTree = "<group>"; };
+		F0D9F23B1FED1A04001D9A27 /* add_group_participant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_group_participant.png; sourceTree = "<group>"; };
+		F0D9F23C1FED1A04001D9A27 /* add_group_participant@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_group_participant@3x.png"; sourceTree = "<group>"; };
+		F0D9F23D1FED1A05001D9A27 /* add_group_participant@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_group_participant@2x.png"; sourceTree = "<group>"; };
+		F0D9F2411FED1E57001D9A27 /* remove_icon_blue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "remove_icon_blue@3x.png"; sourceTree = "<group>"; };
+		F0D9F2421FED1E57001D9A27 /* remove_icon_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove_icon_blue.png; sourceTree = "<group>"; };
+		F0D9F2431FED1E57001D9A27 /* remove_icon_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "remove_icon_blue@2x.png"; sourceTree = "<group>"; };
 		F0DD05CF1F615ECF00CB5292 /* LaunchScreenRiot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreenRiot.png; path = Assets/Images/LaunchScreenRiot.png; sourceTree = "<group>"; };
 		F0E059FB1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchRecentsDataSource.h; sourceTree = "<group>"; };
 		F0E059FC1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchRecentsDataSource.m; sourceTree = "<group>"; };
@@ -1350,12 +1415,15 @@
 		F0E05A271EA0F9EB004B83FB /* tab_people.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_people.png; sourceTree = "<group>"; };
 		F0E05A281EA0F9EB004B83FB /* tab_people@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_people@2x.png"; sourceTree = "<group>"; };
 		F0E05A291EA0F9EB004B83FB /* tab_people@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_people@3x.png"; sourceTree = "<group>"; };
-		F0E05A2A1EA0F9EB004B83FB /* tab_rooms_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_rooms_selected.png; sourceTree = "<group>"; };
-		F0E05A2B1EA0F9EB004B83FB /* tab_rooms_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_rooms_selected@2x.png"; sourceTree = "<group>"; };
-		F0E05A2C1EA0F9EB004B83FB /* tab_rooms_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_rooms_selected@3x.png"; sourceTree = "<group>"; };
 		F0E05A2D1EA0F9EB004B83FB /* tab_rooms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_rooms.png; sourceTree = "<group>"; };
 		F0E05A2E1EA0F9EB004B83FB /* tab_rooms@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_rooms@2x.png"; sourceTree = "<group>"; };
 		F0E05A2F1EA0F9EB004B83FB /* tab_rooms@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_rooms@3x.png"; sourceTree = "<group>"; };
+		F0E5D90B1FF6DDCF00560D7F /* GroupRoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupRoomsViewController.h; sourceTree = "<group>"; };
+		F0E5D90C1FF6DDCF00560D7F /* GroupRoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupRoomsViewController.m; sourceTree = "<group>"; };
+		F0E5D90D1FF6DDCF00560D7F /* GroupRoomsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupRoomsViewController.xib; sourceTree = "<group>"; };
+		F0E5D9101FF6FF3E00560D7F /* GroupRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupRoomTableViewCell.m; sourceTree = "<group>"; };
+		F0E5D9111FF6FF3F00560D7F /* GroupRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupRoomTableViewCell.xib; sourceTree = "<group>"; };
+		F0E5D9121FF6FF3F00560D7F /* GroupRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupRoomTableViewCell.h; sourceTree = "<group>"; };
 		F546BCBBB9BBEE67DB28878A /* Pods-RiotPods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		FD9D0BDE9232898950554DD5 /* libPods-Riot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Riot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1739,6 +1807,21 @@
 				3C9CA3FF200BEA42006031F1 /* cancel2@3x.png */,
 				3C9CA3F9200BDCB9006031F1 /* camera-flash.png */,
 				3C9CA3FA200BDCBA006031F1 /* camera-flash@2x.png */,
+				F0D9F2421FED1E57001D9A27 /* remove_icon_blue.png */,
+				F0D9F2431FED1E57001D9A27 /* remove_icon_blue@2x.png */,
+				F0D9F2411FED1E57001D9A27 /* remove_icon_blue@3x.png */,
+				F0D9F23B1FED1A04001D9A27 /* add_group_participant.png */,
+				F0D9F23D1FED1A05001D9A27 /* add_group_participant@2x.png */,
+				F0D9F23C1FED1A04001D9A27 /* add_group_participant@3x.png */,
+				F046DC761FE19F8D00E3DAF0 /* create_group.png */,
+				F046DC771FE19F8D00E3DAF0 /* create_group@2x.png */,
+				F046DC751FE19F8D00E3DAF0 /* create_group@3x.png */,
+				F09A664D1FD5A7A2004B13B5 /* tab_groups_selected.png */,
+				F09A664E1FD5A7A3004B13B5 /* tab_groups_selected@2x.png */,
+				F09A664F1FD5A7A3004B13B5 /* tab_groups_selected@3x.png */,
+				F09A66501FD5A7A4004B13B5 /* tab_groups.png */,
+				F09A66511FD5A7A4004B13B5 /* tab_groups@2x.png */,
+				F09A66521FD5A7A5004B13B5 /* tab_groups@3x.png */,
 				32E84F9E1F6BD32700CA0B89 /* apps-icon.png */,
 				32E84F9F1F6BD32700CA0B89 /* apps-icon@2x.png */,
 				32E84FA01F6BD32700CA0B89 /* apps-icon@3x.png */,
@@ -1772,9 +1855,6 @@
 				F0E05A271EA0F9EB004B83FB /* tab_people.png */,
 				F0E05A281EA0F9EB004B83FB /* tab_people@2x.png */,
 				F0E05A291EA0F9EB004B83FB /* tab_people@3x.png */,
-				F0E05A2A1EA0F9EB004B83FB /* tab_rooms_selected.png */,
-				F0E05A2B1EA0F9EB004B83FB /* tab_rooms_selected@2x.png */,
-				F0E05A2C1EA0F9EB004B83FB /* tab_rooms_selected@3x.png */,
 				F0E05A2D1EA0F9EB004B83FB /* tab_rooms.png */,
 				F0E05A2E1EA0F9EB004B83FB /* tab_rooms@2x.png */,
 				F0E05A2F1EA0F9EB004B83FB /* tab_rooms@3x.png */,
@@ -1997,6 +2077,8 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				F05927C81FDED835009F2A68 /* MXGroup+Riot.h */,
+				F05927C71FDED835009F2A68 /* MXGroup+Riot.m */,
 				F083BBE51E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.h */,
 				F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */,
 				F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */,
@@ -2016,6 +2098,7 @@
 		F083BBF21E7009EC00A9B29C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F0B8D0D61FE01F8500F34524 /* Group */,
 				F083BBF31E7009EC00A9B29C /* Contact */,
 				F083BBF61E7009EC00A9B29C /* Room */,
 				F083BC011E7009EC00A9B29C /* RoomList */,
@@ -2098,6 +2181,7 @@
 		F083BC191E7009EC00A9B29C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0C9508E2003EC1D000997E7 /* Communities */,
 				3233F72D1F31F47E006ACA81 /* Widgets */,
 				3C2B82662005CDF7007CF26B /* ImageViewController.h */,
 				3C2B82672005CDF8007CF26B /* ImageViewController.m */,
@@ -2202,6 +2286,7 @@
 		F083BC571E7009EC00A9B29C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F0B8D0CB1FDFEC6100F34524 /* Group */,
 				92324BE01F4F668F009DE194 /* Calls */,
 				F0B4CBAD1F4215E3008E99C5 /* Event */,
 				F083BC581E7009EC00A9B29C /* Authentication */,
@@ -2436,6 +2521,9 @@
 		F083BCDC1E7009EC00A9B29C /* RoomList */ = {
 			isa = PBXGroup;
 			children = (
+				F0E5D9121FF6FF3F00560D7F /* GroupRoomTableViewCell.h */,
+				F0E5D9101FF6FF3E00560D7F /* GroupRoomTableViewCell.m */,
+				F0E5D9111FF6FF3F00560D7F /* GroupRoomTableViewCell.xib */,
 				F075BED31EBB169C00A7B68A /* RoomCollectionViewCell.h */,
 				F075BED41EBB169C00A7B68A /* RoomCollectionViewCell.m */,
 				F075BED51EBB169C00A7B68A /* RoomCollectionViewCell.xib */,
@@ -2580,6 +2668,49 @@
 				F0B4CBB01F4215E3008E99C5 /* EventDetailsView.xib */,
 			);
 			path = Event;
+			sourceTree = "<group>";
+		};
+		F0B8D0CB1FDFEC6100F34524 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				F0B8D0D01FDFECB200F34524 /* GroupInviteTableViewCell.h */,
+				F0B8D0CC1FDFECB100F34524 /* GroupInviteTableViewCell.m */,
+				F0B8D0D11FDFECB200F34524 /* GroupInviteTableViewCell.xib */,
+				F0B8D0CF1FDFECB200F34524 /* GroupTableViewCell.h */,
+				F0B8D0CD1FDFECB100F34524 /* GroupTableViewCell.m */,
+				F0B8D0CE1FDFECB100F34524 /* GroupTableViewCell.xib */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
+		F0B8D0D61FE01F8500F34524 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				F0B8D0D81FE01FDF00F34524 /* GroupsDataSource.h */,
+				F0B8D0D71FE01FDF00F34524 /* GroupsDataSource.m */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
+		F0C9508E2003EC1D000997E7 /* Communities */ = {
+			isa = PBXGroup;
+			children = (
+				F0E5D90B1FF6DDCF00560D7F /* GroupRoomsViewController.h */,
+				F0E5D90C1FF6DDCF00560D7F /* GroupRoomsViewController.m */,
+				F0E5D90D1FF6DDCF00560D7F /* GroupRoomsViewController.xib */,
+				F046DC7C1FE1A40F00E3DAF0 /* GroupParticipantsViewController.h */,
+				F046DC7B1FE1A40F00E3DAF0 /* GroupParticipantsViewController.m */,
+				F046DC7D1FE1A40F00E3DAF0 /* GroupParticipantsViewController.xib */,
+				F046DC711FE1786500E3DAF0 /* GroupHomeViewController.h */,
+				F046DC721FE1786500E3DAF0 /* GroupHomeViewController.m */,
+				F046DC701FE1786500E3DAF0 /* GroupHomeViewController.xib */,
+				F05927BE1FDEC2F6009F2A68 /* GroupDetailsViewController.h */,
+				F05927BC1FDEC2F6009F2A68 /* GroupDetailsViewController.m */,
+				F05927BD1FDEC2F6009F2A68 /* GroupDetailsViewController.xib */,
+				F05927B41FDEB15E009F2A68 /* GroupsViewController.h */,
+				F05927B51FDEB15F009F2A68 /* GroupsViewController.m */,
+			);
+			path = Communities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2796,10 +2927,13 @@
 				F083BD611E7009ED00A9B29C /* details_icon@3x.png in Resources */,
 				F083BD9D1E7009ED00A9B29C /* main_alias_icon@3x.png in Resources */,
 				F083BDA21E7009ED00A9B29C /* newmessages@2x.png in Resources */,
+				F046DC781FE19F8E00E3DAF0 /* create_group@3x.png in Resources */,
+				F0D9F2401FED1A05001D9A27 /* add_group_participant@2x.png in Resources */,
 				F083BEA11E7009ED00A9B29C /* TableViewCellWithLabelAndLargeTextView.xib in Resources */,
 				F083BD881E7009ED00A9B29C /* file_doc_icon@3x.png in Resources */,
 				F083BDAB1E7009ED00A9B29C /* placeholder@2x.png in Resources */,
 				F083BE4D1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
+				F046DC791FE19F8E00E3DAF0 /* create_group.png in Resources */,
 				24B510401EFA88CC004C6AD2 /* ReadReceiptsViewController.xib in Resources */,
 				F0173EB61FCF346800B5F6A3 /* Localizable.strings in Resources */,
 				F083BDC81E7009ED00A9B29C /* search_icon.png in Resources */,
@@ -2813,6 +2947,7 @@
 				F0614A0F1EDDCCE700F5DC9A /* jump_to_unread@3x.png in Resources */,
 				F083BE511E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */,
+				F0B8D0D41FDFECB200F34524 /* GroupTableViewCell.xib in Resources */,
 				F083BDAE1E7009ED00A9B29C /* plus_icon@2x.png in Resources */,
 				F0E05A401EA0F9EB004B83FB /* tab_people@2x.png in Resources */,
 				F083BD5A1E7009ED00A9B29C /* chevron@2x.png in Resources */,
@@ -2847,9 +2982,11 @@
 				F083BDC41E7009ED00A9B29C /* scrollup@3x.png in Resources */,
 				F083BD291E7009ED00A9B29C /* animatedLogo-1.png in Resources */,
 				F083BD4F1E7009ED00A9B29C /* camera_play@2x.png in Resources */,
+				F046DC7A1FE19F8E00E3DAF0 /* create_group@2x.png in Resources */,
 				321082B31F0E9F41002E0091 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
 				F083BD981E7009ED00A9B29C /* logo.png in Resources */,
 				F083BD911E7009ED00A9B29C /* file_video_icon@3x.png in Resources */,
+				F09A66531FD5A7A6004B13B5 /* tab_groups_selected.png in Resources */,
 				F083BD991E7009ED00A9B29C /* logo@2x.png in Resources */,
 				F083BD331E7009ED00A9B29C /* call_audio_mute_off_icon.png in Resources */,
 				F083BD691E7009ED00A9B29C /* directChatOn@2x.png in Resources */,
@@ -2867,13 +3004,16 @@
 				F083BDAC1E7009ED00A9B29C /* placeholder@3x.png in Resources */,
 				F083BD8D1E7009ED00A9B29C /* file_photo_icon@2x.png in Resources */,
 				F083BD831E7009ED00A9B29C /* favouriteOff.png in Resources */,
+				F09A66551FD5A7A6004B13B5 /* tab_groups_selected@3x.png in Resources */,
 				F083BD411E7009ED00A9B29C /* call_speaker_off_icon@3x.png in Resources */,
 				F083BDE21E7009ED00A9B29C /* video_icon@3x.png in Resources */,
 				F083BDA31E7009ED00A9B29C /* newmessages@3x.png in Resources */,
 				F083BE591E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
+				F09A66541FD5A7A6004B13B5 /* tab_groups_selected@2x.png in Resources */,
 				F083BD821E7009ED00A9B29C /* favourite@3x.png in Resources */,
 				327382B51F276AD200356143 /* InfoPlist.strings in Resources */,
 				F083BD551E7009ED00A9B29C /* camera_switch@3x.png in Resources */,
+				F046DC7F1FE1A40F00E3DAF0 /* GroupParticipantsViewController.xib in Resources */,
 				F083BE361E7009ED00A9B29C /* MediaAlbumTableCell.xib in Resources */,
 				F083BD7B1E7009ED00A9B29C /* edit_icon@2x.png in Resources */,
 				F083BDAF1E7009ED00A9B29C /* plus_icon@3x.png in Resources */,
@@ -2905,12 +3045,12 @@
 				F083BD3C1E7009ED00A9B29C /* call_hangup_icon.png in Resources */,
 				F083BE6D1E7009ED00A9B29C /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				F083BE9F1E7009ED00A9B29C /* TableViewCellWithCheckBoxes.xib in Resources */,
-				F0E05A421EA0F9EB004B83FB /* tab_rooms_selected.png in Resources */,
 				F0B4CBB21F4215E3008E99C5 /* EventDetailsView.xib in Resources */,
 				F083BE4F1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				F0B4CBAC1F41F090008E99C5 /* EncryptionInfoView.xib in Resources */,
 				F083BD241E7009ED00A9B29C /* add_participant@3x.png in Resources */,
 				F083BD891E7009ED00A9B29C /* file_music_icon.png in Resources */,
+				F05927C01FDEC2F7009F2A68 /* GroupDetailsViewController.xib in Resources */,
 				F083BDD11E7009ED00A9B29C /* settings_icon.png in Resources */,
 				F083BD811E7009ED00A9B29C /* favourite@2x.png in Resources */,
 				F0A4A1681EF7CB66003630DB /* members_list_icon@2x.png in Resources */,
@@ -2950,7 +3090,9 @@
 				3C2B827020099027007CF26B /* CameraViewController.xib in Resources */,
 				F083BD271E7009ED00A9B29C /* admin_icon@3x.png in Resources */,
 				F083BDDC1E7009ED00A9B29C /* typing@3x.png in Resources */,
+				F0D9F23F1FED1A05001D9A27 /* add_group_participant@3x.png in Resources */,
 				F083BDC31E7009ED00A9B29C /* scrollup@2x.png in Resources */,
+				F09A66571FD5A7A6004B13B5 /* tab_groups@2x.png in Resources */,
 				F083BD451E7009ED00A9B29C /* call_video_mute_off_icon.png in Resources */,
 				F083BD2F1E7009ED00A9B29C /* back_icon@3x.png in Resources */,
 				F083BDD01E7009ED00A9B29C /* selection_untick@3x.png in Resources */,
@@ -2961,6 +3103,7 @@
 				F083BDDF1E7009ED00A9B29C /* upload_icon@3x.png in Resources */,
 				327382B61F276AD200356143 /* Localizable.strings in Resources */,
 				F083BD6D1E7009ED00A9B29C /* disclosure_icon@3x.png in Resources */,
+				F09A66561FD5A7A6004B13B5 /* tab_groups.png in Resources */,
 				32AE61F31F0D2183007255F4 /* Localizable.strings in Resources */,
 				F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */,
 				F083BDD51E7009ED00A9B29C /* shrink_icon@2x.png in Resources */,
@@ -2985,6 +3128,7 @@
 				F083BD4D1E7009ED00A9B29C /* camera_capture@3x.png in Resources */,
 				F083BDB11E7009ED00A9B29C /* priorityHigh@2x.png in Resources */,
 				F0614A0E1EDDCCE700F5DC9A /* jump_to_unread@2x.png in Resources */,
+				F0D9F2451FED1E57001D9A27 /* remove_icon_blue.png in Resources */,
 				F083BDC21E7009ED00A9B29C /* scrollup.png in Resources */,
 				329DCE1A1F988F8100468420 /* riot_icon_callkit@2.png in Resources */,
 				F083BD521E7009ED00A9B29C /* camera_stop@2x.png in Resources */,
@@ -2993,11 +3137,14 @@
 				F0E05A381EA0F9EB004B83FB /* tab_home_selected@3x.png in Resources */,
 				F083BDDA1E7009ED00A9B29C /* typing.png in Resources */,
 				F083BE831E7009ED00A9B29C /* RecentTableViewCell.xib in Resources */,
+				F046DC731FE1786500E3DAF0 /* GroupHomeViewController.xib in Resources */,
+				F0E5D9141FF6FF3F00560D7F /* GroupRoomTableViewCell.xib in Resources */,
 				F083BDB71E7009ED00A9B29C /* remove_icon@2x.png in Resources */,
 				3C9CA400200BEA42006031F1 /* cancel2.png in Resources */,
 				F083BDD31E7009ED00A9B29C /* settings_icon@3x.png in Resources */,
 				F04AF26B1F83A4C100D20F4D /* Vector.strings in Resources */,
 				F083BDBA1E7009ED00A9B29C /* remove_icon_pink@2x.png in Resources */,
+				F09A66581FD5A7A6004B13B5 /* tab_groups@3x.png in Resources */,
 				F083BDC91E7009ED00A9B29C /* search_icon@2x.png in Resources */,
 				F083BE381E7009ED00A9B29C /* RoomActivitiesView.xib in Resources */,
 				F083BDC51E7009ED00A9B29C /* search_bg.png in Resources */,
@@ -3005,7 +3152,6 @@
 				F083BD3B1E7009ED00A9B29C /* call_chat_icon@3x.png in Resources */,
 				F083BD351E7009ED00A9B29C /* call_audio_mute_off_icon@3x.png in Resources */,
 				F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */,
-				F0E05A441EA0F9EB004B83FB /* tab_rooms_selected@3x.png in Resources */,
 				F083BD2C1E7009ED00A9B29C /* animatedLogo-4.png in Resources */,
 				F083BD7E1E7009ED00A9B29C /* error@2x.png in Resources */,
 				F083BE931E7009ED00A9B29C /* SimpleRoomTitleView.xib in Resources */,
@@ -3017,6 +3163,7 @@
 				F083BD7D1E7009ED00A9B29C /* error.png in Resources */,
 				F083BD2E1E7009ED00A9B29C /* back_icon@2x.png in Resources */,
 				F083BD501E7009ED00A9B29C /* camera_record.png in Resources */,
+				F0D9F2441FED1E57001D9A27 /* remove_icon_blue@3x.png in Resources */,
 				F0D869EB1EC455A100BB0A2B /* create_direct_chat.png in Resources */,
 				F083BDBB1E7009ED00A9B29C /* remove_icon_pink@3x.png in Resources */,
 				F0E05A301EA0F9EB004B83FB /* tab_favourites_selected.png in Resources */,
@@ -3033,7 +3180,6 @@
 				32E84FA11F6BD32700CA0B89 /* apps-icon.png in Resources */,
 				F083BE891E7009ED00A9B29C /* RoomMemberTitleView.xib in Resources */,
 				F083BE3D1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
-				F0E05A431EA0F9EB004B83FB /* tab_rooms_selected@2x.png in Resources */,
 				F083BE291E7009ED00A9B29C /* StartChatViewController.xib in Resources */,
 				F083BE6F1E7009ED00A9B29C /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BEA31E7009ED00A9B29C /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
@@ -3091,6 +3237,7 @@
 				F083BE301E7009ED00A9B29C /* ContactTableViewCell.xib in Resources */,
 				F083BE571E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BE771E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				F0D9F2461FED1E57001D9A27 /* remove_icon_blue@2x.png in Resources */,
 				F083BDA71E7009ED00A9B29C /* notificationsOff.png in Resources */,
 				F06CDD6A1EF01E3900870B75 /* RoomEmptyBubbleCell.xib in Resources */,
 				F0B5430A1F70FF8F00D29293 /* back_icon@4x.png in Resources */,
@@ -3120,6 +3267,7 @@
 				F0E05A3A1EA0F9EB004B83FB /* tab_home@2x.png in Resources */,
 				F083BE091E7009ED00A9B29C /* AuthenticationViewController.xib in Resources */,
 				F083BD381E7009ED00A9B29C /* call_audio_mute_on_icon@3x.png in Resources */,
+				F0B8D0D51FDFECB200F34524 /* GroupInviteTableViewCell.xib in Resources */,
 				F0E05A3C1EA0F9EB004B83FB /* tab_people_selected.png in Resources */,
 				F083BD221E7009ED00A9B29C /* add_participant.png in Resources */,
 				F083BDC61E7009ED00A9B29C /* search_bg@2x.png in Resources */,
@@ -3153,6 +3301,8 @@
 				F083BD461E7009ED00A9B29C /* call_video_mute_off_icon@2x.png in Resources */,
 				F083BD311E7009ED00A9B29C /* bubbles_bg_landscape@2x.png in Resources */,
 				F0E05A371EA0F9EB004B83FB /* tab_home_selected@2x.png in Resources */,
+				F0D9F23E1FED1A05001D9A27 /* add_group_participant.png in Resources */,
+				F0E5D90F1FF6DDCF00560D7F /* GroupRoomsViewController.xib in Resources */,
 				F083BE651E7009ED00A9B29C /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F083BD6F1E7009ED00A9B29C /* e2e_blocked@2x.png in Resources */,
 			);
@@ -3218,6 +3368,7 @@
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactDetailsViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactListViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKCountryPickerViewController.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKGroupListViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKLanguagePickerViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRecentListViewController.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomMemberDetailsViewController.xib",
@@ -3231,6 +3382,7 @@
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Contact/MXKContactTableCell.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/DeviceView/MXKDeviceView.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/EncryptionInfoView/MXKEncryptionInfoView.xib",
+				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Group/MXKGroupTableViewCell.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKCollectionViewCell/MXKMediaCollectionViewCell.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKEventDetailsView.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKPieChartHUD.xib",
@@ -3390,6 +3542,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0E5D9131FF6FF3F00560D7F /* GroupRoomTableViewCell.m in Sources */,
 				F083BE221E7009ED00A9B29C /* RoomSettingsViewController.m in Sources */,
 				F083BE421E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BDF71E7009ED00A9B29C /* RoomBubbleCellData.m in Sources */,
@@ -3415,8 +3568,10 @@
 				F083BDFC1E7009ED00A9B29C /* HomeMessagesSearchDataSource.m in Sources */,
 				F083BE0E1E7009ED00A9B29C /* ContactsTableViewController.m in Sources */,
 				F083BE861E7009ED00A9B29C /* RoomTableViewCell.m in Sources */,
+				F046DC7E1FE1A40F00E3DAF0 /* GroupParticipantsViewController.m in Sources */,
 				F083BDF51E7009ED00A9B29C /* main.m in Sources */,
 				3C2B82612005CD19007CF26B /* UIImage+Crop.m in Sources */,
+				F05927BF1FDEC2F6009F2A68 /* GroupDetailsViewController.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
 				F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */,
 				F083BE331E7009ED00A9B29C /* DeviceView.m in Sources */,
@@ -3428,17 +3583,20 @@
 				F083BE141E7009ED00A9B29C /* HomeViewController.m in Sources */,
 				F083BDFB1E7009ED00A9B29C /* RoomSearchDataSource.m in Sources */,
 				3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */,
+				F0B8D0D31FDFECB200F34524 /* GroupTableViewCell.m in Sources */,
 				F083BE281E7009ED00A9B29C /* StartChatViewController.m in Sources */,
 				F083BE841E7009ED00A9B29C /* RoomIdOrAliasTableViewCell.m in Sources */,
 				F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */,
 				F083BE1F1E7009ED00A9B29C /* RoomParticipantsViewController.m in Sources */,
 				F083BE741E7009ED00A9B29C /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				F0B8D0D21FDFECB200F34524 /* GroupInviteTableViewCell.m in Sources */,
 				F083BE1C1E7009ED00A9B29C /* RoomMemberDetailsViewController.m in Sources */,
 				3C2B826B2005CDF8007CF26B /* VideoViewController.m in Sources */,
 				F083BE481E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				F06CDD691EF01E3900870B75 /* RoomEmptyBubbleCell.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				92324BE31F4F66D3009DE194 /* IncomingCallView.m in Sources */,
+				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
 				F083BE6A1E7009ED00A9B29C /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				F083BE761E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
@@ -3463,6 +3621,7 @@
 				F083BE6E1E7009ED00A9B29C /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				3233F7311F31F4BF006ACA81 /* JitsiViewController.m in Sources */,
 				F083BE2A1E7009ED00A9B29C /* UsersDevicesViewController.m in Sources */,
+				F05927B61FDEB15F009F2A68 /* GroupsViewController.m in Sources */,
 				32F3AE1A1F6FF4E600F0F004 /* WidgetViewController.m in Sources */,
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				F083BE2D1E7009ED00A9B29C /* ForgotPasswordInputsView.m in Sources */,
@@ -3480,6 +3639,7 @@
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
 				F05BD79E1E7AEBF800C69941 /* UnifiedSearchViewController.m in Sources */,
 				F083BE561E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				F046DC741FE1786500E3DAF0 /* GroupHomeViewController.m in Sources */,
 				F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				3C9CA3F8200A8293006031F1 /* CaptureViewController.m in Sources */,
@@ -3493,6 +3653,7 @@
 				3233F73F1F331F05006ACA81 /* Widget.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
 				F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */,
+				F0E5D90E1FF6DDCF00560D7F /* GroupRoomsViewController.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,
 				F083BE4C1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F075BEDB1EBB26F100A7B68A /* TableViewCellWithCollectionView.m in Sources */,
@@ -3520,6 +3681,7 @@
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				F083BE8C1E7009ED00A9B29C /* PreviewRoomTitleView.m in Sources */,
 				F083BE271E7009ED00A9B29C /* SettingsViewController.m in Sources */,
+				F0B8D0D91FE01FDF00F34524 /* GroupsDataSource.m in Sources */,
 				F083BE9A1E7009ED00A9B29C /* TableViewCellWithButton.m in Sources */,
 				3C2B82602005CD19007CF26B /* ViewUtils.m in Sources */,
 				F083BE8E1E7009ED00A9B29C /* RoomAvatarTitleView.m in Sources */,

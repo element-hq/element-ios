@@ -161,15 +161,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"MediaAlbumContent"];
     
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"MediaAlbumContent"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+
 
     self.navigationItem.title = _assetsCollection.localizedTitle;
     

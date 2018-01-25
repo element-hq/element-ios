@@ -37,10 +37,11 @@
 @property (nonatomic, readonly, nullable) NSString *type;
 
 /**
- The widget url.
- 
- Widgets are basically opened in a webview. `url` is the url the webview must use
- to render the widget.
+ The raw widget url.
+
+ This is the preformated version of the widget url containing parameters names.
+ This is not a valid url. The url to use in a webview can be obtained with
+ `[self widgetUrl:]`.
  */
 @property (nonatomic, readonly, nullable) NSString *url;
 
@@ -81,5 +82,16 @@
  @return the newly created instance.
  */
 - (instancetype _Nullable )initWithWidgetEvent:(MXEvent* _Nonnull)widgetEvent inMatrixSession:(MXSession* _Nonnull)mxSession;
+
+/**
+ Build the url of the widget that can be opened in a webview.
+
+ @param success A block object called when the operation succeeds. It provides the valid widget url.
+ @param failure A block object called when the operation fails.
+
+ @return a MXHTTPOperation instance.
+ */
+- (MXHTTPOperation * _Nullable)widgetUrl:(void (^_Nonnull)(NSString * _Nonnull widgetUrl))success
+                                 failure:(void (^ _Nullable)(NSError * _Nonnull error))failure;
 
 @end
