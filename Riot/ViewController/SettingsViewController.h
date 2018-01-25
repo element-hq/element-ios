@@ -18,9 +18,9 @@
 
 #import "DeviceView.h"
 
-#import "MediaPickerViewController.h"
+#import "CameraViewController.h"
 
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate>
+@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, CameraViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate>
 
 @end
 

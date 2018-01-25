@@ -28,7 +28,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -89,6 +89,22 @@
 		32F3AE1A1F6FF4E600F0F004 /* WidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */; };
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
+		3C2B82602005CD19007CF26B /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2B825A2005CD19007CF26B /* ViewUtils.m */; };
+		3C2B82612005CD19007CF26B /* UIImage+Crop.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2B825E2005CD19007CF26B /* UIImage+Crop.m */; };
+		3C2B82622005CD19007CF26B /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2B825F2005CD19007CF26B /* UIImage+Resize.m */; };
+		3C2B826A2005CDF8007CF26B /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2B82672005CDF8007CF26B /* ImageViewController.m */; };
+		3C2B826B2005CDF8007CF26B /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2B82682005CDF8007CF26B /* VideoViewController.m */; };
+		3C2B826F20099027007CF26B /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2B826D20099027007CF26B /* CameraViewController.m */; };
+		3C2B827020099027007CF26B /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C2B826E20099027007CF26B /* CameraViewController.xib */; };
+		3C9CA3F8200A8293006031F1 /* CaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CA3F7200A8293006031F1 /* CaptureViewController.m */; };
+		3C9CA3FB200BDCBA006031F1 /* camera-flash.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CA3F9200BDCB9006031F1 /* camera-flash.png */; };
+		3C9CA3FC200BDCBA006031F1 /* camera-flash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CA3FA200BDCBA006031F1 /* camera-flash@2x.png */; };
+		3C9CA400200BEA42006031F1 /* cancel2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CA3FD200BEA41006031F1 /* cancel2.png */; };
+		3C9CA401200BEA42006031F1 /* cancel2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CA3FE200BEA42006031F1 /* cancel2@2x.png */; };
+		3C9CA402200BEA42006031F1 /* cancel2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CA3FF200BEA42006031F1 /* cancel2@3x.png */; };
+		3C9CA406200C651F006031F1 /* send@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CA403200C651E006031F1 /* send@3x.png */; };
+		3C9CA407200C651F006031F1 /* send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CA404200C651E006031F1 /* send@2x.png */; };
+		3C9CA408200C651F006031F1 /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9CA405200C651E006031F1 /* send.png */; };
 		40D7564A9783FD6C28C157CE /* libPods-RiotPods-RiotShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF0A0746EF74FF15B8B79658 /* libPods-RiotPods-RiotShareExtension.a */; };
 		83711A7C1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83711A7B1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m */; };
 		92324BE31F4F66D3009DE194 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92324BE21F4F66D3009DE194 /* IncomingCallView.m */; };
@@ -366,8 +382,6 @@
 		F083BE141E7009ED00A9B29C /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC311E7009EC00A9B29C /* HomeViewController.m */; };
 		F083BE151E7009ED00A9B29C /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC331E7009EC00A9B29C /* MediaAlbumContentViewController.m */; };
 		F083BE161E7009ED00A9B29C /* MediaAlbumContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BC341E7009EC00A9B29C /* MediaAlbumContentViewController.xib */; };
-		F083BE171E7009ED00A9B29C /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC361E7009EC00A9B29C /* MediaPickerViewController.m */; };
-		F083BE181E7009ED00A9B29C /* MediaPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083BC371E7009EC00A9B29C /* MediaPickerViewController.xib */; };
 		F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC391E7009EC00A9B29C /* RecentsViewController.m */; };
 		F083BE1A1E7009ED00A9B29C /* RoomFilesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC3B1E7009EC00A9B29C /* RoomFilesSearchViewController.m */; };
 		F083BE1B1E7009ED00A9B29C /* RoomFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC3D1E7009EC00A9B29C /* RoomFilesViewController.m */; };
@@ -713,6 +727,29 @@
 		32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		33F966BE1A83B32A2DFE24CA /* Pods-RiotPods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
 		397BCA987893439918EBF330 /* Pods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiriIntents.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
+		3C2B825A2005CD19007CF26B /* ViewUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUtils.m; sourceTree = "<group>"; };
+		3C2B825B2005CD19007CF26B /* ViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUtils.h; sourceTree = "<group>"; };
+		3C2B825C2005CD19007CF26B /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		3C2B825D2005CD19007CF26B /* UIImage+Crop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Crop.h"; sourceTree = "<group>"; };
+		3C2B825E2005CD19007CF26B /* UIImage+Crop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Crop.m"; sourceTree = "<group>"; };
+		3C2B825F2005CD19007CF26B /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		3C2B82662005CDF7007CF26B /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		3C2B82672005CDF8007CF26B /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		3C2B82682005CDF8007CF26B /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
+		3C2B82692005CDF8007CF26B /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
+		3C2B826C20099027007CF26B /* CameraViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		3C2B826D20099027007CF26B /* CameraViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		3C2B826E20099027007CF26B /* CameraViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
+		3C9CA3F6200A8293006031F1 /* CaptureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptureViewController.h; sourceTree = "<group>"; };
+		3C9CA3F7200A8293006031F1 /* CaptureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaptureViewController.m; sourceTree = "<group>"; };
+		3C9CA3F9200BDCB9006031F1 /* camera-flash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-flash.png"; sourceTree = "<group>"; };
+		3C9CA3FA200BDCBA006031F1 /* camera-flash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-flash@2x.png"; sourceTree = "<group>"; };
+		3C9CA3FD200BEA41006031F1 /* cancel2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel2.png; sourceTree = "<group>"; };
+		3C9CA3FE200BEA42006031F1 /* cancel2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel2@2x.png"; sourceTree = "<group>"; };
+		3C9CA3FF200BEA42006031F1 /* cancel2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel2@3x.png"; sourceTree = "<group>"; };
+		3C9CA403200C651E006031F1 /* send@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send@3x.png"; sourceTree = "<group>"; };
+		3C9CA404200C651E006031F1 /* send@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send@2x.png"; sourceTree = "<group>"; };
+		3C9CA405200C651E006031F1 /* send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send.png; sourceTree = "<group>"; };
 		4D1164C2F07EF74950DCDA7A /* Pods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiriIntents.release.xcconfig"; path = "Pods/Target Support Files/Pods-SiriIntents/Pods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
 		5666C1236223F54D4C635C54 /* libPods-SiriIntents.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SiriIntents.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		61BB7CD1741206BEAAA6D4C7 /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1050,9 +1087,6 @@
 		F083BC321E7009EC00A9B29C /* MediaAlbumContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAlbumContentViewController.h; sourceTree = "<group>"; };
 		F083BC331E7009EC00A9B29C /* MediaAlbumContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAlbumContentViewController.m; sourceTree = "<group>"; };
 		F083BC341E7009EC00A9B29C /* MediaAlbumContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaAlbumContentViewController.xib; sourceTree = "<group>"; };
-		F083BC351E7009EC00A9B29C /* MediaPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPickerViewController.h; sourceTree = "<group>"; };
-		F083BC361E7009EC00A9B29C /* MediaPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPickerViewController.m; sourceTree = "<group>"; };
-		F083BC371E7009EC00A9B29C /* MediaPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaPickerViewController.xib; sourceTree = "<group>"; };
 		F083BC381E7009EC00A9B29C /* RecentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsViewController.h; sourceTree = "<group>"; };
 		F083BC391E7009EC00A9B29C /* RecentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsViewController.m; sourceTree = "<group>"; };
 		F083BC3A1E7009EC00A9B29C /* RoomFilesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomFilesSearchViewController.h; sourceTree = "<group>"; };
@@ -1531,6 +1565,19 @@
 			path = nl.lproj;
 			sourceTree = "<group>";
 		};
+		3C2B82592005CCCD007CF26B /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				3C2B825D2005CD19007CF26B /* UIImage+Crop.h */,
+				3C2B825E2005CD19007CF26B /* UIImage+Crop.m */,
+				3C2B825C2005CD19007CF26B /* UIImage+Resize.h */,
+				3C2B825F2005CD19007CF26B /* UIImage+Resize.m */,
+				3C2B825B2005CD19007CF26B /* ViewUtils.h */,
+				3C2B825A2005CD19007CF26B /* ViewUtils.m */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
 		5FC42FA41F5186AFFB6A2404 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1684,6 +1731,14 @@
 		F083BB151E7009EC00A9B29C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3C9CA405200C651E006031F1 /* send.png */,
+				3C9CA404200C651E006031F1 /* send@2x.png */,
+				3C9CA403200C651E006031F1 /* send@3x.png */,
+				3C9CA3FD200BEA41006031F1 /* cancel2.png */,
+				3C9CA3FE200BEA42006031F1 /* cancel2@2x.png */,
+				3C9CA3FF200BEA42006031F1 /* cancel2@3x.png */,
+				3C9CA3F9200BDCB9006031F1 /* camera-flash.png */,
+				3C9CA3FA200BDCBA006031F1 /* camera-flash@2x.png */,
 				32E84F9E1F6BD32700CA0B89 /* apps-icon.png */,
 				32E84F9F1F6BD32700CA0B89 /* apps-icon@2x.png */,
 				32E84FA01F6BD32700CA0B89 /* apps-icon@3x.png */,
@@ -2026,6 +2081,7 @@
 		F083BC0F1E7009EC00A9B29C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				3C2B82592005CCCD007CF26B /* Camera */,
 				3233F7391F33065F006ACA81 /* Widgets */,
 				F083BC101E7009EC00A9B29C /* AvatarGenerator.h */,
 				F083BC111E7009EC00A9B29C /* AvatarGenerator.m */,
@@ -2043,6 +2099,10 @@
 			isa = PBXGroup;
 			children = (
 				3233F72D1F31F47E006ACA81 /* Widgets */,
+				3C2B82662005CDF7007CF26B /* ImageViewController.h */,
+				3C2B82672005CDF8007CF26B /* ImageViewController.m */,
+				3C2B82692005CDF8007CF26B /* VideoViewController.h */,
+				3C2B82682005CDF8007CF26B /* VideoViewController.m */,
 				F0B4CBA81F41E71A008E99C5 /* RiotNavigationController.h */,
 				F0B4CBA91F41E71A008E99C5 /* RiotNavigationController.m */,
 				F0131DE31F2200D600CBF707 /* RiotSplitViewController.h */,
@@ -2091,9 +2151,6 @@
 				F083BC321E7009EC00A9B29C /* MediaAlbumContentViewController.h */,
 				F083BC331E7009EC00A9B29C /* MediaAlbumContentViewController.m */,
 				F083BC341E7009EC00A9B29C /* MediaAlbumContentViewController.xib */,
-				F083BC351E7009EC00A9B29C /* MediaPickerViewController.h */,
-				F083BC361E7009EC00A9B29C /* MediaPickerViewController.m */,
-				F083BC371E7009EC00A9B29C /* MediaPickerViewController.xib */,
 				F083BC381E7009EC00A9B29C /* RecentsViewController.h */,
 				F083BC391E7009EC00A9B29C /* RecentsViewController.m */,
 				F0E05A0A1E9CCEBF004B83FB /* RecentsViewController.xib */,
@@ -2133,6 +2190,11 @@
 				24B5103F1EFA88CC004C6AD2 /* ReadReceiptsViewController.xib */,
 				F0B4CBA31F418D0B008E99C5 /* WebViewViewController.h */,
 				F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */,
+				3C2B826C20099027007CF26B /* CameraViewController.h */,
+				3C2B826D20099027007CF26B /* CameraViewController.m */,
+				3C2B826E20099027007CF26B /* CameraViewController.xib */,
+				3C9CA3F6200A8293006031F1 /* CaptureViewController.h */,
+				3C9CA3F7200A8293006031F1 /* CaptureViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2614,7 +2676,7 @@
 				TargetAttributes = {
 					24CBEC4D1F0EAD310093EABB = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 7J4U792NQT;
+                        DevelopmentTeam = 7J4U792NQT;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -2624,7 +2686,7 @@
 					};
 					92726A421F58737A004AD26F = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 7J4U792NQT;
+                        DevelopmentTeam = 7J4U792NQT;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -2634,7 +2696,7 @@
 					};
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 7J4U792NQT;
+                        DevelopmentTeam = 7J4U792NQT;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -2647,7 +2709,7 @@
 					};
 					F094A9BD1B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 7J4U792NQT;
+                        DevelopmentTeam = 7J4U792NQT;
 						TestTargetID = F094A9A11B78D8F000B1FBBF;
 					};
 				};
@@ -2706,9 +2768,9 @@
 				F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */,
 				F0BFBDBF1FF3BFD200C88726 /* Vector.strings in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
+				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
 				2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
+				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2768,6 +2830,7 @@
 				F083BE0F1E7009ED00A9B29C /* ContactsTableViewController.xib in Resources */,
 				F083BD9B1E7009ED00A9B29C /* main_alias_icon.png in Resources */,
 				F083BD391E7009ED00A9B29C /* call_chat_icon.png in Resources */,
+				3C9CA407200C651F006031F1 /* send@2x.png in Resources */,
 				F083BD681E7009ED00A9B29C /* directChatOn.png in Resources */,
 				F083BDA61E7009ED00A9B29C /* notifications@3x.png in Resources */,
 				F083BD771E7009ED00A9B29C /* e2e_warning.png in Resources */,
@@ -2795,6 +2858,7 @@
 				32AE61F21F0D2183007255F4 /* InfoPlist.strings in Resources */,
 				F083BDB91E7009ED00A9B29C /* remove_icon_pink.png in Resources */,
 				F083BE531E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
+				3C9CA401200BEA42006031F1 /* cancel2@2x.png in Resources */,
 				F083BD7F1E7009ED00A9B29C /* error@3x.png in Resources */,
 				F083BE5B1E7009ED00A9B29C /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				F083BD401E7009ED00A9B29C /* call_speaker_off_icon@2x.png in Resources */,
@@ -2828,7 +2892,6 @@
 				329DCE1B1F988F8100468420 /* riot_icon_callkit@3.png in Resources */,
 				3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */,
 				F083BD761E7009ED00A9B29C /* e2e_verified@3x.png in Resources */,
-				F083BE181E7009ED00A9B29C /* MediaPickerViewController.xib in Resources */,
 				F083BDCE1E7009ED00A9B29C /* selection_untick.png in Resources */,
 				F083BE971E7009ED00A9B29C /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
 				F083BD9C1E7009ED00A9B29C /* main_alias_icon@2x.png in Resources */,
@@ -2854,6 +2917,7 @@
 				F083BD9F1E7009ED00A9B29C /* mod_icon@2x.png in Resources */,
 				32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */,
 				F083BD801E7009ED00A9B29C /* favourite.png in Resources */,
+				3C9CA408200C651F006031F1 /* send.png in Resources */,
 				F083BD4B1E7009ED00A9B29C /* camera_capture.png in Resources */,
 				F083BD841E7009ED00A9B29C /* favouriteOff@2x.png in Resources */,
 				F083BE671E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
@@ -2865,6 +2929,7 @@
 				32471CE21F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BD901E7009ED00A9B29C /* file_video_icon@2x.png in Resources */,
 				F083BE0B1E7009ED00A9B29C /* CallViewController.xib in Resources */,
+				3C9CA406200C651F006031F1 /* send@3x.png in Resources */,
 				F083BD661E7009ED00A9B29C /* directChatOff@2x.png in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
 				F083BD751E7009ED00A9B29C /* e2e_verified@2x.png in Resources */,
@@ -2882,6 +2947,7 @@
 				F083BE911E7009ED00A9B29C /* RoomTitleView.xib in Resources */,
 				F083BE4B1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
 				F083BDB01E7009ED00A9B29C /* priorityHigh.png in Resources */,
+				3C2B827020099027007CF26B /* CameraViewController.xib in Resources */,
 				F083BD271E7009ED00A9B29C /* admin_icon@3x.png in Resources */,
 				F083BDDC1E7009ED00A9B29C /* typing@3x.png in Resources */,
 				F083BDC31E7009ED00A9B29C /* scrollup@2x.png in Resources */,
@@ -2928,6 +2994,7 @@
 				F083BDDA1E7009ED00A9B29C /* typing.png in Resources */,
 				F083BE831E7009ED00A9B29C /* RecentTableViewCell.xib in Resources */,
 				F083BDB71E7009ED00A9B29C /* remove_icon@2x.png in Resources */,
+				3C9CA400200BEA42006031F1 /* cancel2.png in Resources */,
 				F083BDD31E7009ED00A9B29C /* settings_icon@3x.png in Resources */,
 				F04AF26B1F83A4C100D20F4D /* Vector.strings in Resources */,
 				F083BDBA1E7009ED00A9B29C /* remove_icon_pink@2x.png in Resources */,
@@ -3009,10 +3076,12 @@
 				F083BD931E7009ED00A9B29C /* group@2x.png in Resources */,
 				F0614A0D1EDDCCE700F5DC9A /* jump_to_unread.png in Resources */,
 				F083BDC11E7009ED00A9B29C /* scrolldown@3x.png in Resources */,
+				3C9CA3FC200BDCBA006031F1 /* camera-flash@2x.png in Resources */,
 				F083BD321E7009ED00A9B29C /* bubbles_bg_landscape@3x.png in Resources */,
 				F083BE7F1E7009ED00A9B29C /* InviteRecentTableViewCell.xib in Resources */,
 				F083BDA11E7009ED00A9B29C /* newmessages.png in Resources */,
 				F083BD3A1E7009ED00A9B29C /* call_chat_icon@2x.png in Resources */,
+				3C9CA3FB200BDCBA006031F1 /* camera-flash.png in Resources */,
 				F083BE711E7009ED00A9B29C /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				F083BD5E1E7009ED00A9B29C /* create_room@3x.png in Resources */,
 				F083BE6B1E7009ED00A9B29C /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
@@ -3026,6 +3095,7 @@
 				F06CDD6A1EF01E3900870B75 /* RoomEmptyBubbleCell.xib in Resources */,
 				F0B5430A1F70FF8F00D29293 /* back_icon@4x.png in Resources */,
 				F083BDBD1E7009ED00A9B29C /* riot_icon@2x.png in Resources */,
+				3C9CA402200BEA42006031F1 /* cancel2@3x.png in Resources */,
 				F083BDDE1E7009ED00A9B29C /* upload_icon@2x.png in Resources */,
 				F083BE8B1E7009ED00A9B29C /* ExpandedRoomTitleView.xib in Resources */,
 				F083BE691E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
@@ -3201,7 +3271,7 @@
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
 				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
-				"$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -3321,7 +3391,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F083BE221E7009ED00A9B29C /* RoomSettingsViewController.m in Sources */,
-				F083BE171E7009ED00A9B29C /* MediaPickerViewController.m in Sources */,
 				F083BE421E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BDF71E7009ED00A9B29C /* RoomBubbleCellData.m in Sources */,
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
@@ -3347,6 +3416,7 @@
 				F083BE0E1E7009ED00A9B29C /* ContactsTableViewController.m in Sources */,
 				F083BE861E7009ED00A9B29C /* RoomTableViewCell.m in Sources */,
 				F083BDF51E7009ED00A9B29C /* main.m in Sources */,
+				3C2B82612005CD19007CF26B /* UIImage+Crop.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
 				F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */,
 				F083BE331E7009ED00A9B29C /* DeviceView.m in Sources */,
@@ -3364,6 +3434,7 @@
 				F083BE1F1E7009ED00A9B29C /* RoomParticipantsViewController.m in Sources */,
 				F083BE741E7009ED00A9B29C /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				F083BE1C1E7009ED00A9B29C /* RoomMemberDetailsViewController.m in Sources */,
+				3C2B826B2005CDF8007CF26B /* VideoViewController.m in Sources */,
 				F083BE481E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				F06CDD691EF01E3900870B75 /* RoomEmptyBubbleCell.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
@@ -3377,6 +3448,7 @@
 				F083BE621E7009ED00A9B29C /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE881E7009ED00A9B29C /* RoomMemberTitleView.m in Sources */,
 				F083BE701E7009ED00A9B29C /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
+				3C2B826F20099027007CF26B /* CameraViewController.m in Sources */,
 				3205ED7D1E976C8A003D65FA /* DirectoryServerPickerViewController.m in Sources */,
 				F083BE7C1E7009ED00A9B29C /* DirectoryRecentTableViewCell.m in Sources */,
 				F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */,
@@ -3396,6 +3468,7 @@
 				F083BE2D1E7009ED00A9B29C /* ForgotPasswordInputsView.m in Sources */,
 				F083BE7E1E7009ED00A9B29C /* InviteRecentTableViewCell.m in Sources */,
 				F083BE3C1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				3C2B826A2005CDF8007CF26B /* ImageViewController.m in Sources */,
 				F083BE211E7009ED00A9B29C /* RoomSearchViewController.m in Sources */,
 				32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */,
 				F083BE3E1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
@@ -3409,11 +3482,13 @@
 				F083BE561E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F02C1A861E8EB04C0045A404 /* PeopleViewController.m in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
+				3C9CA3F8200A8293006031F1 /* CaptureViewController.m in Sources */,
 				F083BE151E7009ED00A9B29C /* MediaAlbumContentViewController.m in Sources */,
 				F083BE5C1E7009ED00A9B29C /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F0E05A061E9682E9004B83FB /* ContactsDataSource.m in Sources */,
 				F083BE401E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
+				3C2B82622005CD19007CF26B /* UIImage+Resize.m in Sources */,
 				F083BDFD1E7009ED00A9B29C /* PublicRoomsDirectoryDataSource.m in Sources */,
 				3233F73F1F331F05006ACA81 /* Widget.m in Sources */,
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
@@ -3446,6 +3521,7 @@
 				F083BE8C1E7009ED00A9B29C /* PreviewRoomTitleView.m in Sources */,
 				F083BE271E7009ED00A9B29C /* SettingsViewController.m in Sources */,
 				F083BE9A1E7009ED00A9B29C /* TableViewCellWithButton.m in Sources */,
+				3C2B82602005CD19007CF26B /* ViewUtils.m in Sources */,
 				F083BE8E1E7009ED00A9B29C /* RoomAvatarTitleView.m in Sources */,
 				F05BD7A11E7C0E4500C69941 /* MasterTabBarController.m in Sources */,
 				F0E059FD1E9545BB004B83FB /* UnifiedSearchRecentsDataSource.m in Sources */,
@@ -3706,12 +3782,12 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = RiotShareExtension/RiotShareExtension.entitlements;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+                DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RiotShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
+                PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -3729,12 +3805,12 @@
 				CODE_SIGN_ENTITLEMENTS = RiotShareExtension/RiotShareExtension.entitlements;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+                DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RiotShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
+                PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -3749,12 +3825,12 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+                DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SiriIntents/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
+                PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -3770,12 +3846,12 @@
 				CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+                DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SiriIntents/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
+                PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -3870,10 +3946,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A5030B7C3C0B6EB83A9257BD /* Pods-RiotPods-Riot.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+                DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3881,9 +3958,9 @@
 					"$(PROJECT_DIR)/Riot/libs/jitsi-meet",
 				);
 				INFOPLIST_FILE = Riot/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
+                PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3893,9 +3970,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F546BCBBB9BBEE67DB28878A /* Pods-RiotPods-Riot.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+                DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3903,9 +3981,9 @@
 					"$(PROJECT_DIR)/Riot/libs/jitsi-meet",
 				);
 				INFOPLIST_FILE = Riot/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
+                PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3915,7 +3993,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+                DEVELOPMENT_TEAM = 7J4U792NQT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -3936,7 +4014,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+                DEVELOPMENT_TEAM = 7J4U792NQT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

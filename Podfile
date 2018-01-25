@@ -59,7 +59,8 @@ abstract_target 'RiotPods' do
     pod 'OLMKit'
     #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
     pod 'Realm', '~> 3.0.1'
-
+    pod 'LLSimpleCamera', :inhibit_warnings => true
+    
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true

@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "MediaPickerViewController.h"
+#import "CameraViewController.h"
 #import "TableViewCellWithCheckBoxes.h"
 
 /**
@@ -45,7 +45,7 @@ typedef enum : NSUInteger {
     
 } RoomSettingsViewControllerField;
 
-@interface RoomSettingsViewController : MXKRoomSettingsViewController <UITextViewDelegate, UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, TableViewCellWithCheckBoxesDelegate>
+@interface RoomSettingsViewController : MXKRoomSettingsViewController <UITextViewDelegate, UITextFieldDelegate, CameraViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, TableViewCellWithCheckBoxesDelegate>
 
 /**
  Select a settings field in order to edit it ('RoomSettingsViewControllerFieldNone' by default).

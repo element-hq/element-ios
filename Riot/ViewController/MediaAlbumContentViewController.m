@@ -16,10 +16,13 @@
  */
 
 #import "MediaAlbumContentViewController.h"
-
 #import "AppDelegate.h"
-
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "VideoViewController.h"
+#import "MediaAlbumTableCell.h"
+#import "ImageViewController.h"
+#import "VideoViewController.h"
+#import "CameraViewController.h"
 
 @interface MediaAlbumContentViewController ()
 {
@@ -122,18 +125,21 @@
     return kRiotDesignStatusBarStyle;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    // Return the preferred value of the delegate if it is a view controller itself.
-    // This is required to handle correctly the full screen mode when a media is selected.
-    if ([self.delegate isKindOfClass:UIViewController.class])
-    {
-        return [(UIViewController*)self.delegate prefersStatusBarHidden];
-    }
-    
-    // Keep visible the status bar by default.
+-(BOOL)prefersStatusBarHidden{
     return NO;
 }
+//- (BOOL)prefersStatusBarHidden
+//{
+//    // Return the preferred value of the delegate if it is a view controller itself.
+//    // This is required to handle correctly the full screen mode when a media is selected.
+//    if ([self.delegate isKindOfClass:UIViewController.class])
+//    {
+//        return [(UIViewController*)self.delegate prefersStatusBarHidden];
+//    }
+//
+//    // Keep visible the status bar by default.
+//    return NO;
+//}
 
 - (void)destroy
 {
@@ -163,7 +169,8 @@
         [tracker set:kGAIScreenName value:@"MediaAlbumContent"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
-    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+
     self.navigationItem.title = _assetsCollection.localizedTitle;
     
     [self.assetsCollectionView reloadData];
@@ -172,6 +179,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -288,12 +298,21 @@
     if (indexPath.item < assets.count && self.delegate)
     {
         PHAsset *asset = assets[indexPath.item];
-
         // Are we in multiselection mode ?
         if (!selectedAssets)
         {
             // NO
-            [self.delegate mediaAlbumContentViewController:self didSelectAsset:asset];
+            //[self.delegate mediaAlbumContentViewController:self didSelectAsset:asset];
+            
+            if (asset.mediaType == PHAssetMediaTypeImage)
+            {
+                [self presentPhotofromAsset:asset];
+            }
+            else if (asset.mediaType == PHAssetMediaTypeVideo)
+            {
+                [self presentVideofromAsset:asset];
+            }
+        
         }
         else
         {
@@ -379,6 +398,113 @@
     {
         cell.bottomRightIcon.hidden = YES;
     }
+}
+
+
+-(void)presentPhotofromAsset:(PHAsset *)asset {
+    
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.synchronous = NO;
+    options.networkAccessAllowed = YES;
+    options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    
+    id topVC = self.navigationController.topViewController;
+    if ([topVC respondsToSelector:@selector(startActivityIndicator)])
+    {
+        [topVC startActivityIndicator];
+    }
+    
+    [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:self.view.frame.size contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+        
+        if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
+        {
+            [topVC stopActivityIndicator];
+        }
+        
+        // add new logic here
+        
+        if (result)
+        {
+            __weak typeof(self) weakSelf = self;
+            
+            ImageViewController *imageVC = [[ImageViewController alloc] initWithImage:result];
+            imageVC.delegate = self.camVC;
+            [weakSelf presentViewController:imageVC animated:NO completion:nil];
+            
+        }
+        else
+        {
+            NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
+            
+            // Alert user
+            NSError *error = info[@"PHImageErrorKey"];
+            if (error.userInfo[NSUnderlyingErrorKey])
+            {
+                error = error.userInfo[NSUnderlyingErrorKey];
+            }
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }
+        
+    }];
+    
+}
+
+-(void)presentVideofromAsset:(PHAsset *)asset {
+    PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+    options.networkAccessAllowed = YES;
+    
+    id topVC = self.navigationController.topViewController;
+    if ([topVC respondsToSelector:@selector(startActivityIndicator)])
+    {
+        [topVC startActivityIndicator];
+    }
+    
+    [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
+            {
+                [topVC stopActivityIndicator];
+            }
+            
+            if (asset)
+            {
+                if ([asset isKindOfClass:[AVURLAsset class]])
+                {
+                    NSLog(@"[MediaPickerVC] didSelectAsset: Got AVAsset for video");
+                    AVURLAsset *avURLAsset = (AVURLAsset*)asset;
+                    
+                    VideoViewController *vc = [[VideoViewController alloc] initWithVideoUrl:[avURLAsset URL]];
+                    vc.delegate = self.camVC;
+                    vc.isPhotoLibraryAsset = YES;
+                    [self.navigationController presentViewController:vc animated:YES completion:nil];
+
+                }
+                else
+                {
+                    NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
+                }
+            }
+            else
+            {
+                NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
+                
+                // Alert user
+                NSError *error = info[@"PHImageErrorKey"];
+                if (error.userInfo[NSUnderlyingErrorKey])
+                {
+                    error = error.userInfo[NSUnderlyingErrorKey];
+                }
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }
+            
+        });
+    }];
+}
+
+- (void)imageViewController:(ImageViewController *)imageViewController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset{
+    NSLog(@"Delegate works on MediaAlbumContentViewController");
 }
 
 @end

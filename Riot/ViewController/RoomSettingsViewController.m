@@ -137,8 +137,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // listen to more events than the mother class
     id extraEventsListener;
     
-    // picker
-    MediaPickerViewController* mediaPicker;
+    // camera
+    CameraViewController *cameraController;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id appDelegateDidTapStatusBarNotificationObserver;
@@ -3034,20 +3034,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
-#pragma mark - MediaPickerViewController Delegate
+#pragma mark - CameraViewController Delegate
 
-- (void)dismissMediaPicker
+- (void)cameraViewController:(CameraViewController *)cameraViewController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
-    if (mediaPicker)
-    {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        mediaPicker = nil;
-    }
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
-{
-    [self dismissMediaPicker];
+    [self dismissCameraController];
     
     if (imageData)
     {
@@ -3063,10 +3054,23 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
+- (void)cameraViewController:(CameraViewController *)cameraViewController didSelectVideo:(NSURL*)videoURL isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
-    // this method should not be called
-    [self dismissMediaPicker];
+    //this should not happen
+    [self dismissCameraController];
+}
+
+#pragma mark - camera controller handling
+
+- (void)dismissCameraController
+{
+    if (cameraController)
+    {
+        [cameraController.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [cameraController destroy];
+        cameraController = nil;
+        
+    }
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -3135,11 +3139,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)onRoomAvatarTap:(UITapGestureRecognizer *)recognizer
 {
-    mediaPicker = [MediaPickerViewController mediaPickerViewController];
-    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    mediaPicker.delegate = self;
+    cameraController = [CameraViewController cameraViewController];
+    cameraController.mediaTypes = @[(NSString *)kUTTypeImage];
+    cameraController.delegate = self;
     UINavigationController *navigationController = [UINavigationController new];
-    [navigationController pushViewController:mediaPicker animated:NO];
+    [navigationController pushViewController:cameraController animated:NO];
     
     [self presentViewController:navigationController animated:YES completion:nil];
 }

@@ -15,8 +15,10 @@
  */
 
 #import <MatrixKit/MatrixKit.h>
-
 #import <Photos/Photos.h>
+#import "ImageViewController.h"
+
+@class CameraViewController;
 
 @class MediaAlbumContentViewController;
 
@@ -27,7 +29,7 @@
 
 /**
  Tells the delegate that the user has selected an asset.
- 
+
  @param mediaAlbumContentViewController the `MediaAlbumContentViewController` instance.
  @param asset the selected asset.
  */
@@ -45,7 +47,7 @@
 
 /**
  */
-@interface MediaAlbumContentViewController : MXKViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface MediaAlbumContentViewController : MXKViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, ImageViewControllerDelegate>
 
 /**
  *  Returns the `UINib` object initialized for a `MediaAlbumContentViewController`.
@@ -86,6 +88,8 @@
  Default is NO.
  */
 @property (nonatomic) BOOL allowsMultipleSelection;
+
+@property (nonatomic, weak) CameraViewController *camVC;
 
 @end
 

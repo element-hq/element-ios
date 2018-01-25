@@ -23,15 +23,15 @@
 
 #import "UINavigationController+Riot.h"
 
-#import <MediaPlayer/MediaPlayer.h>
-
 #import <Photos/Photos.h>
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "CameraViewController.h"
+
 @interface RoomInputToolbarView()
 {
-    MediaPickerViewController *mediaPicker;
+    CameraViewController *cameraController;
 
     // The call type selection (voice or video)
     UIAlertController *callActionSheet;
@@ -232,11 +232,11 @@
             Class PHAsset_class = NSClassFromString(@"PHAsset");
             if (PHAsset_class)
             {
-                mediaPicker = [MediaPickerViewController mediaPickerViewController];
-                mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-                mediaPicker.delegate = self;
+                cameraController = [CameraViewController cameraViewController];
+                cameraController.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+                cameraController.delegate = self;
                 UINavigationController *navigationController = [UINavigationController new];
-                [navigationController pushViewController:mediaPicker animated:NO];
+                [navigationController pushViewController:cameraController animated:NO];
                 
                 [self.delegate roomInputToolbarView:self presentViewController:navigationController];
             }
@@ -319,7 +319,7 @@
 
 - (void)destroy
 {
-    [self dismissMediaPicker];
+    [self dismissCameraController];
 
     if (callActionSheet)
     {
@@ -330,39 +330,32 @@
     [super destroy];
 }
 
-#pragma mark - MediaPickerViewController Delegate
+#pragma mark - CameraViewController Delegate
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
+- (void)cameraViewController:(CameraViewController *)cameraViewController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
-    [self dismissMediaPicker];
+    [self dismissCameraController];
     
     [self sendSelectedImage:imageData withMimeType:mimetype andCompressionMode:MXKRoomInputToolbarCompressionModePrompt isPhotoLibraryAsset:isPhotoLibraryAsset];
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
+- (void)cameraViewController:(CameraViewController *)cameraViewController didSelectVideo:(NSURL*)videoURL isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
-    [self dismissMediaPicker];
-    
-    BOOL isPhotoLibraryAsset = ![videoURL.path hasPrefix:NSTemporaryDirectory()];
+    [self dismissCameraController];
+
     [self sendSelectedVideo:videoURL isPhotoLibraryAsset:isPhotoLibraryAsset];
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray<PHAsset*>*)assets
+#pragma mark - camera controller handling
+
+- (void)dismissCameraController
 {
-    [self dismissMediaPicker];
-
-    [self sendSelectedAssets:assets withCompressionMode:MXKRoomInputToolbarCompressionModePrompt];
-}
-
-#pragma mark - Media picker handling
-
-- (void)dismissMediaPicker
-{
-    if (mediaPicker)
+    if (cameraController)
     {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        [mediaPicker destroy];
-        mediaPicker = nil;
+        [cameraController.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [cameraController destroy];
+        cameraController = nil;
+
     }
 }
 

@@ -16,13 +16,13 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "MediaPickerViewController.h"
+#import "CameraViewController.h"
 
 /**
  `RoomInputToolbarView` instance is a view used to handle all kinds of available inputs
  for a room (message composer, attachments selection...).
  */
-@interface RoomInputToolbarView : MXKRoomInputToolbarViewWithHPGrowingText <MediaPickerViewControllerDelegate>
+@interface RoomInputToolbarView : MXKRoomInputToolbarViewWithHPGrowingText <CameraViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
 

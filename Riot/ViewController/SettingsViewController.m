@@ -140,8 +140,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     id notificationCenterDidUpdateObserver;
     id notificationCenterDidFailObserver;
     
-    // picker
-    MediaPickerViewController* mediaPicker;
+    // camera
+    CameraViewController *cameraController;
     
     // profile updates
     // avatar
@@ -3466,11 +3466,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)onProfileAvatarTap:(UITapGestureRecognizer *)recognizer
 {
-    mediaPicker = [MediaPickerViewController mediaPickerViewController];
-    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    mediaPicker.delegate = self;
+    cameraController = [CameraViewController cameraViewController];
+    cameraController.mediaTypes = @[(NSString *)kUTTypeImage];
+    cameraController.delegate = self;
     UINavigationController *navigationController = [UINavigationController new];
-    [navigationController pushViewController:mediaPicker animated:NO];
+    [navigationController pushViewController:cameraController animated:NO];
     
     [self presentViewController:navigationController animated:YES completion:nil];
 }
@@ -3631,30 +3631,34 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self presentViewController:themePicker animated:YES completion:nil];
 }
 
-#pragma mark - MediaPickerViewController Delegate
+#pragma mark - CameraViewController Delegate
 
-- (void)dismissMediaPicker
+- (void)cameraViewController:(CameraViewController *)cameraViewController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
-    if (mediaPicker)
-    {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        mediaPicker = nil;
-    }
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
-{
-    [self dismissMediaPicker];
+    [self dismissCameraController];
     
     newAvatarImage = [UIImage imageWithData:imageData];
     
     [self.tableView reloadData];
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
+- (void)cameraViewController:(CameraViewController *)cameraViewController didSelectVideo:(NSURL*)videoURL isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
-    // this method should not be called
-    [self dismissMediaPicker];
+    //this should not happen
+    [self dismissCameraController];
+}
+
+#pragma mark - camera controller handling
+
+- (void)dismissCameraController
+{
+    if (cameraController)
+    {
+        [cameraController.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [cameraController destroy];
+        cameraController = nil;
+        
+    }
 }
 
 #pragma mark - TextField listener
