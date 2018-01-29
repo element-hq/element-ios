@@ -80,7 +80,7 @@
 "auth_reset_password_error_unauthorized" = "Huts egin du e-mail helbidearen egiaztaketak, egin klik e-mailean zetorren estekan";
 "auth_reset_password_success_message" = "Zure pasahitza berrezarri da.\n\nSaiotik atera zaizu gailu guztietan eta ez dituzu jakinarazpenak jasoko. Jakinarazpenak berriro jasotzeko hasi berriro saioa gailu bakoitzean.";
 // Read Receipts
-"read_receipts_list" = "Irakurri jasotzaileen zerrenda";
+"read_receipts_list" = "Irakurragirien zerrenda";
 "yesterday" = "Atzo";
 "today" = "Gaur";
 "continue" = "Jarraitu";
@@ -145,9 +145,9 @@
 // Directory
 "directory_cell_title" = "Arakatu direktorioa";
 "room_details_favourite_tag" = "Gogokoa";
-"settings_copyright" = "Copyright";
+"settings_copyright" = "Copyright-a";
 "settings_profile_picture" = "Profil-argazkia";
-"settings_display_name" = "Pantaila izena";
+"settings_display_name" = "Pantaila-izena";
 "settings_email_address" = "E-mail";
 "settings_add_email_address" = "Gehitu e-mail helbidea";
 "settings_phone_number" = "Telefonoa";
@@ -156,7 +156,7 @@
 "room_participants_action_section_other" = "Bestea";
 "room_details_advanced_section" = "Aurreratua";
 "settings_contacts_phonebook_country" = "Telefono-liburuaren herrialdea";
-"settings_pin_rooms_with_missed_notif" = "Finkatu galdutako jakinarazpenak dituzten gelak";
+"settings_pin_rooms_with_missed_notif" = "Finkatu ikusi gabeko jakinarazpenak dituzten gelak";
 "settings_pin_rooms_with_unread" = "Finkatu irakurri gabeko mezuak dituzten gelak";
 "room_participants_action_section_devices" = "Gailuak";
 "room_creation_appearance_name" = "Izena";
@@ -173,11 +173,11 @@
 "auth_msisdn_validation_message" = "Aktibazio kodea duen SMS mezu bat bidali dizugu. Idatzi kode hori hemen azpian.";
 "room_details_photo" = "Gelaren argazkia";
 "room_details_room_name" = "Gelaren izena";
-"room_details_topic" = "Gaia";
+"room_details_topic" = "Mintzagaia";
 "room_details_access_section_directory_toggle" = "Zerrendatu gela hau gelen direktorioan";
 "room_details_history_section" = "Nork irakurri dezake historiala?";
 "room_details_access_section" = "Nor sartu daiteke gelara?";
-"room_details_history_section_anyone" = "Edonor";
+"room_details_history_section_anyone" = "Edonork";
 "room_details_history_section_members_only" = "Kideak besterik ez (aukera hau hautatutako unetik)";
 "room_details_history_section_members_only_since_invited" = "Kideak besterik ez (gonbidatu zitzaienetik)";
 "room_details_history_section_members_only_since_joined" = "Kideak besterik ez (elkartu zirenetik)";
@@ -350,7 +350,7 @@
 "settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Pribatutasun politika";
 "settings_privacy_policy_url" = "https://riot.im/privacy";
-"settings_third_party_notices" = "Hirugarrengoen jakinarazpenak";
+"settings_third_party_notices" = "Hirugarrengoen adierazpenak";
 "settings_send_crash_report" = "Bidali kraskatze eta erabilera datu anonimoak";
 "settings_crypto_device_name" = "Gailuaren izena: ";
 "settings_crypto_device_id" = "\nGailuaren IDa ";
@@ -372,7 +372,7 @@
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Zifratu egiaztatutako gailuetara besterik ez";
 "room_details_fail_to_update_avatar" = "Huts egin du gelaren argazkia eguneratzean";
 "room_details_fail_to_update_room_name" = "Huts egin du gelaren izena eguneratzean";
-"room_details_fail_to_update_topic" = "Huts egin du gaia aldatzean";
+"room_details_fail_to_update_topic" = "Huts egin du mintzagaia aldatzean";
 "room_details_fail_to_update_room_guest_access" = "Huts egin du bisitariak gelara sartzeko baimena aldatzean";
 "room_details_fail_to_update_room_join_rule" = "Huts egin du elkartzeko araua aldatzean";
 "room_details_fail_to_update_room_directory_visibility" = "Huts egin du gelen direktorioko ikusgaitasuna aldatzean";
@@ -442,12 +442,12 @@
 "settings_show_decrypted_content" = "Erakutsi deszifratutako edukia";
 "settings_enable_callkit" = "Dei integratuak";
 "settings_callkit_info" = "Jaso deiak zure blokeo-pantailan. Ikusi Riot deiak sistemaren deian historialean. Cloud gaituta badago, deien historiala Apple-ekin partekatuko da.";
-"settings_ui_theme" = "Gaia";
+"settings_ui_theme" = "Itxura";
 "settings_ui_theme_auto" = "Automatikoa";
 "settings_ui_theme_light" = "Argia";
 "settings_ui_theme_dark" = "Iluna";
 "settings_ui_theme_black" = "Beltza";
-"settings_ui_theme_picker_title" = "Hautatu gai bat";
+"settings_ui_theme_picker_title" = "Hautatu itxura bat";
 "settings_ui_theme_picker_message" = "\"Automatikoa\"-k gailuaren \"alderantzikatu koloreak\" ezarpena erabiltzen du";
 "settings_labs_matrix_apps" = "Matrix aplikazioak";
 "settings_enable_rageshake" = "Astindu amorruz akatsaren berri emateko";
