@@ -568,10 +568,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
     _isAppForeground = YES;
-    
-    // GA: Start a new session. The next hit from this tracker will be the first in a new session.
-    // @TODO
-//    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"start"];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -2104,9 +2100,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Disable identicon use
     sdkOptions.disableIdenticonUseForUserAvatar = YES;
     
-    // Enable SDK stats upload to GA
-    sdkOptions.enableGoogleAnalytics = YES;
-    
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
 
@@ -2702,16 +2695,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
         NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", durationMs);
-        
-        if ([MXSDKOptions sharedInstance].enableGoogleAnalytics)
-        {
-        // @TODO
-//            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-//            [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:kMXGoogleAnalyticsStartupCategory
-//                                                                 interval:@((int)durationMs)
-//                                                                     name:kMXGoogleAnalyticsStartupLaunchScreen
-//                                                                    label:nil] build]];
-        }
+
+        // TODO: Send durationMs to Piwik
+        // Such information should be the same on all platforms
         
         [launchAnimationContainerView removeFromSuperview];
         launchAnimationContainerView = nil;
