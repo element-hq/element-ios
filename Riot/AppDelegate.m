@@ -45,6 +45,8 @@
 
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 
+@import PiwikTracker;
+
 // Calls
 #import "CallViewController.h"
 
@@ -548,9 +550,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     _isAppForeground = NO;
     
-    // GA: End a session while the app is in background
-    // @TODO
-//    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"end"];
+    // Analytics: Force to send the pending actions
+    [[PiwikTracker shared] dispatch];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -645,8 +646,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     NSLog(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    
-    [self stopAnalytics];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
@@ -1003,75 +1002,65 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)startAnalytics
 {
+    NSDictionary *piwikConfig = [[NSUserDefaults standardUserDefaults] objectForKey:@"piwik"];
+    [PiwikTracker configureSharedInstanceWithSiteID:piwikConfig[@"siteId"]
+                                            baseURL:[NSURL URLWithString:piwikConfig[@"url"]]
+                                          userAgent:@"iOSPiwikTracker"];
+
     // Check whether the user has enabled the sending of crash reports.
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
     {
-          // @TODO
-//        // Retrieve trackerId from GoogleService-Info.plist.
-//        NSString *googleServiceInfoPath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist"];
-//        NSDictionary *googleServiceInfo = [NSDictionary dictionaryWithContentsOfFile:googleServiceInfoPath];
-//        NSString *gaTrackingID = [googleServiceInfo objectForKey:@"TRACKING_ID"];
-//        if (gaTrackingID)
-//        {
-//            // Catch and log crashes
-//            [MXLogger logCrashes:YES];
-//            [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
-//
-//            // Configure GAI options.
-//            GAI *gai = [GAI sharedInstance];
-//
-//            // Disable GA UncaughtException: their crash reports are quite limited (100 first chars of the stack trace)
-//            // Let's MXLogger manage them
-//            gai.trackUncaughtExceptions = NO;
-//
-//            // Initialize it with the app tracker ID
-//            [gai trackerWithTrackingId:gaTrackingID];
-//
-//            // Set Google Analytics dispatch interval to e.g. 20 seconds.
-//            gai.dispatchInterval = 20;
-//
-//#ifdef DEBUG
-//            // Disable GAI in debug as it pollutes stats and crashes in GA
-//            gai.dryRun = YES;
-//#endif
-//        }
-//        else
-//        {
-//            NSLog(@"[AppDelegate] Unable to find tracker id for Google Analytics");
-//        }
+        [PiwikTracker shared].isOptedOut = NO;
+
+        [[PiwikTracker shared] setCustomVariableWithIndex:1 name:@"App Platform" value:@"iOS Platform"];
+        [[PiwikTracker shared] setCustomVariableWithIndex:2 name:@"App Version" value:[self appVersion]];
+
+        // The language is either the one selected by the user within the app
+        // or, else, the one configured by the OS
+        NSString *language = [NSBundle mxk_language] ? [NSBundle mxk_language] : [[NSBundle mainBundle] preferredLocalizations][0];
+        [[PiwikTracker shared] setCustomVariableWithIndex:4 name:@"Chosen Language" value:language];
+
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        if (account)
+        {
+            [[PiwikTracker shared] setCustomVariableWithIndex:7 name:@"Homeserver URL" value:account.mxCredentials.homeServer];
+            [[PiwikTracker shared] setCustomVariableWithIndex:8 name:@"Identity Server URL" value:account.identityServerURL];
+        }
+
+        // TODO: We should also track device and os version
+        // But that needs to be decided for all platforms
+
+        // Catch and log crashes
+        [MXLogger logCrashes:YES];
+        [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
+
+#ifdef DEBUG
+        // Disable analytics in debug as it pollutes stats
+        [PiwikTracker shared].isOptedOut = YES;
+#endif
     }
     else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
     {
-        NSLog(@"[AppDelegate] The user decides to do not use Google Analytics");
+        NSLog(@"[AppDelegate] The user decided to not ");
+        [PiwikTracker shared].isOptedOut = YES;
+        [MXLogger logCrashes:NO];
     }
 }
 
 - (void)stopAnalytics
 {
-    // @TODO
-//    GAI *gai = [GAI sharedInstance];
-//
-//    // End a session. The next hit from this tracker will be the last in the current session.
-//    [[gai defaultTracker] set:kGAISessionControl value:@"end"];
-//
-//    // Flush pending GA messages
-//    [gai dispatch];
-//
-//    [gai removeTrackerByName:[gai defaultTracker].name];
-
+    [PiwikTracker shared].isOptedOut = YES;
     [MXLogger logCrashes:NO];
 }
 
 - (void)trackScreen:(NSString *)screenName
 {
-    // @TODO
-//    // Screen tracking (via Google Analytics)
-//    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-//    if (tracker)
-//    {
-//        [tracker set:kGAIScreenName value:screenName];
-//        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-//    }
+    // Use the same URL pattern as Android
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appVersion = [self appVersion];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"/ios/%@/%@/%@", appName, appVersion, screenName]];
+
+    [[PiwikTracker shared] trackWithView:@[screenName] url:url];
 }
 
 // Check if there is a crash log to send to server
@@ -1092,21 +1081,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                             usedEncoding:nil
                                                                    error:nil];
         
-        NSLog(@"[AppDelegate] Send crash log to Google Analytics:\n%@", description);
+        NSLog(@"[AppDelegate] Promt user to report crash:\n%@", description);
 
-        // @TODO
-        // Send it via Google Analytics
-        // The doc says the exception description must not exceeed 100 chars but it seems
-        // to accept much more.
-        // https://developers.google.com/analytics/devguides/collection/ios/v3/exceptions#overview
-//        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-//        [tracker send:[[GAIDictionaryBuilder
-//                        createExceptionWithDescription:description
-//                        withFatal:[NSNumber numberWithBool:YES]] build]];
-//        [[GAI sharedInstance] dispatch];
-
-        // Ask the user to send a crash report by email too
-        // The email will provide logs and thus more context to the crash
+        // Ask the user to send a crash report
         [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
     }
 }

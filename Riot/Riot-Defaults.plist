@@ -30,6 +30,13 @@
 	<string>https://scalar-staging.riot.im/scalar-web/</string>
 	<key>integrationsRestUrl</key>
 	<string>https://scalar-staging.riot.im/scalar/api</string>
+	<key>piwik</key>
+	<dict>
+		<key>url</key>
+		<string>https://piwik.riot.im/</string>
+		<key>siteId</key>
+		<string>1</string>
+	</dict>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>

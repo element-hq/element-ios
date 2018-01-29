@@ -60,6 +60,11 @@ abstract_target 'RiotPods' do
 
     pod 'GBDeviceInfo', '~> 4.4.0'
 
+    # Piwik for analytics
+    # While https://github.com/matomo-org/matomo-sdk-ios/pull/223 is not accepted, use the PR branch
+    pod 'PiwikTracker', :git => 'https://github.com/manuroe/matomo-sdk-ios.git', :branch => 'feature/CustomVariables'
+    #pod 'PiwikTracker', '~> 4.4.2'
+
     # OLMKit for crypto
     pod 'OLMKit'
     #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
@@ -93,6 +98,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
+      config.build_settings['SWIFT_VERSION'] = '4.0'     # Required for PiwikTracker. Should be removed
     end
   end
 end
