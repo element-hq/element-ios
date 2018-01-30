@@ -33,7 +33,7 @@
 	<key>piwik</key>
 	<dict>
 		<key>url</key>
-		<string>https://piwik.riot.im/</string>
+		<string>https://piwik.riot.im/piwik.php</string>
 		<key>siteId</key>
 		<string>1</string>
 	</dict>
