@@ -61,7 +61,7 @@ abstract_target 'RiotPods' do
     pod 'GBDeviceInfo', '~> 4.4.0'
 
     # Piwik for analytics
-    # While https://github.com/matomo-org/matomo-sdk-ios/pull/223 is not accepted, use the PR branch
+    # While https://github.com/matomo-org/matomo-sdk-ios/pull/223 is not released, use the PR branch
     pod 'PiwikTracker', :git => 'https://github.com/manuroe/matomo-sdk-ios.git', :branch => 'feature/CustomVariables'
     #pod 'PiwikTracker', '~> 4.4.2'
 

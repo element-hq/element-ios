@@ -1032,7 +1032,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #ifdef DEBUG
         // Disable analytics in debug as it pollutes stats
-        // [PiwikTracker shared].isOptedOut = YES;
+        [PiwikTracker shared].isOptedOut = YES;
 #endif
     }
     else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
