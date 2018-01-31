@@ -65,11 +65,6 @@ abstract_target 'RiotPods' do
     pod 'PiwikTracker', :git => 'https://github.com/manuroe/matomo-sdk-ios.git', :branch => 'feature/CustomVariables'
     #pod 'PiwikTracker', '~> 4.4.2'
 
-    # OLMKit for crypto
-    pod 'OLMKit'
-    #pod 'OLMKit', :path => '../olm/OLMKit.podspec'
-    pod 'Realm', '~> 3.0.1'
-
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true
