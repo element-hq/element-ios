@@ -91,15 +91,26 @@ abstract_target 'RiotPods' do
 end
 
 
-# Disable bitcode for each pod framework
-# Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
-# Plus the app does not enable it
 post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
-      config.build_settings['SWIFT_VERSION'] = '4.0'     # Required for PiwikTracker. Should be removed
+    installer.pods_project.targets.each do |target|
+
+        # Disable bitcode for each pod framework
+        # Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
+        # Plus the app does not enable it
+        target.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+            config.build_settings['SWIFT_VERSION'] = '4.0'     # Required for PiwikTracker. Should be removed
+        end
+
+        # Set the right identity to build pods frameworks to be able to make release builds
+        # See https://github.com/CocoaPods/CocoaPods/issues/3156#issuecomment-102022787
+        if target.to_s.include? 'Pods'
+            target.build_configurations.each do |config|
+                if !config.to_s.include? 'Debug'
+                    config.build_settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'] = 'iPhone Distribution'
+                end
+            end
+        end
     end
-  end
 end
 
