@@ -1051,12 +1051,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)trackScreen:(NSString *)screenName
 {
-    // Use the same URL pattern as Android
+    // Use the same pattern as Android
     NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
     NSString *appVersion = [self appVersion];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"/ios/%@/%@/%@", appName, appVersion, screenName]];
 
-    [[PiwikTracker shared] trackWithView:@[screenName] url:url];
+    [[PiwikTracker shared] trackWithView:@[@"ios", appName, appVersion, screenName]
+                                     url:nil];
 }
 
 // Check if there is a crash log to send to server
