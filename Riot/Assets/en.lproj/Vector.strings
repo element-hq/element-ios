@@ -310,6 +310,7 @@
 "settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 "settings_labs" = "LABS";
+"settings_flair" = "FLAIR";
 "settings_devices" = "DEVICES";
 "settings_cryptography" = "CRYPTOGRAPHY";
 
@@ -426,6 +427,10 @@
 "room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
 "room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
 "room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
+"room_details_flair_section"="Flair";
+"room_details_new_flair_placeholder" = "Add new community ID (e.g. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Invalid format";
+"room_details_flair_invalid_id_prompt_msg" = "%@ is not a valid identifier for a community";
 "room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
@@ -444,6 +449,7 @@
 "room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
 "room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
 "room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
+"room_details_fail_to_update_room_communities" = "Fail to update the related communities";
 "room_details_fail_to_update_room_direct" = "Fail to update the direct flag of this room";
 "room_details_fail_to_enable_encryption" = "Fail to enable encryption in this room";
 "room_details_save_changes_prompt" = "Do you want to save changes?";

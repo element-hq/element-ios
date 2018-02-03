@@ -137,36 +137,41 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-    UINavigationController *mainNavigationController = self.navigationController;
-    if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-    {
-        mainNavigationController = self.splitViewController.viewControllers.firstObject;
-    }
-    
-    if (mainNavigationController.navigationBar.tintColor == kRiotColorBlue)
-    {
-        // Restore default tintColor
-        mainNavigationController.navigationBar.tintColor = kRiotColorGreen;
-    }
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
-    // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-    UINavigationController *mainNavigationController = self.navigationController;
+    // Customize the navigation bar tint color
+    self.navigationController.navigationBar.tintColor = kRiotColorBlue;
+    
+    // Consider the case where the view controller is embedded inside a collapsed split view controller.
     if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
     {
-        mainNavigationController = self.splitViewController.viewControllers.firstObject;
+        UINavigationController *mainNavigationController = self.splitViewController.viewControllers.firstObject;
+        mainNavigationController.navigationBar.tintColor = kRiotColorBlue;
     }
-    mainNavigationController.navigationBar.tintColor = kRiotColorBlue;
 }
 
 - (void)destroy
 {
+    // Restore the default tintColor of the main navigation controller.
+    if (self.navigationController.navigationBar.tintColor == kRiotColorBlue)
+    {
+        self.navigationController.navigationBar.tintColor = kRiotColorGreen;
+    }
+    
+    // Check whether the current view controller is embedded inside a collapsed split view controller.
+    if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+    {
+        UINavigationController *mainNavigationController = self.splitViewController.viewControllers.firstObject;
+        if (mainNavigationController.navigationBar.tintColor == kRiotColorBlue)
+        {
+            mainNavigationController.navigationBar.tintColor = kRiotColorGreen;
+        }
+    }
+    
     [super destroy];
 }
 

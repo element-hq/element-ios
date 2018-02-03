@@ -219,6 +219,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                  {
                      if (weakSelf)
                      {
+                         typeof(self) self = weakSelf;
                          itemProvider.isLoaded = YES;
                          [self.pendingImages addObject:imageData];
                          
@@ -442,7 +443,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                              style:UIAlertActionStyleDefault
+                                                              style:UIAlertActionStyleCancel
                                                             handler:^(UIAlertAction * action) {
                                                                 
                                                                 if (weakSelf)

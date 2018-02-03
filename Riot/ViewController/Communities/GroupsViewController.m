@@ -220,7 +220,7 @@
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
     
-    if ([AppDelegate theDelegate].masterTabBarController.tabBar.tintColor == kRiotColorBlue)
+    if ([AppDelegate theDelegate].masterTabBarController.tabBar.tintColor == kRiotColorBlue && ![AppDelegate theDelegate].masterTabBarController.selectedGroup)
     {
         // Restore default tintColor
         [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;

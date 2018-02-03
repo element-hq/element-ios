@@ -33,7 +33,8 @@
     // Mask view while processing a request
     UIActivityIndicatorView *pendingMaskSpinnerView;
     
-    ContactsTableViewController *contactsPickerViewController;
+    // The current pushed view controller
+    UIViewController *pushedViewController;
     
     // Display a gradient view above the screen.
     CAGradientLayer* tableViewMaskLayer;
@@ -181,6 +182,9 @@
 
 - (void)destroy
 {
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
+    
     if (kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
@@ -215,11 +219,8 @@
     // Screen tracking
     [[AppDelegate theDelegate] trackScreen:@"GroupDetailsPeople"];
     
-    if (contactsPickerViewController)
-    {
-        [contactsPickerViewController destroy];
-        contactsPickerViewController = nil;
-    }
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
     
     if (_group)
     {
@@ -523,7 +524,7 @@
 - (void)onAddParticipantButtonPressed
 {
     // Push the contacts picker.
-    contactsPickerViewController = [ContactsTableViewController contactsTableViewController];
+    ContactsTableViewController *contactsPickerViewController = [ContactsTableViewController contactsTableViewController];
     
     // Set delegate to handle action on member (start chat, mention)
     contactsPickerViewController.contactsTableViewControllerDelegate = self;
@@ -670,6 +671,9 @@
 
 - (void)pushViewController:(UIViewController*)viewController
 {
+    // Keep ref on pushed view controller
+    pushedViewController = viewController;
+    
     // Check whether the view controller is displayed inside a segmented one.
     if (self.parentViewController.navigationController)
     {
@@ -684,6 +688,30 @@
         self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
         [self.navigationController pushViewController:viewController animated:YES];
+    }
+}
+
+- (void)releasePushedViewController
+{
+    if (pushedViewController)
+    {
+        if ([pushedViewController isKindOfClass:[UINavigationController class]])
+        {
+            UINavigationController *navigationController = (UINavigationController*)pushedViewController;
+            for (id subViewController in navigationController.viewControllers)
+            {
+                if ([subViewController respondsToSelector:@selector(destroy)])
+                {
+                    [subViewController destroy];
+                }
+            }
+        }
+        else if ([pushedViewController respondsToSelector:@selector(destroy)])
+        {
+            [(id)pushedViewController destroy];
+        }
+        
+        pushedViewController = nil;
     }
 }
 
@@ -898,6 +926,46 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Contact *contact;
+    NSArray *participants;
+    
+    if (indexPath.section == participantsSection)
+    {
+        if (currentSearchText.length)
+        {
+            participants = filteredActualParticipants;
+        }
+        else
+        {
+            participants = actualParticipants;
+        }
+    }
+    else if (indexPath.section == invitedSection)
+    {
+        if (currentSearchText.length)
+        {
+            participants = filteredInvitedParticipants;
+        }
+        else
+        {
+            participants = invitedParticipants;
+        }
+    }
+    
+    if (indexPath.row < participants.count)
+    {
+        contact = participants[indexPath.row];
+    }
+    
+    if (contact)
+    {
+        ContactDetailsViewController *contactDetailsViewController = [ContactDetailsViewController contactDetailsViewController];
+        contactDetailsViewController.enableVoipCall = NO;
+        contactDetailsViewController.contact = contact;
+        
+        [self pushViewController:contactDetailsViewController];
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
