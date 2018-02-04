@@ -558,6 +558,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     NSLog(@"[AppDelegate] applicationWillEnterForeground");
     
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
     // Flush all the pending push notifications.
     for (NSMutableArray *array in self.incomingPushEventIds.allValues)
     {
@@ -565,7 +567,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     [incomingPushPayloads removeAllObjects];
     
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    // Force each session to refresh here their publicised groups by user dictionary.
+    // When these publicised groups are retrieved for a user, they are cached and reused until the app is backgrounded and enters in the foreground again
+    for (MXSession *session in mxSessionArray)
+    {
+        [session markOutdatedPublicisedGroupsByUserData];
+    }
     
     _isAppForeground = YES;
 }
