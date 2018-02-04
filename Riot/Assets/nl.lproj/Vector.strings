@@ -462,3 +462,45 @@
 "search_in_progress" = "Aan het zoeken…";
 "room_event_action_cancel_send" = "Annuleer verzending";
 "room_event_failed_to_send" = "Verzenden is gefaald";
+"settings_calls_settings" = "OPROEPEN";
+"settings_show_decrypted_content" = "Geef ontsleutelde content weer";
+"settings_enable_callkit" = "Geïntegreerde oproepen";
+"settings_callkit_info" = "Ontvang inkomende oproepen op je toegangsscherm. Zie je Riot oproepen in de gesprekkengeschiedenis van het systeem. Als iCloud ingeschakeld is zal deze geschiedenis met Apple gedeeld worden.";
+"settings_ui_theme" = "Thema";
+"settings_ui_theme_auto" = "Automatisch";
+"settings_ui_theme_light" = "Licht";
+"settings_ui_theme_dark" = "Donker";
+"settings_ui_theme_black" = "Zwart";
+"settings_ui_theme_picker_title" = "Selecteer een thema";
+"settings_ui_theme_picker_message" = "\"Automatisch\" gebruikt de \"Kleurweergave omkeren\" instelling van je apparaat";
+"settings_labs_matrix_apps" = "Matrix Applicaties";
+"settings_enable_rageshake" = "Schud de telefoon om een fout te rapporteren";
+"room_details_direct_chat" = "Privégesprek";
+"room_details_fail_to_update_room_direct" = "Het is niet gelukt om de direct (privé) vlag in deze ruimte te updaten";
+"event_formatter_widget_added" = "%@ widget toegevoegd door %@";
+"event_formatter_widget_removed" = "%@ widget verwijderd door %@";
+"event_formatter_jitsi_widget_added" = "VoIP vergadergesprek toegevoegd door %@";
+"event_formatter_jitsi_widget_removed" = "VoIP vergadergesprek verwijderd door %@";
+"do_not_ask_again" = "Niet opnieuw vragen";
+"call_incoming_voice" = "Inkomende oproep...";
+"call_incoming_video" = "Inkomend videogesprek...";
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Je moet het machtsniveau waarmee je gebruikers kan uitnodigen hebben om dat te kunnen doen.";
+"widget_integration_unable_to_create" = "Niet in staat om een widget aan te maken.";
+"widget_integration_failed_to_send_request" = "Het is niet gelukt om een verzoek te versturen.";
+"widget_integration_room_not_recognised" = "Deze ruimte wordt niet herkend.";
+"widget_integration_positive_power_level" = "Het machtsniveau moet een positief geheel getal zijn.";
+"widget_integration_must_be_in_room" = "Je zit niet in deze ruimte.";
+"widget_integration_no_permission_in_room" = "Je hebt niet de permissie om dat in deze ruimte te doen.";
+"widget_integration_missing_room_id" = "Het room_id mist in het verzoek.";
+"widget_integration_missing_user_id" = "Het user_id mist in het verzoek.";
+"widget_integration_room_not_visible" = "Room %@ is niet zichtbaar.";
+// Share extension
+"share_extension_auth_prompt" = "Log in op de hoofdapplicatie om de content te delen";
+"share_extension_failed_to_encrypt" = "Niet gelukt om te versturen. Controleer in de hoofdapplicatie de versleutelingsinstellingen van deze ruimte";
+// Room key request dialog
+"e2e_room_key_request_title" = "Versleutelingssleutel verzoek";
+"e2e_room_key_request_message" = "Je niet geverifieerde apparaat '%@' vraagt naar versleutelingssleutels.";
+"e2e_room_key_request_start_verification" = "Start verificatie...";
+"e2e_room_key_request_share_without_verifying" = "Delen zonder te verifiëren";
+"e2e_room_key_request_ignore_request" = "Negeer verzoek";
