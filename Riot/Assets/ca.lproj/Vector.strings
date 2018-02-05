@@ -1,1 +1,42 @@
-
+// Titles
+"title_home" = "Inici";
+"title_favourites" = "Favorits";
+"title_people" = "Gent";
+"title_rooms" = "Sales";
+"warning" = "Avís";
+// Actions
+"view" = "Veure";
+"next" = "Següent";
+"back" = "Tornar";
+"continue" = "Continua";
+"create" = "Crear";
+"start" = "Començar";
+"leave" = "Sortir";
+"remove" = "Esborrar";
+"invite" = "Convida";
+"retry" = "Tornar a provar";
+"on" = "Activa";
+"off" = "Apaga";
+"cancel" = "Cancel·lar";
+"save" = "Desar";
+"join" = "Entrar";
+"decline" = "Declinar";
+"accept" = "Acceptar";
+"preview" = "Vista prèvia";
+"camera" = "Càmera";
+"voice" = "Veu";
+"video" = "Vídeo";
+"active_call" = "Trucada en curs";
+"active_call_details" = "Trucada en curs (%@)";
+"later" = "Més tard";
+"rename" = "Reanomenar";
+"collapse" = "Contraure";
+"send_to" = "Enviar a %@";
+"sending" = "Enviant";
+// Authentication
+"auth_login" = "Iniciar sessió";
+"auth_register" = "Registre";
+"auth_submit" = "Presentar";
+"auth_skip" = "Saltar";
+"auth_send_reset_email" = "Enviar Reset Email";
+"auth_return_to_login" = "Tornar a la pantalla d'inici de sessió";
