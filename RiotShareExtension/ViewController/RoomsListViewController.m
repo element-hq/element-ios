@@ -305,24 +305,30 @@
 
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager showImageCompressionPrompt:(UIAlertController *)compressionPrompt
 {
-    [compressionPrompt popoverPresentationController].sourceView = self.view;
-    [compressionPrompt popoverPresentationController].sourceRect = self.view.frame;
-    [self presentViewController:compressionPrompt animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [compressionPrompt popoverPresentationController].sourceView = self.view;
+        [compressionPrompt popoverPresentationController].sourceRect = self.view.frame;
+        [self presentViewController:compressionPrompt animated:YES completion:nil];
+    });
 }
 
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(MXRoom *)room
 {
-    if (!self.hudView)
-    {
-        self.parentViewController.view.userInteractionEnabled = NO;
-        self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
-        [self.hudView setProgress:0.0];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.hudView)
+        {
+            self.parentViewController.view.userInteractionEnabled = NO;
+            self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
+            [self.hudView setProgress:0.0];
+        }
+    });
 }
 
 - (void)shareExtensionManager:(ShareExtensionManager *)extensionManager mediaUploadProgress:(CGFloat)progress
 {
-    [self.hudView setProgress:progress];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.hudView setProgress:progress];
+    });
 }
 
 @end
