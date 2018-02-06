@@ -200,10 +200,11 @@
 {
     [super viewDidAppear:animated];
 
-    // Verify that the app does not show the authentification whereas the user
-    // has already logged in.
+    // Verify that the app does not show the authentification screean whereas
+    // the user has already logged in.
     // This bug rarely happens (https://github.com/vector-im/riot-ios/issues/1643)
-    // but it invites the user to log in again. They will then lose all their e2e messages.
+    // but it invites the user to log in again. They will then lose all their
+    // e2e messages.
     NSLog(@"[AuthenticationVC] viewDidAppear: Checking false logout");
     [[MXKAccountManager sharedManager] forceReloadAccounts];
     if ([MXKAccountManager sharedManager].activeAccounts)
