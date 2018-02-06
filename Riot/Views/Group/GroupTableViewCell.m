@@ -28,9 +28,12 @@
 {
     [super awakeFromNib];
     
-    // Initialize unread count badge
-    [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
-    _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    if (self.missedNotifAndUnreadBadgeBgView)
+    {
+        // Initialize unread count badge
+        [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
+        _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    }
 }
 
 - (void)customizeTableViewCellRendering
@@ -40,7 +43,11 @@
     self.groupName.textColor = kRiotPrimaryTextColor;
     self.groupDescription.textColor = kRiotSecondaryTextColor;
     self.memberCount.textColor = kRiotSecondaryTextColor;
-    self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
+    
+    if (self.missedNotifAndUnreadBadgeLabel)
+    {
+        self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
+    }
     
     self.groupAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
@@ -58,9 +65,12 @@
 {
     [super render:cellData];
     
-    // Hide by default missed notifications and unread widgets
-    self.missedNotifAndUnreadBadgeBgView.hidden = YES;
-    self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    if (self.missedNotifAndUnreadBadgeBgView)
+    {
+        // Hide by default missed notifications and unread widgets
+        self.missedNotifAndUnreadBadgeBgView.hidden = YES;
+        self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    }
     
     if (groupCellData)
     {

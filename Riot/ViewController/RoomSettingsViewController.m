@@ -2028,6 +2028,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else if (section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX)
     {
+        if (relatedGroupsNewGroupIndex == -1)
+        {
+            // Hide this section
+            return nil;
+        }
         return NSLocalizedStringFromTable(@"room_details_flair_section", @"Vector", nil);
     }
     else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
@@ -2036,11 +2041,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             return NSLocalizedStringFromTable(@"room_details_banned_users_section", @"Vector", nil);
         }
-        else
-        {
-            // Hide this section
-            return nil;
-        }
+        // Hide this section
+        return nil;
     }
     else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
@@ -2068,6 +2070,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Hide this section
         return SECTION_TITLE_PADDING_WHEN_HIDDEN;
     }
+    else if (section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX && relatedGroupsNewGroupIndex == -1)
+    {
+        // Hide this section
+        return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+    }
     else
     {
         return [super tableView:tableView heightForHeaderInSection:section];
@@ -2077,6 +2084,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && bannedMembers.count == 0)
+    {
+        // Hide this section
+        return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+    }
+    else if (section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX && relatedGroupsNewGroupIndex == -1)
     {
         // Hide this section
         return SECTION_TITLE_PADDING_WHEN_HIDDEN;

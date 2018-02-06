@@ -132,6 +132,8 @@
 		F075BED71EBB169C00A7B68A /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F075BED51EBB169C00A7B68A /* RoomCollectionViewCell.xib */; };
 		F075BEDB1EBB26F100A7B68A /* TableViewCellWithCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F075BED91EBB26F100A7B68A /* TableViewCellWithCollectionView.m */; };
 		F075BEDC1EBB26F100A7B68A /* TableViewCellWithCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F075BEDA1EBB26F100A7B68A /* TableViewCellWithCollectionView.xib */; };
+		F07CB3992029B20100C29C20 /* GroupTableViewCellWithSwitch.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07CB3972029B20000C29C20 /* GroupTableViewCellWithSwitch.xib */; };
+		F07CB39A2029B20100C29C20 /* GroupTableViewCellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = F07CB3982029B20100C29C20 /* GroupTableViewCellWithSwitch.m */; };
 		F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0B1E7009EC00A9B29C /* RageShakeManager.m */; };
 		F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		F083BD221E7009ED00A9B29C /* add_participant.png in Resources */ = {isa = PBXBuildFile; fileRef = F083BB161E7009EC00A9B29C /* add_participant.png */; };
@@ -814,6 +816,9 @@
 		F075BED81EBB26F100A7B68A /* TableViewCellWithCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithCollectionView.h; sourceTree = "<group>"; };
 		F075BED91EBB26F100A7B68A /* TableViewCellWithCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellWithCollectionView.m; sourceTree = "<group>"; };
 		F075BEDA1EBB26F100A7B68A /* TableViewCellWithCollectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithCollectionView.xib; sourceTree = "<group>"; };
+		F07CB3962029B20000C29C20 /* GroupTableViewCellWithSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupTableViewCellWithSwitch.h; sourceTree = "<group>"; };
+		F07CB3972029B20000C29C20 /* GroupTableViewCellWithSwitch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupTableViewCellWithSwitch.xib; sourceTree = "<group>"; };
+		F07CB3982029B20100C29C20 /* GroupTableViewCellWithSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTableViewCellWithSwitch.m; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F083BB041E7005FD00A9B29C /* RiotTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotTests.m; sourceTree = "<group>"; };
 		F083BB0A1E7009EC00A9B29C /* RageShakeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakeManager.h; sourceTree = "<group>"; };
@@ -2611,6 +2616,9 @@
 		F0B8D0CB1FDFEC6100F34524 /* Group */ = {
 			isa = PBXGroup;
 			children = (
+				F07CB3962029B20000C29C20 /* GroupTableViewCellWithSwitch.h */,
+				F07CB3982029B20100C29C20 /* GroupTableViewCellWithSwitch.m */,
+				F07CB3972029B20000C29C20 /* GroupTableViewCellWithSwitch.xib */,
 				F0B8D0D01FDFECB200F34524 /* GroupInviteTableViewCell.h */,
 				F0B8D0CC1FDFECB100F34524 /* GroupInviteTableViewCell.m */,
 				F0B8D0D11FDFECB200F34524 /* GroupInviteTableViewCell.xib */,
@@ -3190,6 +3198,7 @@
 				32935CB41F628BCE006888C8 /* IntegrationManager.js in Resources */,
 				F083BD851E7009ED00A9B29C /* favouriteOff@3x.png in Resources */,
 				F083BD541E7009ED00A9B29C /* camera_switch@2x.png in Resources */,
+				F07CB3992029B20100C29C20 /* GroupTableViewCellWithSwitch.xib in Resources */,
 				F083BD6A1E7009ED00A9B29C /* directChatOn@3x.png in Resources */,
 				F083BE3B1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 				F083BD341E7009ED00A9B29C /* call_audio_mute_off_icon@2x.png in Resources */,
@@ -3566,6 +3575,7 @@
 				3205ED7D1E976C8A003D65FA /* DirectoryServerPickerViewController.m in Sources */,
 				F083BE7C1E7009ED00A9B29C /* DirectoryRecentTableViewCell.m in Sources */,
 				F0E05A031E963103004B83FB /* RoomsViewController.m in Sources */,
+				F07CB39A2029B20100C29C20 /* GroupTableViewCellWithSwitch.m in Sources */,
 				83711A7C1F6F8E7D008F0D4D /* KeyboardGrowingTextView.m in Sources */,
 				F083BE801E7009ED00A9B29C /* PublicRoomTableViewCell.m in Sources */,
 				322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */,
