@@ -25,9 +25,9 @@
 
 @implementation WidgetViewController
 
-- (instancetype)initForWidget:(Widget*)theWidget
+- (instancetype)initWithUrl:(NSString*)widgetUrl forWidget:(Widget*)theWidget
 {
-    self = [super initWithURL:theWidget.url];
+    self = [super initWithURL:widgetUrl];
     if (self)
     {
         widget = theWidget;

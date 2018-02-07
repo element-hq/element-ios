@@ -171,14 +171,4 @@ WidgetManagerErrorCode;
                                         success:(void (^)(NSString *scalarToken))success
                                         failure:(void (^)(NSError *error))failure;
 
-/**
- The current scalar token for the given Matrix session.
-
- It may be nil if `getScalarTokenForMXSession` was never called before.
- 
- @param mxSession the session to check.
- @return the current scalar token .
- */
-- (NSString *)scalarTokenForMXSession:(MXSession*)mxSession;
-
 @end

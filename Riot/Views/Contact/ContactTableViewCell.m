@@ -298,6 +298,19 @@
             subLabelText = phoneNumber.textNumber;
         }
     }
+    
+    if (subLabelText.length)
+    {
+        self.contactInformationLabel.hidden = NO;
+    }
+    else
+    {
+        // Hide and fill the label with a fake string to harmonize the height of all the cells.
+        // This is a drawback of the self-sizing cell.
+        self.contactInformationLabel.hidden = YES;
+        subLabelText = @"No method";
+    }
+    
     self.contactInformationLabel.text = subLabelText;
 }
 
@@ -326,6 +339,18 @@
     else if (contact.isThirdPartyInvite)
     {
         presenceText =  NSLocalizedStringFromTable(@"room_participants_offline", @"Vector", nil);
+    }
+    
+    if (presenceText.length)
+    {
+        self.contactInformationLabel.hidden = NO;
+    }
+    else
+    {
+        // Hide and fill the label with a fake string to harmonize the height of all the cells.
+        // This is a drawback of the self-sizing cell.
+        self.contactInformationLabel.hidden = YES;
+        presenceText = @"No presence";
     }
 
     self.contactInformationLabel.text = presenceText;

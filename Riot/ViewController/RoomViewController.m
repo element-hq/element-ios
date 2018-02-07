@@ -251,6 +251,10 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
+    _showExpandedHeader = NO;
+    _showMissedDiscussionsBadge = YES;
+    
+    
     // Listen to the event sent state changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
 }
@@ -369,45 +373,8 @@
         barButtonItem.action = @selector(onButtonPressed:);
     }
 
-    // Prepare missed dicussion badge
-    missedDiscussionsBarButtonCustomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
-    missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
-    missedDiscussionsBarButtonCustomView.clipsToBounds = NO;
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBarButtonCustomView
-                                                                         attribute:NSLayoutAttributeHeight
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:nil
-                                                                         attribute:NSLayoutAttributeNotAnAttribute
-                                                                        multiplier:1.0
-                                                                          constant:21];
-    
-    missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
-    [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
-    
-    [missedDiscussionsBarButtonCustomView addSubview:missedDiscussionsBadgeLabelBgView];
-    missedDiscussionsBarButtonCustomView.accessibilityIdentifier = @"RoomVCMissedDiscussionsBarButton";
-    
-    missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
-    missedDiscussionsBadgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [missedDiscussionsBadgeLabelBgView addSubview:missedDiscussionsBadgeLabel];
-    
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:missedDiscussionsBadgeLabelBgView
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                        multiplier:1.0
-                                                                          constant:0];
-    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
-                                                                         attribute:NSLayoutAttributeCenterY
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:missedDiscussionsBadgeLabelBgView
-                                                                         attribute:NSLayoutAttributeCenterY
-                                                                        multiplier:1.0
-                                                                          constant:0];
-    
-    [NSLayoutConstraint activateConstraints:@[heightConstraint, centerXConstraint, centerYConstraint]];
+    // Prepare missed dicussion badge (if any)
+    self.showMissedDiscussionsBadge = _showMissedDiscussionsBadge;
     
     // Set up the room title view according to the data source (if any)
     [self refreshRoomTitle];
@@ -469,14 +436,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"ChatRoom"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"ChatRoom"];
     
     // Refresh the room title view
     [self refreshRoomTitle];
@@ -1137,6 +1099,60 @@
 {
     _showExpandedHeader = showExpandedHeader;
     [self showExpandedHeader:showExpandedHeader];
+}
+
+- (void)setShowMissedDiscussionsBadge:(BOOL)showMissedDiscussionsBadge
+{
+    _showMissedDiscussionsBadge = showMissedDiscussionsBadge;
+    
+    if (_showMissedDiscussionsBadge && !missedDiscussionsBarButtonCustomView)
+    {
+        // Prepare missed dicussion badge
+        missedDiscussionsBarButtonCustomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
+        missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
+        missedDiscussionsBarButtonCustomView.clipsToBounds = NO;
+        
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBarButtonCustomView
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:21];
+        
+        missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
+        [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
+        
+        [missedDiscussionsBarButtonCustomView addSubview:missedDiscussionsBadgeLabelBgView];
+        missedDiscussionsBarButtonCustomView.accessibilityIdentifier = @"RoomVCMissedDiscussionsBarButton";
+        
+        missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
+        missedDiscussionsBadgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [missedDiscussionsBadgeLabelBgView addSubview:missedDiscussionsBadgeLabel];
+        
+        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:missedDiscussionsBadgeLabelBgView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1.0
+                                                                              constant:0];
+        NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:missedDiscussionsBadgeLabelBgView
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                            multiplier:1.0
+                                                                              constant:0];
+        
+        [NSLayoutConstraint activateConstraints:@[heightConstraint, centerXConstraint, centerYConstraint]];
+    }
+    else
+    {
+        missedDiscussionsBarButtonCustomView = nil;
+        missedDiscussionsBadgeLabelBgView = nil;
+        missedDiscussionsBadgeLabel = nil;
+    }
 }
 
 #pragma mark - Internals
@@ -2395,7 +2411,7 @@
                                                                        
                                                                    }]];
                                                                    
-                                                                   [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
                                                                        
                                                                        if (weakSelf)
                                                                        {
@@ -2450,7 +2466,7 @@
     }
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
+                                                     style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
@@ -2536,6 +2552,15 @@
             
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        }
+        // Preview the clicked group
+        else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
+        {
+            shouldDoAction = NO;
+            
+            // Open the group or preview it
+            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
     }
@@ -3893,7 +3918,7 @@
                                                                }]];
                 
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil)
-                                                                 style:UIAlertActionStyleDefault
+                                                                 style:UIAlertActionStyleCancel
                                                                handler:^(UIAlertAction * action) {
                                                                    
                                                                    if (weakSelf)
@@ -4257,7 +4282,7 @@
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleDefault
+                                                     style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
