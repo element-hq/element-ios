@@ -14,20 +14,13 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "GroupTableViewCell.h"
 
 /**
- `GroupTableViewCell` instances display a group in the context of the groups list.
+ `GroupTableViewCellWithSwitch` instances display a group with a toggle button.
  */
-@interface GroupTableViewCell : MXKGroupTableViewCell
+@interface GroupTableViewCellWithSwitch : GroupTableViewCell
 
-@property (weak, nonatomic) IBOutlet MXKImageView *groupAvatar;
-
-/**
- The optional unread badge
- */
-@property (weak, nonatomic) IBOutlet UILabel *missedNotifAndUnreadBadgeLabel;
-@property (weak, nonatomic) IBOutlet UIView  *missedNotifAndUnreadBadgeBgView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *missedNotifAndUnreadBadgeBgViewWidthConstraint;
+@property (strong, nonatomic) IBOutlet UISwitch *toggleButton;
 
 @end

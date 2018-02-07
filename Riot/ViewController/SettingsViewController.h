@@ -20,7 +20,7 @@
 
 #import "CameraViewController.h"
 
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, CameraViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate>
+@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, CameraViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
 
 @end
 

@@ -228,8 +228,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                              UIAlertController *compressionPrompt = [self compressionPromptForImage:self.pendingImages.firstObject shareBlock:^{
                                  [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
                              }];
-                             
-                             [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
+
+                             if (compressionPrompt)
+                             {
+                                 [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
+                             }
                          }
                      }
                  }];
@@ -630,12 +633,28 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
         {
-            // Use jpeg format by default.
             mimeType = @"image/jpeg";
             if (convertedImage != image)
             {
                 imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
             }
+        }
+        else
+        {
+            // Other image types like GIF 
+            NSString *imageFileName = itemProvider.registeredTypeIdentifiers[0];
+            mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)imageFileName, kUTTagClassMIMEType);
+        }
+
+        // Sanity check
+        if (!mimeType)
+        {
+            NSLog(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
+            if (failureBlock)
+            {
+                failureBlock(nil);
+            }
+            return;
         }
         
         UIImage *thumbnail = nil;

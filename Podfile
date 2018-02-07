@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, "8.0"
+platform :ios, "9.0"
 
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
@@ -58,7 +58,7 @@ end
 
 abstract_target 'RiotPods' do
 
-    pod 'GBDeviceInfo', '~> 4.4.0'
+    pod 'GBDeviceInfo', '~> 5.1.0'
 
     # OLMKit for crypto
     pod 'OLMKit'

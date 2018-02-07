@@ -501,6 +501,7 @@
 // Share extension
 "share_extension_auth_prompt" = "Connectez-vous dans l'application pour partager du contenu";
 "share_extension_failed_to_encrypt" = "Échec d'envoi. Vérifiez les paramètres de chiffrement de ce salon dans l'application";
+"settings_ui_theme_black" = "Noir";
 // Room key request dialog
 "e2e_room_key_request_title" = "Demande de clés de chiffrement";
 "e2e_room_key_request_message_new_device" = "Vous avez ajouté un nouvel appareil '%@', qui demande les clés de chiffrement.";

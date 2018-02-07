@@ -306,7 +306,7 @@
 "room_participants_action_set_default_power_level" = "Zurück auf normale Berechtigung";
 "room_participants_action_start_voice_call" = "Starte Sprach-Anruf";
 "room_ongoing_conference_call" = "Laufender Konferenz-Anruf. Trete bei als %@ oder %@.";
-"room_event_action_redact" = "Schwärzen";
+"room_event_action_redact" = "Entfernen";
 "room_warning_about_encryption" = "Ende-zu-Ende Verschlüsselung ist in Beta und ist evtl. nicht zuverlässig.\n\nMan sollte noch nicht darauf vertrauen, dass die Daten sicher sind.\n\nGeräte werden den Verlauf vor dem Beitritt des Raumes nicht entschlüsseln können.\n\nVerschlüsselte Nachrichten sind nicht lesbar auf Clients, die Verschlüsselung noch nicht implementiert haben.";
 "unknown_devices_alert" = "Dieser Raum enthält unbekannte Geräte, die nicht verifiziert wurden.\nDas bedeutet, es gibt keine Garantie, dass sie dem User gehören, der angegeben ist.\nWir empfehlen eine Überprüfung für jedes Gerät, bevor du weitermachst, aber du kannst die Nachricht erneut senden ohne Verifikation.";
 "room_preview_unlinked_email_warning" = "Diese Einladung wurde an %@ gesendet, die Adresse ist nicht mit diesem Konto verbunden. Du kannst dich mit einem anderen Konto anmelden, oder diese E-Mail-Adresse deinem Konto hinzufügen.";
@@ -471,3 +471,10 @@
 "settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Riot-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
 "settings_enable_rageshake" = "Schüttle stark um einen Fehler zu melden";
 "do_not_ask_again" = "Nicht erneut fragen";
+"settings_ui_theme_black" = "Schwarz";
+// Room key request dialog
+"e2e_room_key_request_title" = "Verschlüsselungs-Schlüssel-Anfrage";
+"e2e_room_key_request_message" = "Dein nicht verifiziertes Gerät '%@' fragt Verschlüsselungs-Schlüssel an.";
+"e2e_room_key_request_start_verification" = "Starte Verifikation...";
+"e2e_room_key_request_share_without_verifying" = "Teile ohne zu verifizieren";
+"e2e_room_key_request_ignore_request" = "Ignoriere Anfrage";
