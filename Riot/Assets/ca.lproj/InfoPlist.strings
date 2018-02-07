@@ -1,0 +1,5 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "La càmera s'utilitza per fer fotos i vídeos, fer vídeo conferència.";
+"NSPhotoLibraryUsageDescription" = "La fototeca s'utilitza per enviar fotos i vídeos.";
+"NSMicrophoneUsageDescription" = "El micròfon s'utilitza per fer vídeos, fer trucades.";
+"NSContactsUsageDescription" = "L'agenda de contactes s'utilitza per cercar usuaris per correu electrònic o número de telèfon a Riot.";
