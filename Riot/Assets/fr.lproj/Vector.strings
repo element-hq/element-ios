@@ -3,12 +3,16 @@
 "title_favourites" = "Favoris";
 "title_people" = "Personnes";
 "title_rooms" = "Salons";
+"title_groups" = "Communautés";
 "warning" = "Attention";
 // Actions
 "view" = "Voir";
 "next" = "Suivant";
 "back" = "Retour";
 "continue" = "Continuer";
+"start" = "Commencer";
+"on" = "Activé";
+"off" = "Désactivé";
 "create" = "Créer";
 "leave" = "Quitter";
 "remove" = "Supprimer";
@@ -65,6 +69,7 @@
 "auth_msisdn_validation_title" = "Vérification en attente";
 "auth_msisdn_validation_message" = "Nous vous avons envoyé un SMS avec un code d'activation. Merci de le recopier ci-dessous.";
 "auth_msisdn_validation_error" = "Impossible de vérifier votre numéro de téléphone.";
+"auth_recaptcha_message" = "Ce serveur d'accueil voudrait s'assurer que vous n'êtes pas un robot";
 "auth_reset_password_message" = "Pour réinitialiser votre mot de passe, saisissez l'adresse e-mail liée à votre compte :";
 "auth_reset_password_missing_email" = "Vous devez saisir l'adresse e-mail liée à votre compte.";
 "auth_reset_password_missing_password" = "Vous devez spécifier un nouveau mot de passe.";
@@ -80,6 +85,7 @@
 "room_creation_appearance" = "Apparence";
 "room_creation_appearance_name" = "Nom";
 "room_creation_appearance_picture" = "Avatar du salon (facultatif)";
+"room_creation_privacy" = "Visibilité";
 "room_creation_private_room" = "Cette discussion est privée";
 "room_creation_public_room" = "Cette discussion est publique";
 "room_creation_make_public" = "Rendre publique";
@@ -109,6 +115,9 @@
 "people_no_conversation" = "Aucune discussion";
 // Rooms tab
 "room_directory_no_public_room" = "Aucun salon public disponible";
+// Groups tab
+"group_invite_section" = "INVITATIONS";
+"group_section" = "COMMUNAUTÉS";
 // Search
 "search_rooms" = "Salons";
 "search_messages" = "Messages";
@@ -148,11 +157,6 @@
 "room_participants_filter_room_members" = "Filtrer les membres du salon";
 "room_participants_invite_another_user" = "Rechercher/inviter par identifiant, nom ou e-mail";
 "room_participants_invite_malformed_id_title" = "Erreur lors de l'invitation";
-"start" = "Commencer";
-"on" = "Activé";
-"off" = "Désactivé";
-"auth_recaptcha_message" = "Ce serveur d'accueil voudrait s'assurer que vous n'êtes pas un robot";
-"room_creation_privacy" = "Visibilité";
 "room_participants_remove_third_party_invite_msg" = "Supprimer une invitation de tiers n'est pas prise en charge tant que l'API n'existe pas";
 "room_participants_invite_malformed_id" = "Identifiant au mauvais format. Une adresse e-mail ou un identifiant Matrix au format \"@utilisateur:domaine\" est attendu";
 "room_participants_invited_section" = "INVITÉS";
@@ -357,12 +361,38 @@
 "room_details_fail_to_update_room_canonical_alias" = "Échec de la mise à jour de l'adresse principale";
 "room_details_fail_to_update_room_direct" = "Échec de mise à jour de l'étiquette de discussion directe";
 "room_details_fail_to_enable_encryption" = "Échec de l'activation du chiffrement de ce salon";
-"room_details_save_changes_prompt" = "Voulez-vous enregistrer les modifications ?";
+"room_details_save_changes_prompt" = "Voulez-vous enregistrer les modifications?";
 "room_details_set_main_address" = "Définir comme adresse principale";
 "room_details_unset_main_address" = "Désactiver comme adresse principale";
 "room_details_copy_room_id" = "Copier l'identifiant du salon";
 "room_details_copy_room_address" = "Copier l'adresse du salon";
 "room_details_copy_room_url" = "Copier le lien du salon";
+// Group Details
+"group_details_title" = "Détails de la communauté";
+"group_details_home" = "Accueil";
+"group_details_people" = "Membres";
+"group_details_rooms" = "Salons";
+// Group Home
+"group_home_one_member_format" = "1 membre";
+"group_home_multi_members_format" = "%tu membres";
+"group_home_one_room_format" = "1 salon";
+"group_home_multi_rooms_format" = "%tu salons";
+"group_invitation_format" = "%@ vous a invité à rejoindre cette communauté";
+// Group participants
+"group_participants_add_participant" = "Ajouter un membre";
+"group_participants_leave_prompt_title" = "Quitter le groupe";
+"group_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter le groupe?";
+"group_participants_remove_prompt_title" = "Confirmation";
+"group_participants_remove_prompt_msg" = "Voulez-vous vraiment exclure %@ de ce groupe?";
+"group_participants_invite_prompt_title" = "Confirmation";
+"group_participants_invite_prompt_msg" = "Voulez-vous vraiment inviter %@ dans ce groupe?";
+"group_participants_filter_members" = "Filtrer les membres de la communauté";
+"group_participants_invite_another_user" = "Rechercher/inviter par identifiant ou nom";
+"group_participants_invite_malformed_id_title" = "Erreur lors de l'invitation";
+"group_participants_invite_malformed_id" = "Identifiant au mauvais format. Un identifiant Matrix au format \"@utilisateur:domaine\" est attendu";
+"group_participants_invited_section" = "INVITÉS";
+// Group rooms
+"group_rooms_filter_rooms" = "Filtrer les salons de la communauté";
 // Read Receipts
 "read_receipts_list" = "Liste des accusés de lecture";
 "receipt_status_read" = "Lu : ";
@@ -471,3 +501,10 @@
 // Share extension
 "share_extension_auth_prompt" = "Connectez-vous dans l'application pour partager du contenu";
 "share_extension_failed_to_encrypt" = "Échec d'envoi. Vérifiez les paramètres de chiffrement de ce salon dans l'application";
+// Room key request dialog
+"e2e_room_key_request_title" = "Demande de clés de chiffrement";
+"e2e_room_key_request_message_new_device" = "Vous avez ajouté un nouvel appareil '%@', qui demande les clés de chiffrement.";
+"e2e_room_key_request_message" = "Votre appareil non vérifié '%@' demande les clés de chiffrement.";
+"e2e_room_key_request_start_verification" = "Commencer la vérification...";
+"e2e_room_key_request_share_without_verifying" = "Partager sans vérifier";
+"e2e_room_key_request_ignore_request" = "Ignorer la demande";

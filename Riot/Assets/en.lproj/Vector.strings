@@ -20,6 +20,7 @@
 "title_favourites" = "Favourites";
 "title_people" = "People";
 "title_rooms" = "Rooms";
+"title_groups" = "Communities";
 "warning" = "Warning";
 
 // Actions
@@ -146,6 +147,10 @@
 
 // Rooms tab
 "room_directory_no_public_room" = "No public rooms available";
+
+// Groups tab
+"group_invite_section" = "INVITES";
+"group_section" = "COMMUNITIES";
 
 // Search
 "search_rooms" = "Rooms";
@@ -305,6 +310,7 @@
 "settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 "settings_labs" = "LABS";
+"settings_flair" = "FLAIR";
 "settings_devices" = "DEVICES";
 "settings_cryptography" = "CRYPTOGRAPHY";
 
@@ -421,6 +427,10 @@
 "room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
 "room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
 "room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
+"room_details_flair_section"="Flair";
+"room_details_new_flair_placeholder" = "Add new community ID (e.g. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Invalid format";
+"room_details_flair_invalid_id_prompt_msg" = "%@ is not a valid identifier for a community";
 "room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
@@ -439,6 +449,7 @@
 "room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
 "room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
 "room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
+"room_details_fail_to_update_room_communities" = "Fail to update the related communities";
 "room_details_fail_to_update_room_direct" = "Fail to update the direct flag of this room";
 "room_details_fail_to_enable_encryption" = "Fail to enable encryption in this room";
 "room_details_save_changes_prompt" = "Do you want to save changes?";
@@ -447,6 +458,36 @@
 "room_details_copy_room_id" = "Copy Room ID";
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
+
+// Group Details
+"group_details_title" = "Community Details";
+"group_details_home" = "Home";
+"group_details_people" = "People";
+"group_details_rooms" = "Rooms";
+
+// Group Home
+"group_home_one_member_format" = "1 member";
+"group_home_multi_members_format" = "%tu members";
+"group_home_one_room_format" = "1 room";
+"group_home_multi_rooms_format" = "%tu rooms";
+"group_invitation_format" = "%@ has invited you to join this community";
+
+// Group participants
+"group_participants_add_participant" = "Add participant";
+"group_participants_leave_prompt_title" = "Leave group";
+"group_participants_leave_prompt_msg" = "Are you sure you want to leave the group?";
+"group_participants_remove_prompt_title" = "Confirmation";
+"group_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this group?";
+"group_participants_invite_prompt_title" = "Confirmation";
+"group_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this group?";
+"group_participants_filter_members" = "Filter community members";
+"group_participants_invite_another_user" = "Search / invite by User ID or Name";
+"group_participants_invite_malformed_id_title" = "Invite Error";
+"group_participants_invite_malformed_id" = "Malformed ID. Should be a Matrix ID like '@localpart:domain'";
+"group_participants_invited_section" = "INVITED";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Filter community rooms";
 
 // Read Receipts
 "read_receipts_list" = "Read Receipts List";
@@ -544,6 +585,7 @@
 
 // Room key request dialog
 "e2e_room_key_request_title" = "Encryption key request";
+"e2e_room_key_request_message_new_device" = "You added a new device '%@', which is requesting encryption keys.";
 "e2e_room_key_request_message" = "Your unverified device '%@' is requesting encryption keys.";
 "e2e_room_key_request_start_verification" = "Start verification...";
 "e2e_room_key_request_share_without_verifying" = "Share without verifying";

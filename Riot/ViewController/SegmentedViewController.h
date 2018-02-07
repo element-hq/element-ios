@@ -38,6 +38,11 @@ limitations under the License.
 @property (nonatomic) NSUInteger selectedIndex;
 
 /**
+ The tint color for the section header (kRiotColorGreen by default).
+ */
+@property (nonatomic) UIColor *sectionHeaderTintColor;
+
+/**
  The view controller that currently has the focus.
  */
 @property (nonatomic, readonly) UIViewController *selectedViewController;

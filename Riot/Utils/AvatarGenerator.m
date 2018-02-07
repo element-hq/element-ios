@@ -69,7 +69,7 @@ static UILabel* backgroundLabel = nil;
  */
 + (NSString *)firstChar:(NSString *)text
 {
-    if ([text hasPrefix:@"@"] || [text hasPrefix:@"#"] || [text hasPrefix:@"!"])
+    if ([text hasPrefix:@"@"] || [text hasPrefix:@"#"] || [text hasPrefix:@"!"] || [text hasPrefix:@"+"])
     {
         text = [text substringFromIndex:1];
     }

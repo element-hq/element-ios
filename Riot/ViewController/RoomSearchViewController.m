@@ -99,14 +99,9 @@
         [self.activityIndicator stopAnimating];
         self.activityIndicator = nil;
     }
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"RoomsSearch"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"RoomsSearch"];
     
     // Enable the search field by default at the screen opening
     if (self.searchBarHidden)

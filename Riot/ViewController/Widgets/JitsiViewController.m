@@ -44,41 +44,65 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
     return jitsiViewController;
 }
 
-- (BOOL)openWidget:(Widget*)widget withVideo:(BOOL)aVideo
+- (void)openWidget:(Widget*)widget withVideo:(BOOL)aVideo
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure
 {
     video = aVideo;
     _widget = widget;
 
-    // Extract the jitsi conference id from the widget url
-    NSString *confId;
-    NSURL *url = [NSURL URLWithString:_widget.url];
-    if (url)
-    {
-        NSURLComponents *components = [[NSURLComponents new] initWithURL:url resolvingAgainstBaseURL:NO];
-        NSArray *queryItems = [components queryItems];
+    [_widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
 
-        for (NSURLQueryItem *item in queryItems)
+        // Extract the jitsi conference id from the widget url
+        NSString *confId;
+        NSURL *url = [NSURL URLWithString:widgetUrl];
+        if (url)
         {
-            if ([item.name isEqualToString:@"confId"])
+            NSURLComponents *components = [[NSURLComponents new] initWithURL:url resolvingAgainstBaseURL:NO];
+            NSArray *queryItems = [components queryItems];
+
+            for (NSURLQueryItem *item in queryItems)
             {
-                confId = item.value;
-                break;
+                if ([item.name isEqualToString:@"confId"])
+                {
+                    confId = item.value;
+                    break;
+                }
+            }
+
+            // And build from it the url to use in jitsi-meet sdk
+            if (confId)
+            {
+                jitsiUrl = [NSString stringWithFormat:@"%@%@", kJitsiServerUrl, confId];
             }
         }
 
-        // And build from it the url to use in jitsi-meet sdk
-        if (confId)
+        if (jitsiUrl)
         {
-            jitsiUrl = [NSString stringWithFormat:@"%@%@", kJitsiServerUrl, confId];
+            if (success)
+            {
+                success();
+            }
         }
-    }
+        else
+        {
+            NSLog(@"[JitsiVC] Failed to load widget: %@. Widget event: %@", widget, widget.widgetEvent);
 
-    if (!jitsiUrl)
-    {
-        NSLog(@"[JitsiVC] Failed to load widget: %@. Widget event: %@", widget, widget.widgetEvent);
-    }
+            if (failure)
+            {
+                failure(nil);
+            }
+        }
 
-    return (jitsiUrl != nil);
+    } failure:^(NSError * _Nonnull error) {
+
+        NSLog(@"[JitsiVC] Failed to load widget 2: %@. Widget event: %@", widget, widget.widgetEvent);
+
+        if (failure)
+        {
+            failure(nil);
+        }
+    }];
 }
 
 - (void)hangup

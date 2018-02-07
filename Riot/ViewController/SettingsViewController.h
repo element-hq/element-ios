@@ -20,7 +20,7 @@
 
 #import "MediaPickerViewController.h"
 
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate>
+@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
 
 @end
 

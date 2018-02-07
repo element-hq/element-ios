@@ -1,3 +1,69 @@
+Changes in 0.6.8 (2018-01-03)
+===============================================
+
+Improvements:
+ * AppDelegate: Enable log to file earlier.
+
+Bug Fix:
+ * AppDelegate: Disable again loop on [application isProtectedDataAvailable] because it sometimes makes an OS watchdog kill the app.
+ * Missing Push Notifications (#1696): Show a notification even if the app fails to sync with its hs.
+
+Changes in 0.6.7 (2017-12-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.4).
+
+Bug Fix:
+ * Share extension is not localized? (#1701).
+ * Widget: Fix crash with unexpected widget data (#1703).
+ * Silent crash at startup in [MXKContactManager loadCachedMatrixContacts] (#1711).
+ * Should fix missing push notifications (#1696).
+ * Should fix the application crash on "Failed to grow buffer" when loading local phonebook contacts (https://github.com/matrix-org/riot-ios-rageshakes/issues/779).
+
+Changes in 0.6.6 (2017-12-21)
+===============================================
+
+Bug Fix:
+ * Widget: Integrate widget data into widget URL (https://github.com/vector-im/riot-meta/issues/125).
+ * VoIP: increase call invite lifetime from 30 to 60s (https://github.com/vector-im/riot-meta/issues/129).
+
+Changes in 0.6.5 (2017-12-19)
+===============================================
+
+Bug Fix:
+ * Push Notifications: Missing push notifications (#1696).
+
+Changes in 0.6.4 (2017-12-05)
+===============================================
+
+Bug Fix:
+ * Crypto: The share key dialog can appear with a 'null' device (#1683).
+
+Changes in 0.6.3 (2017-11-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.3).
+ * Crypto: Add key sharing dialog for incoming room key requests (PR #1652, PR #1655).
+ * Update developing instructions in README, thanks to @aaronraimist.
+ * Add basic OLED black theme, thanks to @aaronraimist (PR #1665).
+ * Make code compatible with `!use_frameworks` in Podfile.
+
+Bug Fix:
+ * Failed to send photos which are not stored on the local device and must be downloaded from iCloud (#1654).
+ * Spontaneous logouts (#1643).
+ * Dark theme: Make the keyboard dark (#1620), thanks to @aaronraimist.
+ * App crashes when user wants to share a message (matrix-org/riot-ios-rageshakes#676).
+ * Fix UICollectionView warning: The behavior of the UICollectionViewFlowLayout is not defined...
+ 
+Translations:
+ * Vietnamese, enabled thanks to @loulsle.
+ * Simplified Chinese, updated thanks to @tonghuix.
+ * German, updated thanks to @dccs and @fkalis.
+ * Japanese, updated thanks to @yuurii and @libraryxhime.
+ * Russian, updated thanks to @Walter.
+
 Changes in 0.6.2 (2017-11-13)
 ===============================================
 
