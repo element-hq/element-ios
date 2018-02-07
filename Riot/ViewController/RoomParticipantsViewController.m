@@ -243,14 +243,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"RoomParticipants"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"RoomParticipants"];
     
     if (memberDetailsViewController)
     {
@@ -1302,7 +1297,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -1363,7 +1358,7 @@
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
             [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                             style:UIAlertActionStyleDefault
+                                                             style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
                                                                if (weakSelf)
@@ -1450,7 +1445,7 @@
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
                     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                                     style:UIAlertActionStyleDefault
+                                                                     style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
                                                                        if (weakSelf)
@@ -1502,7 +1497,7 @@
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
                     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                                     style:UIAlertActionStyleDefault
+                                                                     style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
                                                                        if (weakSelf)
@@ -1540,7 +1535,7 @@
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleDefault
+                                                     style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
@@ -1772,14 +1767,16 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    if (currentSearchText)
+    {
+        currentSearchText = nil;
+        filteredActualParticipants = nil;
+        filteredInvitedParticipants = nil;
+        
+        [self refreshTableView];
+    }
+    
     searchBar.text = nil;
-    
-    currentSearchText = nil;
-    filteredActualParticipants = nil;
-    filteredInvitedParticipants = nil;
-    
-    [self refreshTableView];
-    
     // Leave search
     [searchBar resignFirstResponder];
 }

@@ -181,7 +181,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         {
             // Check whether another component than this one is selected
             // Note: When a component is selected, it is highlighted by applying an alpha on other components.
-            if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index)
+            if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index && componentString.length)
             {
                 // Apply alpha to blur this component
                 NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
@@ -226,7 +226,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             [currentAttributedTextMsg appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
             
             // Check whether another component than this one is selected
-            if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index)
+            if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index && componentString.length)
             {
                 // Apply alpha to blur this component
                 NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];

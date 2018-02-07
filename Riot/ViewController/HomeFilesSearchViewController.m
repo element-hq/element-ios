@@ -105,15 +105,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"FilesGlobalSearch"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
-    
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"FilesGlobalSearch"];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSearchResult:) name:kMXSessionDidLeaveRoomNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSearchResult:) name:kMXSessionNewRoomNotification object:nil];
 }

@@ -66,8 +66,16 @@
                            mxkViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 
                            // Display the widget
-                           WidgetViewController *widgetVC = [[WidgetViewController alloc] initForWidget:widget];
-                           [mxkViewController.navigationController pushViewController:widgetVC animated:YES];
+                           [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
+
+                                WidgetViewController *widgetVC = [[WidgetViewController alloc] initWithUrl:widgetUrl forWidget:widget];
+                                [mxkViewController.navigationController pushViewController:widgetVC animated:YES];
+
+                            } failure:^(NSError * _Nonnull error) {
+
+                                NSLog(@"[WidgetPickerVC] Cannot display widget %@", widget);
+                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            }];
                        }];
         [_alertController addAction:alertAction];
     }

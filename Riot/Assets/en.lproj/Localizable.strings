@@ -44,6 +44,12 @@
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ posted a picture %@ in %@";
 
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "You received a message in %@";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "You received a message";
+
 /** Coalesced messages **/
 
 /* Multiple unread messages in a room */

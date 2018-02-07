@@ -26,8 +26,9 @@
 /**
  Init 'WidgetViewController' instance with a widget.
 
+ @param widgetUrl the formatted widget url.
  @param widget the widget to open.
  */
-- (instancetype)initForWidget:(Widget*)widget;
+- (instancetype)initWithUrl:(NSString*)widgetUrl forWidget:(Widget*)widget;
 
 @end

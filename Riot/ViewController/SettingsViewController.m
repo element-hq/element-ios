@@ -39,6 +39,9 @@
 #import "RiotDesignValues.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
 
+#import "GroupsDataSource.h"
+#import "GroupTableViewCellWithSwitch.h"
+
 #import "GBDeviceInfo_iOS.h"
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
@@ -56,6 +59,7 @@ enum
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_LABS_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
+    SETTINGS_SECTION_FLAIR_INDEX,
     SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_COUNT
 };
@@ -187,6 +191,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
     
+    // Flair: the groups data source
+    GroupsDataSource *groupsDataSource;
+    
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
@@ -255,6 +262,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
+    [self.tableView registerClass:GroupTableViewCellWithSwitch.class forCellReuseIdentifier:[GroupTableViewCellWithSwitch defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -295,6 +303,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         [self addMatrixSession:mxSession];
     }
+    
+    groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:self.mainSession];
+    [groupsDataSource finalizeInitialization];
+    groupsDataSource.delegate = self;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"SettingsVCNavBarSaveButton";
@@ -337,6 +349,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)destroy
 {
+    if (groupsDataSource)
+    {
+        groupsDataSource.delegate = nil;
+        [groupsDataSource destroy];
+        groupsDataSource = nil;
+    }
+    
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
@@ -394,14 +413,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:@"Settings"];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"Settings"];
     
     // Release the potential pushed view controller
     [self releasePushedViewController];
@@ -1230,6 +1244,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         count = LABS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
+    {
+        // Check whether some joined groups are available
+        if ([groupsDataSource numberOfSectionsInTableView:tableView])
+        {
+            if (groupsDataSource.joinedGroupsSection != -1)
+            {
+                count = [groupsDataSource tableView:tableView numberOfRowsInSection:groupsDataSource.joinedGroupsSection];
+            }
+        }
+    }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
         count = devicesArray.count;
@@ -1281,6 +1306,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    
+    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
     
     // Force layout before reusing a cell (fix switch displayed outside the screen)
     [cell layoutIfNeeded];
@@ -1632,7 +1659,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
@@ -1644,7 +1670,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.showDecryptedContentInNotifications;
             labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
@@ -1669,7 +1694,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithMissedNotif"];
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
@@ -1681,7 +1705,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithUnread"];
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
@@ -1695,7 +1718,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
@@ -1799,7 +1821,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
@@ -1910,7 +1931,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
             sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
             sendCrashReportCell.mxkSwitch.enabled = YES;
-            [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = sendCrashReportCell;
@@ -1922,7 +1942,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             enableRageShakeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_rageshake", @"Vector", nil);
             enableRageShakeCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableRageShake"];
             enableRageShakeCell.mxkSwitch.enabled = YES;
-            [enableRageShakeCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [enableRageShakeCell.mxkSwitch addTarget:self action:@selector(toggleEnableRageShake:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = enableRageShakeCell;
@@ -2012,7 +2031,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_matrix_apps", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
 
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsMatrixApps:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
@@ -2024,7 +2042,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"createConferenceCallsWithJitsi"];
 
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
@@ -2038,7 +2055,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = (nil != session.crypto);
 
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
 
             if (session.crypto)
@@ -2048,6 +2064,32 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
 
             cell = labelAndSwitchCell;
+        }
+    }
+    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
+    {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:groupsDataSource.joinedGroupsSection];
+        cell = [groupsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+        
+        if ([cell isKindOfClass:GroupTableViewCellWithSwitch.class])
+        {
+            GroupTableViewCellWithSwitch* groupWithSwitchCell = (GroupTableViewCellWithSwitch*)cell;
+            id<MXKGroupCellDataStoring> groupCellData = [groupsDataSource cellDataAtIndex:indexPath];
+            
+            // Display the groupId in the description label, except if the group has no name
+            if (![groupWithSwitchCell.groupName.text isEqualToString:groupCellData.group.groupId])
+            {
+                groupWithSwitchCell.groupDescription.hidden = NO;
+                groupWithSwitchCell.groupDescription.text = groupCellData.group.groupId;
+            }
+            
+            // Update the toogle button
+            groupWithSwitchCell.toggleButton.on = groupCellData.group.summary.user.isPublicised;
+            groupWithSwitchCell.toggleButton.enabled = YES;
+            groupWithSwitchCell.toggleButton.tag = row;
+            
+            [groupWithSwitchCell.toggleButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [groupWithSwitchCell.toggleButton addTarget:self action:@selector(toggleCommunityFlair:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
@@ -2089,7 +2131,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.mxSession.crypto.globalBlacklistUnverifiedDevices;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
@@ -2172,6 +2213,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
+    {
+        // Check whether this section is visible
+        if (groupsDataSource.joinedGroupsSection != -1)
+        {
+            return NSLocalizedStringFromTable(@"settings_flair", @"Vector", nil);
+        }
     }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
@@ -2272,6 +2321,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
+    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
+    {
+        if (groupsDataSource.joinedGroupsSection == -1)
+        {
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
+    }
     
     return 24;
 }
@@ -2293,6 +2349,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
         if (![MXCallKitAdapter callKitAvailable])
+        {
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
+    }
+    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
+    {
+        if (groupsDataSource.joinedGroupsSection == -1)
         {
             return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
@@ -2324,7 +2387,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
             }];
             
-            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(20, 18)];
+            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(24, 24)];
             [actions insertObject:leaveAction atIndex:0];
         }
     }
@@ -2563,7 +2626,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                    }]];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleDefault
+                                                     style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
@@ -2630,7 +2693,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_remove_prompt_title", @"Vector", nil) message:promptMsg preferredStyle:UIAlertControllerStyleAlert];
             
             [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                             style:UIAlertActionStyleDefault
+                                                             style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
                                                                if (weakSelf)
@@ -2790,7 +2853,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[AppDelegate theDelegate] stopGoogleAnalytics];
+        [[AppDelegate theDelegate] stopAnalytics];
         
         // Remove potential crash file.
         [MXLogger deleteCrashLog];
@@ -2801,7 +2864,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[AppDelegate theDelegate] startGoogleAnalytics];
+        [[AppDelegate theDelegate] startAnalytics];
     }
 }
 
@@ -2971,6 +3034,45 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     [[NSUserDefaults standardUserDefaults] setBool:switchButton.on forKey:@"pinRoomsWithUnread"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)toggleCommunityFlair:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:switchButton.tag inSection:groupsDataSource.joinedGroupsSection];
+    id<MXKGroupCellDataStoring> groupCellData = [groupsDataSource cellDataAtIndex:indexPath];
+    MXGroup *group = groupCellData.group;
+    
+    if (group)
+    {
+        [self startActivityIndicator];
+        
+        __weak typeof(self) weakSelf = self;
+        
+        [self.mainSession updateGroupPublicity:group isPublicised:switchButton.on success:^{
+            
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                [self stopActivityIndicator];
+            }
+            
+        } failure:^(NSError *error) {
+            
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                [self stopActivityIndicator];
+                
+                // Come back to previous state button
+                [switchButton setOn:!switchButton.isOn animated:YES];
+                
+                // Notify user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }
+        }];
+    }
 }
 
 - (void)markAllAsRead:(id)sender
@@ -3504,7 +3606,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
                 [self->documentInteractionController setDelegate:self];
 
-                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
+                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES])
                 {
                     // We want to delete the temp keys file after it has been processed by the other app.
                     // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
@@ -3621,7 +3723,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
     // Cancel button
     [themePicker addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleCancel
                                                       handler:nil]];
 
     UIView *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:USER_INTERFACE_THEME_INDEX inSection:SETTINGS_SECTION_USER_INTERFACE_INDEX]];
@@ -3853,7 +3955,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // check if the textfields have the right value
     savePasswordAction.enabled = NO;
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         
         if (weakSelf)
         {
@@ -3958,8 +4060,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [NSBundle mxk_setLanguage:language];
 
         // Store user settings
-        [[NSUserDefaults standardUserDefaults] setObject:language forKey:@"appLanguage"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+        [sharedUserDefaults setObject:language forKey:@"appLanguage"];
+        [sharedUserDefaults synchronize];
 
         // Do a reload in order to recompute strings in the new language
         // Note that "reloadMatrixSessions:NO" will reset room summaries
@@ -3969,6 +4072,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [[AppDelegate theDelegate] reloadMatrixSessions:NO];
         });
     }
+}
+
+#pragma mark - MXKDataSourceDelegate
+
+- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
+{
+    // Return the class used to display a group with a toogle button
+    return GroupTableViewCellWithSwitch.class;
+}
+
+- (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
+{
+    return GroupTableViewCellWithSwitch.defaultReuseIdentifier;
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    // Group data has been updated. Do a simple full reload
+    [self refreshSettings];
 }
 
 @end

@@ -18,11 +18,6 @@
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
 
-// Google Analytics
-#import "GAI.h"
-#import "GAIFields.h"
-#import "GAIDictionaryBuilder.h"
-
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"
 
@@ -85,6 +80,11 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)restoreInitialDisplay:(void (^)())completion;
 
+/**
+ Replace the secondary view controller of the split view controller (if any) with the default empty details view controller.
+ */
+- (void)restoreEmptyDetailsViewController;
+
 - (UIAlertController*)showErrorAsAlert:(NSError*)error;
 
 #pragma mark - Matrix Sessions handling
@@ -107,10 +107,11 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
 
-#pragma mark - Crash reports handling
+#pragma mark - Analytics
 
-- (void)startGoogleAnalytics;
-- (void)stopGoogleAnalytics;
+- (void)startAnalytics;
+- (void)stopAnalytics;
+- (void)trackScreen:(NSString*)screenName;
 
 #pragma mark - Push notifications
 

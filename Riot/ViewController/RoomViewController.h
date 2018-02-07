@@ -58,6 +58,12 @@
 @property (nonatomic, readonly) RoomPreviewData *roomPreviewData;
 
 /**
+ Tell whether a badge must be added next to the chevron (back button) showing number of unread rooms.
+ YES by default.
+ */
+@property (nonatomic) BOOL showMissedDiscussionsBadge;
+
+/**
  Display the preview of a room that is unknown for the user.
 
  This room can come from an email invitation link or a simple link to a room.
