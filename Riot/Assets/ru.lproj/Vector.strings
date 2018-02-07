@@ -472,3 +472,10 @@
 // Share extension
 "share_extension_auth_prompt" = "Вход в основное приложение для совместного использования контента";
 "share_extension_failed_to_encrypt" = "Не удалось отправить. Проверьте в основном приложении параметры шифрования для этой комнаты";
+"settings_ui_theme_black" = "Черная";
+// Room key request dialog
+"e2e_room_key_request_title" = "Запрос ключа шифрования";
+"e2e_room_key_request_message" = "Ваше непроверенное устройство '%@' запрашивает ключи шифрования.";
+"e2e_room_key_request_start_verification" = "Начало верификации...";
+"e2e_room_key_request_share_without_verifying" = "Поделиться без верификации";
+"e2e_room_key_request_ignore_request" = "Игнорировать запрос";
