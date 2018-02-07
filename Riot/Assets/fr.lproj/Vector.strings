@@ -509,3 +509,9 @@
 "e2e_room_key_request_start_verification" = "Commencer la vérification...";
 "e2e_room_key_request_share_without_verifying" = "Partager sans vérifier";
 "e2e_room_key_request_ignore_request" = "Ignorer la demande";
+"settings_flair" = "TALENTS";
+"room_details_flair_section" = "Talent";
+"room_details_new_flair_placeholder" = "Ajouter un nouvel identifiant de communauté (par ex. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Format invalide";
+"room_details_flair_invalid_id_prompt_msg" = "%@ n'est pas un identifiant valide pour une communauté";
+"room_details_fail_to_update_room_communities" = "Échec de la mise à jour des communautés liées";
