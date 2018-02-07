@@ -515,3 +515,4 @@
 "room_details_flair_invalid_id_prompt_title" = "Format invalide";
 "room_details_flair_invalid_id_prompt_msg" = "%@ n'est pas un identifiant valide pour une communauté";
 "room_details_fail_to_update_room_communities" = "Échec de la mise à jour des communautés liées";
+"room_do_not_have_permission_to_post" = "Vous n'avez pas la permission d'envoyer des messages dans ce salon";
