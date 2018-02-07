@@ -39,6 +39,9 @@
 #import "RiotDesignValues.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
 
+#import "GroupsDataSource.h"
+#import "GroupTableViewCellWithSwitch.h"
+
 #import "GBDeviceInfo_iOS.h"
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
@@ -188,8 +191,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
     
-    // Flair
-    NSMutableArray<MXGroup *> *communitiesArray;
+    // Flair: the groups data source
+    GroupsDataSource *groupsDataSource;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
@@ -246,8 +249,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     isSavingInProgress = NO;
     isResetPwdInProgress = NO;
     is3PIDBindingInProgress = NO;
-    
-    communitiesArray = [NSMutableArray array];
 }
 
 - (void)viewDidLoad
@@ -261,6 +262,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
+    [self.tableView registerClass:GroupTableViewCellWithSwitch.class forCellReuseIdentifier:[GroupTableViewCellWithSwitch defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -301,6 +303,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         [self addMatrixSession:mxSession];
     }
+    
+    groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:self.mainSession];
+    [groupsDataSource finalizeInitialization];
+    groupsDataSource.delegate = self;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"SettingsVCNavBarSaveButton";
@@ -343,6 +349,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)destroy
 {
+    if (groupsDataSource)
+    {
+        groupsDataSource.delegate = nil;
+        [groupsDataSource destroy];
+        groupsDataSource = nil;
+    }
+    
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
@@ -418,12 +431,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     // Refresh devices in parallel
     [self loadDevices];
-    
-    // Listen to MXSession groups changes, and load the current list.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroup:) name:kMXSessionDidJoinGroupNotification object:self.mainSession];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroup:) name:kMXSessionDidLeaveGroupNotification object:self.mainSession];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateGroup:) name:kMXSessionDidUpdateGroupSummaryNotification object:self.mainSession];
-    [self refreshCommunitiesList:YES];
     
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -964,55 +971,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return cryptoInformationString;
 }
 
-- (void)refreshCommunitiesList:(BOOL)forceUpdate
-{
-    // Reset the table
-    [communitiesArray removeAllObjects];
-    
-    NSArray *groups = self.mainSession.groups;
-    for (MXGroup *group in groups)
-    {
-        // Keep only the joined group
-        if (group.membership == MXMembershipJoin)
-        {
-            [communitiesArray addObject:group];
-            
-            if (forceUpdate)
-            {
-                // Force the matrix session to refresh the group summary.
-                [self.mainSession updateGroupSummary:group success:nil failure:nil];
-            }
-        }
-    }
-    
-    NSLog(@"[SettingsViewController] Loaded %tu groups", communitiesArray.count);
-    
-    // Order alphabetically the groups
-    [communitiesArray sortUsingComparator:^NSComparisonResult(MXGroup *group1, MXGroup *group2)
-     {
-         if (group1.profile.name.length && group2.profile.name.length)
-         {
-             return [group1.profile.name compare:group2.profile.name options:NSCaseInsensitiveSearch];
-         }
-         else if (group1.profile.name.length)
-         {
-             return NSOrderedAscending;
-         }
-         else if (group2.profile.name.length)
-         {
-             return NSOrderedDescending;
-         }
-         return [group1.groupId compare:group2.groupId options:NSCaseInsensitiveSearch];;
-     }];
-    
-    [self refreshSettings];
-}
-
-- (void)didUpdateGroup:(NSNotification *)notif
-{
-    [self refreshCommunitiesList:NO];
-}
-
 - (void)loadDevices
 {
     // Refresh the account devices list
@@ -1288,7 +1246,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_FLAIR_INDEX)
     {
-        count = communitiesArray.count;
+        // Check whether some joined groups are available
+        if ([groupsDataSource numberOfSectionsInTableView:tableView])
+        {
+            if (groupsDataSource.joinedGroupsSection != -1)
+            {
+                count = [groupsDataSource tableView:tableView numberOfRowsInSection:groupsDataSource.joinedGroupsSection];
+            }
+        }
     }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
@@ -2103,20 +2068,29 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_FLAIR_INDEX)
     {
-        MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:groupsDataSource.joinedGroupsSection];
+        cell = [groupsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
         
-        if (row < communitiesArray.count)
+        if ([cell isKindOfClass:GroupTableViewCellWithSwitch.class])
         {
-            MXGroup *group = communitiesArray[row];
-            labelAndSwitchCell.mxkLabel.text = (group.profile.name.length ? group.profile.name : group.groupId);
-            labelAndSwitchCell.mxkSwitch.on = group.summary.user.isPublicised;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            labelAndSwitchCell.mxkSwitch.tag = row;
+            GroupTableViewCellWithSwitch* groupWithSwitchCell = (GroupTableViewCellWithSwitch*)cell;
+            id<MXKGroupCellDataStoring> groupCellData = [groupsDataSource cellDataAtIndex:indexPath];
             
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCommunityFlair:) forControlEvents:UIControlEventTouchUpInside];
+            // Display the groupId in the description label, except if the group has no name
+            if (![groupWithSwitchCell.groupName.text isEqualToString:groupCellData.group.groupId])
+            {
+                groupWithSwitchCell.groupDescription.hidden = NO;
+                groupWithSwitchCell.groupDescription.text = groupCellData.group.groupId;
+            }
+            
+            // Update the toogle button
+            groupWithSwitchCell.toggleButton.on = groupCellData.group.summary.user.isPublicised;
+            groupWithSwitchCell.toggleButton.enabled = YES;
+            groupWithSwitchCell.toggleButton.tag = row;
+            
+            [groupWithSwitchCell.toggleButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [groupWithSwitchCell.toggleButton addTarget:self action:@selector(toggleCommunityFlair:) forControlEvents:UIControlEventTouchUpInside];
         }
-        
-        cell = labelAndSwitchCell;
     }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
@@ -2243,7 +2217,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_FLAIR_INDEX)
     {
         // Check whether this section is visible
-        if (communitiesArray.count > 0)
+        if (groupsDataSource.joinedGroupsSection != -1)
         {
             return NSLocalizedStringFromTable(@"settings_flair", @"Vector", nil);
         }
@@ -2347,6 +2321,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
+    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
+    {
+        if (groupsDataSource.joinedGroupsSection == -1)
+        {
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
+    }
     
     return 24;
 }
@@ -2368,6 +2349,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
         if (![MXCallKitAdapter callKitAvailable])
+        {
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
+    }
+    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
+    {
+        if (groupsDataSource.joinedGroupsSection == -1)
         {
             return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
@@ -3052,9 +3040,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     UISwitch *switchButton = (UISwitch*)sender;
     
-    if (switchButton.tag < communitiesArray.count)
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:switchButton.tag inSection:groupsDataSource.joinedGroupsSection];
+    id<MXKGroupCellDataStoring> groupCellData = [groupsDataSource cellDataAtIndex:indexPath];
+    MXGroup *group = groupCellData.group;
+    
+    if (group)
     {
-        MXGroup *group = communitiesArray[switchButton.tag];
         [self startActivityIndicator];
         
         __weak typeof(self) weakSelf = self;
@@ -4081,6 +4072,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [[AppDelegate theDelegate] reloadMatrixSessions:NO];
         });
     }
+}
+
+#pragma mark - MXKDataSourceDelegate
+
+- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
+{
+    // Return the class used to display a group with a toogle button
+    return GroupTableViewCellWithSwitch.class;
+}
+
+- (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
+{
+    return GroupTableViewCellWithSwitch.defaultReuseIdentifier;
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    // Group data has been updated. Do a simple full reload
+    [self refreshSettings];
 }
 
 @end

@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,13 +14,8 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "GroupTableViewCellWithSwitch.h"
 
-#import "DeviceView.h"
-
-#import "MediaPickerViewController.h"
-
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
+@implementation GroupTableViewCellWithSwitch
 
 @end
-
