@@ -46,3 +46,7 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Групповой звонок от %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Групповой видеозвонок от %@: '%@'";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Вы получили сообщение в %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Вы получили сообщение";
