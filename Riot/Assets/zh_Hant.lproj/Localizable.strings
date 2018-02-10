@@ -46,3 +46,7 @@
 "VOICE_CONF_NAMED_FROM_USER" = "從 %@ 而來的群組通話：'%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "從 %@ 而來的視訊群組通話：'%@'";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "你在 %@ 中收到了一則訊息";
+/* A single unread message */
+"SINGLE_UNREAD" = "你收到了一則訊息";

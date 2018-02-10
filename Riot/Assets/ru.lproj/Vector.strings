@@ -479,3 +479,38 @@
 "e2e_room_key_request_start_verification" = "Начало верификации...";
 "e2e_room_key_request_share_without_verifying" = "Поделиться без верификации";
 "e2e_room_key_request_ignore_request" = "Игнорировать запрос";
+"title_groups" = "Сообщества";
+// Groups tab
+"group_invite_section" = "ПРИГЛАШЕНИЯ";
+"group_section" = "СООБЩЕСТВА";
+"room_details_new_flair_placeholder" = "Добавить новый идентификатор сообщества (напр. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Неверный формат";
+"room_details_flair_invalid_id_prompt_msg" = "%@ - недопустимый идентификатор сообщества";
+"room_details_fail_to_update_room_communities" = "Не удалось обновить связанные сообщества";
+// Group Details
+"group_details_title" = "Сведения о сообществе";
+"group_details_home" = "Главная";
+"group_details_people" = "Люди";
+"group_details_rooms" = "Комнаты";
+// Group Home
+"group_home_one_member_format" = "1 участник";
+"group_home_multi_members_format" = "%tu участников";
+"group_home_one_room_format" = "1 комната";
+"group_home_multi_rooms_format" = "%tu комнат";
+"group_invitation_format" = "%@ пригласил вас присоединиться к этому сообществу";
+// Group participants
+"group_participants_add_participant" = "Добавить участника";
+"group_participants_leave_prompt_title" = "Покинуть группу";
+"group_participants_leave_prompt_msg" = "Вы уверены, что хотите покинуть группу?";
+"group_participants_remove_prompt_title" = "Подтверждение";
+"group_participants_remove_prompt_msg" = "Вы действительно хотите удалить %@ из этой группы?";
+"group_participants_invite_prompt_title" = "Подтверждение";
+"group_participants_invite_prompt_msg" = "Вы действительно хотите пригласить %@ в эту группу?";
+"group_participants_filter_members" = "Фильтр участников сообщества";
+"group_participants_invite_another_user" = "Поиск / приглашение пользователя по ID или имени";
+"group_participants_invite_malformed_id_title" = "Ошибка приглашения";
+"group_participants_invite_malformed_id" = "Неправильный идентификатор. Должен быть Matrix ID, такой как '@localpart:domain'";
+"group_participants_invited_section" = "ПРИГЛАШЕНЫ";
+// Group rooms
+"group_rooms_filter_rooms" = "Фильтр комнат сообщества";
+"e2e_room_key_request_message_new_device" = "Вы добавили новое устройство '%@', которое запрашивает ключи шифрования.";

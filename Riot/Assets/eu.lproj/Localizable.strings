@@ -46,3 +46,7 @@
 "VOICE_CONF_NAMED_FROM_USER" = "%@ erabiltzailearen talde deia: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "%@ erabiltzailearen talde bideo deia: '%@'";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Mezu bat jaso duzu %@ gelan";
+/* A single unread message */
+"SINGLE_UNREAD" = "Mezu bat jaso duzu";
