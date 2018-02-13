@@ -109,7 +109,11 @@
     }
     [viewControllers addObject:groupRoomsViewController];
     
-    self.title = NSLocalizedStringFromTable(@"group_details_title", @"Vector", nil);
+    if (!self.title.length)
+    {
+        self.title = NSLocalizedStringFromTable(@"group_details_title", @"Vector", nil);
+    }
+    
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [super viewDidLoad];
@@ -179,6 +183,8 @@
 {
     _group = group;
     _mxSession = mxSession;
+    
+    self.title = group.summary.profile.name.length ? group.summary.profile.name : group.groupId;
     
     [self addMatrixSession:mxSession];
     
