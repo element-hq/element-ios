@@ -482,8 +482,8 @@
 // Groups tab
 "group_invite_section" = "EINLADUNGEN";
 "group_section" = "COMMUNITIES";
-"settings_flair" = "FLAIR";
-"room_details_flair_section" = "Flair";
+"settings_flair" = "Zeigen Sie Flair, wo erlaubt";
+"room_details_flair_section" = "Zeige Flair für Communities";
 "room_details_new_flair_placeholder" = "Füge neue Community-ID hinzu (z.B. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Ungültiges Format";
 "room_details_flair_invalid_id_prompt_msg" = "%@ ist kein valider Bezeichner für eine Community";
