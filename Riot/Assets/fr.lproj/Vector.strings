@@ -509,7 +509,7 @@
 "e2e_room_key_request_start_verification" = "Commencer la vérification...";
 "e2e_room_key_request_share_without_verifying" = "Partager sans vérifier";
 "e2e_room_key_request_ignore_request" = "Ignorer la demande";
-"settings_flair" = "Afficher le badge au endroit autorisé";
+"settings_flair" = "Afficher le badge aux endroits autorisés";
 "room_details_flair_section" = "Afficher le badge pour des communautés";
 "room_details_new_flair_placeholder" = "Ajouter un nouvel identifiant de communauté (par ex. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Format invalide";
