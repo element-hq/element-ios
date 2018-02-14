@@ -480,3 +480,40 @@
 "e2e_room_key_request_start_verification" = "Hasi egiaztatzea...";
 "e2e_room_key_request_share_without_verifying" = "Partekatu egiaztatu gabe";
 "e2e_room_key_request_ignore_request" = "Ezikusi eskaera";
+"title_groups" = "Komunitateak";
+// Groups tab
+"group_invite_section" = "GONBIDAPENAK";
+"group_section" = "KOMUNITATEAK";
+"settings_flair" = "Erakutsi ikurra non baimenduta";
+"room_details_flair_section" = "Erakutsi ikurra komunitateentzat";
+"room_details_new_flair_placeholder" = "Gehitu komunitate ID berria (adib. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Baliogabeko formatua";
+"room_details_flair_invalid_id_prompt_msg" = "%@ ez da komunitate batentzako baliozko identifikatzailea";
+"room_details_fail_to_update_room_communities" = "Huts egin du lotutako komunitateak eguneratzean";
+// Group Details
+"group_details_title" = "Komunitatearen xehetasunak";
+"group_details_home" = "Hasiera";
+"group_details_people" = "Jendea";
+"group_details_rooms" = "Gelak";
+// Group Home
+"group_home_one_member_format" = "kide 1";
+"group_home_multi_members_format" = "%tu kide";
+"group_home_one_room_format" = "gela 1";
+"group_home_multi_rooms_format" = "%tu gela";
+"group_invitation_format" = "%@ erabiltzaileak komunitate honetara elkartzera gonbidatu zaitu";
+// Group participants
+"group_participants_add_participant" = "Gehitu parte-hartzailea";
+"group_participants_leave_prompt_title" = "Atera taldetik";
+"group_participants_leave_prompt_msg" = "Ziur taldetik atera nahi duzula?";
+"group_participants_remove_prompt_title" = "Berrespena";
+"group_participants_remove_prompt_msg" = "Ziur %@ taldetik kendu nahi duzula?";
+"group_participants_invite_prompt_title" = "Berrespena";
+"group_participants_invite_prompt_msg" = "Ziur %@ taldera gonbidatu nahi duzula?";
+"group_participants_filter_members" = "Iragazi komunitateko kideak";
+"group_participants_invite_another_user" = "Bilatu / gonbidatu erabiltzaile ID-a edo izena erabiliz";
+"group_participants_invite_malformed_id_title" = "Gonbidapen errorea";
+"group_participants_invite_malformed_id" = "Gaizki osatutako IDa. Matrix ID bat izan behar da, honelakoa '@erabiltzailea:domeinua'";
+"group_participants_invited_section" = "GONBIDATUTA";
+// Group rooms
+"group_rooms_filter_rooms" = "Iragazi komunitateko gelak";
+"e2e_room_key_request_message_new_device" = "'%@' gailu berria gehitu duzu, eta zifratze-gakoak eskatzen ari da.";

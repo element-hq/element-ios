@@ -478,3 +478,40 @@
 "e2e_room_key_request_start_verification" = "Starte Verifikation...";
 "e2e_room_key_request_share_without_verifying" = "Teile ohne zu verifizieren";
 "e2e_room_key_request_ignore_request" = "Ignoriere Anfrage";
+"title_groups" = "Communities";
+// Groups tab
+"group_invite_section" = "EINLADUNGEN";
+"group_section" = "COMMUNITIES";
+"settings_flair" = "Zeigen Sie Flair, wo erlaubt";
+"room_details_flair_section" = "Zeige Flair für Communities";
+"room_details_new_flair_placeholder" = "Füge neue Community-ID hinzu (z.B. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Ungültiges Format";
+"room_details_flair_invalid_id_prompt_msg" = "%@ ist kein valider Bezeichner für eine Community";
+"room_details_fail_to_update_room_communities" = "Verknüpfte Communities konnten nicht aktualisiert werden";
+// Group Details
+"group_details_title" = "Community-Details";
+"group_details_home" = "Startseite";
+"group_details_people" = "Personen";
+"group_details_rooms" = "Räume";
+// Group Home
+"group_home_one_member_format" = "1 Mitglied";
+"group_home_multi_members_format" = "%tu Mitglieder";
+"group_home_one_room_format" = "1 Raum";
+"group_home_multi_rooms_format" = "%tu Räume";
+"group_invitation_format" = "%@ hat dich eingeladen dieser Community beizutreten";
+// Group participants
+"group_participants_add_participant" = "Füge Teilnehmer hinzu";
+"group_participants_leave_prompt_title" = "Gruppe verlassen";
+"group_participants_leave_prompt_msg" = "Bist du sicher, dass du diese Gruppe verlassen willst?";
+"group_participants_remove_prompt_title" = "Bestätigung";
+"group_participants_remove_prompt_msg" = "Bist du sicher, dass du %@ aus dieser Gruppe entfernen möchtest?";
+"group_participants_invite_prompt_title" = "Bestätigung";
+"group_participants_invite_prompt_msg" = "Bist du sicher, dass du %@ dieser Gruppe hinzufügen möchtest?";
+"group_participants_filter_members" = "Filtere Community-Mitglieder";
+"group_participants_invite_another_user" = "Suche / Lade mit Benutzer-ID oder Name ein";
+"group_participants_invite_malformed_id_title" = "Fehler beim Einladen";
+"group_participants_invite_malformed_id" = "ID-Format ungültig. Es sollte eine Matrix-ID wie '@lokal:domain' sein";
+"group_participants_invited_section" = "EINGELADEN";
+// Group rooms
+"group_rooms_filter_rooms" = "Filtere Community-Räume";
+"e2e_room_key_request_message_new_device" = "Du hast ein neues Gerät '%@' hinzugefügt, welches Verschlüsselungs-Schlüssel anfordert.";

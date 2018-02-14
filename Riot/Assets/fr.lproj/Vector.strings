@@ -361,7 +361,7 @@
 "room_details_fail_to_update_room_canonical_alias" = "Échec de la mise à jour de l'adresse principale";
 "room_details_fail_to_update_room_direct" = "Échec de mise à jour de l'étiquette de discussion directe";
 "room_details_fail_to_enable_encryption" = "Échec de l'activation du chiffrement de ce salon";
-"room_details_save_changes_prompt" = "Voulez-vous enregistrer les modifications?";
+"room_details_save_changes_prompt" = "Voulez-vous enregistrer les modifications ?";
 "room_details_set_main_address" = "Définir comme adresse principale";
 "room_details_unset_main_address" = "Désactiver comme adresse principale";
 "room_details_copy_room_id" = "Copier l'identifiant du salon";
@@ -381,11 +381,11 @@
 // Group participants
 "group_participants_add_participant" = "Ajouter un membre";
 "group_participants_leave_prompt_title" = "Quitter le groupe";
-"group_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter le groupe?";
+"group_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter le groupe ?";
 "group_participants_remove_prompt_title" = "Confirmation";
-"group_participants_remove_prompt_msg" = "Voulez-vous vraiment exclure %@ de ce groupe?";
+"group_participants_remove_prompt_msg" = "Voulez-vous vraiment exclure %@ de ce groupe ?";
 "group_participants_invite_prompt_title" = "Confirmation";
-"group_participants_invite_prompt_msg" = "Voulez-vous vraiment inviter %@ dans ce groupe?";
+"group_participants_invite_prompt_msg" = "Voulez-vous vraiment inviter %@ dans ce groupe ?";
 "group_participants_filter_members" = "Filtrer les membres de la communauté";
 "group_participants_invite_another_user" = "Rechercher/inviter par identifiant ou nom";
 "group_participants_invite_malformed_id_title" = "Erreur lors de l'invitation";
@@ -509,3 +509,9 @@
 "e2e_room_key_request_start_verification" = "Commencer la vérification...";
 "e2e_room_key_request_share_without_verifying" = "Partager sans vérifier";
 "e2e_room_key_request_ignore_request" = "Ignorer la demande";
+"settings_flair" = "Afficher le badge aux endroits autorisés";
+"room_details_flair_section" = "Afficher le badge pour des communautés";
+"room_details_new_flair_placeholder" = "Ajouter un nouvel identifiant de communauté (par ex. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Format invalide";
+"room_details_flair_invalid_id_prompt_msg" = "%@ n'est pas un identifiant valide pour une communauté";
+"room_details_fail_to_update_room_communities" = "Échec de la mise à jour des communautés liées";
