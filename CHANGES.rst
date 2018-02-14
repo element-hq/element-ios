@@ -1,7 +1,19 @@
+Changes in 0.6.10 (2018-02-14)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.6).
+ * Group Details: Put the name of the community in the title.
+
+Bug Fix:
+ * App crashes on cold start if no account is defined.
+ * flair labels are a bit confusing (#1772).
+
 Changes in 0.6.9 (2018-02-10)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version (v0.7.5).
  * Add a new tab to list the user's communities (vector-im/riot-meta#114).
  * Add new screens to display the community details, edition is not supported yet (vector-im/riot-meta#115, vector-im/riot-meta#116, vector-im/riot-meta#117).
  * Room Settings: handle the related communities in order to show flair for them.
