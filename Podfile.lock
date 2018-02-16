@@ -44,21 +44,21 @@ PODS:
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.9.13)
   - LLSimpleCamera (5.0.0)
-  - MatrixKit (0.7.5):
+  - MatrixKit (0.7.6):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
-    - MatrixKit/Core (= 0.7.5)
+    - MatrixKit/Core (= 0.7.6)
     - MatrixSDK (= 0.10.5)
-  - MatrixKit/AppExtension (0.7.5):
+  - MatrixKit/AppExtension (0.7.6):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.10)
     - MatrixSDK (= 0.10.5)
-  - MatrixKit/Core (0.7.5):
+  - MatrixKit/Core (0.7.6):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.17)
     - HPGrowingTextView (~> 1.1)
@@ -93,8 +93,8 @@ DEPENDENCIES:
   - GoogleAnalytics
   - LLSimpleCamera
   - GBDeviceInfo (~> 5.1.0)
-  - MatrixKit (= 0.7.5)
-  - MatrixKit/AppExtension (= 0.7.5)
+  - MatrixKit (= 0.7.6)
+  - MatrixKit/AppExtension (= 0.7.6)
   - MatrixSDK/JingleCallStack
 
   - OLMKit
@@ -120,13 +120,12 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
   LLSimpleCamera: 7175ccb81be71c83d79933089322eb662b1f0327
-  MatrixKit: d63aea1bc8ec812fcf5b3eed431f9300c80eca92
+  MatrixKit: c0f004d72b589fe259a38163181a02e036dc929a
   MatrixSDK: ad1f2b3f183ad328a8a0ab7b3f8aa13bc145d141
   OLMKit: b9d8c0ffee9ea8c45bc0aaa9afb47f93fba7efbd
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
   Realm: 42d1c38a5b1bbcc828b48a7ce702cb86fc68adf4
   WebRTC: f2a6203584745fe53532633397557876b5d71640
-
 
 PODFILE CHECKSUM: d64e2f14187ba569213ca73c22108ee7cb73f735
 
