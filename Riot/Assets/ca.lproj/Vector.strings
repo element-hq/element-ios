@@ -7,14 +7,14 @@
 // Actions
 "view" = "Veure";
 "next" = "Següent";
-"back" = "Tornar";
+"back" = "Torna";
 "continue" = "Continua";
 "create" = "Crear";
 "start" = "Començar";
 "leave" = "Sortir";
 "remove" = "Esborrar";
 "invite" = "Convida";
-"retry" = "Tornar a provar";
+"retry" = "Torna a provar";
 "on" = "Activa";
 "off" = "Apaga";
 "cancel" = "Cancel·lar";
