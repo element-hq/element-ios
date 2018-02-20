@@ -1067,8 +1067,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (!isPushRegistered)
     {
+        NSMutableSet* notificationCategories = [NSMutableSet set];
+        if ([[UIMutableUserNotificationAction class] instancesRespondToSelector:@selector(behavior)])
+        {
+            UIMutableUserNotificationAction* quickReply = [[UIMutableUserNotificationAction alloc] init];
+            quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+            quickReply.identifier = @"inline-reply";
+            quickReply.activationMode = UIUserNotificationActivationModeBackground;
+            quickReply.authenticationRequired = true;
+            quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
+
+            UIMutableUserNotificationCategory* quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
+            quickReplyCategory.identifier = @"QUICK_REPLY";
+            [quickReplyCategory setActions:[NSArray arrayWithObjects:quickReply, nil] forContext:UIUserNotificationActionContextDefault];
+            [notificationCategories addObject:quickReplyCategory];
+        }
+
         // Registration on iOS 8 and later
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:nil];
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:notificationCategories];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     }
 }
@@ -1094,6 +1110,46 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Clear existing token
         MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
         [accountManager setPushDeviceToken:nil withPushOptions:nil];
+    }
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
+{
+    if ([identifier isEqualToString: @"inline-reply"])
+    {
+        NSString* roomId = notification.userInfo[@"room_id"];
+        if (roomId.length)
+        {
+            NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+            MXRoom* room = nil;
+            for (MXKAccount* account in mxAccounts)
+            {
+                room = [account.mxSession roomWithRoomId:roomId];
+                if (room)
+                {
+                    break;
+                }
+            }
+            if (room == nil)
+            {
+                NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room with id %@ not found", roomId);
+            }
+            else
+            {
+                NSString* responseText = [responseInfo objectForKey:UIUserNotificationActionResponseTypedTextKey];
+                if (responseText != nil && responseText.length != 0)
+                {
+                    NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
+                    [room sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
+                        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
+                    }];
+                }
+            }
+        }
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: unhandled identifier %@", identifier);
     }
 }
 
@@ -1350,6 +1406,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                @"user_id": account.mxCredentials.userId
                                                };
                 
+                if (event.eventType == MXEventTypeRoomMessage || (event.eventType == MXEventTypeRoomEncrypted && event.isEncrypted && account.showDecryptedContentInNotifications))
+                {
+                    eventNotification.category = @"QUICK_REPLY";
+                }
+
                 // Set sound name based on the value provided in action of MXPushRule
                 for (MXPushRuleAction *action in rule.actions)
                 {
