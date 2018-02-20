@@ -1406,7 +1406,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                @"user_id": account.mxCredentials.userId
                                                };
                 
-                if (event.eventType == MXEventTypeRoomMessage || (event.eventType == MXEventTypeRoomEncrypted && event.isEncrypted && account.showDecryptedContentInNotifications))
+                BOOL isNotificationContentShown = !event.isEncrypted || account.showDecryptedContentInNotifications;
+                if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
                 {
                     eventNotification.category = @"QUICK_REPLY";
                 }
