@@ -271,7 +271,7 @@
 "settings_advanced" = "Avançat";
 "settings_other" = "Altres";
 "settings_labs" = "Labs";
-"settings_flair" = "Estil";
+"settings_flair" = "Mostra l’estil on permès";
 "settings_devices" = "Dispositius";
 "settings_cryptography" = "Criptografia";
 "settings_sign_out" = "Tancar sessió";
@@ -370,7 +370,7 @@
 "room_details_addresses_invalid_address_prompt_msg" = "%@ no és un format d'àlies vàlid";
 "room_details_addresses_disable_main_address_prompt_title" = "Avís d'adreça principal";
 "room_details_addresses_disable_main_address_prompt_msg" = "No tindreu especificada una adreça principal. La adreça principal per defecte per a aquesta sala serà un nom a l'atzar";
-"room_details_flair_section" = "Estil";
+"room_details_flair_section" = "Mostra l’estil per a les comunitats";
 "room_details_new_flair_placeholder" = "Afegir nova ID de comunitat (ex. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Format invàlid";
 "room_details_flair_invalid_id_prompt_msg" = "%@ no és un identificador vàlid per una comunitat";
