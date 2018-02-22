@@ -353,7 +353,7 @@
 "room_details_access_section_invited_only" = "Només persones que han estat convidades";
 "room_details_access_section_anyone_apart_from_guest" = "Qualsevol que conegui l'enllaç de la sala, excepte els convidats";
 "room_details_access_section_anyone" = "Qualsevol que conegui l'enllaç de la sala, inclosos els convidats";
-"room_details_access_section_no_address_warning" = "La sala ha de tenir una adreça per tal d'unir-s'hi.";
+"room_details_access_section_no_address_warning" = "La sala ha de tenir una adreça per tal d'unir-s'hi";
 "room_details_access_section_directory_toggle" = "Mostra aquesta sala al directori de sales";
 "room_details_history_section" = "Qui pot llegir la historia?";
 "room_details_history_section_anyone" = "Qualsevol";
