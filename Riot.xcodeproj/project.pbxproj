@@ -66,6 +66,8 @@
 		327382C21F276AED00356143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BC1F276AED00356143 /* InfoPlist.strings */; };
 		327382C31F276AED00356143 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BE1F276AED00356143 /* Localizable.strings */; };
 		327382C41F276AED00356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
+		32795C0B203DA4C4002420E2 /* DisabledRoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32795C09203DA4C3002420E2 /* DisabledRoomInputToolbarView.m */; };
+		32795C0C203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32795C0A203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib */; };
 		3284D7FF1FBB34B70090AA80 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */; };
 		32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA51F473BDB0076CA16 /* Localizable.strings */; };
 		32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA71F473BDB0076CA16 /* Vector.strings */; };
@@ -717,6 +719,9 @@
 		327382BD1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		327382BF1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		327382C11F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vector.strings; sourceTree = "<group>"; };
+		32795C08203DA4C3002420E2 /* DisabledRoomInputToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisabledRoomInputToolbarView.h; sourceTree = "<group>"; };
+		32795C09203DA4C3002420E2 /* DisabledRoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisabledRoomInputToolbarView.m; sourceTree = "<group>"; };
+		32795C0A203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisabledRoomInputToolbarView.xib; sourceTree = "<group>"; };
 		3284D7FD1FBB34B70090AA80 /* RoomKeyRequestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomKeyRequestViewController.h; sourceTree = "<group>"; };
 		3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomKeyRequestViewController.m; sourceTree = "<group>"; };
 		32918EA61F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
@@ -2470,6 +2475,9 @@
 		F083BCD81E7009EC00A9B29C /* RoomInputToolbar */ = {
 			isa = PBXGroup;
 			children = (
+				32795C08203DA4C3002420E2 /* DisabledRoomInputToolbarView.h */,
+				32795C09203DA4C3002420E2 /* DisabledRoomInputToolbarView.m */,
+				32795C0A203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib */,
 				F083BCD91E7009EC00A9B29C /* RoomInputToolbarView.h */,
 				F083BCDA1E7009EC00A9B29C /* RoomInputToolbarView.m */,
 				F083BCDB1E7009EC00A9B29C /* RoomInputToolbarView.xib */,
@@ -3156,6 +3164,7 @@
 				F083BE0D1E7009ED00A9B29C /* ContactDetailsViewController.xib in Resources */,
 				F083BDCB1E7009ED00A9B29C /* selection_tick.png in Resources */,
 				F083BD6C1E7009ED00A9B29C /* disclosure_icon@2x.png in Resources */,
+				32795C0C203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib in Resources */,
 				F083BD4A1E7009ED00A9B29C /* call_video_mute_on_icon@3x.png in Resources */,
 				F083BE8F1E7009ED00A9B29C /* RoomAvatarTitleView.xib in Resources */,
 				F083BD9E1E7009ED00A9B29C /* mod_icon.png in Resources */,
@@ -3638,6 +3647,7 @@
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
 				F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */,
 				F0E5D90E1FF6DDCF00560D7F /* GroupRoomsViewController.m in Sources */,
+				32795C0B203DA4C4002420E2 /* DisabledRoomInputToolbarView.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,
 				F083BE4C1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F075BEDB1EBB26F100A7B68A /* TableViewCellWithCollectionView.m in Sources */,

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DisabledRoomInputToolbarView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a84-Vc-6ud" userLabel="MainToolBar View">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ln-yI-ef9" userLabel="Separator View">
+                            <rect key="frame" x="10" y="0.0" width="580" height="1"/>
+                            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="WBM-ts-zPX"/>
+                            </constraints>
+                        </view>
+                        <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="dd4-pE-Es1" userLabel="Picture View" customClass="MXKImageView">
+                            <rect key="frame" x="13" y="8" width="30" height="30"/>
+                            <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="PictureView"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="gwh-Qs-gY1"/>
+                                <constraint firstAttribute="height" constant="30" id="wMB-Ec-D9s"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
+                            <rect key="frame" x="52" y="4" width="533" height="38"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="UITextView">
+                                    <rect key="frame" x="0.0" y="0.0" width="533" height="38"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="GrowingTextView"/>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstItem="wgb-ON-N29" firstAttribute="centerY" secondItem="QWp-NV-uh5" secondAttribute="centerY" id="PZl-Tb-mDv"/>
+                                <constraint firstAttribute="trailing" secondItem="wgb-ON-N29" secondAttribute="trailing" id="ms6-mg-0xf"/>
+                                <constraint firstItem="wgb-ON-N29" firstAttribute="height" secondItem="QWp-NV-uh5" secondAttribute="height" priority="750" id="pOn-UI-aTZ"/>
+                                <constraint firstItem="wgb-ON-N29" firstAttribute="leading" secondItem="QWp-NV-uh5" secondAttribute="leading" id="yvw-X3-WtY"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="1FO-iu-urG"/>
+                        <constraint firstItem="3ln-yI-ef9" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="10" id="BwP-sF-qE1"/>
+                        <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="52" id="ErD-eB-stF"/>
+                        <constraint firstItem="dd4-pE-Es1" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="13" id="Jem-U2-oEq"/>
+                        <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="4" id="NGr-2o-sOP"/>
+                        <constraint firstAttribute="trailing" secondItem="3ln-yI-ef9" secondAttribute="trailing" constant="10" id="RXB-PN-3n8"/>
+                        <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="4" id="WyZ-3i-OHi"/>
+                        <constraint firstAttribute="height" constant="46" id="Yjj-ua-rbe"/>
+                        <constraint firstAttribute="trailing" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="15" id="hXO-cY-Jgz"/>
+                        <constraint firstItem="dd4-pE-Es1" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="8" id="xjT-If-1cd"/>
+                        <constraint firstItem="3ln-yI-ef9" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" id="yUF-5t-x03"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="DisabledRoomInputToolbarView"/>
+            <constraints>
+                <constraint firstItem="a84-Vc-6ud" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VBS-kE-WiP"/>
+                <constraint firstAttribute="trailing" secondItem="a84-Vc-6ud" secondAttribute="trailing" id="cNb-nJ-iAI"/>
+                <constraint firstAttribute="bottom" secondItem="a84-Vc-6ud" secondAttribute="bottom" id="jFc-lW-hpZ"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="disabledReasonTextView" destination="wgb-ON-N29" id="JnB-sr-s3I"/>
+                <outlet property="mainToolbarMinHeightConstraint" destination="1FO-iu-urG" id="2U6-h2-0zQ"/>
+                <outlet property="mainToolbarView" destination="a84-Vc-6ud" id="5p3-Ft-0gv"/>
+                <outlet property="messageComposerContainer" destination="QWp-NV-uh5" id="APR-B5-ogC"/>
+                <outlet property="messageComposerContainerBottomConstraint" destination="NGr-2o-sOP" id="oez-6D-IKA"/>
+                <outlet property="messageComposerContainerTopConstraint" destination="WyZ-3i-OHi" id="OcO-1f-bNA"/>
+                <outlet property="pictureView" destination="dd4-pE-Es1" id="rb6-z2-pJ9"/>
+                <outlet property="separatorView" destination="3ln-yI-ef9" id="HQ3-B4-Goj"/>
+            </connections>
+        </view>
+    </objects>
+</document>
