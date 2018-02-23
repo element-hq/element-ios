@@ -1121,18 +1121,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         if (roomId.length)
         {
             NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-            MXRoom* room = nil;
+            MXKRoomDataSource* roomDataSource = nil;
             for (MXKAccount* account in mxAccounts)
             {
-                room = [account.mxSession roomWithRoomId:roomId];
-                if (room)
+                MXKRoomDataSourceManager* manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+                if (manager)
                 {
-                    break;
+                    roomDataSource = [manager roomDataSourceForRoom:roomId create:false];
+                    if (roomDataSource)
+                    {
+                        break;
+                    }
                 }
             }
-            if (room == nil)
+            if (roomDataSource == nil)
             {
-                NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room with id %@ not found", roomId);
+                NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room data source with id %@ not found", roomId);
             }
             else
             {
@@ -1140,7 +1144,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 if (responseText != nil && responseText.length != 0)
                 {
                     NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
-                    [room sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
+                    [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
+                        UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
+                        failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+                        failureNotification.userInfo = notification.userInfo;
+                        [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
                         NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
                     }];
                 }
@@ -1151,6 +1159,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: unhandled identifier %@", identifier);
     }
+    completionHandler();
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
