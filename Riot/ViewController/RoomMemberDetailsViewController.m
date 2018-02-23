@@ -406,11 +406,28 @@
         }
         
         // Retrieve member's devices
-        [self.mxRoom.mxSession.crypto devicesForUser:self.mxRoomMember.userId complete:^(NSArray<MXDeviceInfo *> *devices) {
-            devicesArray = devices;
+        NSString *userId = self.mxRoomMember.userId;
+        __weak typeof(self) weakSelf = self;
 
-            // Reload the full table to take into account a potential change on a device status.
-            [super updateMemberInfo];
+        [self.mxRoom.mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
+
+            if (weakSelf)
+            {
+                // Restore the status bar
+                typeof(self) self = weakSelf;
+
+                self->devicesArray = usersDevicesInfoMap.map[userId].allValues;
+
+                // Reload the full table to take into account a potential change on a device status.
+                [super updateMemberInfo];
+            }
+
+        } failure:^(NSError *error) {
+
+            NSLog(@"[RoomMemberDetailsVC] Crypto failed to download device info for user: %@", userId);
+
+            // Notify MatrixKit user
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
         }];
     }
     

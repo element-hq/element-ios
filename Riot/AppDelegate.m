@@ -3733,8 +3733,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSString *deviceId = [pendingKeyRequests deviceIdsForUser:userId].firstObject;
 
             // Give the client a chance to refresh the device list
-            // Note: react-sdk does not do a force download
-            [mxSession.crypto downloadKeys:@[userId] success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
+            [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
 
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)
