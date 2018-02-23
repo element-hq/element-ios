@@ -1124,19 +1124,20 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             MXKRoomDataSource* roomDataSource = nil;
             for (MXKAccount* account in mxAccounts)
             {
-                MXKRoomDataSourceManager* manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
-                if (manager)
+                MXRoom* room = [account.mxSession roomWithRoomId:roomId];
+                if (room)
                 {
-                    roomDataSource = [manager roomDataSourceForRoom:roomId create:false];
-                    if (roomDataSource)
+                    MXKRoomDataSourceManager* manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+                    if (manager)
                     {
-                        break;
+                        roomDataSource = [manager roomDataSourceForRoom:roomId create:YES];
                     }
+                    break;
                 }
             }
             if (roomDataSource == nil)
             {
-                NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room data source with id %@ not found", roomId);
+                NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room with id %@ not found", roomId);
             }
             else
             {
