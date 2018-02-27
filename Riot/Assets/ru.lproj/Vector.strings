@@ -514,3 +514,4 @@
 // Group rooms
 "group_rooms_filter_rooms" = "Фильтр комнат сообщества";
 "e2e_room_key_request_message_new_device" = "Вы добавили новое устройство '%@', которое запрашивает ключи шифрования.";
+"room_do_not_have_permission_to_post" = "У вас нет разрешения на публикацию в этой комнате";
