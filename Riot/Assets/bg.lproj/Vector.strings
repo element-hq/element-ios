@@ -47,3 +47,4 @@
 "auth_email_placeholder" = "Имейл адрес";
 "auth_optional_phone_placeholder" = "Телефонен номер (по избор)";
 "auth_phone_placeholder" = "Телефонен номер";
+"auth_repeat_password_placeholder" = "Повтори парола";
