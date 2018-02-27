@@ -1097,8 +1097,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (!isPushRegistered)
     {
+        NSMutableSet* notificationCategories = [NSMutableSet set];
+        if ([[UIMutableUserNotificationAction class] instancesRespondToSelector:@selector(behavior)])
+        {
+            UIMutableUserNotificationAction* quickReply = [[UIMutableUserNotificationAction alloc] init];
+            quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+            quickReply.identifier = @"inline-reply";
+            quickReply.activationMode = UIUserNotificationActivationModeBackground;
+            quickReply.authenticationRequired = true;
+            quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
+
+            UIMutableUserNotificationCategory* quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
+            quickReplyCategory.identifier = @"QUICK_REPLY";
+            [quickReplyCategory setActions:[NSArray arrayWithObjects:quickReply, nil] forContext:UIUserNotificationActionContextDefault];
+            [notificationCategories addObject:quickReplyCategory];
+        }
+
         // Registration on iOS 8 and later
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:nil];
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:notificationCategories];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     }
 }
@@ -1125,6 +1141,56 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
         [accountManager setPushDeviceToken:nil withPushOptions:nil];
     }
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
+{
+    if ([identifier isEqualToString: @"inline-reply"])
+    {
+        NSString* roomId = notification.userInfo[@"room_id"];
+        if (roomId.length)
+        {
+            NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+            MXKRoomDataSource* roomDataSource = nil;
+            for (MXKAccount* account in mxAccounts)
+            {
+                MXRoom* room = [account.mxSession roomWithRoomId:roomId];
+                if (room)
+                {
+                    MXKRoomDataSourceManager* manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+                    if (manager)
+                    {
+                        roomDataSource = [manager roomDataSourceForRoom:roomId create:YES];
+                    }
+                    break;
+                }
+            }
+            if (roomDataSource == nil)
+            {
+                NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room with id %@ not found", roomId);
+            }
+            else
+            {
+                NSString* responseText = [responseInfo objectForKey:UIUserNotificationActionResponseTypedTextKey];
+                if (responseText != nil && responseText.length != 0)
+                {
+                    NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
+                    [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
+                        UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
+                        failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+                        failureNotification.userInfo = notification.userInfo;
+                        [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
+                        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
+                    }];
+                }
+            }
+        }
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: unhandled identifier %@", identifier);
+    }
+    completionHandler();
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -1380,6 +1446,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                @"user_id": account.mxCredentials.userId
                                                };
                 
+                BOOL isNotificationContentShown = !event.isEncrypted || account.showDecryptedContentInNotifications;
+                if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
+                {
+                    eventNotification.category = @"QUICK_REPLY";
+                }
+
                 // Set sound name based on the value provided in action of MXPushRule
                 for (MXPushRuleAction *action in rule.actions)
                 {
@@ -3733,8 +3805,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSString *deviceId = [pendingKeyRequests deviceIdsForUser:userId].firstObject;
 
             // Give the client a chance to refresh the device list
-            // Note: react-sdk does not do a force download
-            [mxSession.crypto downloadKeys:@[userId] success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
+            [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
 
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)

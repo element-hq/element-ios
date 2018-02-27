@@ -1,3 +1,40 @@
+Changes in 0.6.10 (2018-02-14)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.6).
+ * Group Details: Put the name of the community in the title.
+
+Bug Fix:
+ * App crashes on cold start if no account is defined.
+ * flair labels are a bit confusing (#1772).
+
+Changes in 0.6.9 (2018-02-10)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.5).
+ * Add a new tab to list the user's communities (vector-im/riot-meta#114).
+ * Add new screens to display the community details, edition is not supported yet (vector-im/riot-meta#115, vector-im/riot-meta#116, vector-im/riot-meta#117).
+ * Room Settings: handle the related communities in order to show flair for them.
+ * User Settings: Let the user enable his community flair in rooms configured to show it.
+ * Replace Google Analytic by Matomo(Piwik) (PR #1753).
+ * Spontaneous logout: Try to detect it in AuthenticationViewController and crash the app if it happens (PR #1761).
+ * Share: Make sure the progress bar is always displayed.
+ * Jitsi: update lib to jitsi-meet_2794 tag.
+
+Bug Fix:
+ * iPad: export e2e keys failed, there pops no window up where to save the keys (#1733).
+ * Widget can display "Forbidden" (#1723).
+ * keyboard is not dark when entering bug report in dark theme (#1720), thanks to @daverPL (PR #1729).
+ * Contact Details: The contact avatar quality is very low when the contact details screen is opened from a link.
+ * Cancel Buttons use style Cancel (PR #1737), thanks to @tellowkrinkle.
+ * Share Extension: Fix crash on a weak self (PR #1744).
+ * Share: The extension crashes if you try to share a GIF image (#1759)
+ 
+Translations:
+ * Catalan, added thanks to @sim6 and @salvadorpla (PR #1767).
+
 Changes in 0.6.8 (2018-01-03)
 ===============================================
 

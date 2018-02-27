@@ -484,8 +484,8 @@
 // Groups tab
 "group_invite_section" = "GONBIDAPENAK";
 "group_section" = "KOMUNITATEAK";
-"settings_flair" = "IKURRA";
-"room_details_flair_section" = "Ikurra";
+"settings_flair" = "Erakutsi ikurra non baimenduta";
+"room_details_flair_section" = "Erakutsi ikurra komunitateentzat";
 "room_details_new_flair_placeholder" = "Gehitu komunitate ID berria (adib. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Baliogabeko formatua";
 "room_details_flair_invalid_id_prompt_msg" = "%@ ez da komunitate batentzako baliozko identifikatzailea";
