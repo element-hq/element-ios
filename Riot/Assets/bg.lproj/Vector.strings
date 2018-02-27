@@ -53,3 +53,4 @@
 "auth_identity_server_placeholder" = "URL (напр. https://matrix.org)";
 "auth_invalid_login_param" = "Неправилно потребителско име и/или парола";
 "auth_invalid_user_name" = "Потребителските имена могат да съдържат само букви, цифри, точки, тирета и долни черти";
+"auth_invalid_password" = "Паролата е твърде къса (мин. 6)";
