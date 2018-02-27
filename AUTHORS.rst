@@ -29,4 +29,10 @@ Aram Sargsyan <aram.sargsyan.1997 at gmail.com>
  
 Vivian Lim <vivvnlim at gmail.com>
  * PR #1513 Return key on hardware keyboards now sends messages
+
+Dawid Rączka <dawidraczka at gmail.com>
+ * PR #1729 Fixed keyboard color when entering bug report
+ 
+Evan Tang <etang110 at gmail.com>
+ * PR #1737 Cancel Buttons use style Cancel
  
