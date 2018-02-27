@@ -48,3 +48,8 @@
 "auth_optional_phone_placeholder" = "Телефонен номер (по избор)";
 "auth_phone_placeholder" = "Телефонен номер";
 "auth_repeat_password_placeholder" = "Повтори парола";
+"auth_repeat_new_password_placeholder" = "Потвърди своята нова парола";
+"auth_home_server_placeholder" = "URL (напр. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (напр. https://matrix.org)";
+"auth_invalid_login_param" = "Неправилно потребителско име и/или парола";
+"auth_invalid_user_name" = "Потребителските имена могат да съдържат само букви, цифри, точки, тирета и долни черти";
