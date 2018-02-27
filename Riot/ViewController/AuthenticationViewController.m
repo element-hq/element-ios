@@ -210,7 +210,7 @@
     if ([MXKAccountManager sharedManager].activeAccounts.count)
     {
         // For now, we do not have better solution than forcing the user to restart the app
-        [NSException raise:@"False " format:@"AuthenticationViewController has been displayed whereas there is an existing account"];
+        [NSException raise:@"False logout. Kill the app" format:@"AuthenticationViewController has been displayed whereas there is an existing account"];
     }
 }
 
