@@ -233,6 +233,7 @@
 "room_two_users_are_typing" = "%@ & %@ are typing…";
 "room_many_users_are_typing" = "%@, %@ & others are typing…";
 "room_message_placeholder" = "Send a message (unencrypted)…";
+"room_do_not_have_permission_to_post" = "You do not have permission to post to this room";
 "encrypted_room_message_placeholder" = "Send an encrypted message…";
 "room_message_short_placeholder" = "Send a message…";
 "room_offline_notification" = "Connectivity to the server has been lost.";

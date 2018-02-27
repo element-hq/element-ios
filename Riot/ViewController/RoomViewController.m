@@ -23,6 +23,7 @@
 #import "AppDelegate.h"
 
 #import "RoomInputToolbarView.h"
+#import "DisabledRoomInputToolbarView.h"
 
 #import "RoomActivitiesView.h"
 
@@ -348,10 +349,10 @@
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
-    [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+    [self setRoomInputToolbarViewClass];
     
     // Update the inputToolBar height.
-    CGFloat height = (self.inputToolbarView ? ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant : 0);
+    CGFloat height = [self inputToolbarHeight];
     // Disable animation during the update
     [UIView setAnimationsEnabled:NO];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
@@ -867,10 +868,10 @@
             // Restore tool bar view and room activities view if none
             if (!self.inputToolbarView)
             {
-                [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+                [self setRoomInputToolbarViewClass];
                 
                 // Update the inputToolBar height.
-                CGFloat height = (self.inputToolbarView ? ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant : 0);
+                CGFloat height = [self inputToolbarHeight];
                 // Disable animation during the update
                 [UIView setAnimationsEnabled:NO];
                 [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
@@ -905,8 +906,24 @@
     [super leaveRoomOnEvent:event];
 }
 
-- (void)setRoomInputToolbarViewClass:(Class)roomInputToolbarViewClass
+// Set the input toolbar according to the current display
+- (void)setRoomInputToolbarViewClass
 {
+    Class roomInputToolbarViewClass = RoomInputToolbarView.class;
+
+    // Check the user has enough power to post message
+    if (self.roomDataSource.room.state)
+    {
+        MXRoomPowerLevels *powerLevels = self.roomDataSource.room.state.powerLevels;
+        NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+
+        BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
+        if (!canSend)
+        {
+            roomInputToolbarViewClass = DisabledRoomInputToolbarView.class;
+        }
+    }
+
     // Do not show toolbar in case of preview
     if (self.isRoomPreview)
     {
@@ -914,6 +931,23 @@
     }
     
     [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+}
+
+// Get the height of the current room input toolbar
+- (CGFloat)inputToolbarHeight
+{
+    CGFloat height = 0;
+
+    if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    {
+        height = ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant;
+    }
+    else if ([self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
+    {
+        height = ((DisabledRoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant;
+    }
+
+    return height;
 }
 
 - (void)setRoomActivitiesViewClass:(Class)roomActivitiesViewClass
@@ -1271,6 +1305,8 @@
 
 - (void)refreshRoomInputToolbar
 {
+    MXKImageView *userPictureView;
+
     // Check whether the input toolbar is ready before updating it.
     if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
     {
@@ -1279,22 +1315,8 @@
         // Check whether the call option is supported
         roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.state.joinedMembers.count >= 2;
         
-        // Set user picture in input toolbar
-        MXKImageView *userPictureView = roomInputToolbarView.pictureView;
-        if (userPictureView)
-        {
-            UIImage *preview = [AvatarGenerator generateAvatarForMatrixItem:self.mainSession.myUser.userId withDisplayName:self.mainSession.myUser.displayname];
-            NSString *avatarThumbURL = nil;
-            if (self.mainSession.myUser.avatarUrl)
-            {
-                // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-                avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
-            }
-            userPictureView.enableInMemoryCache = YES;
-            [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
-            [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
-            userPictureView.clipsToBounds = YES;
-        }
+        // Get user picture view in input toolbar
+        userPictureView = roomInputToolbarView.pictureView;
         
         // Show the hangup button if there is an active call or an active jitsi
         // conference call in the current room
@@ -1318,6 +1340,32 @@
             // Encrypt the user's messages as soon as the user supports the encryption?
             roomInputToolbarView.isEncryptionEnabled = (self.mainSession.crypto != nil);
         }
+    }
+    else if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
+    {
+        DisabledRoomInputToolbarView *roomInputToolbarView = (DisabledRoomInputToolbarView*)self.inputToolbarView;
+
+        // Get user picture view in input toolbar
+        userPictureView = roomInputToolbarView.pictureView;
+
+        // For the moment, there is only one reason to use `DisabledRoomInputToolbarView`
+        [roomInputToolbarView setDisabledReason:NSLocalizedStringFromTable(@"room_do_not_have_permission_to_post", @"Vector", nil)];
+    }
+
+    // Set user picture in input toolbar
+    if (userPictureView)
+    {
+        UIImage *preview = [AvatarGenerator generateAvatarForMatrixItem:self.mainSession.myUser.userId withDisplayName:self.mainSession.myUser.displayname];
+        NSString *avatarThumbURL = nil;
+        if (self.mainSession.myUser.avatarUrl)
+        {
+            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+            avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+        }
+        userPictureView.enableInMemoryCache = YES;
+        [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
+        [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
+        userPictureView.clipsToBounds = YES;
     }
 }
 
@@ -3265,7 +3313,7 @@
                         [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
                         
                         // Update the inputToolBar height.
-                        CGFloat height = (self.inputToolbarView ? ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant : 0);
+                        CGFloat height = [self inputToolbarHeight];
                         // Disable animation during the update
                         [UIView setAnimationsEnabled:NO];
                         [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];

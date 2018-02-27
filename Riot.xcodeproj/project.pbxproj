@@ -40,6 +40,9 @@
 		3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3205ED831E97725E003D65FA /* DirectoryServerTableViewCell.xib */; };
 		321082B21F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 321082B01F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m */; };
 		321082B31F0E9F41002E0091 /* RoomMembershipCollapsedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */; };
+		32117182203ACD32002C16C6 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3211717C203ACD32002C16C6 /* Vector.strings */; };
+		32117183203ACD32002C16C6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3211717E203ACD32002C16C6 /* Localizable.strings */; };
+		32117184203ACD32002C16C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32117180203ACD32002C16C6 /* InfoPlist.strings */; };
 		32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32185B301F20FA2B00752141 /* LanguagePickerViewController.m */; };
 		322806A01F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3228069E1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.m */; };
 		322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3228069F1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib */; };
@@ -63,6 +66,8 @@
 		327382C21F276AED00356143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BC1F276AED00356143 /* InfoPlist.strings */; };
 		327382C31F276AED00356143 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382BE1F276AED00356143 /* Localizable.strings */; };
 		327382C41F276AED00356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
+		32795C0B203DA4C4002420E2 /* DisabledRoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32795C09203DA4C3002420E2 /* DisabledRoomInputToolbarView.m */; };
+		32795C0C203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32795C0A203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib */; };
 		3284D7FF1FBB34B70090AA80 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */; };
 		32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA51F473BDB0076CA16 /* Localizable.strings */; };
 		32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA71F473BDB0076CA16 /* Vector.strings */; };
@@ -682,6 +687,9 @@
 		321082AF1F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipCollapsedBubbleCell.h; sourceTree = "<group>"; };
 		321082B01F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipCollapsedBubbleCell.m; sourceTree = "<group>"; };
 		321082B11F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipCollapsedBubbleCell.xib; sourceTree = "<group>"; };
+		3211717D203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = Vector.strings; sourceTree = "<group>"; };
+		3211717F203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = Localizable.strings; sourceTree = "<group>"; };
+		32117181203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32185B2F1F20FA2B00752141 /* LanguagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguagePickerViewController.h; sourceTree = "<group>"; };
 		32185B301F20FA2B00752141 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
 		3228069D1F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipExpandedBubbleCell.h; sourceTree = "<group>"; };
@@ -711,6 +719,9 @@
 		327382BD1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		327382BF1F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		327382C11F276AED00356143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vector.strings; sourceTree = "<group>"; };
+		32795C08203DA4C3002420E2 /* DisabledRoomInputToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisabledRoomInputToolbarView.h; sourceTree = "<group>"; };
+		32795C09203DA4C3002420E2 /* DisabledRoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisabledRoomInputToolbarView.m; sourceTree = "<group>"; };
+		32795C0A203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisabledRoomInputToolbarView.xib; sourceTree = "<group>"; };
 		3284D7FD1FBB34B70090AA80 /* RoomKeyRequestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomKeyRequestViewController.h; sourceTree = "<group>"; };
 		3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomKeyRequestViewController.m; sourceTree = "<group>"; };
 		32918EA61F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
@@ -1504,6 +1515,16 @@
 			path = Directory;
 			sourceTree = "<group>";
 		};
+		3211717B203ACD32002C16C6 /* ca.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				3211717C203ACD32002C16C6 /* Vector.strings */,
+				3211717E203ACD32002C16C6 /* Localizable.strings */,
+				32117180203ACD32002C16C6 /* InfoPlist.strings */,
+			);
+			path = ca.lproj;
+			sourceTree = "<group>";
+		};
 		3233F7291F31F3B4006ACA81 /* libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1739,6 +1760,7 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3211717B203ACD32002C16C6 /* ca.lproj */,
 				F0173EAE1FCF346800B5F6A3 /* vi.lproj */,
 				F04AF2631F83A4C000D20F4D /* eu.lproj */,
 				F04AF25E1F83A4C000D20F4D /* zh_Hans.lproj */,
@@ -2453,6 +2475,9 @@
 		F083BCD81E7009EC00A9B29C /* RoomInputToolbar */ = {
 			isa = PBXGroup;
 			children = (
+				32795C08203DA4C3002420E2 /* DisabledRoomInputToolbarView.h */,
+				32795C09203DA4C3002420E2 /* DisabledRoomInputToolbarView.m */,
+				32795C0A203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib */,
 				F083BCD91E7009EC00A9B29C /* RoomInputToolbarView.h */,
 				F083BCDA1E7009EC00A9B29C /* RoomInputToolbarView.m */,
 				F083BCDB1E7009EC00A9B29C /* RoomInputToolbarView.xib */,
@@ -2805,6 +2830,7 @@
 				zh_Hans,
 				eu,
 				vi,
+				ca,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -2926,6 +2952,7 @@
 				F083BE9D1E7009ED00A9B29C /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				F083BDC41E7009ED00A9B29C /* scrollup@3x.png in Resources */,
 				F083BD291E7009ED00A9B29C /* animatedLogo-1.png in Resources */,
+				32117184203ACD32002C16C6 /* InfoPlist.strings in Resources */,
 				F083BD4F1E7009ED00A9B29C /* camera_play@2x.png in Resources */,
 				F046DC7A1FE19F8E00E3DAF0 /* create_group@2x.png in Resources */,
 				321082B31F0E9F41002E0091 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
@@ -3137,6 +3164,7 @@
 				F083BE0D1E7009ED00A9B29C /* ContactDetailsViewController.xib in Resources */,
 				F083BDCB1E7009ED00A9B29C /* selection_tick.png in Resources */,
 				F083BD6C1E7009ED00A9B29C /* disclosure_icon@2x.png in Resources */,
+				32795C0C203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib in Resources */,
 				F083BD4A1E7009ED00A9B29C /* call_video_mute_on_icon@3x.png in Resources */,
 				F083BE8F1E7009ED00A9B29C /* RoomAvatarTitleView.xib in Resources */,
 				F083BD9E1E7009ED00A9B29C /* mod_icon.png in Resources */,
@@ -3163,6 +3191,7 @@
 				F083BD931E7009ED00A9B29C /* group@2x.png in Resources */,
 				F0614A0D1EDDCCE700F5DC9A /* jump_to_unread.png in Resources */,
 				F083BDC11E7009ED00A9B29C /* scrolldown@3x.png in Resources */,
+				32117183203ACD32002C16C6 /* Localizable.strings in Resources */,
 				F083BD321E7009ED00A9B29C /* bubbles_bg_landscape@3x.png in Resources */,
 				F083BE7F1E7009ED00A9B29C /* InviteRecentTableViewCell.xib in Resources */,
 				F083BDA11E7009ED00A9B29C /* newmessages.png in Resources */,
@@ -3219,6 +3248,7 @@
 				322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				F083BE201E7009ED00A9B29C /* RoomParticipantsViewController.xib in Resources */,
 				F083BE471E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				32117182203ACD32002C16C6 /* Vector.strings in Resources */,
 				32AE61E51F0A971B007255F4 /* RoomMembershipBubbleCell.xib in Resources */,
 				F083BDA01E7009ED00A9B29C /* mod_icon@3x.png in Resources */,
 				F083BE491E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
@@ -3617,6 +3647,7 @@
 				F083BE191E7009ED00A9B29C /* RecentsViewController.m in Sources */,
 				F0B4CBA51F418D0B008E99C5 /* WebViewViewController.m in Sources */,
 				F0E5D90E1FF6DDCF00560D7F /* GroupRoomsViewController.m in Sources */,
+				32795C0B203DA4C4002420E2 /* DisabledRoomInputToolbarView.m in Sources */,
 				F083BE351E7009ED00A9B29C /* MediaAlbumTableCell.m in Sources */,
 				F083BE4C1E7009ED00A9B29C /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F075BEDB1EBB26F100A7B68A /* TableViewCellWithCollectionView.m in Sources */,
@@ -3700,6 +3731,30 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		3211717C203ACD32002C16C6 /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3211717D203ACD32002C16C6 /* ca */,
+			);
+			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		3211717E203ACD32002C16C6 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3211717F203ACD32002C16C6 /* ca */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		32117180203ACD32002C16C6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32117181203ACD32002C16C6 /* ca */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		325E1C131E8D03950018D91E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
