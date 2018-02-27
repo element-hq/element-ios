@@ -1,3 +1,12 @@
+Changes in 0.6.11 (2018-02-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.7).
+
+Bug Fix:
+ * My communities screen is empty despite me being in several groups (#1792).
+
 Changes in 0.6.10 (2018-02-14)
 ===============================================
 
