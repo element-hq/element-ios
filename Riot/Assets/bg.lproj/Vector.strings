@@ -48,7 +48,7 @@
 "auth_optional_phone_placeholder" = "Телефонен номер (по избор)";
 "auth_phone_placeholder" = "Телефонен номер";
 "auth_repeat_password_placeholder" = "Повтори парола";
-"auth_repeat_new_password_placeholder" = "Потвърди своята нова парола";
+"auth_repeat_new_password_placeholder" = "Потвърди новата парола";
 "auth_home_server_placeholder" = "URL (напр. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (напр. https://matrix.org)";
 "auth_invalid_login_param" = "Неправилно потребителско име и/или парола";
@@ -57,10 +57,10 @@
 "auth_invalid_email" = "Това не изглежда да е валиден имейл адрес";
 "auth_invalid_phone" = "Това не изглежда да е валиден телефонен номер";
 "auth_missing_password" = "Липсва парола";
-"auth_add_email_message" = "Добавете имейл адрес в профила си, за да позволите на потребители да ви откриват и да можете да възстановите Вашата парола.";
+"auth_add_email_message" = "Добавете имейл адрес в профила си, за да позволите на потребители да ви откриват и да можете да възстановявате Вашата парола.";
 "auth_add_phone_message" = "Добавете телефонен номер в профила си, за да позволите на потребители да ви откриват.";
-"auth_add_email_phone_message" = "Добавете имейл адрес и/или телефонен номер в профила си, за да позволите на потребители да ви откриват. Имейл адрес също Ви позволява да възстановите Вашата парола.";
-"auth_add_email_and_phone_message" = "Добавете имейл адрес и телефонен номер в профила си, за да позволите на потребители да ви откриват. Имейл адрес също Ви позволява да възстановите Вашата парола.";
+"auth_add_email_phone_message" = "Добавете имейл адрес и/или телефонен номер в профила си, за да позволите на потребители да ви откриват. Имейл адресът също Ви позволява да възстановите Вашата парола.";
+"auth_add_email_and_phone_message" = "Добавете имейл адрес и телефонен номер в профила си, за да позволите на потребители да Ви откриват. Имейл адресът също Ви позволява да възстановявате Вашата парола.";
 "auth_missing_email" = "Липсва имейл адрес";
 "auth_missing_phone" = "Липсва телефонен номер";
 "auth_missing_email_or_phone" = "Липсва имейл адрес или телефонен номер";
@@ -95,13 +95,13 @@
 "room_creation_privacy" = "Конфиденциалност";
 "room_creation_private_room" = "Този чат е личен";
 "room_creation_public_room" = "Този чат е публичен";
-"room_creation_make_public" = "Направи публичен";
+"room_creation_make_public" = "Направи публична";
 "room_creation_make_public_prompt_title" = "Направи този чат публичен?";
 "auth_return_to_login" = "Връщане към страницата за влизане в профила";
 "auth_submit" = "Изпрати";
 "room_creation_make_public_prompt_msg" = "Сигурни ли сте, че искате да направите този чат публичен? Всеки може да прочете съобщенията Ви и да се присъедини към чата.";
-"room_creation_keep_private" = "Остави личен";
-"room_creation_make_private" = "Направи личен";
+"room_creation_keep_private" = "Остави лична";
+"room_creation_make_private" = "Направи лична";
 "room_creation_wait_for_creation" = "Вече се създава стая. Моля, изчакайте.";
 // Room recents
 "room_recents_directory_section" = "ДИРЕКТОРИЯ СЪС СТАИ";
@@ -152,11 +152,11 @@
 "contacts_address_book_permission_denied" = "Не сте позволили достъп на Riot до локалните Ви контакти";
 "contacts_user_directory_section" = "ДИРЕКТОРИЯ С ПОТРЕБИТЕЛИ";
 "contacts_user_directory_offline_section" = "ДИРЕКТОРИЯ С ПОТРЕБИТЕЛИ (офлайн)";
-"room_details_access_section_directory_toggle" = "Прибавяне тази стая към директорията със стаи";
-"room_details_fail_to_update_room_directory_visibility" = "Неуспешно обновяване на видимостта на директорията със стаи";
+"room_details_access_section_directory_toggle" = "Включване в директорията със стаи";
+"room_details_fail_to_update_room_directory_visibility" = "Неуспешно обновяване на видимостта за директорията със стаи";
 // Directory
 "directory_title" = "Директория";
-"directory_server_picker_title" = "Избери директория";
+"directory_server_picker_title" = "Избиране на директория";
 // Chat participants
 "room_participants_title" = "Участници";
 "room_participants_add_participant" = "Добави участник";
@@ -166,14 +166,14 @@
 "room_participants_leave_prompt_msg" = "Сигурни ли сте, че искате да напуснете стаята?";
 "room_participants_remove_prompt_title" = "Потвърждение";
 "room_participants_remove_prompt_msg" = "Сигурни ли сте, че искате да премахнете %@ от този чат?";
-"room_participants_remove_third_party_invite_msg" = "Премахване на покани от други хора не се поддрържа в момента";
+"room_participants_remove_third_party_invite_msg" = "Премахване на покани от други потребители не се поддрържа в момента";
 "room_participants_invite_prompt_title" = "Потвърждение";
 "room_participants_invite_prompt_msg" = "Сигурни ли сте, че искате да поканите %@ в този чат?";
 "room_participants_filter_room_members" = "Филтриране на членовете";
 "room_participants_invite_another_user" = "Търси потребител по ID, име или имейл";
 "room_participants_invite_malformed_id_title" = "Грешка при поканването";
 "room_participants_invite_malformed_id" = "Грешно формиранo ID. Трябва да бъде имейл адрес или Matrix ID, например '@localpart:domain'";
-"room_participants_invited_section" = "ПОКАНЕН";
+"room_participants_invited_section" = "ПОКАНЕНИ";
 "room_participants_online" = "Онлайн";
 "room_participants_offline" = "Офлайн";
 "room_participants_unknown" = "Неизвестен";
@@ -194,7 +194,7 @@
 "room_participants_action_set_moderator" = "Направи модератор";
 "room_participants_action_set_admin" = "Направи администратор";
 "room_participants_action_start_new_chat" = "Започни нов чат";
-"room_participants_action_start_voice_call" = "Започни разговор";
+"room_participants_action_start_voice_call" = "Започни гласов разговор";
 "room_participants_action_start_video_call" = "Започни видео разговор";
 "room_participants_action_mention" = "Спомени";
 // Chat
@@ -214,7 +214,7 @@
 "room_ongoing_conference_call" = "Текущ групов разговор. Присъедини се като %@ или %@.";
 "room_ongoing_conference_call_with_close" = "Текущ групов разговор. Присъедини се като %@ или %@. %@ го.";
 "room_ongoing_conference_call_close" = "Затвори";
-"room_conference_call_no_power" = "Трябва Ви разрешение, за да управлявате групов разговор в тази стая";
+"room_conference_call_no_power" = "Трябва Ви разрешение, за да управлявате групови разговори в тази стая";
 "room_prompt_resend" = "Изпрати всички отново";
 "room_prompt_cancel" = "откажи всички";
 "room_resend_unsent_messages" = "Изпрати отново неизпратените съобщения";
@@ -226,8 +226,8 @@
 "room_event_action_share" = "Сподели";
 "room_event_action_permalink" = "Permalink";
 "room_event_action_view_source" = "Прегледай източника";
-"room_event_action_report" = "Съобщи съдържанието";
-"room_event_action_report_prompt_reason" = "Причина за съобщаването на това съдържание";
+"room_event_action_report" = "Докладвай съдържанието";
+"room_event_action_report_prompt_reason" = "Причина за докладването на това съдържание";
 "room_event_action_report_prompt_ignore_user" = "Искате ли да скриете всички съобщения от този потребител?";
 "room_event_action_save" = "Запази";
 "room_event_action_resend" = "Изпрати отново";
@@ -238,7 +238,7 @@
 "room_event_failed_to_send" = "Неуспешно изпращане";
 // Unknown devices
 "unknown_devices_alert_title" = "Стаята съдържа непознати устройства";
-"unknown_devices_alert" = "Тази стая съдържа непознати устройства, който не са били потвърдени.\nТова означава, че няма гаранция, че устройствата принадлежат на потребителите, на който се твърди, че принадлежат.\nПрепоръчваме Ви да минете през процеса за потвърждение за всяко устройство, за да потвърдите, че принадлежат на легитимен собственик. Ако предпочитате, можете да изпратите съобщение без потвърждение.";
+"unknown_devices_alert" = "Тази стая съдържа непознати устройства, който не са били потвърдени.\nТова означава, че няма гаранция, че устройствата принадлежат на потребителите, на който се твърди, че принадлежат.\nПрепоръчваме Ви да минете през процеса за потвърждение за всяко устройство, за да потвърдите, че принадлежат на легитимен собственик. Ако предпочитате, можете да изпратите съобщението без потвърждение.";
 "unknown_devices_send_anyway" = "Изпрати въпреки това";
 "unknown_devices_call_anyway" = "Позвъни въпреки това";
 "unknown_devices_answer_anyway" = "Отговори въпреки това";
@@ -272,14 +272,14 @@
 "settings_ignored_users" = "ИГНОРИРАНИ ПОТРЕБИТЕЛИ";
 "settings_contacts" = "ЛОКАЛНИ КОНТАКТИ";
 "settings_advanced" = "РАЗШИРЕНИ";
-"settings_other" = "ДРУГ";
+"settings_other" = "ДРУГИ";
 "settings_labs" = "ЕКСПЕРИМЕНТИ";
 "settings_flair" = "Покажи значката, където е позволено";
 "settings_devices" = "УСТРОЙСТВА";
 "settings_cryptography" = "КРИПТОГРАФИЯ";
 "settings_sign_out" = "Изход";
 "settings_sign_out_confirmation" = "Сигурни ли сте?";
-"settings_sign_out_e2e_warn" = "Ще изгубите ключовете за шифроване от край до край. Това означава, че повече няма да можете да четете стари съобщения в шифровани стаи на това устройство.";
+"settings_sign_out_e2e_warn" = "Ще изгубите ключовете си за шифроване от край до край. Това означава, че на това устройство повече няма да можете да четете стари съобщения в шифровани стаи.";
 "settings_profile_picture" = "Профилна снимка";
 "settings_display_name" = "Име/псевдоним";
 "settings_first_name" = "Първо име";
@@ -295,13 +295,13 @@
 "settings_night_mode" = "Нощен режим";
 "settings_fail_to_update_profile" = "Неуспешно обновяване на профила";
 "settings_enable_push_notif" = "Известия на това устройство";
-"settings_show_decrypted_content" = "Показване на разшифрованото съдържание";
+"settings_show_decrypted_content" = "Показване на разшифровано съдържание";
 "settings_global_settings_info" = "Глобални настройки на известия са налични на Вашия %@ уеб клиент";
-"settings_pin_rooms_with_missed_notif" = "Закачване на стаи с пропуснати известия";
-"settings_pin_rooms_with_unread" = "Закачване на стаи с непрочетени съобщения";
+"settings_pin_rooms_with_missed_notif" = "Закачане на стаи с пропуснати известия";
+"settings_pin_rooms_with_unread" = "Закачане на стаи с непрочетени съобщения";
 "settings_on_denied_notification" = "Известията са отказани за %@. Моля, включете ги в настройките на устройството";
 "settings_enable_callkit" = "Интегрирани разговори";
-"settings_callkit_info" = "Получавайте входящи повиквания при заключен екран. Вижте Вашите Riot разговори в историята на системата. Ако iCloud е включвен, историята на разговорите може да бъде споделена с Apple.";
+"settings_callkit_info" = "Получаване на входящи повиквания при заключен екран. Показване на Riot разговори в историята на системата. Ако iCloud е включен, историята на разговорите се споделя с Apple.";
 "settings_ui_language" = "Език";
 "settings_ui_theme" = "Тема";
 "settings_ui_theme_auto" = "Автоматична";
@@ -317,9 +317,9 @@
 "settings_olm_version" = "Olm версия %@";
 "settings_version" = "Версия %@";
 "settings_term_conditions_url" = "https://riot.im/tac_apple";
-"settings_contacts_discover_matrix_users" = "Използваne на имейл и телефонен номер, за откривате на потребители";
+"settings_contacts_discover_matrix_users" = "Използване на имейл и телефонен номер за откриване на потребители";
 "settings_contacts_phonebook_country" = "Държава на телефонния указател";
-"settings_labs_e2e_encryption_prompt_message" = "За да завършите настройването на шифроването, трябва да влезете в профила си отново.";
+"settings_labs_e2e_encryption_prompt_message" = "За да завършите настройката на шифроването, трябва да влезете в профила си отново.";
 "settings_labs_matrix_apps" = "Matrix приложения";
 "settings_labs_create_conference_with_jitsi" = "Създаване на групови разговори с jitsi";
 "settings_term_conditions" = "Правила и условия";
@@ -371,7 +371,7 @@
 "room_details_addresses_invalid_address_prompt_title" = "Невалиден формат на псевдонима";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ не е валиден формат на псевдоним";
 "room_details_addresses_disable_main_address_prompt_title" = "Предупреждение за основен адрес";
-"room_details_addresses_disable_main_address_prompt_msg" = "Нямате определен основен адрес. Адресът по подразбиране за тази стая ще бъде избран на случаен принцип";
+"room_details_addresses_disable_main_address_prompt_msg" = "Няма зададен основен адрес. Адресът по подразбиране за тази стая ще бъде избран на случаен принцип";
 "room_details_flair_section" = "Показване на значка за общности";
 "room_details_new_flair_placeholder" = "Добави нов ID на общност (напр. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Невалиден формат";
@@ -382,22 +382,22 @@
 "room_details_advanced_enable_e2e_encryption" = "Включване на шифроване (не може да се изключи в последствие!)";
 "room_details_advanced_e2e_encryption_enabled" = "Шифроването е включено в тази стая";
 "room_details_advanced_e2e_encryption_disabled" = "Шифроването не е включено в тази стая.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Шифроване само с потвърдени устройства";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Шифроване само за потвърдени устройства";
 "room_details_advanced_e2e_encryption_prompt_message" = "Шифроване от край до край е експериментално и може да не е надеждно.\n\nВсе още не трябва да се доверявате на това, че ще защити Вашите данни.\n\nУстройства все още не могат да разшифроват история от преди присъединяването към стая.\n\nВеднъж включено, шифроването в стаята не може да бъде изключено (за сега).\n\nШифровани съобщения не са видими за клиенти, които все още не поддържат шифроване.";
 "room_details_fail_to_update_avatar" = "Неуспешно обновяване на снимката на стаята";
 "room_details_fail_to_update_room_name" = "Неуспешно обновяване на името на стаята";
 "room_details_fail_to_update_topic" = "Неуспешно обновяване на темата";
-"room_details_fail_to_update_room_guest_access" = "Неуспешно обновяване на достъпа на гости в стаята";
+"room_details_fail_to_update_room_guest_access" = "Неуспешно обновяване на достъпа за гости в стаята";
 "room_details_fail_to_update_room_join_rule" = "Неуспешно обновяване на правилото за присъединяване";
 "room_details_fail_to_update_history_visibility" = "Неуспешно обновяване на видимостта на историята";
 "room_details_fail_to_add_room_aliases" = "Неуспешно добавяне на новите адреси на стаята";
 "room_details_fail_to_remove_room_aliases" = "Неуспешно премахване на адресите на стаята";
 "room_details_fail_to_update_room_canonical_alias" = "Неуспешно обновяване на основния адрес";
 "room_details_fail_to_update_room_communities" = "Неуспешно обновяване на свързаните общности";
-"room_details_fail_to_update_room_direct" = "Неуспешо обновяване на";
+"room_details_fail_to_update_room_direct" = "Неуспешо обновяване на статуса за директен чат";
 "room_details_fail_to_enable_encryption" = "Неуспешно включване на шифроването в тази стая";
 "room_details_save_changes_prompt" = "Искате ли да запазите промените?";
-"room_details_set_main_address" = "Задаване като основен адрес";
+"room_details_set_main_address" = "Задай като основен адрес";
 "room_details_copy_room_id" = "Копирай ID на стаята";
 "room_details_copy_room_address" = "Копирай адреса на стаята";
 "room_details_copy_room_url" = "Копирай URL на стаята";
@@ -424,7 +424,7 @@
 "group_participants_invite_another_user" = "Търси потребител по ID или име";
 "group_participants_invite_malformed_id_title" = "Грешка при поканването";
 "group_participants_invite_malformed_id" = "Грешно формиранo ID. Трябва да бъде Matrix ID, например '@localpart:domain'";
-"group_participants_invited_section" = "ПОКАНЕН";
+"group_participants_invited_section" = "ПОКАНЕНИ";
 // Group rooms
 "group_rooms_filter_rooms" = "Филтриране на стаи";
 // Read Receipts
@@ -433,25 +433,25 @@
 // Media picker
 "media_picker_library" = "Библиотека";
 "media_picker_select" = "Избери";
-"directory_server_all_rooms" = "Всички стаи на %@  сървър";
+"directory_server_all_rooms" = "Всички стаи на сървър %@";
 "directory_server_all_native_rooms" = "Всички изцяло Matrix стаи";
 "directory_server_type_homeserver" = "Въведете Home сървър, от който да се покажат публични стаи";
 "directory_server_placeholder" = "matrix.org";
 // Events formatter
-"event_formatter_member_updates" = "%tu промени в членство";
+"event_formatter_member_updates" = "%tu промени в членствата";
 "event_formatter_widget_added" = "%@ приспособление добавено от %@";
 "event_formatter_widget_removed" = "%@ приспособление премахнато от %@";
-"event_formatter_jitsi_widget_added" = "VoIP конферентен разговор добавен от %@";
-"event_formatter_jitsi_widget_removed" = "VoIP конферентен разговор премахнат от %@";
+"event_formatter_jitsi_widget_added" = "VoIP групов разговор добавен от %@";
+"event_formatter_jitsi_widget_removed" = "VoIP групов разговор премахнат от %@";
 // Others
 "or" = "или";
 "today" = "Днес";
 "yesterday" = "Вчера";
 "you" = "Вие";
-"network_offline_prompt" = "Интернет връзката е офлайн.";
+"network_offline_prompt" = "Интернет връзката изглежда не работи.";
 "public_room_section_title" = "Публични стаи (в %@):";
 "bug_report_prompt" = "Приложението спря да работи последния път. Искате ли да изпратите съобщение за грешка?";
-"rage_shake_prompt" = "Изглежда, че разклащате телефона. Искате ли да изпратите съобщение за грешка?";
+"rage_shake_prompt" = "Изглежда, че разклащате телефона, което ни кара да мислим, че не сте доволни от Riot. Искате ли да изпратите съобщение за грешка?";
 "do_not_ask_again" = "Не питай отново";
 "camera_access_not_granted" = "%@ няма разрешение да използва камерата. Моля, проверете настройките за сигурност";
 "large_badge_value_k_format" = "%.1fK";
@@ -479,16 +479,16 @@
 "bug_report_progress_zipping" = "Събиране на логове";
 "bug_report_progress_uploading" = "Качване на доклада";
 "bug_report_send" = "Изпрати";
-"no_voip" = "%@ Ви се обажда, но %@ не поддържа разговори все още.\nМожете да пренебрегнете това известие и да отговорите на това позвъняването от друго устройство или да го откажете.";
+"no_voip" = "%@ Ви се обажда, но %@ все още не поддържа разговори.\nМожете да пренебрегнете това известие и да отговорите на това позвъняване от друго устройство или да го откажете.";
 // Crash report
-"google_analytics_use_prompt" = "Искате ли да помогнете за подобрението на %@ като автоматично изпращате съобщения за грешка и данни за използване?";
+"google_analytics_use_prompt" = "Искате ли да помогнете за подобрението на %@ като анонимно изпращате съобщения за грешки и данни за използване?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot поддръжа шифроване от край до край, но трябва да влезете в профила си отново, за да го включите.\n\nМоже да го направите сега или по-късно от настройките на приложението.";
+"e2e_enabling_on_app_update" = "Riot поддържа шифроване от край до край, но за да го включите трябва да влезете в профила си отново.\n\nМоже да го направите сега или по-късно от настройките на приложението.";
 "e2e_need_log_in_again" = "Трябва да влезете обратно в профила си, за да се създадат ключове за шифроване от край до край за това устройство и да се изпрати публичния ключ към Home сървъра.\nТова е еднократно. Извинете за неудобството.";
 "bug_crash_report_description" = "Моля, опишете какво правихте преди да възникне грешката:";
 "bug_report_logs_description" = "За да се диагностицират проблемите, логовете от този клиент ще бъдат изпратени с този доклад за грешки. Ако предпочитате да изпратите само текста по-горе, моля, премахнете отметката:";
 // Widget
-"widget_no_power_to_manage" = "Трябва да имате разрешение, за да управлявате приспособленията в тази стая";
+"widget_no_power_to_manage" = "Трябва Ви разрешение, за да управлявате приспособленията в тази стая";
 "widget_creation_failure" = "Създаване на приспособлението беше неуспешно";
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "За да извършите това, трябва да имате право да добавяте потребители.";
@@ -502,8 +502,8 @@
 "widget_integration_missing_user_id" = "Липсва user_id в заявката.";
 "widget_integration_room_not_visible" = "Стая %@ не е видима.";
 // Share extension
-"share_extension_auth_prompt" = "Влезте в главното приложение, за да споделите съдържанието";
-"share_extension_failed_to_encrypt" = "Неуспешно изпращане. Проверетек лючовете за шифроване за тази стая в главното приложение";
+"share_extension_auth_prompt" = "Влизане в главното приложение, за да споделите съдържанието";
+"share_extension_failed_to_encrypt" = "Неуспешно изпращане. Проверете ключовете за шифроване за тази стая в главното приложение";
 // Room key request dialog
 "e2e_room_key_request_title" = "Заявка за ключ за шифроване";
 "e2e_room_key_request_message_new_device" = "Добавихте ново устройство '%@', което изисква ключове за шифроване.";
@@ -512,6 +512,6 @@
 "e2e_room_key_request_share_without_verifying" = "Сподели без потвърждение";
 "e2e_room_key_request_ignore_request" = "Игнорирай поканата";
 "room_warning_about_encryption" = "Шифроване от край до край е в бета версия и може да не е надеждно.\n\nВсе още не трябва да се доверявате на това, че ще защити Вашите данни.\n\nУстройства все още не могат да разшифроват история от преди присъединяването към стая.\n\nШифровани съобщения не са видими за клиенти, които все още не поддържат шифроване.";
-"room_details_unset_main_address" = "Премахване на задаването като основен адрес";
-"room_participants_action_set_default_power_level" = "Възвръщане към нормален потребител";
-"settings_config_no_build_info" = "Няма информация за изграждане";
+"room_details_unset_main_address" = "Премахни задаването като основен адрес";
+"room_participants_action_set_default_power_level" = "Възвърни към нормален потребител";
+"settings_config_no_build_info" = "Няма информация за версията";
