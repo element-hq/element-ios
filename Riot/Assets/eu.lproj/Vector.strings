@@ -517,3 +517,4 @@
 // Group rooms
 "group_rooms_filter_rooms" = "Iragazi komunitateko gelak";
 "e2e_room_key_request_message_new_device" = "'%@' gailu berria gehitu duzu, eta zifratze-gakoak eskatzen ari da.";
+"room_do_not_have_permission_to_post" = "Ez duzu gela honetara mezuak bidaltzeko baimenik";

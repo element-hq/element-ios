@@ -514,3 +514,4 @@
 "e2e_room_key_request_start_verification" = "Iniciant verificació...";
 "e2e_room_key_request_share_without_verifying" = "Comparteix sense verificar";
 "e2e_room_key_request_ignore_request" = "Ignora la sol·licitud";
+"room_do_not_have_permission_to_post" = "No tens permisos per publicar en aquesta sala";

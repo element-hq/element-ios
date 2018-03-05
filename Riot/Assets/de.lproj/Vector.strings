@@ -515,3 +515,4 @@
 // Group rooms
 "group_rooms_filter_rooms" = "Filtere Community-Räume";
 "e2e_room_key_request_message_new_device" = "Du hast ein neues Gerät '%@' hinzugefügt, welches Verschlüsselungs-Schlüssel anfordert.";
+"room_do_not_have_permission_to_post" = "Du hast keine Berechtigung in diesem Raum zu posten";

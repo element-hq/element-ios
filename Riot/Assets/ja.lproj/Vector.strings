@@ -203,7 +203,7 @@
 "room_unsent_messages_notification" = "文章が送信できませんでした。現在 %@ または %@ ?";
 "room_unsent_messages_unknown_devices_notification" = "未知の端末が存在するために文章が送信されませんでした。現在%@ or %@ ？";
 "room_ongoing_conference_call" = "会議通話実施中。 %@ または %@で参加してください。";
-"room_ongoing_conference_call_with_close" = "会議通話実施中。%@または%@で参加してください。 %@ it.";
+"room_ongoing_conference_call_with_close" = "会議通話実施中。%@または%@で参加してください。 %@。";
 "room_ongoing_conference_call_close" = "閉じる";
 "room_conference_call_no_power" = "この部屋で会議通話を管理する権限が必要です";
 "room_prompt_resend" = "全て再送信";
