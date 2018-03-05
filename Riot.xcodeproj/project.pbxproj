@@ -83,6 +83,9 @@
 		32AE61F21F0D2183007255F4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61EC1F0D2183007255F4 /* InfoPlist.strings */; };
 		32AE61F31F0D2183007255F4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61EE1F0D2183007255F4 /* Localizable.strings */; };
 		32AE61F41F0D2183007255F4 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61F01F0D2183007255F4 /* Vector.strings */; };
+		32BB89EE204D86DA002F3AEC /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32BB89E8204D86DA002F3AEC /* Vector.strings */; };
+		32BB89EF204D86DA002F3AEC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32BB89EA204D86DA002F3AEC /* Localizable.strings */; };
+		32BB89F0204D86DA002F3AEC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32BB89EC204D86DA002F3AEC /* InfoPlist.strings */; };
 		32C2356F1F7B871800E38FC5 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */; };
 		32D392181EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */; };
 		32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */; };
@@ -741,6 +744,9 @@
 		32AE61ED1F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32AE61EF1F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Localizable.strings; sourceTree = "<group>"; };
 		32AE61F11F0D2183007255F4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Vector.strings; sourceTree = "<group>"; };
+		32BB89E9204D86DA002F3AEC /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = Vector.strings; sourceTree = "<group>"; };
+		32BB89EB204D86DA002F3AEC /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = Localizable.strings; sourceTree = "<group>"; };
+		32BB89ED204D86DA002F3AEC /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32C2356D1F7B871800E38FC5 /* WidgetPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WidgetPickerViewController.h; sourceTree = "<group>"; };
 		32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WidgetPickerViewController.m; sourceTree = "<group>"; };
 		32D392151EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerDetailTableViewCell.h; sourceTree = "<group>"; };
@@ -1625,6 +1631,16 @@
 			path = nl.lproj;
 			sourceTree = "<group>";
 		};
+		32BB89E7204D86DA002F3AEC /* bg.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				32BB89E8204D86DA002F3AEC /* Vector.strings */,
+				32BB89EA204D86DA002F3AEC /* Localizable.strings */,
+				32BB89EC204D86DA002F3AEC /* InfoPlist.strings */,
+			);
+			path = bg.lproj;
+			sourceTree = "<group>";
+		};
 		5FC42FA41F5186AFFB6A2404 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1760,6 +1776,7 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				32BB89E7204D86DA002F3AEC /* bg.lproj */,
 				3211717B203ACD32002C16C6 /* ca.lproj */,
 				F0173EAE1FCF346800B5F6A3 /* vi.lproj */,
 				F04AF2631F83A4C000D20F4D /* eu.lproj */,
@@ -2831,6 +2848,7 @@
 				eu,
 				vi,
 				ca,
+				bg,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -2963,6 +2981,7 @@
 				F083BD331E7009ED00A9B29C /* call_audio_mute_off_icon.png in Resources */,
 				F083BD691E7009ED00A9B29C /* directChatOn@2x.png in Resources */,
 				F04AF26E1F83A4C100D20F4D /* Vector.strings in Resources */,
+				32BB89F0204D86DA002F3AEC /* InfoPlist.strings in Resources */,
 				F083BD3E1E7009ED00A9B29C /* call_hangup_icon@3x.png in Resources */,
 				32AE61F21F0D2183007255F4 /* InfoPlist.strings in Resources */,
 				F083BDB91E7009ED00A9B29C /* remove_icon_pink.png in Resources */,
@@ -3205,6 +3224,7 @@
 				F083BE301E7009ED00A9B29C /* ContactTableViewCell.xib in Resources */,
 				F083BE571E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BE771E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				32BB89EE204D86DA002F3AEC /* Vector.strings in Resources */,
 				F0D9F2461FED1E57001D9A27 /* remove_icon_blue@2x.png in Resources */,
 				F083BDA71E7009ED00A9B29C /* notificationsOff.png in Resources */,
 				F06CDD6A1EF01E3900870B75 /* RoomEmptyBubbleCell.xib in Resources */,
@@ -3244,6 +3264,7 @@
 				F083BD9A1E7009ED00A9B29C /* logo@3x.png in Resources */,
 				327382BA1F276AD200356143 /* Vector.strings in Resources */,
 				327382C41F276AED00356143 /* Vector.strings in Resources */,
+				32BB89EF204D86DA002F3AEC /* Localizable.strings in Resources */,
 				F083BDE51E7009ED00A9B29C /* voice_call_icon@3x.png in Resources */,
 				322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				F083BE201E7009ED00A9B29C /* RoomParticipantsViewController.xib in Resources */,
@@ -3873,6 +3894,30 @@
 				32AE61F11F0D2183007255F4 /* nl */,
 			);
 			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		32BB89E8204D86DA002F3AEC /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32BB89E9204D86DA002F3AEC /* bg */,
+			);
+			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		32BB89EA204D86DA002F3AEC /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32BB89EB204D86DA002F3AEC /* bg */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		32BB89EC204D86DA002F3AEC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32BB89ED204D86DA002F3AEC /* bg */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		F0173EAF1FCF346800B5F6A3 /* Vector.strings */ = {
