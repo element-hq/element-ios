@@ -189,7 +189,7 @@
 "room_participants_action_remove" = "Премахни от тази стая";
 "room_participants_action_ban" = "Блокирай в тази стая";
 "room_participants_action_unban" = "Отблокирай";
-"room_participants_action_ignore" = "Скрий съобщенията от този потребител";
+"room_participants_action_ignore" = "Скрий всички съобщения от този потребител";
 "room_participants_action_unignore" = "Покажи всички съобщения от този потребител";
 "room_participants_action_set_moderator" = "Направи модератор";
 "room_participants_action_set_admin" = "Направи администратор";
@@ -428,7 +428,7 @@
 // Group rooms
 "group_rooms_filter_rooms" = "Филтриране на стаи";
 // Read Receipts
-"read_receipts_list" = "Списък с подвърждения за прочитане";
+"read_receipts_list" = "Списък с потвърждения за прочитане";
 "receipt_status_read" = "Прочетено: ";
 // Media picker
 "media_picker_library" = "Галерия";
