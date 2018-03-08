@@ -27,7 +27,7 @@
 	<key>webAppUrl</key>
 	<string>https://riot.im/app</string>
 	<key>matrixApps</key>
-	<false/>
+	<true/>
 	<key>integrationsUiUrl</key>
 	<string>https://scalar-staging.riot.im/scalar-web/</string>
 	<key>integrationsRestUrl</key>
