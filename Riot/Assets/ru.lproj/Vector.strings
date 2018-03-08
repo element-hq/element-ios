@@ -435,7 +435,6 @@
 "sending" = "Отправка";
 "auth_share_extension_prompt" = "Войти в основное приложение для совместного использования контента";
 "room_event_failed_to_send" = "Не удалось отправить";
-"settings_labs_matrix_apps" = "Приложения Matrix";
 "room_details_direct_chat" = "Прямой чат";
 "room_details_fail_to_update_room_direct" = "Не удается обновить прямой флаг этой комнаты";
 "event_formatter_jitsi_widget_added" = "Конференция добавлена %@";

@@ -320,7 +320,6 @@
 "settings_contacts_discover_matrix_users" = "Използване на имейл и телефонен номер за откриване на потребители";
 "settings_contacts_phonebook_country" = "Държава на телефонния указател";
 "settings_labs_e2e_encryption_prompt_message" = "За да завършите настройката на шифроването, трябва да влезете в профила си отново.";
-"settings_labs_matrix_apps" = "Matrix приложения";
 "settings_labs_create_conference_with_jitsi" = "Създаване на групови разговори с jitsi";
 "settings_term_conditions" = "Правила и условия";
 "settings_privacy_policy" = "Правила за поверителност";

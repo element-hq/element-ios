@@ -473,7 +473,6 @@
 "settings_ui_theme_black" = "Zwart";
 "settings_ui_theme_picker_title" = "Selecteer een thema";
 "settings_ui_theme_picker_message" = "\"Automatisch\" gebruikt de \"Kleurweergave omkeren\" instelling van je apparaat";
-"settings_labs_matrix_apps" = "Matrix Applicaties";
 "settings_enable_rageshake" = "Schud de telefoon om een fout te rapporteren";
 "room_details_direct_chat" = "Privégesprek";
 "room_details_fail_to_update_room_direct" = "Het is niet gelukt om de direct (privé) vlag in deze ruimte te updaten";

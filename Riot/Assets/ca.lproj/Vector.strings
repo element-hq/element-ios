@@ -312,7 +312,6 @@
 "settings_contacts_phonebook_country" = "País de la guia telefònica";
 "settings_labs_e2e_encryption" = "Xifrat punt a punt";
 "settings_labs_e2e_encryption_prompt_message" = "Per acabar de ajustar el xifratge has de Iniciar sessió de nou.";
-"settings_labs_matrix_apps" = "Aplicacions Matrix";
 "settings_labs_create_conference_with_jitsi" = "Crear trucades amb Jitsi";
 "settings_version" = "Versió %@";
 "settings_olm_version" = "Versió Olm %@";

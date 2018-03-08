@@ -439,7 +439,6 @@
 "send_to" = "Sende an %@";
 "sending" = "Senden";
 "room_event_failed_to_send" = "Senden fehlgeschlagen";
-"settings_labs_matrix_apps" = "Matrix Apps";
 "room_details_direct_chat" = "Direkter Chat";
 "room_details_fail_to_update_room_direct" = "Setzen der Direkt-Kennzeichnung in diesem Raum fehlgeschlagen";
 "event_formatter_widget_added" = "Widget %@ wurde von %@ hinzugefügt";

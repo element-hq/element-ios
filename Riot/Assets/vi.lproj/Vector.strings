@@ -306,7 +306,6 @@
 "settings_contacts_phonebook_country" = "Quốc gia trong danh bạ";
 "settings_labs_e2e_encryption" = "End-to-End Mã Hóa";
 "settings_labs_e2e_encryption_prompt_message" = "Để hoàn thành cài đặt mã hóa, bạn phải đăng nhập lại.";
-"settings_labs_matrix_apps" = "Ứng dụng Matrix";
 "settings_labs_create_conference_with_jitsi" = "Tạo cuộc gọi hội họp bằng jitsi";
 "settings_version" = "Phiên bản %@";
 "settings_olm_version" = "Phiên bản Olm %@";
