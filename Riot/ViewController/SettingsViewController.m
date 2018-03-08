@@ -112,8 +112,7 @@ enum
 
 enum
 {
-    LABS_MATRIX_APPS_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX,
+    LABS_USE_JITSI_WIDGET_INDEX = 0,
     LABS_CRYPTO_INDEX,
     LABS_COUNT
 };
@@ -2024,18 +2023,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_MATRIX_APPS_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_matrix_apps", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsMatrixApps:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2875,19 +2863,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         UISwitch *switchButton = (UISwitch*)sender;
 
         [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"enableRageShake"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
-        [self.tableView reloadData];
-    }
-}
-
-- (void)toggleLabsMatrixApps:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-
-        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"matrixApps"];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
         [self.tableView reloadData];

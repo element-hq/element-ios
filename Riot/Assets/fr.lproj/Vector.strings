@@ -481,7 +481,6 @@
 "widget_integration_room_not_visible" = "Le salon %@ n'est pas visible.";
 "auth_share_extension_prompt" = "Se connecter dans l'application principale pour partager du contenu";
 "room_event_failed_to_send" = "Échec de l'envoi";
-"settings_labs_matrix_apps" = "Applications Matrix";
 "event_formatter_jitsi_widget_added" = "Téléconférence en Voix sur IP ajoutée par %@";
 "event_formatter_jitsi_widget_removed" = "Téléconférence en Voix sur IP supprimée par %@";
 // Widget Integration Manager
