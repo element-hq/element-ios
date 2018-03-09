@@ -147,6 +147,13 @@
             {
                 roomName = NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room_default", @"Vector", nil);
             }
+            else if (roomName.length > 20)
+            {
+                // Would have nice to get the cropped string displayed by self.displayNameTextField
+                // but the value is not accessible. Cut it off by hand
+                roomName = [NSString stringWithFormat:@"%@…",[roomName substringToIndex:20]];
+            }
+
             self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room", @"Vector", nil), roomName];
         }
     }
