@@ -2468,7 +2468,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (mxSession)
     {
         // Report this session to contact manager
-        [[MXKContactManager sharedManager] addMatrixSession:mxSession];
+        // But wait a bit that our launch animation screen is ready to show and
+        // displayed if needed. As the processing in MXKContactManager can lock
+        // the UI thread for several seconds, it is better to show the animation
+        // during this blocking task.
+        dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [[MXKContactManager sharedManager] addMatrixSession:mxSession];
+        });
         
         // Update home data sources
         [_masterTabBarController addMatrixSession:mxSession];
