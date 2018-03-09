@@ -67,7 +67,6 @@
     self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
     
     self.roomTopic.textColor = kRiotTopicTextColor;
-    self.roomTopic.numberOfLines = 0;
     
     self.roomMembers.textColor = kRiotColorGreen;
     

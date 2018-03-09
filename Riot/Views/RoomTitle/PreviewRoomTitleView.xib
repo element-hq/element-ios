@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -47,22 +47,25 @@
                                 <outlet property="delegate" destination="Cpa-Xt-cwB" id="BIq-nD-Pb9"/>
                             </connections>
                         </textField>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tk0-pA-9a0">
-                            <rect key="frame" x="282" y="153" width="36" height="17"/>
+                        <textView opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room Topic" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Tk0-pA-9a0">
+                            <rect key="frame" x="262" y="153" width="76" height="17"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomTopic"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="76" id="BEk-1P-gqy"/>
+                            </constraints>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ou0-3Z-weL">
-                            <rect key="frame" x="282" y="184" width="36" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="X members" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ou0-3Z-weL">
+                            <rect key="frame" x="262" y="184" width="76" height="17"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomMembers"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="details_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S3Y-wJ-HOe">
-                            <rect key="frame" x="325" y="187" width="6" height="12"/>
+                            <rect key="frame" x="345" y="187" width="6" height="12"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomMembersDetailsIcon"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="6" id="XTx-6p-2wB"/>
@@ -166,6 +169,7 @@
                 <constraint firstItem="BkF-x3-7fX" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" id="Uvb-cK-dQf"/>
                 <constraint firstItem="BkF-x3-7fX" firstAttribute="top" secondItem="Cpa-Xt-cwB" secondAttribute="top" id="Zru-9A-ifB"/>
                 <constraint firstAttribute="trailing" secondItem="y5s-FK-My4" secondAttribute="trailing" id="d4g-19-C58"/>
+                <constraint firstItem="BkF-x3-7fX" firstAttribute="bottom" secondItem="y5s-FK-My4" secondAttribute="bottom" id="gzp-8c-3iR"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IwA-0X-IYb" secondAttribute="trailing" constant="31" id="iGR-eh-0e9"/>
                 <constraint firstItem="WmW-5h-jL1" firstAttribute="top" secondItem="gIX-nY-f6M" secondAttribute="bottom" constant="17" id="ioD-jo-XQe"/>
                 <constraint firstItem="IwA-0X-IYb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="31" id="lpD-yd-qgt"/>
