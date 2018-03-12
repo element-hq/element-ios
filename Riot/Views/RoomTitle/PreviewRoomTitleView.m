@@ -153,8 +153,9 @@
             }
             else if (roomName.length > 20)
             {
-                // Would have nice to get the cropped string displayed by self.displayNameTextField
-                // but the value is not accessible. Cut it off by hand
+                // Would have beed nice to get the cropped string displayed by
+                // self.displayNameTextField but the value is not accessible.
+                // Cut it off by hand
                 roomName = [NSString stringWithFormat:@"%@…",[roomName substringToIndex:20]];
             }
 
