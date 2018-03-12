@@ -1227,11 +1227,8 @@
     // Set the right room title view
     if (self.isRoomPreview)
     {
-        // Disable the right buttons
-        for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
-        {
-            barButtonItem.enabled = NO;
-        }
+        // Do not show the right buttons
+        self.navigationItem.rightBarButtonItems = nil;
         
         [self showPreviewHeader:YES];
     }
