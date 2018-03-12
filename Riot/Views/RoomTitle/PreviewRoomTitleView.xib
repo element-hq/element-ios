@@ -47,7 +47,7 @@
                                 <outlet property="delegate" destination="Cpa-Xt-cwB" id="BIq-nD-Pb9"/>
                             </connections>
                         </textField>
-                        <textView opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room Topic" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Tk0-pA-9a0">
+                        <textView opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" editable="NO" text="Room Topic" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Tk0-pA-9a0">
                             <rect key="frame" x="31" y="153" width="538" height="17"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomTopic"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>

@@ -105,6 +105,10 @@
         
         // Room topic
         self.roomTopic.text = self.roomPreviewData.roomTopic;
+
+        [UIView setAnimationsEnabled:NO];
+        [self.roomTopic scrollRangeToVisible:NSMakeRange(0, 0)];
+        [UIView setAnimationsEnabled:YES];
         
         // Joined members count
         if (self.roomPreviewData.numJoinedMembers > 1)
