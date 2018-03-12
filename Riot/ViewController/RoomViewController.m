@@ -1581,7 +1581,7 @@
     if (previewHeader)
     {
         if (isLandscapeOriented
-            && [GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad)
+            && [GBDeviceInfo deviceInfo].family != GBDeviceFamilyiPad)
         {
             CGRect frame = self.navigationController.navigationBar.frame;
             
@@ -1608,8 +1608,7 @@
             {
                 // In case of preview, update the header height so that we can
                 // display as much as possible the room topic in this header.
-                // Note: the header height is the previewHeader.mainHeaderBackgroundHeightConstraint
-                // just computed
+                // Note: the header height is handled by the previewHeader.mainHeaderBackgroundHeightConstraint.
                 PreviewRoomTitleView *previewRoomTitleView = (PreviewRoomTitleView *)previewHeader;
 
                 // Compute the height required to display all the room topic
