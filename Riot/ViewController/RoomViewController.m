@@ -1227,11 +1227,8 @@
     // Set the right room title view
     if (self.isRoomPreview)
     {
-        // Disable the right buttons
-        for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
-        {
-            barButtonItem.enabled = NO;
-        }
+        // Do not show the right buttons
+        self.navigationItem.rightBarButtonItems = nil;
         
         [self showPreviewHeader:YES];
     }
@@ -1583,7 +1580,8 @@
 {
     if (previewHeader)
     {
-        if (isLandscapeOriented)
+        if (isLandscapeOriented
+            && [GBDeviceInfo deviceInfo].family != GBDeviceFamilyiPad)
         {
             CGRect frame = self.navigationController.navigationBar.frame;
             
@@ -1605,7 +1603,32 @@
         {
             previewHeader.mainHeaderContainer.hidden = NO;
             previewHeader.mainHeaderBackgroundHeightConstraint.constant = previewHeader.mainHeaderContainer.frame.size.height;
-            
+
+            if ([previewHeader isKindOfClass:PreviewRoomTitleView.class])
+            {
+                // In case of preview, update the header height so that we can
+                // display as much as possible the room topic in this header.
+                // Note: the header height is handled by the previewHeader.mainHeaderBackgroundHeightConstraint.
+                PreviewRoomTitleView *previewRoomTitleView = (PreviewRoomTitleView *)previewHeader;
+
+                // Compute the height required to display all the room topic
+                CGSize sizeThatFitsTextView = [previewRoomTitleView.roomTopic sizeThatFits:CGSizeMake(previewRoomTitleView.roomTopic.frame.size.width, MAXFLOAT)];
+
+                // Increase the preview header height according to the room topic height
+                // but limit it in order to let room for room messages at the screen bottom.
+                // This free space depends on the device.
+                // On an iphone 5 screen, the room topic height cannot be more than 50px.
+                // Then, on larger screen, we can allow it a bit more height but we
+                // apply a factor to give more priority to the display of more messages.
+                CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+                CGFloat maxRoomTopicHeight = 50 + (screenHeight - 568) / 3;
+
+                CGFloat additionalHeight = MIN(maxRoomTopicHeight, sizeThatFitsTextView.height)
+                                            - previewRoomTitleView.roomTopic.frame.size.height;
+
+                previewHeader.mainHeaderBackgroundHeightConstraint.constant += additionalHeight;
+            }
+
             [self setRoomTitleViewClass:RoomAvatarTitleView.class];
             // Note the avatar title view does not define tap gesture.
             
