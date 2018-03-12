@@ -1583,7 +1583,8 @@
 {
     if (previewHeader)
     {
-        if (isLandscapeOriented)
+        if (isLandscapeOriented
+            && [GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad)
         {
             CGRect frame = self.navigationController.navigationBar.frame;
             
