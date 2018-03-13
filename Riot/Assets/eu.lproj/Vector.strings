@@ -449,7 +449,6 @@
 "settings_ui_theme_black" = "Beltza";
 "settings_ui_theme_picker_title" = "Hautatu itxura bat";
 "settings_ui_theme_picker_message" = "\"Automatikoa\"-k gailuaren \"alderantzikatu koloreak\" ezarpena erabiltzen du";
-"settings_labs_matrix_apps" = "Matrix aplikazioak";
 "settings_enable_rageshake" = "Astindu amorruz akatsaren berri emateko";
 "room_details_direct_chat" = "Txat zuzena";
 "event_formatter_widget_added" = "%@ trepeta gehitu du %@ erabiltzaileak";

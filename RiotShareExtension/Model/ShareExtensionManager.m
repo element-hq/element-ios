@@ -221,7 +221,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                      {
                          typeof(self) self = weakSelf;
                          itemProvider.isLoaded = YES;
-                         [self.pendingImages addObject:imageData];
+
+                         if (imageData)
+                         {
+                             [self.pendingImages addObject:imageData];
+                         }
+                         else
+                         {
+                             NSLog(@"[ShareExtensionManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
+                         }
                          
                          if ([self areAttachmentsFullyLoaded])
                          {

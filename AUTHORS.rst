@@ -35,4 +35,7 @@ Dawid Rączka <dawidraczka at gmail.com>
  
 Evan Tang <etang110 at gmail.com>
  * PR #1737 Cancel Buttons use style Cancel
+
+Joey Watts <joey.watts.96 at gmail.com>
+ * PR #1777 Add support for interactive notifications
  

@@ -1,3 +1,24 @@
+Changes in 0.6.12 (2018-03-12)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.8).
+ * Add Catalan, thanks to @salvadorpla.
+ * Add Bulgarian, thanks to @rbozhkova. 
+ * Add quick reply to notifications (#625), thanks to @joeywatts(PR #1777).
+ * Room: Inform user when they cannot post to a room because of low power level.
+ * Matrix Apps: Enable them by default. Remove the settings from LABS section (#1795).
+ * Improve server load on event redaction (vector-im/riot-ios#1730).
+ 
+Bug Fix:
+ * Push: Missing push notifications after answering a call (vector-im/riot-ios#1757).
+ * Fix screen flashing at startup (#1798).
+ * Cannot join from a room preview for room with a long topic (#1645).
+ * Groups: Room summary should not display notices about groups (vector-im/riot-ios#1780).
+ * MXKEventFormatter: Emotes which contain a single emoji are expanded to be enormous (vector-im/riot-ios#1558).
+ * Crypto: e2e devices list not shown (#1782).
+ * Direct Chat: a room was marked as direct by mistake when I joined it.
+ 
 Changes in 0.6.11 (2018-02-27)
 ===============================================
 
