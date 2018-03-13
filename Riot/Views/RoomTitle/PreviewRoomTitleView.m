@@ -67,7 +67,6 @@
     self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
     
     self.roomTopic.textColor = kRiotTopicTextColor;
-    self.roomTopic.numberOfLines = 0;
     
     self.roomMembers.textColor = kRiotColorGreen;
     
@@ -106,6 +105,10 @@
         
         // Room topic
         self.roomTopic.text = self.roomPreviewData.roomTopic;
+
+        [UIView setAnimationsEnabled:NO];
+        [self.roomTopic scrollRangeToVisible:NSMakeRange(0, 0)];
+        [UIView setAnimationsEnabled:YES];
         
         // Joined members count
         if (self.roomPreviewData.numJoinedMembers > 1)
@@ -148,6 +151,14 @@
             {
                 roomName = NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room_default", @"Vector", nil);
             }
+            else if (roomName.length > 20)
+            {
+                // Would have been nice to get the cropped string displayed by
+                // self.displayNameTextField but the value is not accessible.
+                // Cut it off by hand
+                roomName = [NSString stringWithFormat:@"%@…",[roomName substringToIndex:20]];
+            }
+
             self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room", @"Vector", nil), roomName];
         }
     }

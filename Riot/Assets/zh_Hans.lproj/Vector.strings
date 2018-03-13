@@ -443,5 +443,4 @@
 "settings_ui_theme_black" = "纯黑";
 "settings_ui_theme_picker_title" = "选择一个主题";
 "settings_ui_theme_picker_message" = "“自动”表示使用设备的“反色”设置";
-"settings_labs_matrix_apps" = "Matrix 应用";
 "settings_labs_create_conference_with_jitsi" = "使用 jitsi 创建一个会议通话";
