@@ -503,3 +503,41 @@
 "e2e_room_key_request_start_verification" = "Start verificatie...";
 "e2e_room_key_request_share_without_verifying" = "Delen zonder te verifiëren";
 "e2e_room_key_request_ignore_request" = "Negeer verzoek";
+"title_groups" = "Gemeenschappen";
+// Groups tab
+"group_invite_section" = "UITNODIGINGEN";
+"group_section" = "GEMEENSCHAPPEN";
+"room_do_not_have_permission_to_post" = "Je hebt geen toestemming om in deze ruimte te posten";
+"settings_flair" = "Badge weergeven waar toegestaan";
+"room_details_flair_section" = "Badge voor gemeenschappen weergeven";
+"room_details_new_flair_placeholder" = "Voeg nieuw gemeenschaps-ID toe (bv. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Ongeldig formaat";
+"room_details_flair_invalid_id_prompt_msg" = "%@ is niet een geldige identificatie voor een gemeenschap";
+"room_details_fail_to_update_room_communities" = "Niet gelukt om de gerelateerde gemeenschappen te updaten";
+// Group Details
+"group_details_title" = "Gemeenschapsdetails";
+"group_details_home" = "Home";
+"group_details_people" = "Personen";
+"group_details_rooms" = "Ruimtes";
+// Group Home
+"group_home_one_member_format" = "1 lid";
+"group_home_multi_members_format" = "%tu leden";
+"group_home_one_room_format" = "1 ruimte";
+"group_home_multi_rooms_format" = "%tu ruimtes";
+"group_invitation_format" = "%@ heeft je uitgenodigd om tot deze gemeenschap toe te treden";
+// Group participants
+"group_participants_add_participant" = "Deelnemer toevoegen";
+"group_participants_leave_prompt_title" = "Groep verlaten";
+"group_participants_leave_prompt_msg" = "Weet je zeker dat je de groep wilt verlaten?";
+"group_participants_remove_prompt_title" = "Bevestigen";
+"group_participants_remove_prompt_msg" = "Weet je zeker dat je %@ van deze groep wilt verwijderen?";
+"group_participants_invite_prompt_title" = "Bevestiging";
+"group_participants_invite_prompt_msg" = "Weet je zeker dat je %@ in deze groep wilt uitnodigen?";
+"group_participants_filter_members" = "Gemeenschapsleden filteren";
+"group_participants_invite_another_user" = "Zoeken / uitnodigen bij Gebruikers-ID of Naam";
+"group_participants_invite_malformed_id_title" = "Uitnodigingsfout";
+"group_participants_invite_malformed_id" = "Misvormd ID. Het moet een Matrix ID zijn, zoals '@localpart:domain'";
+"group_participants_invited_section" = "UITGENODIGD";
+// Group rooms
+"group_rooms_filter_rooms" = "Gemeenschapsruimtes filteren";
+"e2e_room_key_request_message_new_device" = "Je hebt een nieuwe apparaat '%@' toegevoegd, die een verzoek doet naar versleutelingssleutels.";
