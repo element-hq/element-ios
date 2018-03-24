@@ -198,7 +198,7 @@
 "room_participants_action_start_video_call" = "Започни видео разговор";
 "room_participants_action_mention" = "Спомени";
 // Chat
-"room_jump_to_first_unread" = "Отиди до първото непрочетено съобщение";
+"room_jump_to_first_unread" = "Виж първото непрочетено съобщение";
 "room_new_message_notification" = "%d ново съобщение";
 "room_new_messages_notification" = "%d нови съобщения";
 "room_one_user_is_typing" = "%@ пише…";
