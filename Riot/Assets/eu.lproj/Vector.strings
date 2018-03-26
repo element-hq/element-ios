@@ -78,7 +78,7 @@
 "auth_reset_password_missing_email" = "Zure kontura gehitutako e-mail helbidea sartu behar da.";
 "auth_reset_password_missing_password" = "Pasahitz berri bat sartu behar da.";
 "auth_reset_password_error_unauthorized" = "Huts egin du e-mail helbidearen egiaztaketak, egin klik e-mailean zetorren estekan";
-"auth_reset_password_success_message" = "Zure pasahitza berrezarri da.\n\nSaiotik atera zaizu gailu guztietan eta ez dituzu jakinarazpenak jasoko. Jakinarazpenak berriro jasotzeko hasi berriro saioa gailu bakoitzean.";
+"auth_reset_password_success_message" = "Zure pasahitza berrezarri da.\n\nSaioa amaitu da zure gailu guztietan eta ez dituzu jakinarazpenak jasoko. Jakinarazpenak berriro jasotzeko hasi berriro saioa gailu bakoitzean.";
 // Read Receipts
 "read_receipts_list" = "Irakurragirien zerrenda";
 "yesterday" = "Atzo";
