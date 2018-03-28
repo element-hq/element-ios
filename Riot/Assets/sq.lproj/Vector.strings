@@ -41,8 +41,8 @@
 "auth_password_placeholder" = "Fjalëkalim";
 "auth_new_password_placeholder" = "Fjalëkalim i ri";
 "auth_user_name_placeholder" = "Emër përdoruesi";
-"auth_optional_email_placeholder" = "Adresë email (opsionale)";
-"auth_email_placeholder" = "Adresë email";
+"auth_optional_email_placeholder" = "Adresë e-mail-i (opsionale)";
+"auth_email_placeholder" = "Adresë e-mail-i";
 "auth_optional_phone_placeholder" = "Numër telefoni (opsionale)";
 "auth_phone_placeholder" = "Numër telefoni";
 "auth_repeat_password_placeholder" = "Rijepeni fjalëkalimin";
@@ -388,3 +388,5 @@
 "e2e_room_key_request_start_verification" = "Fillo verifikimin…";
 "e2e_room_key_request_share_without_verifying" = "Ndaje pa e verifikuar";
 "e2e_room_key_request_ignore_request" = "Shpërfille kërkesën";
+"auth_user_id_placeholder" = "E-mail-i apro emri përdorues";
+"auth_invalid_user_name" = "Emri përdoruesi mund të përmban vetëm shkronja, numra, pika, viza lidhëse dhe nënvije";
