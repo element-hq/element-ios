@@ -5,7 +5,7 @@
 "title_groups" = "Bashkësi";
 "warning" = "Sinjalizim";
 // Actions
-"view" = "Parje";
+"view" = "Shiheni";
 "next" = "Pasuesja";
 "back" = "Mbrapsht";
 "continue" = "Vazhdo";
@@ -170,7 +170,7 @@
 "room_many_users_are_typing" = "%@, %@ & të tjerë po shtyin…";
 "room_message_placeholder" = "Dërgojni një mesazh (të pafshehtëzuar)…";
 "room_do_not_have_permission_to_post" = "S’keni leje të postoni në këtë dhomë";
-"encrypted_room_message_placeholder" = "Dërgoni një mesazhi të fshehtëzuar…";
+"encrypted_room_message_placeholder" = "Dërgoni një mesazh të fshehtëzuar…";
 "room_message_short_placeholder" = "Dërgoni një mesazh…";
 "room_offline_notification" = "Humbi lidhja me shërbyesin.";
 "room_unsent_messages_notification" = "Mesazhet s’u dërguan. %@ apo %@ tani?";
@@ -302,7 +302,7 @@
 "room_details_advanced_section" = "Të mëtejshme";
 "room_details_advanced_room_id" = "ID Dhome:";
 "room_details_advanced_e2e_encryption_enabled" = "Në këtë dhomë është i aktivizuar fshehtëzimi";
-"room_details_advanced_e2e_encryption_disabled" = "Në këtë dhomë s’është i aktivizuar fshehtëzimi";
+"room_details_advanced_e2e_encryption_disabled" = "Në këtë dhomë s’është i aktivizuar fshehtëzimi.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Fshehtëzo vetëm për pajisje të verifikuara";
 "room_details_fail_to_add_room_aliases" = "S’u arrit të shtoheshin adresa dhome të re";
 "room_details_save_changes_prompt" = "Doni të ruhen ndryshimet?";
@@ -335,7 +335,7 @@
 "group_rooms_filter_rooms" = "Filtroni dhoma bashkësie";
 // Read Receipts
 "read_receipts_list" = "Listë Dëftesash Leximi";
-"receipt_status_read" = "Të lexuara:";
+"receipt_status_read" = "Të lexuara: ";
 // Media picker
 "media_picker_library" = "Mediatekë";
 "media_picker_select" = "Përzgjidhni";
