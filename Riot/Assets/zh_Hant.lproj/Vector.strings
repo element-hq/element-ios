@@ -29,7 +29,7 @@
 "video" = "視訊";
 "active_call" = "進行中的通話";
 "active_call_details" = "進行中的通話 (%@)";
-"later" = "現在不要";
+"later" = "稍後再說";
 "rename" = "重新命名";
 "collapse" = "摺疊";
 "send_to" = "傳送到 %@";
@@ -235,7 +235,7 @@
 "room_participants_leave_prompt_msg" = "確定要離開聊天室嗎？";
 "room_participants_remove_prompt_title" = "確認";
 "room_participants_remove_prompt_msg" = "確定要從此聊天室踢出 %@ 嗎？";
-"room_participants_remove_third_party_invite_msg" = "直到 API 存在以前，尚不支援移除第三方邀請。";
+"room_participants_remove_third_party_invite_msg" = "直到 API 存在以前，尚不支援移除第三方邀請";
 "room_participants_invite_prompt_title" = "確認";
 "room_participants_invite_prompt_msg" = "確定要邀請 %@ 進入聊天室嗎？";
 "room_participants_invite_another_user" = "透過使用者ID、名稱或電子郵件地址來搜尋/邀請";
