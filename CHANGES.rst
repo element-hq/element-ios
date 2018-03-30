@@ -1,3 +1,13 @@
+Changes in 0.6.13 (2018-03-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.9).
+ * Make state event redaction handling gentler with homeserver (vector-im/riot-ios#1823).
+
+Bug fixes:
+ * Room summary is not updated after redaction of the room display name (vector-im/riot-ios#1822). 
+
 Changes in 0.6.12 (2018-03-12)
 ===============================================
 
