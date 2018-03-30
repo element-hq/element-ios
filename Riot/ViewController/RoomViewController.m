@@ -1,6 +1,7 @@
 /*
  Copyright 2014 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -1909,12 +1910,33 @@
                 [self showEditButtonAlertMenuForEvent:selectedEvent inCell:cell level:0];
             }
         }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView]
-                 && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventSentState == MXEventSentStateFailed)
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView])
         {
-            // Shortcut: when clicking on an unsent media, show the action sheet to resend it
-            MXEvent *selectedEvent = [self.roomDataSource eventWithEventId:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId];
-            [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellRiotEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
+            if (((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventSentState == MXEventSentStateFailed)
+            {
+                // Shortcut: when clicking on an unsent media, show the action sheet to resend it
+                MXEvent *selectedEvent = [self.roomDataSource eventWithEventId:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId];
+                [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellRiotEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
+            }
+            else if (((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.type == MXKAttachmentTypeSticker)
+            {
+                // We don't open the attachments viewer when the user taps on a sticker.
+                // We consider this tap like a selection.
+                
+                // Check whether a selection already exist or not
+                if (customizedRoomDataSource.selectedEventId)
+                {
+                    [self cancelEventSelection];
+                }
+                else
+                {
+                    // Highlight this event in displayed message
+                    customizedRoomDataSource.selectedEventId = ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId;
+                }
+                
+                // Force table refresh
+                [self dataSource:self.roomDataSource didCellChange:nil];
+            }
         }
         else if ([actionIdentifier isEqualToString:kRoomEncryptedDataBubbleCellTapOnEncryptionIcon])
         {
@@ -2156,38 +2178,41 @@
                                                                }]];
             }
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
+            if (attachment.type != MXKAttachmentTypeSticker)
+            {
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
                                                                    
-                                                                   [self cancelEventSelection];
+                                                                   if (weakSelf)
+                                                                   {
+                                                                       typeof(self) self = weakSelf;
+                                                                       
+                                                                       [self cancelEventSelection];
+                                                                       
+                                                                       [self startActivityIndicator];
+                                                                       
+                                                                       [attachment copy:^{
+                                                                           
+                                                                           __strong __typeof(weakSelf)self = weakSelf;
+                                                                           [self stopActivityIndicator];
+                                                                           
+                                                                       } failure:^(NSError *error) {
+                                                                           
+                                                                           __strong __typeof(weakSelf)self = weakSelf;
+                                                                           [self stopActivityIndicator];
+                                                                           
+                                                                           //Alert user
+                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                           
+                                                                       }];
+                                                                       
+                                                                       // Start animation in case of download during attachment preparing
+                                                                       [roomBubbleTableViewCell startProgressUI];
+                                                                   }
                                                                    
-                                                                   [self startActivityIndicator];
-                                                                   
-                                                                   [attachment copy:^{
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                       //Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
-                                                                   
-                                                                   // Start animation in case of download during attachment preparing
-                                                                   [roomBubbleTableViewCell startProgressUI];
-                                                               }
-                                                               
-                                                           }]];
+                                                               }]];
+            }
             
             // Check status of the selected event
             if (selectedEvent.sentState == MXEventSentStatePreparing ||
@@ -2234,7 +2259,7 @@
             }
         }
         
-        if (level == 1)
+        if (level == 1 && (attachment.type != MXKAttachmentTypeSticker))
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
