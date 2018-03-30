@@ -255,8 +255,6 @@
 "room_event_action_permalink" = "Permalink";
 "room_event_action_view_source" = "View Source";
 "room_event_action_report" = "Report content";
-"room_event_action_kick" = "Kick user";
-"room_event_action_ban" = "Ban user";
 "room_event_action_report_prompt_reason" = "Reason for reporting this content";
 "room_event_action_kick_prompt_reason" = "Reason for kicking this user";
 "room_event_action_ban_prompt_reason" = "Reason for banning this user";
