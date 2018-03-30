@@ -390,3 +390,11 @@
 "e2e_room_key_request_ignore_request" = "Shpërfille kërkesën";
 "auth_user_id_placeholder" = "Email ose emër përdoruesi";
 "auth_invalid_user_name" = "Emri përdoruesi mund të përmban vetëm shkronja, numra, pika, viza lidhëse dhe nënvije";
+"auth_reset_password_email_validation_message" = "Një e-mail të është dërguar në %@. Pasi ke ndjekur lidhjen që përmban, kliko përfundi.";
+"auth_reset_password_next_step_button" = "Kam vërtetuar adresën e-mail-i time";
+"on" = "Aktivizuar";
+"auth_add_phone_message" = "Shtoja një adresë e-mail-i llogarisë tënde për të mundur përdoruesit të te zbulojnë.";
+"auth_msisdn_validation_message" = "Kemi dërguar një SMS me një kod aktivizimi. Të lutem fute kodin përposh.";
+"auth_recaptcha_message" = "Ky server shtëpiak kishte dashur të sigurohet se nuk je robot";
+"auth_reset_password_error_unauthorized" = "Vërtetimi i adresës e-mail-i dështoi: sigurohu se ke klikuar lidhjen në e-mail";
+"auth_reset_password_error_not_found" = "Adresa e-mail-i yt nuk duket se është e lidhur me një ID matrix-i në këtë server shtëpiak.";
