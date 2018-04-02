@@ -51,7 +51,7 @@
 
 - (void)render:(MXKCellData *)cellData
 {
-    [self originalRender:cellData];
+    [self prepareRender:cellData];
     
     if (bubbleData)
     {
