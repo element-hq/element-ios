@@ -98,6 +98,8 @@
 #import "RoomMembershipExpandedBubbleCell.h"
 #import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
 
+#import "RoomSelectedStickerBubbleCell.h"
+
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
 #import "AvatarGenerator.h"
@@ -310,6 +312,8 @@
     [self.bubblesTableView registerClass:RoomMembershipCollapsedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipExpandedBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomMembershipExpandedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
     
     // Prepare expanded header
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
@@ -1761,7 +1765,12 @@
         {
             if (bubbleData.isAttachmentWithThumbnail)
             {
-                if (bubbleData.isPaginationFirstBubble)
+                // Check whether the provided celldata corresponds to a selected sticker
+                if (customizedRoomDataSource.selectedEventId && (bubbleData.attachment.type == MXKAttachmentTypeSticker) && [bubbleData.attachment.eventId isEqualToString:customizedRoomDataSource.selectedEventId])
+                {
+                    cellViewClass = RoomSelectedStickerBubbleCell.class;
+                }
+                else if (bubbleData.isPaginationFirstBubble)
                 {
                     cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.class : RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
                 }
@@ -1806,7 +1815,12 @@
             // Handle here outgoing bubbles
             if (bubbleData.isAttachmentWithThumbnail)
             {
-                if (bubbleData.isPaginationFirstBubble)
+                // Check whether the provided celldata corresponds to a selected sticker
+                if (customizedRoomDataSource.selectedEventId && (bubbleData.attachment.type == MXKAttachmentTypeSticker) && [bubbleData.attachment.eventId isEqualToString:customizedRoomDataSource.selectedEventId])
+                {
+                    cellViewClass = RoomSelectedStickerBubbleCell.class;
+                }
+                else if (bubbleData.isPaginationFirstBubble)
                 {
                     cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class :RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
                 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02543BAE206E6C59001CDAB2 /* RoomSelectedStickerBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 02543BAB206E6C58001CDAB2 /* RoomSelectedStickerBubbleCell.m */; };
+		02543BAF206E6C59001CDAB2 /* RoomSelectedStickerBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02543BAC206E6C58001CDAB2 /* RoomSelectedStickerBubbleCell.xib */; };
 		2435179C1F375B9400D0683E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2466B7551F2F80B800AE27B0 /* Info.plist */; };
 		2435179F1F375C0F00D0683E /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
 		2439DD621F6BBE760090F42D /* RecentRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2439DD611F6BBE760090F42D /* RecentRoomTableViewCell.m */; };
@@ -656,6 +658,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		02543BAB206E6C58001CDAB2 /* RoomSelectedStickerBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSelectedStickerBubbleCell.m; sourceTree = "<group>"; };
+		02543BAC206E6C58001CDAB2 /* RoomSelectedStickerBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomSelectedStickerBubbleCell.xib; sourceTree = "<group>"; };
+		02543BAD206E6C59001CDAB2 /* RoomSelectedStickerBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSelectedStickerBubbleCell.h; sourceTree = "<group>"; };
 		12AA0005C8B3D8D8162584C5 /* Pods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		22D76C11C202B6BC5917A049 /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		23D7292481328A48B8D5D4ED /* Pods_RiotPods_RiotShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_RiotShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2428,6 +2433,9 @@
 				F083BCD51E7009EC00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h */,
 				F083BCD61E7009EC00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m */,
 				F083BCD71E7009EC00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib */,
+				02543BAD206E6C59001CDAB2 /* RoomSelectedStickerBubbleCell.h */,
+				02543BAB206E6C58001CDAB2 /* RoomSelectedStickerBubbleCell.m */,
+				02543BAC206E6C58001CDAB2 /* RoomSelectedStickerBubbleCell.xib */,
 			);
 			path = RoomBubbleList;
 			sourceTree = "<group>";
@@ -3217,6 +3225,7 @@
 				F083BD3A1E7009ED00A9B29C /* call_chat_icon@2x.png in Resources */,
 				F083BE711E7009ED00A9B29C /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				F083BD5E1E7009ED00A9B29C /* create_room@3x.png in Resources */,
+				02543BAF206E6C59001CDAB2 /* RoomSelectedStickerBubbleCell.xib in Resources */,
 				F083BE6B1E7009ED00A9B29C /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				F083BD4C1E7009ED00A9B29C /* camera_capture@2x.png in Resources */,
 				F083BD8F1E7009ED00A9B29C /* file_video_icon.png in Resources */,
@@ -3635,6 +3644,7 @@
 				F083BE601E7009ED00A9B29C /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				F083BE2F1E7009ED00A9B29C /* ContactTableViewCell.m in Sources */,
 				F083BE901E7009ED00A9B29C /* RoomTitleView.m in Sources */,
+				02543BAE206E6C59001CDAB2 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				F083BE6E1E7009ED00A9B29C /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				3233F7311F31F4BF006ACA81 /* JitsiViewController.m in Sources */,
 				F083BE2A1E7009ED00A9B29C /* UsersDevicesViewController.m in Sources */,
