@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, "8.0"
+platform :ios, "9.0"
 
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
