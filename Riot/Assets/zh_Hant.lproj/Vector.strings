@@ -63,10 +63,10 @@
 "auth_add_phone_message" = "輸入電話號碼來讓其他人找到您。";
 "auth_add_email_phone_message" = "輸入電子郵件位址或電話號碼來讓其他人找到您；電子郵件位址也可以用來重設密碼。";
 "auth_add_email_and_phone_message" = "輸入電子郵件位址和電話號碼來讓其他人找到您；電子郵件位址也可以用來重設密碼。";
-"auth_missing_email" = "缺少電子郵件位置";
+"auth_missing_email" = "缺少電子郵件位址";
 "auth_missing_phone" = "缺少電話號碼";
-"auth_missing_email_or_phone" = "缺少電子郵件位置或電話號碼";
-"auth_email_in_use" = "這個電子郵件位置已被使用";
+"auth_missing_email_or_phone" = "缺少電子郵件位址或電話號碼";
+"auth_email_in_use" = "這個電子郵件位址已被使用";
 "auth_phone_in_use" = "這個電話號碼已被使用";
 "auth_untrusted_id_server" = "這個驗證伺服器不受信任";
 "auth_password_dont_match" = "兩次密碼輸入不吻合";
@@ -98,7 +98,7 @@
 "directory_title" = "目錄";
 "auth_recaptcha_message" = "這個家伺服器想要確定您不是機器人";
 "auth_reset_password_missing_email" = "必須輸入和你帳號關聯的電子郵件地址。";
-"auth_reset_password_missing_password" = "一個新的密碼必須被輸入。.";
+"auth_reset_password_missing_password" = "一個新的密碼必須被輸入。";
 "auth_reset_password_next_step_button" = "我已經驗證了我的電子郵件地址";
 "auth_reset_password_error_unauthorized" = "電子郵件地址驗證失敗： 請確保你已點擊郵件中的連結";
 "auth_reset_password_error_not_found" = "您的電子郵件地址似乎未在此家伺服器上與 Matrix ID 關聯。";
@@ -257,3 +257,4 @@
 "room_participants_action_set_admin" = "設定成管理者";
 "room_participants_action_start_voice_call" = "開始語音通話";
 "room_participants_action_start_video_call" = "開始視訊通話";
+"room_event_action_view_encryption" = "加密資訊";
