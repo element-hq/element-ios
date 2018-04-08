@@ -74,6 +74,9 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 // Current selected room id. nil if no room is presently visible.
 @property (strong, nonatomic) NSString *visibleRoomId;
 
+// New message sound id.
+@property (nonatomic, readonly) SystemSoundID messageSound;
+
 + (AppDelegate*)theDelegate;
 
 #pragma mark - Application layout handling

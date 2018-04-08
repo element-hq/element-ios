@@ -340,6 +340,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
+    // Create message sound
+    NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"mp3"];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)messageSoundURL, &_messageSound);
+    
     NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
 
     return YES;
@@ -1461,7 +1465,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                         {
                             NSString *soundName = action.parameters[@"value"];
                             if ([soundName isEqualToString:@"default"])
-                                soundName = UILocalNotificationDefaultSoundName;
+                                soundName = @"message.mp3";
                             
                             eventNotification.soundName = soundName;
                         }
@@ -2954,8 +2958,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                             {
                                 if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
                                 {
-                                    // Play system sound (VoicemailReceived)
-                                    AudioServicesPlaySystemSound (1002);
+                                    // Play message sound
+                                    AudioServicesPlaySystemSound(_messageSound);
                                 }
                             }
                         }
