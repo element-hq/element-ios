@@ -1951,6 +1951,11 @@
                 // Force table refresh
                 [self dataSource:self.roomDataSource didCellChange:nil];
             }
+            else
+            {
+                // Keep default implementation
+                [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+            }
         }
         else if ([actionIdentifier isEqualToString:kRoomEncryptedDataBubbleCellTapOnEncryptionIcon])
         {
