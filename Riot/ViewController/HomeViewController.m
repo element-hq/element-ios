@@ -591,41 +591,7 @@
 
 - (IBAction)onLeaveButtonPressed:(id)sender
 {
-    __weak typeof(self) weakSelf = self;
-
-    // confirm leave
-    NSString *promptMessage = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
-                                                       message:promptMessage
-                                                preferredStyle:UIAlertControllerStyleAlert];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-
-                                                   }]];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-
-                                                         if (weakSelf)
-                                                         {
-                                                             typeof(self) self = weakSelf;
-                                                             self->currentAlert = nil;
-                                                             
-                                                             [self leaveEditedRoom];
-                                                         }
-
-                                                     }]];
-
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomMemberDetailsVCKickAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [self leaveEditedRoom];
 }
 
 @end
