@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -981,6 +982,7 @@
                                                                  self->currentAlert = nil;
                                                                  
                                                                  // Check whether the user didn't leave the room yet
+                                                                 // TODO: Handle multi-account
                                                                  MXRoom *room = [self.mainSession roomWithRoomId:currentRoomId];
                                                                  if (room)
                                                                  {
@@ -996,22 +998,32 @@
                                                                      
                                                                      [room leave:^{
                                                                          
-                                                                         [self stopActivityIndicator];
-                                                                         
-                                                                         // Force table refresh
-                                                                         [self cancelEditionMode:YES];
+                                                                         if (weakSelf)
+                                                                         {
+                                                                             typeof(self) self = weakSelf;
+                                                                             [self stopActivityIndicator];
+                                                                             // Force table refresh
+                                                                             [self cancelEditionMode:YES];
+                                                                         }
                                                                          
                                                                      } failure:^(NSError *error) {
                                                                          
-                                                                         NSLog(@"[RecentsViewController] Failed to leave room (%@)", room.state.roomId);
+                                                                         NSLog(@"[RecentsViewController] Failed to leave room");
+                                                                         if (weakSelf)
+                                                                         {
+                                                                             typeof(self) self = weakSelf;
+                                                                             // Notify the end user
+                                                                             NSString *userId = room.mxSession.myUser.userId;
+                                                                             [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                                                                                 object:error
+                                                                                                                               userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
+                                                                             
+                                                                             [self stopActivityIndicator];
+                                                                             
+                                                                             // Leave editing mode
+                                                                             [self cancelEditionMode:isRefreshPending];
+                                                                         }
                                                                          
-                                                                         // Notify MatrixKit user
-                                                                         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
-                                                                         
-                                                                         [self stopActivityIndicator];
-                                                                         
-                                                                         // Leave editing mode
-                                                                         [self cancelEditionMode:isRefreshPending];
                                                                      }];
                                                                  }
                                                                  else
@@ -1059,7 +1071,10 @@
 {
     if (editedRoomId)
     {
+        __weak typeof(self) weakSelf = self;
+        
         // Check whether the user didn't leave the room
+        // TODO: handle multi-account
         MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
         if (room)
         {
@@ -1067,23 +1082,32 @@
             
             [room setIsDirect:isDirect withUserId:nil success:^{
                 
-                [self stopActivityIndicator];
-                
-                // Leave editing mode
-                [self cancelEditionMode:isRefreshPending];
-                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    [self stopActivityIndicator];
+                    // Leave editing mode
+                    [self cancelEditionMode:isRefreshPending];
+                }
                 
             } failure:^(NSError *error) {
                 
-                [self stopActivityIndicator];
-                
-                NSLog(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
-                
-                // Notify MatrixKit user
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
-                
-                // Leave editing mode
-                [self cancelEditionMode:isRefreshPending];
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    [self stopActivityIndicator];
+                    
+                    NSLog(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
+                    
+                    // Notify the end user
+                    NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                        object:error
+                                                                      userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
+                    
+                    // Leave editing mode
+                    [self cancelEditionMode:isRefreshPending];
+                }
                 
             }];
         }

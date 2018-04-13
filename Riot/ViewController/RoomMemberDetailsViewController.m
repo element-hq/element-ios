@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -415,9 +416,7 @@
             {
                 // Restore the status bar
                 typeof(self) self = weakSelf;
-
                 self->devicesArray = usersDevicesInfoMap.map[userId].allValues;
-
                 // Reload the full table to take into account a potential change on a device status.
                 [super updateMemberInfo];
             }
@@ -425,9 +424,15 @@
         } failure:^(NSError *error) {
 
             NSLog(@"[RoomMemberDetailsVC] Crypto failed to download device info for user: %@", userId);
-
-            // Notify MatrixKit user
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+            if (weakSelf)
+            {
+                // Restore the status bar
+                typeof(self) self = weakSelf;
+                // Notify the end user
+                NSString *myUserId = self.mainSession.myUser.userId;
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+            }
+            
         }];
     }
     

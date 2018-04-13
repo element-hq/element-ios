@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -707,7 +708,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                                            [self stopActivityIndicator];
                                                                            
                                                                            // Notify user
-                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                                                                           NSString *myUserId = self.mainSession.myUser.userId; // TODO: Hanlde multi-account
+                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
                                                                        }
                                                                    }
                                                                }
@@ -817,8 +819,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                                            {
                                                                                [self stopActivityIndicator];
                                                                                
-                                                                               // Notify user
-                                                                               [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                                                                               NSString *myUserId = self.mainSession.myUser.userId; // TODO: Hanlde multi-account
+                                                                               [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
                                                                            }
                                                                        }
                                                                        
@@ -2446,8 +2448,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                                            
                                                                            NSLog(@"[SettingsViewController] Unignore %@ failed", ignoredUserId);
                                                                            
-                                                                           // Notify user
-                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                                                                           NSString *myUserId = session.myUser.userId;
+                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
                                                                            
                                                                        }];
                                                                    }
@@ -2724,8 +2726,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                                            
                                                                            [self stopActivityIndicator];
                                                                            
-                                                                           // Notify user
-                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                                                                           NSString *myUserId = self.mainSession.myUser.userId; // TODO: Hanlde multi-account
+                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
                                                                        }
                                                                    }];
                                                                }
@@ -3413,7 +3415,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
 
         // Notify user
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+        NSString *myUserId = session.myUser.userId; // TODO: Hanlde multi-account
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
 
     }];
 }
@@ -3515,7 +3518,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         
         // Notify user
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+        NSString *myUserId = session.myUser.userId;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
         
     }];
 }
