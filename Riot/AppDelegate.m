@@ -2084,7 +2084,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }];
         }
     }
-    else if ([pathParams[0] isEqualToString:@"register"])
+    // Check whether a session id is provided to finalize a registration, ignore links without session id.
+    else if ([pathParams[0] isEqualToString:@"register"] && queryParams[@"session_id"])
     {
         NSLog(@"[AppDelegate] Universal link with registration parameters");
         continueUserActivity = YES;
