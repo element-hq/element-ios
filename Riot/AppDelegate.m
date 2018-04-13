@@ -2587,15 +2587,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 #endif
     
     // Logout all matrix account
-    [[MXKAccountManager sharedManager] logout];
-    
-    // Return to authentication screen
-    [_masterTabBarController showAuthenticationScreen];
-    
-    // Note: Keep App settings
-    
-    // Reset the contact manager
-    [[MXKContactManager sharedManager] reset];
+    [[MXKAccountManager sharedManager] logoutWithCompletion:^{
+        
+        // Return to authentication screen
+        [_masterTabBarController showAuthenticationScreen];
+        
+        // Note: Keep App settings
+        
+        // Reset the contact manager
+        [[MXKContactManager sharedManager] reset];
+        
+    }];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

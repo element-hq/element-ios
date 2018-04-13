@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -2606,7 +2607,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                            
                                                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                                                                
-                                                               [[MXKAccountManager sharedManager] logout];
+                                                               [[MXKAccountManager sharedManager] logoutWithCompletion:nil];
                                                                
                                                            });
                                                        }
@@ -2930,7 +2931,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                                    
                                                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                                                                        
-                                                                       [[MXKAccountManager sharedManager] logout];
+                                                                       [[MXKAccountManager sharedManager] logoutWithCompletion:nil];
                                                                        
                                                                    });
                                                                }
