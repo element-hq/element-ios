@@ -88,7 +88,7 @@
 "search_files" = "Skrár";
 "search_default_placeholder" = "Leita";
 "search_no_result" = "Engar niðurstöður";
-"search_in_progress" = "Leita...";
+"search_in_progress" = "Leita…";
 // Directory
 "directory_cell_title" = "Vafra í möppu";
 "directory_cell_description" = "%tu spjallrásir";
@@ -117,8 +117,8 @@
 "room_participants_action_unban" = "Afbanna";
 "room_participants_action_set_admin" = "Gera að stjórnanda";
 "room_participants_action_start_new_chat" = "Hefja nýtt spjall";
-"room_participants_action_start_voice_call" = "Hefja raddsímtal";
-"room_participants_action_start_video_call" = "Hefja myndsímtal";
+"room_participants_action_start_voice_call" = "Hefja raddsamtal";
+"room_participants_action_start_video_call" = "Hefja myndsamtal";
 "room_new_message_notification" = "%d nýtt skilaboð";
 "room_new_messages_notification" = "%d ný skilaboð";
 "room_one_user_is_typing" = "%@ er að skrifa…";
@@ -263,10 +263,10 @@
 "room_displayname_more_than_two_members" = "%@ og %u til viðbótar";
 "room_displayname_no_title" = "Tóm spjallrás";
 // Call
-"call_incoming_voice_prompt" = "Innhringing raddsímtals frá %@";
-"call_incoming_video_prompt" = "Innhringing myndsímtals frá %@";
+"call_incoming_voice_prompt" = "Innhringing raddsamtals frá %@";
+"call_incoming_video_prompt" = "Innhringing myndsamtals frá %@";
 "call_incoming_voice" = "Innhringing...";
-"call_incoming_video" = "Innhringing myndsímtals...";
+"call_incoming_video" = "Innhringing myndsamtals...";
 // No VoIP support
 "no_voip_title" = "Innhringing";
 // Bug report
@@ -280,3 +280,6 @@
 "widget_integration_must_be_in_room" = "Þú ert ekki á þessari spjallrás.";
 "widget_integration_no_permission_in_room" = "Þú hefur ekki réttindi til þess að gera þetta á þessari spjallrás.";
 "e2e_room_key_request_ignore_request" = "Hunsa beiðni";
+"active_call" = "Virkt samtal";
+"unknown_devices_call_anyway" = "hringja samt";
+"call_already_displayed" = "Þegar er samtal í gangi.";
