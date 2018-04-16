@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -86,51 +86,12 @@
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="C5F-6D-LZx"/>
                         </constraints>
                     </view>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K9X-gn-noF" userLabel="File Type Image View">
-                        <rect key="frame" x="67" y="75" width="32" height="32"/>
-                        <accessibility key="accessibilityConfiguration" identifier="FileTypeImageView"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="32" id="OE8-oh-B7Q"/>
-                            <constraint firstAttribute="height" constant="32" id="jJB-zj-fbT"/>
-                        </constraints>
-                    </imageView>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
                         <rect key="frame" x="515" y="54" width="70" height="125.5"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="70" id="tLr-6k-ArA"/>
-                        </constraints>
-                    </view>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fdx-qs-8en" userLabel="ProgressView">
-                        <rect key="frame" x="487" y="63.5" width="100" height="70"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="eU5-iK-u8i" userLabel="Progress stats">
-                                <rect key="frame" x="0.0" y="60" width="100" height="10"/>
-                                <accessibility key="accessibilityConfiguration" identifier="ProgressStats"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="8"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJj-TC-pxK" customClass="MXKPieChartView">
-                                <rect key="frame" x="30" y="0.0" width="40" height="40"/>
-                                <accessibility key="accessibilityConfiguration" identifier="ProgressChartView"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="Cpt-s4-tlK"/>
-                                    <constraint firstAttribute="height" constant="40" id="Jb4-9E-tG0"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="70" id="5w2-Hm-hZx"/>
-                            <constraint firstAttribute="centerX" secondItem="eU5-iK-u8i" secondAttribute="centerX" id="APi-aE-mLc"/>
-                            <constraint firstItem="eU5-iK-u8i" firstAttribute="leading" secondItem="fdx-qs-8en" secondAttribute="leading" id="Njw-3a-E9Y"/>
-                            <constraint firstAttribute="bottom" secondItem="eU5-iK-u8i" secondAttribute="bottom" id="QMO-g9-QVE"/>
-                            <constraint firstAttribute="centerX" secondItem="hJj-TC-pxK" secondAttribute="centerX" id="laR-Vg-ol3"/>
-                            <constraint firstItem="hJj-TC-pxK" firstAttribute="top" secondItem="fdx-qs-8en" secondAttribute="top" id="ovD-8p-4dP"/>
-                            <constraint firstAttribute="width" constant="100" id="ryE-fW-SgG"/>
-                            <constraint firstAttribute="trailing" secondItem="eU5-iK-u8i" secondAttribute="trailing" id="teG-8q-BOX"/>
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3b7-4a-YL0">
@@ -187,7 +148,6 @@
                 <constraints>
                     <constraint firstItem="4ru-pn-Aka" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" constant="6" id="0Cl-Or-gY1"/>
                     <constraint firstItem="3b7-4a-YL0" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="10i-70-PDz"/>
-                    <constraint firstItem="hgp-Z5-rAj" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="54" id="2Ih-ga-N9s"/>
                     <constraint firstItem="SfO-mO-OOz" firstAttribute="top" secondItem="SFg-55-RF4" secondAttribute="bottom" constant="34" id="7ug-dI-P4H"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="75" id="96U-67-5TP"/>
                     <constraint firstItem="lgz-UT-c2U" firstAttribute="leading" secondItem="5IE-JS-uf3" secondAttribute="leading" id="B0j-24-Z8x"/>
@@ -209,13 +169,10 @@
                     <constraint firstItem="SFg-55-RF4" firstAttribute="leading" secondItem="q9c-0p-QyP" secondAttribute="leading" id="hwY-nq-Oyw"/>
                     <constraint firstAttribute="trailing" secondItem="SFg-55-RF4" secondAttribute="trailing" constant="10" id="jvR-oT-EQF"/>
                     <constraint firstItem="SfO-mO-OOz" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="41" id="nW4-ob-PSQ"/>
-                    <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="K9X-gn-noF" secondAttribute="leading" id="p93-5h-lvW"/>
                     <constraint firstItem="hgp-Z5-rAj" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="13" id="tuw-aU-ncu"/>
-                    <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="fdx-qs-8en" secondAttribute="centerY" id="v0F-Ts-14P"/>
                     <constraint firstItem="SFg-55-RF4" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="10" id="wJX-7V-bJB"/>
-                    <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="K9X-gn-noF" secondAttribute="top" id="wkX-zQ-iQS"/>
                     <constraint firstAttribute="bottomMargin" secondItem="3b7-4a-YL0" secondAttribute="bottom" constant="-8" id="wpa-8Z-Gy3"/>
-                    <constraint firstAttribute="trailing" secondItem="fdx-qs-8en" secondAttribute="trailing" constant="13" id="xKk-Gz-moE"/>
+                    <constraint firstItem="hgp-Z5-rAj" firstAttribute="top" secondItem="q9c-0p-QyP" secondAttribute="top" id="xVT-Xe-sq0"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -236,14 +193,10 @@
                 <outlet property="descriptionLabel" destination="PwC-m9-IC3" id="Xf9-RK-KCJ"/>
                 <outlet property="descriptionView" destination="lql-N7-aOv" id="7Sb-9t-j0p"/>
                 <outlet property="encryptionStatusView" destination="SfO-mO-OOz" id="8BV-oD-e0i"/>
-                <outlet property="fileTypeIconView" destination="K9X-gn-noF" id="4Pj-bc-3gk"/>
                 <outlet property="paginationLabel" destination="wkY-7Y-sGw" id="9Uh-tX-t0I"/>
                 <outlet property="paginationSeparatorView" destination="0kR-4b-Wav" id="c7x-Sh-aj6"/>
                 <outlet property="paginationTitleView" destination="SFg-55-RF4" id="mbP-6I-gOn"/>
                 <outlet property="pictureView" destination="hgp-Z5-rAj" id="rKM-QG-RJN"/>
-                <outlet property="progressChartView" destination="hJj-TC-pxK" id="Zz3-s5-Qqr"/>
-                <outlet property="progressView" destination="fdx-qs-8en" id="V7E-pn-Xze"/>
-                <outlet property="statsLabel" destination="eU5-iK-u8i" id="MSm-kU-RSY"/>
                 <outlet property="userNameLabel" destination="q9c-0p-QyP" id="JId-R7-LoM"/>
                 <outlet property="userNameLabelTopConstraint" destination="Ixr-7h-f8j" id="RqB-b5-7D2"/>
                 <outlet property="userNameTapGestureMaskView" destination="4ru-pn-Aka" id="28k-f4-1LY"/>

@@ -136,15 +136,7 @@
         {
             mimetype = bubbleData.attachment.contentInfo[@"mimetype"];
         }
-        if ([mimetype isEqualToString:@"image/gif"])
-        {
-            self.fileTypeIconView.image = [NSBundle mxk_imageFromMXKAssetsBundleWithName:@"filetype-gif"];
-            self.fileTypeIconView.hidden = NO;
-        }
-        else
-        {
-            self.fileTypeIconView.hidden = YES;
-        }
+        
         // Display the sticker
         self.attachmentView.backgroundColor = [UIColor clearColor];
         self.attachmentView.mediaFolder = bubbleData.roomId;
@@ -163,15 +155,8 @@
             self.descriptionContainerView.hidden = YES;
         }
         
-        // @TODO: check whether we need the progress view or not. Remove it if it is useless.
-        self.progressView.hidden = YES;
-        
         // Adjust Attachment width constant
         self.attachViewWidthConstraint.constant = contentSize.width;
-        
-//        // Add a long gesture recognizer on progressView to cancel the current operation (Note: only the download can be cancelled).
-//        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
-//        [self.progressView addGestureRecognizer:longPress];
         
         // Handle the encryption view
         if (bubbleData.isEncryptedRoom)
@@ -200,7 +185,6 @@
             }
             frame = cell.attachmentView.frame;
             self.attachViewLeadingConstraint.constant = frame.origin.x;
-            self.pictureView.frame = cell.pictureView.frame;
             self.attachViewTopConstraint.constant = cell.attachViewTopConstraint.constant;
             self.attachViewBottomConstraint.constant = cell.attachViewBottomConstraint.constant;
             self.bubbleInfoContainerTopConstraint.constant = cell.bubbleInfoContainerTopConstraint.constant;
