@@ -119,7 +119,7 @@
 "room_participants_action_start_new_chat" = "Hefja nýtt spjall";
 "room_participants_action_start_voice_call" = "Hefja raddsamtal";
 "room_participants_action_start_video_call" = "Hefja myndsamtal";
-"room_new_message_notification" = "%d nýtt skilaboð";
+"room_new_message_notification" = "%d ný skilaboð";
 "room_new_messages_notification" = "%d ný skilaboð";
 "room_one_user_is_typing" = "%@ er að skrifa…";
 "room_two_users_are_typing" = "%@ & %@ eru að skrifa…";
@@ -283,3 +283,73 @@
 "active_call" = "Virkt samtal";
 "unknown_devices_call_anyway" = "hringja samt";
 "call_already_displayed" = "Þegar er samtal í gangi.";
+"active_call_details" = "Virkt samtal (%@)";
+"auth_send_reset_email" = "Senda endurstillingarpóst";
+"auth_return_to_login" = "Fara aftur í innskráningargluggann";
+"auth_home_server_placeholder" = "URL-slóð (t.d. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL-slóð (t.d. https://matrix.org)";
+"auth_invalid_email" = "Þetta lítur ekki út eins og gilt tölvupóstfang";
+"auth_invalid_phone" = "Þetta lítur ekki út eins og gilt símanúmer";
+"auth_email_in_use" = "Þetta tölvupóstfang er nú þegar í notkun";
+"auth_phone_in_use" = "Þetta símanúmer er nú þegar í notkun";
+"auth_untrusted_id_server" = "Þessum auðkennisþjóni er ekki treyst";
+"auth_use_server_options" = "Nota sérsniðna valkosti vefþjóns (ítarlegt)";
+"auth_email_validation_message" = "Skoðaðu tölvupóstinn þinn til að geta haldið áfram með skráningu";
+"auth_msisdn_validation_message" = "Við höfum sent SMS-skilaboð með virkjunarkóða. Settu þennan kóða inn hér fyrir neðan.";
+"auth_msisdn_validation_error" = "Ekki var hægt að sannreyna símanúmer.";
+// Chat creation
+"room_creation_title" = "Nýtt spjall";
+"room_creation_private_room" = "Þetta spjall er einkamál";
+"room_creation_public_room" = "Þetta spjall er opinbert";
+"room_creation_make_public" = "Gera opinbert";
+"room_creation_make_public_prompt_title" = "Gera þetta spjall opinbert?";
+"room_creation_keep_private" = "Halda einka";
+// Rooms tab
+"room_directory_no_public_room" = "Engar opinberar spjallrásir tiltækar";
+"search_people_placeholder" = "Leita eftir notandauðkenni, nafni eða tölvupóstfangi";
+"directory_search_fail" = "Ekki tókst að sækja gögn";
+"contacts_address_book_no_contact" = "Engir tengiliðir á tæki";
+// Chat participants
+"room_participants_title" = "Þátttakendur";
+"room_participants_add_participant" = "Bæta við þátttakanda";
+"room_participants_one_participant" = "1 þáttakandi";
+"room_participants_multi_participants" = "%d þátttakendur";
+"room_participants_action_ignore" = "Fela öll skilaboð frá þessum notanda";
+"room_participants_action_unignore" = "Sýna öll skilaboð frá þessum notanda";
+"room_participants_action_set_default_power_level" = "Endurstilla sem venjulegan notanda";
+"room_participants_action_set_moderator" = "Gera að umsjónarmanni";
+"room_participants_action_mention" = "Minnst á";
+// Chat
+"room_jump_to_first_unread" = "Fara í fyrstu ólesin skilaboð";
+"room_message_placeholder" = "Senda skilaboð (ódulrituð)…";
+"room_do_not_have_permission_to_post" = "Þú hefur ekki heimild til að senda skilaboð á þessa spjallrás";
+"room_message_short_placeholder" = "Senda skilaboð…";
+"room_offline_notification" = "Tenging við vefþjón hefur rofnað.";
+"room_resend_unsent_messages" = "Senda aftur ósend skilaboð";
+"room_delete_unsent_messages" = "Eyða ósendum skilaboðum";
+"room_event_action_report" = "Klaga efni";
+"room_event_action_report_prompt_reason" = "Ástæður fyrir tilkynningu um vankanta á þessu efni";
+"room_event_action_report_prompt_ignore_user" = "Viltu fela öll skilaboð frá þessum notanda?";
+"room_event_action_cancel_send" = "Hætta við sendingu";
+"room_event_action_view_encryption" = "Dulritunarupplýsingar";
+"room_event_failed_to_send" = "Mistókst að senda";
+// Unknown devices
+"unknown_devices_alert_title" = "Spjallrás inniheldur óþekkt tæki";
+"unknown_devices_answer_anyway" = "Svara samt";
+"unknown_devices_title" = "Óþekkt tæki";
+// Room Preview
+"room_preview_invitation_format" = "Þér hefur verið boðið af %@ að taka þátt í þessari spjallrás";
+"account_logout_all" = "Skrá út af öllum notandaaðgöngum";
+"settings_config_no_build_info" = "Engar smíðaupplýsingar";
+"settings_mark_all_as_read" = "Merkja öll skilaboð sem lesin";
+"settings_config_home_server" = "Heimaþjónn er %@";
+"settings_config_identity_server" = "Auðkennisþjónn er %@";
+"settings_labs" = "TILRAUNIR";
+"settings_flair" = "Sýna hlutverksmerki þar sem það er leyfilegt";
+"settings_remove_email_prompt_msg" = "Ertu viss um að þú viljir fjarlægja tölvupóstfangið %@?";
+"settings_remove_phone_prompt_msg" = "Ertu viss um að þú viljir fjarlægja símanúmerið %@?";
+"settings_email_address_placeholder" = "Settu inn tölvupóstfangið þitt";
+"settings_enable_push_notif" = "Tilkynningar á þessu tæki";
+"settings_show_decrypted_content" = "Sýna afkóðað efni";
+"settings_enable_callkit" = "Innbyggð hringing";
+"room_details_flair_section" = "Sýna hlutverksmerki fyrir samfélög";
