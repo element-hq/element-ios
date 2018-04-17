@@ -2639,6 +2639,20 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         return;
     }
     
+    // Display a loading wheel during the logout process
+    id topVC;
+    if (_masterTabBarController && _masterTabBarController == _masterNavigationController.visibleViewController)
+    {
+        topVC = _masterTabBarController.selectedViewController;
+    }
+    else
+    {
+        topVC = _masterNavigationController.visibleViewController;
+    }
+    if (topVC && [topVC respondsToSelector:@selector(startActivityIndicator)])
+    {
+        [topVC startActivityIndicator];
+    }
     
     self.pushRegistry = nil;
     isPushRegistered = NO;
