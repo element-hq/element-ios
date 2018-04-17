@@ -2571,63 +2571,24 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)onSignout:(id)sender
 {
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-    __weak typeof(self) weakSelf = self;
-
-    NSString *message = NSLocalizedStringFromTable(@"settings_sign_out_confirmation", @"Vector", nil);
-
-    // If the user has encrypted rooms, warn he will lose his e2e keys
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-    for (MXRoom *room in session.rooms)
-    {
-        if (room.state.isEncrypted)
+    // Feedback: disable button and run activity indicator
+    UIButton *button = (UIButton*)sender;
+    button.enabled = NO;
+    [self startActivityIndicator];
+    
+     __weak typeof(self) weakSelf = self;
+    
+    [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
+        
+        if (!isLoggedOut && weakSelf)
         {
-            message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\n%@", NSLocalizedStringFromTable(@"settings_sign_out_e2e_warn", @"Vector", nil)]];
-            break;
+            typeof(self) self = weakSelf;
+            
+            // Enable the button and stop activity indicator
+            button.enabled = YES;
+            [self stopActivityIndicator];
         }
-    }
-
-    // Ask confirmation
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil) message:message preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                           
-                                                           // Feedback: disable button and run activity indicator
-                                                           UIButton *button = (UIButton*)sender;
-                                                           button.enabled = NO;
-                                                           [self startActivityIndicator];
-                                                           
-                                                           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                                                               
-                                                               [[MXKAccountManager sharedManager] logoutWithCompletion:nil];
-                                                               
-                                                           });
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-
-    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCSignoutAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    }];
 }
 
 - (void)onRemove3PID:(NSIndexPath*)path
@@ -2931,7 +2892,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                                    
                                                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                                                                        
-                                                                       [[MXKAccountManager sharedManager] logoutWithCompletion:nil];
+                                                                       [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:nil];
                                                                        
                                                                    });
                                                                }

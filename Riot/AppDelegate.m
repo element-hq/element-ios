@@ -208,6 +208,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
 
+@property (strong, nonatomic) UIAlertController *logoutConfirmation;
+
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
 
@@ -2084,8 +2086,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }];
         }
     }
-    // Check whether a session id is provided to finalize a registration, ignore links without session id.
-    else if ([pathParams[0] isEqualToString:@"register"] && queryParams[@"session_id"])
+    // Check whether this is a registration links.
+    else if ([pathParams[0] isEqualToString:@"register"])
     {
         NSLog(@"[AppDelegate] Universal link with registration parameters");
         continueUserActivity = YES;
@@ -2396,7 +2398,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // Logout the app when there is no available account
         if (![MXKAccountManager sharedManager].accounts.count)
         {
-            [self logout];
+            [self logoutWithConfirmation:NO completion:nil];
         }
     }];
     
@@ -2568,8 +2570,76 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)logout
+- (void)logoutWithConfirmation:(BOOL)askConfirmation completion:(void (^)(BOOL isLoggedOut))completion
 {
+    // Check whether we have to ask confirmation before logging out.
+    if (askConfirmation)
+    {
+        if (self.logoutConfirmation)
+        {
+            [self.logoutConfirmation dismissViewControllerAnimated:NO completion:nil];
+            self.logoutConfirmation = nil;
+        }
+        
+        __weak typeof(self) weakSelf = self;
+        
+        NSString *message = NSLocalizedStringFromTable(@"settings_sign_out_confirmation", @"Vector", nil);
+        
+        // If the user has encrypted rooms, warn he will lose his e2e keys
+        MXSession *session = self.mxSessions.firstObject;
+        for (MXRoom *room in session.rooms)
+        {
+            if (room.state.isEncrypted)
+            {
+                message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\n%@", NSLocalizedStringFromTable(@"settings_sign_out_e2e_warn", @"Vector", nil)]];
+                break;
+            }
+        }
+        
+        // Ask confirmation
+        self.logoutConfirmation = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil) message:message preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil)
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               self.logoutConfirmation = nil;
+                                                               
+                                                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                                                   
+                                                                   [self logoutWithConfirmation:NO completion:completion];
+                                                                   
+                                                               });
+                                                           }
+                                                           
+                                                       }]];
+        
+        [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               self.logoutConfirmation = nil;
+                                                               
+                                                               if (completion)
+                                                               {
+                                                                   completion(NO);
+                                                               }
+                                                           }
+                                                           
+                                                       }]];
+        
+        [self.logoutConfirmation mxk_setAccessibilityIdentifier: @"AppDelegateLogoutConfirmationAlert"];
+        [self showNotificationAlert:self.logoutConfirmation];
+        return;
+    }
+    
+    
     self.pushRegistry = nil;
     isPushRegistered = NO;
     
@@ -2589,6 +2659,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logoutWithCompletion:^{
+        
+        if (completion)
+        {
+            completion (YES);
+        }
         
         // Return to authentication screen
         [_masterTabBarController showAuthenticationScreen];
@@ -2920,7 +2995,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                          typeof(self) self = weakSelf;
                                                                          self->_errorNotification = nil;
                                                                          
-                                                                         [self logout];
+                                                                         [self logoutWithConfirmation:NO completion:nil];
                                                                      }
                                                                      
                                                                  }]];
