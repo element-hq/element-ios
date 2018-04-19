@@ -101,7 +101,14 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 // Reload all running matrix sessions
 - (void)reloadMatrixSessions:(BOOL)clearCache;
 
-- (void)logout;
+/**
+ Log out all the accounts after asking for a potential confirmation.
+ Show the authentication screen on successful logout.
+ 
+ @param askConfirmation tell whether a confirmation is required before logging out.
+ @param completion the block to execute at the end of the operation.
+ */
+- (void)logoutWithConfirmation:(BOOL)askConfirmation completion:(void (^)(BOOL isLoggedOut))completion;
 
 #pragma mark - Matrix Accounts handling
 

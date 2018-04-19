@@ -30,7 +30,9 @@ rm -r "$tmp"
 if [ -z "$xcent" ]
 then
     echo "$1 has no archived-expanded-entitlements.xcent."
-    exit 2
+    
+    # It seems that since Xcode 9.3, this file is no more present (https://forums.developer.apple.com/thread/99923)
+    #exit 2
 fi
 
 # Check the aps-environment embedded in the binary.
