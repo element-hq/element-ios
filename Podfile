@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, "8.0"
+platform :ios, "9.0"
 
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
@@ -9,7 +9,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.7.8'
+$matrixKitVersion = '0.7.9'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'

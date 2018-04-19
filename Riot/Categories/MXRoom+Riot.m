@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -57,9 +58,12 @@
              } failure:^(NSError *error) {
                  
                  NSLog(@"[MXRoom+Riot] Failed to update the tag %@ of room (%@)", tag, self.state.roomId);
+                 NSString *userId = self.mxSession.myUser.userId;
                  
                  // Notify user
-                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                     object:error
+                                                                   userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
                  
                  if (completion)
                  {

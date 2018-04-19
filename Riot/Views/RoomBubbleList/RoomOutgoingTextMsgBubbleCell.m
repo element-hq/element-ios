@@ -21,12 +21,6 @@
 
 @implementation RoomOutgoingTextMsgBubbleCell
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    self.readReceiptsAlignment = ReadReceiptAlignmentRight;
-}
-
 - (void)customizeTableViewCellRendering
 {
     [super customizeTableViewCellRendering];
