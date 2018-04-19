@@ -1,3 +1,28 @@
+Changes in 0.6.13 (2018-04-20)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.10).
+ * The minimal iOS version is now 9.0.
+ * Render stickers in the timeline (#1819).
+ * Support specifying kick and ban msgs (#1816), thanks to @atabrizian (PR #1824).
+ * Confirmation popup when leaving room (#1793), thanks to @atabrizian (PR #1828).
+
+
+Bug fixes:
+ * Global Messages search: some search results are missing.
+ * Crash on URL like https://riot.im/#/app/register?hs_url=... (#1838).
+
+Changes in 0.6.13 (2018-03-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.9).
+ * Make state event redaction handling gentler with homeserver (vector-im/riot-ios#1823).
+
+Bug fixes:
+ * Room summary is not updated after redaction of the room display name (vector-im/riot-ios#1822). 
+
 Changes in 0.6.12 (2018-03-12)
 ===============================================
 

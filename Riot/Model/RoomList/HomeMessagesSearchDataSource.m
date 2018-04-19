@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -46,8 +47,8 @@
         MXKRoomDataSource *roomDataSource;
         if (roomId)
         {
-            roomDataSource = [roomDataSourceManager roomDataSourceForRoom:roomId create:NO];
-            
+            // Check whether the user knows this room to create the room data source if it doesn't exist.
+            roomDataSource = [roomDataSourceManager roomDataSourceForRoom:roomId create:([self.mxSession roomWithRoomId:roomId])];
             if (roomDataSource)
             {
                 // Prepare text font used to highlight the search pattern.

@@ -39,3 +39,7 @@ Evan Tang <etang110 at gmail.com>
 Joey Watts <joey.watts.96 at gmail.com>
  * PR #1777 Add support for interactive notifications
  
+Arash Tabrizian <a.tabriziyan at gmail.com>
+ * PR #1828 Fix issue #1793 Confirmation popup when leaving room
+ * PR #1824 Fix issue #1816 Support specifying kick and ban msgs
+ 

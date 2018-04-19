@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -415,9 +416,7 @@
             {
                 // Restore the status bar
                 typeof(self) self = weakSelf;
-
                 self->devicesArray = usersDevicesInfoMap.map[userId].allValues;
-
                 // Reload the full table to take into account a potential change on a device status.
                 [super updateMemberInfo];
             }
@@ -425,9 +424,15 @@
         } failure:^(NSError *error) {
 
             NSLog(@"[RoomMemberDetailsVC] Crypto failed to download device info for user: %@", userId);
-
-            // Notify MatrixKit user
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+            if (weakSelf)
+            {
+                // Restore the status bar
+                typeof(self) self = weakSelf;
+                // Notify the end user
+                NSString *myUserId = self.mainSession.myUser.userId;
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+            }
+            
         }];
     }
     
@@ -936,6 +941,130 @@
             case MXKRoomMemberDetailsActionSetAdmin:
             {
                 [self setPowerLevel:kRiotRoomAdminLevel promptUser:YES];
+                break;
+            }
+            case MXKRoomMemberDetailsActionBan:
+            {
+                __weak typeof(self) weakSelf = self;
+                
+                // Ban
+                currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_ban_prompt_reason", @"Vector", nil)
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+                
+                [currentAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                    textField.secureTextEntry = NO;
+                    textField.placeholder = nil;
+                    textField.keyboardType = UIKeyboardTypeDefault;
+                }];
+                
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   if (weakSelf)
+                                                                   {
+                                                                       typeof(self) self = weakSelf;
+                                                                       self->currentAlert = nil;
+                                                                   }
+                                                                   
+                                                               }]];
+                
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"ban", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                     
+                                                                     if (weakSelf)
+                                                                     {
+                                                                         typeof(self) self = weakSelf;
+                                                                         self->currentAlert = nil;
+                                                                         
+                                                                         [self startActivityIndicator];
+                                                                         
+                                                                         // kick user
+                                                                         UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                                         [self.mxRoom banUser:self.mxRoomMember.userId reason:textField.text success:^{
+                                                                             
+                                                                             __strong __typeof(weakSelf)self = weakSelf;
+                                                                             [self stopActivityIndicator];
+                                                                             
+                                                                         } failure:^(NSError *error) {
+                                                                             
+                                                                             __strong __typeof(weakSelf)self = weakSelf;
+                                                                             [self stopActivityIndicator];
+                                                                             
+                                                                             NSLog(@"[RoomMemberDetailVC] Ban user (%@) failed", self.mxRoomMember.userId);
+                                                                             //Alert user
+                                                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                             
+                                                                         }];
+                                                                     }
+                                                                     
+                                                                 }]];
+                
+                [currentAlert mxk_setAccessibilityIdentifier:@"RoomMemberDetailsVCBanAlert"];
+                [self presentViewController:currentAlert animated:YES completion:nil];
+                break;
+            }
+            case MXKRoomMemberDetailsActionKick:
+            {
+                __weak typeof(self) weakSelf = self;
+                
+                // Kick
+                currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_kick_prompt_reason", @"Vector", nil)
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+                
+                [currentAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                    textField.secureTextEntry = NO;
+                    textField.placeholder = nil;
+                    textField.keyboardType = UIKeyboardTypeDefault;
+                }];
+                
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   if (weakSelf)
+                                                                   {
+                                                                       typeof(self) self = weakSelf;
+                                                                       self->currentAlert = nil;
+                                                                   }
+                                                                   
+                                                               }]];
+                
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   
+                                                                   if (weakSelf)
+                                                                   {
+                                                                       typeof(self) self = weakSelf;
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                       [self startActivityIndicator];
+                                                                       
+                                                                       // kick user
+                                                                       UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                                       [self.mxRoom kickUser:self.mxRoomMember.userId reason:textField.text success:^{
+                                                                           
+                                                                           __strong __typeof(weakSelf)self = weakSelf;
+                                                                           [self stopActivityIndicator];
+                                                                           
+                                                                       } failure:^(NSError *error) {
+                                                                           
+                                                                           __strong __typeof(weakSelf)self = weakSelf;
+                                                                           [self stopActivityIndicator];
+                                                                           
+                                                                           NSLog(@"[RoomMemberDetailVC] Removing user (%@) failed", self.mxRoomMember.userId);
+                                                                           //Alert user
+                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                           
+                                                                       }];
+                                                                   }
+                                                                   
+                                                               }]];
+                
+                [currentAlert mxk_setAccessibilityIdentifier:@"RoomMemberDetailsVCKickAlert"];
+                [self presentViewController:currentAlert animated:YES completion:nil];
                 break;
             }
             default:
