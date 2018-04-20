@@ -1,4 +1,4 @@
-Changes in 0.6.13 (2018-04-20)
+Changes in 0.6.14 (2018-04-20)
 ===============================================
 
 Improvements:
@@ -7,7 +7,6 @@ Improvements:
  * Render stickers in the timeline (#1819).
  * Support specifying kick and ban msgs (#1816), thanks to @atabrizian (PR #1824).
  * Confirmation popup when leaving room (#1793), thanks to @atabrizian (PR #1828).
-
 
 Bug fixes:
  * Global Messages search: some search results are missing.
