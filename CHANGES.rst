@@ -1,3 +1,19 @@
+Changes in 0.6.14 (2018-04-20)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.10).
+ * The minimal iOS version is now 9.0.
+ * Render stickers in the timeline (#1819).
+ * Support specifying kick and ban msgs (#1816), thanks to @atabrizian (PR #1824).
+ * Confirmation popup when leaving room (#1793), thanks to @atabrizian (PR #1828).
+
+Bug fixes:
+ * Global Messages search: some search results are missing.
+ * Crash on URL like https://riot.im/#/app/register?hs_url=... (#1838).
+ * All rooms showing the same avatar (#1673).
+ * App fails to logout on unknown token (#1839).
+
 Changes in 0.6.13 (2018-03-30)
 ===============================================
 

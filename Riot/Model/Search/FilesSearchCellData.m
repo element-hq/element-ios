@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -39,7 +40,7 @@
         // Check attachment if any
         if ([searchDataSource.eventFormatter isSupportedAttachment:event])
         {
-            // Note: event.eventType is equal here to MXEventTypeRoomMessage
+            // Note: event.eventType may be equal here to MXEventTypeRoomMessage or MXEventTypeSticker
             attachment = [[MXKAttachment alloc] initWithEvent:event andMatrixSession:searchDataSource.mxSession];
         }
         
@@ -101,7 +102,7 @@
 
 - (BOOL)isAttachmentWithThumbnail
 {
-    return (attachment && (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo));
+    return (attachment && (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo || attachment.type == MXKAttachmentTypeSticker));
 }
 
 - (UIImage*)attachmentIcon

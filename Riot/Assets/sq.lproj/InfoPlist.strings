@@ -1,0 +1,5 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kamera përdoret për të bërë foto dhe regjistruar video, dhe për të bërë thirrje video.";
+"NSPhotoLibraryUsageDescription" = "Fototeka përdoret për të dërguar foto dhe video.";
+"NSMicrophoneUsageDescription" = "Mikrofoni përdoret për të regjistruar video, dhe për të bërë thirrje.";
+"NSContactsUsageDescription" = "Libri i kontakteve përdoret për të kërkuar për përdorues sipas email-i ose numri telefoni në Riot.";

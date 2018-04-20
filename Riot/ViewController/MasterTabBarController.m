@@ -372,13 +372,19 @@
     }
     else
     {
-        NSLog(@"[MasterTabBarController] Universal link: Logout current sessions and open AuthViewController to complete the registration");
+        NSLog(@"[MasterTabBarController] Universal link: Prompt to logout current sessions and open AuthViewController to complete the registration");
         
         // Keep a ref on the params
         authViewControllerRegistrationParameters = parameters;
         
-        // And do a logout out. It will then display AuthViewController
-        [[AppDelegate theDelegate] logout];
+        // Prompt to logout. It will then display AuthViewController if the user is logged out.
+        [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
+            if (!isLoggedOut)
+            {
+                // Reset temporary params
+                authViewControllerRegistrationParameters = nil;
+            }
+        }];
     }
 }
 

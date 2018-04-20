@@ -514,3 +514,7 @@
 "group_rooms_filter_rooms" = "Фильтр комнат сообщества";
 "e2e_room_key_request_message_new_device" = "Вы добавили новое устройство '%@', которое запрашивает ключи шифрования.";
 "room_do_not_have_permission_to_post" = "У вас нет разрешения на публикацию в этой комнате";
+"settings_flair" = "Покажите настроение, где это разрешено";
+"room_details_flair_section" = "Показать настроение для сообществ";
+"room_event_action_kick_prompt_reason" = "Причина по которой этот пользователь будет выкинут";
+"room_event_action_ban_prompt_reason" = "Причина по которой этот пользователь будет забанен";

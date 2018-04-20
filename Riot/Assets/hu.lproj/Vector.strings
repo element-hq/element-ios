@@ -1,1 +1,15 @@
-
+// Titles
+"title_home" = "Kezdőképernyő";
+"title_favourites" = "Kedvencek";
+"title_people" = "Emberek";
+"title_rooms" = "Szobák";
+"title_groups" = "Közösségek";
+"warning" = "Figyelmeztetés";
+// Actions
+"view" = "Megtekintés";
+"back" = "Vissza";
+"continue" = "Folytatás";
+"create" = "Létrehozás";
+"leave" = "Elhagyás";
+"remove" = "Eltávolítás";
+"invite" = "Meghívás";
