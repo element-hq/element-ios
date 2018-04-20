@@ -516,3 +516,5 @@
 "room_do_not_have_permission_to_post" = "У вас нет разрешения на публикацию в этой комнате";
 "settings_flair" = "Покажите настроение, где это разрешено";
 "room_details_flair_section" = "Показать настроение для сообществ";
+"room_event_action_kick_prompt_reason" = "Причина по которой этот пользователь будет выкинут";
+"room_event_action_ban_prompt_reason" = "Причина по которой этот пользователь будет забанен";
