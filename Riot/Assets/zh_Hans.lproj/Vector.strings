@@ -444,3 +444,48 @@
 "settings_ui_theme_picker_title" = "选择一个主题";
 "settings_ui_theme_picker_message" = "“自动”表示使用设备的“反色”设置";
 "settings_labs_create_conference_with_jitsi" = "使用 jitsi 创建一个会议通话";
+"title_groups" = "社区";
+// Groups tab
+"group_invite_section" = "邀请";
+"group_section" = "社区";
+"room_do_not_have_permission_to_post" = "你无权在此聊天室发送消息";
+"settings_enable_rageshake" = "摇一摇报告 bug";
+"room_details_direct_chat" = "私聊";
+// Group Details
+"group_details_title" = "社区信息";
+"group_details_home" = "主页";
+"group_details_people" = "用户";
+"group_details_rooms" = "聊天室";
+// Group Home
+"group_home_one_member_format" = "1 位用户";
+"group_home_multi_members_format" = "%tu 位用户";
+"group_home_one_room_format" = "1 个聊天室";
+"group_home_multi_rooms_format" = "%tu 个聊天室";
+// Group participants
+"group_participants_add_participant" = "添加成员";
+"group_participants_leave_prompt_title" = "退出群组";
+"group_participants_leave_prompt_msg" = "你确定要退出此群组吗？";
+"group_participants_remove_prompt_title" = "选项";
+"group_participants_remove_prompt_msg" = "你确定要从此群组中移除 %@ 吗？";
+"group_participants_invite_prompt_title" = "选项";
+"group_participants_invite_prompt_msg" = "你确定要邀请 %@ 加入此群组吗？";
+"group_participants_filter_members" = "过滤社区成员";
+"group_participants_invite_another_user" = "按照用户 ID 或昵称搜索/邀请用户";
+"group_participants_invite_malformed_id_title" = "邀请时出现错误";
+"group_participants_invited_section" = "已邀请";
+// Group rooms
+"group_rooms_filter_rooms" = "过滤社区聊天室";
+"event_formatter_widget_added" = "小部件 %@ 已被 %@ 添加";
+"event_formatter_widget_removed" = "小部件 %@ 已被 %@ 移除";
+"do_not_ask_again" = "不再询问";
+"call_already_displayed" = "正在通话。";
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "你需要有邀请用户的权限才能进行此操作。";
+"widget_integration_unable_to_create" = "无法创建小部件。";
+"widget_integration_failed_to_send_request" = "发送请求失败。";
+"widget_integration_room_not_recognised" = "无法识别此房间。";
+"widget_integration_positive_power_level" = "权限级别必须是整数。";
+"widget_integration_must_be_in_room" = "您不在此聊天室中。";
+"e2e_room_key_request_start_verification" = "开始验证…";
+"e2e_room_key_request_share_without_verifying" = "在不验证的情况下分享";
+"e2e_room_key_request_ignore_request" = "忽略请求";
