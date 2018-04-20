@@ -78,6 +78,9 @@
 		329DCE191F988F8100468420 /* riot_icon_callkit.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE161F988F8100468420 /* riot_icon_callkit.png */; };
 		329DCE1A1F988F8100468420 /* riot_icon_callkit@2.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE171F988F8100468420 /* riot_icon_callkit@2.png */; };
 		329DCE1B1F988F8100468420 /* riot_icon_callkit@3.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE181F988F8100468420 /* riot_icon_callkit@3.png */; };
+		32A9B3BA2089CA410087E7A3 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32A9B3B42089CA400087E7A3 /* Vector.strings */; };
+		32A9B3BB2089CA410087E7A3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32A9B3B62089CA400087E7A3 /* Localizable.strings */; };
+		32A9B3BC2089CA410087E7A3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32A9B3B82089CA400087E7A3 /* InfoPlist.strings */; };
 		32AE61E41F0A971B007255F4 /* RoomMembershipBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */; };
 		32AE61E51F0A971B007255F4 /* RoomMembershipBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */; };
 		32AE61E91F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AE61E71F0CE099007255F4 /* RoomMembershipWithPaginationTitleBubbleCell.m */; };
@@ -740,6 +743,9 @@
 		329DCE161F988F8100468420 /* riot_icon_callkit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = riot_icon_callkit.png; sourceTree = "<group>"; };
 		329DCE171F988F8100468420 /* riot_icon_callkit@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon_callkit@2.png"; sourceTree = "<group>"; };
 		329DCE181F988F8100468420 /* riot_icon_callkit@3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon_callkit@3.png"; sourceTree = "<group>"; };
+		32A9B3B52089CA400087E7A3 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = Vector.strings; sourceTree = "<group>"; };
+		32A9B3B72089CA400087E7A3 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = Localizable.strings; sourceTree = "<group>"; };
+		32A9B3B92089CA400087E7A3 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32AE61E11F0A971B007255F4 /* RoomMembershipBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembershipBubbleCell.h; sourceTree = "<group>"; };
 		32AE61E21F0A971B007255F4 /* RoomMembershipBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipBubbleCell.m; sourceTree = "<group>"; };
 		32AE61E31F0A971B007255F4 /* RoomMembershipBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipBubbleCell.xib; sourceTree = "<group>"; };
@@ -1626,6 +1632,16 @@
 			path = js;
 			sourceTree = "<group>";
 		};
+		32A9B3B32089CA400087E7A3 /* vi.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				32A9B3B42089CA400087E7A3 /* Vector.strings */,
+				32A9B3B62089CA400087E7A3 /* Localizable.strings */,
+				32A9B3B82089CA400087E7A3 /* InfoPlist.strings */,
+			);
+			path = vi.lproj;
+			sourceTree = "<group>";
+		};
 		32AE61EB1F0D2183007255F4 /* nl.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -1781,6 +1797,7 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				32A9B3B32089CA400087E7A3 /* vi.lproj */,
 				32BB89E7204D86DA002F3AEC /* bg.lproj */,
 				3211717B203ACD32002C16C6 /* ca.lproj */,
 				F0173EAE1FCF346800B5F6A3 /* vi.lproj */,
@@ -2955,6 +2972,7 @@
 				F083BD3F1E7009ED00A9B29C /* call_speaker_off_icon.png in Resources */,
 				F083BD3D1E7009ED00A9B29C /* call_hangup_icon@2x.png in Resources */,
 				F083BE551E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				32A9B3BA2089CA410087E7A3 /* Vector.strings in Resources */,
 				32471CDD1F1373A100BDF50A /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
 				329DCE191F988F8100468420 /* riot_icon_callkit.png in Resources */,
 				3233F7321F31F4BF006ACA81 /* JitsiViewController.xib in Resources */,
@@ -3031,6 +3049,7 @@
 				3205ED851E97725E003D65FA /* DirectoryServerTableViewCell.xib in Resources */,
 				F083BD761E7009ED00A9B29C /* e2e_verified@3x.png in Resources */,
 				F083BE181E7009ED00A9B29C /* MediaPickerViewController.xib in Resources */,
+				32A9B3BC2089CA410087E7A3 /* InfoPlist.strings in Resources */,
 				F083BDCE1E7009ED00A9B29C /* selection_untick.png in Resources */,
 				F083BE971E7009ED00A9B29C /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
 				F083BD9C1E7009ED00A9B29C /* main_alias_icon@2x.png in Resources */,
@@ -3070,6 +3089,7 @@
 				F083BD661E7009ED00A9B29C /* directChatOff@2x.png in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
 				F083BD751E7009ED00A9B29C /* e2e_verified@2x.png in Resources */,
+				32A9B3BB2089CA410087E7A3 /* Localizable.strings in Resources */,
 				F083BDCD1E7009ED00A9B29C /* selection_tick@3x.png in Resources */,
 				F0E05A311EA0F9EB004B83FB /* tab_favourites_selected@2x.png in Resources */,
 				F083BD741E7009ED00A9B29C /* e2e_verified.png in Resources */,
@@ -3880,6 +3900,30 @@
 				32918EA81F473BDB0076CA16 /* ru */,
 			);
 			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		32A9B3B42089CA400087E7A3 /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32A9B3B52089CA400087E7A3 /* vi */,
+			);
+			name = Vector.strings;
+			sourceTree = "<group>";
+		};
+		32A9B3B62089CA400087E7A3 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32A9B3B72089CA400087E7A3 /* vi */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		32A9B3B82089CA400087E7A3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32A9B3B92089CA400087E7A3 /* vi */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		32AE61EC1F0D2183007255F4 /* InfoPlist.strings */ = {
