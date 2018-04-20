@@ -12,6 +12,8 @@ Improvements:
 Bug fixes:
  * Global Messages search: some search results are missing.
  * Crash on URL like https://riot.im/#/app/register?hs_url=... (#1838).
+ * All rooms showing the same avatar (#1673).
+ * App fails to logout on unknown token (#1839).
 
 Changes in 0.6.13 (2018-03-30)
 ===============================================
