@@ -514,3 +514,5 @@
 "room_details_unset_main_address" = "Премахни задаването като основен адрес";
 "room_participants_action_set_default_power_level" = "Възвърни към нормален потребител";
 "settings_config_no_build_info" = "Няма build информация";
+"room_event_action_kick_prompt_reason" = "Причина за изгонване на потребителя";
+"room_event_action_ban_prompt_reason" = "Причина за блокиране на потребителя";
