@@ -371,3 +371,11 @@
 "room_details_copy_room_address" = "Afrita vistfang spjallrásar";
 "room_details_copy_room_url" = "Afrita slóð spjallrásar";
 "group_participants_leave_prompt_title" = "Yfirgefa hóp";
+"auth_email_not_found" = "Gat ekki sent tölvupóst: Þetta tölvupóstfang fannst ekki";
+"auth_reset_password_missing_password" = "Það verður að setja inn nýtt lykilorð.";
+"auth_reset_password_next_step_button" = "Ég hef staðfest tölvupóstfangið mitt";
+"room_creation_wait_for_creation" = "Verið er að útbúa spjallrás. Bíddu aðeins.";
+"room_recents_join_room_prompt" = "Settu inn auðkenni eða samheiti spjallrásar";
+"room_participants_invite_another_user" = "Leita/Bjóða eftir notandauðkenni, nafni eða tölvupóstfangi";
+"room_event_action_kick_prompt_reason" = "Ástæða fyrir að sparka þessum notanda";
+"room_event_action_ban_prompt_reason" = "Ástæða fyrir að banna þennan notanda";
