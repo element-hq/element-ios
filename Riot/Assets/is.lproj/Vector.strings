@@ -353,3 +353,8 @@
 "settings_show_decrypted_content" = "Sýna afkóðað efni";
 "settings_enable_callkit" = "Innbyggð hringing";
 "room_details_flair_section" = "Sýna hlutverksmerki fyrir samfélög";
+"room_participants_invited_section" = "BOÐIÐ";
+"room_details_access_section" = "Hver hefur aðgang að þessari spjallrás?";
+"room_details_advanced_e2e_encryption_enabled" = "Dulritun er virk í þessari spjallrás.";
+"e2e_room_key_request_start_verification" = "Hefja sannvottun...";
+"e2e_room_key_request_share_without_verifying" = "Deila án sannvottunar";
