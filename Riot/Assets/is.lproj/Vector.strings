@@ -306,7 +306,7 @@
 "room_creation_keep_private" = "Halda einka";
 // Rooms tab
 "room_directory_no_public_room" = "Engar opinberar spjallrásir tiltækar";
-"search_people_placeholder" = "Leita eftir notandauðkenni, nafni eða tölvupóstfangi";
+"search_people_placeholder" = "Leita eftir notandaauðkenni, nafni eða tölvupóstfangi";
 "directory_search_fail" = "Ekki tókst að sækja gögn";
 "contacts_address_book_no_contact" = "Engir tengiliðir á tæki";
 // Chat participants
@@ -359,7 +359,7 @@
 "e2e_room_key_request_start_verification" = "Hefja sannvottun...";
 "e2e_room_key_request_share_without_verifying" = "Deila án sannvottunar";
 "room_creation_appearance_picture" = "Mynd spjalls (valfrjálst)";
-"room_creation_invite_another_user" = "Leita/Bjóða eftir notandauðkenni, nafni eða tölvupóstfangi";
+"room_creation_invite_another_user" = "Leita/Bjóða eftir notandaauðkenni, nafni eða tölvupóstfangi";
 // Room recents
 "room_recents_directory_section" = "SKRÁ YFIR SPJALLRÁSIR";
 "directory_searching_title" = "Leita í yfirlitsskrá.…";
@@ -379,3 +379,15 @@
 "room_participants_invite_another_user" = "Leita/Bjóða eftir notandauðkenni, nafni eða tölvupóstfangi";
 "room_event_action_kick_prompt_reason" = "Ástæða fyrir að sparka þessum notanda";
 "room_event_action_ban_prompt_reason" = "Ástæða fyrir að banna þennan notanda";
+"settings_unignore_user" = "Sýna öll skilaboð frá %@?";
+"settings_labs_create_conference_with_jitsi" = "Búa til ráðstefnusamtöl með Jitsi";
+"room_details_history_section_members_only" = "Einungis meðlimir (síðan þessi kostur var valinn)";
+"room_details_history_section_members_only_since_invited" = "Einungis meðlimir (síðan þeim var boðið)";
+"room_details_history_section_members_only_since_joined" = "Einungis meðlimir (síðan þeir skráðu sig)";
+"room_details_new_flair_placeholder" = "Bæta við nýjui samfélag (t.d. +foo%@)";
+"room_details_flair_invalid_id_prompt_msg" = "%@ er ekki gilt auðkenni samfélags";
+"room_details_advanced_e2e_encryption_disabled" = "Dulritun er ekki virk í þessari spjallrás.";
+"room_details_save_changes_prompt" = "Viltu vista breytingarnar?";
+"group_participants_leave_prompt_msg" = "Ertu viss um að þú viljir fara út úr hópnum?";
+"group_participants_remove_prompt_msg" = "Ertu viss um að þú viljir fjarlægja %@ úr hópnum ?";
+"group_participants_invite_another_user" = "Leita/Bjóða eftir notandaauðkenni eða nafni";
