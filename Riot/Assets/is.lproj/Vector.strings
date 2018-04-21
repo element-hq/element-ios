@@ -73,7 +73,7 @@
 "room_recents_start_chat_with" = "Hefja spjall";
 "room_recents_create_empty_room" = "Búa til spjallrás";
 "room_recents_join_room" = "Taka þátt í spjallrás";
-"room_recents_join_room_title" = "Taka þátt í spjallsvæði";
+"room_recents_join_room_title" = "Taka þátt í spjallrás";
 // People tab
 "people_invites_section" = "BOÐSGESTIR";
 "people_conversation_section" = "SAMTÖL";
@@ -355,6 +355,10 @@
 "room_details_flair_section" = "Sýna hlutverksmerki fyrir samfélög";
 "room_participants_invited_section" = "BOÐIÐ";
 "room_details_access_section" = "Hver hefur aðgang að þessari spjallrás?";
-"room_details_advanced_e2e_encryption_enabled" = "Dulritun er virk í þessari spjallrás.";
+"room_details_advanced_e2e_encryption_enabled" = "Dulritun er virk í þessari spjallrás";
 "e2e_room_key_request_start_verification" = "Hefja sannvottun...";
 "e2e_room_key_request_share_without_verifying" = "Deila án sannvottunar";
+"room_creation_appearance_picture" = "Mynd spjalls (valfrjálst)";
+"room_creation_invite_another_user" = "Leita/Bjóða eftir notandauðkenni, nafni eða tölvupóstfangi";
+// Room recents
+"room_recents_directory_section" = "SKRÁ YFIR SPJALLRÁSIR";
