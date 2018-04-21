@@ -362,3 +362,12 @@
 "room_creation_invite_another_user" = "Leita/Bjóða eftir notandauðkenni, nafni eða tölvupóstfangi";
 // Room recents
 "room_recents_directory_section" = "SKRÁ YFIR SPJALLRÁSIR";
+"directory_searching_title" = "Leita í yfirlitsskrá.…";
+"contacts_user_directory_section" = "SKRÁ YFIR NOTENDUR";
+"contacts_user_directory_offline_section" = "SKRÁ YFIR NOTENDUR (ónettengd)";
+"room_details_mute_notifs" = "Þagga tilkynningar";
+"room_details_advanced_room_id" = "Auðkenni spjallrásar:";
+"room_details_copy_room_id" = "Afrita auðkenni spjallrásar";
+"room_details_copy_room_address" = "Afrita vistfang spjallrásar";
+"room_details_copy_room_url" = "Afrita slóð spjallrásar";
+"group_participants_leave_prompt_title" = "Yfirgefa hóp";
