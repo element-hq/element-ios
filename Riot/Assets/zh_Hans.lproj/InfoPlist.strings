@@ -1,5 +1,5 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "用来拍照、拍视频和视频聊天的摄像头。";
-"NSPhotoLibraryUsageDescription" = "用来发送图片和视频的图片文件夹。";
-"NSMicrophoneUsageDescription" = "用来拍视频和通话的麦克风。";
-"NSContactsUsageDescription" = "在 Riot 里通过电子邮件或电话搜索用户的通讯录。";
+"NSCameraUsageDescription" = "Riot 需要使用摄像头权限以拍摄照片、录制视频或进行视频聊天。";
+"NSPhotoLibraryUsageDescription" = "Riot 需要使用图库权限以发送图片与视频。";
+"NSMicrophoneUsageDescription" = "Riot 需要使用麦克风权限以便录制视频或进行通话。";
+"NSContactsUsageDescription" = "Riot 需要使用通讯录权限以 Riot 内部通过邮箱地址或手机号码搜索用户。";

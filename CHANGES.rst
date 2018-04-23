@@ -1,3 +1,12 @@
+Changes in 0.6.15 (2018-04-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.11).
+ 
+Bug fix:
+ * Regression: Sending a photo from the photo library causes a crash.
+ 
 Changes in 0.6.14 (2018-04-20)
 ===============================================
 

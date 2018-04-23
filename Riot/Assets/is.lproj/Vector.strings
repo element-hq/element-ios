@@ -73,7 +73,7 @@
 "room_recents_start_chat_with" = "Hefja spjall";
 "room_recents_create_empty_room" = "Búa til spjallrás";
 "room_recents_join_room" = "Taka þátt í spjallrás";
-"room_recents_join_room_title" = "Taka þátt í spjallsvæði";
+"room_recents_join_room_title" = "Taka þátt í spjallrás";
 // People tab
 "people_invites_section" = "BOÐSGESTIR";
 "people_conversation_section" = "SAMTÖL";
@@ -306,7 +306,7 @@
 "room_creation_keep_private" = "Halda einka";
 // Rooms tab
 "room_directory_no_public_room" = "Engar opinberar spjallrásir tiltækar";
-"search_people_placeholder" = "Leita eftir notandauðkenni, nafni eða tölvupóstfangi";
+"search_people_placeholder" = "Leita eftir notandaauðkenni, nafni eða tölvupóstfangi";
 "directory_search_fail" = "Ekki tókst að sækja gögn";
 "contacts_address_book_no_contact" = "Engir tengiliðir á tæki";
 // Chat participants
@@ -353,3 +353,41 @@
 "settings_show_decrypted_content" = "Sýna afkóðað efni";
 "settings_enable_callkit" = "Innbyggð hringing";
 "room_details_flair_section" = "Sýna hlutverksmerki fyrir samfélög";
+"room_participants_invited_section" = "BOÐIÐ";
+"room_details_access_section" = "Hver hefur aðgang að þessari spjallrás?";
+"room_details_advanced_e2e_encryption_enabled" = "Dulritun er virk í þessari spjallrás";
+"e2e_room_key_request_start_verification" = "Hefja sannvottun...";
+"e2e_room_key_request_share_without_verifying" = "Deila án sannvottunar";
+"room_creation_appearance_picture" = "Mynd spjalls (valfrjálst)";
+"room_creation_invite_another_user" = "Leita/Bjóða eftir notandaauðkenni, nafni eða tölvupóstfangi";
+// Room recents
+"room_recents_directory_section" = "SKRÁ YFIR SPJALLRÁSIR";
+"directory_searching_title" = "Leita í yfirlitsskrá.…";
+"contacts_user_directory_section" = "SKRÁ YFIR NOTENDUR";
+"contacts_user_directory_offline_section" = "SKRÁ YFIR NOTENDUR (ónettengd)";
+"room_details_mute_notifs" = "Þagga tilkynningar";
+"room_details_advanced_room_id" = "Auðkenni spjallrásar:";
+"room_details_copy_room_id" = "Afrita auðkenni spjallrásar";
+"room_details_copy_room_address" = "Afrita vistfang spjallrásar";
+"room_details_copy_room_url" = "Afrita slóð spjallrásar";
+"group_participants_leave_prompt_title" = "Yfirgefa hóp";
+"auth_email_not_found" = "Gat ekki sent tölvupóst: Þetta tölvupóstfang fannst ekki";
+"auth_reset_password_missing_password" = "Það verður að setja inn nýtt lykilorð.";
+"auth_reset_password_next_step_button" = "Ég hef staðfest tölvupóstfangið mitt";
+"room_creation_wait_for_creation" = "Verið er að útbúa spjallrás. Bíddu aðeins.";
+"room_recents_join_room_prompt" = "Settu inn auðkenni eða samheiti spjallrásar";
+"room_participants_invite_another_user" = "Leita/Bjóða eftir notandauðkenni, nafni eða tölvupóstfangi";
+"room_event_action_kick_prompt_reason" = "Ástæða fyrir að sparka þessum notanda";
+"room_event_action_ban_prompt_reason" = "Ástæða fyrir að banna þennan notanda";
+"settings_unignore_user" = "Sýna öll skilaboð frá %@?";
+"settings_labs_create_conference_with_jitsi" = "Búa til ráðstefnusamtöl með Jitsi";
+"room_details_history_section_members_only" = "Einungis meðlimir (síðan þessi kostur var valinn)";
+"room_details_history_section_members_only_since_invited" = "Einungis meðlimir (síðan þeim var boðið)";
+"room_details_history_section_members_only_since_joined" = "Einungis meðlimir (síðan þeir skráðu sig)";
+"room_details_new_flair_placeholder" = "Bæta við nýjui samfélag (t.d. +foo%@)";
+"room_details_flair_invalid_id_prompt_msg" = "%@ er ekki gilt auðkenni samfélags";
+"room_details_advanced_e2e_encryption_disabled" = "Dulritun er ekki virk í þessari spjallrás.";
+"room_details_save_changes_prompt" = "Viltu vista breytingarnar?";
+"group_participants_leave_prompt_msg" = "Ertu viss um að þú viljir fara út úr hópnum?";
+"group_participants_remove_prompt_msg" = "Ertu viss um að þú viljir fjarlægja %@ úr hópnum ?";
+"group_participants_invite_another_user" = "Leita/Bjóða eftir notandaauðkenni eða nafni";
