@@ -96,6 +96,22 @@ DEPENDENCIES:
   - OLMKit
   - PiwikTracker (from `https://github.com/manuroe/matomo-sdk-ios.git`, branch `feature/CustomVariables`)
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - cmark
+    - DTCoreText
+    - DTFoundation
+    - GBDeviceInfo
+    - GZIP
+    - HPGrowingTextView
+    - libPhoneNumber-iOS
+    - MatrixKit
+    - MatrixSDK
+    - OLMKit
+    - Realm
+    - WebRTC
+
 EXTERNAL SOURCES:
   PiwikTracker:
     :branch: feature/CustomVariables
@@ -124,4 +140,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a3ec9e9795d74a34aeaa86fdbc1983a365e93e9a
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0
