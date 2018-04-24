@@ -30,7 +30,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -2737,7 +2737,6 @@
 				24CBEC4A1F0EAD310093EABB /* Sources */,
 				24CBEC4B1F0EAD310093EABB /* Frameworks */,
 				24CBEC4C1F0EAD310093EABB /* Resources */,
-				8EA19F5011654D3BD5EDAC33 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2756,7 +2755,6 @@
 				92726A3F1F58737A004AD26F /* Sources */,
 				92726A401F58737A004AD26F /* Frameworks */,
 				92726A411F58737A004AD26F /* Resources */,
-				807A0ABF153A23C2FC22F977 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2777,7 +2775,6 @@
 				F094A9A01B78D8F000B1FBBF /* Resources */,
 				24CBEC5D1F0EAD310093EABB /* Embed App Extensions */,
 				7FFD40AA75DB32D83350D225 /* [CP] Embed Pods Frameworks */,
-				68D6013FA64A4507DC9DB95B /* [CP] Copy Pods Resources */,
 				3233F7481F3497E2006ACA81 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -2914,9 +2911,9 @@
 				F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */,
 				F0BFBDBF1FF3BFD200C88726 /* Vector.strings in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
+				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
 				2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
+				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3373,86 +3370,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		68D6013FA64A4507DC9DB95B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot-resources.sh",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAccountDetailsViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAttachmentsViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKAuthenticationViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKCallViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactDetailsViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKContactListViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKCountryPickerViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKGroupListViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKLanguagePickerViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRecentListViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomMemberDetailsViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomMemberListViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomSettingsViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKRoomViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Controllers/MXKSearchViewController.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Account/MXKAccountTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Authentication/MXKAuthInputsEmailCodeBasedView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Authentication/MXKAuthInputsPasswordBasedView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Contact/MXKContactTableCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/DeviceView/MXKDeviceView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/EncryptionInfoView/MXKEncryptionInfoView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Group/MXKGroupTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKCollectionViewCell/MXKMediaCollectionViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKEventDetailsView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKPieChartHUD.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKRoomCreationView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithButton.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndButton.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndImageView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndMXKImageView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSlider.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSubLabel.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndSwitch.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelAndTextField.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithLabelTextFieldAndButton.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithPicker.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithSearchBar.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextFieldAndButton.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/MXKTableViewCell/MXKTableViewCellWithTextView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/PushRule/MXKPushRuleCreationTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/PushRule/MXKPushRuleTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/ReadReceipts/MXKReadReceiptTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomEmptyBubbleTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentBubbleCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgBubbleCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomIOSOutgoingBubbleTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentBubbleCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgBubbleCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomBubbleList/MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithHPGrowingText.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomInputToolbar/MXKRoomInputToolbarViewWithSimpleTextView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKInterleavedRecentTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKPublicRoomTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomList/MXKRecentTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomMemberList/MXKRoomMemberTableViewCell.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleView.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/RoomTitle/MXKRoomTitleViewWithTopic.xib",
-				"${PODS_ROOT}/MatrixKit/MatrixKit/Views/Search/MXKSearchTableViewCell.xib",
-				$PODS_CONFIGURATION_BUILD_DIR/MatrixKit/MatrixKit.bundle,
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6AA0024D4D5FAE30C2E1F311 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3515,42 +3432,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		807A0ABF153A23C2FC22F977 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents-resources.sh",
-				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8EA19F5011654D3BD5EDAC33 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension-resources.sh",
-				"${PODS_ROOT}/MatrixSDK/MatrixSDK/Data/Store/MXCoreDataStore/MXCoreDataStore.xcdatamodeld",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
