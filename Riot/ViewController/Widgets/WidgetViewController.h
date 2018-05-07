@@ -50,48 +50,49 @@
  This method can be overidden to implement a specific API between the matrix client
  and widget.
 
- @param @TODO
+ @param requestId the id of the widget request.
+ @param requestData the request data.
  */
-- (void)onMessage:(NSDictionary*)JSData;
+- (void)onPostMessageRequest:(NSString*)requestId data:(NSDictionary*)requestData;
 
 /**
  Send a boolean response to a request from the widget.
 
  @param response the response to send.
- @param @TODO
+ @param requestId the id of the widget request.
  */
-- (void)sendBoolResponse:(BOOL)response toEvent:(NSDictionary*)eventData;
+- (void)sendBoolResponse:(BOOL)response toRequest:(NSString*)requestId;
 
 /**
  Send an integer response to a request from the widget.
 
  @param response the response to send.
- @param @TODO
+ @param requestId the id of the widget request.
  */
-- (void)sendIntegerResponse:(NSUInteger)response toEvent:(NSDictionary*)eventData;
+- (void)sendIntegerResponse:(NSUInteger)response toRequest:(NSString*)requestId;
 
 /**
  Send a serialiable object response to a request the widget.
 
  @param response the response to send.
- @param @TODO
+ @param requestId the id of the widget request.
  */
-- (void)sendNSObjectResponse:(NSObject*)response toEvent:(NSDictionary*)eventData;
+- (void)sendNSObjectResponse:(NSObject*)response toRequest:(NSString*)requestId;
 
 /**
  Send a message error to a request from the widget.
 
  @param message the error message.
- @param @TODO
+ @param requestId the id of the widget request.
  */
-- (void)sendError:(NSString*)message toEvent:(NSDictionary*)eventData;
+- (void)sendError:(NSString*)message toRequest:(NSString*)requestId;
 
 /**
  Send a localised message error to a request from the widget.
 
  @param errorKey the string id of the message error.
- @param @TODO
+ @param requestId the id of the widget request.
  */
-- (void)sendLocalisedError:(NSString*)errorKey toEvent:(NSDictionary*)eventData;
+- (void)sendLocalisedError:(NSString*)errorKey toRequest:(NSString*)requestId;
 
 @end

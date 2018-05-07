@@ -135,7 +135,21 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                                                                      error:&error];
         if (!error)
         {
-            [self onMessage:parameters];
+            // Retrieve the js event payload data
+            NSDictionary *eventData;
+            MXJSONModelSetDictionary(eventData, parameters[@"event.data"]);
+
+            NSString *requestId;
+            MXJSONModelSetString(requestId, eventData[@"_id"]);
+
+            if (requestId)
+            {
+                [self onPostMessageRequest:requestId data:eventData];
+            }
+            else
+            {
+                NSLog(@"[WidgetVC] shouldStartLoadWithRequest: ERROR: Missing request id in postMessage API %@", parameters);
+            }
         }
 
         return NO;
@@ -170,33 +184,31 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
 #pragma mark - postMessage API
 
-- (void)onMessage:(NSDictionary*)JSData
+- (void)onPostMessageRequest:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    // @TODO
-    NSDictionary *eventData;
-    MXJSONModelSetDictionary(eventData, JSData[@"event.data"]);
+    // TODO
 }
 
-- (void)sendBoolResponse:(BOOL)response toEvent:(NSDictionary*)eventData
+- (void)sendBoolResponse:(BOOL)response toRequest:(NSString*)requestId
 {
     // Convert BOOL to "true" or "false"
     NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
+                    requestId,
                     response ? @"true" : @"false"];
 
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
-- (void)sendIntegerResponse:(NSUInteger)response toEvent:(NSDictionary*)eventData
+- (void)sendIntegerResponse:(NSUInteger)response toRequest:(NSString*)requestId
 {
     NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
+                    requestId,
                     @(response)];
 
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
-- (void)sendNSObjectResponse:(NSObject*)response toEvent:(NSDictionary*)eventData
+- (void)sendNSObjectResponse:(NSObject*)response toRequest:(NSString*)requestId
 {
     NSString *jsString;
 
@@ -216,15 +228,15 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     }
 
     NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
+                    requestId,
                     jsString];
 
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
-- (void)sendError:(NSString*)message toEvent:(NSDictionary*)eventData
+- (void)sendError:(NSString*)message toRequest:(NSString*)requestId
 {
-    NSLog(@"[WidgetVC] sendError: Action %@ failed with message: %@", eventData[@"action"], message);
+    NSLog(@"[WidgetVC] sendError: Action %@ failed with message: %@", requestId, message);
 
     // TODO: JS has an additional optional parameter: nestedError
     [self sendNSObjectResponse:@{
@@ -232,12 +244,12 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                                          @"message": message
                                          }
                                  }
-                       toEvent:eventData];
+                       toRequest:requestId];
 }
 
-- (void)sendLocalisedError:(NSString*)errorKey toEvent:(NSDictionary*)eventData
+- (void)sendLocalisedError:(NSString*)errorKey toRequest:(NSString*)requestId
 {
-    [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toEvent:eventData];
+    [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toRequest:requestId];
 }
 
 @end

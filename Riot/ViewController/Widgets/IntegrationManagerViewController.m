@@ -131,17 +131,13 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 #pragma mark - Modular postMessage API implementation
 
-- (void)onMessage:(NSDictionary*)JSData
+- (void)onPostMessageRequest:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    // Implement the Modular postMessage API
-    NSDictionary *eventData;
-    MXJSONModelSetDictionary(eventData, JSData[@"event.data"]);
-
     NSString *roomIdInEvent, *userId, *action;
 
-    MXJSONModelSetString(roomIdInEvent, eventData[@"room_id"]);
-    MXJSONModelSetString(userId, eventData[@"user_id"]);
-    MXJSONModelSetString(action, eventData[@"action"]);
+    MXJSONModelSetString(roomIdInEvent, requestData[@"room_id"]);
+    MXJSONModelSetString(userId, requestData[@"user_id"]);
+    MXJSONModelSetString(action, requestData[@"action"]);
 
     if ([action isEqualToString:@"close_scalar"])
     {
@@ -151,13 +147,13 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     if (!roomIdInEvent)
     {
-        [self sendLocalisedError:@"widget_integration_missing_room_id" toEvent:eventData];
+        [self sendLocalisedError:@"widget_integration_missing_room_id" toRequest:requestId];
         return;
     }
 
     if (![roomIdInEvent isEqualToString:roomId])
     {
-        [self sendError:[NSString stringWithFormat:NSLocalizedStringFromTable(@"widget_integration_room_not_visible", @"Vector", nil), roomIdInEvent] toEvent:eventData];
+        [self sendError:[NSString stringWithFormat:NSLocalizedStringFromTable(@"widget_integration_room_not_visible", @"Vector", nil), roomIdInEvent] toRequest:requestId];
         return;
     }
 
@@ -165,86 +161,86 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     // These APIs don't require userId
     if ([@"join_rules_state" isEqualToString:action])
     {
-        [self getJoinRules:eventData];
+        [self getJoinRules:requestId data:requestData];
         return;
     }
     else if ([@"set_plumbing_state" isEqualToString:action])
     {
-        [self setPlumbingState:eventData];
+        [self setPlumbingState:requestId data:requestData];
         return;
     }
     else if ([@"get_membership_count" isEqualToString:action])
     {
-        [self getMembershipCount:eventData];
+        [self getMembershipCount:requestId data:requestData];
         return;
     }
     else if ([@"set_widget" isEqualToString:action])
     {
-        [self setWidget:eventData];
+        [self setWidget:requestId data:requestData];
         return;
     }
     else if ([@"get_widgets" isEqualToString:action])
     {
-        [self getWidgets:eventData];
+        [self getWidgets:requestId data:requestData];
         return;
     }
     else if ([@"can_send_event" isEqualToString:action])
     {
-        [self canSendEvent:eventData];
+        [self canSendEvent:requestId data:requestData];
         return;
     }
 
 
     if (!userId)
     {
-        [self sendLocalisedError:@"widget_integration_missing_user_id" toEvent:eventData];
+        [self sendLocalisedError:@"widget_integration_missing_user_id" toRequest:requestId];
         return;
     }
 
     if ([@"membership_state" isEqualToString:action])
     {
-        [self getMembershipState:userId eventData:eventData];
+        [self getMembershipState:userId request:requestId data:requestData];
     }
     else if ([@"invite" isEqualToString:action])
     {
-        [self inviteUser:userId eventData:eventData];
+        [self inviteUser:userId request:requestId data:requestData];
     }
     else if ([@"bot_options" isEqualToString:action])
     {
-        [self getBotOptions:userId eventData:eventData];
+        [self getBotOptions:userId request:requestId data:requestData];
     }
     else if ([@"set_bot_options" isEqualToString:action])
     {
-        [self setBotOptions:userId eventData:eventData];
+        [self setBotOptions:userId request:requestId data:requestData];
     }
     else if ([@"set_bot_power" isEqualToString:action])
     {
-        [self setBotPower:userId eventData:eventData];
+        [self setBotPower:userId request:requestId data:requestData];
     }
     else
     {
-        NSLog(@"[IntegrationManagerViewControllerVC] Unhandled postMessage event with action %@: %@", action, JSData);
+        NSLog(@"[IntegrationManagerViewControllerVC] Unhandled postMessage event with action %@: %@", action, requestData);
     }
 }
 
 #pragma mark - Private methods
 
-- (MXRoom *)roomCheckWithEvent:(NSDictionary*)eventData
+- (MXRoom *)roomCheckForRequest:(NSString*)requestId data:(NSDictionary*)requestData
 {
     MXRoom *room = [mxSession roomWithRoomId:roomId];
     if (!room)
     {
-        [self sendLocalisedError:@"widget_integration_room_not_recognised" toEvent:eventData];
+        [self sendLocalisedError:@"widget_integration_room_not_recognised" toRequest:requestId];
     }
 
     return room;
 }
 
-- (void)inviteUser:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)inviteUser:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] Received request to invite %@ into room %@.", userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     
     if (room)
     {
@@ -254,7 +250,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
             [self sendNSObjectResponse:@{
                                          @"success": @(YES)
                                          }
-                               toEvent:eventData];
+                               toRequest:requestId];
         }
         else
         {
@@ -268,7 +264,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                     [self sendNSObjectResponse:@{
                                                  @"success": @(YES)
                                                  }
-                                       toEvent:eventData];
+                                       toRequest:requestId];
                 }
 
             } failure:^(NSError *error) {
@@ -276,18 +272,18 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                 typeof(self) self = weakSelf;
                 if (self)
                 {
-                    [self sendLocalisedError:@"widget_integration_need_to_be_able_to_invite" toEvent:eventData];
+                    [self sendLocalisedError:@"widget_integration_need_to_be_able_to_invite" toRequest:requestId];
                 }
             }];
         }
     }
 }
 
-- (void)setWidget:(NSDictionary*)eventData
+- (void)setWidget:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] Received request to set widget in room %@.", roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
 
     if (room)
     {
@@ -295,15 +291,15 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         NSString *widgetName; // optional
         NSDictionary *widgetData ; // optional
 
-        MXJSONModelSetString(widget_id, eventData[@"widget_id"]);
-        MXJSONModelSetString(widgetType, eventData[@"type"]);
-        MXJSONModelSetString(widgetUrl, eventData[@"url"]);
-        MXJSONModelSetString(widgetName, eventData[@"name"]);
-        MXJSONModelSetDictionary(widgetData, eventData[@"data"]);
+        MXJSONModelSetString(widget_id, requestData[@"widget_id"]);
+        MXJSONModelSetString(widgetType, requestData[@"type"]);
+        MXJSONModelSetString(widgetUrl, requestData[@"url"]);
+        MXJSONModelSetString(widgetName, requestData[@"name"]);
+        MXJSONModelSetDictionary(widgetData, requestData[@"data"]);
 
         if (!widget_id)
         {
-            [self sendLocalisedError:@"widget_integration_unable_to_create" toEvent:eventData]; // new Error("Missing required widget fields."));
+            [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId]; // new Error("Missing required widget fields."));
             return;
         }
 
@@ -312,7 +308,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         {
             if (!widgetType)
             {
-                [self sendLocalisedError:@"widget_integration_unable_to_create" toEvent:eventData];
+                [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
                 return;
             }
 
@@ -343,7 +339,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                    [self sendNSObjectResponse:@{
                                                                 @"success": @(YES)
                                                                 }
-                                                      toEvent:eventData];
+                                                      toRequest:requestId];
                                }
                            }
                            failure:^(NSError *error) {
@@ -351,15 +347,15 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                typeof(self) self = weakSelf;
                                if (self)
                                {
-                                   [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                                   [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
                                }
                            }];
     }
 }
 
-- (void)getWidgets:(NSDictionary*)eventData
+- (void)getWidgets:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     NSMutableArray<NSDictionary*> *widgetStateEvents = [NSMutableArray array];
 
     if (room)
@@ -377,26 +373,26 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         [widgetStateEvents addObject:widget.widgetEvent.JSONDictionary];
     }
 
-    [self sendNSObjectResponse:widgetStateEvents toEvent:eventData];
+    [self sendNSObjectResponse:widgetStateEvents toRequest:requestId];
 }
 
-- (void)canSendEvent:(NSDictionary*)eventData
+- (void)canSendEvent:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSString *eventType;
     BOOL isState = NO;
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
 
     if (room)
     {
         if (room.state.membership != MXMembershipJoin)
         {
-            [self sendLocalisedError:@"widget_integration_must_be_in_room" toEvent:eventData];
+            [self sendLocalisedError:@"widget_integration_must_be_in_room" toRequest:requestId];
             return;
         }
 
-        MXJSONModelSetString(eventType, eventData[@"event_type"]);
-        MXJSONModelSetBoolean(isState, eventData[@"is_state"]);
+        MXJSONModelSetString(eventType, requestData[@"event_type"]);
+        MXJSONModelSetBoolean(isState, requestData[@"is_state"]);
 
         MXRoomPowerLevels *powerLevels = room.state.powerLevels;
         NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxSession.myUser.userId];
@@ -414,48 +410,48 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
         if (canSend)
         {
-            [self sendBoolResponse:YES toEvent:eventData];
+            [self sendBoolResponse:YES toRequest:requestId];
         }
         else
         {
-            [self sendLocalisedError:@"widget_integration_no_permission_in_room" toEvent:eventData];
+            [self sendLocalisedError:@"widget_integration_no_permission_in_room" toRequest:requestId];
         }
     }
 }
 
-- (void)getMembershipState:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)getMembershipState:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] membership_state of %@ in room %@ requested.", userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         MXRoomMember *member = [room.state memberWithUserId:userId];
-        [self sendNSObjectResponse:member.originalEvent.content toEvent:eventData];
+        [self sendNSObjectResponse:member.originalEvent.content toRequest:requestId];
     }
 }
 
-- (void)getJoinRules:(NSDictionary*)eventData
+- (void)getJoinRules:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] join_rules of %@ requested.", roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         MXEvent *event = [room.state stateEventsWithType:kMXEventTypeStringRoomJoinRules].lastObject;
-        [self sendNSObjectResponse:event.JSONDictionary toEvent:eventData];
+        [self sendNSObjectResponse:event.JSONDictionary toRequest:requestId];
     }
 }
 
-- (void)setPlumbingState:(NSDictionary*)eventData
+- (void)setPlumbingState:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    NSLog(@"[IntegrationManagerVC] Received request to set plumbing state to status %@ in room %@.", eventData[@"status"], roomId);
+    NSLog(@"[IntegrationManagerVC] Received request to set plumbing state to status %@ in room %@.", requestData[@"status"], roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSString *status;
-        MXJSONModelSetString(status, eventData[@"status"]);
+        MXJSONModelSetString(status, requestData[@"status"]);
 
         if (status)
         {
@@ -474,7 +470,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                        [self sendNSObjectResponse:@{
                                                                     @"success": @(YES)
                                                                     }
-                                                          toEvent:eventData];
+                                                          toRequest:requestId];
                                    }
                                }
                                failure:^(NSError *error) {
@@ -482,7 +478,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                    typeof(self) self = weakSelf;
                                    if (self)
                                    {
-                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
                                    }
                                }];
         }
@@ -493,11 +489,11 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     }
 }
 
-- (void)getBotOptions:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)getBotOptions:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] Received request to get options for bot %@ in room %@", userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSString *stateKey = [NSString stringWithFormat:@"_%@", userId];
@@ -517,19 +513,19 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
             }
         }
 
-        [self sendNSObjectResponse:botOptionsEvent.JSONDictionary toEvent:eventData];
+        [self sendNSObjectResponse:botOptionsEvent.JSONDictionary toRequest:requestId];
     }
 }
 
-- (void)setBotOptions:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)setBotOptions:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] Received request to set options for bot %@ in room %@", userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSDictionary *content;
-        MXJSONModelSetDictionary(content, eventData[@"content"]);
+        MXJSONModelSetDictionary(content, requestData[@"content"]);
 
         if (content)
         {
@@ -548,7 +544,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                        [self sendNSObjectResponse:@{
                                                                     @"success": @(YES)
                                                                     }
-                                                          toEvent:eventData];
+                                                          toRequest:requestId];
                                    }
                                }
                                failure:^(NSError *error) {
@@ -556,7 +552,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                    typeof(self) self = weakSelf;
                                    if (self)
                                    {
-                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
                                    }
                                }];
         }
@@ -567,15 +563,15 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     }
 }
 
-- (void)setBotPower:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)setBotPower:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    NSLog(@"[IntegrationManagerVC] Received request to set power level to %@ for bot %@ in room %@.", eventData[@"level"], userId, roomId);
+    NSLog(@"[IntegrationManagerVC] Received request to set power level to %@ for bot %@ in room %@.", requestData[@"level"], userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSInteger level = -1;
-        MXJSONModelSetInteger(level, eventData[@"level"]);
+        MXJSONModelSetInteger(level, requestData[@"level"]);
 
         if (level >= 0)
         {
@@ -589,7 +585,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                     [self sendNSObjectResponse:@{
                                                  @"success": @(YES)
                                                  }
-                                       toEvent:eventData];
+                                       toRequest:requestId];
                 }
 
             } failure:^(NSError *error) {
@@ -597,25 +593,25 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                 typeof(self) self = weakSelf;
                 if (self)
                 {
-                    [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                    [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
                 }
             }];
         }
         else
         {
             NSLog(@"[IntegrationManagerVC] setBotPower. Power level must be positive integer.");
-            [self sendLocalisedError:@"widget_integration_positive_power_level" toEvent:eventData];
+            [self sendLocalisedError:@"widget_integration_positive_power_level" toRequest:requestId];
         }
     }
 }
 
-- (void)getMembershipCount:(NSDictionary*)eventData
+- (void)getMembershipCount:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSUInteger membershipCount = room.state.joinedMembers.count;
-        [self sendIntegerResponse:membershipCount toEvent:eventData];
+        [self sendIntegerResponse:membershipCount toRequest:requestId];
     }
 }
 
