@@ -28,7 +28,7 @@ window.riotIOS.sendObjectMessageToObjC = function(parameters) {
 
 window.riotIOS.events = {};
 
-// Listen to messages posted by Modular
+// Listen to messages posted by the widget
 window.riotIOS.onMessage = function(event) {
 
     // Do not SPAM ObjC with event already managed
@@ -50,7 +50,7 @@ window.riotIOS.onMessage = function(event) {
 window.addEventListener('message', riotIOS.onMessage, false);
 
 
-// ObjC -> Modular JS bridge
+// ObjC -> Widget JS bridge
 window.riotIOS.sendResponse = function(eventId, res) {
 
     // Retrieve the correspong JS event

@@ -17,12 +17,9 @@
 #import "IntegrationManagerViewController.h"
 
 #import "WidgetManager.h"
-#import "AppDelegate.h"
 
 NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
-
-NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 
 @interface IntegrationManagerViewController ()
@@ -61,19 +58,6 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     operation = nil;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    webView.scalesPageToFit = NO;
-    webView.scrollView.bounces = NO;
-
-    // Disable opacity so that the webview background uses the current interface theme
-    webView.opaque = NO;
-
-    webView.delegate = self;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -84,7 +68,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
         [self startActivityIndicator];
 
-        // Make sure we a scalar token
+        // Make sure we have a scalar token
         operation = [[WidgetManager sharedManager] getScalarTokenForMXSession:mxSession success:^(NSString *theScalarToken) {
 
             typeof(self) self = weakSelf;
@@ -145,123 +129,11 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     return url;
 }
 
-- (void)showErrorAsAlert:(NSError*)error
-{
-    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
-    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
-    if (!title)
-    {
-        if (msg)
-        {
-            title = msg;
-            msg = nil;
-        }
-        else
-        {
-            title = [NSBundle mxk_localizedStringForKey:@"error"];
-        }
-    }
-
-    __weak __typeof__(self) weakSelf = self;
-
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction * action) {
-
-                                                typeof(self) self = weakSelf;
-
-                                                if (self)
-                                                {
-                                                    // Leave this Intergrations Manager VC
-                                                    [self withdrawViewControllerAnimated:YES completion:nil];
-                                                }
-
-                                            }]];
-
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-#pragma mark - UIWebViewDelegate
-
--(void)webViewDidFinishLoad:(UIWebView *)theWebView
-{
-    [self enableDebug];
-
-    // Setup js code
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"IntegrationManager" ofType:@"js"];
-    NSString *js = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [webView stringByEvaluatingJavaScriptFromString:js];
-
-    [self stopActivityIndicator];
-
-    // Check connectivity
-    if ([AppDelegate theDelegate].isOffline)
-    {
-        // The web page may be in the cache, so its loading will be successful
-        // but we cannot go further, it often leads to a blank screen.
-        // So, display an error so that the user can escape.
-        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                             code:NSURLErrorNotConnectedToInternet
-                                         userInfo:@{
-                                                    NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"network_offline_prompt", @"Vector", nil)
-                                                    }];
-        [self showErrorAsAlert:error];
-    }
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSString *urlString = [[request URL] absoluteString];
-
-    if ([urlString hasPrefix:@"js:"])
-    {
-        // Listen only to scheme of the JS-UIWebView bridge
-        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-
-        NSError *error;
-        NSDictionary *parameters = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers
-                                                                     error:&error];
-        if (!error)
-        {
-            [self onMessage:parameters];
-        }
-
-        return NO;
-    }
-
-    if (navigationType == UIWebViewNavigationTypeLinkClicked )
-    {
-        // Open links outside the app
-        [[UIApplication sharedApplication] openURL:[request URL]];
-        return NO;
-    }
-
-    return YES;
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    // Filter out the users's scalar token
-    NSString *errorDescription = error.description;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"scalar_token=\\w*"
-                                                                           options:NSRegularExpressionCaseInsensitive error:nil];
-    errorDescription = [regex stringByReplacingMatchesInString:errorDescription
-                                                       options:0
-                                                         range:NSMakeRange(0, errorDescription.length)
-                                                  withTemplate:@"scalar_token=..."];
-
-    NSLog(@"[IntegrationManagerVC] didFailLoadWithError: %@", errorDescription);
-
-    [self stopActivityIndicator];
-    [self showErrorAsAlert:error];
-}
-
-#pragma mark - Modular postMessage API
+#pragma mark - Modular postMessage API implementation
 
 - (void)onMessage:(NSDictionary*)JSData
 {
+    // Implement the Modular postMessage API
     NSDictionary *eventData;
     MXJSONModelSetDictionary(eventData, JSData[@"event.data"]);
 
@@ -355,70 +227,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     }
 }
 
-- (void)sendBoolResponse:(BOOL)response toEvent:(NSDictionary*)eventData
-{
-    // Convert BOOL to "true" or "false"
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
-                    response ? @"true" : @"false"];
-
-    [webView stringByEvaluatingJavaScriptFromString:js];
-}
-
-- (void)sendIntegerResponse:(NSUInteger)response toEvent:(NSDictionary*)eventData
-{
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
-                    @(response)];
-
-    [webView stringByEvaluatingJavaScriptFromString:js];
-}
-
-- (void)sendNSObjectResponse:(NSObject*)response toEvent:(NSDictionary*)eventData
-{
-    NSString *jsString;
-
-    if (response)
-    {
-        // Convert response into a JS object through a JSON string
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:response
-                                                           options:0
-                                                             error:0];
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-
-        jsString = [NSString stringWithFormat:@"JSON.parse('%@')", jsonString];
-    }
-    else
-    {
-        jsString = @"null";
-    }
-
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
-                    jsString];
-
-    [webView stringByEvaluatingJavaScriptFromString:js];
-}
-
-- (void)sendError:(NSString*)message toEvent:(NSDictionary*)eventData
-{
-    NSLog(@"[IntegrationManagerVC] sendError: Action %@ failed with message: %@", eventData[@"action"], message);
-
-    // TODO: JS has an additional optional parameter: nestedError
-    [self sendNSObjectResponse:@{
-                                 @"error": @{
-                                         @"message": message
-                                         }
-                                 }
-                       toEvent:eventData];
-}
-
-- (void)sendLocalisedError:(NSString*)errorKey toEvent:(NSDictionary*)eventData
-{
-    [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toEvent:eventData];
-}
-
-#pragma mark - Modular postMessage Implementation
+#pragma mark - Private methods
 
 - (MXRoom *)roomCheckWithEvent:(NSDictionary*)eventData
 {
