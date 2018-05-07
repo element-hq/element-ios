@@ -40,6 +40,19 @@ window.riotIOS.onMessage = function(event) {
         event.origin = event.originalEvent.origin;
     }
 
+    // Use an internal "_id" field for matching onMessage events and requests
+    // _id was originally used by the Modular API. Keep it
+    if (!event.data._id) {
+        // The Matrix Widget API v2 spec says:
+        // "The requestId field should be unique and included in all requests"
+        event.data._id = event.data.requestId;
+    }
+
+    // Make sure to have one id
+    if (!event.data._id) {
+        event.data._id = Date.now() + "-" + Math.random().toString(36);
+    }
+
     // Keep this event for future usage
     riotIOS.events[event.data._id] = event;
 
