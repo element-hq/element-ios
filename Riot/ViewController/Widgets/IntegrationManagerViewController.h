@@ -25,7 +25,7 @@ FOUNDATION_EXPORT NSString *const kIntegrationManagerAddIntegrationScreen;
  `IntegrationManagerViewController` displays the Modular integration manager webapp
  into a webview.
  */
-@interface IntegrationManagerViewController : WebViewViewController <UIWebViewDelegate>
+@interface IntegrationManagerViewController : WebViewViewController
 
 /**
  Initialise with params for the Modular interface webapp.

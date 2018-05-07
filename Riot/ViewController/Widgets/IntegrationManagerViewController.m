@@ -19,8 +19,6 @@
 #import "WidgetManager.h"
 #import "AppDelegate.h"
 
-#import <JavaScriptCore/JavaScriptCore.h>
-
 NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
@@ -145,18 +143,6 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     }
     
     return url;
-}
-
-- (void)enableDebug
-{
-    // Setup console.log() -> NSLog() route
-    JSContext *ctx = [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
-    ctx[@"console"][@"log"] = ^(JSValue * msg) {
-        NSLog(@"-- JavaScript: %@", msg);
-    };
-
-    // Redirect all console.* logging methods to console.log
-    [webView stringByEvaluatingJavaScriptFromString:@"console.debug = console.log; console.info = console.log; console.warn = console.log; console.error = console.log;"];
 }
 
 - (void)showErrorAsAlert:(NSError*)error
