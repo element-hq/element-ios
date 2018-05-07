@@ -94,6 +94,14 @@ WidgetManagerErrorCode;
 - (NSArray<Widget*> *)widgetsNotOfTypes:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room;
 
 /**
+ List all widgets of an account.
+
+ @param mxSession the session of the user account.
+ @return a list of widgets.
+ */
+- (NSArray<Widget*> *)userWidgets:(MXSession*)mxSession;
+
+/**
  Add a modular widget to a room.
 
  @param widgetId the id of the widget.

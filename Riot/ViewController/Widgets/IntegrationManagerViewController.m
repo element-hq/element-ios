@@ -551,20 +551,24 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 - (void)getWidgets:(NSDictionary*)eventData
 {
     MXRoom *room = [self roomCheckWithEvent:eventData];
+    NSMutableArray<NSDictionary*> *widgetStateEvents = [NSMutableArray array];
 
     if (room)
     {
         NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsInRoom:room];
-
-        NSMutableArray<NSDictionary*> *widgetStateEvents = [NSMutableArray arrayWithCapacity:widgets.count];
-
         for (Widget *widget in widgets)
         {
             [widgetStateEvents addObject:widget.widgetEvent.JSONDictionary];
         }
-
-        [self sendNSObjectResponse:widgetStateEvents toEvent:eventData];
     }
+
+    // Add user widgets (not linked to a specific room)
+    for (Widget *widget in [[WidgetManager sharedManager] userWidgets:mxSession])
+    {
+        [widgetStateEvents addObject:widget.widgetEvent.JSONDictionary];
+    }
+
+    [self sendNSObjectResponse:widgetStateEvents toEvent:eventData];
 }
 
 - (void)canSendEvent:(NSDictionary*)eventData

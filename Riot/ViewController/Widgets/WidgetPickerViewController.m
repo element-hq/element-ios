@@ -53,12 +53,19 @@
 
     MXRoom *room = [mxSession roomWithRoomId:roomId];
 
-    NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
+    NSArray<Widget*> *roomWidgets = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
                                                                           inRoom:room];
+
+    NSArray<Widget*> *userWidgets = [[WidgetManager sharedManager] userWidgets:room.mxSession];
+
+    NSMutableArray<Widget*> *widgets = [NSMutableArray array];
+    [widgets addObjectsFromArray:roomWidgets];
+    [widgets addObjectsFromArray:userWidgets];
+
     // List widgets
     for (Widget *widget in widgets)
     {
-        alertAction = [UIAlertAction actionWithTitle:widget.name
+        alertAction = [UIAlertAction actionWithTitle:widget.name ? widget.name : widget.type
                                                style:UIAlertActionStyleDefault
                                              handler:^(UIAlertAction * _Nonnull action)
                        {

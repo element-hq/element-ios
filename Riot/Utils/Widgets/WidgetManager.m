@@ -172,6 +172,26 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return activeWidgets;
 }
 
+- (NSArray<Widget*> *)userWidgets:(MXSession*)mxSession
+{
+    // Get all widgets in the user account data
+    NSMutableArray<Widget *> *userWidgets = [NSMutableArray array];
+    for (NSDictionary *widgetEventContent in [mxSession.accountData accountDataForEventType:@"m.widgets"].allValues)
+    {
+        MXEvent *widgetEvent = [MXEvent modelFromJSON:widgetEventContent];
+        if (widgetEvent)
+        {
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent inMatrixSession:mxSession];
+            if (widget)
+            {
+                [userWidgets addObject:widget];
+            }
+        }
+    }
+
+    return userWidgets;
+}
+
 - (MXHTTPOperation *)createWidget:(NSString*)widgetId
                       withContent:(NSDictionary<NSString*, NSObject*>*)widgetContent
                            inRoom:(MXRoom*)room
