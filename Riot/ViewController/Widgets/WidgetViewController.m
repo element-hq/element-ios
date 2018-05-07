@@ -18,7 +18,7 @@
 
 #import "AppDelegate.h"
 
-NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
+NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 
 @interface WidgetViewController ()
 {
@@ -186,13 +186,42 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
 - (void)onPostMessageRequest:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    // TODO
+    NSString *action;
+    MXJSONModelSetString(action, requestData[@"action"]);
+
+    if ([@"m.sticker" isEqualToString:action])
+    {
+        // Extract the sticker event content and send it as is
+
+        // The key should be "data" according to https://docs.google.com/document/d/1uPF7XWY_dXTKVKV7jZQ2KmsI19wn9-kFRgQ1tFQP7wQ/edit?usp=sharing
+        // TODO: Fix it once spec is finalised
+        NSDictionary *widgetData;
+        NSDictionary *stickerContent;
+        MXJSONModelSetDictionary(widgetData, requestData[@"widgetData"]);
+        if (widgetData)
+        {
+            MXJSONModelSetDictionary(stickerContent, widgetData[@"content"]);
+        }
+
+        if (stickerContent)
+        {
+            // Let the data source manage the sending cycle
+            [_roomDataSource sendEventOfType:kMXEventTypeStringSticker content:stickerContent success:nil failure:nil];
+        }
+        else
+        {
+            NSLog(@"[WidgetVC] onPostMessageRequest: ERROR: Invalid content for m.sticker: %@", requestData);
+        }
+
+        // Consider we are done with the sticker picker widget
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)sendBoolResponse:(BOOL)response toRequest:(NSString*)requestId
 {
     // Convert BOOL to "true" or "false"
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
+    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToPostMessageAPI,
                     requestId,
                     response ? @"true" : @"false"];
 
@@ -201,7 +230,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
 - (void)sendIntegerResponse:(NSUInteger)response toRequest:(NSString*)requestId
 {
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
+    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToPostMessageAPI,
                     requestId,
                     @(response)];
 
@@ -227,7 +256,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
         jsString = @"null";
     }
 
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
+    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToPostMessageAPI,
                     requestId,
                     jsString];
 

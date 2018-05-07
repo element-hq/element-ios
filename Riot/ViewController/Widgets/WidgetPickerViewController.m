@@ -75,8 +75,12 @@
                            // Display the widget
                            [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
 
-                                WidgetViewController *widgetVC = [[WidgetViewController alloc] initWithUrl:widgetUrl forWidget:widget];
-                                [mxkViewController.navigationController pushViewController:widgetVC animated:YES];
+                               WidgetViewController *widgetVC = [[WidgetViewController alloc] initWithUrl:widgetUrl forWidget:widget];
+
+                               MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+                               widgetVC.roomDataSource = [roomDataSourceManager roomDataSourceForRoom:roomId create:NO];
+
+                               [mxkViewController.navigationController pushViewController:widgetVC animated:YES];
 
                             } failure:^(NSError * _Nonnull error) {
 

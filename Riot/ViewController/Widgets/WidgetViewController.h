@@ -17,6 +17,7 @@
 #import "WebViewViewController.h"
 
 #import "WidgetManager.h"
+#import "MatrixKit/MatrixKit.h"
 
 /**
  `WidgetViewController` displays widget within a webview.
@@ -25,6 +26,12 @@
  content within the webview, ie the widget (matrix app).
  */
 @interface WidgetViewController : WebViewViewController
+
+/**
+ The room data source.
+ Required if the widget needs to post messages.
+ */
+@property (nonatomic) MXKRoomDataSource *roomDataSource;
 
 /**
  Init 'WidgetViewController' instance with a widget.
