@@ -21,9 +21,15 @@
 #import "Widget.h"
 
 /**
- The type of matrix event used for modular widgets.
+ The type of matrix event used for matrix widgets.
  */
-FOUNDATION_EXPORT NSString *const kWidgetEventTypeString;
+FOUNDATION_EXPORT NSString *const kWidgetMatrixEventTypeString;
+
+/**
+ The type of matrix event used for modular widgets.
+ TODO: It should be replaced by kWidgetMatrixEventTypeString.
+ */
+FOUNDATION_EXPORT NSString *const kWidgetModularEventTypeString;
 
 /**
  Known types widgets.

@@ -20,7 +20,8 @@
 
 #pragma mark - Contants
 
-NSString *const kWidgetEventTypeString = @"im.vector.modular.widgets";
+NSString *const kWidgetMatrixEventTypeString  = @"m.widget";
+NSString *const kWidgetModularEventTypeString = @"im.vector.modular.widgets";
 NSString *const kWidgetTypeJitsi = @"jitsi";
 
 NSString *const kWidgetManagerDidUpdateWidgetNotification = @"kWidgetManagerDidUpdateWidgetNotification";
@@ -102,10 +103,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // Widget id -> widget
     NSMutableDictionary <NSString*, Widget *> *widgets = [NSMutableDictionary dictionary];
 
-    // Get all im.vector.modular.widgets state events in the room
-    NSMutableArray<MXEvent*> *widgetEvents = [NSMutableArray arrayWithArray:[room.state stateEventsWithType:kWidgetEventTypeString]];
+    // Get all widgets state events in the room
+    NSMutableArray<MXEvent*> *widgetEvents = [NSMutableArray arrayWithArray:[room.state stateEventsWithType:kWidgetMatrixEventTypeString]];
+    [widgetEvents addObjectsFromArray:[room.state stateEventsWithType:kWidgetModularEventTypeString]];
 
-    // There can be several im.vector.modular.widgets state events for a same widget but
+    // There can be several widgets state events for a same widget but
     // only the last one must be considered.
 
     // Order widgetEvents with the last event first
@@ -124,7 +126,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
          return result;
      }];
 
-    // Create each widget from its lastest im.vector.modular.widgets state event
+    // Create each widget from its lastest widgets state event
     for (MXEvent *widgetEvent in widgetEvents)
     {
         // Filter widget types if required
@@ -192,7 +194,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
     // Send a state event with the widget data
     // TODO: This API will be shortly replaced by a pure modular API
-    return [room sendStateEventOfType:kWidgetEventTypeString
+    // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
+    return [room sendStateEventOfType:kWidgetModularEventTypeString
                               content:widgetContent
                              stateKey:widgetId
                               success:nil failure:failure];
@@ -247,7 +250,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
     // Send a state event with an empty content to disable the widget
     // TODO: This API will be shortly replaced by a pure modular API
-    return [room sendStateEventOfType:kWidgetEventTypeString
+    // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
+    return [room sendStateEventOfType:kWidgetModularEventTypeString
                               content:@{}
                              stateKey:widgetId
                               success:^(NSString *eventId)
@@ -292,7 +296,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
     NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
 
-    id listener = [mxSession listenToEventsOfTypes:@[kWidgetEventTypeString] onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
+    id listener = [mxSession listenToEventsOfTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString] onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
 
         typeof(self) self = weakSelf;
 

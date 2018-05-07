@@ -22,9 +22,12 @@
 
 - (instancetype)initWithWidgetEvent:(MXEvent *)widgetEvent inMatrixSession:(MXSession*)mxSession
 {
-    if (![widgetEvent.type isEqualToString:kWidgetEventTypeString])
+    // TODO - Room widgets need to be moved to 'm.widget' state events
+    // https://docs.google.com/document/d/1uPF7XWY_dXTKVKV7jZQ2KmsI19wn9-kFRgQ1tFQP7wQ/edit?usp=sharing
+    if (![widgetEvent.type isEqualToString:kWidgetMatrixEventTypeString]
+        && ![widgetEvent.type isEqualToString:kWidgetModularEventTypeString])
     {
-        // The Widget class works only with modular, aka "im.vector.modular.widgets", widgets
+        // The Widget class works only with modular, aka "m.widget" or "im.vector.modular.widgets", widgets
         return nil;
     }
 

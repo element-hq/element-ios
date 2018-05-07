@@ -522,7 +522,8 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
         __weak __typeof__(self) weakSelf = self;
 
-        [room sendStateEventOfType:kWidgetEventTypeString
+        // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
+        [room sendStateEventOfType:kWidgetModularEventTypeString
                            content:widgetEventContent
                           stateKey:widget_id
                            success:^(NSString *eventId) {
