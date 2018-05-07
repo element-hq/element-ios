@@ -178,7 +178,17 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     NSMutableArray<Widget *> *userWidgets = [NSMutableArray array];
     for (NSDictionary *widgetEventContent in [mxSession.accountData accountDataForEventType:@"m.widgets"].allValues)
     {
-        MXEvent *widgetEvent = [MXEvent modelFromJSON:widgetEventContent];
+        // Patch: Modular uses a malformed key: "stateKey" instead of "state_key"
+        // TODO: To remove once fixed server side
+        NSDictionary *widgetEventContentFixed = widgetEventContent;
+        if (!widgetEventContent[@"state_key"] && widgetEventContent[@"stateKey"])
+        {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:widgetEventContent];
+            dict[@"state_key"] = widgetEventContent[@"stateKey"];
+            widgetEventContentFixed = dict;
+        }
+
+        MXEvent *widgetEvent = [MXEvent modelFromJSON:widgetEventContentFixed];
         if (widgetEvent)
         {
             Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent inMatrixSession:mxSession];
