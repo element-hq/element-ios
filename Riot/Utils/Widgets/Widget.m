@@ -70,9 +70,6 @@
             widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_display_name" withString:displayName];
             widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_avatar_url" withString:avatarUrl];
 
-            // And add the user scalar token
-            widgetUrl = [widgetUrl stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", scalarToken]];
-
             // Integrate widget data into widget url
             for (NSString *key in _data)
             {
@@ -99,6 +96,14 @@
                     NSLog(@"[Widget] Error: Invalid data field value in %@ for key %@ in data %@", self, key, _data);
                 }
             }
+
+            // Add the user scalar token
+            widgetUrl = [widgetUrl stringByAppendingString:[NSString stringWithFormat:@"%@scalar_token=%@",
+                                                            [widgetUrl containsString:@"?"] ? @"&" : @"?",
+                                                            scalarToken]];
+
+            // Add the widget id
+            widgetUrl = [widgetUrl stringByAppendingString:[NSString stringWithFormat:@"&widgetId=%@", _widgetId]];
 
             success(widgetUrl);
         }
