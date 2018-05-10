@@ -27,11 +27,6 @@
      The calendar used to retrieve the today date.
      */
     NSCalendar *calendar;
-
-    /**
-     The local time zone
-     */
-    NSTimeZone *localTimeZone;
 }
 @end
 
@@ -142,8 +137,6 @@
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         // Note: NSDate object always shows time according to GMT, so the calendar should be in GMT too.
         calendar.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-
-        localTimeZone = [NSTimeZone localTimeZone];
         
         // Use the secondary bg color to set the background color in the default CSS.
         NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
@@ -456,9 +449,7 @@
     NSDateComponents *components = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
     NSDate *today = [calendar dateFromComponents:components];
     
-    NSTimeInterval localZoneOffset = [localTimeZone secondsFromGMT];
-    
-    NSTimeInterval interval = -[date timeIntervalSinceDate:today] - localZoneOffset;
+    NSTimeInterval interval = -[date timeIntervalSinceDate:today];
     
     if (interval > 60*60*24*364)
     {
