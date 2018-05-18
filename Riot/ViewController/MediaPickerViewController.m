@@ -504,7 +504,7 @@ static void *RecordingContext = &RecordingContext;
     {
         // Set up fetch options.
         PHFetchOptions *options = [[PHFetchOptions alloc] init];
-        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO]];
         if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
         {
             if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
