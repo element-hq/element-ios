@@ -30,7 +30,7 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		24EEE5A81F25529600B3C705 /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
 		24EEE5A91F25529900B3C705 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		24EEE5AA1F25529C00B3C705 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
@@ -70,11 +70,11 @@
 		327382C41F276AED00356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
 		32795C0B203DA4C4002420E2 /* DisabledRoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32795C09203DA4C3002420E2 /* DisabledRoomInputToolbarView.m */; };
 		32795C0C203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32795C0A203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib */; };
+		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
 		3284D7FF1FBB34B70090AA80 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */; };
 		32918EA91F473BDB0076CA16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA51F473BDB0076CA16 /* Localizable.strings */; };
 		32918EAA1F473BDB0076CA16 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32918EA71F473BDB0076CA16 /* Vector.strings */; };
 		32935CB11F6056FD006888C8 /* IntegrationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32935CB01F6056FD006888C8 /* IntegrationManagerViewController.m */; };
-		32935CB41F628BCE006888C8 /* IntegrationManager.js in Resources */ = {isa = PBXBuildFile; fileRef = 32935CB31F628BCE006888C8 /* IntegrationManager.js */; };
 		329DCE191F988F8100468420 /* riot_icon_callkit.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE161F988F8100468420 /* riot_icon_callkit.png */; };
 		329DCE1A1F988F8100468420 /* riot_icon_callkit@2.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE171F988F8100468420 /* riot_icon_callkit@2.png */; };
 		329DCE1B1F988F8100468420 /* riot_icon_callkit@3.png in Resources */ = {isa = PBXBuildFile; fileRef = 329DCE181F988F8100468420 /* riot_icon_callkit@3.png */; };
@@ -733,13 +733,13 @@
 		32795C08203DA4C3002420E2 /* DisabledRoomInputToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisabledRoomInputToolbarView.h; sourceTree = "<group>"; };
 		32795C09203DA4C3002420E2 /* DisabledRoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisabledRoomInputToolbarView.m; sourceTree = "<group>"; };
 		32795C0A203DA4C4002420E2 /* DisabledRoomInputToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisabledRoomInputToolbarView.xib; sourceTree = "<group>"; };
+		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = postMessageAPI.js; sourceTree = "<group>"; };
 		3284D7FD1FBB34B70090AA80 /* RoomKeyRequestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomKeyRequestViewController.h; sourceTree = "<group>"; };
 		3284D7FE1FBB34B70090AA80 /* RoomKeyRequestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomKeyRequestViewController.m; sourceTree = "<group>"; };
 		32918EA61F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
 		32918EA81F473BDB0076CA16 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Vector.strings; sourceTree = "<group>"; };
 		32935CAF1F6056FD006888C8 /* IntegrationManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntegrationManagerViewController.h; sourceTree = "<group>"; };
 		32935CB01F6056FD006888C8 /* IntegrationManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegrationManagerViewController.m; sourceTree = "<group>"; };
-		32935CB31F628BCE006888C8 /* IntegrationManager.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = IntegrationManager.js; sourceTree = "<group>"; };
 		329DCE161F988F8100468420 /* riot_icon_callkit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = riot_icon_callkit.png; sourceTree = "<group>"; };
 		329DCE171F988F8100468420 /* riot_icon_callkit@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon_callkit@2.png"; sourceTree = "<group>"; };
 		329DCE181F988F8100468420 /* riot_icon_callkit@3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "riot_icon_callkit@3.png"; sourceTree = "<group>"; };
@@ -1627,7 +1627,7 @@
 		32935CB21F628B98006888C8 /* js */ = {
 			isa = PBXGroup;
 			children = (
-				32935CB31F628BCE006888C8 /* IntegrationManager.js */,
+				3284A35020A07C210044F922 /* postMessageAPI.js */,
 			);
 			path = js;
 			sourceTree = "<group>";
@@ -2911,9 +2911,9 @@
 				F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */,
 				F0BFBDBF1FF3BFD200C88726 /* Vector.strings in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
+				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
 				2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* BuildFile in Resources */,
+				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3270,7 +3270,6 @@
 				F083BD961E7009ED00A9B29C /* leave@2x.png in Resources */,
 				F0E05A461EA0F9EB004B83FB /* tab_rooms@2x.png in Resources */,
 				32AE61F41F0D2183007255F4 /* Vector.strings in Resources */,
-				32935CB41F628BCE006888C8 /* IntegrationManager.js in Resources */,
 				F083BD851E7009ED00A9B29C /* favouriteOff@3x.png in Resources */,
 				F083BD541E7009ED00A9B29C /* camera_switch@2x.png in Resources */,
 				F07CB3992029B20100C29C20 /* GroupTableViewCellWithSwitch.xib in Resources */,
@@ -3292,6 +3291,7 @@
 				327382C41F276AED00356143 /* Vector.strings in Resources */,
 				32BB89EF204D86DA002F3AEC /* Localizable.strings in Resources */,
 				F083BDE51E7009ED00A9B29C /* voice_call_icon@3x.png in Resources */,
+				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
 				322806A11F0F64C4008C53D7 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				F083BE201E7009ED00A9B29C /* RoomParticipantsViewController.xib in Resources */,
 				F083BE471E7009ED00A9B29C /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,

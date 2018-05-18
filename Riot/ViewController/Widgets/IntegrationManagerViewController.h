@@ -14,9 +14,7 @@
  limitations under the License.
  */
 
-#import "WebViewViewController.h"
-
-#import <MatrixSDK/MatrixSDK.h>
+#import "WidgetViewController.h"
 
 FOUNDATION_EXPORT NSString *const kIntegrationManagerMainScreen;
 FOUNDATION_EXPORT NSString *const kIntegrationManagerAddIntegrationScreen;
@@ -24,8 +22,10 @@ FOUNDATION_EXPORT NSString *const kIntegrationManagerAddIntegrationScreen;
 /**
  `IntegrationManagerViewController` displays the Modular integration manager webapp
  into a webview.
+
+ It reuses the postMessage API pipe defined in `WidgetViewController`.
  */
-@interface IntegrationManagerViewController : WebViewViewController <UIWebViewDelegate>
+@interface IntegrationManagerViewController : WidgetViewController
 
 /**
  Initialise with params for the Modular interface webapp.

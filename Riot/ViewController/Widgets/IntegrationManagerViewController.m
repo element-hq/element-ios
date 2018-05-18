@@ -17,14 +17,9 @@
 #import "IntegrationManagerViewController.h"
 
 #import "WidgetManager.h"
-#import "AppDelegate.h"
-
-#import <JavaScriptCore/JavaScriptCore.h>
 
 NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
-
-NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', %@);";
 
 
 @interface IntegrationManagerViewController ()
@@ -63,19 +58,6 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     operation = nil;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    webView.scalesPageToFit = NO;
-    webView.scrollView.bounces = NO;
-
-    // Disable opacity so that the webview background uses the current interface theme
-    webView.opaque = NO;
-
-    webView.delegate = self;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -86,7 +68,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
         [self startActivityIndicator];
 
-        // Make sure we a scalar token
+        // Make sure we have a scalar token
         operation = [[WidgetManager sharedManager] getScalarTokenForMXSession:mxSession success:^(NSString *theScalarToken) {
 
             typeof(self) self = weakSelf;
@@ -147,143 +129,15 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     return url;
 }
 
-- (void)enableDebug
+#pragma mark - Modular postMessage API implementation
+
+- (void)onPostMessageRequest:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    // Setup console.log() -> NSLog() route
-    JSContext *ctx = [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
-    ctx[@"console"][@"log"] = ^(JSValue * msg) {
-        NSLog(@"-- JavaScript: %@", msg);
-    };
-
-    // Redirect all console.* logging methods to console.log
-    [webView stringByEvaluatingJavaScriptFromString:@"console.debug = console.log; console.info = console.log; console.warn = console.log; console.error = console.log;"];
-}
-
-- (void)showErrorAsAlert:(NSError*)error
-{
-    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
-    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
-    if (!title)
-    {
-        if (msg)
-        {
-            title = msg;
-            msg = nil;
-        }
-        else
-        {
-            title = [NSBundle mxk_localizedStringForKey:@"error"];
-        }
-    }
-
-    __weak __typeof__(self) weakSelf = self;
-
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction * action) {
-
-                                                typeof(self) self = weakSelf;
-
-                                                if (self)
-                                                {
-                                                    // Leave this Intergrations Manager VC
-                                                    [self withdrawViewControllerAnimated:YES completion:nil];
-                                                }
-
-                                            }]];
-
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-#pragma mark - UIWebViewDelegate
-
--(void)webViewDidFinishLoad:(UIWebView *)theWebView
-{
-    [self enableDebug];
-
-    // Setup js code
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"IntegrationManager" ofType:@"js"];
-    NSString *js = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [webView stringByEvaluatingJavaScriptFromString:js];
-
-    [self stopActivityIndicator];
-
-    // Check connectivity
-    if ([AppDelegate theDelegate].isOffline)
-    {
-        // The web page may be in the cache, so its loading will be successful
-        // but we cannot go further, it often leads to a blank screen.
-        // So, display an error so that the user can escape.
-        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                             code:NSURLErrorNotConnectedToInternet
-                                         userInfo:@{
-                                                    NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"network_offline_prompt", @"Vector", nil)
-                                                    }];
-        [self showErrorAsAlert:error];
-    }
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSString *urlString = [[request URL] absoluteString];
-
-    if ([urlString hasPrefix:@"js:"])
-    {
-        // Listen only to scheme of the JS-UIWebView bridge
-        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-
-        NSError *error;
-        NSDictionary *parameters = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers
-                                                                     error:&error];
-        if (!error)
-        {
-            [self onMessage:parameters];
-        }
-
-        return NO;
-    }
-
-    if (navigationType == UIWebViewNavigationTypeLinkClicked )
-    {
-        // Open links outside the app
-        [[UIApplication sharedApplication] openURL:[request URL]];
-        return NO;
-    }
-
-    return YES;
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    // Filter out the users's scalar token
-    NSString *errorDescription = error.description;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"scalar_token=\\w*"
-                                                                           options:NSRegularExpressionCaseInsensitive error:nil];
-    errorDescription = [regex stringByReplacingMatchesInString:errorDescription
-                                                       options:0
-                                                         range:NSMakeRange(0, errorDescription.length)
-                                                  withTemplate:@"scalar_token=..."];
-
-    NSLog(@"[IntegrationManagerVC] didFailLoadWithError: %@", errorDescription);
-
-    [self stopActivityIndicator];
-    [self showErrorAsAlert:error];
-}
-
-#pragma mark - Modular postMessage API
-
-- (void)onMessage:(NSDictionary*)JSData
-{
-    NSDictionary *eventData;
-    MXJSONModelSetDictionary(eventData, JSData[@"event.data"]);
-
     NSString *roomIdInEvent, *userId, *action;
 
-    MXJSONModelSetString(roomIdInEvent, eventData[@"room_id"]);
-    MXJSONModelSetString(userId, eventData[@"user_id"]);
-    MXJSONModelSetString(action, eventData[@"action"]);
+    MXJSONModelSetString(roomIdInEvent, requestData[@"room_id"]);
+    MXJSONModelSetString(userId, requestData[@"user_id"]);
+    MXJSONModelSetString(action, requestData[@"action"]);
 
     if ([action isEqualToString:@"close_scalar"])
     {
@@ -293,13 +147,13 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
     if (!roomIdInEvent)
     {
-        [self sendLocalisedError:@"widget_integration_missing_room_id" toEvent:eventData];
+        [self sendLocalisedError:@"widget_integration_missing_room_id" toRequest:requestId];
         return;
     }
 
     if (![roomIdInEvent isEqualToString:roomId])
     {
-        [self sendError:[NSString stringWithFormat:NSLocalizedStringFromTable(@"widget_integration_room_not_visible", @"Vector", nil), roomIdInEvent] toEvent:eventData];
+        [self sendError:[NSString stringWithFormat:NSLocalizedStringFromTable(@"widget_integration_room_not_visible", @"Vector", nil), roomIdInEvent] toRequest:requestId];
         return;
     }
 
@@ -307,149 +161,86 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     // These APIs don't require userId
     if ([@"join_rules_state" isEqualToString:action])
     {
-        [self getJoinRules:eventData];
+        [self getJoinRules:requestId data:requestData];
         return;
     }
     else if ([@"set_plumbing_state" isEqualToString:action])
     {
-        [self setPlumbingState:eventData];
+        [self setPlumbingState:requestId data:requestData];
         return;
     }
     else if ([@"get_membership_count" isEqualToString:action])
     {
-        [self getMembershipCount:eventData];
+        [self getMembershipCount:requestId data:requestData];
         return;
     }
     else if ([@"set_widget" isEqualToString:action])
     {
-        [self setWidget:eventData];
+        [self setWidget:requestId data:requestData];
         return;
     }
     else if ([@"get_widgets" isEqualToString:action])
     {
-        [self getWidgets:eventData];
+        [self getWidgets:requestId data:requestData];
         return;
     }
     else if ([@"can_send_event" isEqualToString:action])
     {
-        [self canSendEvent:eventData];
+        [self canSendEvent:requestId data:requestData];
         return;
     }
 
 
     if (!userId)
     {
-        [self sendLocalisedError:@"widget_integration_missing_user_id" toEvent:eventData];
+        [self sendLocalisedError:@"widget_integration_missing_user_id" toRequest:requestId];
         return;
     }
 
     if ([@"membership_state" isEqualToString:action])
     {
-        [self getMembershipState:userId eventData:eventData];
+        [self getMembershipState:userId request:requestId data:requestData];
     }
     else if ([@"invite" isEqualToString:action])
     {
-        [self inviteUser:userId eventData:eventData];
+        [self inviteUser:userId request:requestId data:requestData];
     }
     else if ([@"bot_options" isEqualToString:action])
     {
-        [self getBotOptions:userId eventData:eventData];
+        [self getBotOptions:userId request:requestId data:requestData];
     }
     else if ([@"set_bot_options" isEqualToString:action])
     {
-        [self setBotOptions:userId eventData:eventData];
+        [self setBotOptions:userId request:requestId data:requestData];
     }
     else if ([@"set_bot_power" isEqualToString:action])
     {
-        [self setBotPower:userId eventData:eventData];
+        [self setBotPower:userId request:requestId data:requestData];
     }
     else
     {
-        NSLog(@"[IntegrationManagerViewControllerVC] Unhandled postMessage event with action %@: %@", action, JSData);
+        NSLog(@"[IntegrationManagerViewControllerVC] Unhandled postMessage event with action %@: %@", action, requestData);
     }
 }
 
-- (void)sendBoolResponse:(BOOL)response toEvent:(NSDictionary*)eventData
-{
-    // Convert BOOL to "true" or "false"
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
-                    response ? @"true" : @"false"];
+#pragma mark - Private methods
 
-    [webView stringByEvaluatingJavaScriptFromString:js];
-}
-
-- (void)sendIntegerResponse:(NSUInteger)response toEvent:(NSDictionary*)eventData
-{
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
-                    @(response)];
-
-    [webView stringByEvaluatingJavaScriptFromString:js];
-}
-
-- (void)sendNSObjectResponse:(NSObject*)response toEvent:(NSDictionary*)eventData
-{
-    NSString *jsString;
-
-    if (response)
-    {
-        // Convert response into a JS object through a JSON string
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:response
-                                                           options:0
-                                                             error:0];
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-
-        jsString = [NSString stringWithFormat:@"JSON.parse('%@')", jsonString];
-    }
-    else
-    {
-        jsString = @"null";
-    }
-
-    NSString *js = [NSString stringWithFormat:kJavascriptSendResponseToModular,
-                    eventData[@"_id"],
-                    jsString];
-
-    [webView stringByEvaluatingJavaScriptFromString:js];
-}
-
-- (void)sendError:(NSString*)message toEvent:(NSDictionary*)eventData
-{
-    NSLog(@"[IntegrationManagerVC] sendError: Action %@ failed with message: %@", eventData[@"action"], message);
-
-    // TODO: JS has an additional optional parameter: nestedError
-    [self sendNSObjectResponse:@{
-                                 @"error": @{
-                                         @"message": message
-                                         }
-                                 }
-                       toEvent:eventData];
-}
-
-- (void)sendLocalisedError:(NSString*)errorKey toEvent:(NSDictionary*)eventData
-{
-    [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toEvent:eventData];
-}
-
-#pragma mark - Modular postMessage Implementation
-
-- (MXRoom *)roomCheckWithEvent:(NSDictionary*)eventData
+- (MXRoom *)roomCheckForRequest:(NSString*)requestId data:(NSDictionary*)requestData
 {
     MXRoom *room = [mxSession roomWithRoomId:roomId];
     if (!room)
     {
-        [self sendLocalisedError:@"widget_integration_room_not_recognised" toEvent:eventData];
+        [self sendLocalisedError:@"widget_integration_room_not_recognised" toRequest:requestId];
     }
 
     return room;
 }
 
-- (void)inviteUser:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)inviteUser:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] Received request to invite %@ into room %@.", userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     
     if (room)
     {
@@ -459,7 +250,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
             [self sendNSObjectResponse:@{
                                          @"success": @(YES)
                                          }
-                               toEvent:eventData];
+                               toRequest:requestId];
         }
         else
         {
@@ -473,7 +264,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                     [self sendNSObjectResponse:@{
                                                  @"success": @(YES)
                                                  }
-                                       toEvent:eventData];
+                                       toRequest:requestId];
                 }
 
             } failure:^(NSError *error) {
@@ -481,18 +272,18 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                 typeof(self) self = weakSelf;
                 if (self)
                 {
-                    [self sendLocalisedError:@"widget_integration_need_to_be_able_to_invite" toEvent:eventData];
+                    [self sendLocalisedError:@"widget_integration_need_to_be_able_to_invite" toRequest:requestId];
                 }
             }];
         }
     }
 }
 
-- (void)setWidget:(NSDictionary*)eventData
+- (void)setWidget:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] Received request to set widget in room %@.", roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
 
     if (room)
     {
@@ -500,15 +291,15 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
         NSString *widgetName; // optional
         NSDictionary *widgetData ; // optional
 
-        MXJSONModelSetString(widget_id, eventData[@"widget_id"]);
-        MXJSONModelSetString(widgetType, eventData[@"type"]);
-        MXJSONModelSetString(widgetUrl, eventData[@"url"]);
-        MXJSONModelSetString(widgetName, eventData[@"name"]);
-        MXJSONModelSetDictionary(widgetData, eventData[@"data"]);
+        MXJSONModelSetString(widget_id, requestData[@"widget_id"]);
+        MXJSONModelSetString(widgetType, requestData[@"type"]);
+        MXJSONModelSetString(widgetUrl, requestData[@"url"]);
+        MXJSONModelSetString(widgetName, requestData[@"name"]);
+        MXJSONModelSetDictionary(widgetData, requestData[@"data"]);
 
         if (!widget_id)
         {
-            [self sendLocalisedError:@"widget_integration_unable_to_create" toEvent:eventData]; // new Error("Missing required widget fields."));
+            [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId]; // new Error("Missing required widget fields."));
             return;
         }
 
@@ -517,7 +308,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
         {
             if (!widgetType)
             {
-                [self sendLocalisedError:@"widget_integration_unable_to_create" toEvent:eventData];
+                [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
                 return;
             }
 
@@ -536,7 +327,8 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
         __weak __typeof__(self) weakSelf = self;
 
-        [room sendStateEventOfType:kWidgetEventTypeString
+        // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
+        [room sendStateEventOfType:kWidgetModularEventTypeString
                            content:widgetEventContent
                           stateKey:widget_id
                            success:^(NSString *eventId) {
@@ -547,7 +339,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                                    [self sendNSObjectResponse:@{
                                                                 @"success": @(YES)
                                                                 }
-                                                      toEvent:eventData];
+                                                      toRequest:requestId];
                                }
                            }
                            failure:^(NSError *error) {
@@ -555,48 +347,52 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                                typeof(self) self = weakSelf;
                                if (self)
                                {
-                                   [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                                   [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
                                }
                            }];
     }
 }
 
-- (void)getWidgets:(NSDictionary*)eventData
+- (void)getWidgets:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
+    NSMutableArray<NSDictionary*> *widgetStateEvents = [NSMutableArray array];
 
     if (room)
     {
         NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsInRoom:room];
-
-        NSMutableArray<NSDictionary*> *widgetStateEvents = [NSMutableArray arrayWithCapacity:widgets.count];
-
         for (Widget *widget in widgets)
         {
             [widgetStateEvents addObject:widget.widgetEvent.JSONDictionary];
         }
-
-        [self sendNSObjectResponse:widgetStateEvents toEvent:eventData];
     }
+
+    // Add user widgets (not linked to a specific room)
+    for (Widget *widget in [[WidgetManager sharedManager] userWidgets:mxSession])
+    {
+        [widgetStateEvents addObject:widget.widgetEvent.JSONDictionary];
+    }
+
+    [self sendNSObjectResponse:widgetStateEvents toRequest:requestId];
 }
 
-- (void)canSendEvent:(NSDictionary*)eventData
+- (void)canSendEvent:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSString *eventType;
     BOOL isState = NO;
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
 
     if (room)
     {
         if (room.state.membership != MXMembershipJoin)
         {
-            [self sendLocalisedError:@"widget_integration_must_be_in_room" toEvent:eventData];
+            [self sendLocalisedError:@"widget_integration_must_be_in_room" toRequest:requestId];
             return;
         }
 
-        MXJSONModelSetString(eventType, eventData[@"event_type"]);
-        MXJSONModelSetBoolean(isState, eventData[@"is_state"]);
+        MXJSONModelSetString(eventType, requestData[@"event_type"]);
+        MXJSONModelSetBoolean(isState, requestData[@"is_state"]);
 
         MXRoomPowerLevels *powerLevels = room.state.powerLevels;
         NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxSession.myUser.userId];
@@ -614,48 +410,48 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
 
         if (canSend)
         {
-            [self sendBoolResponse:YES toEvent:eventData];
+            [self sendBoolResponse:YES toRequest:requestId];
         }
         else
         {
-            [self sendLocalisedError:@"widget_integration_no_permission_in_room" toEvent:eventData];
+            [self sendLocalisedError:@"widget_integration_no_permission_in_room" toRequest:requestId];
         }
     }
 }
 
-- (void)getMembershipState:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)getMembershipState:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] membership_state of %@ in room %@ requested.", userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         MXRoomMember *member = [room.state memberWithUserId:userId];
-        [self sendNSObjectResponse:member.originalEvent.content toEvent:eventData];
+        [self sendNSObjectResponse:member.originalEvent.content toRequest:requestId];
     }
 }
 
-- (void)getJoinRules:(NSDictionary*)eventData
+- (void)getJoinRules:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] join_rules of %@ requested.", roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         MXEvent *event = [room.state stateEventsWithType:kMXEventTypeStringRoomJoinRules].lastObject;
-        [self sendNSObjectResponse:event.JSONDictionary toEvent:eventData];
+        [self sendNSObjectResponse:event.JSONDictionary toRequest:requestId];
     }
 }
 
-- (void)setPlumbingState:(NSDictionary*)eventData
+- (void)setPlumbingState:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    NSLog(@"[IntegrationManagerVC] Received request to set plumbing state to status %@ in room %@.", eventData[@"status"], roomId);
+    NSLog(@"[IntegrationManagerVC] Received request to set plumbing state to status %@ in room %@.", requestData[@"status"], roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSString *status;
-        MXJSONModelSetString(status, eventData[@"status"]);
+        MXJSONModelSetString(status, requestData[@"status"]);
 
         if (status)
         {
@@ -674,7 +470,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                                        [self sendNSObjectResponse:@{
                                                                     @"success": @(YES)
                                                                     }
-                                                          toEvent:eventData];
+                                                          toRequest:requestId];
                                    }
                                }
                                failure:^(NSError *error) {
@@ -682,7 +478,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                                    typeof(self) self = weakSelf;
                                    if (self)
                                    {
-                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
                                    }
                                }];
         }
@@ -693,11 +489,11 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     }
 }
 
-- (void)getBotOptions:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)getBotOptions:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] Received request to get options for bot %@ in room %@", userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSString *stateKey = [NSString stringWithFormat:@"_%@", userId];
@@ -717,19 +513,19 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
             }
         }
 
-        [self sendNSObjectResponse:botOptionsEvent.JSONDictionary toEvent:eventData];
+        [self sendNSObjectResponse:botOptionsEvent.JSONDictionary toRequest:requestId];
     }
 }
 
-- (void)setBotOptions:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)setBotOptions:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
     NSLog(@"[IntegrationManagerVC] Received request to set options for bot %@ in room %@", userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSDictionary *content;
-        MXJSONModelSetDictionary(content, eventData[@"content"]);
+        MXJSONModelSetDictionary(content, requestData[@"content"]);
 
         if (content)
         {
@@ -748,7 +544,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                                        [self sendNSObjectResponse:@{
                                                                     @"success": @(YES)
                                                                     }
-                                                          toEvent:eventData];
+                                                          toRequest:requestId];
                                    }
                                }
                                failure:^(NSError *error) {
@@ -756,7 +552,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                                    typeof(self) self = weakSelf;
                                    if (self)
                                    {
-                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
                                    }
                                }];
         }
@@ -767,15 +563,15 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
     }
 }
 
-- (void)setBotPower:(NSString*)userId eventData:(NSDictionary*)eventData
+- (void)setBotPower:(NSString*)userId request:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    NSLog(@"[IntegrationManagerVC] Received request to set power level to %@ for bot %@ in room %@.", eventData[@"level"], userId, roomId);
+    NSLog(@"[IntegrationManagerVC] Received request to set power level to %@ for bot %@ in room %@.", requestData[@"level"], userId, roomId);
 
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSInteger level = -1;
-        MXJSONModelSetInteger(level, eventData[@"level"]);
+        MXJSONModelSetInteger(level, requestData[@"level"]);
 
         if (level >= 0)
         {
@@ -789,7 +585,7 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                     [self sendNSObjectResponse:@{
                                                  @"success": @(YES)
                                                  }
-                                       toEvent:eventData];
+                                       toRequest:requestId];
                 }
 
             } failure:^(NSError *error) {
@@ -797,25 +593,25 @@ NSString *const kJavascriptSendResponseToModular = @"riotIOS.sendResponse('%@', 
                 typeof(self) self = weakSelf;
                 if (self)
                 {
-                    [self sendLocalisedError:@"widget_integration_failed_to_send_request" toEvent:eventData];
+                    [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
                 }
             }];
         }
         else
         {
             NSLog(@"[IntegrationManagerVC] setBotPower. Power level must be positive integer.");
-            [self sendLocalisedError:@"widget_integration_positive_power_level" toEvent:eventData];
+            [self sendLocalisedError:@"widget_integration_positive_power_level" toRequest:requestId];
         }
     }
 }
 
-- (void)getMembershipCount:(NSDictionary*)eventData
+- (void)getMembershipCount:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    MXRoom *room = [self roomCheckWithEvent:eventData];
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
         NSUInteger membershipCount = room.state.joinedMembers.count;
-        [self sendIntegerResponse:membershipCount toEvent:eventData];
+        [self sendIntegerResponse:membershipCount toRequest:requestId];
     }
 }
 
