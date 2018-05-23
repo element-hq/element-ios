@@ -1257,9 +1257,10 @@
                     // If the setting is disabled, do not show the icon
                     self.navigationItem.rightBarButtonItems = @[self.navigationItem.rightBarButtonItem];
                 }
-                else if (self.widgetsCount)
+                else if ([self widgetsCount:NO])
                 {
                     // Show there are widgets by changing the "apps" icon color
+                    // Show it in red only for room widgets, not user's widgets
                     // TODO: Design must be reviewed
                     UIImage *icon = self.navigationItem.rightBarButtonItems[1].image;
                     icon = [MXKTools paintImage:icon withColor:kRiotColorPinkRed];
@@ -3063,7 +3064,7 @@
     // Matrix Apps button
     else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
     {
-        if (self.widgetsCount)
+        if ([self widgetsCount:YES])
         {
             WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
                                                                                                      inRoom:self.roomDataSource.roomId];
@@ -3643,10 +3644,16 @@
     [[AppDelegate theDelegate] showErrorAsAlert:error];
 }
 
-- (NSUInteger)widgetsCount
+- (NSUInteger)widgetsCount:(BOOL)includeUserWidgets
 {
-    return [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
-                                                     inRoom:self.roomDataSource.room].count;
+    NSUInteger widgetsCount = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
+                                                                        inRoom:self.roomDataSource.room].count;
+    if (includeUserWidgets)
+    {
+        widgetsCount = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.room.mxSession].count;
+    }
+
+    return widgetsCount;
 }
 
 #pragma mark - Unreachable Network Handling

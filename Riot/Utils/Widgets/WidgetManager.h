@@ -21,9 +21,15 @@
 #import "Widget.h"
 
 /**
- The type of matrix event used for modular widgets.
+ The type of matrix event used for matrix widgets.
  */
-FOUNDATION_EXPORT NSString *const kWidgetEventTypeString;
+FOUNDATION_EXPORT NSString *const kWidgetMatrixEventTypeString;
+
+/**
+ The type of matrix event used for modular widgets.
+ TODO: It should be replaced by kWidgetMatrixEventTypeString.
+ */
+FOUNDATION_EXPORT NSString *const kWidgetModularEventTypeString;
 
 /**
  Known types widgets.
@@ -86,6 +92,14 @@ WidgetManagerErrorCode;
  @return a list of widgets.
  */
 - (NSArray<Widget*> *)widgetsNotOfTypes:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room;
+
+/**
+ List all widgets of an account.
+
+ @param mxSession the session of the user account.
+ @return a list of widgets.
+ */
+- (NSArray<Widget*> *)userWidgets:(MXSession*)mxSession;
 
 /**
  Add a modular widget to a room.
