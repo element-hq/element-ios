@@ -174,6 +174,9 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
 - (NSArray<Widget*> *)userWidgets:(MXSession*)mxSession
 {
+    // Disable user widgets (sticker picker) for now
+    return nil;
+
     // Get all widgets in the user account data
     NSMutableArray<Widget *> *userWidgets = [NSMutableArray array];
     for (NSDictionary *widgetEventContent in [mxSession.accountData accountDataForEventType:@"m.widgets"].allValues)
