@@ -1,3 +1,28 @@
+Changes in 0.6.16 (2018-05-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.12).
+ * Display quick replies in timeline (#1858).
+ * Beginning of "Send sticker" support (#1860).
+ * Use existing message.mp3 for notification sounds, thanks to @pixlwave (PR #1835).
+ * GDPR: Display the consent tool in case of M_CONSENT_NOT_GIVEN error (#1871).
+ 
+Bug fix:
+ * Fix the display of side borders of HTML blockquotes (#1857).
+ * Moved UI update to main queue, thanks to @Taiwo (PR #1854).
+ * Timestamps say 'Yesterday' when it is today (#1274), thanks to @pixlwave (PR #1865).
+ * RoomVC: messages with link blink forever #1869
+
+Changes in 0.6.15 (2018-04-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.11).
+ 
+Bug fix:
+ * Regression: Sending a photo from the photo library causes a crash.
+ 
 Changes in 0.6.14 (2018-04-20)
 ===============================================
 

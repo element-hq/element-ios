@@ -22,9 +22,12 @@
 
 - (instancetype)initWithWidgetEvent:(MXEvent *)widgetEvent inMatrixSession:(MXSession*)mxSession
 {
-    if (![widgetEvent.type isEqualToString:kWidgetEventTypeString])
+    // TODO - Room widgets need to be moved to 'm.widget' state events
+    // https://docs.google.com/document/d/1uPF7XWY_dXTKVKV7jZQ2KmsI19wn9-kFRgQ1tFQP7wQ/edit?usp=sharing
+    if (![widgetEvent.type isEqualToString:kWidgetMatrixEventTypeString]
+        && ![widgetEvent.type isEqualToString:kWidgetModularEventTypeString])
     {
-        // The Widget class works only with modular, aka "im.vector.modular.widgets", widgets
+        // The Widget class works only with modular, aka "m.widget" or "im.vector.modular.widgets", widgets
         return nil;
     }
 
@@ -67,9 +70,6 @@
             widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_display_name" withString:displayName];
             widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_avatar_url" withString:avatarUrl];
 
-            // And add the user scalar token
-            widgetUrl = [widgetUrl stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@", scalarToken]];
-
             // Integrate widget data into widget url
             for (NSString *key in _data)
             {
@@ -96,6 +96,14 @@
                     NSLog(@"[Widget] Error: Invalid data field value in %@ for key %@ in data %@", self, key, _data);
                 }
             }
+
+            // Add the user scalar token
+            widgetUrl = [widgetUrl stringByAppendingString:[NSString stringWithFormat:@"%@scalar_token=%@",
+                                                            [widgetUrl containsString:@"?"] ? @"&" : @"?",
+                                                            scalarToken]];
+
+            // Add the widget id
+            widgetUrl = [widgetUrl stringByAppendingString:[NSString stringWithFormat:@"&widgetId=%@", _widgetId]];
 
             success(widgetUrl);
         }
