@@ -46,6 +46,8 @@
 
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 
+#import "WebViewViewController.h"
+
 @import PiwikTracker;
 
 // Calls
@@ -210,6 +212,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 @property (strong, nonatomic) UIAlertController *logoutConfirmation;
 
+@property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
+@property (weak, nonatomic) UIViewController *gdprConsentViewController;
+
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
 
@@ -343,6 +348,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
+    // Create message sound
+    NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"mp3"];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)messageSoundURL, &_messageSound);
+    
     NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
 
     return YES;
@@ -591,6 +600,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    // Register to GDPR consent not given notification
+    [self registerUserConsentNotGivenNotification];
     
     // Start monitoring reachability
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -1464,7 +1476,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                         {
                             NSString *soundName = action.parameters[@"value"];
                             if ([soundName isEqualToString:@"default"])
-                                soundName = UILocalNotificationDefaultSoundName;
+                                soundName = @"message.mp3";
                             
                             eventNotification.soundName = soundName;
                         }
@@ -2196,7 +2208,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
 
     // Get modular widget events in rooms histories
-    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetEventTypeString]];
+    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
     
     // Disable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
@@ -2255,9 +2267,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
 
-            // Send read receipts for modular widgets events too
+            // Send read receipts for widgets events too
             NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
-            [acknowledgableEventTypes addObject:kWidgetEventTypeString];
+            [acknowledgableEventTypes addObject:kWidgetMatrixEventTypeString];
+            [acknowledgableEventTypes addObject:kWidgetModularEventTypeString];
             mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
@@ -3056,8 +3069,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                             {
                                 if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
                                 {
-                                    // Play system sound (VoicemailReceived)
-                                    AudioServicesPlaySystemSound (1002);
+                                    // Play message sound
+                                    AudioServicesPlaySystemSound(_messageSound);
                                 }
                             }
                         }
@@ -3972,6 +3985,81 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [self checkPendingRoomKeyRequestsInSession:mxSession];
     }
+}
+
+#pragma mark - GDPR consent
+
+// Observe user GDPR consent not given
+- (void)registerUserConsentNotGivenNotification
+{
+    [NSNotificationCenter.defaultCenter addObserverForName:kMXHTTPClientUserConsentNotGivenErrorNotification
+                                                    object:nil
+                                                     queue:[NSOperationQueue mainQueue]
+                                                usingBlock:^(NSNotification *notification)
+    {
+        NSString *consentURI = notification.userInfo[kMXHTTPClientUserConsentNotGivenErrorNotificationConsentURIKey];
+        if (consentURI
+            && self.gdprConsentNotGivenAlertController == nil
+            && self.gdprConsentViewController == nil)
+        {
+            UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+            
+            __weak typeof(self) weakSelf = self;
+            
+            MXSession *mainSession = self.mxSessions.firstObject;
+            NSString *homeServerName = mainSession.matrixRestClient.credentials.homeServerName;
+            
+            NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_message", @"Vector", nil), homeServerName];
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil)                                        
+                                                                           message:alertMessage
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_review_now_action", @"Vector", nil)
+                                                      style:UIAlertActionStyleDefault
+                                                    handler:^(UIAlertAction * action) {
+                                                        
+                                                        typeof(weakSelf) strongSelf = weakSelf;
+                                                        
+                                                        if (strongSelf)
+                                                        {
+                                                            [strongSelf presentGDPRConsentFromViewController:presentingViewController consentURI:consentURI];
+                                                        }
+                                                    }]];
+            
+            [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:nil]];
+            
+            [presentingViewController presentViewController:alert animated:YES completion:nil];
+            
+            self.gdprConsentNotGivenAlertController = alert;
+        }
+    }];
+}
+
+- (void)presentGDPRConsentFromViewController:(UIViewController*)viewController consentURI:(NSString*)consentURI
+{
+    WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:consentURI];    
+    webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
+    
+    UIBarButtonItem *closeBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"close"]
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:self
+                                                                          action:@selector(dismissGDPRConsent)];
+    
+    webViewViewController.navigationItem.rightBarButtonItem = closeBarButtonItem;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewViewController];
+    
+    [viewController presentViewController:navigationController animated:YES completion:nil];
+    
+    self.gdprConsentViewController = navigationController;
+}
+
+- (void)dismissGDPRConsent
+{    
+    [self.gdprConsentViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

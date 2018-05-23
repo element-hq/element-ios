@@ -1,18 +1,18 @@
 PODS:
-  - AFNetworking (3.2.0):
-    - AFNetworking/NSURLSession (= 3.2.0)
-    - AFNetworking/Reachability (= 3.2.0)
-    - AFNetworking/Security (= 3.2.0)
-    - AFNetworking/Serialization (= 3.2.0)
-    - AFNetworking/UIKit (= 3.2.0)
-  - AFNetworking/NSURLSession (3.2.0):
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.0)
-  - AFNetworking/Security (3.2.0)
-  - AFNetworking/Serialization (3.2.0)
-  - AFNetworking/UIKit (3.2.0):
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
   - DTCoreText (1.6.21):
@@ -43,34 +43,34 @@ PODS:
   - GZIP (1.2.1)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.9.13)
-  - MatrixKit (0.7.11):
+  - MatrixKit (0.7.12):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.7.11)
-    - MatrixSDK (= 0.10.9)
-  - MatrixKit/AppExtension (0.7.11):
+    - MatrixKit/Core (= 0.7.12)
+    - MatrixSDK (= 0.10.10)
+  - MatrixKit/AppExtension (0.7.12):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.10.9)
-  - MatrixKit/Core (0.7.11):
+    - MatrixSDK (= 0.10.10)
+  - MatrixKit/Core (0.7.12):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.10.9)
-  - MatrixSDK (0.10.9):
-    - MatrixSDK/Core (= 0.10.9)
-  - MatrixSDK/Core (0.10.9):
+    - MatrixSDK (= 0.10.10)
+  - MatrixSDK (0.10.10):
+    - MatrixSDK/Core (= 0.10.10)
+  - MatrixSDK/Core (0.10.10):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.1)
     - OLMKit (~> 2.2.2)
     - Realm (~> 3.3.2)
-  - MatrixSDK/JingleCallStack (0.10.9):
+  - MatrixSDK/JingleCallStack (0.10.10):
     - MatrixSDK/Core
     - WebRTC (= 63.11.20455)
   - OLMKit (2.2.2):
@@ -90,11 +90,27 @@ DEPENDENCIES:
   - cmark
   - DTCoreText
   - GBDeviceInfo (~> 5.1.0)
-  - MatrixKit (= 0.7.11)
-  - MatrixKit/AppExtension (= 0.7.11)
+  - MatrixKit (= 0.7.12)
+  - MatrixKit/AppExtension (= 0.7.12)
   - MatrixSDK/JingleCallStack
   - OLMKit
   - PiwikTracker (from `https://github.com/manuroe/matomo-sdk-ios.git`, branch `feature/CustomVariables`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - cmark
+    - DTCoreText
+    - DTFoundation
+    - GBDeviceInfo
+    - GZIP
+    - HPGrowingTextView
+    - libPhoneNumber-iOS
+    - MatrixKit
+    - MatrixSDK
+    - OLMKit
+    - Realm
+    - WebRTC
 
 EXTERNAL SOURCES:
   PiwikTracker:
@@ -107,7 +123,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/manuroe/matomo-sdk-ios.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   cmark: ec0275215b504780287b6fca360224e384368af8
   DTCoreText: e5d688cffc9f6a61eddd1a4f94e2046851230de3
   DTFoundation: f03be9fd786f11e505bb8fc44e2a3732bf0917df
@@ -115,13 +131,13 @@ SPEC CHECKSUMS:
   GZIP: 7ee835f989fb3c6ea79005fc90b8fa6af710a70d
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatrixKit: fa148ae8eef4e60e65d36af0af1be28fc8264935
-  MatrixSDK: 5c3a0ddfa141775d88565e627f491a066dd1e87c
+  MatrixKit: ac91b2667d1be1895994ee78654d6193a6644b09
+  MatrixSDK: c74ed8b41e3e55b7510d7bddf612ed1985816e04
   OLMKit: b9d8c0ffee9ea8c45bc0aaa9afb47f93fba7efbd
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
   Realm: d927fbf66df5532cfafc08afb5f7e53ded37b894
   WebRTC: f2a6203584745fe53532633397557876b5d71640
 
-PODFILE CHECKSUM: a3ec9e9795d74a34aeaa86fdbc1983a365e93e9a
+PODFILE CHECKSUM: ba3cdb1f77ff6463e50f031aefd807535f5612ad
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0
