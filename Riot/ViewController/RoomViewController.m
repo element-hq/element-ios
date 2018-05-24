@@ -115,6 +115,7 @@
 
 #import "IntegrationManagerViewController.h"
 #import "WidgetPickerViewController.h"
+#import "StickerPickerViewController.h"
 
 @interface RoomViewController ()
 {
@@ -2852,6 +2853,43 @@
     
     // Hide back button title
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+#pragma mark - RoomInputToolbarViewDelegate
+
+- (void)roomInputToolbarViewPresentStickerPicker:(MXKRoomInputToolbarView*)toolbarView
+{
+    // Search for the sticker picker widget in the user account
+    Widget *widget = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.mxSession ofTypes:@[kWidgetTypeStickerPicker]].firstObject;
+
+    if (widget)
+    {
+        // Display the widget
+        [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
+
+            StickerPickerViewController *stickerPickerVC = [[StickerPickerViewController alloc] initWithUrl:widgetUrl forWidget:widget];
+
+            stickerPickerVC.roomDataSource = self.roomDataSource;
+
+            [self.navigationController pushViewController:stickerPickerVC animated:YES];
+        } failure:^(NSError * _Nonnull error) {
+
+            NSLog(@"[RoomVC] Cannot display widget %@", widget);
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+    else
+    {
+        // The Sticker picker widget is not installed yet. Propose the user to install it
+        // TODO
+        IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
+                                                       initForMXSession:self.roomDataSource.mxSession
+                                                       inRoom:self.roomDataSource.roomId
+                                                       screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
+                                                       widgetId:kWidgetTypeStickerPicker];
+
+        [self presentViewController:modularVC animated:NO completion:nil];
+    }
 }
 
 #pragma mark - MXKRoomInputToolbarViewDelegate

@@ -97,6 +97,7 @@
 		32E84FA11F6BD32700CA0B89 /* apps-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84F9E1F6BD32700CA0B89 /* apps-icon.png */; };
 		32E84FA21F6BD32700CA0B89 /* apps-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84F9F1F6BD32700CA0B89 /* apps-icon@2x.png */; };
 		32E84FA31F6BD32700CA0B89 /* apps-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84FA01F6BD32700CA0B89 /* apps-icon@3x.png */; };
+		32EF474920B6EE990031695C /* StickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EF474820B6EE990031695C /* StickerPickerViewController.m */; };
 		32F3AE1A1F6FF4E600F0F004 /* WidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */; };
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
@@ -766,6 +767,8 @@
 		32E84F9E1F6BD32700CA0B89 /* apps-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon.png"; sourceTree = "<group>"; };
 		32E84F9F1F6BD32700CA0B89 /* apps-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon@2x.png"; sourceTree = "<group>"; };
 		32E84FA01F6BD32700CA0B89 /* apps-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon@3x.png"; sourceTree = "<group>"; };
+		32EF474720B6EE990031695C /* StickerPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StickerPickerViewController.h; sourceTree = "<group>"; };
+		32EF474820B6EE990031695C /* StickerPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StickerPickerViewController.m; sourceTree = "<group>"; };
 		32F3AE181F6FF4E600F0F004 /* WidgetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetViewController.h; sourceTree = "<group>"; };
 		32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidgetViewController.m; sourceTree = "<group>"; };
 		32FD0A3A1EB0CD9B0072B066 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
@@ -1562,6 +1565,8 @@
 				3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */,
 				32C2356D1F7B871800E38FC5 /* WidgetPickerViewController.h */,
 				32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */,
+				32EF474720B6EE990031695C /* StickerPickerViewController.h */,
+				32EF474820B6EE990031695C /* StickerPickerViewController.m */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -3510,6 +3515,7 @@
 				F083BE661E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE141E7009ED00A9B29C /* HomeViewController.m in Sources */,
 				F083BDFB1E7009ED00A9B29C /* RoomSearchDataSource.m in Sources */,
+				32EF474920B6EE990031695C /* StickerPickerViewController.m in Sources */,
 				3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */,
 				F0B8D0D31FDFECB200F34524 /* GroupTableViewCell.m in Sources */,
 				F083BE281E7009ED00A9B29C /* StartChatViewController.m in Sources */,
