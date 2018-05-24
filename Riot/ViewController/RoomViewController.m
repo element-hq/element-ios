@@ -3102,7 +3102,7 @@
     // Matrix Apps button
     else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
     {
-        if ([self widgetsCount:YES])
+        if ([self widgetsCount:NO])
         {
             WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
                                                                                                      inRoom:self.roomDataSource.roomId];
