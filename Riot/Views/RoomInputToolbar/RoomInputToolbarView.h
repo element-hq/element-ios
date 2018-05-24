@@ -18,11 +18,27 @@
 
 #import "MediaPickerViewController.h"
 
+@protocol RoomInputToolbarViewDelegate <MXKRoomInputToolbarViewDelegate>
+
+/**
+ Tells the delegate that the user wants to display the sticker picker.
+
+ @param toolbarView the room input toolbar view.
+ */
+- (void)roomInputToolbarViewPresentStickerPicker:(MXKRoomInputToolbarView*)toolbarView;
+
+@end
+
 /**
  `RoomInputToolbarView` instance is a view used to handle all kinds of available inputs
  for a room (message composer, attachments selection...).
  */
 @interface RoomInputToolbarView : MXKRoomInputToolbarViewWithHPGrowingText <MediaPickerViewControllerDelegate>
+
+/**
+ The delegate notified when inputs are ready.
+ */
+@property (nonatomic) id<RoomInputToolbarViewDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
 
