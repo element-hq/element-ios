@@ -21,13 +21,11 @@
 NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 
 @interface WidgetViewController ()
-{
-    Widget  *widget;
-}
 
 @end
 
 @implementation WidgetViewController
+@synthesize widget;
 
 - (instancetype)initWithUrl:(NSString*)widgetUrl forWidget:(Widget*)theWidget
 {

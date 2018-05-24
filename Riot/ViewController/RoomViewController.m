@@ -2886,7 +2886,7 @@
                                                        initForMXSession:self.roomDataSource.mxSession
                                                        inRoom:self.roomDataSource.roomId
                                                        screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
-                                                       widgetId:kWidgetTypeStickerPicker];
+                                                       widgetId:nil];
 
         [self presentViewController:modularVC animated:NO completion:nil];
     }

@@ -52,7 +52,7 @@
                                                    initForMXSession:self.roomDataSource.mxSession
                                                    inRoom:self.roomDataSource.roomId
                                                    screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
-                                                   widgetId:kWidgetTypeStickerPicker];
+                                                   widgetId:self.widget.widgetId];
 
     [self presentViewController:modularVC animated:NO completion:nil];
 }
