@@ -2881,14 +2881,51 @@
     else
     {
         // The Sticker picker widget is not installed yet. Propose the user to install it
-        // TODO
-        IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
-                                                       initForMXSession:self.roomDataSource.mxSession
-                                                       inRoom:self.roomDataSource.roomId
-                                                       screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
-                                                       widgetId:nil];
+        __weak typeof(self) weakSelf = self;
 
-        [self presentViewController:modularVC animated:NO completion:nil];
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+        NSString *alertMessage = [NSString stringWithFormat:@"%@\n%@",
+                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert", @"Vector", nil),
+                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert_add_now", @"Vector", nil)
+                                  ];
+
+        currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * action)
+        {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+            }
+
+        }]];
+
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action)
+        {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+
+                // Show the sticker picker settings screen
+                IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
+                                                               initForMXSession:self.roomDataSource.mxSession
+                                                               inRoom:self.roomDataSource.roomId
+                                                               screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
+                                                               widgetId:nil];
+
+                [self presentViewController:modularVC animated:NO completion:nil];
+            }
+        }]];
+
+        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
+        [self presentViewController:currentAlert animated:YES completion:nil];
     }
 }
 
