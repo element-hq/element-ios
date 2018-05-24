@@ -517,3 +517,6 @@
 "room_do_not_have_permission_to_post" = "Vous n'avez pas la permission d'envoyer des messages dans ce salon";
 "room_event_action_kick_prompt_reason" = "Raison de l'exclusion de l'utilisateur";
 "room_event_action_ban_prompt_reason" = "Raison du bannissement de l'utilisateur";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Pour continuer à utiliser le serveur d'accueil %@, vous devez lire et accepter les conditions générales.";
+"gdpr_consent_not_given_alert_review_now_action" = "Voir maintenant";
