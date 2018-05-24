@@ -518,3 +518,6 @@
 "room_details_flair_section" = "Показать настроение для сообществ";
 "room_event_action_kick_prompt_reason" = "Причина по которой этот пользователь будет выкинут";
 "room_event_action_ban_prompt_reason" = "Причина по которой этот пользователь будет забанен";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Для продолжения использования сервера %@ вы должны принять условия и положения.";
+"gdpr_consent_not_given_alert_review_now_action" = "Просмотреть сейчас";
