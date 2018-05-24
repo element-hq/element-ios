@@ -50,6 +50,11 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     return self;
 }
 
++ (NSString*)screenForWidget:(NSString*)widgetType
+{
+    return [NSString stringWithFormat:@"type_%@", widgetType];
+}
+
 - (void)destroy
 {
     [super destroy];
@@ -147,8 +152,25 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     if (!roomIdInEvent)
     {
-        [self sendLocalisedError:@"widget_integration_missing_room_id" toRequest:requestId];
-        return;
+        // These APIs don't require roomId
+        // Get and set user widgets (not associated with a specific room)
+        // If roomId is specified, it must be validated, so room-based widgets agreed
+        // handled further down.
+        if ([@"set_widget" isEqualToString:action])
+        {
+            [self setWidget:requestId data:requestData];
+            return;
+        }
+        else if ([@"get_widgets" isEqualToString:action])
+        {
+            [self getWidgets:requestId data:requestData];
+            return;
+        }
+        else
+        {
+            [self sendLocalisedError:@"widget_integration_missing_room_id" toRequest:requestId];
+            return;
+        }
     }
 
     if (![roomIdInEvent isEqualToString:roomId])
@@ -156,7 +178,6 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         [self sendError:[NSString stringWithFormat:NSLocalizedStringFromTable(@"widget_integration_room_not_visible", @"Vector", nil), roomIdInEvent] toRequest:requestId];
         return;
     }
-
 
     // These APIs don't require userId
     if ([@"join_rules_state" isEqualToString:action])
@@ -281,75 +302,120 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 - (void)setWidget:(NSString*)requestId data:(NSDictionary*)requestData
 {
-    NSLog(@"[IntegrationManagerVC] Received request to set widget in room %@.", roomId);
+    NSLog(@"[IntegrationManagerVC] Received request to set widget");
 
-    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
+    NSString *widget_id, *widgetType, *widgetUrl;
+    NSString *widgetName; // optional
+    NSDictionary *widgetData ; // optional
+    BOOL userWidget = NO;
 
-    if (room)
+    MXJSONModelSetString(widget_id, requestData[@"widget_id"]);
+    MXJSONModelSetString(widgetType, requestData[@"type"]);
+    MXJSONModelSetString(widgetUrl, requestData[@"url"]);
+    MXJSONModelSetString(widgetName, requestData[@"name"]);
+    MXJSONModelSetDictionary(widgetData, requestData[@"data"]);
+    MXJSONModelSetBoolean(userWidget, requestData[@"userWidget"]);
+
+    if (!widget_id)
     {
-        NSString *widget_id, *widgetType, *widgetUrl;
-        NSString *widgetName; // optional
-        NSDictionary *widgetData ; // optional
+        [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId]; // new Error("Missing required widget fields."));
+        return;
+    }
 
-        MXJSONModelSetString(widget_id, requestData[@"widget_id"]);
-        MXJSONModelSetString(widgetType, requestData[@"type"]);
-        MXJSONModelSetString(widgetUrl, requestData[@"url"]);
-        MXJSONModelSetString(widgetName, requestData[@"name"]);
-        MXJSONModelSetDictionary(widgetData, requestData[@"data"]);
+    if (!widgetType)
+    {
+        [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
+        return;
+    }
 
-        if (!widget_id)
+    NSMutableDictionary *widgetEventContent = [NSMutableDictionary dictionary];
+    if (widgetUrl)
+    {
+        widgetEventContent[@"type"] = widgetType;
+        widgetEventContent[@"url"] = widgetUrl;
+
+        if (widgetName)
         {
-            [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId]; // new Error("Missing required widget fields."));
-            return;
+            widgetEventContent[@"name"] = widgetName;
         }
+        if (widgetData)
+        {
+            widgetEventContent[@"data"] = widgetData;
+        }
+    }
+    // else this is a deletion
 
-        NSMutableDictionary *widgetEventContent = [NSMutableDictionary dictionary];
+    __weak __typeof__(self) weakSelf = self;
+
+    if (userWidget)
+    {
+        // Update the user account data
+        NSMutableDictionary *userWidgets = [NSMutableDictionary dictionaryWithDictionary:[mxSession.accountData accountDataForEventType:kMXAccountDataTypeUserWidgets]];
+
+        // Delete existing widget with ID
+        [userWidgets removeObjectForKey:widget_id];
+
+        // Add new widget / update
         if (widgetUrl)
         {
-            if (!widgetType)
-            {
-                [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
-                return;
-            }
-
-            widgetEventContent[@"type"] = widgetType;
-            widgetEventContent[@"url"] = widgetUrl;
-
-            if (widgetName)
-            {
-                widgetEventContent[@"name"] = widgetName;
-            }
-            if (widgetData)
-            {
-                widgetEventContent[@"data"] = widgetData;
-            }
+            userWidgets[widget_id] = @{
+                                      @"content": widgetEventContent,
+                                      @"sender": mxSession.myUser.userId,
+                                      @"state_key": widget_id,
+                                      @"type": kWidgetMatrixEventTypeString,
+                                      @"id": widget_id,
+                                      };
         }
 
-        __weak __typeof__(self) weakSelf = self;
+        [mxSession setAccountData:userWidgets forType:kMXAccountDataTypeUserWidgets success:^{
 
-        // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
-        [room sendStateEventOfType:kWidgetModularEventTypeString
-                           content:widgetEventContent
-                          stateKey:widget_id
-                           success:^(NSString *eventId) {
+            typeof(self) self = weakSelf;
+            if (self)
+            {
+                [self sendNSObjectResponse:@{
+                                             @"success": @(YES)
+                                             }
+                                 toRequest:requestId];
+            }
+        } failure:^(NSError *error) {
 
-                               typeof(self) self = weakSelf;
-                               if (self)
-                               {
-                                   [self sendNSObjectResponse:@{
-                                                                @"success": @(YES)
-                                                                }
-                                                      toRequest:requestId];
+            typeof(self) self = weakSelf;
+            if (self)
+            {
+                [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
+            }
+        }];
+    }
+    else
+    {
+        // Room widget
+        MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
+        if (room)
+        {
+            // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
+            [room sendStateEventOfType:kWidgetModularEventTypeString
+                               content:widgetEventContent
+                              stateKey:widget_id
+                               success:^(NSString *eventId) {
+
+                                   typeof(self) self = weakSelf;
+                                   if (self)
+                                   {
+                                       [self sendNSObjectResponse:@{
+                                                                    @"success": @(YES)
+                                                                    }
+                                                        toRequest:requestId];
+                                   }
                                }
-                           }
-                           failure:^(NSError *error) {
+                               failure:^(NSError *error) {
 
-                               typeof(self) self = weakSelf;
-                               if (self)
-                               {
-                                   [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
-                               }
-                           }];
+                                   typeof(self) self = weakSelf;
+                                   if (self)
+                                   {
+                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
+                                   }
+                               }];
+        }
     }
 }
 
