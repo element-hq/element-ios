@@ -179,6 +179,18 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         return;
     }
 
+    // Get and set room-based widgets
+    if ([@"set_widget" isEqualToString:action])
+    {
+        [self setWidget:requestId data:requestData];
+        return;
+    }
+    else if ([@"get_widgets" isEqualToString:action])
+    {
+        [self getWidgets:requestId data:requestData];
+        return;
+    }
+
     // These APIs don't require userId
     if ([@"join_rules_state" isEqualToString:action])
     {
@@ -195,14 +207,9 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         [self getMembershipCount:requestId data:requestData];
         return;
     }
-    else if ([@"set_widget" isEqualToString:action])
+    else if ([@"get_room_enc_state" isEqualToString:action])
     {
-        [self setWidget:requestId data:requestData];
-        return;
-    }
-    else if ([@"get_widgets" isEqualToString:action])
-    {
-        [self getWidgets:requestId data:requestData];
+        [self getRoomEncState:requestId data:requestData];
         return;
     }
     else if ([@"can_send_event" isEqualToString:action])
@@ -440,6 +447,15 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     }
 
     [self sendNSObjectResponse:widgetStateEvents toRequest:requestId];
+}
+
+- (void)getRoomEncState:(NSString*)requestId data:(NSDictionary*)requestData
+{
+    MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
+    if (room)
+    {
+        [self sendBoolResponse:room.state.isEncrypted toRequest:requestId];
+    }
 }
 
 - (void)canSendEvent:(NSString*)requestId data:(NSDictionary*)requestData
