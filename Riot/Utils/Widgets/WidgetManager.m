@@ -23,6 +23,7 @@
 NSString *const kWidgetMatrixEventTypeString  = @"m.widget";
 NSString *const kWidgetModularEventTypeString = @"im.vector.modular.widgets";
 NSString *const kWidgetTypeJitsi = @"jitsi";
+NSString *const kWidgetTypeStickerPicker = @"m.stickerpicker";
 
 NSString *const kWidgetManagerDidUpdateWidgetNotification = @"kWidgetManagerDidUpdateWidgetNotification";
 
@@ -174,11 +175,22 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
 - (NSArray<Widget*> *)userWidgets:(MXSession*)mxSession
 {
+    return [self userWidgets:mxSession ofTypes:nil];
+}
+
+- (NSArray<Widget*> *)userWidgets:(MXSession*)mxSession ofTypes:(NSArray<NSString*>*)widgetTypes
+{
     // Get all widgets in the user account data
     NSMutableArray<Widget *> *userWidgets = [NSMutableArray array];
-    for (NSDictionary *widgetEventContent in [mxSession.accountData accountDataForEventType:@"m.widgets"].allValues)
+    for (NSDictionary *widgetEventContent in [mxSession.accountData accountDataForEventType:kMXAccountDataTypeUserWidgets].allValues)
     {
-        // Patch: Modular uses a malformed key: "stateKey" instead of "state_key"
+        if (![widgetEventContent isKindOfClass:NSDictionary.class])
+        {
+            NSLog(@"[WidgetManager] userWidgets: ERROR: invalid user widget format: %@", widgetEventContent);
+            continue;
+        }
+
+        // Patch: Modular used a malformed key: "stateKey" instead of "state_key"
         // TODO: To remove once fixed server side
         NSDictionary *widgetEventContentFixed = widgetEventContent;
         if (!widgetEventContent[@"state_key"] && widgetEventContent[@"stateKey"])
@@ -189,7 +201,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         }
 
         MXEvent *widgetEvent = [MXEvent modelFromJSON:widgetEventContentFixed];
-        if (widgetEvent)
+        if (widgetEvent
+            && (!widgetTypes || [widgetTypes containsObject:widgetEvent.content[@"type"]]))
         {
             Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent inMatrixSession:mxSession];
             if (widget)
