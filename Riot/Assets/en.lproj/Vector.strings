@@ -316,6 +316,7 @@
 "settings_flair" = "Show flair where allowed";
 "settings_devices" = "DEVICES";
 "settings_cryptography" = "CRYPTOGRAPHY";
+"settings_deactivate_account" = "DEACTIVATE ACCOUNT";
 
 "settings_sign_out" = "Sign Out";
 "settings_sign_out_confirmation" = "Are you sure?";
@@ -395,6 +396,8 @@
 "settings_crypto_device_key" = "\nDevice key: ";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified devices only";
+
+"settings_deactivate_my_account" = "Deactivate my account";
 
 // Room Details
 "room_details_title" = "Room Details";
@@ -596,3 +599,22 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "To continue using the %@ homeserver you must review and agree to the terms and conditions.";
 "gdpr_consent_not_given_alert_review_now_action" = "Review now";
+
+// Deactivate account
+
+"deactivate_account_title" = "Deactivate Account";
+
+"deactivate_account_informations_part1" = "This will make your account permanently unusable. You will not be able to log in, and no one will be able to re-register the same user ID.  This will cause your account to leave all rooms it is participating in, and it will remove your account details from your identity server. ";
+"deactivate_account_informations_part2_emphasize" = "This action is irreversible.";
+"deactivate_account_informations_part3" = "\n\nDeactivating your account ";
+"deactivate_account_informations_part4_emphasize" = "does not by default cause us to forget messages you have sent. ";
+"deactivate_account_informations_part5" = "If you would like us to forget your messages, please tick the box below\n\nMessage visibility in Matrix is similar to email. Our forgetting your messages means that messages you have sent will not be shared with any new or unregistered users, but registered users who already have access to these messages will still have access to their copy.";
+
+"deactivate_account_forget_messages_information_part1" = "Please forget all messages I have sent when my account is deactivated (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Warning";
+"deactivate_account_forget_messages_information_part3" = ": this will cause future users to see an incomplete view of conversations)";
+
+"deactivate_account_validate_action" = "Deactivate account";
+
+"deactivate_account_password_alert_title" = "Deactivate Account";
+"deactivate_account_password_alert_message" = "To continue, please enter your password";
