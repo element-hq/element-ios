@@ -541,3 +541,8 @@
 // Group rooms
 "group_rooms_filter_rooms" = "Gemeenschapsruimtes filteren";
 "e2e_room_key_request_message_new_device" = "Je hebt een nieuwe apparaat '%@' toegevoegd, die een verzoek doet naar versleutelingssleutels.";
+"room_event_action_kick_prompt_reason" = "Reden voor het verwijderen van deze gebruiker";
+"room_event_action_ban_prompt_reason" = "Reden voor het verbannen van deze gebruiker";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Om de %@ thuisserver te blijven gebruiken moet je de algemeen voorwaarden lezen en daarmee akkoord gaan.";
+"gdpr_consent_not_given_alert_review_now_action" = "Nu doorlezen";
