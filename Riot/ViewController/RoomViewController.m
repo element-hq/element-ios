@@ -3725,7 +3725,7 @@
                                                                         inRoom:self.roomDataSource.room].count;
     if (includeUserWidgets)
     {
-        widgetsCount = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.room.mxSession].count;
+        widgetsCount += [[WidgetManager sharedManager] userWidgets:self.roomDataSource.room.mxSession].count;
     }
 
     return widgetsCount;

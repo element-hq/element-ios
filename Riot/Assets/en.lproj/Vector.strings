@@ -597,3 +597,6 @@
 "e2e_room_key_request_share_without_verifying" = "Share without verifying";
 "e2e_room_key_request_ignore_request" = "Ignore request";
 
+// GDPR
+"gdpr_consent_not_given_alert_message" = "To continue using the %@ homeserver you must review and agree to the terms and conditions.";
+"gdpr_consent_not_given_alert_review_now_action" = "Review now";

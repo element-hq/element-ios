@@ -1,5 +1,5 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "カメラや写真撮影や動画撮影、映像付き通話のために使用されます。";
+"NSCameraUsageDescription" = "ビデオ通話や写真撮影、動画撮影などを行うときにカメラを使用します。";
 "NSPhotoLibraryUsageDescription" = "フォトライブラリは、写真や動画の送信に使用されます。";
 "NSMicrophoneUsageDescription" = "マイクは動画撮影や通話に使用されます。";
 "NSContactsUsageDescription" = "本体内の連絡先、アドレス帳は、Riotのユーザを電子メールアドレスや電話番号で検索する際に使用します。";

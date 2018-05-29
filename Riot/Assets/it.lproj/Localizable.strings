@@ -1,0 +1,30 @@
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "Messaggio ricevuto da %@";
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ ha scritto in %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ in %@: %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ ha inviato un'immagine %@";
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ ha inviato un'immagine %@ in %@";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Hai ricevuto un messaggio in %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Hai ricevuto un messaggio";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ nuovi messaggi in %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ nuovi messaggi in %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ nuovi messaggi da %@ e %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ nuovi messaggi da %@, %@ e %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ nuovi messaggi da %@, %@ e altri";
