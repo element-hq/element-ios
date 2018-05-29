@@ -17,6 +17,7 @@
 #import "WidgetViewController.h"
 
 #import "AppDelegate.h"
+#import "IntegrationManagerViewController.h"
 
 NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 
@@ -213,6 +214,37 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
         // Consider we are done with the sticker picker widget
         [self withdrawViewControllerAnimated:YES completion:nil];
+    }
+    else if ([@"integration_manager_open" isEqualToString:action])
+    {
+        NSDictionary *widgetData;
+        NSString *integType, *integId;
+        MXJSONModelSetDictionary(widgetData, requestData[@"widgetData"]);
+        if (widgetData)
+        {
+            MXJSONModelSetString(integType, widgetData[@"integType"]);
+            MXJSONModelSetString(integId, widgetData[@"integId"]);
+        }
+
+        if (integType && integId)
+        {
+            // Open the integration manager requested page
+            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
+                                                           initForMXSession:self.roomDataSource.mxSession
+                                                           inRoom:self.roomDataSource.roomId
+                                                           screen:[IntegrationManagerViewController screenForWidget:integType]
+                                                           widgetId:integId];
+
+            [self presentViewController:modularVC animated:NO completion:nil];
+        }
+        else
+        {
+            NSLog(@"[WidgetVC] onPostMessageRequest: ERROR: Invalid content for integration_manager_open: %@", requestData);
+        }
+    }
+    else
+    {
+        NSLog(@"[WidgetVC] onPostMessageRequest: ERROR: Unsupported action: %@: %@", action, requestData);
     }
 }
 
