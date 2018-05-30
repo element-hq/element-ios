@@ -28,6 +28,11 @@
 @interface WidgetViewController : WebViewViewController
 
 /**
+ The displayed widget.
+ */
+@property (nonatomic, readonly) Widget  *widget;
+
+/**
  The room data source.
  Required if the widget needs to post messages.
  */

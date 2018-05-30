@@ -29,17 +29,21 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "WidgetManager.h"
+#import "IntegrationManagerViewController.h"
+
 @interface RoomInputToolbarView()
 {
     MediaPickerViewController *mediaPicker;
 
-    // The call type selection (voice or video)
-    UIAlertController *callActionSheet;
+    // The intermediate action sheet
+    UIAlertController *actionSheet;
 }
 
 @end
 
 @implementation RoomInputToolbarView
+@dynamic delegate;
 
 + (UINib *)nib
 {
@@ -228,24 +232,53 @@
         // Check whether media attachment is supported
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
         {
-            // MediaPickerViewController is based on the Photos framework. So it is available only for iOS 8 and later.
-            Class PHAsset_class = NSClassFromString(@"PHAsset");
-            if (PHAsset_class)
-            {
-                mediaPicker = [MediaPickerViewController mediaPickerViewController];
-                mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-                mediaPicker.delegate = self;
-                UINavigationController *navigationController = [UINavigationController new];
-                [navigationController pushViewController:mediaPicker animated:NO];
-                
-                [self.delegate roomInputToolbarView:self presentViewController:navigationController];
-            }
-            else
-            {
-                // We use UIImagePickerController by default for iOS < 8
-                self.leftInputToolbarButton = self.attachMediaButton;
-                [super onTouchUpInside:self.leftInputToolbarButton];
-            }
+            // Ask the user the kind of the call: voice or video?
+            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+            __weak typeof(self) weakSelf = self;
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_photo_or_video", @"Vector", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+
+                                                                  [self showMediaPicker];
+                                                              }
+
+                                                          }]];
+
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+
+                                                                  [self.delegate roomInputToolbarViewPresentStickerPicker:self];
+                                                              }
+
+                                                          }]];
+
+            [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * action) {
+
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+                                                              }
+
+                                                          }]];
+
+            [actionSheet popoverPresentationController].sourceView = self.voiceCallButton;
+            [actionSheet popoverPresentationController].sourceRect = self.voiceCallButton.bounds;
+            [self.window.rootViewController presentViewController:actionSheet animated:YES completion:nil];
         }
         else
         {
@@ -257,52 +290,52 @@
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
         {
             // Ask the user the kind of the call: voice or video?
-            callActionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
             __weak typeof(self) weakSelf = self;
-            [callActionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"voice", @"Vector", nil)
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"voice", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
                                                                if (weakSelf)
                                                                {
                                                                    typeof(self) self = weakSelf;
-                                                                   self->callActionSheet = nil;
+                                                                   self->actionSheet = nil;
                                                                    
                                                                    [self.delegate roomInputToolbarView:self placeCallWithVideo:NO];
                                                                }
                                                                
                                                            }]];
             
-            [callActionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"video", @"Vector", nil)
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"video", @"Vector", nil)
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action) {
                                                                   
                                                                   if (weakSelf)
                                                                   {
                                                                       typeof(self) self = weakSelf;
-                                                                      self->callActionSheet = nil;
+                                                                      self->actionSheet = nil;
                                                                       
                                                                       [self.delegate roomInputToolbarView:self placeCallWithVideo:YES];
                                                                   }
                                                                   
                                                               }]];
             
-            [callActionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:^(UIAlertAction * action) {
                                                                   
                                                                   if (weakSelf)
                                                                   {
                                                                       typeof(self) self = weakSelf;
-                                                                      self->callActionSheet = nil;
+                                                                      self->actionSheet = nil;
                                                                   }
                                                                   
                                                               }]];
             
-            [callActionSheet popoverPresentationController].sourceView = self.voiceCallButton;
-            [callActionSheet popoverPresentationController].sourceRect = self.voiceCallButton.bounds;
-            [self.window.rootViewController presentViewController:callActionSheet animated:YES completion:nil];
+            [actionSheet popoverPresentationController].sourceView = self.voiceCallButton;
+            [actionSheet popoverPresentationController].sourceRect = self.voiceCallButton.bounds;
+            [self.window.rootViewController presentViewController:actionSheet animated:YES completion:nil];
         }
     }
     else if (button == self.hangupCallButton)
@@ -316,15 +349,36 @@
     [super onTouchUpInside:button];
 }
 
+- (void)showMediaPicker
+{
+    // MediaPickerViewController is based on the Photos framework. So it is available only for iOS 8 and later.
+    Class PHAsset_class = NSClassFromString(@"PHAsset");
+    if (PHAsset_class)
+    {
+        mediaPicker = [MediaPickerViewController mediaPickerViewController];
+        mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+        mediaPicker.delegate = self;
+        UINavigationController *navigationController = [UINavigationController new];
+        [navigationController pushViewController:mediaPicker animated:NO];
+
+        [self.delegate roomInputToolbarView:self presentViewController:navigationController];
+    }
+    else
+    {
+        // We use UIImagePickerController by default for iOS < 8
+        self.leftInputToolbarButton = self.attachMediaButton;
+        [super onTouchUpInside:self.leftInputToolbarButton];
+    }
+}
 
 - (void)destroy
 {
     [self dismissMediaPicker];
 
-    if (callActionSheet)
+    if (actionSheet)
     {
-        [callActionSheet dismissViewControllerAnimated:NO completion:nil];
-        callActionSheet = nil;
+        [actionSheet dismissViewControllerAnimated:NO completion:nil];
+        actionSheet = nil;
     }
     
     [super destroy];

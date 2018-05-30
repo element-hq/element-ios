@@ -267,6 +267,8 @@
 "room_event_action_view_encryption" = "Encryption Information";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
 "room_event_failed_to_send" = "Failed to send";
+"room_action_send_photo_or_video" = "Send photo or video";
+"room_action_send_sticker" = "Send sticker";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
@@ -568,6 +570,8 @@
 // Widget
 "widget_no_power_to_manage" = "You need permission to manage widgets in this room";
 "widget_creation_failure" = "Widget creation has failed";
+"widget_sticker_picker_no_stickerpacks_alert" = "You don't currently have any stickerpacks enabled.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Add some now?";
 
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "You need to be able to invite users to do that.";
