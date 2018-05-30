@@ -2924,7 +2924,7 @@
             }
         }]];
 
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
+        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCStickerPickerAlert"];
         [self presentViewController:currentAlert animated:YES completion:nil];
     }
 }
