@@ -516,3 +516,6 @@
 "settings_config_no_build_info" = "Няма build информация";
 "room_event_action_kick_prompt_reason" = "Причина за изгонване на потребителя";
 "room_event_action_ban_prompt_reason" = "Причина за блокиране на потребителя";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "За да продължите да използвате %@ трябва да се съгласите с условията за ползване.";
+"gdpr_consent_not_given_alert_review_now_action" = "Прегледай сега";

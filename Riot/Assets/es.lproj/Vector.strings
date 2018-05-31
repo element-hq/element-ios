@@ -60,3 +60,4 @@
 "auth_missing_password" = "Contraseña ausente";
 "auth_add_email_message" = "Añade un correo electrónico a tu cuenta para poder ser descubierto por otros usuarios, y ser capaz de recomponer tu contraseña.";
 "auth_add_phone_message" = "Añade un número telefónico a tu cuenta para ser descubierto por otros usuarios.";
+"title_groups" = "Comunidades";
