@@ -238,8 +238,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
 
-//@property (strong, nonatomic) ErrorPresenter *errorPresenter;
-
 @end
 
 @implementation SettingsViewController
