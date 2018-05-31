@@ -2667,6 +2667,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [topVC startActivityIndicator];
     }
     
+    [self logoutWithCompletion:^(BOOL isLoggedOut) {
+        if (completion)
+        {
+            completion (YES);
+        }
+    }];
+}
+
+- (void)logoutWithCompletion:(void (^)(BOOL isLoggedOut))completion
+{
     self.pushRegistry = nil;
     isPushRegistered = NO;
     
