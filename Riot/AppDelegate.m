@@ -4048,7 +4048,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                           target:self
                                                                           action:@selector(dismissGDPRConsent)];
     
-    webViewViewController.navigationItem.rightBarButtonItem = closeBarButtonItem;
+    webViewViewController.navigationItem.leftBarButtonItem = closeBarButtonItem;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewViewController];
     
