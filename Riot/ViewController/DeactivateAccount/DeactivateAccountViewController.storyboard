@@ -75,7 +75,7 @@ Message visibility in Matrix is similar to email. Our forgetting your messages m
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="2AU-Ro-4rr" firstAttribute="leading" secondItem="UBr-xR-a5z" secondAttribute="trailing" id="2dA-G3-YmX"/>
                                             <constraint firstAttribute="trailing" secondItem="uaL-Wi-UcQ" secondAttribute="trailing" constant="20" id="3VC-8f-t4r"/>

@@ -17,13 +17,12 @@
 #import "DeactivateAccountViewController.h"
 
 #import "RiotDesignValues.h"
+#import "AppDelegate.h"
 
 #pragma mark - Defines & Constants
 
 static CGFloat const kButtonCornerRadius = 5.0;
 static CGFloat const kTextFontSize = 15.0;
-static NSTimeInterval const kActivityIndicatorAnimationDuration = 0.3;
-static CGFloat const kActivityContainerViewCornerRadius = 5.0;
 
 #pragma mark - Private Interface
 
@@ -46,6 +45,8 @@ static CGFloat const kActivityContainerViewCornerRadius = 5.0;
 
 @property (strong, nonatomic) MXKErrorAlertPresentation *errorPresentation;
 
+@property (weak, nonatomic) id <NSObject> themeDidChangeNotificationObserver;
+
 @end
 
 #pragma mark - Implementation
@@ -61,6 +62,19 @@ static CGFloat const kActivityContainerViewCornerRadius = 5.0;
     return viewController;
 }
 
+- (void)destroy
+{
+    id<NSObject> notificationObserver = self.themeDidChangeNotificationObserver;
+    
+    if (notificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:notificationObserver];
+    }
+    
+    [super destroy];
+}
+
+
 #pragma mark - View life cycle
 
 - (void)viewDidLoad
@@ -73,17 +87,45 @@ static CGFloat const kActivityContainerViewCornerRadius = 5.0;
     self.errorPresentation = [[MXKErrorAlertPresentation alloc] init];
     [self setupStringAttributes];
     [self setupViews];
+    [self userInterfaceThemeDidChange];
+    [self registerThemeNotification];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Screen tracking
+    [[AppDelegate theDelegate] trackScreen:@"DeactivateAccount"];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
-//    [self.activityIndicatorContainerView.layer setCornerRadius:kActivityContainerViewCornerRadius];
     [self.deactivateAcccountButton.layer setCornerRadius:kButtonCornerRadius];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return kRiotDesignStatusBarStyle;
+}
+
 #pragma mark - Private
+
+- (void)registerThemeNotification
+{
+    self.themeDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        [self userInterfaceThemeDidChange];
+    }];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+}
 
 - (void)setupStringAttributes
 {
