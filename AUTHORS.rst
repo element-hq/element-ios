@@ -43,3 +43,5 @@ Arash Tabrizian <a.tabriziyan at gmail.com>
  * PR #1828 Fix issue #1793 Confirmation popup when leaving room
  * PR #1824 Fix issue #1816 Support specifying kick and ban msgs
  
+Doug Earnshaw <pixlwave at users.noreply.github.com>
+ * PR #1865 Fix timezone interval

@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,17 +18,16 @@
 #import "WidgetViewController.h"
 
 #import "AppDelegate.h"
+#import "IntegrationManagerViewController.h"
 
 NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 
 @interface WidgetViewController ()
-{
-    Widget  *widget;
-}
 
 @end
 
 @implementation WidgetViewController
+@synthesize widget;
 
 - (instancetype)initWithUrl:(NSString*)widgetUrl forWidget:(Widget*)theWidget
 {
@@ -43,7 +43,6 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 {
     [super viewDidLoad];
 
-    webView.scalesPageToFit = NO;
     webView.scrollView.bounces = NO;
 
     // Disable opacity so that the webview background uses the current interface theme
@@ -92,16 +91,16 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-#pragma mark - UIWebViewDelegate
+#pragma mark - WKNavigationDelegate
 
--(void)webViewDidFinishLoad:(UIWebView *)theWebView
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
     [self enableDebug];
 
     // Setup js code
     NSString *path = [[NSBundle mainBundle] pathForResource:@"postMessageAPI" ofType:@"js"];
     NSString *js = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [webView stringByEvaluatingJavaScriptFromString:js];
+    [webView evaluateJavaScript:js completionHandler:nil];
 
     [self stopActivityIndicator];
 
@@ -120,14 +119,16 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     }
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    NSString *urlString = [[request URL] absoluteString];
+    NSString *urlString = navigationAction.request.URL.absoluteString;
 
+    // TODO: We should use the WebKit PostMessage API and the
+    // `didReceiveScriptMessage` delegate to manage the JS<->Native bridge
     if ([urlString hasPrefix:@"js:"])
     {
-        // Listen only to scheme of the JS-UIWebView bridge
-        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+        // Listen only to the scheme of the JS<->Native bridge
+        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject] stringByRemovingPercentEncoding];
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
 
         NSError *error;
@@ -152,20 +153,22 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
             }
         }
 
-        return NO;
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
 
-    if (navigationType == UIWebViewNavigationTypeLinkClicked )
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated)
     {
         // Open links outside the app
-        [[UIApplication sharedApplication] openURL:[request URL]];
-        return NO;
+        [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
 
-    return YES;
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
     // Filter out the users's scalar token
     NSString *errorDescription = error.description;
@@ -216,6 +219,37 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         // Consider we are done with the sticker picker widget
         [self withdrawViewControllerAnimated:YES completion:nil];
     }
+    else if ([@"integration_manager_open" isEqualToString:action])
+    {
+        NSDictionary *widgetData;
+        NSString *integType, *integId;
+        MXJSONModelSetDictionary(widgetData, requestData[@"widgetData"]);
+        if (widgetData)
+        {
+            MXJSONModelSetString(integType, widgetData[@"integType"]);
+            MXJSONModelSetString(integId, widgetData[@"integId"]);
+        }
+
+        if (integType && integId)
+        {
+            // Open the integration manager requested page
+            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
+                                                           initForMXSession:self.roomDataSource.mxSession
+                                                           inRoom:self.roomDataSource.roomId
+                                                           screen:[IntegrationManagerViewController screenForWidget:integType]
+                                                           widgetId:integId];
+
+            [self presentViewController:modularVC animated:NO completion:nil];
+        }
+        else
+        {
+            NSLog(@"[WidgetVC] onPostMessageRequest: ERROR: Invalid content for integration_manager_open: %@", requestData);
+        }
+    }
+    else
+    {
+        NSLog(@"[WidgetVC] onPostMessageRequest: ERROR: Unsupported action: %@: %@", action, requestData);
+    }
 }
 
 - (void)sendBoolResponse:(BOOL)response toRequest:(NSString*)requestId
@@ -225,7 +259,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                     requestId,
                     response ? @"true" : @"false"];
 
-    [webView stringByEvaluatingJavaScriptFromString:js];
+    [webView evaluateJavaScript:js completionHandler:nil];
 }
 
 - (void)sendIntegerResponse:(NSUInteger)response toRequest:(NSString*)requestId
@@ -234,7 +268,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                     requestId,
                     @(response)];
 
-    [webView stringByEvaluatingJavaScriptFromString:js];
+    [webView evaluateJavaScript:js completionHandler:nil];
 }
 
 - (void)sendNSObjectResponse:(NSObject*)response toRequest:(NSString*)requestId
@@ -260,7 +294,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                     requestId,
                     jsString];
 
-    [webView stringByEvaluatingJavaScriptFromString:js];
+    [webView evaluateJavaScript:js completionHandler:nil];
 }
 
 - (void)sendError:(NSString*)message toRequest:(NSString*)requestId

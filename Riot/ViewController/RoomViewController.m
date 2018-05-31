@@ -115,6 +115,7 @@
 
 #import "IntegrationManagerViewController.h"
 #import "WidgetPickerViewController.h"
+#import "StickerPickerViewController.h"
 
 @interface RoomViewController ()
 {
@@ -2854,6 +2855,80 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
+#pragma mark - RoomInputToolbarViewDelegate
+
+- (void)roomInputToolbarViewPresentStickerPicker:(MXKRoomInputToolbarView*)toolbarView
+{
+    // Search for the sticker picker widget in the user account
+    Widget *widget = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.mxSession ofTypes:@[kWidgetTypeStickerPicker]].firstObject;
+
+    if (widget)
+    {
+        // Display the widget
+        [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
+
+            StickerPickerViewController *stickerPickerVC = [[StickerPickerViewController alloc] initWithUrl:widgetUrl forWidget:widget];
+
+            stickerPickerVC.roomDataSource = self.roomDataSource;
+
+            [self.navigationController pushViewController:stickerPickerVC animated:YES];
+        } failure:^(NSError * _Nonnull error) {
+
+            NSLog(@"[RoomVC] Cannot display widget %@", widget);
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+    else
+    {
+        // The Sticker picker widget is not installed yet. Propose the user to install it
+        __weak typeof(self) weakSelf = self;
+
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+        NSString *alertMessage = [NSString stringWithFormat:@"%@\n%@",
+                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert", @"Vector", nil),
+                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert_add_now", @"Vector", nil)
+                                  ];
+
+        currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * action)
+        {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+            }
+
+        }]];
+
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action)
+        {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+
+                // Show the sticker picker settings screen
+                IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
+                                                               initForMXSession:self.roomDataSource.mxSession
+                                                               inRoom:self.roomDataSource.roomId
+                                                               screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
+                                                               widgetId:nil];
+
+                [self presentViewController:modularVC animated:NO completion:nil];
+            }
+        }]];
+
+        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCStickerPickerAlert"];
+        [self presentViewController:currentAlert animated:YES completion:nil];
+    }
+}
+
 #pragma mark - MXKRoomInputToolbarViewDelegate
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
@@ -3064,7 +3139,7 @@
     // Matrix Apps button
     else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
     {
-        if ([self widgetsCount:YES])
+        if ([self widgetsCount:NO])
         {
             WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
                                                                                                      inRoom:self.roomDataSource.roomId];
@@ -3650,7 +3725,7 @@
                                                                         inRoom:self.roomDataSource.room].count;
     if (includeUserWidgets)
     {
-        widgetsCount = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.room.mxSession].count;
+        widgetsCount += [[WidgetManager sharedManager] userWidgets:self.roomDataSource.room.mxSession].count;
     }
 
     return widgetsCount;
