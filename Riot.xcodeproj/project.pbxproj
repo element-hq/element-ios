@@ -92,6 +92,7 @@
 		32BB89EF204D86DA002F3AEC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32BB89EA204D86DA002F3AEC /* Localizable.strings */; };
 		32BB89F0204D86DA002F3AEC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32BB89EC204D86DA002F3AEC /* InfoPlist.strings */; };
 		32C2356F1F7B871800E38FC5 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */; };
+		32C699CD20C04AD100D1C5A4 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32C699CB20C04AD100D1C5A4 /* Vector.strings */; };
 		32D392181EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */; };
 		32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */; };
 		32E84FA11F6BD32700CA0B89 /* apps-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84F9E1F6BD32700CA0B89 /* apps-icon.png */; };
@@ -763,6 +764,7 @@
 		32BB89ED204D86DA002F3AEC /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32C2356D1F7B871800E38FC5 /* WidgetPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WidgetPickerViewController.h; sourceTree = "<group>"; };
 		32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WidgetPickerViewController.m; sourceTree = "<group>"; };
+		32C699CC20C04AD100D1C5A4 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = Vector.strings; sourceTree = "<group>"; };
 		32D392151EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerDetailTableViewCell.h; sourceTree = "<group>"; };
 		32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerDetailTableViewCell.m; sourceTree = "<group>"; };
 		32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerDetailTableViewCell.xib; sourceTree = "<group>"; };
@@ -1672,6 +1674,14 @@
 			path = bg.lproj;
 			sourceTree = "<group>";
 		};
+		32C699CA20C04AD100D1C5A4 /* is.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				32C699CB20C04AD100D1C5A4 /* Vector.strings */,
+			);
+			path = is.lproj;
+			sourceTree = "<group>";
+		};
 		5FC42FA41F5186AFFB6A2404 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1817,6 +1827,7 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				32C699CA20C04AD100D1C5A4 /* is.lproj */,
 				32A9B3B32089CA400087E7A3 /* vi.lproj */,
 				32BB89E7204D86DA002F3AEC /* bg.lproj */,
 				3211717B203ACD32002C16C6 /* ca.lproj */,
@@ -2892,6 +2903,7 @@
 				vi,
 				ca,
 				bg,
+				is,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -3299,6 +3311,7 @@
 				F083BE3B1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 				F083BD341E7009ED00A9B29C /* call_audio_mute_off_icon@2x.png in Resources */,
 				F083BD6E1E7009ED00A9B29C /* e2e_blocked.png in Resources */,
+				32C699CD20C04AD100D1C5A4 /* Vector.strings in Resources */,
 				F0E05A3A1EA0F9EB004B83FB /* tab_home@2x.png in Resources */,
 				F083BE091E7009ED00A9B29C /* AuthenticationViewController.xib in Resources */,
 				F083BD381E7009ED00A9B29C /* call_audio_mute_on_icon@3x.png in Resources */,
@@ -3877,6 +3890,14 @@
 				32BB89ED204D86DA002F3AEC /* bg */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		32C699CB20C04AD100D1C5A4 /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32C699CC20C04AD100D1C5A4 /* is */,
+			);
+			name = Vector.strings;
 			sourceTree = "<group>";
 		};
 		F0173EAF1FCF346800B5F6A3 /* Vector.strings */ = {
