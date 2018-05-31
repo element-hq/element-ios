@@ -517,3 +517,24 @@
 "room_do_not_have_permission_to_post" = "Du hast keine Berechtigung in diesem Raum zu posten";
 "room_event_action_kick_prompt_reason" = "Grund für den Rauswurf des Benutzers";
 "room_event_action_ban_prompt_reason" = "Grund für die Verbannung des Benutzers";
+"room_action_send_photo_or_video" = "Sende Foto oder Video";
+"room_action_send_sticker" = "Sende Sticker";
+"settings_deactivate_account" = "DEAKTIVIERE ACCOUNT";
+"settings_deactivate_my_account" = "Deaktivere meinen Account";
+"widget_sticker_picker_no_stickerpacks_alert" = "Du hast aktuell keine Sticker-Packete aktiviert.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Welche hinzufügen?";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Um den %@ -Heimserver weiter zu verwenden, musst du die Geschäftsbedingungen sichten und ihnen zustimmen.";
+"gdpr_consent_not_given_alert_review_now_action" = "Jetzt sichten";
+"deactivate_account_title" = "Deaktiviere Account";
+"deactivate_account_informations_part1" = "Dies wird deinen Account permanent unbenutzbar machen. Du wirst dich nicht erneut anmelden können und keiner wird dieselbe Nutzer-ID erneut registrieren. Alle Räume, in denen dein Account ist, werden verlassen werden und deine Account-Daten werden vom Identitätsserver gelöscht werden. ";
+"deactivate_account_informations_part2_emphasize" = "Diese Aktion ist irreversibel.";
+"deactivate_account_informations_part3" = "\n\nDeinen Account deaktivieren ";
+"deactivate_account_informations_part4_emphasize" = "wird standardmäßig nicht dafür sorgen, dass wir alle Nachrichten löschen, die du gesendet hast. ";
+"deactivate_account_informations_part5" = "Wenn du möchtest, dass wir deine Nachrichten löschen, wähle das Auswahlfeld unten aus.\n\nDie Sichtbarkeit der Nachrichten in Matrix ist wie bei E-Mails: Wenn wir deine Nachrichten löschen, werden sie nicht mehr mit neuen oder nicht registrierten Benutzern geteilt, aber bereits registrierte Nutzer werden den Zugriff auf ihre Kopie deiner Nachrichten behalten.";
+"deactivate_account_forget_messages_information_part1" = "Bitte vergesst alle Nachrichten, die ich gesendet habe, wenn mein Account deaktiviert wird (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Warnung";
+"deactivate_account_forget_messages_information_part3" = ": Dies wird dafür sorgen, dass zukünftige Nutzer eine unvollständige Konversation sehen)";
+"deactivate_account_validate_action" = "Account deaktiveren";
+"deactivate_account_password_alert_title" = "Account deaktivieren";
+"deactivate_account_password_alert_message" = "Zum Fortfahren, Password eingeben";
