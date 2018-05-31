@@ -521,3 +521,21 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Для продолжения использования сервера %@ вы должны принять условия и положения.";
 "gdpr_consent_not_given_alert_review_now_action" = "Просмотреть сейчас";
+"room_action_send_photo_or_video" = "Отправить фото или видео";
+"room_action_send_sticker" = "Отправить стикер";
+"settings_deactivate_account" = "ДЕАКТИВАЦИЯ АККАУНТА";
+"settings_deactivate_my_account" = "Деактивировать мой аккаунт";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Добавить сейчас?";
+"deactivate_account_title" = "Деактивировать аккаунт";
+"deactivate_account_informations_part1" = "Это действие сделает вашу учетную запись непригодной для дальнейшего использования. Вы не сможете войти в систему и никто другой не сможет заново зарегистрировать учетную запись с вашим идентификатором. Также, это приведет к тому, что вы покинете все комнаты, в которых участвовали и данные о вашей учетной записи будут удалены с сервера идентификации. ";
+"deactivate_account_informations_part2_emphasize" = "Это действие необратимо.";
+"deactivate_account_informations_part3" = "\n\nДеактивация вашего аккаунта ";
+"deactivate_account_informations_part4_emphasize" = "по умолчанию не удаляет отправленные вами сообщения. ";
+"deactivate_account_informations_part5" = "Если вы хотите, чтобы мы удалили все ваши сообщения - поставьте отметку в поле ниже.\n\nВидимость сообщений в Matrix похожа на электронную почту. Удаление ваших сообщений означает, что отправленные вами сообщения не будут показаны новым или не зарегистрированным пользователям, но те пользователи, которые уже получили эти сообщения - по прежнему будут их видеть.";
+"deactivate_account_forget_messages_information_part1" = "Пожалуйста, удалите все сообщения, которые я отправил (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Внимание";
+"deactivate_account_forget_messages_information_part3" = ": будущие участники увидят неполное представление разговоров)";
+"deactivate_account_validate_action" = "Деактивировать аккаунт";
+"deactivate_account_password_alert_title" = "Деактивировать аккаунт";
+"deactivate_account_password_alert_message" = "Чтобы продолжить, введите пароль";
+"widget_sticker_picker_no_stickerpacks_alert" = "У вас пока нет включенных пакетов стикеров.";
