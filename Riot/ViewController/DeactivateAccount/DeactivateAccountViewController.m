@@ -321,9 +321,7 @@ static CGFloat const kTextFontSize = 15.0;
             [strongSelf deactivateAccountWithUserId:userId andPassword:password eraseAllMessages:strongSelf.forgetMessageButton.isEnabled];
         }
         
-    } cancelHandler:^{
-        
-    }];
+    } cancelHandler:nil];
 }
 
 @end
