@@ -850,6 +850,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         return nil;
     }
     
+    // Ignore GDPR Consent not given error. Already caught by kMXHTTPClientUserConsentNotGivenErrorNotification observation
+    if ([MXError isMXError:error])
+    {
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if ([mxError.errcode isEqualToString:kMXErrCodeStringConsentNotGiven])
+        {
+            return nil;
+        }
+    }
+    
     [_errorNotification dismissViewControllerAnimated:NO completion:nil];
     
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
