@@ -203,7 +203,7 @@ static CGFloat const kTextFontSize = 15.0;
 - (void)enableUserActions:(BOOL)enableUserActions
 {
     self.navigationItem.rightBarButtonItem.enabled = enableUserActions;
-    self.forgetMessageButton.enabled = enableUserActions;
+    self.forgetMessageButton.userInteractionEnabled = enableUserActions;
     self.deactivateAcccountButton.enabled = enableUserActions;
 }
 
@@ -272,8 +272,15 @@ static CGFloat const kTextFontSize = 15.0;
         [self.mainSession deactivateAccountWithAuthParameters:authParameters eraseAccount:eraseAllMessages success:^{
             NSLog(@"[SettingsViewController] Deactivate account with success");
             
-            [weakSelf stopActivityIndicator];
-            [weakSelf enableUserActions:YES];
+            typeof(weakSelf) strongSelf = weakSelf;
+            
+            if (strongSelf)
+            {
+                [strongSelf stopActivityIndicator];
+                [strongSelf enableUserActions:YES];
+                [strongSelf.delegate deactivateAccountViewControllerDidDeactivateWithSuccess:strongSelf];
+            }
+            
         } failure:^(NSError *error) {
             
             NSLog(@"[SettingsViewController] Failed to deactivate account");
