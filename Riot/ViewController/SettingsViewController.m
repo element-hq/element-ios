@@ -4102,8 +4102,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)deactivateAccountViewControllerDidDeactivateWithSuccess:(DeactivateAccountViewController *)deactivateAccountViewController
 {
     NSLog(@"[SettingsViewController] Deactivate account with success");
+
     
-    [[AppDelegate theDelegate] logoutWithCompletion:^(BOOL isLoggedOut) {
+    [[AppDelegate theDelegate] logoutSendingRequestServer:NO completion:^(BOOL isLoggedOut) {
         NSLog(@"[SettingsViewController] Complete clear user data after account deactivation");
     }];
 }
