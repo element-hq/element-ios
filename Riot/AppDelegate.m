@@ -2677,7 +2677,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [topVC startActivityIndicator];
     }
     
-    [self logoutWithCompletion:^(BOOL isLoggedOut) {
+    [self logoutSendingRequestServer:YES completion:^(BOOL isLoggedOut) {
         if (completion)
         {
             completion (YES);
@@ -2685,7 +2685,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }];
 }
 
-- (void)logoutWithCompletion:(void (^)(BOOL isLoggedOut))completion
+- (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
+                        completion:(void (^)(BOOL isLoggedOut))completion
 {
     self.pushRegistry = nil;
     isPushRegistered = NO;

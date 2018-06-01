@@ -117,9 +117,12 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
  
+ @param sendLogoutRequest Indicate whether send logout request to home server.
  @param completion the block to execute at the end of the operation.
  */
-- (void)logoutWithCompletion:(void (^)(BOOL isLoggedOut))completion;
+- (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
+                        completion:(void (^)(BOOL isLoggedOut))completion;
+
 
 #pragma mark - Matrix Accounts handling
 
