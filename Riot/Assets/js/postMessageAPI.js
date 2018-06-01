@@ -31,15 +31,6 @@ window.riotIOS.events = {};
 // Listen to messages posted by the widget
 window.riotIOS.onMessage = function(event) {
 
-    // Do not SPAM ObjC with event already managed
-    if (riotIOS.events[event.data._id]) {
-        return;
-    }
-
-    if (!event.origin) { // stupid chrome
-        event.origin = event.originalEvent.origin;
-    }
-
     // Use an internal "_id" field for matching onMessage events and requests
     // _id was originally used by the Modular API. Keep it
     if (!event.data._id) {
@@ -51,6 +42,15 @@ window.riotIOS.onMessage = function(event) {
     // Make sure to have one id
     if (!event.data._id) {
         event.data._id = Date.now() + "-" + Math.random().toString(36);
+    }
+    
+    // Do not SPAM ObjC with event already managed
+    if (riotIOS.events[event.data._id]) {
+        return;
+    }
+
+    if (!event.origin) { // stupid chrome
+        event.origin = event.originalEvent.origin;
     }
 
     // Keep this event for future usage

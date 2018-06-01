@@ -92,11 +92,13 @@
 		32BB89EF204D86DA002F3AEC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32BB89EA204D86DA002F3AEC /* Localizable.strings */; };
 		32BB89F0204D86DA002F3AEC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32BB89EC204D86DA002F3AEC /* InfoPlist.strings */; };
 		32C2356F1F7B871800E38FC5 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */; };
+		32C699CD20C04AD100D1C5A4 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32C699CB20C04AD100D1C5A4 /* Vector.strings */; };
 		32D392181EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */; };
 		32D392191EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */; };
 		32E84FA11F6BD32700CA0B89 /* apps-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84F9E1F6BD32700CA0B89 /* apps-icon.png */; };
 		32E84FA21F6BD32700CA0B89 /* apps-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84F9F1F6BD32700CA0B89 /* apps-icon@2x.png */; };
 		32E84FA31F6BD32700CA0B89 /* apps-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32E84FA01F6BD32700CA0B89 /* apps-icon@3x.png */; };
+		32EF474920B6EE990031695C /* StickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EF474820B6EE990031695C /* StickerPickerViewController.m */; };
 		32F3AE1A1F6FF4E600F0F004 /* WidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */; };
 		32FD0A3D1EB0CD9B0072B066 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32FD0A3B1EB0CD9B0072B066 /* BugReportViewController.m */; };
 		32FD0A3E1EB0CD9B0072B066 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32FD0A3C1EB0CD9B0072B066 /* BugReportViewController.xib */; };
@@ -109,6 +111,8 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		9D686B069F967C4D4BBC610F /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB50EEBE8214352B9EBD6394 /* Pods_RiotPods_SiriIntents.framework */; };
+		B19A173920B7F94800DF0BB0 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A173820B7F94800DF0BB0 /* DeactivateAccountViewController.m */; };
+		B19A173B20B7F96700DF0BB0 /* DeactivateAccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19A173A20B7F96700DF0BB0 /* DeactivateAccountViewController.storyboard */; };
 		DDDE2AB95F865F2292B1D315 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7292481328A48B8D5D4ED /* Pods_RiotPods_RiotShareExtension.framework */; };
 		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
 		F0173EB51FCF346800B5F6A3 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EAF1FCF346800B5F6A3 /* Vector.strings */; };
@@ -760,12 +764,15 @@
 		32BB89ED204D86DA002F3AEC /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = InfoPlist.strings; sourceTree = "<group>"; };
 		32C2356D1F7B871800E38FC5 /* WidgetPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WidgetPickerViewController.h; sourceTree = "<group>"; };
 		32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WidgetPickerViewController.m; sourceTree = "<group>"; };
+		32C699CC20C04AD100D1C5A4 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = Vector.strings; sourceTree = "<group>"; };
 		32D392151EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerDetailTableViewCell.h; sourceTree = "<group>"; };
 		32D392161EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerDetailTableViewCell.m; sourceTree = "<group>"; };
 		32D392171EB9B7AB009A2BAF /* DirectoryServerDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerDetailTableViewCell.xib; sourceTree = "<group>"; };
 		32E84F9E1F6BD32700CA0B89 /* apps-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon.png"; sourceTree = "<group>"; };
 		32E84F9F1F6BD32700CA0B89 /* apps-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon@2x.png"; sourceTree = "<group>"; };
 		32E84FA01F6BD32700CA0B89 /* apps-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apps-icon@3x.png"; sourceTree = "<group>"; };
+		32EF474720B6EE990031695C /* StickerPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StickerPickerViewController.h; sourceTree = "<group>"; };
+		32EF474820B6EE990031695C /* StickerPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StickerPickerViewController.m; sourceTree = "<group>"; };
 		32F3AE181F6FF4E600F0F004 /* WidgetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetViewController.h; sourceTree = "<group>"; };
 		32F3AE191F6FF4E600F0F004 /* WidgetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidgetViewController.m; sourceTree = "<group>"; };
 		32FD0A3A1EB0CD9B0072B066 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
@@ -794,6 +801,9 @@
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		A5030B7C3C0B6EB83A9257BD /* Pods-RiotPods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		B0FAA1A49F76B0CE15C5CBD8 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B19A173720B7F94800DF0BB0 /* DeactivateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeactivateAccountViewController.h; sourceTree = "<group>"; };
+		B19A173820B7F94800DF0BB0 /* DeactivateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeactivateAccountViewController.m; sourceTree = "<group>"; };
+		B19A173A20B7F96700DF0BB0 /* DeactivateAccountViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DeactivateAccountViewController.storyboard; sourceTree = "<group>"; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		C5258DFF261AA3AB228A3F11 /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		DB50EEBE8214352B9EBD6394 /* Pods_RiotPods_SiriIntents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_SiriIntents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1562,6 +1572,8 @@
 				3233F7301F31F4BF006ACA81 /* JitsiViewController.xib */,
 				32C2356D1F7B871800E38FC5 /* WidgetPickerViewController.h */,
 				32C2356E1F7B871800E38FC5 /* WidgetPickerViewController.m */,
+				32EF474720B6EE990031695C /* StickerPickerViewController.h */,
+				32EF474820B6EE990031695C /* StickerPickerViewController.m */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -1662,6 +1674,14 @@
 			path = bg.lproj;
 			sourceTree = "<group>";
 		};
+		32C699CA20C04AD100D1C5A4 /* is.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				32C699CB20C04AD100D1C5A4 /* Vector.strings */,
+			);
+			path = is.lproj;
+			sourceTree = "<group>";
+		};
 		5FC42FA41F5186AFFB6A2404 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1715,6 +1735,16 @@
 				92726A481F58737A004AD26F /* Info.plist */,
 			);
 			path = SiriIntents;
+			sourceTree = "<group>";
+		};
+		B19A173520B6F89900DF0BB0 /* DeactivateAccount */ = {
+			isa = PBXGroup;
+			children = (
+				B19A173720B7F94800DF0BB0 /* DeactivateAccountViewController.h */,
+				B19A173820B7F94800DF0BB0 /* DeactivateAccountViewController.m */,
+				B19A173A20B7F96700DF0BB0 /* DeactivateAccountViewController.storyboard */,
+			);
+			path = DeactivateAccount;
 			sourceTree = "<group>";
 		};
 		F0173EAE1FCF346800B5F6A3 /* vi.lproj */ = {
@@ -1797,6 +1827,7 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				32C699CA20C04AD100D1C5A4 /* is.lproj */,
 				32A9B3B32089CA400087E7A3 /* vi.lproj */,
 				32BB89E7204D86DA002F3AEC /* bg.lproj */,
 				3211717B203ACD32002C16C6 /* ca.lproj */,
@@ -2283,6 +2314,7 @@
 				24B5103F1EFA88CC004C6AD2 /* ReadReceiptsViewController.xib */,
 				F0B4CBA31F418D0B008E99C5 /* WebViewViewController.h */,
 				F0B4CBA41F418D0B008E99C5 /* WebViewViewController.m */,
+				B19A173520B6F89900DF0BB0 /* DeactivateAccount */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2871,6 +2903,7 @@
 				vi,
 				ca,
 				bg,
+				is,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -3151,6 +3184,7 @@
 				F083BDDA1E7009ED00A9B29C /* typing.png in Resources */,
 				F083BE831E7009ED00A9B29C /* RecentTableViewCell.xib in Resources */,
 				F046DC731FE1786500E3DAF0 /* GroupHomeViewController.xib in Resources */,
+				B19A173B20B7F96700DF0BB0 /* DeactivateAccountViewController.storyboard in Resources */,
 				F0E5D9141FF6FF3F00560D7F /* GroupRoomTableViewCell.xib in Resources */,
 				F083BDB71E7009ED00A9B29C /* remove_icon@2x.png in Resources */,
 				F083BDD31E7009ED00A9B29C /* settings_icon@3x.png in Resources */,
@@ -3277,6 +3311,7 @@
 				F083BE3B1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 				F083BD341E7009ED00A9B29C /* call_audio_mute_off_icon@2x.png in Resources */,
 				F083BD6E1E7009ED00A9B29C /* e2e_blocked.png in Resources */,
+				32C699CD20C04AD100D1C5A4 /* Vector.strings in Resources */,
 				F0E05A3A1EA0F9EB004B83FB /* tab_home@2x.png in Resources */,
 				F083BE091E7009ED00A9B29C /* AuthenticationViewController.xib in Resources */,
 				F083BD381E7009ED00A9B29C /* call_audio_mute_on_icon@3x.png in Resources */,
@@ -3510,6 +3545,7 @@
 				F083BE661E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F083BE141E7009ED00A9B29C /* HomeViewController.m in Sources */,
 				F083BDFB1E7009ED00A9B29C /* RoomSearchDataSource.m in Sources */,
+				32EF474920B6EE990031695C /* StickerPickerViewController.m in Sources */,
 				3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */,
 				F0B8D0D31FDFECB200F34524 /* GroupTableViewCell.m in Sources */,
 				F083BE281E7009ED00A9B29C /* StartChatViewController.m in Sources */,
@@ -3630,6 +3666,7 @@
 				F0E05A021E963103004B83FB /* FavouritesViewController.m in Sources */,
 				F083BE941E7009ED00A9B29C /* FilesSearchTableViewCell.m in Sources */,
 				F083BE921E7009ED00A9B29C /* SimpleRoomTitleView.m in Sources */,
+				B19A173920B7F94800DF0BB0 /* DeactivateAccountViewController.m in Sources */,
 				F083BE981E7009ED00A9B29C /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3853,6 +3890,14 @@
 				32BB89ED204D86DA002F3AEC /* bg */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		32C699CB20C04AD100D1C5A4 /* Vector.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				32C699CC20C04AD100D1C5A4 /* is */,
+			);
+			name = Vector.strings;
 			sourceTree = "<group>";
 		};
 		F0173EAF1FCF346800B5F6A3 /* Vector.strings */ = {

@@ -37,4 +37,12 @@ FOUNDATION_EXPORT NSString *const kIntegrationManagerAddIntegrationScreen;
  */
 - (instancetype)initForMXSession:(MXSession*)mxSession inRoom:(NSString*)roomId screen:(NSString*)screen widgetId:(NSString*)widgetId;
 
+/**
+ Get the integration manager settings screen for a given widget type.
+
+ @param widgetType the widget type.
+ @return the screen id for that widget type.
+ */
++ (NSString*)screenForWidget:(NSString*)widgetType;
+
 @end
