@@ -4019,9 +4019,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         NSString *consentURI = notification.userInfo[kMXHTTPClientUserConsentNotGivenErrorNotificationConsentURIKey];
         if (consentURI
-            && self.gdprConsentNotGivenAlertController == nil
-            && self.gdprConsentViewController == nil)
+            && self.gdprConsentNotGivenAlertController.presentingViewController == nil
+            && self.gdprConsentViewController.presentingViewController == nil)
         {
+            self.gdprConsentNotGivenAlertController = nil;
+            self.gdprConsentViewController = nil;
+            
             UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
             
             __weak typeof(self) weakSelf = self;
