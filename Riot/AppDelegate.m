@@ -850,6 +850,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         return nil;
     }
     
+    // Ignore GDPR Consent not given error. Already caught by kMXHTTPClientUserConsentNotGivenErrorNotification observation
+    if ([MXError isMXError:error])
+    {
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if ([mxError.errcode isEqualToString:kMXErrCodeStringConsentNotGiven])
+        {
+            return nil;
+        }
+    }
+    
     [_errorNotification dismissViewControllerAnimated:NO completion:nil];
     
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
@@ -4009,9 +4019,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         NSString *consentURI = notification.userInfo[kMXHTTPClientUserConsentNotGivenErrorNotificationConsentURIKey];
         if (consentURI
-            && self.gdprConsentNotGivenAlertController == nil
-            && self.gdprConsentViewController == nil)
+            && self.gdprConsentNotGivenAlertController.presentingViewController == nil
+            && self.gdprConsentViewController.presentingViewController == nil)
         {
+            self.gdprConsentNotGivenAlertController = nil;
+            self.gdprConsentViewController = nil;
+            
             UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
             
             __weak typeof(self) weakSelf = self;
@@ -4058,7 +4071,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                           target:self
                                                                           action:@selector(dismissGDPRConsent)];
     
-    webViewViewController.navigationItem.rightBarButtonItem = closeBarButtonItem;
+    webViewViewController.navigationItem.leftBarButtonItem = closeBarButtonItem;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewViewController];
     
