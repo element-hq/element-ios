@@ -520,3 +520,21 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Pour continuer à utiliser le serveur d'accueil %@, vous devez lire et accepter les conditions générales.";
 "gdpr_consent_not_given_alert_review_now_action" = "Voir maintenant";
+"room_action_send_photo_or_video" = "Envoyer une photo ou une vidéo";
+"room_action_send_sticker" = "Envoyer un sticker";
+"settings_deactivate_account" = "DÉSACTIVER LE COMPTE";
+"settings_deactivate_my_account" = "Désactiver mon compte";
+"widget_sticker_picker_no_stickerpacks_alert" = "Vous n'avez aucun pack de stickers activé.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "En ajouter maintenant ?";
+"deactivate_account_title" = "Désactiver le compte";
+"deactivate_account_informations_part1" = "Votre compte sera inutilisable de façon permanente. Vous ne pourrez plus vous connecter et personne ne pourra se réenregistrer avec le même identifiant d'utilisateur. Votre compte quittera tous les salons auxquels il participe, et tous les détails du compte seront supprimés du serveur d'identité. ";
+"deactivate_account_informations_part2_emphasize" = "Cette action est irréversible.";
+"deactivate_account_informations_part3" = "\n\nLa désactivation de votre compte ";
+"deactivate_account_informations_part4_emphasize" = "ne nous fait pas oublier les messages que vous avez envoyés par défaut. ";
+"deactivate_account_informations_part5" = "Si vous souhaitez que nous oubliions vos messages, cochez la case ci-dessous\n\nLa visibilité des messages dans Matrix est similaire à celle des e-mails. Notre oubli des messages signifie que les messages que vous avez envoyés ne seront pas partagés avec les nouveaux utilisateurs ou les utilisateurs non enregistrés, mais les utilisateurs qui ont déjà accès à ces messages auront toujours accès à leur copie.";
+"deactivate_account_forget_messages_information_part1" = "Veuillez oublier tous les messages que j'ai envoyé quand mon compte sera désactivé (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Avertissement";
+"deactivate_account_forget_messages_information_part3" = ": les futurs utilisateurs auront alors une vue incomplète des conversations)";
+"deactivate_account_validate_action" = "Désactiver le compte";
+"deactivate_account_password_alert_title" = "Désactiver le compte";
+"deactivate_account_password_alert_message" = "Pour continuer, veuillez renseigner votre mot de passe";
