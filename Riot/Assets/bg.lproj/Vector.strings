@@ -519,3 +519,21 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "За да продължите да използвате %@ трябва да се съгласите с условията за ползване.";
 "gdpr_consent_not_given_alert_review_now_action" = "Прегледай сега";
+"room_action_send_photo_or_video" = "Изпрати снимка или видео";
+"room_action_send_sticker" = "Изпрати стикер";
+"settings_deactivate_account" = "ДЕАКТИВАЦИЯ НА АКАУНТ";
+"settings_deactivate_my_account" = "Деактивирай акаунта ми";
+"widget_sticker_picker_no_stickerpacks_alert" = "В момента нямате активирани пакети със стикери.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Добави сега?";
+"deactivate_account_title" = "Деактивиране на акаунт";
+"deactivate_account_informations_part1" = "Това ще направи акаунта Ви неизползваем завинаги. Няма да можете да влезете пак, а регистрирането повторно на същия потребителски идентификатор няма да е възможно. Акаунтът Ви да напусне всички стаи, в които участва. Ще бъдат премахнати и данните за акаунта Ви от сървъра за самоличност. ";
+"deactivate_account_informations_part2_emphasize" = "Действието е необратимо.";
+"deactivate_account_informations_part3" = "\n\nДеактивирането на акаунта Ви ";
+"deactivate_account_informations_part4_emphasize" = "по подразбиране не прави така, че изпратените съобщения да бъдат забравени. ";
+"deactivate_account_informations_part5" = "Ако искате да забравим съобщенията Ви, моля отбележете с отметка по-долу\n\nВидимостта на съобщенията в Matrix е подобно на имейл системата. Нашето забравяне означава, че: изпратените от Вас съобщения няма да бъдат споделяни с нови или нерегистрирани потребители, но регистрираните потребители имащи достъп до тях ще продължат да имат достъп до своето копие.";
+"deactivate_account_forget_messages_information_part1" = "Моля, забравете всички изпратени от мен съобщения, когато акаунта ми се деактивира (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Внимание";
+"deactivate_account_forget_messages_information_part3" = ": това ще направи бъдещите потребители да имат само частичен поглед върху кореспонденцията)";
+"deactivate_account_validate_action" = "Деактивирай акаунта";
+"deactivate_account_password_alert_title" = "Деактивиране на акаунт";
+"deactivate_account_password_alert_message" = "За да продължите, моля въведете паролата си";
