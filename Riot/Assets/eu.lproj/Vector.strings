@@ -522,3 +522,21 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "%@ hasiera-zerbitzaria erabiltzen jarraitzeko erabilera baldintzak irakurri eta onartu behar dituzu.";
 "gdpr_consent_not_given_alert_review_now_action" = "Irakurri orain";
+"room_action_send_photo_or_video" = "Bidali argazki edo bideoa";
+"room_action_send_sticker" = "Bidali eranskailua";
+"settings_deactivate_account" = "DESAKTIBATU KONTUA";
+"settings_deactivate_my_account" = "Desaktibatu nire kontua";
+"widget_sticker_picker_no_stickerpacks_alert" = "Ez duzu orain eranskailu multzo aktiborik.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Baten bat gehitu orain?";
+"deactivate_account_title" = "Desaktibatu kontua";
+"deactivate_account_informations_part1" = "Honek kontua behin betirako erabilgaitza bihurtuko du. Ezin izango duzu saioa hasi, eta ezin izango du beste inork ID hori erabili. Kontua dagoen gela guztietatik aterako da, eta kontuaren xehetasunak identitate-zerbitzaritik ezabatuko dira. ";
+"deactivate_account_informations_part2_emphasize" = "Ekintza hau ezin da desegin.";
+"deactivate_account_informations_part3" = "\n\nZure kontua desaktibatzen ";
+"deactivate_account_informations_part4_emphasize" = "ez du lehenetsita guk zuk bidalitako mezuak ahaztea eragingo ";
+"deactivate_account_informations_part5" = "Guk zure mezuak ahaztea nahi baduzu markatu beheko kutxa.\n\nMatrix-eko mezuen ikusgaitasuna e-mail sistemaren antekoa da. Guk zure mezuak ahaztean ez dizkiogu erabiltzaile berriei edo izena eman ez dutenei erakutsiko, baina jada zure mezuak jaso dituzten erregistratutako erabiltzaileen bere kopia izaten jarraituko dute.";
+"deactivate_account_forget_messages_information_part1" = "Ahaztu bidali ditudan mezu guztiak kontua desaktibatzean (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Abisua";
+"deactivate_account_forget_messages_information_part3" = ": Honekin etorkizuneko erabiltzaileek elkarrizketaren bertsio ez oso bat ikusiko dute)";
+"deactivate_account_validate_action" = "Desaktibatu kontua";
+"deactivate_account_password_alert_title" = "Desaktibatu kontua";
+"deactivate_account_password_alert_message" = "Jarraitzeko sartu zure pasahitza";
