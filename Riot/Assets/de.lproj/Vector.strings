@@ -318,7 +318,7 @@
 "settings_add_phone_number" = "Telefonnummer hinzufügen";
 "settings_fail_to_update_profile" = "Profilaktualisierung fehlgeschlagen";
 "settings_global_settings_info" = "Globale Benachrichtungseinstellungen sind verfügbar auf dem %@ Web Client";
-"settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit vepassten Benachrichtigungen";
+"settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit verpassten Benachrichtigungen";
 "settings_pin_rooms_with_unread" = "Pinnen von Räumen mit ungelesenen Nachrichten";
 "settings_on_denied_notification" = "Benachrichtigungen verboten für %@, bitte in den Geräte-Einstellungen erlauben";
 "settings_contacts_discover_matrix_users" = "Entdecke andere Benutzer mittels E-Mail-Adressen oder Telefonnummern";
