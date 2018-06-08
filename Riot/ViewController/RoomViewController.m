@@ -117,6 +117,8 @@
 #import "WidgetPickerViewController.h"
 #import "StickerPickerViewController.h"
 
+#import "EventFormatter.h"
+
 @interface RoomViewController ()
 {
     // The expanded header
@@ -2680,6 +2682,20 @@
             NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
+        else if ([absoluteURLString hasPrefix:kEventFormatterOnReRequestKeysLinkAction])
+        {
+            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:kEventFormatterOnReRequestKeysLinkActionSeparator];
+            if (arguments.count > 1)
+            {
+                NSString *eventId = arguments[1];
+                MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
+
+                if (event)
+                {
+                    [self showRerequestConfirmationAlert:event];
+                }
+            }
+        }
     }
     
     return shouldDoAction;
@@ -4579,6 +4595,36 @@
                                                    }]];
     
     [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCInviteAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+#pragma mark - Re-request encryption keys
+
+- (void)showRerequestConfirmationAlert:(MXEvent*)event
+{
+    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
+                                                       message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
+                                                preferredStyle:UIAlertControllerStyleAlert];
+
+    MXWeakify(self);
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action)
+                             {
+                                 MXStrongifyAndReturnIfNil(self);
+                                 self->currentAlert = nil;
+                             }]];
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_button", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action)
+                             {
+                                 MXStrongifyAndReturnIfNil(self);
+                                 self->currentAlert = nil;
+
+                                 [self.mainSession.crypto reRequestRoomKeyForEvent:event];
+                             }]];
+
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
