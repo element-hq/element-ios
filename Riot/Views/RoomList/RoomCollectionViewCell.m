@@ -24,6 +24,11 @@
 
 #import "MXTools.h"
 
+#pragma mark - Defines & Constants
+
+static const CGFloat kDirectRoomBorderColorAlpha = 0.75;
+static const CGFloat kDirectRoomBorderWidth = 3.0;
+
 @implementation RoomCollectionViewCell
 
 #pragma mark - Class methods
@@ -66,10 +71,14 @@
     self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
     
     // Prepare direct room border
+    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, kDirectRoomBorderColorAlpha);
+    
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
-    self.directRoomBorderView.layer.borderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, 0.75);
-    self.directRoomBorderView.layer.borderWidth = 3;
+    self.directRoomBorderView.layer.borderColor = directRoomBorderColor;
+    self.directRoomBorderView.layer.borderWidth = kDirectRoomBorderWidth;
+    
+    CFRelease(directRoomBorderColor);
     
     self.editionArrowView.backgroundColor = kRiotSecondaryBgColor;
     
