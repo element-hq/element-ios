@@ -627,4 +627,4 @@
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
-"rerequest_keys_alert_message" = "Please check your other devices for key share requests.";
+"rerequest_keys_alert_message" = "Please check your other devices for key share requests";
