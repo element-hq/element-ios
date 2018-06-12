@@ -2692,7 +2692,7 @@
 
                 if (event)
                 {
-                    [self showRerequestConfirmationAlert:event];
+                    [self reRequestKeysAndShowExplanationAlert:event];
                 }
             }
         }
@@ -4600,29 +4600,49 @@
 
 #pragma mark - Re-request encryption keys
 
-- (void)showRerequestConfirmationAlert:(MXEvent*)event
+- (void)reRequestKeysAndShowExplanationAlert:(MXEvent*)event
 {
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
+    MXWeakify(self);
+    __block UIAlertController *alert;
+
+    // Make the re-request
+    [self.mainSession.crypto reRequestRoomKeyForEvent:event];
+
+    // Observe kMXEventDidDecryptNotification to remove automatically the dialog
+    // if the user has shared the keys from another device
+    id didDecryptObserver;
+    didDecryptObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXEventDidDecryptNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        MXEvent *decryptedEvent = notif.object;
+
+        if ([decryptedEvent.eventId isEqualToString:event.eventId])
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:didDecryptObserver];
+
+            MXStrongifyAndReturnIfNil(self);
+            if (self->currentAlert == alert)
+            {
+                [self->currentAlert dismissViewControllerAnimated:YES completion:nil];
+                self->currentAlert = nil;
+            }
+        }
+    }];
+
+    // Show the explanation dialog
+    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
                                                        message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
                                                 preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = alert;
 
-    MXWeakify(self);
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action)
                              {
+                                 [[NSNotificationCenter defaultCenter] removeObserver:didDecryptObserver];
+
                                  MXStrongifyAndReturnIfNil(self);
                                  self->currentAlert = nil;
-                             }]];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_button", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action)
-                             {
-                                 MXStrongifyAndReturnIfNil(self);
-                                 self->currentAlert = nil;
-
-                                 [self.mainSession.crypto reRequestRoomKeyForEvent:event];
                              }]];
 
     [self presentViewController:currentAlert animated:YES completion:nil];

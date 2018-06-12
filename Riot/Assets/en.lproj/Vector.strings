@@ -626,6 +626,5 @@
 "deactivate_account_password_alert_message" = "To continue, please enter your password";
 
 // Re-request confirmation dialog
-"rerequest_keys_alert_title" = "Re-request encryption keys";
-"rerequest_keys_alert_message" = "Your key share request has been sent - please check your other devices for key share requests.\n\nKey share requests are sent to your other devices automatically. If you rejected or dismissed the key share request on your other devices, you can request the keys for this session again.";
-"rerequest_keys_alert_button" = "Re-request";
+"rerequest_keys_alert_title" = "Request Sent";
+"rerequest_keys_alert_message" = "Please check your other devices for key share requests.";
