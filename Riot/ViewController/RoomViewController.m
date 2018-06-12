@@ -183,6 +183,9 @@
     
     // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
     id mxRoomSummaryDidChangeObserver;
+
+    // Observer for removing the re-request explanation/waiting dialog
+    id mxEventDidDecryptNotificationObserver;
     
     // The table view cell in which the read marker is displayed (nil by default).
     MXKRoomBubbleTableViewCell *readMarkerTableViewCell;
@@ -593,6 +596,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
         mxRoomSummaryDidChangeObserver = nil;
+    }
+
+    if (mxEventDidDecryptNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
+        mxEventDidDecryptNotificationObserver = nil;
     }
 }
 
@@ -1104,6 +1113,11 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
         mxRoomSummaryDidChangeObserver = nil;
+    }
+    if (mxEventDidDecryptNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
+        mxEventDidDecryptNotificationObserver = nil;
     }
     
     [self removeCallNotificationsListeners];
@@ -4610,16 +4624,16 @@
 
     // Observe kMXEventDidDecryptNotification to remove automatically the dialog
     // if the user has shared the keys from another device
-    id didDecryptObserver;
-    didDecryptObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXEventDidDecryptNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    mxEventDidDecryptNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXEventDidDecryptNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        MXStrongifyAndReturnIfNil(self);
 
         MXEvent *decryptedEvent = notif.object;
 
         if ([decryptedEvent.eventId isEqualToString:event.eventId])
         {
-            [[NSNotificationCenter defaultCenter] removeObserver:didDecryptObserver];
+            [[NSNotificationCenter defaultCenter] removeObserver:self->mxEventDidDecryptNotificationObserver];
+            self->mxEventDidDecryptNotificationObserver = nil;
 
-            MXStrongifyAndReturnIfNil(self);
             if (self->currentAlert == alert)
             {
                 [self->currentAlert dismissViewControllerAnimated:YES completion:nil];
@@ -4639,9 +4653,11 @@
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action)
                              {
-                                 [[NSNotificationCenter defaultCenter] removeObserver:didDecryptObserver];
-
                                  MXStrongifyAndReturnIfNil(self);
+
+                                 [[NSNotificationCenter defaultCenter] removeObserver:self->mxEventDidDecryptNotificationObserver];
+                                 self->mxEventDidDecryptNotificationObserver = nil;
+
                                  self->currentAlert = nil;
                              }]];
 
