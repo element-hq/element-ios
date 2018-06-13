@@ -117,6 +117,8 @@
 #import "WidgetPickerViewController.h"
 #import "StickerPickerViewController.h"
 
+#import "EventFormatter.h"
+
 @interface RoomViewController ()
 {
     // The expanded header
@@ -181,6 +183,9 @@
     
     // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
     id mxRoomSummaryDidChangeObserver;
+
+    // Observer for removing the re-request explanation/waiting dialog
+    id mxEventDidDecryptNotificationObserver;
     
     // The table view cell in which the read marker is displayed (nil by default).
     MXKRoomBubbleTableViewCell *readMarkerTableViewCell;
@@ -591,6 +596,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
         mxRoomSummaryDidChangeObserver = nil;
+    }
+
+    if (mxEventDidDecryptNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
+        mxEventDidDecryptNotificationObserver = nil;
     }
 }
 
@@ -1102,6 +1113,11 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
         mxRoomSummaryDidChangeObserver = nil;
+    }
+    if (mxEventDidDecryptNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
+        mxEventDidDecryptNotificationObserver = nil;
     }
     
     [self removeCallNotificationsListeners];
@@ -2679,6 +2695,20 @@
             // Open the group or preview it
             NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        }
+        else if ([absoluteURLString hasPrefix:kEventFormatterOnReRequestKeysLinkAction])
+        {
+            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:kEventFormatterOnReRequestKeysLinkActionSeparator];
+            if (arguments.count > 1)
+            {
+                NSString *eventId = arguments[1];
+                MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
+
+                if (event)
+                {
+                    [self reRequestKeysAndShowExplanationAlert:event];
+                }
+            }
         }
     }
     
@@ -4579,6 +4609,58 @@
                                                    }]];
     
     [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCInviteAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+#pragma mark - Re-request encryption keys
+
+- (void)reRequestKeysAndShowExplanationAlert:(MXEvent*)event
+{
+    MXWeakify(self);
+    __block UIAlertController *alert;
+
+    // Make the re-request
+    [self.mainSession.crypto reRequestRoomKeyForEvent:event];
+
+    // Observe kMXEventDidDecryptNotification to remove automatically the dialog
+    // if the user has shared the keys from another device
+    mxEventDidDecryptNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXEventDidDecryptNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        MXStrongifyAndReturnIfNil(self);
+
+        MXEvent *decryptedEvent = notif.object;
+
+        if ([decryptedEvent.eventId isEqualToString:event.eventId])
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self->mxEventDidDecryptNotificationObserver];
+            self->mxEventDidDecryptNotificationObserver = nil;
+
+            if (self->currentAlert == alert)
+            {
+                [self->currentAlert dismissViewControllerAnimated:YES completion:nil];
+                self->currentAlert = nil;
+            }
+        }
+    }];
+
+    // Show the explanation dialog
+    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
+                                                       message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
+                                                preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = alert;
+
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action)
+                             {
+                                 MXStrongifyAndReturnIfNil(self);
+
+                                 [[NSNotificationCenter defaultCenter] removeObserver:self->mxEventDidDecryptNotificationObserver];
+                                 self->mxEventDidDecryptNotificationObserver = nil;
+
+                                 self->currentAlert = nil;
+                             }]];
+
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 

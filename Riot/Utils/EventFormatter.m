@@ -21,6 +21,13 @@
 
 #import "WidgetManager.h"
 
+#import "MXDecryptionResult.h"
+
+#pragma mark - Constants definitions
+
+NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
+NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
+
 @interface EventFormatter ()
 {
     /**
@@ -107,7 +114,40 @@
         }
     }
 
-    return [super attributedStringFromEvent:event withRoomState:roomState error:error];
+    NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
+
+    if (event.sentState == MXEventSentStateSent
+        && [event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain]
+        && event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
+    {
+        // Append to the displayed error an attibuted string with a tappable link 
+        // so that the user can try to fix the UTC
+        NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
+        [attributedStringWithRerequestMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+
+        NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", kEventFormatterOnReRequestKeysLinkAction,
+                                      kEventFormatterOnReRequestKeysLinkActionSeparator,
+                                      event.eventId];
+
+        [attributedStringWithRerequestMessage appendAttributedString:
+         [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1_link", @"Vector", nil)
+                                         attributes:@{
+                                                      NSLinkAttributeName: linkActionString,
+                                                      NSForegroundColorAttributeName: self.sendingTextColor,
+                                                      NSFontAttributeName: self.encryptedMessagesTextFont
+                                         }]];
+
+        [attributedStringWithRerequestMessage appendAttributedString:
+         [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2", @"Vector", nil)
+                                         attributes:@{
+                                                      NSForegroundColorAttributeName: self.sendingTextColor,
+                                                      NSFontAttributeName: self.encryptedMessagesTextFont
+                                                      }]];
+
+        attributedString = attributedStringWithRerequestMessage;
+    }
+
+    return attributedString;
 }
 
 - (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
