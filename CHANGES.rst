@@ -1,3 +1,29 @@
+Changes in 0.6.18 ()
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ().
+ * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
+ 
+Bug fix:
+
+Changes in 0.6.17 (2018-06-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.14).
+ * Send Stickers (#1860).
+ * Settings: Add deactivate account (#1870).
+ * Widgets: Update from UIWebView to WKWebView to improve performance.
+ 
+Bug fix:
+ * Quotes (by themselves) render as white blocks (#1877).
+ * GDPR: consent screen could not be closed (#1883).
+ * GDPR: Do not display error alert when receiving GDPR Consent not given (#1886).
+ 
+Translations:
+ * Enable Icelandic.
+
 Changes in 0.6.16 (2018-05-23)
 ===============================================
 
