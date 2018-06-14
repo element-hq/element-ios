@@ -539,3 +539,8 @@
 "deactivate_account_password_alert_title" = "Деактивировать аккаунт";
 "deactivate_account_password_alert_message" = "Чтобы продолжить, введите пароль";
 "widget_sticker_picker_no_stickerpacks_alert" = "У вас пока нет включенных пакетов стикеров.";
+"event_formatter_rerequest_keys_part1_link" = "Повторно запросить ключи шифрования";
+"event_formatter_rerequest_keys_part2" = " с других устройств.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Запрос отправлен";
+"rerequest_keys_alert_message" = "Запустите Riot на другом устройстве, которое может расшифровать сообщение, чтобы оно могло отправить ключи этому устройству.";
