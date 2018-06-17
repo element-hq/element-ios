@@ -540,3 +540,8 @@
 "deactivate_account_validate_action" = "Desaktibatu kontua";
 "deactivate_account_password_alert_title" = "Desaktibatu kontua";
 "deactivate_account_password_alert_message" = "Jarraitzeko sartu zure pasahitza";
+"event_formatter_rerequest_keys_part1_link" = "Berreskatu zifratze gakoak";
+"event_formatter_rerequest_keys_part2" = " zure beste gailuetatik.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Eskaria bidalita";
+"rerequest_keys_alert_message" = "Abiatu Riot mezua deszifratu dezakeen beste gailuren batean handik hona gakoak bidali ahal izateko.";
