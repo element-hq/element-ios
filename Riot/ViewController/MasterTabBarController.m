@@ -77,6 +77,15 @@
     _roomsViewController = [self.viewControllers objectAtIndex:TABBAR_ROOMS_INDEX];
     _groupsViewController = [self.viewControllers objectAtIndex:TABBAR_GROUPS_INDEX];
     
+    // Set the accessibility labels for all buttons #1842
+    [_settingsBarButtonItem setAccessibilityLabel:@"Settings"];
+    [_searchBarButtonIem setAccessibilityLabel:@"Search"];
+    [_homeViewController setAccessibilityLabel:@"Home"];
+    [_favouritesViewController setAccessibilityLabel:@"Favorites"];
+    [_peopleViewController setAccessibilityLabel:@"People"];
+    [_roomsViewController setAccessibilityLabel:@"Rooms"];
+    [_groupsViewController setAccessibilityLabel:@"Groups"];
+    
     // Sanity check
     NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController && _groupsViewController, @"Something wrong in Main.storyboard");
 
