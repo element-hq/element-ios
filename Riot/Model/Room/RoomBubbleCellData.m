@@ -51,6 +51,9 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // Initialize read receipts
         self.readReceipts = [NSMutableDictionary dictionary];
         self.readReceipts[event.eventId] = [roomDataSource.room getEventReceipts:event.eventId sorted:YES];
+
+        // Reset attributedTextMessage to force reset MXKRoomCellData parameters
+        self.attributedTextMessage = nil;
     }
     
     return self;
