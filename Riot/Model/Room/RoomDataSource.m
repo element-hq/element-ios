@@ -96,24 +96,101 @@
 
 - (void)didReceiveReceiptEvent:(MXEvent *)receiptEvent roomState:(MXRoomState *)roomState
 {
-    // Override this callback to force rendering of each cell with read receipts information.
-    @synchronized(bubbles)
-    {
-        for (RoomBubbleCellData *cellData in bubbles)
+    // Do the processing on the same processing queue as MXKRoomDataSource
+    dispatch_async(MXKRoomDataSource.processingQueue, ^{
+
+        // Remove the previous displayed read receipt for each user who sent a
+        // new read receipt.
+        // To implement it, we need to find the sender id of each new read receipt
+        // among the read receipts array of all events in all bubbles.
+        NSMutableArray *readReceiptSenders = [receiptEvent.readReceiptSenders mutableCopy];
+
+        @synchronized(bubbles)
         {
-            cellData.hasReadReceipts = NO;
+            NSMutableDictionary<NSString* /* eventId */, NSMutableArray<MXReceiptData*> *> *updatedCellDataReadReceipts = [NSMutableDictionary dictionary];
+            for (RoomBubbleCellData *cellData in bubbles)
+            {
+                for (NSString *eventId in cellData.readReceipts)
+                {
+                    for (MXReceiptData *receiptData in cellData.readReceipts[eventId])
+                    {
+                        NSMutableArray *foundSenders = [NSMutableArray array];
+                        for (NSString *senderId in readReceiptSenders)
+                        {
+                            if ([receiptData.userId isEqualToString:senderId])
+                            {
+                                // We find an existing displayed receipt, remove it
+                                [foundSenders addObject:senderId];
+
+                                if (!updatedCellDataReadReceipts[eventId])
+                                {
+                                    updatedCellDataReadReceipts[eventId] = [cellData.readReceipts[eventId] mutableCopy];
+                                }
+
+                                [updatedCellDataReadReceipts[eventId] removeObject:receiptData];
+                                break;
+                            }
+                        }
+
+                        // As there is one (the last) read receipt displayed per user,
+                        // we do not need to search for other read receipts of found users.
+                        [readReceiptSenders removeObjectsInArray:foundSenders];
+                        if (!readReceiptSenders.count)
+                        {
+                            // All senders have been found
+                            break;
+                        }
+                    }
+                }
+
+                // Flush found changed to the cell data
+                for (NSString *eventId in updatedCellDataReadReceipts)
+                {
+                    if (updatedCellDataReadReceipts[eventId].count)
+                    {
+                        cellData.readReceipts[eventId] = updatedCellDataReadReceipts[eventId];
+                    }
+                    else
+                    {
+                        cellData.readReceipts[eventId] = nil;
+                    }
+                }
+
+                if (!readReceiptSenders.count)
+                {
+                    // All senders have been found
+                    break;
+                }
+            }
         }
-    }
-    
-    NSArray *readEventIds = receiptEvent.readReceiptEventIds;
-    for (NSString* eventId in readEventIds)
-    {
-        RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
-        // Ignore the read receipts on the events without an actual display.
-        cellData.hasReadReceipts = !cellData.hasNoDisplay;
-    }
-    
-    [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
+
+        // Update cell data we have received a read receipt for
+        NSArray *readEventIds = receiptEvent.readReceiptEventIds;
+        for (NSString* eventId in readEventIds)
+        {
+            RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
+            if (cellData)
+            {
+                @synchronized(bubbles)
+                {
+                    if (!cellData.hasNoDisplay)
+                    {
+                        cellData.readReceipts[eventId] = [self.room getEventReceipts:eventId sorted:YES];
+                    }
+                    else
+                    {
+                        // Ignore the read receipts on the events without an actual display.
+                        cellData.readReceipts[eventId] = nil;
+                    }
+                }
+            }
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // TODO: Be smarter and update only updated cells
+            [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
+        });
+    });
 }
 
 #pragma  mark -
@@ -181,7 +258,7 @@
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((self.showBubbleReceipts && cellData.hasReadReceipts && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -194,10 +271,10 @@
                 if (component.event.sentState != MXEventSentStateFailed)
                 {
                     // Handle read receipts (if any)
-                    if (self.showBubbleReceipts && cellData.hasReadReceipts && !isCollapsableCellCollapsed)
+                    if (self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed)
                     {
                         // Get the events receipts by ignoring the current user receipt.
-                        NSArray* receipts = [self.room getEventReceipts:component.event.eventId sorted:YES];
+                        NSArray* receipts =  cellData.readReceipts[component.event.eventId];
                         NSMutableArray *roomMembers;
                         NSMutableArray *placeholders;
                         

@@ -6,6 +6,7 @@ Improvements:
  * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
  
 Bug fix:
+ * RoomVC: Read receipts processing dramatically slows down UI (#1899).
 
 Changes in 0.6.17 (2018-06-01)
 ===============================================
