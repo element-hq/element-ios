@@ -78,13 +78,13 @@
     _groupsViewController = [self.viewControllers objectAtIndex:TABBAR_GROUPS_INDEX];
     
     // Set the accessibility labels for all buttons #1842
-    [_settingsBarButtonItem setAccessibilityLabel:@"Settings"];
-    [_searchBarButtonIem setAccessibilityLabel:@"Search"];
-    [_homeViewController setAccessibilityLabel:@"Home"];
-    [_favouritesViewController setAccessibilityLabel:@"Favorites"];
-    [_peopleViewController setAccessibilityLabel:@"People"];
-    [_roomsViewController setAccessibilityLabel:@"Rooms"];
-    [_groupsViewController setAccessibilityLabel:@"Groups"];
+    [_settingsBarButtonItem setAccessibilityLabel:NSLocalizedStringFromTable(@"settings_title", @"Vector", nil)];
+    [_searchBarButtonIem setAccessibilityLabel:NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil)];
+    [_homeViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_home", @"Vector", nil)];
+    [_favouritesViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil)];
+    [_peopleViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
+    [_roomsViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil)];
+    [_groupsViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_groups", @"Vector", nil)];
     
     // Sanity check
     NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController && _groupsViewController, @"Something wrong in Main.storyboard");
