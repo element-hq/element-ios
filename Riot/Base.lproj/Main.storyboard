@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -51,7 +51,7 @@
                         <segue destination="e7G-NU-7ck" kind="show" identifier="showRoomDetails" id="vCz-dl-6xQ"/>
                         <segue destination="KDg-aD-xlK" kind="show" identifier="showRoomSearch" id="hdA-V1-9AF"/>
                         <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="cUw-vU-gJq"/>
-                        <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" action="showDetailViewController:sender:" id="f5u-Y1-7nt"/>
+                        <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="f5u-Y1-7nt"/>
                         <segue destination="ZZb-IS-a1F" kind="presentation" identifier="showUnknownDevices" id="wUx-4y-ybn"/>
                         <segue destination="udm-55-AMb" kind="show" identifier="showContactPicker" id="Q6y-9M-Ugl"/>
                     </connections>
@@ -247,7 +247,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" image="tab_home.png" selectedImage="tab_home_selected.png" id="hNI-yH-EXj">
+                    <tabBarItem key="tabBarItem" title="" image="tab_home.png" selectedImage="tab_home_selected.png" id="hNI-yH-EXj">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemHome"/>
                         </userDefinedRuntimeAttributes>
@@ -608,7 +608,7 @@
         <image name="tab_rooms.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bwO-oZ-2vj"/>
+        <segue reference="mhb-l9-pM3"/>
         <segue reference="fIR-e3-ssz"/>
         <segue reference="f5u-Y1-7nt"/>
         <segue reference="vCz-dl-6xQ"/>
