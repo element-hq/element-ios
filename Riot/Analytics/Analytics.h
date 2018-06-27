@@ -16,10 +16,12 @@
 
 #import <Foundation/Foundation.h>
 
+#import <MatrixSDK/MatrixSDK.h>
+
 /**
  `Analytics` sends analytics to an analytics tool.
  */
-@interface Analytics : NSObject
+@interface Analytics : NSObject <MXAnalyticsDelegate>
 
 /**
  Returns the shared Analytics manager.
@@ -49,5 +51,12 @@
  Flush analytics data.
  */
 - (void)dispatch;
+
+/**
+ Track how long the launch screen has been displayed to the end user.
+
+ @param seconds the duration in seconds.
+ */
+- (void)trackLaunchScreenDisplayDuration: (NSTimeInterval)seconds;
 
 @end

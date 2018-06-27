@@ -18,6 +18,12 @@
 
 #import "AppDelegate.h"
 
+// All metrics are store under a Piwik category called "Metrics"
+// Then, there are 2 (for the moment) Piwik actions: "iOS.startup" and "iOS.stats"
+// Then, we use constants defined by the Matrix SDK as Piwik Names (ex:"mountData")
+NSString *const kAnalyticsPiwikMetricsCategory = @"Metrics";
+NSString *const kAnalyticsPiwikMetricsActionPattern = @"iOS.%@";
+
 @import PiwikTracker;
 
 @implementation Analytics
@@ -100,6 +106,63 @@
 - (void)dispatch
 {
     [[PiwikTracker shared] dispatch];
+}
+
+- (void)trackLaunchScreenDisplayDuration:(NSTimeInterval)seconds
+{
+    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStartupCategory];
+
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+                                               action:action
+                                                 name:kMXAnalyticsStartupLaunchScreen
+                                               number:@(seconds * 1000)
+                                                  url:nil];
+}
+
+#pragma mark - MXAnalyticsDelegate
+
+- (void)trackStartupStorePreloadDuration: (NSTimeInterval)seconds
+{
+    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStartupCategory];
+
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+                                               action:action
+                                                 name:kMXAnalyticsStartupStorePreload
+                                               number:@(seconds * 1000)
+                                                  url:nil];
+}
+
+- (void)trackStartupMountDataDuration: (NSTimeInterval)seconds
+{
+    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStartupCategory];
+
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+                                               action:action
+                                                 name:kMXAnalyticsStartupMountData
+                                               number:@(seconds * 1000)
+                                                  url:nil];
+}
+
+- (void)trackStartupSyncDuration: (NSTimeInterval)seconds isInitial: (BOOL)isInitial
+{
+    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStartupCategory];
+
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+                                               action:action
+                                                 name:isInitial ? kMXAnalyticsStartupInititialSync : kMXAnalyticsStartupIncrementalSync
+                                               number:@(seconds * 1000)
+                                                  url:nil];
+}
+
+- (void)trackRoomCount: (NSUInteger)roomCount
+{
+    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStatsCategory];
+
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+                                               action:action
+                                                 name:kMXAnalyticsStatsRooms
+                                               number:@(roomCount)
+                                                  url:nil];
 }
 
 @end

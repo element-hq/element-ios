@@ -467,6 +467,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     // Configure our analytics. It will indeed start if the option is enabled
+    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
     [[Analytics sharedInstance] start];
     
     // Prepare Pushkit handling
@@ -2849,8 +2850,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     if (launchAnimationContainerView)
     {
-        NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
-        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", durationMs);
+        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
+        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", duration * 1000);
+
+        // Track it on our analytics
+        [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
 
         // TODO: Send durationMs to Piwik
         // Such information should be the same on all platforms
