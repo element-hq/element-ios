@@ -73,9 +73,9 @@
         [PiwikTracker shared].isOptedOut = YES;
 #endif
     }
-    else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
+    else
     {
-        NSLog(@"[AppDelegate] The user decided to not ");
+        NSLog(@"[AppDelegate] The user decided to not send analytics");
         [PiwikTracker shared].isOptedOut = YES;
         [MXLogger logCrashes:NO];
     }
