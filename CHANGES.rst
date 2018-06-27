@@ -4,6 +4,7 @@ Changes in 0.6.18 ()
 Improvements:
  * Upgrade MatrixKit version ().
  * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
+ * Added the i18n localisation strings to the accessibility labels (#1842), thanks to @einMarco (PR#1906).
  
 Bug fix:
 
