@@ -18,8 +18,9 @@
 
 #import "AppDelegate.h"
 
-// All metrics are store under a Piwik category called "Metrics"
-// Then, there are 2 (for the moment) Piwik actions: "iOS.startup" and "iOS.stats"
+// All metrics are store under a Piwik category called "Metrics".
+// Then, there are 2 Piwik actions: "iOS.startup" and "iOS.stats" (these actions
+// are namespaced by plaform to have a nice rendering on the Piwik website).
 // Then, we use constants defined by the Matrix SDK as Piwik Names (ex:"mountData")
 NSString *const kAnalyticsPiwikMetricsCategory = @"Metrics";
 NSString *const kAnalyticsPiwikMetricsActionPattern = @"iOS.%@";

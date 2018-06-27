@@ -233,10 +233,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     sdkOptions.applicationGroupIdentifier = @"group.im.vector";
 
-    // Track SDK performance our analytics
-    // TODO: needs the same tool
-    //sdkOptions.analyticsDelegate = [[MXGoogleAnalytics alloc] init];
-
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
     {
