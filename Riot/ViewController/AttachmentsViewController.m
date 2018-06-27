@@ -73,7 +73,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"AttachmentsViewer"];
+    [[Analytics sharedInstance] trackScreen:@"AttachmentsViewer"];
 }
 
 - (void)destroy

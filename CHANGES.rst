@@ -4,6 +4,7 @@ Changes in 0.6.18 ()
 Improvements:
  * Upgrade MatrixKit version ().
  * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
+ * Analytics: Move code from AppDelegate to a dedicated class: Analytics
  
 Bug fix:
 

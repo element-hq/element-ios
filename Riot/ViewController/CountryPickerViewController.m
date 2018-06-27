@@ -99,7 +99,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"CountryPicker"];
+    [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
 }
 
 - (void)destroy

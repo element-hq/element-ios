@@ -810,8 +810,8 @@
                                                            typeof(self) self = weakSelf;
                                                            self->currentAlert = nil;
                                                        }
-                                                       
-                                                       [[AppDelegate theDelegate] startAnalytics];
+
+                                                       [[Analytics sharedInstance] start];
                                                        
                                                    }]];
     

@@ -59,6 +59,11 @@
 		32471CE11F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32471CDF1F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m */; };
 		32471CE21F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32471CE01F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.xib */; };
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
+		3267EFB220E2A04100FF1CAA /* Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267EFB120E2A04100FF1CAA /* Analytics.m */; };
+		3267EFB720E379FE00FF1CAA /* CHANGES.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB320E379FD00FF1CAA /* CHANGES.rst */; };
+		3267EFB820E379FE00FF1CAA /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB420E379FD00FF1CAA /* Podfile */; };
+		3267EFB920E379FE00FF1CAA /* AUTHORS.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB520E379FD00FF1CAA /* AUTHORS.rst */; };
+		3267EFBA20E379FE00FF1CAA /* README.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB620E379FD00FF1CAA /* README.rst */; };
 		327382B51F276AD200356143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382A81F276AD200356143 /* InfoPlist.strings */; };
 		327382B61F276AD200356143 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382AA1F276AD200356143 /* Localizable.strings */; };
 		327382B71F276AD200356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382AC1F276AD200356143 /* Vector.strings */; };
@@ -725,6 +730,12 @@
 		32471CDF1F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembershipExpandedWithPaginationTitleBubbleCell.m; sourceTree = "<group>"; };
 		32471CE01F13AC1500BDF50A /* RoomMembershipExpandedWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipExpandedWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
 		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		3267EFB020E2A04100FF1CAA /* Analytics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Analytics.h; path = Riot/Analytics/Analytics.h; sourceTree = SOURCE_ROOT; };
+		3267EFB120E2A04100FF1CAA /* Analytics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Analytics.m; path = Riot/Analytics/Analytics.m; sourceTree = SOURCE_ROOT; };
+		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
+		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
+		3267EFB620E379FD00FF1CAA /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
 		327382A91F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = InfoPlist.strings; sourceTree = "<group>"; };
 		327382AB1F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
 		327382AD1F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Vector.strings; sourceTree = "<group>"; };
@@ -1597,6 +1608,16 @@
 			path = "jitsi-meet";
 			sourceTree = "<group>";
 		};
+		3267EFAF20E2A00F00FF1CAA /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				3267EFB020E2A04100FF1CAA /* Analytics.h */,
+				3267EFB120E2A04100FF1CAA /* Analytics.m */,
+			);
+			name = Analytics;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		327382A71F276AD200356143 /* de.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -1796,6 +1817,7 @@
 		F083BB081E7009EC00A9B29C /* Riot */ = {
 			isa = PBXGroup;
 			children = (
+				3267EFAF20E2A00F00FF1CAA /* Analytics */,
 				F083BB091E7009EC00A9B29C /* API */,
 				F083BB0E1E7009EC00A9B29C /* Assets */,
 				F083BBE41E7009EC00A9B29C /* Categories */,
@@ -2682,6 +2704,10 @@
 			isa = PBXGroup;
 			children = (
 				F083BB081E7009EC00A9B29C /* Riot */,
+				3267EFB520E379FD00FF1CAA /* AUTHORS.rst */,
+				3267EFB320E379FD00FF1CAA /* CHANGES.rst */,
+				3267EFB420E379FD00FF1CAA /* Podfile */,
+				3267EFB620E379FD00FF1CAA /* README.rst */,
 				F083BB021E7005FD00A9B29C /* RiotTests */,
 				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
 				92726A441F58737A004AD26F /* SiriIntents */,
@@ -2988,6 +3014,7 @@
 				F083BD641E7009ED00A9B29C /* direct_icon@3x.png in Resources */,
 				F083BE261E7009ED00A9B29C /* SegmentedViewController.xib in Resources */,
 				F083BE161E7009ED00A9B29C /* MediaAlbumContentViewController.xib in Resources */,
+				3267EFB720E379FE00FF1CAA /* CHANGES.rst in Resources */,
 				F083BD441E7009ED00A9B29C /* call_speaker_on_icon@3x.png in Resources */,
 				F0614A0F1EDDCCE700F5DC9A /* jump_to_unread@3x.png in Resources */,
 				F083BE511E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
@@ -3040,6 +3067,7 @@
 				32BB89F0204D86DA002F3AEC /* InfoPlist.strings in Resources */,
 				F083BD3E1E7009ED00A9B29C /* call_hangup_icon@3x.png in Resources */,
 				32AE61F21F0D2183007255F4 /* InfoPlist.strings in Resources */,
+				3267EFB920E379FE00FF1CAA /* AUTHORS.rst in Resources */,
 				F083BDB91E7009ED00A9B29C /* remove_icon_pink.png in Resources */,
 				F083BE531E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F083BD7F1E7009ED00A9B29C /* error@3x.png in Resources */,
@@ -3070,6 +3098,7 @@
 				F083BD5F1E7009ED00A9B29C /* details_icon.png in Resources */,
 				F083BE241E7009ED00A9B29C /* RoomViewController.xib in Resources */,
 				F083BE7B1E7009ED00A9B29C /* RoomInputToolbarView.xib in Resources */,
+				3267EFB820E379FE00FF1CAA /* Podfile in Resources */,
 				F0E05A3D1EA0F9EB004B83FB /* tab_people_selected@2x.png in Resources */,
 				F0E05A451EA0F9EB004B83FB /* tab_rooms.png in Resources */,
 				F083BE751E7009ED00A9B29C /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
@@ -3319,6 +3348,7 @@
 				F0E05A3C1EA0F9EB004B83FB /* tab_people_selected.png in Resources */,
 				F083BD221E7009ED00A9B29C /* add_participant.png in Resources */,
 				F083BDC61E7009ED00A9B29C /* search_bg@2x.png in Resources */,
+				3267EFBA20E379FE00FF1CAA /* README.rst in Resources */,
 				F083BD421E7009ED00A9B29C /* call_speaker_on_icon.png in Resources */,
 				F04AF26D1F83A4C100D20F4D /* Localizable.strings in Resources */,
 				F083BD9A1E7009ED00A9B29C /* logo@3x.png in Resources */,
@@ -3543,6 +3573,7 @@
 				321082B21F0E9F40002E0091 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				32C2356F1F7B871800E38FC5 /* WidgetPickerViewController.m in Sources */,
 				F083BE661E7009ED00A9B29C /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				3267EFB220E2A04100FF1CAA /* Analytics.m in Sources */,
 				F083BE141E7009ED00A9B29C /* HomeViewController.m in Sources */,
 				F083BDFB1E7009ED00A9B29C /* RoomSearchDataSource.m in Sources */,
 				32EF474920B6EE990031695C /* StickerPickerViewController.m in Sources */,

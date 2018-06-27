@@ -79,7 +79,7 @@
 @property (nonatomic) CGFloat stickyHeaderHeight;
 
 /**
- The Google Analytics Instance screen name (Default is "RecentsScreen").
+ The analytics instance screen name (Default is "RecentsScreen").
  */
 @property (nonatomic) NSString *screenName;
 
