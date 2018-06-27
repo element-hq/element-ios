@@ -2850,7 +2850,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
     if (enable)
     {
-        NSLog(@"[SettingsViewController] disable automatic crash report sending");
+        NSLog(@"[SettingsViewController] disable automatic crash report and analytics sending");
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
@@ -2861,7 +2861,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else
     {
-        NSLog(@"[SettingsViewController] enable automatic crash report sending");
+        NSLog(@"[SettingsViewController] enable automatic crash report and analytics sending");
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
