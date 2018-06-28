@@ -7,6 +7,7 @@ Improvements:
  * Analytics: Move code from AppDelegate to a dedicated class: Analytics.
  * Analytics: Track Matrix SDK stats (time to startup the app).
  * Added the i18n localisation strings to the accessibility labels (#1842), thanks to @einMarco (PR#1906).
+ * Added titles to sound files ID3 tags.
 
 Bug fix:
  * RoomVC: Read receipts processing dramatically slows down UI (#1899).
