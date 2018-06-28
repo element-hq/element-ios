@@ -48,8 +48,6 @@
 
 #import "WebViewViewController.h"
 
-@import PiwikTracker;
-
 // Calls
 #import "CallViewController.h"
 
@@ -234,10 +232,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Set the App Group identifier.
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-
-    // Track SDK performance on Google analytics
-    // TODO: needs the same tool
-    //sdkOptions.analyticsDelegate = [[MXGoogleAnalytics alloc] init];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -468,8 +462,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    // Configure Google Analytics here if the option is enabled
-    [self startAnalytics];
+    // Configure our analytics. It will indeed start if the option is enabled
+    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
+    [[Analytics sharedInstance] start];
     
     // Prepare Pushkit handling
     _incomingPushEventIds = [NSMutableDictionary dictionary];
@@ -563,7 +558,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     _isAppForeground = NO;
     
     // Analytics: Force to send the pending actions
-    [[PiwikTracker shared] dispatch];
+    [[Analytics sharedInstance] dispatch];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -1026,70 +1021,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-#pragma mark - Analytics
-
-- (void)startAnalytics
-{
-    NSDictionary *piwikConfig = [[NSUserDefaults standardUserDefaults] objectForKey:@"piwik"];
-    [PiwikTracker configureSharedInstanceWithSiteID:piwikConfig[@"siteId"]
-                                            baseURL:[NSURL URLWithString:piwikConfig[@"url"]]
-                                          userAgent:@"iOSPiwikTracker"];
-
-    // Check whether the user has enabled the sending of crash reports.
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
-    {
-        [PiwikTracker shared].isOptedOut = NO;
-
-        [[PiwikTracker shared] setCustomVariableWithIndex:1 name:@"App Platform" value:@"iOS Platform"];
-        [[PiwikTracker shared] setCustomVariableWithIndex:2 name:@"App Version" value:[self appVersion]];
-
-        // The language is either the one selected by the user within the app
-        // or, else, the one configured by the OS
-        NSString *language = [NSBundle mxk_language] ? [NSBundle mxk_language] : [[NSBundle mainBundle] preferredLocalizations][0];
-        [[PiwikTracker shared] setCustomVariableWithIndex:4 name:@"Chosen Language" value:language];
-
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        if (account)
-        {
-            [[PiwikTracker shared] setCustomVariableWithIndex:7 name:@"Homeserver URL" value:account.mxCredentials.homeServer];
-            [[PiwikTracker shared] setCustomVariableWithIndex:8 name:@"Identity Server URL" value:account.identityServerURL];
-        }
-
-        // TODO: We should also track device and os version
-        // But that needs to be decided for all platforms
-
-        // Catch and log crashes
-        [MXLogger logCrashes:YES];
-        [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
-
-#ifdef DEBUG
-        // Disable analytics in debug as it pollutes stats
-        [PiwikTracker shared].isOptedOut = YES;
-#endif
-    }
-    else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
-    {
-        NSLog(@"[AppDelegate] The user decided to not ");
-        [PiwikTracker shared].isOptedOut = YES;
-        [MXLogger logCrashes:NO];
-    }
-}
-
-- (void)stopAnalytics
-{
-    [PiwikTracker shared].isOptedOut = YES;
-    [MXLogger logCrashes:NO];
-}
-
-- (void)trackScreen:(NSString *)screenName
-{
-    // Use the same pattern as Android
-    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-    NSString *appVersion = [self appVersion];
-
-    [[PiwikTracker shared] trackWithView:@[@"ios", appName, appVersion, screenName]
-                                     url:nil];
-}
+#pragma mark - Crash handling
 
 // Check if there is a crash log to send to server
 - (void)checkExceptionToReport
@@ -2914,8 +2846,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     if (launchAnimationContainerView)
     {
-        NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
-        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", durationMs);
+        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
+        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", duration * 1000);
+
+        // Track it on our analytics
+        [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
 
         // TODO: Send durationMs to Piwik
         // Such information should be the same on all platforms

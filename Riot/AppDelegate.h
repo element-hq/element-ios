@@ -22,6 +22,7 @@
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
+#import "Analytics.h"
 
 #import "RiotDesignValues.h"
 
@@ -127,12 +128,6 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 #pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
-
-#pragma mark - Analytics
-
-- (void)startAnalytics;
-- (void)stopAnalytics;
-- (void)trackScreen:(NSString*)screenName;
 
 #pragma mark - Push notifications
 

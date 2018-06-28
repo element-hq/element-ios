@@ -423,7 +423,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"Settings"];
+    [[Analytics sharedInstance] trackScreen:@"Settings"];
     
     // Release the potential pushed view controller
     [self releasePushedViewController];
@@ -2850,22 +2850,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
     if (enable)
     {
-        NSLog(@"[SettingsViewController] disable automatic crash report sending");
+        NSLog(@"[SettingsViewController] disable automatic crash report and analytics sending");
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[AppDelegate theDelegate] stopAnalytics];
+        [[Analytics sharedInstance] stop];
         
         // Remove potential crash file.
         [MXLogger deleteCrashLog];
     }
     else
     {
-        NSLog(@"[SettingsViewController] enable automatic crash report sending");
+        NSLog(@"[SettingsViewController] enable automatic crash report and analytics sending");
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[AppDelegate theDelegate] startAnalytics];
+        [[Analytics sharedInstance] start];
     }
 }
 

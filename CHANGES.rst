@@ -4,8 +4,10 @@ Changes in 0.6.18 ()
 Improvements:
  * Upgrade MatrixKit version ().
  * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
+ * Analytics: Move code from AppDelegate to a dedicated class: Analytics.
+ * Analytics: Track Matrix SDK stats (time to startup the app).
  * Added the i18n localisation strings to the accessibility labels (#1842), thanks to @einMarco (PR#1906).
- 
+
 Bug fix:
  * RoomVC: Read receipts processing dramatically slows down UI (#1899).
 

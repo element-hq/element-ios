@@ -148,7 +148,7 @@
         // (Check whether 'enableCrashReport' flag has been set once)
         if (![[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
         {
-            [self promptUserBeforeUsingGoogleAnalytics];
+            [self promptUserBeforeUsingAnalytics];
         }
         
         [self refreshTabBarBadges];
@@ -771,7 +771,7 @@
 
 #pragma mark -
 
-- (void)promptUserBeforeUsingGoogleAnalytics
+- (void)promptUserBeforeUsingAnalytics
 {
     NSLog(@"[MasterTabBarController]: Invite the user to send crash reports");
     
@@ -810,12 +810,12 @@
                                                            typeof(self) self = weakSelf;
                                                            self->currentAlert = nil;
                                                        }
-                                                       
-                                                       [[AppDelegate theDelegate] startAnalytics];
+
+                                                       [[Analytics sharedInstance] start];
                                                        
                                                    }]];
     
-    [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseGoogleAnalyticsAlert"];
+    [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseAnalyticsAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 

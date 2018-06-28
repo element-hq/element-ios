@@ -245,7 +245,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"RoomParticipants"];
+    [[Analytics sharedInstance] trackScreen:@"RoomParticipants"];
     
     if (memberDetailsViewController)
     {
