@@ -22,13 +22,13 @@
 // Then, there are 2 Piwik actions: "iOS.startup" and "iOS.stats" (these actions
 // are namespaced by plaform to have a nice rendering on the Piwik website).
 // Then, we use constants defined by the Matrix SDK as Piwik Names (ex:"mountData")
-NSString *const kAnalyticsPiwikMetricsCategory = @"Metrics";
-NSString *const kAnalyticsPiwikMetricsActionPattern = @"iOS.%@";
+NSString *const kAnalyticsMetricsCategory = @"Metrics";
+NSString *const kAnalyticsMetricsActionPattern = @"iOS.%@";
 
 // E2E telemetry is stored under a Piwik category called "E2E".
-NSString *const kAnalyticsPiwikE2eCategory = @"E2E";
-NSString *const kAnalyticsPiwikE2eDecryptionFailureAction = @"Decryption failure";
-NSString *const kAnalyticsPiwikE2eDecryptionFailureReasonNoReason = @"no_reason";
+NSString *const kAnalyticsE2eCategory = @"E2E";
+NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
+NSString *const kAnalyticsE2eDecryptionFailureReasonNoReason = @"no_reason";
 
 
 @import PiwikTracker;
@@ -117,9 +117,9 @@ NSString *const kAnalyticsPiwikE2eDecryptionFailureReasonNoReason = @"no_reason"
 
 - (void)trackLaunchScreenDisplayDuration:(NSTimeInterval)seconds
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStartupCategory];
+    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
 
-    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
                                                action:action
                                                  name:kMXAnalyticsStartupLaunchScreen
                                                number:@(seconds * 1000)
@@ -130,9 +130,9 @@ NSString *const kAnalyticsPiwikE2eDecryptionFailureReasonNoReason = @"no_reason"
 
 - (void)trackStartupStorePreloadDuration: (NSTimeInterval)seconds
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStartupCategory];
+    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
 
-    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
                                                action:action
                                                  name:kMXAnalyticsStartupStorePreload
                                                number:@(seconds * 1000)
@@ -141,9 +141,9 @@ NSString *const kAnalyticsPiwikE2eDecryptionFailureReasonNoReason = @"no_reason"
 
 - (void)trackStartupMountDataDuration: (NSTimeInterval)seconds
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStartupCategory];
+    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
 
-    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
                                                action:action
                                                  name:kMXAnalyticsStartupMountData
                                                number:@(seconds * 1000)
@@ -152,9 +152,9 @@ NSString *const kAnalyticsPiwikE2eDecryptionFailureReasonNoReason = @"no_reason"
 
 - (void)trackStartupSyncDuration: (NSTimeInterval)seconds isInitial: (BOOL)isInitial
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStartupCategory];
+    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
 
-    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
                                                action:action
                                                  name:isInitial ? kMXAnalyticsStartupInititialSync : kMXAnalyticsStartupIncrementalSync
                                                number:@(seconds * 1000)
@@ -163,9 +163,9 @@ NSString *const kAnalyticsPiwikE2eDecryptionFailureReasonNoReason = @"no_reason"
 
 - (void)trackRoomCount: (NSUInteger)roomCount
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsPiwikMetricsActionPattern, kMXAnalyticsStatsCategory];
+    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStatsCategory];
 
-    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikMetricsCategory
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
                                                action:action
                                                  name:kMXAnalyticsStatsRooms
                                                number:@(roomCount)
@@ -176,9 +176,9 @@ NSString *const kAnalyticsPiwikE2eDecryptionFailureReasonNoReason = @"no_reason"
 
 - (void)trackFailures:(NSUInteger)failuresCount
 {
-    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsPiwikE2eCategory
-                                               action:kAnalyticsPiwikE2eDecryptionFailureAction
-                                                 name:kAnalyticsPiwikE2eDecryptionFailureReasonNoReason
+    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsE2eCategory
+                                               action:kAnalyticsE2eDecryptionFailureAction
+                                                 name:kAnalyticsE2eDecryptionFailureReasonNoReason
                                                number:@(failuresCount)
                                                   url:nil];
 }
