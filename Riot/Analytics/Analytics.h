@@ -17,11 +17,12 @@
 #import <Foundation/Foundation.h>
 
 #import <MatrixSDK/MatrixSDK.h>
+#import "DecryptionFailureTracker.h"
 
 /**
  `Analytics` sends analytics to an analytics tool.
  */
-@interface Analytics : NSObject <MXAnalyticsDelegate>
+@interface Analytics : NSObject <MXAnalyticsDelegate, MXDecryptionFailureDelegate>
 
 /**
  Returns the shared Analytics manager.
