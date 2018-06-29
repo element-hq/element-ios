@@ -99,6 +99,11 @@
     reportedFailures[event.eventId] = decryptionFailure;
 }
 
+- (void)dispatch
+{
+    [self checkFailures];
+}
+
 #pragma mark - Private methods
 
 /**

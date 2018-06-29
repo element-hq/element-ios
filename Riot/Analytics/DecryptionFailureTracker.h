@@ -46,6 +46,11 @@
  */
 - (void)reportUnableToDecryptErrorForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState myUser:(NSString*)userId;
 
+/**
+ Flush current data.
+ */
+- (void)dispatch;
+
 @end
 
 /**

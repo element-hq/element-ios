@@ -559,6 +559,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     _isAppForeground = NO;
     
     // Analytics: Force to send the pending actions
+    [[DecryptionFailureTracker sharedInstance] dispatch];
     [[Analytics sharedInstance] dispatch];
 }
 
