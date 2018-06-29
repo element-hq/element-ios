@@ -6,6 +6,7 @@ Improvements:
  * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
  * Analytics: Move code from AppDelegate to a dedicated class: Analytics.
  * Analytics: Track Matrix SDK stats (time to startup the app).
+ * Crypto: Add telemetry for events unable to decrypt (UTDs).
  * Added the i18n localisation strings to the accessibility labels (#1842), thanks to @einMarco (PR#1906).
  * Added titles to sound files ID3 tags.
 

@@ -64,6 +64,8 @@
 		3267EFB820E379FE00FF1CAA /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB420E379FD00FF1CAA /* Podfile */; };
 		3267EFB920E379FE00FF1CAA /* AUTHORS.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB520E379FD00FF1CAA /* AUTHORS.rst */; };
 		3267EFBA20E379FE00FF1CAA /* README.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB620E379FD00FF1CAA /* README.rst */; };
+		3267EFC020E4A3DD00FF1CAA /* DecryptionFailureTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267EFBE20E4A3DD00FF1CAA /* DecryptionFailureTracker.m */; };
+		3267EFC320E5055800FF1CAA /* DecryptionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267EFC220E5055800FF1CAA /* DecryptionFailure.m */; };
 		327382B51F276AD200356143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382A81F276AD200356143 /* InfoPlist.strings */; };
 		327382B61F276AD200356143 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382AA1F276AD200356143 /* Localizable.strings */; };
 		327382B71F276AD200356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382AC1F276AD200356143 /* Vector.strings */; };
@@ -736,6 +738,10 @@
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
 		3267EFB620E379FD00FF1CAA /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
+		3267EFBE20E4A3DD00FF1CAA /* DecryptionFailureTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DecryptionFailureTracker.m; path = Riot/Analytics/DecryptionFailureTracker.m; sourceTree = SOURCE_ROOT; };
+		3267EFBF20E4A3DD00FF1CAA /* DecryptionFailureTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DecryptionFailureTracker.h; path = Riot/Analytics/DecryptionFailureTracker.h; sourceTree = SOURCE_ROOT; };
+		3267EFC120E5055800FF1CAA /* DecryptionFailure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DecryptionFailure.h; path = Riot/Analytics/DecryptionFailure.h; sourceTree = SOURCE_ROOT; };
+		3267EFC220E5055800FF1CAA /* DecryptionFailure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DecryptionFailure.m; path = Riot/Analytics/DecryptionFailure.m; sourceTree = SOURCE_ROOT; };
 		327382A91F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = InfoPlist.strings; sourceTree = "<group>"; };
 		327382AB1F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
 		327382AD1F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Vector.strings; sourceTree = "<group>"; };
@@ -1613,6 +1619,10 @@
 			children = (
 				3267EFB020E2A04100FF1CAA /* Analytics.h */,
 				3267EFB120E2A04100FF1CAA /* Analytics.m */,
+				3267EFBF20E4A3DD00FF1CAA /* DecryptionFailureTracker.h */,
+				3267EFBE20E4A3DD00FF1CAA /* DecryptionFailureTracker.m */,
+				3267EFC120E5055800FF1CAA /* DecryptionFailure.h */,
+				3267EFC220E5055800FF1CAA /* DecryptionFailure.m */,
 			);
 			name = Analytics;
 			path = "New Group";
@@ -3622,6 +3632,7 @@
 				F083BE2D1E7009ED00A9B29C /* ForgotPasswordInputsView.m in Sources */,
 				F083BE7E1E7009ED00A9B29C /* InviteRecentTableViewCell.m in Sources */,
 				F083BE3C1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				3267EFC320E5055800FF1CAA /* DecryptionFailure.m in Sources */,
 				F083BE211E7009ED00A9B29C /* RoomSearchViewController.m in Sources */,
 				32185B311F20FA2B00752141 /* LanguagePickerViewController.m in Sources */,
 				F083BE3E1E7009ED00A9B29C /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
@@ -3686,6 +3697,7 @@
 				F083BE101E7009ED00A9B29C /* CountryPickerViewController.m in Sources */,
 				F083BE581E7009ED00A9B29C /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				F083BDF61E7009ED00A9B29C /* Contact.m in Sources */,
+				3267EFC020E4A3DD00FF1CAA /* DecryptionFailureTracker.m in Sources */,
 				F083BE961E7009ED00A9B29C /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				F083BE391E7009ED00A9B29C /* RoomEncryptedDataBubbleCell.m in Sources */,
 				F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */,

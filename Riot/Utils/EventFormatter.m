@@ -22,6 +22,7 @@
 #import "WidgetManager.h"
 
 #import "MXDecryptionResult.h"
+#import "DecryptionFailureTracker.h"
 
 #pragma mark - Constants definitions
 
@@ -117,34 +118,42 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
 
     if (event.sentState == MXEventSentStateSent
-        && [event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain]
-        && event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
+        && [event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain])
     {
-        // Append to the displayed error an attibuted string with a tappable link 
-        // so that the user can try to fix the UTC
-        NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
-        [attributedStringWithRerequestMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+        // Track e2e failures
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:mxSession.myUser.userId];
+        });
 
-        NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", kEventFormatterOnReRequestKeysLinkAction,
-                                      kEventFormatterOnReRequestKeysLinkActionSeparator,
-                                      event.eventId];
 
-        [attributedStringWithRerequestMessage appendAttributedString:
-         [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1_link", @"Vector", nil)
-                                         attributes:@{
-                                                      NSLinkAttributeName: linkActionString,
-                                                      NSForegroundColorAttributeName: self.sendingTextColor,
-                                                      NSFontAttributeName: self.encryptedMessagesTextFont
-                                         }]];
+        if (event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
+        {
+            // Append to the displayed error an attibuted string with a tappable link
+            // so that the user can try to fix the UTD
+            NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
+            [attributedStringWithRerequestMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
 
-        [attributedStringWithRerequestMessage appendAttributedString:
-         [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2", @"Vector", nil)
-                                         attributes:@{
-                                                      NSForegroundColorAttributeName: self.sendingTextColor,
-                                                      NSFontAttributeName: self.encryptedMessagesTextFont
-                                                      }]];
+            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", kEventFormatterOnReRequestKeysLinkAction,
+                                          kEventFormatterOnReRequestKeysLinkActionSeparator,
+                                          event.eventId];
 
-        attributedString = attributedStringWithRerequestMessage;
+            [attributedStringWithRerequestMessage appendAttributedString:
+             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1_link", @"Vector", nil)
+                                             attributes:@{
+                                                          NSLinkAttributeName: linkActionString,
+                                                          NSForegroundColorAttributeName: self.sendingTextColor,
+                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+                                                          }]];
+
+            [attributedStringWithRerequestMessage appendAttributedString:
+             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2", @"Vector", nil)
+                                             attributes:@{
+                                                          NSForegroundColorAttributeName: self.sendingTextColor,
+                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+                                                          }]];
+
+            attributedString = attributedStringWithRerequestMessage;
+        }
     }
 
     return attributedString;
