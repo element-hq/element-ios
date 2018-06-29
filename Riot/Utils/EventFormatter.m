@@ -125,7 +125,6 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
             [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:mxSession.myUser.userId];
         });
 
-
         if (event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
         {
             // Append to the displayed error an attibuted string with a tappable link
