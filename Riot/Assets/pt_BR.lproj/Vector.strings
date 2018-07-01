@@ -87,3 +87,70 @@
 "auth_reset_password_error_unauthorized" = "Não foi possível verificar o endereço de e-mail: confirme que realmente clicou no link contido na mensagem de e-mail";
 "auth_reset_password_error_not_found" = "O seu endereço de e-mail não parece estar associado a um ID Matrix neste Servidor de Base (Home Server).";
 "auth_reset_password_success_message" = "Sua senha foi redefinida.\n\nVocê foi deslogado de todos os dispositivos e não receberá notificações. Para reativar as notificações, faça login novamente em cada um dos dispositivos.";
+"auth_add_email_and_phone_warning" = "Registro com email e número de telefone ainda não é suportado enquanto existir a API. Apenas o número de telefone será associado a sua conta. Você pode adicionar seu email ao seu perfil nas configurações.";
+"room_creation_appearance" = "Aparência";
+"room_creation_appearance_name" = "Nome";
+"room_creation_appearance_picture" = "Imagem da Sala (opcional)";
+"room_creation_privacy" = "Privacidade";
+"room_creation_private_room" = "Esta conversa é privada";
+"room_creation_public_room" = "Esta conversa é pública";
+"room_creation_make_public" = "Tornar público";
+"room_creation_make_public_prompt_title" = "Tornar esta conversa pública?";
+"room_creation_make_public_prompt_msg" = "Você tem certeza que deseja tornar esta conversa pública? Qualquer um poderá ler suas mensagens e entrar na conversa.";
+"room_creation_keep_private" = "Manter privada";
+"room_creation_make_private" = "Manter privada";
+"room_creation_wait_for_creation" = "A sala já está sendo criada. Por favor aguarde.";
+"room_creation_invite_another_user" = "Procurar / convidar por ID da usuária/o, Nome ou email";
+"room_recents_directory_section_network" = "Rede";
+"room_recents_favourites_section" = "FAVORITOS";
+"room_recents_people_section" = "PESSOAS";
+"room_recents_conversations_section" = "SALAS";
+"room_recents_no_conversation" = "Nenhuma sala";
+"room_recents_low_priority_section" = "BAIXA PRIORIDADE";
+"room_recents_invites_section" = "CONVITES";
+"room_recents_start_chat_with" = "Iniciar conversa";
+"room_recents_create_empty_room" = "Criar sala";
+"room_recents_join_room" = "Entrar na sala";
+"room_recents_join_room_title" = "Entrar na sala";
+"room_recents_join_room_prompt" = "Digite o id da sala ou o nome da sala";
+// People tab
+"people_invites_section" = "CONVITES";
+"people_conversation_section" = "CONVERSAS";
+"people_no_conversation" = "Nenhuma conversa";
+// Rooms tab
+"room_directory_no_public_room" = "Não existem salas públicas disponíveis";
+// Groups tab
+"group_invite_section" = "CONVITES";
+"group_section" = "Comunidades";
+// Search
+"search_rooms" = "Salas";
+"search_messages" = "Mensagens";
+"search_people" = "Pessoas";
+"search_files" = "Arquivos";
+"search_default_placeholder" = "Procurar";
+"search_people_placeholder" = "Procurar por ID da/o usuária/o, Nome ou email";
+"search_no_result" = "Nenhum resultado";
+"search_in_progress" = "Procurando…";
+// Directory
+"directory_cell_title" = "Procurar no diretório";
+"directory_cell_description" = "%tu salas";
+"directory_search_results" = "%tu resultados encontrados para %@";
+"directory_search_results_more_than" = ">%tu resultados encontrados para %@";
+"directory_searching_title" = "Procurando no diretório…";
+// Contacts
+"contacts_address_book_section" = "CONTATOS LOCAIS";
+"contacts_address_book_matrix_users_toggle" = "Apenas usuários Matrix";
+"contacts_address_book_no_contact" = "Nenhum contato local";
+"contacts_address_book_permission_required" = "É preciso autorização para acessar contatos locais";
+"contacts_address_book_permission_denied" = "Você não permitiu o Riot acessar seus contatos locais";
+"contacts_user_directory_section" = "DIRETÓRIO DE USUÁRIOS";
+"contacts_user_directory_offline_section" = "DIRETÓRIO DE USUÁRIOS (sem conexão)";
+// Chat participants
+"room_participants_title" = "Participantes";
+"room_participants_add_participant" = "Adicionar participantes";
+"room_participants_one_participant" = "1 participante";
+"room_participants_multi_participants" = "%d participantes";
+"room_participants_leave_prompt_title" = "Sair da sala";
+"room_participants_leave_prompt_msg" = "Você tem certeza que deseja sair da sala?";
+"room_participants_remove_prompt_title" = "Confirmação";
+"room_participants_remove_prompt_msg" = "Você tem certeza que deseja remover %@ desta conversa?";
