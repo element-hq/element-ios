@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// Store Riot specific app settings.
 @objcMembers
 final class RiotSettings: NSObject {
     
@@ -37,6 +38,7 @@ final class RiotSettings: NSObject {
     
     // MARK: Notifications
     
+    /// Indicate if encrypted messages content should be displayed in notifications.
     var showDecryptedContentInNotifications: Bool {
         get {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
@@ -45,6 +47,7 @@ final class RiotSettings: NSObject {
         }
     }
     
+    /// Indicate if rooms with missed notifications should be displayed first on home screen.
     var pinRoomsWithMissedNotificationsOnHome: Bool {
         get {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.pinRoomsWithMissedNotifications)
@@ -53,6 +56,7 @@ final class RiotSettings: NSObject {
         }
     }
     
+    /// Indicate if rooms with unread messages should be displayed first on home screen.
     var pinRoomsWithUnreadMessagesOnHome: Bool {
         get {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.pinRoomsWithUnreadMessages)
@@ -72,6 +76,11 @@ final class RiotSettings: NSObject {
     }
     
     // MARK: Other
+    
+    /// Indicate if `enableCrashReport` settings has been set once.
+    var isEnableCrashReportHasBeenSetOnce: Bool {
+        return UserDefaults.standard.object(forKey: UserDefaultsKeys.enableCrashReport) != nil
+    }
     
     var enableCrashReport: Bool {
         get {
