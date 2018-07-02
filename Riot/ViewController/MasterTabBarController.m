@@ -26,6 +26,8 @@
 #import "MXRoom+Riot.h"
 #import "MXSession+Riot.h"
 
+#import "Riot-Swift.h"
+
 @interface MasterTabBarController ()
 {
     // Array of `MXSession` instances.
@@ -145,8 +147,8 @@
     else
     {
         // Check whether the user has been already prompted to send crash reports.
-        // (Check whether 'enableCrashReport' flag has been set once)
-        if (![[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
+        // (Check whether 'enableCrashReport' flag has been set once)        
+        if (!RiotSettings.shared.enableCrashReport)
         {
             [self promptUserBeforeUsingAnalytics];
         }
@@ -787,8 +789,7 @@
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
-                                                       [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
-                                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                                       RiotSettings.shared.enableCrashReport = NO;
                                                        
                                                        if (weakSelf)
                                                        {
@@ -801,9 +802,8 @@
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
-                                                       
-                                                       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
-                                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                                                                                              
+                                                       RiotSettings.shared.enableCrashReport = YES;
                                                        
                                                        if (weakSelf)
                                                        {

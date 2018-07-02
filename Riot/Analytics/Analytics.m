@@ -17,6 +17,7 @@
 #import "Analytics.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 // All metrics are store under a Piwik category called "Metrics".
 // Then, there are 2 Piwik actions: "iOS.startup" and "iOS.stats" (these actions
@@ -55,7 +56,7 @@ NSString *const kAnalyticsE2eDecryptionFailureReasonNoReason = @"no_reason";
                                           userAgent:@"iOSPiwikTracker"];
 
     // Check whether the user has enabled the sending of crash reports.
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
+    if (RiotSettings.shared.enableCrashReport)
     {
         [PiwikTracker shared].isOptedOut = NO;
 
