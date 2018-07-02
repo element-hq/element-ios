@@ -28,7 +28,6 @@ NSString *const kAnalyticsMetricsActionPattern = @"iOS.%@";
 // E2E telemetry is stored under a Piwik category called "E2E".
 NSString *const kAnalyticsE2eCategory = @"E2E";
 NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
-NSString *const kAnalyticsE2eDecryptionFailureReasonNoReason = @"no_reason";
 
 
 @import PiwikTracker;
@@ -174,13 +173,16 @@ NSString *const kAnalyticsE2eDecryptionFailureReasonNoReason = @"no_reason";
 
 #pragma mark - MXDecryptionFailureDelegate
 
-- (void)trackFailures:(NSUInteger)failuresCount
+- (void)trackFailures:(NSDictionary<NSString *,NSNumber *> *)failuresCounts
 {
-    [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsE2eCategory
-                                               action:kAnalyticsE2eDecryptionFailureAction
-                                                 name:kAnalyticsE2eDecryptionFailureReasonNoReason
-                                               number:@(failuresCount)
-                                                  url:nil];
+    for (NSString *reason in failuresCounts)
+    {
+        [[PiwikTracker shared] trackWithEventWithCategory:kAnalyticsE2eCategory
+                                                   action:kAnalyticsE2eDecryptionFailureAction
+                                                     name:reason
+                                                   number:failuresCounts[reason]
+                                                      url:nil];
+    }
 }
 
 @end
