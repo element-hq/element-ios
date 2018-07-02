@@ -107,7 +107,7 @@
 
         @synchronized(bubbles)
         {
-            NSMutableDictionary<NSString* /* eventId */, NSMutableArray<MXReceiptData*> *> *updatedCellDataReadReceipts = [NSMutableDictionary dictionary];
+            NSMutableDictionary<NSString* /* eventId */, NSArray<MXReceiptData*> *> *updatedCellDataReadReceipts = [NSMutableDictionary dictionary];
             for (RoomBubbleCellData *cellData in bubbles)
             {
                 for (NSString *eventId in cellData.readReceipts)
@@ -124,10 +124,11 @@
 
                                 if (!updatedCellDataReadReceipts[eventId])
                                 {
-                                    updatedCellDataReadReceipts[eventId] = [cellData.readReceipts[eventId] mutableCopy];
+                                    updatedCellDataReadReceipts[eventId] = cellData.readReceipts[eventId];
                                 }
 
-                                [updatedCellDataReadReceipts[eventId] removeObject:receiptData];
+                                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userId!=%@", receiptData.userId];
+                                updatedCellDataReadReceipts[eventId] = [updatedCellDataReadReceipts[eventId] filteredArrayUsingPredicate:predicate];
                                 break;
                             }
                         }
