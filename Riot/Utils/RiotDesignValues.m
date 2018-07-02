@@ -16,7 +16,13 @@
  */
 
 #import "RiotDesignValues.h"
+
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
 #import "Riot-Swift.h"
+#endif
+
 
 NSString *const kRiotDesignValuesDidChangeThemeNotification = @"kRiotDesignValuesDidChangeThemeNotification";
 
