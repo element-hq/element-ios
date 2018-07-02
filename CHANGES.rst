@@ -12,6 +12,7 @@ Improvements:
 
 Bug fix:
  * RoomVC: Read receipts processing dramatically slows down UI (#1899).
+ * E2E messages not decrypted in notifs after logging back in (#1914).
 
 Changes in 0.6.17 (2018-06-01)
 ===============================================
