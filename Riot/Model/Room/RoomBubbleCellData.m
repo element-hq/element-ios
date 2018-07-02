@@ -260,6 +260,8 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // Check whether there is at least one component.
         if (bubbleComponents.count)
         {
+            BOOL hasReadReceipts = NO;
+
             // Set position of the first component
             CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile || self.attachment.type == MXKAttachmentTypeAudio) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
             MXKRoomBubbleComponent *component;
@@ -273,6 +275,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 
                 if (component.attributedTextMessage)
                 {
+                    hasReadReceipts = (self.readReceipts[component.event.eventId].count > 0);
                     break;
                 }
             }
@@ -297,7 +300,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 }
                 
                 // Vertical whitespace is added in case of read receipts
-                if (self.readReceipts.count)
+                if (hasReadReceipts)
                 {
                     [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
                 }
@@ -337,7 +340,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                         component.position = CGPointMake(0, positionY);
                         
                         // Add vertical whitespace in case of read receipts.
-                        if (self.readReceipts[component.event.eventId])
+                        if (self.readReceipts[component.event.eventId].count)
                         {
                             [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
                         }
