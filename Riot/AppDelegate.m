@@ -54,6 +54,8 @@
 #import "MXSession+Riot.h"
 #import "MXRoom+Riot.h"
 
+#import "Riot-Swift.h"
+
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -455,12 +457,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     _isAppForeground = NO;
     
-    // Retrieve custom configuration
-    NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
-    NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
-    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self setupUserDefaults];
     
     // Configure our analytics. It will indeed start if the option is enabled
     [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
@@ -591,7 +588,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
     
     // Check if there is crash log to send
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
+    if (RiotSettings.shared.enableCrashReport)
     {
         [self checkExceptionToReport];
     }
@@ -1405,7 +1402,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                @"user_id": account.mxCredentials.userId
                                                };
                 
-                BOOL isNotificationContentShown = !event.isEncrypted || account.showDecryptedContentInNotifications;
+                BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
+                
                 if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
                 {
                     eventNotification.category = @"QUICK_REPLY";
@@ -1493,7 +1491,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSString *msgType = event.content[@"msgtype"];
         NSString *content = event.content[@"body"];
         
-        if (event.isEncrypted && !account.showDecryptedContentInNotifications)
+        if (event.isEncrypted && !RiotSettings.shared.showDecryptedContentInNotifications)
         {
             // Hide the content
             msgType = nil;
@@ -4021,6 +4019,28 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)dismissGDPRConsent
 {    
     [self.gdprConsentViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Settings
+
+- (void)setupUserDefaults
+{
+    // Retrieve custom configuration
+    NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
+    NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
+    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
+    // Migrate this information from main MXKAccount to RiotSettings, only if value was set to YES as default value is NO
+    
+    MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    
+    if (currentAccount.showDecryptedContentInNotifications)
+    {
+        RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
+    }
 }
 
 @end
