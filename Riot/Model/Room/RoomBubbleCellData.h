@@ -34,10 +34,6 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  */
 @property(nonatomic) BOOL containsLastMessage;
 
-/**
- A Boolean value that determines whether some read receipts are currently displayed in this bubble.
- */
-@property(nonatomic) BOOL hasReadReceipts;
 
 /**
  The event id of the current selected event inside the bubble. Default is nil.

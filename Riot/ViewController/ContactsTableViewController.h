@@ -73,7 +73,7 @@
 @property (nonatomic) BOOL shouldScrollToTopOnRefresh;
 
 /**
- The Google Analytics Instance screen name (Default is "ContactsTable").
+ The analytics instance screen name (Default is "ContactsTable").
  */
 @property (nonatomic) NSString *screenName;
 

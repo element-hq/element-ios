@@ -17,6 +17,13 @@
 
 #import "RiotDesignValues.h"
 
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
+
+
 NSString *const kRiotDesignValuesDidChangeThemeNotification = @"kRiotDesignValuesDidChangeThemeNotification";
 
 UIColor *kRiotPrimaryBgColor;
@@ -134,7 +141,7 @@ UIKeyboardAppearance kRiotKeyboard;
 - (void)accessibilityInvertColorsStatusDidChange
 {
     // Refresh the theme only for "auto"
-    NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+    NSString *theme = RiotSettings.shared.userInterfaceTheme;
     if (!theme || [theme isEqualToString:@"auto"])
     {
         [self userInterfaceThemeDidChange];
@@ -144,7 +151,7 @@ UIKeyboardAppearance kRiotKeyboard;
 - (void)userInterfaceThemeDidChange
 {
     // Retrieve the current selected theme ("light" if none. "auto" is used as default from iOS 11).
-    NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+    NSString *theme = RiotSettings.shared.userInterfaceTheme;
 
     if (!theme || [theme isEqualToString:@"auto"])
     {

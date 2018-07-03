@@ -26,6 +26,8 @@
 #import "MXRoom+Riot.h"
 #import "MXSession+Riot.h"
 
+#import "Riot-Swift.h"
+
 @interface MasterTabBarController ()
 {
     // Array of `MXSession` instances.
@@ -76,6 +78,15 @@
     _peopleViewController = [self.viewControllers objectAtIndex:TABBAR_PEOPLE_INDEX];
     _roomsViewController = [self.viewControllers objectAtIndex:TABBAR_ROOMS_INDEX];
     _groupsViewController = [self.viewControllers objectAtIndex:TABBAR_GROUPS_INDEX];
+    
+    // Set the accessibility labels for all buttons #1842
+    [_settingsBarButtonItem setAccessibilityLabel:NSLocalizedStringFromTable(@"settings_title", @"Vector", nil)];
+    [_searchBarButtonIem setAccessibilityLabel:NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil)];
+    [_homeViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_home", @"Vector", nil)];
+    [_favouritesViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil)];
+    [_peopleViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
+    [_roomsViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil)];
+    [_groupsViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_groups", @"Vector", nil)];
     
     // Sanity check
     NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController && _groupsViewController, @"Something wrong in Main.storyboard");
@@ -136,10 +147,10 @@
     else
     {
         // Check whether the user has been already prompted to send crash reports.
-        // (Check whether 'enableCrashReport' flag has been set once)
-        if (![[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
+        // (Check whether 'enableCrashReport' flag has been set once)        
+        if (!RiotSettings.shared.isEnableCrashReportHasBeenSetOnce)
         {
-            [self promptUserBeforeUsingGoogleAnalytics];
+            [self promptUserBeforeUsingAnalytics];
         }
         
         [self refreshTabBarBadges];
@@ -762,7 +773,7 @@
 
 #pragma mark -
 
-- (void)promptUserBeforeUsingGoogleAnalytics
+- (void)promptUserBeforeUsingAnalytics
 {
     NSLog(@"[MasterTabBarController]: Invite the user to send crash reports");
     
@@ -778,8 +789,7 @@
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
-                                                       [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
-                                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                                       RiotSettings.shared.enableCrashReport = NO;
                                                        
                                                        if (weakSelf)
                                                        {
@@ -792,21 +802,20 @@
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
-                                                       
-                                                       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
-                                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                                                                                              
+                                                       RiotSettings.shared.enableCrashReport = YES;
                                                        
                                                        if (weakSelf)
                                                        {
                                                            typeof(self) self = weakSelf;
                                                            self->currentAlert = nil;
                                                        }
-                                                       
-                                                       [[AppDelegate theDelegate] startAnalytics];
+
+                                                       [[Analytics sharedInstance] start];
                                                        
                                                    }]];
     
-    [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseGoogleAnalyticsAlert"];
+    [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseAnalyticsAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 

@@ -48,12 +48,11 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // Increase maximum number of components
         self.maxComponentCount = 20;
         
-        // Initialize receipts flag
-        _hasReadReceipts = NO;
-        
-        // Force the update of the text message to take into account the potential read receipts in the bubble display.
-        // Note: we don't update this attributed string here because the RoomBubbleCellData instances are created on a processing
-        // thread different from the UI thread.
+        // Initialize read receipts
+        self.readReceipts = [NSMutableDictionary dictionary];
+        self.readReceipts[event.eventId] = [roomDataSource.room getEventReceipts:event.eventId sorted:YES];
+
+        // Reset attributedTextMessage to force reset MXKRoomCellData parameters
         self.attributedTextMessage = nil;
     }
     
@@ -78,7 +77,6 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         {
             [self refreshBubbleComponentsPosition];
         }
-        
         
         shouldUpdateComponentsPosition = NO;
     }
@@ -163,9 +161,6 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
     NSMutableAttributedString *currentAttributedTextMsg;
     
-    // Refresh the receipt flag during this process
-    _hasReadReceipts = NO;
-    
     NSInteger selectedComponentIndex = self.selectedComponentIndex;
     NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
     
@@ -203,11 +198,10 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 // Init attributed string with the first text component
                 currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
             }
-            
-            // Vertical whitespace is added in case of read receipts
-            if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
+
+            if (self.readReceipts[component.event.eventId].count)
             {
-                _hasReadReceipts = YES;
+                // Add vertical whitespace in case of read receipts
                 [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
             }
             
@@ -246,10 +240,9 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             // Append attributed text
             [currentAttributedTextMsg appendAttributedString:componentString];
             
-            // Add vertical whitespace in case of read receipts
-            if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
+            if (self.readReceipts[component.event.eventId].count)
             {
-                _hasReadReceipts = YES;
+                // Add vertical whitespace in case of read receipts
                 [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
             }
         }
@@ -262,14 +255,13 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 {
     // CAUTION: This method must be called on the main thread.
     
-    // Refresh the receipt flag during this process.
-    _hasReadReceipts = NO;
-    
     @synchronized(bubbleComponents)
     {
         // Check whether there is at least one component.
         if (bubbleComponents.count)
         {
+            BOOL hasReadReceipts = NO;
+
             // Set position of the first component
             CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile || self.attachment.type == MXKAttachmentTypeAudio) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
             MXKRoomBubbleComponent *component;
@@ -283,7 +275,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 
                 if (component.attributedTextMessage)
                 {
-                    _hasReadReceipts = ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO] != nil);
+                    hasReadReceipts = (self.readReceipts[component.event.eventId].count > 0);
                     break;
                 }
             }
@@ -308,7 +300,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 }
                 
                 // Vertical whitespace is added in case of read receipts
-                if (_hasReadReceipts)
+                if (hasReadReceipts)
                 {
                     [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
                 }
@@ -348,9 +340,8 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                         component.position = CGPointMake(0, positionY);
                         
                         // Add vertical whitespace in case of read receipts.
-                        if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
+                        if (self.readReceipts[component.event.eventId].count)
                         {
-                            _hasReadReceipts = YES;
                             [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
                         }
                         
@@ -373,19 +364,6 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     {
         // Update flag
         _containsLastMessage = containsLastMessage;
-        
-        // Recompute the text message layout
-        self.attributedTextMessage = nil;
-    }
-}
-
-- (void)setHasReadReceipts:(BOOL)hasReadReceipts
-{
-    // Check whether there is something to do
-    if (_hasReadReceipts || hasReadReceipts)
-    {
-        // Update flag
-        _hasReadReceipts = hasReadReceipts;
         
         // Recompute the text message layout
         self.attributedTextMessage = nil;
@@ -516,6 +494,9 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // One single bubble per membership event
         return NO;
     }
+
+    // Update read receipts for this bubble
+    self.readReceipts[event.eventId] = [roomDataSource.room getEventReceipts:event.eventId sorted:YES];
 
     return [super addEvent:event andRoomState:roomState];
 }
