@@ -538,3 +538,8 @@
 "deactivate_account_validate_action" = "Désactiver le compte";
 "deactivate_account_password_alert_title" = "Désactiver le compte";
 "deactivate_account_password_alert_message" = "Pour continuer, veuillez renseigner votre mot de passe";
+"event_formatter_rerequest_keys_part1_link" = "Redemander les clés de chiffrement";
+"event_formatter_rerequest_keys_part2" = " depuis vos autres appareils.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Demande envoyée";
+"rerequest_keys_alert_message" = "Veuillez lancer Riot sur un autre appareil qui peut déchiffrer le message pour qu'il puisse envoyer les clés sur cet appareil.";

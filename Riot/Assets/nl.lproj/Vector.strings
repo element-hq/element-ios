@@ -546,3 +546,26 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Om de %@ thuisserver te blijven gebruiken moet je de algemeen voorwaarden lezen en daarmee akkoord gaan.";
 "gdpr_consent_not_given_alert_review_now_action" = "Nu doorlezen";
+"room_action_send_photo_or_video" = "Foto of video versturen";
+"room_action_send_sticker" = "Sticker versturen";
+"settings_deactivate_account" = "DEACTIVEER ACCOUNT";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Waarschuwing";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Aanvraag verstuurd";
+"rerequest_keys_alert_message" = "Start Riot alstublieft op een ander apparaat dat het bericht kan ontsleutelen zodat deze de sleutels kan sturen naar dit apparaat.";
+"settings_deactivate_my_account" = "Account deactiveren";
+"event_formatter_rerequest_keys_part1_link" = "Vraag beveiligingssleutels opnieuw aan";
+"event_formatter_rerequest_keys_part2" = " van je andere apparaten.";
+"widget_sticker_picker_no_stickerpacks_alert" = "Je hebt momenteel geen stickerpakketten aan staan.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Wil je er nu een paar toevoegen?";
+"deactivate_account_title" = "Account deactiveren";
+"deactivate_account_informations_part1" = "Dit zal je account voorgoed onbruikbaar maken. Je zal niet meer in kunnen loggen en niemand anders zal met dezelfde gebruikers ID kunnen registreren. Dit zal er voor zorgen dat je account alle ruimtes verlaat waar het momenteel onderdeel van is en het verwijderd de accountgegevens van de identiteitsserver. ";
+"deactivate_account_informations_part2_emphasize" = "Deze actie is onomkeerbaar.";
+"deactivate_account_informations_part3" = "\n\nHet deactiveren van je account ";
+"deactivate_account_informations_part4_emphasize" = "zal er niet standaard voor zorgen dat de berichten die je verzonden hebt vergeten worden. ";
+"deactivate_account_informations_part5" = "Als je wilt dat wij de berichten vergeten, klikt alsjeblieft op het vakje hieronder.\n\nDe zichtbaarheid van berichten in Matrix is hetzelfde als in e-mail. Het vergeten van je berichten betekent dat berichten die je hebt verstuurd niet meer gedeeld worden met nieuwe of ongeregistreerde gebruikers, maar geregistreerde gebruikers die al toegang hebben tot deze berichten zullen alsnog toegang hebben tot hun eigen kopie van het bericht.";
+"deactivate_account_forget_messages_information_part1" = "Vergeet alle berichten die ik heb verstuurd wanneer mijn account gedeactiveerd is (";
+"deactivate_account_forget_messages_information_part3" = ": dit zal er voor zorgen dat toekomstige gebruikers een incompleet beeld krijgen van gesprekken)";
+"deactivate_account_validate_action" = "Account deactiveren";
+"deactivate_account_password_alert_title" = "Account deactiveren";
+"deactivate_account_password_alert_message" = "Voer je wachtwoord in om verder te gaan";
