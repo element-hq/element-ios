@@ -16,6 +16,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "DecryptionFailure.h"
+
 @import MatrixSDK;
 
 @protocol MXDecryptionFailureDelegate;
@@ -62,8 +64,8 @@
 /**
  Stats for decryption failures.
 
- @param failuresCount the number of decryption failures.
+ @param failuresCounts the number of errors per failure reason.
  */
-- (void)trackFailures:(NSUInteger)failuresCount;
+- (void)trackFailures:(NSDictionary<NSString*, NSNumber*> *)failuresCounts;
 
 @end

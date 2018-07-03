@@ -16,8 +16,6 @@
 
 #import "DecryptionFailureTracker.h"
 
-#import "DecryptionFailure.h"
-
 
 // Call `checkFailures` every `CHECK_INTERVAL`
 #define CHECK_INTERVAL 5
@@ -93,8 +91,26 @@
     DecryptionFailure *decryptionFailure = [[DecryptionFailure alloc] init];
     decryptionFailure.failedEventId = event.eventId;
 
-    // TODO: Need to sync with all platforms
-    // decryptionFailure.reason =;
+    // Categorise the error
+    switch (event.decryptionError.code)
+    {
+        case MXDecryptingErrorUnknownInboundSessionIdCode:
+            decryptionFailure.reason = DecryptionFailureReason.olmKeysNotSent;
+            break;
+
+        case MXDecryptingErrorOlmCode:
+            decryptionFailure.reason = DecryptionFailureReason.olmIndexError;
+            break;
+
+        case MXDecryptingErrorEncryptionNotEnabledCode:
+        case MXDecryptingErrorUnableToDecryptCode:
+            decryptionFailure.reason = DecryptionFailureReason.unexpected;
+            break;
+
+        default:
+            decryptionFailure.reason = DecryptionFailureReason.unspecified;
+            break;
+    }
 
     reportedFailures[event.eventId] = decryptionFailure;
 }
@@ -128,8 +144,16 @@
 
     if (_delegate && failuresToTrack.count)
     {
-        NSLog(@"[DecryptionFailureTracker] trackFailures: %@", @(failuresToTrack.count));
-        [_delegate trackFailures:failuresToTrack.count];
+        // Sort failures by error reason
+        NSMutableDictionary<NSString*, NSNumber*> *failuresCounts = [NSMutableDictionary dictionary];
+        for (DecryptionFailure *failure in failuresToTrack)
+        {
+            failuresCounts[failure.reason] = @(failuresCounts[failure.reason].unsignedIntegerValue + 1);
+        }
+
+        NSLog(@"[DecryptionFailureTracker] trackFailures: %@", failuresCounts);
+
+        [_delegate trackFailures:failuresCounts];
     }
 }
 
