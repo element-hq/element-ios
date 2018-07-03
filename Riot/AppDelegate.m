@@ -4025,20 +4025,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)setupUserDefaults
 {
-    // Retrieve custom configuration
+    // Register "Riot-Defaults.plist" default values
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     
     // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
-    // Migrate this information from main MXKAccount to RiotSettings, only if value was set to YES as default value is NO
+    // Migrate this information from main MXKAccount to RiotSettings, if value is not in UserDefaults
     
-    MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    
-    if (currentAccount.showDecryptedContentInNotifications)
+    if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
     {
+        MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
     }
 }

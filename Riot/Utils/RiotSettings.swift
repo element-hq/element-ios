@@ -38,6 +38,11 @@ final class RiotSettings: NSObject {
     
     // MARK: Notifications
     
+    /// Indicate if `showDecryptedContentInNotifications` settings has been set once.
+    var isShowDecryptedContentInNotificationsHasBeenSetOnce: Bool {
+        return UserDefaults.standard.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
+    }
+    
     /// Indicate if encrypted messages content should be displayed in notifications.
     var showDecryptedContentInNotifications: Bool {
         get {
