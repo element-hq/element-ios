@@ -119,6 +119,8 @@
 
 #import "EventFormatter.h"
 
+#import "Riot-Swift.h"
+
 @interface RoomViewController ()
 {
     // The expanded header
@@ -450,7 +452,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"ChatRoom"];
+    [[Analytics sharedInstance] trackScreen:@"ChatRoom"];
     
     // Refresh the room title view
     [self refreshRoomTitle];
@@ -3012,7 +3014,7 @@
     }
 
     // If enabled, create the conf using jitsi widget and open it directly
-    else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"createConferenceCallsWithJitsi"]
+    else if (RiotSettings.shared.createConferenceCallsWithJitsi
              && self.roomDataSource.room.state.joinedMembers.count > 2)
     {
         [self startActivityIndicator];

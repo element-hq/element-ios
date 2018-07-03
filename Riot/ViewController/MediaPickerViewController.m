@@ -236,7 +236,7 @@ static void *RecordingContext = &RecordingContext;
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"MediaPicker"];
+    [[Analytics sharedInstance] trackScreen:@"MediaPicker"];
     
     if (!userAlbumsQueue)
     {
