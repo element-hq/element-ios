@@ -116,7 +116,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"UnknowDevices"];
+    [[Analytics sharedInstance] trackScreen:@"UnknowDevices"];
 
     [self.tableView reloadData];
 }

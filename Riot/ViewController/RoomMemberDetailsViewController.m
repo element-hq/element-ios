@@ -251,7 +251,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"RoomMemberDetails"];
+    [[Analytics sharedInstance] trackScreen:@"RoomMemberDetails"];
     
     // Hide the bottom border of the navigation bar to display the expander header
     [self hideNavigationBarBorder:YES];

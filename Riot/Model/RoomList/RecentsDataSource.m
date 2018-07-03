@@ -25,6 +25,8 @@
 
 #import "AppDelegate.h"
 
+#import "Riot-Swift.h"
+
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
 #define RECENTSDATASOURCE_SECTION_INVITES       0x02
 #define RECENTSDATASOURCE_SECTION_FAVORITES     0x04
@@ -1193,8 +1195,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         if (_recentsDataSourceMode == RecentsDataSourceModeHome)
         {
-            BOOL pinMissedNotif = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithMissedNotif"];
-            BOOL pinUnread = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithUnread"];
+            BOOL pinMissedNotif = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome;
+            BOOL pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;            
             NSComparator comparator = nil;
             
             if (pinMissedNotif)

@@ -46,6 +46,8 @@
 
 #import "GBDeviceInfo_iOS.h"
 
+#import "Riot-Swift.h"
+
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 enum
@@ -423,7 +425,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"Settings"];
+    [[Analytics sharedInstance] trackScreen:@"Settings"];
     
     // Release the potential pushed view controller
     [self releasePushedViewController];
@@ -1681,7 +1683,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.showDecryptedContentInNotifications;
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
             labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1705,7 +1707,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithMissedNotif"];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1716,7 +1718,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"pinRoomsWithUnread"];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;                        
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1782,7 +1784,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
             }
 
-            NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+            NSString *theme = RiotSettings.shared.userInterfaceTheme;
+            
             if (!theme)
             {
                 if (@available(iOS 11.0, *))
@@ -1942,7 +1945,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
-            sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
+            sendCrashReportCell.mxkSwitch.on = RiotSettings.shared.enableCrashReport;
             sendCrashReportCell.mxkSwitch.enabled = YES;
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1953,7 +1956,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* enableRageShakeCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             enableRageShakeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_rageshake", @"Vector", nil);
-            enableRageShakeCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableRageShake"];
+            enableRageShakeCell.mxkSwitch.on = RiotSettings.shared.enableRageShake;
             enableRageShakeCell.mxkSwitch.enabled = YES;
             [enableRageShakeCell.mxkSwitch addTarget:self action:@selector(toggleEnableRageShake:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2042,7 +2045,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"createConferenceCallsWithJitsi"];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.createConferenceCallsWithJitsi;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2820,8 +2823,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)toggleShowDecodedContent:(id)sender
 {
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    account.showDecryptedContentInNotifications = !account.showDecryptedContentInNotifications;
+    UISwitch *switchButton = (UISwitch*)sender;
+    RiotSettings.shared.showDecryptedContentInNotifications = switchButton.isOn;
 }
 
 - (void)toggleLocalContactsSync:(id)sender
@@ -2847,25 +2850,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)toggleSendCrashReport:(id)sender
 {
-    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
+    BOOL enable = RiotSettings.shared.enableCrashReport;
     if (enable)
     {
-        NSLog(@"[SettingsViewController] disable automatic crash report sending");
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSLog(@"[SettingsViewController] disable automatic crash report and analytics sending");
         
-        [[AppDelegate theDelegate] stopAnalytics];
+        RiotSettings.shared.enableCrashReport = NO;
+        
+        [[Analytics sharedInstance] stop];
         
         // Remove potential crash file.
         [MXLogger deleteCrashLog];
     }
     else
     {
-        NSLog(@"[SettingsViewController] enable automatic crash report sending");
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSLog(@"[SettingsViewController] enable automatic crash report and analytics sending");
         
-        [[AppDelegate theDelegate] startAnalytics];
+        RiotSettings.shared.enableCrashReport = YES;
+        
+        [[Analytics sharedInstance] start];
     }
 }
 
@@ -2875,8 +2878,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         UISwitch *switchButton = (UISwitch*)sender;
 
-        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"enableRageShake"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        RiotSettings.shared.enableRageShake = switchButton.isOn;
 
         [self.tableView reloadData];
     }
@@ -2887,9 +2889,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     if (sender && [sender isKindOfClass:UISwitch.class])
     {
         UISwitch *switchButton = (UISwitch*)sender;
-
-        [[NSUserDefaults standardUserDefaults] setBool:switchButton.isOn forKey:@"createConferenceCallsWithJitsi"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        RiotSettings.shared.createConferenceCallsWithJitsi = switchButton.isOn;
 
         [self.tableView reloadData];
     }
@@ -3012,16 +3013,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     UISwitch *switchButton = (UISwitch*)sender;
     
-    [[NSUserDefaults standardUserDefaults] setBool:switchButton.on forKey:@"pinRoomsWithMissedNotif"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome = switchButton.on;
 }
 
 - (void)togglePinRoomsWithUnread:(id)sender
 {
     UISwitch *switchButton = (UISwitch*)sender;
-    
-    [[NSUserDefaults standardUserDefaults] setBool:switchButton.on forKey:@"pinRoomsWithUnread"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome = switchButton.on;
 }
 
 - (void)toggleCommunityFlair:(id)sender
@@ -3661,15 +3660,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 newTheme = @"black";
             }
 
-            NSString *theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"userInterfaceTheme"];
+            NSString *theme = RiotSettings.shared.userInterfaceTheme;
             if (newTheme && ![newTheme isEqualToString:theme])
             {
                 // Clear fake Riot Avatars based on the previous theme.
                 [AvatarGenerator clear];
 
                 // The user wants to select this theme
-                [[NSUserDefaults standardUserDefaults] setObject:newTheme forKey:@"userInterfaceTheme"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                RiotSettings.shared.userInterfaceTheme = newTheme;
 
                 [self.tableView reloadData];
             }

@@ -193,7 +193,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"Authentication"];
+    [[Analytics sharedInstance] trackScreen:@"Authentication"];
 }
 
 - (void)viewDidAppear:(BOOL)animated
