@@ -144,7 +144,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:_screenName];
+    [[Analytics sharedInstance] trackScreen:_screenName];
 
     // Check whether the access to the local contacts has not been already asked.
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)

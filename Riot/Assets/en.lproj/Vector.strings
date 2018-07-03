@@ -518,6 +518,8 @@
 "event_formatter_widget_removed" = "%@ widget removed by %@";
 "event_formatter_jitsi_widget_added" = "VoIP conference added by %@";
 "event_formatter_jitsi_widget_removed" = "VoIP conference removed by %@";
+"event_formatter_rerequest_keys_part1_link" = "Re-request encryption keys";
+"event_formatter_rerequest_keys_part2" = " from your other devices.";
 
 // Others
 "or" = "or";
@@ -622,3 +624,7 @@
 
 "deactivate_account_password_alert_title" = "Deactivate Account";
 "deactivate_account_password_alert_message" = "To continue, please enter your password";
+
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Request Sent";
+"rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this device.";

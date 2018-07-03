@@ -182,7 +182,7 @@
     [super viewWillAppear:animated];
     
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"GroupDetailsHome"];
+    [[Analytics sharedInstance] trackScreen:@"GroupDetailsHome"];
     
     // Release the potential pushed view controller
     [self releasePushedViewController];

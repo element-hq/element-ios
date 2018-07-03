@@ -318,7 +318,7 @@
 "settings_add_phone_number" = "Telefonnummer hinzufügen";
 "settings_fail_to_update_profile" = "Profilaktualisierung fehlgeschlagen";
 "settings_global_settings_info" = "Globale Benachrichtungseinstellungen sind verfügbar auf dem %@ Web Client";
-"settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit vepassten Benachrichtigungen";
+"settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit verpassten Benachrichtigungen";
 "settings_pin_rooms_with_unread" = "Pinnen von Räumen mit ungelesenen Nachrichten";
 "settings_on_denied_notification" = "Benachrichtigungen verboten für %@, bitte in den Geräte-Einstellungen erlauben";
 "settings_contacts_discover_matrix_users" = "Entdecke andere Benutzer mittels E-Mail-Adressen oder Telefonnummern";
@@ -538,3 +538,8 @@
 "deactivate_account_validate_action" = "Account deaktiveren";
 "deactivate_account_password_alert_title" = "Account deaktivieren";
 "deactivate_account_password_alert_message" = "Zum Fortfahren, Password eingeben";
+"event_formatter_rerequest_keys_part1_link" = "Verschlüsselungsschlüssel erneut";
+"event_formatter_rerequest_keys_part2" = " von deinen anderen Geräten anfragen.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Anfrage gesendet";
+"rerequest_keys_alert_message" = "Öffne Riot bitte auf einem anderen Gerät, dass die Nachricht entschlüsseln kann, damit es die Schlüssel an dieses Gerät senden kann.";

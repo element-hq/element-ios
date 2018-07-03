@@ -107,7 +107,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"FilesGlobalSearch"];
+    [[Analytics sharedInstance] trackScreen:@"FilesGlobalSearch"];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSearchResult:) name:kMXSessionDidLeaveRoomNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSearchResult:) name:kMXSessionNewRoomNotification object:nil];

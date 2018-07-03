@@ -79,7 +79,7 @@
 "auth_password_dont_match" = "De wachtwoorden komen niet overeen";
 "auth_username_in_use" = "De gebruikersnaam is al in gebruik";
 "auth_forgot_password" = "Wachtwoord vergeten?";
-"auth_use_server_options" = "Gebruik aangepaste server options (geavanceerd)";
+"auth_use_server_options" = "Gebruik alternatieve serverinstellingen (geavanceerd)";
 "auth_email_validation_message" = "Bekijk je e-mail om verder te gaan met de registratie";
 "auth_msisdn_validation_title" = "Verificatie Aanhangig";
 "auth_msisdn_validation_message" = "We hebben een SMS met een activatie code gestuurd. Vul deze code hieronder in.";
@@ -227,7 +227,7 @@
 "room_event_action_cancel_upload" = "Uploaden annuleren";
 "room_event_action_cancel_download" = "Downloaden annuleren";
 "room_event_action_view_encryption" = "Versleutelingsinformatie";
-"room_warning_about_encryption" = "Eind-tot-eind versleuteling is nog in beta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen nog niet de geschiedenis van voordat ze de ruimte betraden kunnen ontsleutelen.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op applicaties die geen versleuteling ondersteunen.";
+"room_warning_about_encryption" = "End-to-endbeveiliging is in bèta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van voordat ze de ruimte betraden nog niet ontsleutelen.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op programma's die geen versleuteling ondersteunen.";
 // Unknown devices
 "unknown_devices_alert_title" = "Ruimte bevat onbekende apparaten";
 "unknown_devices_alert" = "Deze ruimte bevat onbekende apparaten die niet geen geverifieerd.\nDit betekent dat er geen garantie is dat de apparaten bij de gebruikers horen waar het beweert dat het bij hoort.\nWe raden je aan om bij elk apparaat door het verificatieprocces heen te gaan voordat je doorgaat, maar je kan het bericht opnieuw versturen zonder te verifiëren als je dat prefereert.";
@@ -302,7 +302,7 @@
 "settings_unignore_user" = "Alle berichten van %@ laten zien?";
 "settings_contacts_discover_matrix_users" = "Gebruik e-mailadressen en telefoonnummers om gebruikers te vinden";
 "settings_contacts_phonebook_country" = "Telefoonboek land";
-"settings_labs_e2e_encryption" = "Eind-tot-Eind versleuteling";
+"settings_labs_e2e_encryption" = "End-to-endbeveiliging";
 "settings_labs_e2e_encryption_prompt_message" = "Om het opzetten van de versleuteling af te ronden moet je opnieuw inloggen.";
 "settings_version" = "Versie %@";
 "settings_olm_version" = "Olm Versie %@";
@@ -365,8 +365,8 @@
 "room_details_advanced_e2e_encryption_enabled" = "Versleuteling staat aan in deze ruimte";
 "room_details_advanced_e2e_encryption_disabled" = "Versleuteling staat niet aan in deze ruimte.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";
-"room_details_advanced_e2e_encryption_prompt_message" = "Eind-tot-eind versleuteling is experimenteel en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen nog niet de geschiedenis van voordat ze de ruimte betraden kunnen ontsleutelen.\n\nZodra de versleuteling aan staat kan het niet meer worden uitgezet (voor nu).\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op applicaties die geen versleuteling ondersteunen.";
-"room_details_fail_to_update_avatar" = "Ruimte foto vernieuwen mislukt";
+"room_details_advanced_e2e_encryption_prompt_message" = "End-to-endbeveiliging is experimenteel en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van voordat ze de ruimte betraden nog niet ontsleutelen.\n\nZodra de versleuteling aan staat kan het (voorlopig) niet worden uitgezet.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op programma's die geen versleuteling ondersteunen.";
+"room_details_fail_to_update_avatar" = "Ruimte-foto vernieuwen mislukt";
 "room_details_fail_to_update_room_name" = "Ruimtenaam vernieuwen mislukt";
 "room_details_fail_to_update_topic" = "Ruimteonderwerp vernieuwen mislukt";
 "room_details_fail_to_update_room_guest_access" = "Ruimte's gast toegang vernieuwen mislukt";
@@ -420,7 +420,7 @@
 "google_analytics_use_prompt" = "Wil je helpen met het verbeteren van %@ bij het automatisch rapporteren van crash rapporten en data van gebruik?";
 // Crypto
 "e2e_enabling_on_app_update" = "Riot ondersteunt nu eind-tot-eind sleuteling maar je moet opnieuw inloggen om het aan te zetten.\n\nJe kan het nu of later doen vanaf de applicatie instellingen.";
-"e2e_need_log_in_again" = "Je moet opnieuw inloggen om eind-tot-eind versleuteling sleutels te genereren voor dit apparaat en om de publieke sleutel naar de thuisserver te sturen.\nDit is eenmalig; excuses voor het ongemak.";
+"e2e_need_log_in_again" = "Je moet opnieuw inloggen om end-to-endbeveligingssleutels te genereren voor dit apparaat en om de publieke sleutel naar de thuisserver te sturen.\nDit is eenmalig; excuses voor het ongemak.";
 // Bug report
 "bug_report_title" = "Foutmelding";
 "bug_report_description" = "Beschrijf de foutmelding. Wat heb je gedaan? Wat verwachte je dat er zou gebeuren? Wat gebeurde er werkelijk?";
@@ -546,3 +546,26 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Om de %@ thuisserver te blijven gebruiken moet je de algemeen voorwaarden lezen en daarmee akkoord gaan.";
 "gdpr_consent_not_given_alert_review_now_action" = "Nu doorlezen";
+"room_action_send_photo_or_video" = "Foto of video versturen";
+"room_action_send_sticker" = "Sticker versturen";
+"settings_deactivate_account" = "DEACTIVEER ACCOUNT";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Waarschuwing";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Aanvraag verstuurd";
+"rerequest_keys_alert_message" = "Start Riot alstublieft op een ander apparaat dat het bericht kan ontsleutelen zodat deze de sleutels kan sturen naar dit apparaat.";
+"settings_deactivate_my_account" = "Account deactiveren";
+"event_formatter_rerequest_keys_part1_link" = "Vraag beveiligingssleutels opnieuw aan";
+"event_formatter_rerequest_keys_part2" = " van je andere apparaten.";
+"widget_sticker_picker_no_stickerpacks_alert" = "Je hebt momenteel geen stickerpakketten aan staan.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Wil je er nu een paar toevoegen?";
+"deactivate_account_title" = "Account deactiveren";
+"deactivate_account_informations_part1" = "Dit zal je account voorgoed onbruikbaar maken. Je zal niet meer in kunnen loggen en niemand anders zal met dezelfde gebruikers ID kunnen registreren. Dit zal er voor zorgen dat je account alle ruimtes verlaat waar het momenteel onderdeel van is en het verwijderd de accountgegevens van de identiteitsserver. ";
+"deactivate_account_informations_part2_emphasize" = "Deze actie is onomkeerbaar.";
+"deactivate_account_informations_part3" = "\n\nHet deactiveren van je account ";
+"deactivate_account_informations_part4_emphasize" = "zal er niet standaard voor zorgen dat de berichten die je verzonden hebt vergeten worden. ";
+"deactivate_account_informations_part5" = "Als je wilt dat wij de berichten vergeten, klikt alsjeblieft op het vakje hieronder.\n\nDe zichtbaarheid van berichten in Matrix is hetzelfde als in e-mail. Het vergeten van je berichten betekent dat berichten die je hebt verstuurd niet meer gedeeld worden met nieuwe of ongeregistreerde gebruikers, maar geregistreerde gebruikers die al toegang hebben tot deze berichten zullen alsnog toegang hebben tot hun eigen kopie van het bericht.";
+"deactivate_account_forget_messages_information_part1" = "Vergeet alle berichten die ik heb verstuurd wanneer mijn account gedeactiveerd is (";
+"deactivate_account_forget_messages_information_part3" = ": dit zal er voor zorgen dat toekomstige gebruikers een incompleet beeld krijgen van gesprekken)";
+"deactivate_account_validate_action" = "Account deactiveren";
+"deactivate_account_password_alert_title" = "Account deactiveren";
+"deactivate_account_password_alert_message" = "Voer je wachtwoord in om verder te gaan";

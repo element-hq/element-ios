@@ -117,6 +117,10 @@
 #import "WidgetPickerViewController.h"
 #import "StickerPickerViewController.h"
 
+#import "EventFormatter.h"
+
+#import "Riot-Swift.h"
+
 @interface RoomViewController ()
 {
     // The expanded header
@@ -181,6 +185,9 @@
     
     // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
     id mxRoomSummaryDidChangeObserver;
+
+    // Observer for removing the re-request explanation/waiting dialog
+    id mxEventDidDecryptNotificationObserver;
     
     // The table view cell in which the read marker is displayed (nil by default).
     MXKRoomBubbleTableViewCell *readMarkerTableViewCell;
@@ -445,7 +452,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[AppDelegate theDelegate] trackScreen:@"ChatRoom"];
+    [[Analytics sharedInstance] trackScreen:@"ChatRoom"];
     
     // Refresh the room title view
     [self refreshRoomTitle];
@@ -591,6 +598,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
         mxRoomSummaryDidChangeObserver = nil;
+    }
+
+    if (mxEventDidDecryptNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
+        mxEventDidDecryptNotificationObserver = nil;
     }
 }
 
@@ -1102,6 +1115,11 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
         mxRoomSummaryDidChangeObserver = nil;
+    }
+    if (mxEventDidDecryptNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
+        mxEventDidDecryptNotificationObserver = nil;
     }
     
     [self removeCallNotificationsListeners];
@@ -2680,6 +2698,20 @@
             NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
+        else if ([absoluteURLString hasPrefix:kEventFormatterOnReRequestKeysLinkAction])
+        {
+            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:kEventFormatterOnReRequestKeysLinkActionSeparator];
+            if (arguments.count > 1)
+            {
+                NSString *eventId = arguments[1];
+                MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
+
+                if (event)
+                {
+                    [self reRequestKeysAndShowExplanationAlert:event];
+                }
+            }
+        }
     }
     
     return shouldDoAction;
@@ -2982,7 +3014,7 @@
     }
 
     // If enabled, create the conf using jitsi widget and open it directly
-    else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"createConferenceCallsWithJitsi"]
+    else if (RiotSettings.shared.createConferenceCallsWithJitsi
              && self.roomDataSource.room.state.joinedMembers.count > 2)
     {
         [self startActivityIndicator];
@@ -4579,6 +4611,58 @@
                                                    }]];
     
     [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCInviteAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+#pragma mark - Re-request encryption keys
+
+- (void)reRequestKeysAndShowExplanationAlert:(MXEvent*)event
+{
+    MXWeakify(self);
+    __block UIAlertController *alert;
+
+    // Make the re-request
+    [self.mainSession.crypto reRequestRoomKeyForEvent:event];
+
+    // Observe kMXEventDidDecryptNotification to remove automatically the dialog
+    // if the user has shared the keys from another device
+    mxEventDidDecryptNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXEventDidDecryptNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        MXStrongifyAndReturnIfNil(self);
+
+        MXEvent *decryptedEvent = notif.object;
+
+        if ([decryptedEvent.eventId isEqualToString:event.eventId])
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self->mxEventDidDecryptNotificationObserver];
+            self->mxEventDidDecryptNotificationObserver = nil;
+
+            if (self->currentAlert == alert)
+            {
+                [self->currentAlert dismissViewControllerAnimated:YES completion:nil];
+                self->currentAlert = nil;
+            }
+        }
+    }];
+
+    // Show the explanation dialog
+    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
+                                                       message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
+                                                preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = alert;
+
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action)
+                             {
+                                 MXStrongifyAndReturnIfNil(self);
+
+                                 [[NSNotificationCenter defaultCenter] removeObserver:self->mxEventDidDecryptNotificationObserver];
+                                 self->mxEventDidDecryptNotificationObserver = nil;
+
+                                 self->currentAlert = nil;
+                             }]];
+
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 

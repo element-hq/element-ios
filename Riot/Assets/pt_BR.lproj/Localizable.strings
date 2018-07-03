@@ -1,0 +1,52 @@
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "Mensagem de %@";
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ enviou mensagem em %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ em %@: %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@ : * %@ %@";
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ enviou a você uma imagem %@";
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ enviou uma imagem %@ na sala %@";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Você recebeu uma mensagem na sala %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Você recebeu uma mensagem";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ novas mensagens na sala %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ novas mensagens de %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ novas mensagens de %@ e %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ novas mensagens de %@, %@ e %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ novas mensagens de %@, %@ e outras/os";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ novas mensagens nas salas %@ e %@";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ novas mensagens nas salas %@ e %@, dentre outras";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ convidou você para conversar";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ convidou você para uma conversa em grupo";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ convidou você para a sala %@";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Chamada de %@";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Chamada de vídeo de %@";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Chamada coletiva de %@";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Vídeo-chamada coletiva de %@";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Vídeo chamada coletiva de %@: '%@'";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Vídeo-chamada coletiva de %@: '%@'";
