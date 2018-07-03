@@ -24,6 +24,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "Riot-Swift.h"
+
 static RageShakeManager* sharedInstance = nil;
 
 @interface RageShakeManager() {
@@ -111,7 +113,7 @@ static RageShakeManager* sharedInstance = nil;
     // Start only if the application is in foreground
     // And if the rageshake user setting is enabled
     if ([AppDelegate theDelegate].isAppForeground
-        && [[NSUserDefaults standardUserDefaults] boolForKey:@"enableRageShake"]
+        && RiotSettings.shared.enableRageShake
         && !confirmationAlert)
     {
         NSLog(@"[RageShakeManager] Start shaking with [%@]", [responder class]);
@@ -163,8 +165,7 @@ static RageShakeManager* sharedInstance = nil;
                                                                         self->confirmationAlert = nil;
 
                                                                         // Disable rageshake user setting
-                                                                        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableRageShake"];
-                                                                        [[NSUserDefaults standardUserDefaults] synchronize];
+                                                                        RiotSettings.shared.enableRageShake = NO;
                                                                     }
 
                                                                 }]];

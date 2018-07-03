@@ -120,6 +120,8 @@
 		9D686B069F967C4D4BBC610F /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB50EEBE8214352B9EBD6394 /* Pods_RiotPods_SiriIntents.framework */; };
 		B19A173920B7F94800DF0BB0 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A173820B7F94800DF0BB0 /* DeactivateAccountViewController.m */; };
 		B19A173B20B7F96700DF0BB0 /* DeactivateAccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19A173A20B7F96700DF0BB0 /* DeactivateAccountViewController.storyboard */; };
+		B1D818C020EA4C7400D5F36D /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D818BF20EA4C7400D5F36D /* RiotSettings.swift */; };
+		B1D818C120EA794400D5F36D /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D818BF20EA4C7400D5F36D /* RiotSettings.swift */; };
 		DDDE2AB95F865F2292B1D315 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7292481328A48B8D5D4ED /* Pods_RiotPods_RiotShareExtension.framework */; };
 		F0131DE51F2200D600CBF707 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0131DE41F2200D600CBF707 /* RiotSplitViewController.m */; };
 		F0173EB51FCF346800B5F6A3 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EAF1FCF346800B5F6A3 /* Vector.strings */; };
@@ -821,6 +823,9 @@
 		B19A173720B7F94800DF0BB0 /* DeactivateAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeactivateAccountViewController.h; sourceTree = "<group>"; };
 		B19A173820B7F94800DF0BB0 /* DeactivateAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeactivateAccountViewController.m; sourceTree = "<group>"; };
 		B19A173A20B7F96700DF0BB0 /* DeactivateAccountViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DeactivateAccountViewController.storyboard; sourceTree = "<group>"; };
+		B1D818BC20E66C3300D5F36D /* Riot-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Riot-Bridging-Header.h"; sourceTree = "<group>"; };
+		B1D818BF20EA4C7400D5F36D /* RiotSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotSettings.swift; sourceTree = "<group>"; };
+		B1D818C220EA7DB500D5F36D /* RiotShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RiotShareExtension-Bridging-Header.h"; path = "RiotShareExtension/RiotShareExtension-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		C5258DFF261AA3AB228A3F11 /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		DB50EEBE8214352B9EBD6394 /* Pods_RiotPods_SiriIntents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_SiriIntents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1506,6 +1511,7 @@
 			isa = PBXGroup;
 			children = (
 				2466B7551F2F80B800AE27B0 /* Info.plist */,
+				B1D818C220EA7DB500D5F36D /* RiotShareExtension-Bridging-Header.h */,
 				2466B7561F2F80B800AE27B0 /* RiotShareExtension.entitlements */,
 				24D6B3441F3C8F8A00FC7A71 /* ViewController */,
 				2439DD5F1F6BBE390090F42D /* Views */,
@@ -2247,6 +2253,7 @@
 				F083BC151E7009EC00A9B29C /* Tools.m */,
 				F083BC161E7009EC00A9B29C /* RiotDesignValues.h */,
 				F083BC171E7009EC00A9B29C /* RiotDesignValues.m */,
+				B1D818BF20EA4C7400D5F36D /* RiotSettings.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2699,6 +2706,7 @@
 		F083BEA41E700B2800A9B29C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B1D818BC20E66C3300D5F36D /* Riot-Bridging-Header.h */,
 				F0DD05CF1F615ECF00CB5292 /* LaunchScreenRiot.png */,
 				F083BBED1E7009EC00A9B29C /* empty.mm */,
 				F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */,
@@ -2906,6 +2914,7 @@
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 7J4U792NQT;
+						LastSwiftMigration = 0940;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -3517,6 +3526,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24EEE5A01F23A08900B3C705 /* RoomTableViewCell.m in Sources */,
+				B1D818C120EA794400D5F36D /* RiotSettings.swift in Sources */,
 				24D6B3581F3C90D300FC7A71 /* ShareDataSource.m in Sources */,
 				245FC3EF1F3DD30800603C6A /* RecentCellData.m in Sources */,
 				24D6B35C1F3CA03600FC7A71 /* RoomsListViewController.m in Sources */,
@@ -3674,6 +3684,7 @@
 				F083BE781E7009ED00A9B29C /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				F083BE5E1E7009ED00A9B29C /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */,
+				B1D818C020EA4C7400D5F36D /* RiotSettings.swift in Sources */,
 				F083BE8A1E7009ED00A9B29C /* ExpandedRoomTitleView.m in Sources */,
 				F083BE0C1E7009ED00A9B29C /* ContactDetailsViewController.m in Sources */,
 				F083BE821E7009ED00A9B29C /* RecentTableViewCell.m in Sources */,
@@ -4031,12 +4042,19 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"IS_SHARE_EXTENSION=1",
+				);
 				INFOPLIST_FILE = RiotShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/RiotShareExtension-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -4054,12 +4072,19 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"IS_SHARE_EXTENSION=1",
+				);
 				INFOPLIST_FILE = RiotShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/RiotShareExtension-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -4125,6 +4150,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4142,7 +4168,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -4171,6 +4197,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4181,7 +4208,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4193,7 +4220,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A5030B7C3C0B6EB83A9257BD /* Pods-RiotPods-Riot.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7J4U792NQT;
@@ -4220,6 +4249,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Riot-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -4228,7 +4260,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F546BCBBB9BBEE67DB28878A /* Pods-RiotPods-Riot.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				ENABLE_BITCODE = NO;
@@ -4254,6 +4288,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/Riot-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -4261,6 +4297,7 @@
 		F094A9CC1B78D8F000B1FBBF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4282,6 +4319,7 @@
 		F094A9CD1B78D8F000B1FBBF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 7J4U792NQT;
 				FRAMEWORK_SEARCH_PATHS = (
