@@ -1,3 +1,11 @@
+Changes in 0.6.19 (2018-07-04)
+===============================================
+
+Improvements:
+
+Bug fix:
+* RoomVC: Fix duplicated read receipts (regression due to read receipts performance improvement).
+
 Changes in 0.6.18 (2018-07-03)
 ===============================================
 
