@@ -103,26 +103,23 @@
         // new read receipt.
         // To implement it, we need to find the sender id of each new read receipt
         // among the read receipts array of all events in all bubbles.
-        NSMutableArray *readReceiptSenders = [receiptEvent.readReceiptSenders mutableCopy];
+        NSArray *readReceiptSenders = receiptEvent.readReceiptSenders;
 
         @synchronized(bubbles)
         {
-            NSMutableDictionary<NSString* /* eventId */, NSArray<MXReceiptData*> *> *updatedCellDataReadReceipts = [NSMutableDictionary dictionary];
             for (RoomBubbleCellData *cellData in bubbles)
             {
+                NSMutableDictionary<NSString* /* eventId */, NSArray<MXReceiptData*> *> *updatedCellDataReadReceipts = [NSMutableDictionary dictionary];
+
                 for (NSString *eventId in cellData.readReceipts)
                 {
                     for (MXReceiptData *receiptData in cellData.readReceipts[eventId])
                     {
-                        NSMutableArray *foundSenders = [NSMutableArray array];
                         for (NSString *senderId in readReceiptSenders)
                         {
                             if ([receiptData.userId isEqualToString:senderId])
                             {
-                                // We find an existing displayed receipt, remove it
-                                [foundSenders addObject:senderId];
-
-                                if (!updatedCellDataReadReceipts[eventId])
+                                 if (!updatedCellDataReadReceipts[eventId])
                                 {
                                     updatedCellDataReadReceipts[eventId] = cellData.readReceipts[eventId];
                                 }
@@ -133,14 +130,6 @@
                             }
                         }
 
-                        // As there is one (the last) read receipt displayed per user,
-                        // we do not need to search for other read receipts of found users.
-                        [readReceiptSenders removeObjectsInArray:foundSenders];
-                        if (!readReceiptSenders.count)
-                        {
-                            // All senders have been found
-                            break;
-                        }
                     }
                 }
 
@@ -155,12 +144,6 @@
                     {
                         cellData.readReceipts[eventId] = nil;
                     }
-                }
-
-                if (!readReceiptSenders.count)
-                {
-                    // All senders have been found
-                    break;
                 }
             }
         }
