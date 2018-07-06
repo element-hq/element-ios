@@ -33,18 +33,13 @@
 		32117182203ACD32002C16C6 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3211717C203ACD32002C16C6 /* Vector.strings */; };
 		32117183203ACD32002C16C6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3211717E203ACD32002C16C6 /* Localizable.strings */; };
 		32117184203ACD32002C16C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32117180203ACD32002C16C6 /* InfoPlist.strings */; };
-		3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3233F73B1F3306A7006ACA81 /* WidgetManager.m */; };
-		3233F73F1F331F05006ACA81 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = 3233F73E1F331F05006ACA81 /* Widget.m */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
-		3267EFB220E2A04100FF1CAA /* Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267EFB120E2A04100FF1CAA /* Analytics.m */; };
 		3267EFB720E379FE00FF1CAA /* CHANGES.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB320E379FD00FF1CAA /* CHANGES.rst */; };
 		3267EFB820E379FE00FF1CAA /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB420E379FD00FF1CAA /* Podfile */; };
 		3267EFB920E379FE00FF1CAA /* AUTHORS.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB520E379FD00FF1CAA /* AUTHORS.rst */; };
 		3267EFBA20E379FE00FF1CAA /* README.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB620E379FD00FF1CAA /* README.rst */; };
-		3267EFC020E4A3DD00FF1CAA /* DecryptionFailureTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267EFBE20E4A3DD00FF1CAA /* DecryptionFailureTracker.m */; };
-		3267EFC320E5055800FF1CAA /* DecryptionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 3267EFC220E5055800FF1CAA /* DecryptionFailure.m */; };
 		327382B51F276AD200356143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382A81F276AD200356143 /* InfoPlist.strings */; };
 		327382B61F276AD200356143 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382AA1F276AD200356143 /* Localizable.strings */; };
 		327382B71F276AD200356143 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382AC1F276AD200356143 /* Vector.strings */; };
@@ -312,8 +307,13 @@
 		B1B5597620EFB02A00210D55 /* InviteRecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5597320EFB02900210D55 /* InviteRecentTableViewCell.xib */; };
 		B1B5597A20EFB15500210D55 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597820EFB15400210D55 /* PublicRoomTableViewCell.m */; };
 		B1B5597B20EFB15500210D55 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5597920EFB15400210D55 /* PublicRoomTableViewCell.xib */; };
-		B1D818C020EA4C7400D5F36D /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D818BF20EA4C7400D5F36D /* RiotSettings.swift */; };
-		B1D818C120EA794400D5F36D /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D818BF20EA4C7400D5F36D /* RiotSettings.swift */; };
+		B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597E20EFC3DF00210D55 /* RageShakeManager.m */; };
+		B1B5598620EFC3E000210D55 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		B1B5598720EFC3E000210D55 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598320EFC3DF00210D55 /* Widget.m */; };
+		B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598420EFC3DF00210D55 /* WidgetManager.m */; };
+		B1B5599220EFC5E400210D55 /* Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598C20EFC5E400210D55 /* Analytics.m */; };
+		B1B5599320EFC5E400210D55 /* DecryptionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598D20EFC5E400210D55 /* DecryptionFailure.m */; };
+		B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */; };
 		DDDE2AB95F865F2292B1D315 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7292481328A48B8D5D4ED /* Pods_RiotPods_RiotShareExtension.framework */; };
 		F0173EB51FCF346800B5F6A3 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EAF1FCF346800B5F6A3 /* Vector.strings */; };
 		F0173EB61FCF346800B5F6A3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EB11FCF346800B5F6A3 /* Localizable.strings */; };
@@ -333,7 +333,6 @@
 		F0614A131EDEE65000F5DC9A /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A101EDEE65000F5DC9A /* cancel.png */; };
 		F0614A141EDEE65000F5DC9A /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A111EDEE65000F5DC9A /* cancel@2x.png */; };
 		F0614A151EDEE65000F5DC9A /* cancel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0614A121EDEE65000F5DC9A /* cancel@3x.png */; };
-		F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0B1E7009EC00A9B29C /* RageShakeManager.m */; };
 		F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		F083BD221E7009ED00A9B29C /* add_participant.png in Resources */ = {isa = PBXBuildFile; fileRef = F083BB161E7009EC00A9B29C /* add_participant.png */; };
 		F083BD231E7009ED00A9B29C /* add_participant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F083BB171E7009EC00A9B29C /* add_participant@2x.png */; };
@@ -699,22 +698,12 @@
 		3211717D203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = Vector.strings; sourceTree = "<group>"; };
 		3211717F203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = Localizable.strings; sourceTree = "<group>"; };
 		32117181203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = InfoPlist.strings; sourceTree = "<group>"; };
-		3233F73A1F3306A6006ACA81 /* WidgetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetManager.h; sourceTree = "<group>"; };
-		3233F73B1F3306A7006ACA81 /* WidgetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidgetManager.m; sourceTree = "<group>"; };
-		3233F73D1F331F05006ACA81 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
-		3233F73E1F331F05006ACA81 /* Widget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Widget.m; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		3267EFB020E2A04100FF1CAA /* Analytics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Analytics.h; path = Riot/Analytics/Analytics.h; sourceTree = SOURCE_ROOT; };
-		3267EFB120E2A04100FF1CAA /* Analytics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Analytics.m; path = Riot/Analytics/Analytics.m; sourceTree = SOURCE_ROOT; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
 		3267EFB620E379FD00FF1CAA /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
-		3267EFBE20E4A3DD00FF1CAA /* DecryptionFailureTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DecryptionFailureTracker.m; path = Riot/Analytics/DecryptionFailureTracker.m; sourceTree = SOURCE_ROOT; };
-		3267EFBF20E4A3DD00FF1CAA /* DecryptionFailureTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DecryptionFailureTracker.h; path = Riot/Analytics/DecryptionFailureTracker.h; sourceTree = SOURCE_ROOT; };
-		3267EFC120E5055800FF1CAA /* DecryptionFailure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DecryptionFailure.h; path = Riot/Analytics/DecryptionFailure.h; sourceTree = SOURCE_ROOT; };
-		3267EFC220E5055800FF1CAA /* DecryptionFailure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DecryptionFailure.m; path = Riot/Analytics/DecryptionFailure.m; sourceTree = SOURCE_ROOT; };
 		327382A91F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = InfoPlist.strings; sourceTree = "<group>"; };
 		327382AB1F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
 		327382AD1F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Vector.strings; sourceTree = "<group>"; };
@@ -1126,8 +1115,20 @@
 		B1B5597720EFB15400210D55 /* PublicRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableViewCell.h; sourceTree = "<group>"; };
 		B1B5597820EFB15400210D55 /* PublicRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomTableViewCell.m; sourceTree = "<group>"; };
 		B1B5597920EFB15400210D55 /* PublicRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicRoomTableViewCell.xib; sourceTree = "<group>"; };
+		B1B5597D20EFC3DF00210D55 /* RageShakeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakeManager.h; sourceTree = "<group>"; };
+		B1B5597E20EFC3DF00210D55 /* RageShakeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RageShakeManager.m; sourceTree = "<group>"; };
+		B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotSettings.swift; sourceTree = "<group>"; };
+		B1B5598120EFC3DF00210D55 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
+		B1B5598220EFC3DF00210D55 /* WidgetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetManager.h; sourceTree = "<group>"; };
+		B1B5598320EFC3DF00210D55 /* Widget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Widget.m; sourceTree = "<group>"; };
+		B1B5598420EFC3DF00210D55 /* WidgetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidgetManager.m; sourceTree = "<group>"; };
+		B1B5598C20EFC5E400210D55 /* Analytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analytics.m; sourceTree = "<group>"; };
+		B1B5598D20EFC5E400210D55 /* DecryptionFailure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecryptionFailure.m; sourceTree = "<group>"; };
+		B1B5598E20EFC5E400210D55 /* DecryptionFailureTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecryptionFailureTracker.h; sourceTree = "<group>"; };
+		B1B5598F20EFC5E400210D55 /* DecryptionFailure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecryptionFailure.h; sourceTree = "<group>"; };
+		B1B5599020EFC5E400210D55 /* Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analytics.h; sourceTree = "<group>"; };
+		B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecryptionFailureTracker.m; sourceTree = "<group>"; };
 		B1D818BC20E66C3300D5F36D /* Riot-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Riot-Bridging-Header.h"; sourceTree = "<group>"; };
-		B1D818BF20EA4C7400D5F36D /* RiotSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotSettings.swift; sourceTree = "<group>"; };
 		B1D818C220EA7DB500D5F36D /* RiotShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RiotShareExtension-Bridging-Header.h"; path = "RiotShareExtension/RiotShareExtension-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		C5258DFF261AA3AB228A3F11 /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1153,8 +1154,6 @@
 		F0614A121EDEE65000F5DC9A /* cancel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel@3x.png"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F083BB041E7005FD00A9B29C /* RiotTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotTests.m; sourceTree = "<group>"; };
-		F083BB0A1E7009EC00A9B29C /* RageShakeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakeManager.h; sourceTree = "<group>"; };
-		F083BB0B1E7009EC00A9B29C /* RageShakeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RageShakeManager.m; sourceTree = "<group>"; };
 		F083BB0C1E7009EC00A9B29C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F083BB0D1E7009EC00A9B29C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F083BB161E7009EC00A9B29C /* add_participant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_participant.png; sourceTree = "<group>"; };
@@ -1572,37 +1571,12 @@
 			path = libs;
 			sourceTree = "<group>";
 		};
-		3233F7391F33065F006ACA81 /* Widgets */ = {
-			isa = PBXGroup;
-			children = (
-				3233F73A1F3306A6006ACA81 /* WidgetManager.h */,
-				3233F73B1F3306A7006ACA81 /* WidgetManager.m */,
-				3233F73D1F331F05006ACA81 /* Widget.h */,
-				3233F73E1F331F05006ACA81 /* Widget.m */,
-			);
-			path = Widgets;
-			sourceTree = "<group>";
-		};
 		3233F7431F3497DA006ACA81 /* jitsi-meet */ = {
 			isa = PBXGroup;
 			children = (
 				3233F7441F3497DA006ACA81 /* JitsiMeet.framework */,
 			);
 			path = "jitsi-meet";
-			sourceTree = "<group>";
-		};
-		3267EFAF20E2A00F00FF1CAA /* Analytics */ = {
-			isa = PBXGroup;
-			children = (
-				3267EFB020E2A04100FF1CAA /* Analytics.h */,
-				3267EFB120E2A04100FF1CAA /* Analytics.m */,
-				3267EFBF20E4A3DD00FF1CAA /* DecryptionFailureTracker.h */,
-				3267EFBE20E4A3DD00FF1CAA /* DecryptionFailureTracker.m */,
-				3267EFC120E5055800FF1CAA /* DecryptionFailure.h */,
-				3267EFC220E5055800FF1CAA /* DecryptionFailure.m */,
-			);
-			name = Analytics;
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		327382A71F276AD200356143 /* de.lproj */ = {
@@ -2763,6 +2737,58 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B1B5597C20EFC3DF00210D55 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B1B5598B20EFC5E400210D55 /* Analytics */,
+				B1B5598920EFC41100210D55 /* BugReport */,
+				B1B5598A20EFC42100210D55 /* Settings */,
+				B1B5598020EFC3DF00210D55 /* Widgets */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		B1B5598020EFC3DF00210D55 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				B1B5598220EFC3DF00210D55 /* WidgetManager.h */,
+				B1B5598420EFC3DF00210D55 /* WidgetManager.m */,
+				B1B5598120EFC3DF00210D55 /* Widget.h */,
+				B1B5598320EFC3DF00210D55 /* Widget.m */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		B1B5598920EFC41100210D55 /* BugReport */ = {
+			isa = PBXGroup;
+			children = (
+				B1B5597D20EFC3DF00210D55 /* RageShakeManager.h */,
+				B1B5597E20EFC3DF00210D55 /* RageShakeManager.m */,
+			);
+			path = BugReport;
+			sourceTree = "<group>";
+		};
+		B1B5598A20EFC42100210D55 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		B1B5598B20EFC5E400210D55 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				B1B5599020EFC5E400210D55 /* Analytics.h */,
+				B1B5598C20EFC5E400210D55 /* Analytics.m */,
+				B1B5598F20EFC5E400210D55 /* DecryptionFailure.h */,
+				B1B5598D20EFC5E400210D55 /* DecryptionFailure.m */,
+				B1B5598E20EFC5E400210D55 /* DecryptionFailureTracker.h */,
+				B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		F0173EAE1FCF346800B5F6A3 /* vi.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -2812,10 +2838,9 @@
 		F083BB081E7009EC00A9B29C /* Riot */ = {
 			isa = PBXGroup;
 			children = (
-				3267EFAF20E2A00F00FF1CAA /* Analytics */,
-				F083BB091E7009EC00A9B29C /* API */,
 				F083BB0E1E7009EC00A9B29C /* Assets */,
 				F083BBE41E7009EC00A9B29C /* Categories */,
+				B1B5597C20EFC3DF00210D55 /* Managers */,
 				F083BBF21E7009EC00A9B29C /* Model */,
 				B1B5567620EE6C4C00210D55 /* Modules */,
 				F083BC0F1E7009EC00A9B29C /* Utils */,
@@ -2829,15 +2854,6 @@
 				F083BEA41E700B2800A9B29C /* Supporting Files */,
 			);
 			path = Riot;
-			sourceTree = "<group>";
-		};
-		F083BB091E7009EC00A9B29C /* API */ = {
-			isa = PBXGroup;
-			children = (
-				F083BB0A1E7009EC00A9B29C /* RageShakeManager.h */,
-				F083BB0B1E7009EC00A9B29C /* RageShakeManager.m */,
-			);
-			path = API;
 			sourceTree = "<group>";
 		};
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
@@ -3222,7 +3238,6 @@
 		F083BC0F1E7009EC00A9B29C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				3233F7391F33065F006ACA81 /* Widgets */,
 				F083BC101E7009EC00A9B29C /* AvatarGenerator.h */,
 				F083BC111E7009EC00A9B29C /* AvatarGenerator.m */,
 				F083BC121E7009EC00A9B29C /* EventFormatter.h */,
@@ -3231,7 +3246,6 @@
 				F083BC151E7009EC00A9B29C /* Tools.m */,
 				F083BC161E7009EC00A9B29C /* RiotDesignValues.h */,
 				F083BC171E7009EC00A9B29C /* RiotDesignValues.m */,
-				B1D818BF20EA4C7400D5F36D /* RiotSettings.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -4011,7 +4025,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1D818C120EA794400D5F36D /* RiotSettings.swift in Sources */,
 				24D6B3581F3C90D300FC7A71 /* ShareDataSource.m in Sources */,
 				245FC3EF1F3DD30800603C6A /* RecentCellData.m in Sources */,
 				24D6B35C1F3CA03600FC7A71 /* RoomsListViewController.m in Sources */,
@@ -4048,11 +4061,13 @@
 				B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */,
 				B1B5581C20EF625800210D55 /* RoomAvatarTitleView.m in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
+				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */,
 				F083BDFE1E7009ED00A9B29C /* RecentCellData.m in Sources */,
 				B1B5575920EE6C4D00210D55 /* HomeMessagesSearchViewController.m in Sources */,
 				B1B558DE20EF768F00210D55 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				B1B5574820EE6C4D00210D55 /* PeopleViewController.m in Sources */,
+				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
 				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
@@ -4065,16 +4080,17 @@
 				B1B558F420EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B5572320EE6C4D00210D55 /* AttachmentsViewController.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
+				B1B5598620EFC3E000210D55 /* RiotSettings.swift in Sources */,
 				B1B5581720EF625800210D55 /* PreviewRoomTitleView.m in Sources */,
 				B1B558C420EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
-				3267EFB220E2A04100FF1CAA /* Analytics.m in Sources */,
 				F083BDFB1E7009ED00A9B29C /* RoomSearchDataSource.m in Sources */,
-				3233F73C1F3306A7006ACA81 /* WidgetManager.m in Sources */,
+				B1B5599220EFC5E400210D55 /* Analytics.m in Sources */,
 				B1B558C320EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1B5577420EE702900210D55 /* WidgetViewController.m in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
+				B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */,
 				B1B558D420EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B558E120EF768F00210D55 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
@@ -4083,7 +4099,6 @@
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				B1B5593B20EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				B1B5581A20EF625800210D55 /* ExpandedRoomTitleView.m in Sources */,
-				F083BD1D1E7009ED00A9B29C /* RageShakeManager.m in Sources */,
 				B1B558E920EF768F00210D55 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				B1B558DF20EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
@@ -4121,12 +4136,12 @@
 				B1B5572520EE6C4D00210D55 /* RoomMessagesSearchViewController.m in Sources */,
 				B1B5579120EF568D00210D55 /* GroupInviteTableViewCell.m in Sources */,
 				B1B5579A20EF575B00210D55 /* ForgotPasswordInputsView.m in Sources */,
-				3267EFC320E5055800FF1CAA /* DecryptionFailure.m in Sources */,
 				F083BE051E7009ED00A9B29C /* RiotDesignValues.m in Sources */,
 				B1B558CC20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
 				B1B5574020EE6C4D00210D55 /* SegmentedViewController.m in Sources */,
+				B1B5599320EFC5E400210D55 /* DecryptionFailure.m in Sources */,
 				B1B558BE20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
 				B1B557A820EF5A1B00210D55 /* DeviceTableViewCell.m in Sources */,
@@ -4141,7 +4156,6 @@
 				B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */,
 				F083BDFD1E7009ED00A9B29C /* PublicRoomsDirectoryDataSource.m in Sources */,
 				B1B5574120EE6C4D00210D55 /* RecentsViewController.m in Sources */,
-				3233F73F1F331F05006ACA81 /* Widget.m in Sources */,
 				B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */,
 				B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */,
 				B1B5581920EF625800210D55 /* RoomTitleView.m in Sources */,
@@ -4157,7 +4171,6 @@
 				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
 				F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */,
-				B1D818C020EA4C7400D5F36D /* RiotSettings.swift in Sources */,
 				B1B558E620EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B557D820EF5EA900210D55 /* RoomActivitiesView.m in Sources */,
 				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
@@ -4192,8 +4205,8 @@
 				B1B5576F20EE702800210D55 /* IntegrationManagerViewController.m in Sources */,
 				B1B557AC20EF5A6D00210D55 /* DeviceView.m in Sources */,
 				F083BDF61E7009ED00A9B29C /* Contact.m in Sources */,
-				3267EFC020E4A3DD00FF1CAA /* DecryptionFailureTracker.m in Sources */,
 				B1B558E520EF768F00210D55 /* RoomMembershipExpandedBubbleCell.m in Sources */,
+				B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */,
 				F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */,
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
 				B1B5572C20EE6C4D00210D55 /* RoomParticipantsViewController.m in Sources */,
@@ -4705,7 +4718,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A5030B7C3C0B6EB83A9257BD /* Pods-RiotPods-Riot.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
@@ -4745,7 +4757,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F546BCBBB9BBEE67DB28878A /* Pods-RiotPods-Riot.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
