@@ -443,7 +443,7 @@
 		32117181203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = InfoPlist.strings; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
-		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
 		3267EFB620E379FD00FF1CAA /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
 		327382A91F276AD200356143 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = InfoPlist.strings; sourceTree = "<group>"; };
@@ -2485,11 +2485,11 @@
 		F094A9991B78D8F000B1FBBF = {
 			isa = PBXGroup;
 			children = (
-				F083BB081E7009EC00A9B29C /* Riot */,
-				3267EFB520E379FD00FF1CAA /* AUTHORS.rst */,
-				3267EFB320E379FD00FF1CAA /* CHANGES.rst */,
-				3267EFB420E379FD00FF1CAA /* Podfile */,
 				3267EFB620E379FD00FF1CAA /* README.rst */,
+				3267EFB320E379FD00FF1CAA /* CHANGES.rst */,
+				3267EFB520E379FD00FF1CAA /* AUTHORS.rst */,
+				3267EFB420E379FD00FF1CAA /* Podfile */,
+				F083BB081E7009EC00A9B29C /* Riot */,
 				F083BB021E7005FD00A9B29C /* RiotTests */,
 				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
 				92726A441F58737A004AD26F /* SiriIntents */,
