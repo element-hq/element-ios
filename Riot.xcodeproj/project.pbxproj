@@ -20,7 +20,6 @@
 		24D6B35C1F3CA03600FC7A71 /* RoomsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D6B3491F3C8F8A00FC7A71 /* RoomsListViewController.m */; };
 		24D6B35D1F3CA03A00FC7A71 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D6B3461F3C8F8A00FC7A71 /* FallbackViewController.m */; };
 		24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24D6B3471F3C8F8A00FC7A71 /* FallbackViewController.xib */; };
-		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
 		32117182203ACD32002C16C6 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3211717C203ACD32002C16C6 /* Vector.strings */; };
@@ -72,6 +71,8 @@
 		B16932A320F3A21C00746532 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B169329F20F3A21B00746532 /* main.m */; };
 		B16932A420F3A21C00746532 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B16932A120F3A21B00746532 /* Info.plist */; };
 		B16932A520F3A21C00746532 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16932A220F3A21B00746532 /* empty.mm */; };
+		B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
+		B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
@@ -347,7 +348,6 @@
 		F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
 		F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC131E7009EC00A9B29C /* EventFormatter.m */; };
 		F083BE041E7009ED00A9B29C /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
-		F083BE051E7009ED00A9B29C /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */; };
 		F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
 		F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
@@ -495,6 +495,8 @@
 		B16932A020F3A21B00746532 /* Riot.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Riot.entitlements; sourceTree = "<group>"; };
 		B16932A120F3A21B00746532 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B16932A220F3A21B00746532 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
+		B16932AA20F3A7B000746532 /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
+		B16932AB20F3A7B000746532 /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
 		B1B5567920EE6C4C00210D55 /* CountryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryPickerViewController.h; sourceTree = "<group>"; };
 		B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryPickerViewController.m; sourceTree = "<group>"; };
 		B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
@@ -932,8 +934,6 @@
 		F083BC131E7009EC00A9B29C /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F083BC141E7009EC00A9B29C /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		F083BC151E7009EC00A9B29C /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
-		F083BC161E7009EC00A9B29C /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
-		F083BC171E7009EC00A9B29C /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
 		F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Riot-Defaults.plist"; sourceTree = "<group>"; };
 		F094A9A21B78D8F000B1FBBF /* Riot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Riot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RiotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1207,6 +1207,15 @@
 				B16932A220F3A21B00746532 /* empty.mm */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		B16932A620F3A6FA00746532 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				B16932AA20F3A7B000746532 /* RiotDesignValues.h */,
+				B16932AB20F3A7B000746532 /* RiotDesignValues.m */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
@@ -2329,6 +2338,7 @@
 			children = (
 				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
 				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
+				B16932A620F3A6FA00746532 /* Constants */,
 				F083BBE41E7009EC00A9B29C /* Categories */,
 				B1B5597C20EFC3DF00210D55 /* Managers */,
 				F083BBF21E7009EC00A9B29C /* Model */,
@@ -2477,8 +2487,6 @@
 				F083BC131E7009EC00A9B29C /* EventFormatter.m */,
 				F083BC141E7009EC00A9B29C /* Tools.h */,
 				F083BC151E7009EC00A9B29C /* Tools.m */,
-				F083BC161E7009EC00A9B29C /* RiotDesignValues.h */,
-				F083BC171E7009EC00A9B29C /* RiotDesignValues.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2988,12 +2996,12 @@
 				24D6B3581F3C90D300FC7A71 /* ShareDataSource.m in Sources */,
 				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
 				245FC3EF1F3DD30800603C6A /* RecentCellData.m in Sources */,
+				B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */,
 				24D6B35C1F3CA03600FC7A71 /* RoomsListViewController.m in Sources */,
 				24D6B35A1F3CA02C00FC7A71 /* ShareViewController.m in Sources */,
 				24D6B3591F3CA02900FC7A71 /* SharePresentingViewController.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
 				24D6B35D1F3CA03A00FC7A71 /* FallbackViewController.m in Sources */,
-				24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
 				2439DD621F6BBE760090F42D /* RecentRoomTableViewCell.m in Sources */,
@@ -3015,6 +3023,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1B557D120EF5E3500210D55 /* MediaAlbumTableCell.m in Sources */,
+				B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */,
 				B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */,
 				F083BDF71E7009ED00A9B29C /* RoomBubbleCellData.m in Sources */,
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
@@ -3099,7 +3108,6 @@
 				B1B5572520EE6C4D00210D55 /* RoomMessagesSearchViewController.m in Sources */,
 				B1B5579120EF568D00210D55 /* GroupInviteTableViewCell.m in Sources */,
 				B1B5579A20EF575B00210D55 /* ForgotPasswordInputsView.m in Sources */,
-				F083BE051E7009ED00A9B29C /* RiotDesignValues.m in Sources */,
 				B1B558CC20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
