@@ -28,7 +28,6 @@
 		32117184203ACD32002C16C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32117180203ACD32002C16C6 /* InfoPlist.strings */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 325E1C131E8D03950018D91E /* LaunchScreen.storyboard */; };
 		3267EFB720E379FE00FF1CAA /* CHANGES.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB320E379FD00FF1CAA /* CHANGES.rst */; };
 		3267EFB820E379FE00FF1CAA /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB420E379FD00FF1CAA /* Podfile */; };
 		3267EFB920E379FE00FF1CAA /* AUTHORS.rst in Resources */ = {isa = PBXBuildFile; fileRef = 3267EFB520E379FD00FF1CAA /* AUTHORS.rst */; };
@@ -66,6 +65,10 @@
 		B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
 		B169328720F3954A00746532 /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B169328620F3954A00746532 /* SharedImages.xcassets */; };
 		B169328820F3954A00746532 /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B169328620F3954A00746532 /* SharedImages.xcassets */; };
+		B169329920F39E6300746532 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329320F39E6200746532 /* LaunchScreen.storyboard */; };
+		B169329A20F39E6300746532 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329320F39E6200746532 /* LaunchScreen.storyboard */; };
+		B169329B20F39E6300746532 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
+		B169329C20F39E6300746532 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
 		B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
@@ -320,7 +323,6 @@
 		F083BDE81E7009ED00A9B29C /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDD1E7009EC00A9B29C /* message.mp3 */; };
 		F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		F083BDEA1E7009ED00A9B29C /* ringback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDF1E7009EC00A9B29C /* ringback.mp3 */; };
-		F083BDEC1E7009ED00A9B29C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F083BBE21E7009EC00A9B29C /* Main.storyboard */; };
 		F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */; };
 		F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */; };
@@ -440,7 +442,6 @@
 		3211717F203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = Localizable.strings; sourceTree = "<group>"; };
 		32117181203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = InfoPlist.strings; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
-		325E1C141E8D03950018D91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
@@ -486,6 +487,8 @@
 		A5030B7C3C0B6EB83A9257BD /* Pods-RiotPods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		B0FAA1A49F76B0CE15C5CBD8 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B169328620F3954A00746532 /* SharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SharedImages.xcassets; sourceTree = "<group>"; };
+		B169329420F39E6200746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B169329620F39E6300746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B1B5567920EE6C4C00210D55 /* CountryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryPickerViewController.h; sourceTree = "<group>"; };
 		B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryPickerViewController.m; sourceTree = "<group>"; };
 		B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
@@ -885,7 +888,6 @@
 		F083BBDD1E7009EC00A9B29C /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
 		F083BBDE1E7009EC00A9B29C /* ring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ring.mp3; sourceTree = "<group>"; };
 		F083BBDF1E7009EC00A9B29C /* ringback.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringback.mp3; sourceTree = "<group>"; };
-		F083BBE31E7009EC00A9B29C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F083BBE51E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXKRoomBubbleTableViewCell+Riot.h"; sourceTree = "<group>"; };
 		F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXKRoomBubbleTableViewCell+Riot.m"; sourceTree = "<group>"; };
 		F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoom+Riot.h"; sourceTree = "<group>"; };
@@ -2312,18 +2314,15 @@
 		F083BB081E7009EC00A9B29C /* Riot */ = {
 			isa = PBXGroup;
 			children = (
-				F083BB0E1E7009EC00A9B29C /* Assets */,
+				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
+				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
 				F083BBE41E7009EC00A9B29C /* Categories */,
 				B1B5597C20EFC3DF00210D55 /* Managers */,
 				F083BBF21E7009EC00A9B29C /* Model */,
 				B1B5567620EE6C4C00210D55 /* Modules */,
 				F083BC0F1E7009EC00A9B29C /* Utils */,
 				3233F7291F31F3B4006ACA81 /* libs */,
-				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
-				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
-				F083BBE21E7009EC00A9B29C /* Main.storyboard */,
-				325E1C131E8D03950018D91E /* LaunchScreen.storyboard */,
-				F083BC0D1E7009EC00A9B29C /* Riot.entitlements */,
+				F083BB0E1E7009EC00A9B29C /* Assets */,
 				F083BEA41E700B2800A9B29C /* Supporting Files */,
 			);
 			path = Riot;
@@ -2332,6 +2331,8 @@
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				B169329320F39E6200746532 /* LaunchScreen.storyboard */,
+				B169329520F39E6300746532 /* Main.storyboard */,
 				32C699CA20C04AD100D1C5A4 /* is.lproj */,
 				32A9B3B32089CA400087E7A3 /* vi.lproj */,
 				32BB89E7204D86DA002F3AEC /* bg.lproj */,
@@ -2348,6 +2349,9 @@
 				F083BBEF1E7009EC00A9B29C /* Images.xcassets */,
 				B169328620F3954A00746532 /* SharedImages.xcassets */,
 				32935CB21F628B98006888C8 /* js */,
+				F083BC0E1E7009EC00A9B29C /* third_party_licenses.html */,
+				F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */,
+				F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -2469,13 +2473,11 @@
 		F083BEA41E700B2800A9B29C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F083BC0D1E7009EC00A9B29C /* Riot.entitlements */,
 				B1D818BC20E66C3300D5F36D /* Riot-Bridging-Header.h */,
 				F083BBED1E7009EC00A9B29C /* empty.mm */,
-				F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */,
 				F083BBF01E7009EC00A9B29C /* Info.plist */,
 				F083BBF11E7009EC00A9B29C /* main.m */,
-				F083BC0E1E7009EC00A9B29C /* third_party_licenses.html */,
-				F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2689,9 +2691,11 @@
 				F0BFBDBE1FF3BFCD00C88726 /* Vector.strings in Resources */,
 				2435179F1F375C0F00D0683E /* Vector.strings in Resources */,
 				B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */,
+				B169329C20F39E6300746532 /* Main.storyboard in Resources */,
 				F0BFBDBA1FF3BDDF00C88726 /* Vector.strings in Resources */,
 				F0BFBDBC1FF3BFC100C88726 /* Vector.strings in Resources */,
 				F0BFBDC01FF3BFE200C88726 /* Vector.strings in Resources */,
+				B169329A20F39E6300746532 /* LaunchScreen.storyboard in Resources */,
 				B169328820F3954A00746532 /* SharedImages.xcassets in Resources */,
 				F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */,
 				F0BFBDBF1FF3BFD200C88726 /* Vector.strings in Resources */,
@@ -2794,6 +2798,7 @@
 				327382C21F276AED00356143 /* InfoPlist.strings in Resources */,
 				327382B81F276AD200356143 /* InfoPlist.strings in Resources */,
 				B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */,
+				B169329B20F39E6300746532 /* Main.storyboard in Resources */,
 				F04AF26B1F83A4C100D20F4D /* Vector.strings in Resources */,
 				B1B5578E20EF568D00210D55 /* GroupInviteTableViewCell.xib in Resources */,
 				B1B5582020EF625800210D55 /* SimpleRoomTitleView.xib in Resources */,
@@ -2815,8 +2820,8 @@
 				B1B5577220EE702800210D55 /* JitsiViewController.xib in Resources */,
 				B1B557D720EF5EA900210D55 /* RoomActivitiesView.xib in Resources */,
 				F083BDF31E7009ED00A9B29C /* Images.xcassets in Resources */,
-				F083BDEC1E7009ED00A9B29C /* Main.storyboard in Resources */,
 				B1B5590720EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
+				B169329920F39E6300746532 /* LaunchScreen.storyboard in Resources */,
 				B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */,
 				B1B557AD20EF5A6D00210D55 /* DeviceView.xib in Resources */,
 				B1B5573920EE6C4D00210D55 /* GroupRoomsViewController.xib in Resources */,
@@ -2849,7 +2854,6 @@
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
 				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
 				32117182203ACD32002C16C6 /* Vector.strings in Resources */,
-				325E1C151E8D03950018D91E /* LaunchScreen.storyboard in Resources */,
 				B1B558EB20EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B5581820EF625800210D55 /* PreviewRoomTitleView.xib in Resources */,
 				F0173EB51FCF346800B5F6A3 /* Vector.strings in Resources */,
@@ -3231,14 +3235,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		325E1C131E8D03950018D91E /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				325E1C141E8D03950018D91E /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		327382A81F276AD200356143 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3407,6 +3403,22 @@
 			name = Vector.strings;
 			sourceTree = "<group>";
 		};
+		B169329320F39E6200746532 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B169329420F39E6200746532 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B169329520F39E6300746532 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B169329620F39E6300746532 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		F0173EAF1FCF346800B5F6A3 /* Vector.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3469,14 +3481,6 @@
 				F04AF2691F83A4C000D20F4D /* eu */,
 			);
 			name = Vector.strings;
-			sourceTree = "<group>";
-		};
-		F083BBE21E7009EC00A9B29C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F083BBE31E7009EC00A9B29C /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
