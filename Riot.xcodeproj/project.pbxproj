@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2435179C1F375B9400D0683E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2466B7551F2F80B800AE27B0 /* Info.plist */; };
 		2435179F1F375C0F00D0683E /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
 		2439DD621F6BBE760090F42D /* RecentRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2439DD611F6BBE760090F42D /* RecentRoomTableViewCell.m */; };
 		2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2439DD631F6BBEA50090F42D /* RecentRoomTableViewCell.xib */; };
@@ -24,7 +23,6 @@
 		24EEE5A11F23A09A00B3C705 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC171E7009EC00A9B29C /* RiotDesignValues.m */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		24EEE5A41F24C06E00B3C705 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEF1E7009EC00A9B29C /* Images.xcassets */; };
 		32117182203ACD32002C16C6 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3211717C203ACD32002C16C6 /* Vector.strings */; };
 		32117183203ACD32002C16C6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3211717E203ACD32002C16C6 /* Localizable.strings */; };
@@ -64,6 +62,9 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		9D686B069F967C4D4BBC610F /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB50EEBE8214352B9EBD6394 /* Pods_RiotPods_SiriIntents.framework */; };
+		B169328320F38AE600746532 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		B169328420F38BE300746532 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */; };
+		B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
 		B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
@@ -285,8 +286,6 @@
 		B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */; };
 		B1B5594620EF7BD000210D55 /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */; };
 		B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */; };
-		B1B5594C20EF980900210D55 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594A20EF980800210D55 /* RecentTableViewCell.m */; };
-		B1B5594D20EF980900210D55 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5594B20EF980800210D55 /* RecentTableViewCell.xib */; };
 		B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */; };
 		B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */; };
 		B1B5596520EF9E9B00210D55 /* RoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */; };
@@ -832,9 +831,6 @@
 		B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
 		B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomCollectionViewCell.m; sourceTree = "<group>"; };
 		B1B5594320EF7BD000210D55 /* TableViewCellWithCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithCollectionView.h; sourceTree = "<group>"; };
-		B1B5594920EF980800210D55 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
-		B1B5594A20EF980800210D55 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
-		B1B5594B20EF980800210D55 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
 		B1B5594F20EF9A8600210D55 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
 		B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
 		B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
@@ -1007,8 +1003,7 @@
 				2439DD5F1F6BBE390090F42D /* Views */,
 				24D6B3551F3C8FCC00FC7A71 /* Model */,
 			);
-			name = RiotShareExtension;
-			path = "Riot Share Extension";
+			path = RiotShareExtension;
 			sourceTree = "<group>";
 		};
 		24D6B3441F3C8F8A00FC7A71 /* ViewController */ = {
@@ -1513,7 +1508,6 @@
 				B1B556D520EE6C4C00210D55 /* SegmentedViewController.h */,
 				B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */,
 				B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */,
-				B1B5594820EF980800210D55 /* Views */,
 			);
 			path = SegmentedViewController;
 			sourceTree = "<group>";
@@ -2175,17 +2169,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		B1B5594820EF980800210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5594920EF980800210D55 /* RecentTableViewCell.h */,
-				B1B5594A20EF980800210D55 /* RecentTableViewCell.m */,
-				B1B5594B20EF980800210D55 /* RecentTableViewCell.xib */,
-			);
-			name = Views;
-			path = Riot/Modules/Common/Recents/Views;
-			sourceTree = SOURCE_ROOT;
-		};
 		B1B5594E20EF9A8600210D55 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2700,19 +2683,17 @@
 				24D6B35B1F3CA03300FC7A71 /* ShareViewController.xib in Resources */,
 				F0BFBDBD1FF3BFC800C88726 /* Vector.strings in Resources */,
 				F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */,
-				2435179C1F375B9400D0683E /* Info.plist in Resources */,
 				F0BFBDBE1FF3BFCD00C88726 /* Vector.strings in Resources */,
 				2435179F1F375C0F00D0683E /* Vector.strings in Resources */,
 				24EEE5AF1F25F0F500B3C705 /* Images.xcassets in Resources */,
+				B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */,
 				F0BFBDBA1FF3BDDF00C88726 /* Vector.strings in Resources */,
 				F0BFBDBC1FF3BFC100C88726 /* Vector.strings in Resources */,
 				F0BFBDC01FF3BFE200C88726 /* Vector.strings in Resources */,
 				F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */,
 				F0BFBDBF1FF3BFD200C88726 /* Vector.strings in Resources */,
 				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
 				2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */,
-				24EEE5A41F24C06E00B3C705 /* (null) in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2813,7 +2794,6 @@
 				B1B5578E20EF568D00210D55 /* GroupInviteTableViewCell.xib in Resources */,
 				B1B5582020EF625800210D55 /* SimpleRoomTitleView.xib in Resources */,
 				F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */,
-				B1B5594D20EF980900210D55 /* RecentTableViewCell.xib in Resources */,
 				B1B558D120EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1B558FE20EF768F00210D55 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B5581D20EF625800210D55 /* RoomAvatarTitleView.xib in Resources */,
@@ -2996,6 +2976,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24D6B3581F3C90D300FC7A71 /* ShareDataSource.m in Sources */,
+				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
 				245FC3EF1F3DD30800603C6A /* RecentCellData.m in Sources */,
 				24D6B35C1F3CA03600FC7A71 /* RoomsListViewController.m in Sources */,
 				24D6B35A1F3CA02C00FC7A71 /* ShareViewController.m in Sources */,
@@ -3007,6 +2988,7 @@
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
 				2439DD621F6BBE760090F42D /* RecentRoomTableViewCell.m in Sources */,
 				245FC3ED1F3D079A00603C6A /* ShareExtensionManager.m in Sources */,
+				B169328320F38AE600746532 /* RiotSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3147,7 +3129,6 @@
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5575120EE6C4D00210D55 /* AuthenticationViewController.m in Sources */,
-				B1B5594C20EF980900210D55 /* RecentTableViewCell.m in Sources */,
 				F083BDF81E7009ED00A9B29C /* RoomDataSource.m in Sources */,
 				B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */,
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
@@ -3688,6 +3669,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A5030B7C3C0B6EB83A9257BD /* Pods-RiotPods-Riot.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
@@ -3727,6 +3709,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F546BCBBB9BBEE67DB28878A /* Pods-RiotPods-Riot.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Riot/Riot.entitlements;
