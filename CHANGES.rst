@@ -1,3 +1,10 @@
+Changes in 0.6.20 ()
+===============================================
+
+Improvements:
+* Update project structure. Organize UI related files by feature (PR#1932).
+* Move image files to xcassets (PR#1932).
+
 Changes in 0.6.19 (2018-07-05)
 ===============================================
 

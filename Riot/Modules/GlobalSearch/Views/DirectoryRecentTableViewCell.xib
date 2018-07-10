@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="L2L-l5-wPx" customClass="DirectoryRecentTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2L-l5-wPx" id="aXz-IR-jj5">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="73.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="TPL-8D-oME">
+                        <rect key="frame" x="26" y="16" width="42" height="42"/>
+                        <accessibility key="accessibilityConfiguration" identifier="PlaceHolder"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="42" id="qAg-He-PXb"/>
+                            <constraint firstAttribute="width" secondItem="TPL-8D-oME" secondAttribute="height" multiplier="1:1" id="wzs-X7-8wC"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
+                        <rect key="frame" x="82" y="41" width="511" height="21"/>
+                        <accessibility key="accessibilityConfiguration" identifier="DescriptionLabel"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="e6p-DU-3ny"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
+                        <rect key="frame" x="82" y="17" width="35" height="20"/>
+                        <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="NW9-MB-gf4"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron" translatesAutoresizingMaskIntoConstraints="NO" id="Xgp-JV-bm1">
+                        <rect key="frame" x="559" y="28" width="8" height="17"/>
+                        <accessibility key="accessibilityConfiguration" identifier="ChevronImageView"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="2fh-OW-kCh"/>
+                            <constraint firstAttribute="width" constant="8" id="9CB-Si-J5N"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="TPL-8D-oME" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leadingMargin" constant="6" id="LVu-AH-5Ac"/>
+                    <constraint firstItem="TPL-8D-oME" firstAttribute="centerY" secondItem="Xgp-JV-bm1" secondAttribute="centerY" id="QYq-CA-8gL"/>
+                    <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="dDa-ra-3O4"/>
+                    <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="TPL-8D-oME" secondAttribute="trailing" constant="14" id="g9c-CK-uxU"/>
+                    <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="dQt-mN-T6b" secondAttribute="leading" id="itp-0x-LhV"/>
+                    <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="topMargin" constant="6" id="jLI-GY-QfV"/>
+                    <constraint firstItem="Xgp-JV-bm1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="4" id="kg7-lm-lU8"/>
+                    <constraint firstItem="Xgp-JV-bm1" firstAttribute="centerY" secondItem="aXz-IR-jj5" secondAttribute="centerY" id="nsF-Aj-oha"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Xgp-JV-bm1" secondAttribute="trailing" constant="13" id="qC2-f0-2cu"/>
+                    <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" constant="7" id="t2m-pb-5zd"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="DirectoryRecentTableViewCell"/>
+            <connections>
+                <outlet property="chevronImageView" destination="Xgp-JV-bm1" id="tU6-gd-lAX"/>
+                <outlet property="descriptionLabel" destination="dQt-mN-T6b" id="XON-GW-a6T"/>
+                <outlet property="titleLabel" destination="Lg1-xQ-AGn" id="uqU-hH-KT0"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="chevron" width="8" height="17"/>
+        <image name="placeholder" width="42" height="42"/>
+    </resources>
+</document>

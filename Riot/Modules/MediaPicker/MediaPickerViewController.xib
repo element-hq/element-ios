@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MediaPickerViewController">
+            <connections>
+                <outlet property="cameraActivityIndicator" destination="dxP-iB-dWk" id="HBu-hw-Cx9"/>
+                <outlet property="cameraCaptureButton" destination="uRG-b0-CjY" id="3Qc-PU-LUY"/>
+                <outlet property="cameraCaptureButtonWidthConstraint" destination="gmN-48-HHd" id="NQ1-3b-Oz7"/>
+                <outlet property="cameraPreviewContainerAspectRatio" destination="QDd-Tq-4zL" id="qNb-5w-GnM"/>
+                <outlet property="cameraPreviewContainerView" destination="w7z-f3-kdT" id="iqZ-I1-ZcW"/>
+                <outlet property="cameraSwitchButton" destination="PXk-ZD-TYS" id="i6p-yB-8HG"/>
+                <outlet property="cameraVideoCaptureProgressView" destination="aXP-Vh-zUp" id="yvj-G0-8oa"/>
+                <outlet property="captureViewContainer" destination="cE0-0g-Su5" id="cr5-6S-9rj"/>
+                <outlet property="closeButton" destination="sO8-Ds-mXZ" id="lkx-5W-NN9"/>
+                <outlet property="libraryViewContainer" destination="QeN-lu-6hK" id="hHu-hn-fXS"/>
+                <outlet property="libraryViewContainerViewHeightConstraint" destination="aRE-Ox-5IJ" id="6mr-qM-Oge"/>
+                <outlet property="mainScrollView" destination="ZfS-wG-RjJ" id="Jjn-q7-ggw"/>
+                <outlet property="recentCapturesCollectionContainerView" destination="jzs-FL-Rqd" id="HiO-qI-0qX"/>
+                <outlet property="recentCapturesCollectionContainerViewHeightConstraint" destination="YRs-ey-rGJ" id="C7p-80-Ywp"/>
+                <outlet property="recentCapturesCollectionView" destination="Cnz-mP-gE5" id="JgC-f6-sYW"/>
+                <outlet property="userAlbumsTableView" destination="mCG-GH-ADc" id="dfb-NV-qvX"/>
+                <outlet property="view" destination="iN0-l3-epB" id="AXL-FN-kh5"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZfS-wG-RjJ">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cE0-0g-Su5" userLabel="Capture View">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="607.33333333333337"/>
+                            <subviews>
+                                <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="w7z-f3-kdT" userLabel="Preview Container View">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="607.33333333333337"/>
+                                    <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCPreviewContainerView"/>
+                                </view>
+                                <button opaque="NO" alpha="0.40000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXk-ZD-TYS" userLabel="Camera Switch Button">
+                                    <rect key="frame" x="356" y="24" width="46" height="46"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCameraSwitchButton"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="46" id="5IK-zA-C0Z"/>
+                                        <constraint firstAttribute="width" constant="46" id="JWE-xq-eRq"/>
+                                    </constraints>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="xHg-kl-L3w"/>
+                                    </connections>
+                                </button>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera_switch" translatesAutoresizingMaskIntoConstraints="NO" id="etc-h5-0u2">
+                                    <rect key="frame" x="363" y="35" width="32" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="Mci-PP-bNY"/>
+                                        <constraint firstAttribute="height" constant="24" id="cqi-nf-MLe"/>
+                                    </constraints>
+                                </imageView>
+                                <button opaque="NO" alpha="0.40000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sO8-Ds-mXZ" userLabel="Close Button">
+                                    <rect key="frame" x="12" y="24" width="46" height="46"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCloseButton"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="46" id="Rrv-zB-kX4"/>
+                                        <constraint firstAttribute="height" constant="46" id="nXZ-ee-z3I"/>
+                                    </constraints>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="nvH-aw-ZJK"/>
+                                    </connections>
+                                </button>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="remove_icon" translatesAutoresizingMaskIntoConstraints="NO" id="VA2-Cu-dX6">
+                                    <rect key="frame" x="24" y="36" width="22" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="22" id="AVO-AA-HaQ"/>
+                                        <constraint firstAttribute="width" constant="22" id="UST-cV-kEd"/>
+                                    </constraints>
+                                </imageView>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dxP-iB-dWk" userLabel="Camera Activity Indicator">
+                                    <rect key="frame" x="197" y="294" width="20" height="20"/>
+                                </activityIndicatorView>
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXP-Vh-zUp" customClass="MXKPieChartView">
+                                    <rect key="frame" x="161" y="490" width="92" height="92"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCameraVideoCaptureProgressView"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="92" id="xVc-PA-ekx"/>
+                                        <constraint firstAttribute="width" constant="92" id="xcR-cZ-E3Z"/>
+                                    </constraints>
+                                </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRG-b0-CjY" userLabel="Capture Button">
+                                    <rect key="frame" x="165.66666666666666" y="494.33333333333326" width="83" height="83"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCaptureButton"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="uRG-b0-CjY" secondAttribute="height" multiplier="1:1" id="1aP-D4-EI5"/>
+                                        <constraint firstAttribute="width" constant="83" id="gmN-48-HHd"/>
+                                    </constraints>
+                                    <state key="normal" image="camera_capture">
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <state key="highlighted" image="camera_capture"/>
+                                    <connections>
+                                        <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="R4P-UW-q4j"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <accessibility key="accessibilityConfiguration" identifier="accessibilityIdentifierCaptureView"/>
+                            <constraints>
+                                <constraint firstItem="etc-h5-0u2" firstAttribute="centerX" secondItem="PXk-ZD-TYS" secondAttribute="centerX" id="1Kl-Hi-rvU"/>
+                                <constraint firstItem="PXk-ZD-TYS" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" constant="24" id="3bv-hT-POE"/>
+                                <constraint firstAttribute="trailing" secondItem="w7z-f3-kdT" secondAttribute="trailing" id="5lY-ez-A5W"/>
+                                <constraint firstAttribute="bottom" secondItem="uRG-b0-CjY" secondAttribute="bottom" constant="30" id="F15-CU-duW"/>
+                                <constraint firstItem="VA2-Cu-dX6" firstAttribute="centerY" secondItem="sO8-Ds-mXZ" secondAttribute="centerY" id="Fze-aW-Jg3"/>
+                                <constraint firstItem="aXP-Vh-zUp" firstAttribute="centerX" secondItem="uRG-b0-CjY" secondAttribute="centerX" id="IWo-s2-YaV"/>
+                                <constraint firstAttribute="bottom" secondItem="w7z-f3-kdT" secondAttribute="bottom" id="Odc-BN-d37"/>
+                                <constraint firstAttribute="width" secondItem="cE0-0g-Su5" secondAttribute="height" multiplier="15:22" priority="750" id="QDd-Tq-4zL"/>
+                                <constraint firstItem="VA2-Cu-dX6" firstAttribute="centerX" secondItem="sO8-Ds-mXZ" secondAttribute="centerX" id="Xmg-sf-k4n"/>
+                                <constraint firstItem="etc-h5-0u2" firstAttribute="centerY" secondItem="PXk-ZD-TYS" secondAttribute="centerY" id="cW6-ue-5Vb"/>
+                                <constraint firstItem="w7z-f3-kdT" firstAttribute="leading" secondItem="cE0-0g-Su5" secondAttribute="leading" id="eH4-0j-WXi"/>
+                                <constraint firstItem="aXP-Vh-zUp" firstAttribute="centerY" secondItem="uRG-b0-CjY" secondAttribute="centerY" id="iNa-wg-YTJ"/>
+                                <constraint firstItem="w7z-f3-kdT" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" id="kXk-s5-NTi"/>
+                                <constraint firstItem="dxP-iB-dWk" firstAttribute="centerY" secondItem="cE0-0g-Su5" secondAttribute="centerY" id="lut-Up-d2d"/>
+                                <constraint firstAttribute="trailing" secondItem="PXk-ZD-TYS" secondAttribute="trailing" constant="12" id="nlx-eq-jfm"/>
+                                <constraint firstItem="sO8-Ds-mXZ" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" constant="24" id="oLB-32-Cmq"/>
+                                <constraint firstAttribute="centerX" secondItem="uRG-b0-CjY" secondAttribute="centerX" id="sca-zF-zuj"/>
+                                <constraint firstItem="sO8-Ds-mXZ" firstAttribute="leading" secondItem="cE0-0g-Su5" secondAttribute="leading" constant="12" id="tCv-ru-PZS"/>
+                                <constraint firstItem="dxP-iB-dWk" firstAttribute="centerX" secondItem="cE0-0g-Su5" secondAttribute="centerX" id="xNd-lI-T6h"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jzs-FL-Rqd" userLabel="Collection Container View">
+                            <rect key="frame" x="0.0" y="607.33333333333337" width="414" height="450.00000000000011"/>
+                            <subviews>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Cnz-mP-gE5">
+                                    <rect key="frame" x="0.0" y="2" width="414" height="448"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="wY5-ZF-Ge2">
+                                        <size key="itemSize" width="148" height="148"/>
+                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </collectionViewFlowLayout>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MediaPickerVCRecentCapturesCollectionView"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="Muv-lU-58u"/>
+                                        <outlet property="delegate" destination="-1" id="mW5-pj-ZDH"/>
+                                    </connections>
+                                </collectionView>
+                            </subviews>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Cnz-mP-gE5" secondAttribute="trailing" id="9iz-v8-Akn"/>
+                                <constraint firstItem="Cnz-mP-gE5" firstAttribute="leading" secondItem="jzs-FL-Rqd" secondAttribute="leading" id="WV8-td-E9m"/>
+                                <constraint firstAttribute="height" constant="450" id="YRs-ey-rGJ"/>
+                                <constraint firstItem="Cnz-mP-gE5" firstAttribute="top" secondItem="jzs-FL-Rqd" secondAttribute="top" constant="2" id="tbF-T3-ksS"/>
+                                <constraint firstAttribute="bottom" secondItem="Cnz-mP-gE5" secondAttribute="bottom" id="vWd-un-Yfl"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QeN-lu-6hK" userLabel="Library View">
+                            <rect key="frame" x="0.0" y="1057.3333333333333" width="414" height="74"/>
+                            <subviews>
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="74" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mCG-GH-ADc" userLabel="Albums Table View">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="74"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MediaPickerVCAlbumsTableView"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="j68-uL-bro"/>
+                                        <outlet property="delegate" destination="-1" id="aCT-mL-1LW"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                            <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCLibraryView"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="mCG-GH-ADc" secondAttribute="bottom" id="BLR-tx-xTO"/>
+                                <constraint firstAttribute="trailing" secondItem="mCG-GH-ADc" secondAttribute="trailing" id="CV6-CG-ob1"/>
+                                <constraint firstItem="mCG-GH-ADc" firstAttribute="top" secondItem="QeN-lu-6hK" secondAttribute="top" id="QsV-mV-xPd"/>
+                                <constraint firstItem="mCG-GH-ADc" firstAttribute="leading" secondItem="QeN-lu-6hK" secondAttribute="leading" id="SyM-a9-t1R"/>
+                                <constraint firstAttribute="height" constant="74" id="aRE-Ox-5IJ"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="cE0-0g-Su5" firstAttribute="top" secondItem="ZfS-wG-RjJ" secondAttribute="top" id="1Kz-qe-p3Y"/>
+                        <constraint firstItem="QeN-lu-6hK" firstAttribute="top" secondItem="jzs-FL-Rqd" secondAttribute="bottom" id="3az-9S-rxJ"/>
+                        <constraint firstItem="cE0-0g-Su5" firstAttribute="centerX" secondItem="ZfS-wG-RjJ" secondAttribute="centerX" id="Fqd-7G-H68"/>
+                        <constraint firstItem="cE0-0g-Su5" firstAttribute="leading" secondItem="ZfS-wG-RjJ" secondAttribute="leading" id="IZE-p0-8AN"/>
+                        <constraint firstAttribute="bottom" secondItem="QeN-lu-6hK" secondAttribute="bottom" id="XIT-bd-OlA"/>
+                        <constraint firstAttribute="trailing" secondItem="cE0-0g-Su5" secondAttribute="trailing" id="c8a-IH-WgO"/>
+                        <constraint firstItem="QeN-lu-6hK" firstAttribute="leading" secondItem="ZfS-wG-RjJ" secondAttribute="leading" id="e0b-PE-U5c"/>
+                        <constraint firstAttribute="trailing" secondItem="jzs-FL-Rqd" secondAttribute="trailing" id="g7G-DC-uSR"/>
+                        <constraint firstAttribute="trailing" secondItem="QeN-lu-6hK" secondAttribute="trailing" id="kbe-Uh-tug"/>
+                        <constraint firstItem="jzs-FL-Rqd" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="bottom" id="q35-tT-GBd"/>
+                        <constraint firstItem="cE0-0g-Su5" firstAttribute="height" relation="lessThanOrEqual" secondItem="ZfS-wG-RjJ" secondAttribute="height" id="w7s-40-3O5"/>
+                        <constraint firstItem="jzs-FL-Rqd" firstAttribute="leading" secondItem="ZfS-wG-RjJ" secondAttribute="leading" id="wZf-nP-JTD"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MediaPickerVCMainScrollView"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Wso-Tg-NuE"/>
+                    </connections>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCView"/>
+            <constraints>
+                <constraint firstItem="ZfS-wG-RjJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BJx-Hb-D6M"/>
+                <constraint firstAttribute="bottom" secondItem="ZfS-wG-RjJ" secondAttribute="bottom" id="Sre-5e-ocp"/>
+                <constraint firstAttribute="trailing" secondItem="ZfS-wG-RjJ" secondAttribute="trailing" id="UrC-gh-xoR"/>
+                <constraint firstItem="ZfS-wG-RjJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bUn-mA-Mv2"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="camera_capture" width="83" height="83"/>
+        <image name="camera_switch" width="32" height="24"/>
+        <image name="remove_icon" width="24" height="24"/>
+    </resources>
+</document>
