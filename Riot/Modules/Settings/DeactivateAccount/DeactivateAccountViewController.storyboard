@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IHf-2R-Nmh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IHf-2R-Nmh">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -43,8 +43,8 @@ Message visibility in Matrix is similar to email. Our forgetting your messages m
                                                     <constraint firstAttribute="height" constant="44" id="3Bn-lP-a2k"/>
                                                     <constraint firstAttribute="width" secondItem="UBr-xR-a5z" secondAttribute="height" multiplier="1:1" id="6Nd-IG-Wda"/>
                                                 </constraints>
-                                                <state key="normal" image="selection_untick.png"/>
-                                                <state key="selected" image="selection_tick.png"/>
+                                                <state key="normal" image="selection_untick"/>
+                                                <state key="selected" image="selection_tick"/>
                                                 <connections>
                                                     <action selector="forgetMessagesButtonAction:" destination="IHf-2R-Nmh" eventType="touchUpInside" id="gbq-6b-IU4"/>
                                                 </connections>
@@ -124,7 +124,7 @@ Message visibility in Matrix is similar to email. Our forgetting your messages m
         </scene>
     </scenes>
     <resources>
-        <image name="selection_tick.png" width="22" height="22"/>
-        <image name="selection_untick.png" width="22" height="22"/>
+        <image name="selection_tick" width="22" height="22"/>
+        <image name="selection_untick" width="22" height="22"/>
     </resources>
 </document>

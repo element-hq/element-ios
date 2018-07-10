@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -129,7 +129,7 @@
                                 <constraint firstAttribute="width" constant="44" id="Jm3-K6-0hG"/>
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="5" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" image="shrink_icon.png"/>
+                            <state key="normal" image="shrink_icon"/>
                             <connections>
                                 <action selector="selectPhoneNumberCountry:" destination="x74-04-ezp" eventType="touchUpInside" id="nvG-sc-8Wn"/>
                             </connections>
@@ -309,6 +309,6 @@
         </view>
     </objects>
     <resources>
-        <image name="shrink_icon.png" width="12" height="6"/>
+        <image name="shrink_icon" width="12" height="6"/>
     </resources>
 </document>

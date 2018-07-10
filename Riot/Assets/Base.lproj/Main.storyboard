@@ -38,10 +38,10 @@
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <rightBarButtonItems>
-                            <barButtonItem image="search_icon.png" id="wyR-qv-IxC" userLabel="Menu Bar Button Item">
+                            <barButtonItem image="search_icon" id="wyR-qv-IxC" userLabel="Menu Bar Button Item">
                                 <inset key="imageInsets" minX="-5" minY="0.0" maxX="5" maxY="0.0"/>
                             </barButtonItem>
-                            <barButtonItem image="apps-icon.png" id="cal-D0-6Fw">
+                            <barButtonItem image="apps-icon" id="cal-D0-6Fw">
                                 <inset key="imageInsets" minX="10" minY="0.0" maxX="-10" maxY="0.0"/>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -177,7 +177,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="2" image="tab_people.png" selectedImage="tab_people_selected.png" id="edr-fK-bgM">
+                    <tabBarItem key="tabBarItem" tag="2" image="tab_people" selectedImage="tab_people_selected" id="edr-fK-bgM">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemPeople"/>
                         </userDefinedRuntimeAttributes>
@@ -203,7 +203,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="1" image="tab_favourites.png" selectedImage="tab_favourites_selected.png" id="UVh-Xd-zDZ">
+                    <tabBarItem key="tabBarItem" tag="1" image="tab_favourites" selectedImage="tab_favourites_selected" id="UVh-Xd-zDZ">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemFavourites"/>
                         </userDefinedRuntimeAttributes>
@@ -247,7 +247,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_home.png" selectedImage="tab_home_selected.png" id="hNI-yH-EXj">
+                    <tabBarItem key="tabBarItem" title="" image="tab_home" selectedImage="tab_home_selected" id="hNI-yH-EXj">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemHome"/>
                         </userDefinedRuntimeAttributes>
@@ -266,7 +266,7 @@
             <objects>
                 <tabBarController id="xaQ-tG-rlO" customClass="MasterTabBarController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="m6O-wq-yrc">
-                        <barButtonItem key="leftBarButtonItem" image="settings_icon.png" id="QSE-cg-V2m">
+                        <barButtonItem key="leftBarButtonItem" image="settings_icon" id="QSE-cg-V2m">
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MasterTabBarControllerSettingsBarButton"/>
                             </userDefinedRuntimeAttributes>
@@ -274,7 +274,7 @@
                                 <segue destination="taU-5Q-sdv" kind="show" identifier="showSettings" id="3jh-kY-vVn"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="search_icon.png" id="pud-Fh-Usd">
+                        <barButtonItem key="rightBarButtonItem" image="search_icon" id="pud-Fh-Usd">
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MasterTabBarControllerSearchBarButton"/>
                             </userDefinedRuntimeAttributes>
@@ -437,7 +437,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="6LG-qc-7jf">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="6LG-qc-7jf">
                                 <rect key="frame" x="127" y="283" width="120" height="101"/>
                             </imageView>
                         </subviews>
@@ -466,7 +466,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_groups.png" selectedImage="tab_groups_selected.png" id="5x2-xc-uIB"/>
+                    <tabBarItem key="tabBarItem" title="" image="tab_groups" selectedImage="tab_groups_selected" id="5x2-xc-uIB"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xpc-LV-krz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -485,7 +485,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms.png" selectedImage="tab_rooms.png" id="7eS-Ei-00V">
+                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms" selectedImage="tab_rooms" id="7eS-Ei-00V">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemRooms"/>
                         </userDefinedRuntimeAttributes>
@@ -593,22 +593,22 @@
         </scene>
     </scenes>
     <resources>
-        <image name="apps-icon.png" width="24" height="24"/>
-        <image name="logo.png" width="120" height="101"/>
-        <image name="search_icon.png" width="22" height="22"/>
-        <image name="settings_icon.png" width="24" height="24"/>
-        <image name="tab_favourites.png" width="25" height="25"/>
-        <image name="tab_favourites_selected.png" width="25" height="25"/>
-        <image name="tab_groups.png" width="25" height="25"/>
-        <image name="tab_groups_selected.png" width="25" height="25"/>
-        <image name="tab_home.png" width="25" height="25"/>
-        <image name="tab_home_selected.png" width="25" height="25"/>
-        <image name="tab_people.png" width="25" height="25"/>
-        <image name="tab_people_selected.png" width="25" height="25"/>
-        <image name="tab_rooms.png" width="25" height="25"/>
+        <image name="apps-icon" width="24" height="24"/>
+        <image name="logo" width="120" height="101"/>
+        <image name="search_icon" width="22" height="22"/>
+        <image name="settings_icon" width="24" height="24"/>
+        <image name="tab_favourites" width="25" height="25"/>
+        <image name="tab_favourites_selected" width="25" height="25"/>
+        <image name="tab_groups" width="25" height="25"/>
+        <image name="tab_groups_selected" width="25" height="25"/>
+        <image name="tab_home" width="25" height="25"/>
+        <image name="tab_home_selected" width="25" height="25"/>
+        <image name="tab_people" width="25" height="25"/>
+        <image name="tab_people_selected" width="25" height="25"/>
+        <image name="tab_rooms" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mhb-l9-pM3"/>
+        <segue reference="Tfl-tq-LQp"/>
         <segue reference="fIR-e3-ssz"/>
         <segue reference="f5u-Y1-7nt"/>
         <segue reference="vCz-dl-6xQ"/>

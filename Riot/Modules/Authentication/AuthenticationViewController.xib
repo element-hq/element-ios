@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -84,8 +84,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhx-dD-4EJ" userLabel="Content View">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="485"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8r-TX-pwX" userLabel="Welcome Image View">
-                                    <rect key="frame" x="127.66666666666666" y="25" width="119.99999999999997" height="101"/>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="d8r-TX-pwX" userLabel="Welcome Image View">
+                                    <rect key="frame" x="127.66666666666669" y="25" width="120" height="101"/>
                                     <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCWelcomeImageView"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="120" id="ZFx-Mn-Kzq"/>
@@ -102,13 +102,13 @@
                                             </userDefinedRuntimeAttributes>
                                         </activityIndicatorView>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currently we do not support authentication flows defined by this Home Server" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="54b-4O-ip9" userLabel="noFlowLabel">
-                                            <rect key="frame" x="9" y="8" width="358" height="17"/>
+                                            <rect key="frame" x="28.333333333333343" y="8" width="319.33333333333326" height="33.666666666666664"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wIH-Kd-r7q" userLabel="retryButton">
-                                            <rect key="frame" x="165.66666666666666" y="30" width="45" height="30"/>
+                                            <rect key="frame" x="165.66666666666666" y="46.666666666666686" width="45" height="30"/>
                                             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCRetryButton"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="WtO-NT-ei8"/>
@@ -205,7 +205,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="buF-NU-DPO"/>
                                                     </constraints>
                                                     <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="selection_untick.png">
+                                                    <state key="normal" image="selection_untick">
                                                         <attributedString key="attributedTitle">
                                                             <fragment content="Use custom server options">
                                                                 <attributes>
@@ -449,7 +449,7 @@
         </view>
     </objects>
     <resources>
-        <image name="logo.png" width="120" height="101"/>
-        <image name="selection_untick.png" width="22" height="22"/>
+        <image name="logo" width="120" height="101"/>
+        <image name="selection_untick" width="22" height="22"/>
     </resources>
 </document>

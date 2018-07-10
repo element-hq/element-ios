@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -62,7 +62,7 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="xHg-kl-L3w"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera_switch.png" translatesAutoresizingMaskIntoConstraints="NO" id="etc-h5-0u2">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera_switch" translatesAutoresizingMaskIntoConstraints="NO" id="etc-h5-0u2">
                                     <rect key="frame" x="363" y="35" width="32" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="32" id="Mci-PP-bNY"/>
@@ -84,7 +84,7 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="nvH-aw-ZJK"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="remove_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="VA2-Cu-dX6">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="remove_icon" translatesAutoresizingMaskIntoConstraints="NO" id="VA2-Cu-dX6">
                                     <rect key="frame" x="24" y="36" width="22" height="22"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="22" id="AVO-AA-HaQ"/>
@@ -104,16 +104,16 @@
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRG-b0-CjY" userLabel="Capture Button">
-                                    <rect key="frame" x="165.66666666666666" y="494.33333333333331" width="83" height="83"/>
+                                    <rect key="frame" x="165.66666666666666" y="494.33333333333326" width="83" height="83"/>
                                     <accessibility key="accessibilityConfiguration" identifier="MediaPickerVCCaptureButton"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="uRG-b0-CjY" secondAttribute="height" multiplier="1:1" id="1aP-D4-EI5"/>
                                         <constraint firstAttribute="width" constant="83" id="gmN-48-HHd"/>
                                     </constraints>
-                                    <state key="normal" image="camera_capture.png">
+                                    <state key="normal" image="camera_capture">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
-                                    <state key="highlighted" image="camera_capture.png"/>
+                                    <state key="highlighted" image="camera_capture"/>
                                     <connections>
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="R4P-UW-q4j"/>
                                     </connections>
@@ -143,10 +143,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jzs-FL-Rqd" userLabel="Collection Container View">
-                            <rect key="frame" x="0.0" y="607.33333333333326" width="414" height="449.99999999999977"/>
+                            <rect key="frame" x="0.0" y="607.33333333333337" width="414" height="450.00000000000011"/>
                             <subviews>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Cnz-mP-gE5">
-                                    <rect key="frame" x="0.0" y="2" width="414" height="447.99999999999989"/>
+                                    <rect key="frame" x="0.0" y="2" width="414" height="448"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="wY5-ZF-Ge2">
                                         <size key="itemSize" width="148" height="148"/>
@@ -230,8 +230,8 @@
         </view>
     </objects>
     <resources>
-        <image name="camera_capture.png" width="83" height="83"/>
-        <image name="camera_switch.png" width="32" height="24"/>
-        <image name="remove_icon.png" width="25" height="24"/>
+        <image name="camera_capture" width="83" height="83"/>
+        <image name="camera_switch" width="32" height="24"/>
+        <image name="remove_icon" width="24" height="24"/>
     </resources>
 </document>

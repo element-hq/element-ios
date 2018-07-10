@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -78,19 +78,19 @@
                                             <rect key="frame" x="0.0" y="48.666666666666657" width="394" height="333"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pop up explanation" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q2l-Yi-SlQ">
-                                                    <rect key="frame" x="20" y="0.0" width="354" height="16"/>
+                                                    <rect key="frame" x="20" y="0.0" width="354" height="15.666666666666666"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" text="bug description" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ssD-te-07G">
-                                                    <rect key="frame" x="20" y="23.999999999999986" width="354" height="221"/>
+                                                    <rect key="frame" x="20" y="23.666666666666671" width="354" height="221.66666666666663"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="log bla bla" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggt-kq-Zy9">
-                                                    <rect key="frame" x="20" y="253" width="354" height="16"/>
+                                                    <rect key="frame" x="20" y="253.33333333333334" width="354" height="15.666666666666657"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -105,7 +105,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="selection_tick.png" translatesAutoresizingMaskIntoConstraints="NO" id="hcc-ve-8OC">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="selection_tick" translatesAutoresizingMaskIntoConstraints="NO" id="hcc-ve-8OC">
                                                             <rect key="frame" x="20" y="1" width="22" height="22"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         </imageView>
@@ -121,17 +121,17 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6VA-Ng-S8R">
-                                                    <rect key="frame" x="20" y="309" width="354" height="23.999999999999943"/>
+                                                    <rect key="frame" x="20" y="309" width="354" height="24"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send screenshot" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jnv-xY-Byx">
-                                                            <rect key="frame" x="50" y="4" width="284" height="15.999999999999943"/>
+                                                            <rect key="frame" x="50" y="4" width="284" height="16"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="selection_tick.png" translatesAutoresizingMaskIntoConstraints="NO" id="wmW-9T-6xp">
-                                                            <rect key="frame" x="20" y="1" width="22" height="21.999999999999943"/>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="selection_tick" translatesAutoresizingMaskIntoConstraints="NO" id="wmW-9T-6xp">
+                                                            <rect key="frame" x="20" y="1" width="22" height="22"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         </imageView>
                                                     </subviews>
@@ -170,7 +170,7 @@
                                             <rect key="frame" x="0.0" y="49" width="394" height="333"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uploading report" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yBc-B9-RaA">
-                                                    <rect key="frame" x="131.66666666666669" y="135.66666666666669" width="130.00000000000006" height="21"/>
+                                                    <rect key="frame" x="132" y="136.33333333333331" width="129.66666666666663" height="20.333333333333343"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -251,6 +251,6 @@
         </view>
     </objects>
     <resources>
-        <image name="selection_tick.png" width="22" height="22"/>
+        <image name="selection_tick" width="22" height="22"/>
     </resources>
 </document>

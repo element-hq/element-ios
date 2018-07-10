@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -37,7 +37,7 @@
                                     <constraint firstAttribute="width" constant="50" id="UaQ-bI-bWg"/>
                                 </constraints>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="directChatOff.png" translatesAutoresizingMaskIntoConstraints="NO" id="zv7-4U-qzL">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="directChatOff" translatesAutoresizingMaskIntoConstraints="NO" id="zv7-4U-qzL">
                                 <rect key="frame" x="165" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="HVn-3g-jMX"/>
@@ -47,7 +47,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dsz-Yx-goM">
                                 <rect key="frame" x="210" y="0.0" width="50" height="60"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notificationsOff.png" translatesAutoresizingMaskIntoConstraints="NO" id="LJb-Om-aCu">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notificationsOff" translatesAutoresizingMaskIntoConstraints="NO" id="LJb-Om-aCu">
                                 <rect key="frame" x="215" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="Bxy-g5-Fm8"/>
@@ -57,7 +57,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MbR-Oe-6k1">
                                 <rect key="frame" x="260" y="0.0" width="50" height="60"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="favouriteOff.png" translatesAutoresizingMaskIntoConstraints="NO" id="f0O-Nh-XqH">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="favouriteOff" translatesAutoresizingMaskIntoConstraints="NO" id="f0O-Nh-XqH">
                                 <rect key="frame" x="265" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="hss-6b-AOg"/>
@@ -67,7 +67,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BsI-jp-frH">
                                 <rect key="frame" x="310" y="0.0" width="50" height="60"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="priorityLow.png" translatesAutoresizingMaskIntoConstraints="NO" id="uJK-LE-Vkz">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="priorityLow" translatesAutoresizingMaskIntoConstraints="NO" id="uJK-LE-Vkz">
                                 <rect key="frame" x="320" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="YvB-as-G5U"/>
@@ -77,7 +77,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uG0-u6-BBj">
                                 <rect key="frame" x="360" y="0.0" width="50" height="60"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="leave.png" translatesAutoresizingMaskIntoConstraints="NO" id="cgb-3x-9qQ">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="leave" translatesAutoresizingMaskIntoConstraints="NO" id="cgb-3x-9qQ">
                                 <rect key="frame" x="365" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="52j-He-vyg"/>
@@ -152,10 +152,10 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="directChatOff.png" width="32" height="32"/>
-        <image name="favouriteOff.png" width="33" height="29"/>
-        <image name="leave.png" width="25" height="24"/>
-        <image name="notificationsOff.png" width="29" height="32"/>
-        <image name="priorityLow.png" width="31" height="24"/>
+        <image name="directChatOff" width="32" height="32"/>
+        <image name="favouriteOff" width="33" height="29"/>
+        <image name="leave" width="25" height="24"/>
+        <image name="notificationsOff" width="29" height="32"/>
+        <image name="priorityLow" width="31" height="24"/>
     </resources>
 </document>

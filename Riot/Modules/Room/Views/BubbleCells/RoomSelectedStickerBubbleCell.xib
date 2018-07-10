@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -58,7 +58,7 @@
                             <constraint firstAttribute="height" constant="30" id="dNT-QU-CUG"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="SfO-mO-OOz">
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="SfO-mO-OOz">
                         <rect key="frame" x="41" y="68" width="28" height="28"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptionStatusView"/>
                         <constraints>
@@ -204,6 +204,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="e2e_verified.png" width="10" height="12"/>
+        <image name="e2e_verified" width="10" height="12"/>
     </resources>
 </document>

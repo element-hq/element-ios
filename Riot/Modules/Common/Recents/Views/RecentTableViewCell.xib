@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -93,7 +93,7 @@
                             <constraint firstItem="mbn-A1-1Yw" firstAttribute="centerX" secondItem="OeZ-wN-eil" secondAttribute="centerX" id="ugY-V1-Ooo"/>
                         </constraints>
                     </view>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="NAZ-zd-MHS">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="NAZ-zd-MHS">
                         <rect key="frame" x="50" y="42" width="11" height="13"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                         <constraints>
@@ -140,6 +140,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="e2e_verified.png" width="10" height="12"/>
+        <image name="e2e_verified" width="10" height="12"/>
     </resources>
 </document>

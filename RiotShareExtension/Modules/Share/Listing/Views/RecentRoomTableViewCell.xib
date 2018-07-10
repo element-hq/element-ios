@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,7 +21,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJd-Am-cCx" customClass="MXKImageView">
-                        <rect key="frame" x="14" y="16" width="42" height="42"/>
+                        <rect key="frame" x="26" y="16" width="42" height="42"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="AvatarImageView"/>
                         <constraints>
@@ -30,14 +30,14 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fbf-fG-GSb">
-                        <rect key="frame" x="14" y="16" width="42" height="42"/>
+                        <rect key="frame" x="26" y="16" width="42" height="42"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Fbf-fG-GSb" secondAttribute="height" multiplier="1:1" id="1gX-EI-Ffa"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBS-iO-8H6">
-                        <rect key="frame" x="70" y="27" width="34" height="20"/>
+                        <rect key="frame" x="82" y="27" width="34" height="20"/>
                         <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="H21-1K-fGz"/>
@@ -46,8 +46,8 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="hqD-YY-LWz">
-                        <rect key="frame" x="50" y="42" width="11" height="13"/>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="hqD-YY-LWz">
+                        <rect key="frame" x="62" y="45" width="11" height="13"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="13" id="8jQ-rK-hf2"/>
@@ -80,6 +80,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="e2e_verified.png" width="10" height="12"/>
+        <image name="e2e_verified" width="10" height="12"/>
     </resources>
 </document>
