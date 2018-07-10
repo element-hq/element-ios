@@ -8,17 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2435179F1F375C0F00D0683E /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382C01F276AED00356143 /* Vector.strings */; };
-		2439DD621F6BBE760090F42D /* RecentRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2439DD611F6BBE760090F42D /* RecentRoomTableViewCell.m */; };
-		2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2439DD631F6BBEA50090F42D /* RecentRoomTableViewCell.xib */; };
-		245FC3ED1F3D079A00603C6A /* ShareExtensionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 245FC3EB1F3CAF9800603C6A /* ShareExtensionManager.m */; };
 		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		24D6B3581F3C90D300FC7A71 /* ShareDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D6B3571F3C90D300FC7A71 /* ShareDataSource.m */; };
-		24D6B3591F3CA02900FC7A71 /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D6B34B1F3C8F8A00FC7A71 /* SharePresentingViewController.m */; };
-		24D6B35A1F3CA02C00FC7A71 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D6B34D1F3C8F8A00FC7A71 /* ShareViewController.m */; };
-		24D6B35B1F3CA03300FC7A71 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24D6B34E1F3C8F8A00FC7A71 /* ShareViewController.xib */; };
-		24D6B35C1F3CA03600FC7A71 /* RoomsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D6B3491F3C8F8A00FC7A71 /* RoomsListViewController.m */; };
-		24D6B35D1F3CA03A00FC7A71 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D6B3461F3C8F8A00FC7A71 /* FallbackViewController.m */; };
-		24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24D6B3471F3C8F8A00FC7A71 /* FallbackViewController.xib */; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
 		32117182203ACD32002C16C6 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3211717C203ACD32002C16C6 /* Vector.strings */; };
@@ -58,6 +48,17 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		9D686B069F967C4D4BBC610F /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB50EEBE8214352B9EBD6394 /* Pods_RiotPods_SiriIntents.framework */; };
+		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
+		B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BAE20F4E67500808783 /* FallbackViewController.m */; };
+		B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB220F4E67500808783 /* SharePresentingViewController.m */; };
+		B1664BC820F4E67600808783 /* ShareDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB520F4E67500808783 /* ShareDataSource.m */; };
+		B1664BC920F4E67600808783 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BB720F4E67500808783 /* ShareViewController.xib */; };
+		B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB820F4E67500808783 /* ShareViewController.m */; };
+		B1664BCB20F4E67600808783 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BBA20F4E67500808783 /* RoomsListViewController.xib */; };
+		B1664BCC20F4E67600808783 /* RoomsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BBC20F4E67500808783 /* RoomsListViewController.m */; };
+		B1664BCD20F4E67600808783 /* RecentRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BBE20F4E67500808783 /* RecentRoomTableViewCell.m */; };
+		B1664BCE20F4E67600808783 /* RecentRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BBF20F4E67500808783 /* RecentRoomTableViewCell.xib */; };
+		B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BC420F4E67600808783 /* ShareExtensionManager.m */; };
 		B169328320F38AE600746532 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
 		B169328420F38BE300746532 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */; };
 		B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
@@ -353,7 +354,6 @@
 		F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */; };
 		F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
 		F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
-		F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */; };
 		F0BFBDBA1FF3BDDF00C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = 327382B31F276AD200356143 /* Vector.strings */; };
 		F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0173EAF1FCF346800B5F6A3 /* Vector.strings */; };
 		F0BFBDBC1FF3BFC100C88726 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F04AF2681F83A4C000D20F4D /* Vector.strings */; };
@@ -418,26 +418,9 @@
 		12AA0005C8B3D8D8162584C5 /* Pods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		22D76C11C202B6BC5917A049 /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		23D7292481328A48B8D5D4ED /* Pods_RiotPods_RiotShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_RiotShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2439DD601F6BBE760090F42D /* RecentRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentRoomTableViewCell.h; sourceTree = "<group>"; };
-		2439DD611F6BBE760090F42D /* RecentRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentRoomTableViewCell.m; sourceTree = "<group>"; };
-		2439DD631F6BBEA50090F42D /* RecentRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentRoomTableViewCell.xib; sourceTree = "<group>"; };
-		245FC3EA1F3CAF9800603C6A /* ShareExtensionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareExtensionManager.h; sourceTree = "<group>"; };
-		245FC3EB1F3CAF9800603C6A /* ShareExtensionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareExtensionManager.m; sourceTree = "<group>"; };
 		2466B7551F2F80B800AE27B0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RiotShareExtension/Info.plist; sourceTree = SOURCE_ROOT; };
 		2466B7561F2F80B800AE27B0 /* RiotShareExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = RiotShareExtension.entitlements; path = RiotShareExtension/RiotShareExtension.entitlements; sourceTree = SOURCE_ROOT; };
 		24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RiotShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		24D6B3451F3C8F8A00FC7A71 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
-		24D6B3461F3C8F8A00FC7A71 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
-		24D6B3471F3C8F8A00FC7A71 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
-		24D6B3481F3C8F8A00FC7A71 /* RoomsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsListViewController.h; sourceTree = "<group>"; };
-		24D6B3491F3C8F8A00FC7A71 /* RoomsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsListViewController.m; sourceTree = "<group>"; };
-		24D6B34A1F3C8F8A00FC7A71 /* SharePresentingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharePresentingViewController.h; sourceTree = "<group>"; };
-		24D6B34B1F3C8F8A00FC7A71 /* SharePresentingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharePresentingViewController.m; sourceTree = "<group>"; };
-		24D6B34C1F3C8F8A00FC7A71 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
-		24D6B34D1F3C8F8A00FC7A71 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
-		24D6B34E1F3C8F8A00FC7A71 /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
-		24D6B3561F3C90D300FC7A71 /* ShareDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDataSource.h; sourceTree = "<group>"; };
-		24D6B3571F3C90D300FC7A71 /* ShareDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDataSource.m; sourceTree = "<group>"; };
 		3211717D203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = Vector.strings; sourceTree = "<group>"; };
 		3211717F203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = Localizable.strings; sourceTree = "<group>"; };
 		32117181203ACD32002C16C6 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = InfoPlist.strings; sourceTree = "<group>"; };
@@ -486,6 +469,24 @@
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		A5030B7C3C0B6EB83A9257BD /* Pods-RiotPods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		B0FAA1A49F76B0CE15C5CBD8 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
+		B1664BAE20F4E67500808783 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
+		B1664BAF20F4E67500808783 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
+		B1664BB120F4E67500808783 /* SharePresentingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharePresentingViewController.h; sourceTree = "<group>"; };
+		B1664BB220F4E67500808783 /* SharePresentingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharePresentingViewController.m; sourceTree = "<group>"; };
+		B1664BB520F4E67500808783 /* ShareDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDataSource.m; sourceTree = "<group>"; };
+		B1664BB620F4E67500808783 /* ShareDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDataSource.h; sourceTree = "<group>"; };
+		B1664BB720F4E67500808783 /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
+		B1664BB820F4E67500808783 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		B1664BBA20F4E67500808783 /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
+		B1664BBB20F4E67500808783 /* RoomsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsListViewController.h; sourceTree = "<group>"; };
+		B1664BBC20F4E67500808783 /* RoomsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsListViewController.m; sourceTree = "<group>"; };
+		B1664BBE20F4E67500808783 /* RecentRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentRoomTableViewCell.m; sourceTree = "<group>"; };
+		B1664BBF20F4E67500808783 /* RecentRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentRoomTableViewCell.xib; sourceTree = "<group>"; };
+		B1664BC020F4E67500808783 /* RecentRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentRoomTableViewCell.h; sourceTree = "<group>"; };
+		B1664BC120F4E67500808783 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		B1664BC320F4E67600808783 /* ShareExtensionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareExtensionManager.h; sourceTree = "<group>"; };
+		B1664BC420F4E67600808783 /* ShareExtensionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareExtensionManager.m; sourceTree = "<group>"; };
 		B169328620F3954A00746532 /* SharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SharedImages.xcassets; sourceTree = "<group>"; };
 		B169329420F39E6200746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B169329620F39E6300746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -942,7 +943,6 @@
 		F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Riot-Defaults.plist"; sourceTree = "<group>"; };
 		F094A9A21B78D8F000B1FBBF /* Riot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Riot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RiotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
 		F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoomSummary+Riot.h"; sourceTree = "<group>"; };
 		F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoomSummary+Riot.m"; sourceTree = "<group>"; };
 		F546BCBBB9BBEE67DB28878A /* Pods-RiotPods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"; sourceTree = "<group>"; };
@@ -986,60 +986,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2439DD5F1F6BBE390090F42D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				2439DD601F6BBE760090F42D /* RecentRoomTableViewCell.h */,
-				2439DD611F6BBE760090F42D /* RecentRoomTableViewCell.m */,
-				2439DD631F6BBEA50090F42D /* RecentRoomTableViewCell.xib */,
-			);
-			name = Views;
-			path = RiotShareExtension/Views;
-			sourceTree = SOURCE_ROOT;
-		};
 		24CBEC4F1F0EAD310093EABB /* RiotShareExtension */ = {
 			isa = PBXGroup;
 			children = (
 				2466B7551F2F80B800AE27B0 /* Info.plist */,
 				B1D818C220EA7DB500D5F36D /* RiotShareExtension-Bridging-Header.h */,
 				2466B7561F2F80B800AE27B0 /* RiotShareExtension.entitlements */,
-				24D6B3441F3C8F8A00FC7A71 /* ViewController */,
-				2439DD5F1F6BBE390090F42D /* Views */,
-				24D6B3551F3C8FCC00FC7A71 /* Model */,
+				B1664BC220F4E67600808783 /* Managers */,
+				B1664BAB20F4E67500808783 /* Modules */,
 			);
 			path = RiotShareExtension;
 			sourceTree = "<group>";
-		};
-		24D6B3441F3C8F8A00FC7A71 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				24D6B34A1F3C8F8A00FC7A71 /* SharePresentingViewController.h */,
-				24D6B34B1F3C8F8A00FC7A71 /* SharePresentingViewController.m */,
-				24D6B34C1F3C8F8A00FC7A71 /* ShareViewController.h */,
-				24D6B34D1F3C8F8A00FC7A71 /* ShareViewController.m */,
-				24D6B34E1F3C8F8A00FC7A71 /* ShareViewController.xib */,
-				24D6B3481F3C8F8A00FC7A71 /* RoomsListViewController.h */,
-				24D6B3491F3C8F8A00FC7A71 /* RoomsListViewController.m */,
-				F0B7A8AF1F4756A5006E27D2 /* RoomsListViewController.xib */,
-				24D6B3451F3C8F8A00FC7A71 /* FallbackViewController.h */,
-				24D6B3461F3C8F8A00FC7A71 /* FallbackViewController.m */,
-				24D6B3471F3C8F8A00FC7A71 /* FallbackViewController.xib */,
-			);
-			name = ViewController;
-			path = RiotShareExtension/ViewController;
-			sourceTree = SOURCE_ROOT;
-		};
-		24D6B3551F3C8FCC00FC7A71 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				245FC3EA1F3CAF9800603C6A /* ShareExtensionManager.h */,
-				245FC3EB1F3CAF9800603C6A /* ShareExtensionManager.m */,
-				24D6B3561F3C90D300FC7A71 /* ShareDataSource.h */,
-				24D6B3571F3C90D300FC7A71 /* ShareDataSource.m */,
-			);
-			name = Model;
-			path = RiotShareExtension/Model;
-			sourceTree = SOURCE_ROOT;
 		};
 		3211717B203ACD32002C16C6 /* ca.lproj */ = {
 			isa = PBXGroup;
@@ -1194,6 +1151,86 @@
 				92726A481F58737A004AD26F /* Info.plist */,
 			);
 			path = SiriIntents;
+			sourceTree = "<group>";
+		};
+		B1664BAB20F4E67500808783 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				B1664BB020F4E67500808783 /* Main */,
+				B1664BAC20F4E67500808783 /* Fallback */,
+				B1664BB320F4E67500808783 /* Share */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		B1664BAC20F4E67500808783 /* Fallback */ = {
+			isa = PBXGroup;
+			children = (
+				B1664BAF20F4E67500808783 /* FallbackViewController.h */,
+				B1664BAE20F4E67500808783 /* FallbackViewController.m */,
+				B1664BAD20F4E67500808783 /* FallbackViewController.xib */,
+			);
+			path = Fallback;
+			sourceTree = "<group>";
+		};
+		B1664BB020F4E67500808783 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				B1664BB120F4E67500808783 /* SharePresentingViewController.h */,
+				B1664BB220F4E67500808783 /* SharePresentingViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		B1664BB320F4E67500808783 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				B1664BC120F4E67500808783 /* ShareViewController.h */,
+				B1664BB820F4E67500808783 /* ShareViewController.m */,
+				B1664BB720F4E67500808783 /* ShareViewController.xib */,
+				B1664BB420F4E67500808783 /* DataSources */,
+				B1664BB920F4E67500808783 /* Listing */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
+		B1664BB420F4E67500808783 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				B1664BB620F4E67500808783 /* ShareDataSource.h */,
+				B1664BB520F4E67500808783 /* ShareDataSource.m */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		B1664BB920F4E67500808783 /* Listing */ = {
+			isa = PBXGroup;
+			children = (
+				B1664BBB20F4E67500808783 /* RoomsListViewController.h */,
+				B1664BBC20F4E67500808783 /* RoomsListViewController.m */,
+				B1664BBA20F4E67500808783 /* RoomsListViewController.xib */,
+				B1664BBD20F4E67500808783 /* Views */,
+			);
+			path = Listing;
+			sourceTree = "<group>";
+		};
+		B1664BBD20F4E67500808783 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1664BC020F4E67500808783 /* RecentRoomTableViewCell.h */,
+				B1664BBE20F4E67500808783 /* RecentRoomTableViewCell.m */,
+				B1664BBF20F4E67500808783 /* RecentRoomTableViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B1664BC220F4E67600808783 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B1664BC320F4E67600808783 /* ShareExtensionManager.h */,
+				B1664BC420F4E67600808783 /* ShareExtensionManager.m */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		B169329D20F3A21B00746532 /* SupportingFiles */ = {
@@ -2773,22 +2810,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24D6B35B1F3CA03300FC7A71 /* ShareViewController.xib in Resources */,
 				F0BFBDBD1FF3BFC800C88726 /* Vector.strings in Resources */,
-				F0B7A8B11F475783006E27D2 /* RoomsListViewController.xib in Resources */,
 				F0BFBDBE1FF3BFCD00C88726 /* Vector.strings in Resources */,
 				2435179F1F375C0F00D0683E /* Vector.strings in Resources */,
+				B1664BCB20F4E67600808783 /* RoomsListViewController.xib in Resources */,
 				B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */,
 				B169329C20F39E6300746532 /* Main.storyboard in Resources */,
 				F0BFBDBA1FF3BDDF00C88726 /* Vector.strings in Resources */,
 				F0BFBDBC1FF3BFC100C88726 /* Vector.strings in Resources */,
 				F0BFBDC01FF3BFE200C88726 /* Vector.strings in Resources */,
+				B1664BC920F4E67600808783 /* ShareViewController.xib in Resources */,
 				B169329A20F39E6300746532 /* LaunchScreen.storyboard in Resources */,
 				B169328820F3954A00746532 /* SharedImages.xcassets in Resources */,
+				B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */,
+				B1664BCE20F4E67600808783 /* RecentRoomTableViewCell.xib in Resources */,
 				F0BFBDBB1FF3BF6F00C88726 /* Vector.strings in Resources */,
 				F0BFBDBF1FF3BFD200C88726 /* Vector.strings in Resources */,
-				24D6B35E1F3CA03E00FC7A71 /* FallbackViewController.xib in Resources */,
-				2439DD641F6BBEA50090F42D /* RecentRoomTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3071,20 +3108,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24D6B3581F3C90D300FC7A71 /* ShareDataSource.m in Sources */,
 				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
 				B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */,
-				24D6B35C1F3CA03600FC7A71 /* RoomsListViewController.m in Sources */,
-				24D6B35A1F3CA02C00FC7A71 /* ShareViewController.m in Sources */,
-				24D6B3591F3CA02900FC7A71 /* SharePresentingViewController.m in Sources */,
+				B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */,
+				B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
-				24D6B35D1F3CA03A00FC7A71 /* FallbackViewController.m in Sources */,
+				B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
+				B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */,
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
-				2439DD621F6BBE760090F42D /* RecentRoomTableViewCell.m in Sources */,
-				245FC3ED1F3D079A00603C6A /* ShareExtensionManager.m in Sources */,
 				B169328320F38AE600746532 /* RiotSettings.swift in Sources */,
+				B1664BC820F4E67600808783 /* ShareDataSource.m in Sources */,
+				B1664BCD20F4E67600808783 /* RecentRoomTableViewCell.m in Sources */,
 				B169331720F3CBE000746532 /* RecentCellData.m in Sources */,
+				B1664BCC20F4E67600808783 /* RoomsListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
