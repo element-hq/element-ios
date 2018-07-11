@@ -203,7 +203,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 {
     [super updateRoomState:newRoomState];
     
-    bannedMembers = [mxRoomState membersWithMembership:MXMembershipBan];
+    bannedMembers = [mxRoomState.members membersWithMembership:MXMembershipBan];
 }
 
 - (UINavigationItem*)getNavigationItem

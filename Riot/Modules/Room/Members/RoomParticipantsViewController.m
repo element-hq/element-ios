@@ -407,7 +407,7 @@
                         // Ignore here change related to the current user (this change is handled by leaveRoomNotificationObserver)
                         if ([event.stateKey isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
                         {
-                            MXRoomMember *mxMember = [self.mxRoom.state memberWithUserId:event.stateKey];
+                            MXRoomMember *mxMember = [self.mxRoom.state.members memberWithUserId:event.stateKey];
                             if (mxMember)
                             {
                                 // Remove previous occurrence of this member (if any)
@@ -686,7 +686,7 @@
     if (self.mxRoom)
     {
         // Retrieve the current members from the room state
-        NSArray *members = [self.mxRoom.state membersWithoutConferenceUser];
+        NSArray *members = [self.mxRoom.state.members membersWithoutConferenceUser];
         NSString *userId = self.mxRoom.mxSession.myUser.userId;
         NSArray *roomThirdPartyInvites = self.mxRoom.state.thirdPartyInvites;
         
@@ -701,7 +701,7 @@
                     NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
                     
                     userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-                    userParticipant.mxMember = [self.mxRoom.state memberWithUserId:userId];
+                    userParticipant.mxMember = [self.mxRoom.state.members memberWithUserId:userId];
                 }
             }
             else
@@ -1111,7 +1111,7 @@
                 // Update the contact display name by considering the current room state.
                 if (contact.mxMember.userId)
                 {
-                    participantCell.contactDisplayNameLabel.text = [self.mxRoom.state memberName:contact.mxMember.userId];
+                    participantCell.contactDisplayNameLabel.text = [self.mxRoom.state.members memberName:contact.mxMember.userId];
                 }
             }
         }

@@ -271,7 +271,7 @@
                             
                             for (MXReceiptData* data in receipts)
                             {
-                                MXRoomMember * roomMember = [self.room.state memberWithUserId:data.userId];
+                                MXRoomMember * roomMember = [self.room.state.members memberWithUserId:data.userId];
                                 if (roomMember)
                                 {
                                     [roomMembers addObject:roomMember];

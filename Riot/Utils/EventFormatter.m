@@ -241,7 +241,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     // Override this method to ignore the identicons defined by default in matrix kit.
     
     // Consider first the avatar url defined in provided room state (Note: this room state is supposed to not take the new event into account)
-    NSString *senderAvatarUrl = [roomState memberWithUserId:event.sender].avatarUrl;
+    NSString *senderAvatarUrl = [roomState.members memberWithUserId:event.sender].avatarUrl;
     
     // Check whether this avatar url is updated by the current event (This happens in case of new joined member)
     NSString* membership = event.content[@"membership"];
@@ -421,7 +421,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
                 if (member.originalEvent.sender)
                 {
                     // extract who invited us to the room
-                    displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_invite_from", @"Vector", nil), [roomState memberName:member.originalEvent.sender]];
+                    displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_invite_from", @"Vector", nil), [roomState.members memberName:member.originalEvent.sender]];
                 }
                 else
                 {
@@ -434,19 +434,19 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     {
         MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
         
-        displayName = [roomState memberName:member.userId];
+        displayName = [roomState.members memberName:member.userId];
     }
     else if (othersActiveMembers.count == 2)
     {
         MXRoomMember* member1 = [othersActiveMembers objectAtIndex:0];
         MXRoomMember* member2 = [othersActiveMembers objectAtIndex:1];
         
-        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_two_members", @"Vector", nil), [roomState memberName:member1.userId], [roomState memberName:member2.userId]];
+        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_two_members", @"Vector", nil), [roomState.members memberName:member1.userId], [roomState.members memberName:member2.userId]];
     }
     else
     {
         MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
-        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_more_than_two_members", @"Vector", nil), [roomState memberName:member.userId], othersActiveMembers.count - 1];
+        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_more_than_two_members", @"Vector", nil), [roomState.members memberName:member.userId], othersActiveMembers.count - 1];
     }
     
     return displayName;
@@ -461,7 +461,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     if (!roomAvatarUrl)
     {
         // If the room has only two members, use the avatar of the second member.
-        NSArray* members = roomState.members;
+        NSArray* members = roomState.members.members;
         
         if (members.count == 2)
         {

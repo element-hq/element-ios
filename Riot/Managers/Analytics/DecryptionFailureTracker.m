@@ -82,7 +82,7 @@
 
     // Filter out "expected" UTDs
     // We cannot decrypt messages sent before the user joined the room
-    MXRoomMember *myUser = [roomState memberWithUserId:userId];
+    MXRoomMember *myUser = [roomState.members memberWithUserId:userId];
     if (!myUser || myUser.membership != MXMembershipJoin)
     {
         return;
