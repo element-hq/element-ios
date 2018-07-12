@@ -1335,7 +1335,7 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.state.members.joinedMembers.count >= 2;
+        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.state.membersCount.joined >= 2;
         
         // Get user picture view in input toolbar
         userPictureView = roomInputToolbarView.pictureView;
@@ -3015,7 +3015,7 @@
 
     // If enabled, create the conf using jitsi widget and open it directly
     else if (RiotSettings.shared.createConferenceCallsWithJitsi
-             && self.roomDataSource.room.state.members.joinedMembers.count > 2)
+             && self.roomDataSource.room.state.membersCount.joined > 2)
     {
         [self startActivityIndicator];
 
@@ -3043,7 +3043,7 @@
          }];
     }
     // Classic conference call is not supported in encrypted rooms
-    else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.members.joinedMembers.count > 2)
+    else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.membersCount.joined > 2)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
@@ -3066,7 +3066,7 @@
     }
 
     // In case of conference call, check that the user has enough power level
-    else if (self.roomDataSource.room.state.members.joinedMembers.count > 2 &&
+    else if (self.roomDataSource.room.state.membersCount.joined > 2 &&
              ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room])
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
