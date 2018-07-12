@@ -272,7 +272,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     
     if (room)
     {
-        MXRoomMember *member = [room.state memberWithUserId:userId];
+        MXRoomMember *member = [room.state.members memberWithUserId:userId];
         if (member && member.membership == MXMembershipJoin)
         {
             [self sendNSObjectResponse:@{
@@ -508,7 +508,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
-        MXRoomMember *member = [room.state memberWithUserId:userId];
+        MXRoomMember *member = [room.state.members memberWithUserId:userId];
         [self sendNSObjectResponse:member.originalEvent.content toRequest:requestId];
     }
 }
@@ -692,7 +692,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
-        NSUInteger membershipCount = room.state.joinedMembers.count;
+        NSUInteger membershipCount = room.state.membersCount.joined;
         [self sendIntegerResponse:membershipCount toRequest:requestId];
     }
 }

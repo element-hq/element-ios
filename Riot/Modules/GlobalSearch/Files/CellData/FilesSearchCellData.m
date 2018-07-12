@@ -60,7 +60,7 @@
         MXRoom *room = [searchDataSource.mxSession roomWithRoomId:roomId];
         if (room)
         {
-            senderDisplayName = [room.state memberName:event.sender];
+            senderDisplayName = [room.state.members memberName:event.sender];
         }
         else
         {

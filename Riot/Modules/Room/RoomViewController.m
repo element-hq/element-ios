@@ -1335,7 +1335,7 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.state.joinedMembers.count >= 2;
+        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.state.membersCount.joined >= 2;
         
         // Get user picture view in input toolbar
         userPictureView = roomInputToolbarView.pictureView;
@@ -1894,7 +1894,7 @@
     {
         if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
         {
-            selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            selectedRoomMember = [self.roomDataSource.room.state.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
             if (selectedRoomMember)
             {
                 [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
@@ -1903,7 +1903,7 @@
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
         {
             // Add the member display name in text input
-            MXRoomMember *roomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            MXRoomMember *roomMember = [self.roomDataSource.room.state.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
             if (roomMember)
             {
                 [self mention:roomMember];
@@ -2656,7 +2656,7 @@
             
             NSString *userId = absoluteURLString;
             
-            MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:userId];
+            MXRoomMember* member = [self.roomDataSource.room.state.members memberWithUserId:userId];
             if (member)
             {
                 // Use the room member detail VC for room members
@@ -2863,7 +2863,7 @@
         MXRoom *room = [session roomWithRoomId:roomId];
         if (room)
         {
-            NSArray *members = [room.state membersWithoutConferenceUser];
+            NSArray *members = [room.state.members membersWithoutConferenceUser];
             
             for (MXRoomMember *mxMember in members)
             {
@@ -3015,7 +3015,7 @@
 
     // If enabled, create the conf using jitsi widget and open it directly
     else if (RiotSettings.shared.createConferenceCallsWithJitsi
-             && self.roomDataSource.room.state.joinedMembers.count > 2)
+             && self.roomDataSource.room.state.membersCount.joined > 2)
     {
         [self startActivityIndicator];
 
@@ -3043,7 +3043,7 @@
          }];
     }
     // Classic conference call is not supported in encrypted rooms
-    else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.joinedMembers.count > 2)
+    else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.membersCount.joined > 2)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
@@ -3066,7 +3066,7 @@
     }
 
     // In case of conference call, check that the user has enough power level
-    else if (self.roomDataSource.room.state.joinedMembers.count > 2 &&
+    else if (self.roomDataSource.room.state.membersCount.joined > 2 &&
              ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room])
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -3621,7 +3621,7 @@
         {
             NSString* name = [currentTypingUsers objectAtIndex:i];
             
-            MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
+            MXRoomMember* member = [self.roomDataSource.room.state.members memberWithUserId:name];
             
             if (member && member.displayname.length)
             {
