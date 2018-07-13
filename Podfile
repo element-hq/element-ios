@@ -9,7 +9,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.7.14'
+$matrixKitVersion = '0.7.15'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
