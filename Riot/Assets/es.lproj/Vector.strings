@@ -61,3 +61,11 @@
 "auth_add_email_message" = "Añade un correo electrónico a tu cuenta para poder ser descubierto por otros usuarios, y ser capaz de recomponer tu contraseña.";
 "auth_add_phone_message" = "Añade un número telefónico a tu cuenta para ser descubierto por otros usuarios.";
 "title_groups" = "Comunidades";
+"deactivate_account_password_alert_title" = "Desactivar Cuenta";
+"deactivate_account_validate_action" = "Desactivar cuenta";
+"deactivate_account_password_alert_message" = "Para continuar, ingrese su contraseña";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Advertencia";
+"deactivate_account_informations_part2_emphasize" = "Esta acción es irreversible.";
+"rerequest_keys_alert_message" = "Por favor,  inicie Riot en otro dispositivo que pueda descifrar el mensaje para que pueda enviar las claves a este dispositivo.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Solicitud Enviada";
