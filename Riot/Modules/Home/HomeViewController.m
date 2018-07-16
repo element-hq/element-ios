@@ -468,7 +468,7 @@
                 }
                 
                 // Store the identifier of the room related to the edited cell.
-                selectedRoomId = room.state.roomId;
+                selectedRoomId = room.roomId;
                 // Store the concerned section
                 selectedCollectionViewContentOffset = -1;
                 selectedSection = selectedCell.collectionViewTag;

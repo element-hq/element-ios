@@ -2544,7 +2544,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         MXSession *session = self.mxSessions.firstObject;
         for (MXRoom *room in session.rooms)
         {
-            if (room.state.isEncrypted)
+            if (room.summary.isEncrypted)
             {
                 message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\n%@", NSLocalizedStringFromTable(@"settings_sign_out_e2e_warn", @"Vector", nil)]];
                 break;
@@ -3201,7 +3201,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                           success:^(MXRoom *room) {
                               
                               // Open created room
-                              [self showRoom:room.state.roomId andEventId:nil withMatrixSession:mxSession];
+                              [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
                               
                               if (completion)
                               {

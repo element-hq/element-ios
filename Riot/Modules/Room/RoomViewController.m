@@ -553,7 +553,7 @@
     
     // Warn about the beta state of e2e encryption when entering the first time in an encrypted room
     MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:self.roomDataSource.mxSession.myUser.userId];
-    if (account && !account.isWarnedAboutEncryption && self.roomDataSource.room.state.isEncrypted)
+    if (account && !account.isWarnedAboutEncryption && self.roomDataSource.room.summary.isEncrypted)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
@@ -1004,7 +1004,7 @@
             [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
                 
                 // Show the room
-                [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
+                [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
                 
             } failure:^(NSError *error) {
                 
@@ -1357,7 +1357,7 @@
         }
         
         // Check whether the encryption is enabled in the room
-        if (self.roomDataSource.room.state.isEncrypted)
+        if (self.roomDataSource.room.summary.isEncrypted)
         {
             // Encrypt the user's messages as soon as the user supports the encryption?
             roomInputToolbarView.isEncryptionEnabled = (self.mainSession.crypto != nil);
@@ -1744,7 +1744,7 @@
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
     Class cellViewClass = nil;
-    BOOL isEncryptedRoom = self.roomDataSource.room.state.isEncrypted;
+    BOOL isEncryptedRoom = self.roomDataSource.room.summary.isEncrypted;
     
     // Sanity check
     if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
@@ -2562,7 +2562,7 @@
                                                            }]];
         }
         
-        if (level == 1 && self.roomDataSource.room.state.isEncrypted)
+        if (level == 1 && self.roomDataSource.room.summary.isEncrypted)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_encryption", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -3043,7 +3043,7 @@
          }];
     }
     // Classic conference call is not supported in encrypted rooms
-    else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.membersCount.joined > 2)
+    else if (self.roomDataSource.room.summary.isEncrypted && self.roomDataSource.room.state.membersCount.joined > 2)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
@@ -3539,7 +3539,7 @@
             } failure:^(NSError *error) {
                 
                 [self stopActivityIndicator];
-                NSLog(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.state.roomId);
+                NSLog(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
                 
             }];
         }

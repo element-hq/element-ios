@@ -179,7 +179,7 @@
         }
         
         // Display room topic
-        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];
+        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
         
         // Compute active members count, and look for the inviter
         NSArray *members = self.mxRoom.state.members;

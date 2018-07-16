@@ -454,7 +454,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
-        [self sendBoolResponse:room.state.isEncrypted toRequest:requestId];
+        [self sendBoolResponse:room.summary.isEncrypted toRequest:requestId];
     }
 }
 

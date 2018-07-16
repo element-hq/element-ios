@@ -194,7 +194,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         if (direction == MXTimelineDirectionForwards)
         {
-            [self updateRoomState:mxRoom.state];
+            [self updateRoomState:roomState];
         }
     }];
 }
@@ -2002,7 +2002,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             count++;
             
-            if (mxRoom.state.isEncrypted)
+            if (mxRoom.summary.isEncrypted)
             {
                 count++;
             }
@@ -2670,7 +2670,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        else if (mxRoom.state.isEncrypted)
+        else if (mxRoom.summary.isEncrypted)
         {
             if (indexPath.row == 1)
             {

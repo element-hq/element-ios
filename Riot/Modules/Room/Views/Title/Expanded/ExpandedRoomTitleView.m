@@ -62,7 +62,7 @@
             self.displayNameTextField.textColor = kRiotPrimaryTextColor;
         }
         
-        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];
+        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
         
         // Compute active members count
         NSArray *members = [self.mxRoom.state.members membersWithMembership:MXMembershipJoin includeConferenceUser:NO];

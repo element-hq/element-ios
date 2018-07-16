@@ -86,10 +86,10 @@
         [_roomDataSource finalizeInitialization];
         _roomDataSource.markTimelineInitialEvent = YES;
 
-        _roomName = peekingRoom.state.name;
-        _roomAvatarUrl = peekingRoom.state.avatar;
+        _roomName = peekingRoom.summary.displayname;
+        _roomAvatarUrl = peekingRoom.summary.avatar;
         
-        _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.state.topic];;
+        _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.summary.topic];;
         _roomAliases = peekingRoom.state.aliases;
         
         // Room members count
