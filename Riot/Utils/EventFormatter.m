@@ -361,7 +361,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     
     NSString* myUserId = mxSession.myUser.userId;
     
-    NSArray* members = roomState.members;
+    NSArray* members = roomState.members.members;
     NSMutableArray* othersActiveMembers = [[NSMutableArray alloc] init];
     NSMutableArray* activeMembers = [[NSMutableArray alloc] init];
     

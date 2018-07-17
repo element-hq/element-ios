@@ -95,7 +95,7 @@
         // Room members count
         // Note that room members presence/activity is not available
         _numJoinedMembers = 0;
-        for (MXRoomMember *mxMember in peekingRoom.state.members)
+        for (MXRoomMember *mxMember in peekingRoom.state.members.members)
         {
             if (mxMember.membership == MXMembershipJoin)
             {

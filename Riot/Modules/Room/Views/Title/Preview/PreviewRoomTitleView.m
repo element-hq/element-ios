@@ -182,7 +182,7 @@
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
         
         // Compute active members count, and look for the inviter
-        NSArray *members = self.mxRoom.state.members;
+        NSArray *members = self.mxRoom.state.members.members;
         NSUInteger activeCount = 0;
         NSUInteger memberCount = 0;
         NSString *inviter = nil;
