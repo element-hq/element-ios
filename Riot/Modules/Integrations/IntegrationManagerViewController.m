@@ -692,7 +692,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
-        NSUInteger membershipCount = room.state.membersCount.joined;
+        NSUInteger membershipCount = room.summary.membersCount.joined;
         [self sendIntegerResponse:membershipCount toRequest:requestId];
     }
 }
