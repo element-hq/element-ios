@@ -467,7 +467,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     if (room)
     {
-        if (room.state.membership != MXMembershipJoin)
+        if (room.summary.membership != MXMembershipJoin)
         {
             [self sendLocalisedError:@"widget_integration_must_be_in_room" toRequest:requestId];
             return;

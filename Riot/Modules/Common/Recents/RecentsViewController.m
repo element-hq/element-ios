@@ -756,7 +756,7 @@
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (cellDataStoring.roomSummary.room.state.membership != MXMembershipInvite)
+    if (cellDataStoring.roomSummary.room.summary.membership != MXMembershipInvite)
     {
         return RecentTableViewCell.class;
     }
@@ -827,7 +827,7 @@
     if (room)
     {
         // Display no action for the invited room
-        if (room.state.membership == MXMembershipInvite)
+        if (room.summary.membership == MXMembershipInvite)
         {
             return actions;
         }

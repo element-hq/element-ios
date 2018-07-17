@@ -830,7 +830,7 @@
 - (void)onRoomDataSourceReady
 {
     // Handle here invitation
-    if (self.roomDataSource.room.state.membership == MXMembershipInvite)
+    if (self.roomDataSource.room.summary.membership == MXMembershipInvite)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
         
@@ -1232,7 +1232,7 @@
         return YES;
     }
     
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady && self.roomDataSource.room.state.membership == MXMembershipInvite)
+    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady && self.roomDataSource.room.summary.membership == MXMembershipInvite)
     {
         return YES;
     }
@@ -1423,7 +1423,7 @@
         // - if the view controller is not embedded inside a split view controller yet.
         // - if the encryption view is displayed
         // - if the event details view is displayed
-        if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.state.membership != MXMembershipJoin) || !self.splitViewController || encryptionInfoView.superview || eventDetailsView.superview))
+        if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.summary.membership != MXMembershipJoin) || !self.splitViewController || encryptionInfoView.superview || eventDetailsView.superview))
         {
             NSLog(@"[RoomVC] Show expanded header ignored");
             return;

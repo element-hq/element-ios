@@ -84,7 +84,7 @@
         if (memberCount)
         {
             // Check whether the logged in user is alone in this room
-            if (memberCount == 1 && self.mxRoom.state.membership == MXMembershipJoin)
+            if (memberCount == 1 && self.mxRoom.summary.membership == MXMembershipJoin)
             {
                 self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_invite_members", @"Vector", nil);
             }

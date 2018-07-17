@@ -1085,7 +1085,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 {
                     [lowPriorityCellDataArray addObject:recentCellDataStoring];
                 }
-                else if (room.state.membership == MXMembershipInvite)
+                else if (room.summary.membership == MXMembershipInvite)
                 {
                     [invitesCellDataArray addObject:recentCellDataStoring];
                 }
@@ -1111,7 +1111,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Keep only the direct rooms which are not low priority
                 if (room.isDirect && !room.accountData.tags[kMXRoomTagLowPriority])
                 {
-                    if (room.state.membership == MXMembershipInvite)
+                    if (room.summary.membership == MXMembershipInvite)
                     {
                         [invitesCellDataArray addObject:recentCellDataStoring];
                     }
@@ -1127,7 +1127,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 if (!room.isDirect)
                 {
                     // Keep only the invites, the favourites and the rooms without tag
-                    if (room.state.membership == MXMembershipInvite)
+                    if (room.summary.membership == MXMembershipInvite)
                     {
                         [invitesCellDataArray addObject:recentCellDataStoring];
                     }
@@ -1179,7 +1179,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                     }
                 }
             }
-            else if (room.state.membership == MXMembershipInvite)
+            else if (room.summary.membership == MXMembershipInvite)
             {
                 if (room.isDirect)
                 {

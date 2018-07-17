@@ -462,7 +462,7 @@
             if (room)
             {
                 // Display no action for the invited room
-                if (room.state.membership == MXMembershipInvite)
+                if (room.summary.membership == MXMembershipInvite)
                 {
                     return;
                 }
