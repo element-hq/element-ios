@@ -461,12 +461,11 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     if (!roomAvatarUrl)
     {
         // If the room has only two members, use the avatar of the second member.
-        NSArray* members = roomState.members.members;
-        
-        if (members.count == 2)
+        if (roomState.membersCount.members == 2)
         {
             NSString* myUserId = mxSession.myUser.userId;
             
+            NSArray* members = roomState.members.members;
             for (MXRoomMember *roomMember in members)
             {
                 if (![roomMember.userId isEqualToString:myUserId])
