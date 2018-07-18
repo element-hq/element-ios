@@ -756,7 +756,7 @@
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (cellDataStoring.roomSummary.room.state.membership != MXMembershipInvite)
+    if (cellDataStoring.roomSummary.room.summary.membership != MXMembershipInvite)
     {
         return RecentTableViewCell.class;
     }
@@ -787,7 +787,7 @@
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
         
         // Display the room preview
-        [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:invitedRoom.state.roomId andEventId:nil inMatrixSession:invitedRoom.mxSession];
+        [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:invitedRoom.roomId andEventId:nil inMatrixSession:invitedRoom.mxSession];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
     {
@@ -803,7 +803,7 @@
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", invitedRoom.state.roomId);
+            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
             
         }];
     }
@@ -827,13 +827,13 @@
     if (room)
     {
         // Display no action for the invited room
-        if (room.state.membership == MXMembershipInvite)
+        if (room.summary.membership == MXMembershipInvite)
         {
             return actions;
         }
         
         // Store the identifier of the room related to the edited cell.
-        editedRoomId = room.state.roomId;
+        editedRoomId = room.roomId;
         
         NSString* title = @"      ";
         
@@ -990,11 +990,11 @@
                                                                      
                                                                      // cancel pending uploads/downloads
                                                                      // they are useless by now
-                                                                     [MXMediaManager cancelDownloadsInCacheFolder:room.state.roomId];
+                                                                     [MXMediaManager cancelDownloadsInCacheFolder:room.roomId];
                                                                      
                                                                      // TODO GFO cancel pending uploads related to this room
                                                                      
-                                                                     NSLog(@"[RecentsViewController] Leave room (%@)", room.state.roomId);
+                                                                     NSLog(@"[RecentsViewController] Leave room (%@)", room.roomId);
                                                                      
                                                                      [room leave:^{
                                                                          
@@ -1702,7 +1702,7 @@
                                                           currentAlert = nil;
                                                       }
                                                       
-                                                      [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:room.state.roomId andEventId:nil inMatrixSession:self.mainSession];
+                                                      [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:room.roomId andEventId:nil inMatrixSession:self.mainSession];
                                                       
                                                       // Force the expanded header
                                                       [AppDelegate theDelegate].masterTabBarController.currentRoomViewController.showExpandedHeader = YES;
@@ -1801,7 +1801,7 @@
                                                                [self.activityIndicator stopAnimating];
                                                                
                                                                // Show the room
-                                                               [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
+                                                               [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
                                                                
                                                            } failure:^(NSError *error) {
                                                                

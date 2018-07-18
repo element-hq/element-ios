@@ -667,7 +667,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         UIImage *thumbnail = nil;
         // Thumbnail is useful only in case of encrypted room
-        if (room.state.isEncrypted)
+        if (room.summary.isEncrypted)
         {
             thumbnail = [MXKTools reduceImage:convertedImage toFitInSize:CGSizeMake(800, 600)];
             if (thumbnail == convertedImage)

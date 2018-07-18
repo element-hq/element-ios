@@ -2973,7 +2973,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
                 for (MXRoom *room in session.rooms)
                 {
-                    if (room.state.isEncrypted)
+                    if (room.summary.isEncrypted)
                     {
                         MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO];
                         [roomDataSource reload];

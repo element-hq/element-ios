@@ -454,7 +454,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
-        [self sendBoolResponse:room.state.isEncrypted toRequest:requestId];
+        [self sendBoolResponse:room.summary.isEncrypted toRequest:requestId];
     }
 }
 
@@ -467,7 +467,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     if (room)
     {
-        if (room.state.membership != MXMembershipJoin)
+        if (room.summary.membership != MXMembershipJoin)
         {
             [self sendLocalisedError:@"widget_integration_must_be_in_room" toRequest:requestId];
             return;
@@ -692,7 +692,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     MXRoom *room = [self roomCheckForRequest:requestId data:requestData];
     if (room)
     {
-        NSUInteger membershipCount = room.state.membersCount.joined;
+        NSUInteger membershipCount = room.summary.membersCount.joined;
         [self sendIntegerResponse:membershipCount toRequest:requestId];
     }
 }

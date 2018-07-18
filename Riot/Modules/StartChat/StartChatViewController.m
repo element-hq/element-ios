@@ -582,7 +582,7 @@
                                                            
                                                            [self stopActivityIndicator];
                                                            
-                                                           [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
+                                                           [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
                                                            
                                                        } failure:^(NSError *error) {
                                                            

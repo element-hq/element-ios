@@ -370,7 +370,7 @@
             if (notif.object == _mxRoom.mxSession)
             {
                 NSString *roomId = notif.userInfo[kMXSessionNotificationRoomIdKey];
-                if (roomId && [roomId isEqualToString:_mxRoom.state.roomId])
+                if (roomId && [roomId isEqualToString:_mxRoom.roomId])
                 {
                     // We remove the current view controller.
                     [self withdrawViewControllerAnimated:YES completion:nil];
@@ -382,7 +382,7 @@
         roomDidFlushDataNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomDidFlushDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
             
             MXRoom *room = notif.object;
-            if (_mxRoom.mxSession == room.mxSession && [_mxRoom.state.roomId isEqualToString:room.state.roomId])
+            if (_mxRoom.mxSession == room.mxSession && [_mxRoom.roomId isEqualToString:room.roomId])
             {
                 // The existing room history has been flushed during server sync. Take into account the updated room members list.
                 [self refreshParticipantsFromRoomMembers];
@@ -1386,7 +1386,7 @@
                                                                    } failure:^(NSError *error) {
                                                                        
                                                                        [self removePendingActionMask];
-                                                                       NSLog(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.state.roomId);
+                                                                       NSLog(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                        

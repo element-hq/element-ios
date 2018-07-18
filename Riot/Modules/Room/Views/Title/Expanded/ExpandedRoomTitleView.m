@@ -62,7 +62,7 @@
             self.displayNameTextField.textColor = kRiotPrimaryTextColor;
         }
         
-        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];
+        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
         
         // Compute active members count
         NSArray *members = [self.mxRoom.state.members membersWithMembership:MXMembershipJoin includeConferenceUser:NO];
@@ -84,7 +84,7 @@
         if (memberCount)
         {
             // Check whether the logged in user is alone in this room
-            if (memberCount == 1 && self.mxRoom.state.membership == MXMembershipJoin)
+            if (memberCount == 1 && self.mxRoom.summary.membership == MXMembershipJoin)
             {
                 self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_invite_members", @"Vector", nil);
             }
