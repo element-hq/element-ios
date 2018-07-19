@@ -51,10 +51,12 @@
 {
     UIAlertAction *alertAction;
 
-    MXRoom *room = [mxSession roomWithRoomId:roomId];
+    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+    MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:roomId create:NO];
 
     NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
-                                                                          inRoom:room];
+                                                                          inRoom:roomDataSource.room
+                                                                   withRoomState:roomDataSource.roomState];
 
     // List widgets
     for (Widget *widget in widgets)
@@ -71,8 +73,7 @@
 
                                WidgetViewController *widgetVC = [[WidgetViewController alloc] initWithUrl:widgetUrl forWidget:widget];
 
-                               MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-                               widgetVC.roomDataSource = [roomDataSourceManager roomDataSourceForRoom:roomId create:NO];
+                               widgetVC.roomDataSource = roomDataSource;
 
                                [mxkViewController.navigationController pushViewController:widgetVC animated:YES];
 
