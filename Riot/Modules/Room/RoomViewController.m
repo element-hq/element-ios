@@ -3555,8 +3555,13 @@
         // Remove the previous live listener
         if (typingNotifListener)
         {
-            [self.roomDataSource.room.liveTimeline removeListener:typingNotifListener];
-            typingNotifListener = nil;
+            MXWeakify(self);
+            [self.roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+                MXStrongifyAndReturnIfNil(self);
+
+                [liveTimeline removeListener:self->typingNotifListener];
+                self->typingNotifListener = nil;
+            }];
         }
     }
     
@@ -3568,28 +3573,32 @@
     if (self.roomDataSource)
     {
         // Add typing notification listener
-        typingNotifListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
-            
-            // Handle only live events
-            if (direction == MXTimelineDirectionForwards)
-            {
-                // Retrieve typing users list
-                NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
-                // Remove typing info for the current user
-                NSUInteger index = [typingUsers indexOfObject:self.mainSession.myUser.userId];
-                if (index != NSNotFound)
+        MXWeakify(self);
+        [self.roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+            MXStrongifyAndReturnIfNil(self);
+
+            self->typingNotifListener = [liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+
+                // Handle only live events
+                if (direction == MXTimelineDirectionForwards)
                 {
-                    [typingUsers removeObjectAtIndex:index];
+                    // Retrieve typing users list
+                    NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
+                    // Remove typing info for the current user
+                    NSUInteger index = [typingUsers indexOfObject:self.mainSession.myUser.userId];
+                    if (index != NSNotFound)
+                    {
+                        [typingUsers removeObjectAtIndex:index];
+                    }
+
+                    // Ignore this notification if both arrays are empty
+                    if (currentTypingUsers.count || typingUsers.count)
+                    {
+                        currentTypingUsers = typingUsers;
+                        [self refreshActivitiesViewDisplay];
+                    }
                 }
-                
-                // Ignore this notification if both arrays are empty
-                if (currentTypingUsers.count || typingUsers.count)
-                {
-                    currentTypingUsers = typingUsers;
-                    [self refreshActivitiesViewDisplay];
-                }
-            }
-            
+            }];
         }];
         
         // Retrieve the current typing users list

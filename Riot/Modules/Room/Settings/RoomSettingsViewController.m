@@ -190,12 +190,17 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [super initWithSession:session andRoomId:roomId];
     
     // Add an additional listener to update banned users
-    extraEventsListener = [mxRoom.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
-        
-        if (direction == MXTimelineDirectionForwards)
-        {
-            [self updateRoomState:roomState];
-        }
+    MXWeakify(self);
+    [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        MXStrongifyAndReturnIfNil(self);
+
+        self->extraEventsListener = [liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+
+            if (direction == MXTimelineDirectionForwards)
+            {
+                [self updateRoomState:roomState];
+            }
+        }];
     }];
 }
 
@@ -399,8 +404,13 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     if (extraEventsListener)
     {
-        [mxRoom.liveTimeline removeListener:extraEventsListener];
-        extraEventsListener = nil;
+        MXWeakify(self);
+        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+            MXStrongifyAndReturnIfNil(self);
+
+            [liveTimeline removeListener:self->extraEventsListener];
+            self->extraEventsListener = nil;
+        }];
     }
     
     [super destroy];

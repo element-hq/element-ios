@@ -216,8 +216,13 @@
     
     if (membersListener)
     {
-        [self.mxRoom.liveTimeline removeListener:membersListener];
-        membersListener = nil;
+        MXWeakify(self);
+        [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+            MXStrongifyAndReturnIfNil(self);
+
+            [liveTimeline removeListener:self->membersListener];
+            self->membersListener = nil;
+        }];
     }
     
     if (currentAlert)
@@ -330,7 +335,10 @@
 {
     // Cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
-    
+
+    // @TODO(async-state): Need to expose [MXSession preloadRoomsData] to avoid race
+    // between _mxRoom & mxRoom
+
     // Remove previous room registration (if any).
     if (_mxRoom)
     {
@@ -347,8 +355,13 @@
         }
         if (membersListener)
         {
-            [_mxRoom.liveTimeline removeListener:membersListener];
-            membersListener = nil;
+            MXWeakify(self);
+            [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+                MXStrongifyAndReturnIfNil(self);
+
+                [liveTimeline removeListener:self->membersListener];
+                self->membersListener = nil;
+            }];
         }
         
         [self removeMatrixSession:_mxRoom.mxSession];
@@ -394,66 +407,71 @@
         
         // Register a listener for events that concern room members
         NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
-        membersListener = [_mxRoom.liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
-            
-            // Consider only live event
-            if (direction == MXTimelineDirectionForwards)
-            {
-                switch (event.eventType)
+
+        MXWeakify(self);
+        [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+            MXStrongifyAndReturnIfNil(self);
+
+            self->membersListener = [liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
+
+                // Consider only live event
+                if (direction == MXTimelineDirectionForwards)
                 {
-                    case MXEventTypeRoomMember:
+                    switch (event.eventType)
                     {
-                        // Take into account updated member
-                        // Ignore here change related to the current user (this change is handled by leaveRoomNotificationObserver)
-                        if ([event.stateKey isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
+                        case MXEventTypeRoomMember:
                         {
-                            MXRoomMember *mxMember = [self.mxRoom.state.members memberWithUserId:event.stateKey];
-                            if (mxMember)
+                            // Take into account updated member
+                            // Ignore here change related to the current user (this change is handled by leaveRoomNotificationObserver)
+                            if ([event.stateKey isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
                             {
-                                // Remove previous occurrence of this member (if any)
-                                [self removeParticipantByKey:mxMember.userId];
-                                
-                                // If any, remove 3pid invite corresponding to this room member
-                                if (mxMember.thirdPartyInviteToken)
+                                MXRoomMember *mxMember = [self.mxRoom.state.members memberWithUserId:event.stateKey];
+                                if (mxMember)
                                 {
-                                    [self removeParticipantByKey:mxMember.thirdPartyInviteToken];
+                                    // Remove previous occurrence of this member (if any)
+                                    [self removeParticipantByKey:mxMember.userId];
+
+                                    // If any, remove 3pid invite corresponding to this room member
+                                    if (mxMember.thirdPartyInviteToken)
+                                    {
+                                        [self removeParticipantByKey:mxMember.thirdPartyInviteToken];
+                                    }
+
+                                    [self handleRoomMember:mxMember];
+
+                                    [self finalizeParticipantsList];
+
+                                    [self refreshTableView];
                                 }
-                                
-                                [self handleRoomMember:mxMember];
-                                
+                            }
+
+                            break;
+                        }
+                        case MXEventTypeRoomThirdPartyInvite:
+                        {
+                            MXRoomThirdPartyInvite *thirdPartyInvite = [self.mxRoom.state thirdPartyInviteWithToken:event.stateKey];
+                            if (thirdPartyInvite)
+                            {
+                                [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite];
+
                                 [self finalizeParticipantsList];
-                                
+
                                 [self refreshTableView];
                             }
+                            break;
                         }
-                        
-                        break;
-                    }
-                    case MXEventTypeRoomThirdPartyInvite:
-                    {
-                        MXRoomThirdPartyInvite *thirdPartyInvite = [self.mxRoom.state thirdPartyInviteWithToken:event.stateKey];
-                        if (thirdPartyInvite)
+                        case MXEventTypeRoomPowerLevels:
                         {
-                            [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite];
-                            
-                            [self finalizeParticipantsList];
-                            
+                            [self refreshParticipantsFromRoomMembers];
+
                             [self refreshTableView];
+                            break;
                         }
-                        break;
+                        default:
+                            break;
                     }
-                    case MXEventTypeRoomPowerLevels:
-                    {
-                        [self refreshParticipantsFromRoomMembers];
-                        
-                        [self refreshTableView];
-                        break;
-                    }
-                    default:
-                        break;
                 }
-            }
-            
+            }];
         }];
     }
     else
