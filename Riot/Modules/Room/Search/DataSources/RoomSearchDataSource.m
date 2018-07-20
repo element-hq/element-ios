@@ -52,7 +52,7 @@
     [super destroy];
 }
 
-- (void)convertHomeserverResultsIntoCells:(MXSearchRoomEventResults *)roomEventResults
+- (void)convertHomeserverResultsIntoCells:(MXSearchRoomEventResults *)roomEventResults onComplete:(dispatch_block_t)onComplete
 {
     // Prepare text font used to highlight the search pattern.
     UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
@@ -73,6 +73,8 @@
             [cellDataArray insertObject:cellData atIndex:0];
         }
     }
+
+    onComplete();
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
