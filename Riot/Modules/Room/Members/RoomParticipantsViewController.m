@@ -425,7 +425,7 @@
                             // Ignore here change related to the current user (this change is handled by leaveRoomNotificationObserver)
                             if ([event.stateKey isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
                             {
-                                MXRoomMember *mxMember = [self.mxRoom.state.members memberWithUserId:event.stateKey];
+                                MXRoomMember *mxMember = [liveTimeline.state.members memberWithUserId:event.stateKey];
                                 if (mxMember)
                                 {
                                     // Remove previous occurrence of this member (if any)
@@ -439,7 +439,7 @@
 
                                     [self handleRoomMember:mxMember];
 
-                                    [self finalizeParticipantsList];
+                                    [self finalizeParticipantsList:liveTimeline.state];
 
                                     [self refreshTableView];
                                 }
@@ -449,12 +449,12 @@
                         }
                         case MXEventTypeRoomThirdPartyInvite:
                         {
-                            MXRoomThirdPartyInvite *thirdPartyInvite = [self.mxRoom.state thirdPartyInviteWithToken:event.stateKey];
+                            MXRoomThirdPartyInvite *thirdPartyInvite = [liveTimeline.state thirdPartyInviteWithToken:event.stateKey];
                             if (thirdPartyInvite)
                             {
-                                [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite];
+                                [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
 
-                                [self finalizeParticipantsList];
+                                [self finalizeParticipantsList:liveTimeline.state];
 
                                 [self refreshTableView];
                             }
@@ -704,36 +704,41 @@
     if (self.mxRoom)
     {
         // Retrieve the current members from the room state
-        NSArray *members = [self.mxRoom.state.members membersWithoutConferenceUser];
-        NSString *userId = self.mxRoom.mxSession.myUser.userId;
-        NSArray *roomThirdPartyInvites = self.mxRoom.state.thirdPartyInvites;
-        
-        for (MXRoomMember *mxMember in members)
-        {
-            // Update the current participants list
-            if ([mxMember.userId isEqualToString:userId])
+        MXWeakify(self);
+        [self.mxRoom state:^(MXRoomState *roomState) {
+            MXStrongifyAndReturnIfNil(self);
+
+            NSArray *members = [roomState.members membersWithoutConferenceUser];
+            NSString *userId = self.mxRoom.mxSession.myUser.userId;
+            NSArray *roomThirdPartyInvites = roomState.thirdPartyInvites;
+
+            for (MXRoomMember *mxMember in members)
             {
-                if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
+                // Update the current participants list
+                if ([mxMember.userId isEqualToString:userId])
                 {
-                    // The user is in this room
-                    NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
-                    
-                    userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-                    userParticipant.mxMember = [self.mxRoom.state.members memberWithUserId:userId];
+                    if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
+                    {
+                        // The user is in this room
+                        NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
+
+                        self->userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
+                        self->userParticipant.mxMember = [roomState.members memberWithUserId:userId];
+                    }
+                }
+                else
+                {
+                    [self handleRoomMember:mxMember];
                 }
             }
-            else
+
+            for (MXRoomThirdPartyInvite *roomThirdPartyInvite in roomThirdPartyInvites)
             {
-                [self handleRoomMember:mxMember];
+                [self addRoomThirdPartyInviteToParticipants:roomThirdPartyInvite roomState:roomState];
             }
-        }
-        
-        for (MXRoomThirdPartyInvite *roomThirdPartyInvite in roomThirdPartyInvites)
-        {
-            [self addRoomThirdPartyInviteToParticipants:roomThirdPartyInvite];
-        }
-        
-        [self finalizeParticipantsList];
+
+            [self finalizeParticipantsList:roomState];
+        }];
     }
 }
 
@@ -784,10 +789,10 @@
     }
 }
 
-- (void)addRoomThirdPartyInviteToParticipants:(MXRoomThirdPartyInvite*)roomThirdPartyInvite
+- (void)addRoomThirdPartyInviteToParticipants:(MXRoomThirdPartyInvite*)roomThirdPartyInvite roomState:(MXRoomState*)roomState
 {
     // If the homeserver has converted the 3pid invite into a room member, do no show it
-    if (![self.mxRoom.state memberWithThirdPartyInviteToken:roomThirdPartyInvite.token])
+    if (![roomState memberWithThirdPartyInviteToken:roomThirdPartyInvite.token])
     {
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
         contact.isThirdPartyInvite = YES;
@@ -837,7 +842,7 @@
     }
 }
 
-- (void)finalizeParticipantsList
+- (void)finalizeParticipantsList:(MXRoomState*)roomState
 {
     // Sort contacts by last active, with "active now" first.
     // ...and then by power
@@ -864,7 +869,7 @@
         if (userA.currentlyActive && userB.currentlyActive)
         {
             // Order first by power levels (admins then moderators then others)
-            MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:contactA.mxMember.userId];
             NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:contactB.mxMember.userId];
             
@@ -1112,8 +1117,10 @@
             
             if (contact.mxMember)
             {
+                MXRoomState *roomState = self.mxRoom.dangerousSyncState;
+                
                 // Update member badge
-                MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+                MXRoomPowerLevels *powerLevels = [roomState powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
                 if (powerLevel >= kRiotRoomAdminLevel)
                 {
@@ -1129,7 +1136,7 @@
                 // Update the contact display name by considering the current room state.
                 if (contact.mxMember.userId)
                 {
-                    participantCell.contactDisplayNameLabel.text = [self.mxRoom.state.members memberName:contact.mxMember.userId];
+                    participantCell.contactDisplayNameLabel.text = [roomState.members memberName:contact.mxMember.userId];
                 }
             }
         }
