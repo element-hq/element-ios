@@ -49,65 +49,66 @@
 
 - (void)showInViewController:(MXKViewController *)mxkViewController
 {
-    UIAlertAction *alertAction;
-
     MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-    MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:roomId create:NO];
+    [roomDataSourceManager roomDataSourceForRoom:roomId create:NO onComplete:^(MXKRoomDataSource *roomDataSource) {
 
-    NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
-                                                                          inRoom:roomDataSource.room
-                                                                   withRoomState:roomDataSource.roomState];
+        UIAlertAction *alertAction;
 
-    // List widgets
-    for (Widget *widget in widgets)
-    {
-        alertAction = [UIAlertAction actionWithTitle:widget.name ? widget.name : widget.type
+        NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
+                                                                              inRoom:roomDataSource.room
+                                                                       withRoomState:roomDataSource.roomState];
+
+        // List widgets
+        for (Widget *widget in widgets)
+        {
+            alertAction = [UIAlertAction actionWithTitle:widget.name ? widget.name : widget.type
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * _Nonnull action)
+                           {
+                               // Hide back button title
+                               mxkViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+
+                               // Display the widget
+                               [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
+
+                                   WidgetViewController *widgetVC = [[WidgetViewController alloc] initWithUrl:widgetUrl forWidget:widget];
+
+                                   widgetVC.roomDataSource = roomDataSource;
+
+                                   [mxkViewController.navigationController pushViewController:widgetVC animated:YES];
+
+                               } failure:^(NSError * _Nonnull error) {
+
+                                   NSLog(@"[WidgetPickerVC] Cannot display widget %@", widget);
+                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                               }];
+                           }];
+            [self.alertController addAction:alertAction];
+        }
+
+        // Link to the integration manager
+        alertAction = [UIAlertAction actionWithTitle:@"Manage integrations..."
                                                style:UIAlertActionStyleDefault
                                              handler:^(UIAlertAction * _Nonnull action)
                        {
-                           // Hide back button title
-                           mxkViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+                           IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self->mxSession
+                                                                                                                             inRoom:self->roomId
+                                                                                                                             screen:kIntegrationManagerMainScreen
+                                                                                                                           widgetId:nil];
 
-                           // Display the widget
-                           [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
-
-                               WidgetViewController *widgetVC = [[WidgetViewController alloc] initWithUrl:widgetUrl forWidget:widget];
-
-                               widgetVC.roomDataSource = roomDataSource;
-
-                               [mxkViewController.navigationController pushViewController:widgetVC animated:YES];
-
-                            } failure:^(NSError * _Nonnull error) {
-
-                                NSLog(@"[WidgetPickerVC] Cannot display widget %@", widget);
-                                [[AppDelegate theDelegate] showErrorAsAlert:error];
-                            }];
+                           [mxkViewController presentViewController:modularVC animated:NO completion:nil];
                        }];
-        [_alertController addAction:alertAction];
-    }
+        [self.alertController addAction:alertAction];
 
-    // Link to the integration manager
-    alertAction = [UIAlertAction actionWithTitle:@"Manage integrations..."
-                                           style:UIAlertActionStyleDefault
-                                         handler:^(UIAlertAction * _Nonnull action)
-                   {
-                       IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self->mxSession
-                                                                                                                         inRoom:self->roomId
-                                                                                                                         screen:kIntegrationManagerMainScreen
-                                                                                                                       widgetId:nil];
+        // Cancel
+        alertAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                               style:UIAlertActionStyleCancel
+                                             handler:nil];
+        [self.alertController addAction:alertAction];
 
-                       [mxkViewController presentViewController:modularVC animated:NO completion:nil];
-                   }];
-    [_alertController addAction:alertAction];
-
-    // Cancel
-    alertAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                           style:UIAlertActionStyleCancel
-                                         handler:nil];
-    [_alertController addAction:alertAction];
-
-    // And show it
-    [mxkViewController presentViewController:_alertController animated:YES completion:nil];
-}
+        // And show it
+        [mxkViewController presentViewController:_alertController animated:YES completion:nil];
+    }];
+ }
 
 @end

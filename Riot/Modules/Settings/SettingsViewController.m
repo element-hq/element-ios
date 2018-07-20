@@ -2975,8 +2975,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 {
                     if (room.summary.isEncrypted)
                     {
-                        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO];
-                        [roomDataSource reload];
+                        [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO onComplete:^(MXKRoomDataSource *roomDataSource) {
+                            [roomDataSource reload];
+                        }];
                     }
                 }
                 
