@@ -444,7 +444,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 - (void)canSendEvent:(NSString*)requestId data:(NSDictionary*)requestData
 {
     MXWeakify(self);
-    [self roomCheckForRequest:requestId data:requestData onComplete:^(MXRoomState *room, MXRoomState *roomState) {
+    [self roomCheckForRequest:requestId data:requestData onComplete:^(MXRoom *room, MXRoomState *roomState) {
         MXStrongifyAndReturnIfNil(self);
 
         NSString *eventType;

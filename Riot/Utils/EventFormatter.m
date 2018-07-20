@@ -262,9 +262,9 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 #pragma mark - MXRoomSummaryUpdating
 
-- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
 {
-    BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents];
+    BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
     
     // Check whether the room display name and/or the room avatar url should be updated at Riot level.
     BOOL refreshRiotRoomDisplayName = NO;
@@ -303,7 +303,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
     if (refreshRiotRoomDisplayName)
     {
-        NSString *riotRoomDisplayName = [self riotRoomDisplayNameFromRoomState:summary.room.state];
+        NSString *riotRoomDisplayName = [self riotRoomDisplayNameFromRoomState:roomState];
 
         if (riotRoomDisplayName.length && ![summary.displayname isEqualToString:riotRoomDisplayName])
         {
@@ -313,7 +313,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     }
     if (refreshRiotRoomAvatarURL)
     {
-        NSString *riotRoomAvatarURL = [self riotRoomAvatarURLFromRoomState:summary.room.state];
+        NSString *riotRoomAvatarURL = [self riotRoomAvatarURLFromRoomState:roomState];
 
         if (riotRoomAvatarURL.length && ![summary.avatar isEqualToString:riotRoomAvatarURL])
         {

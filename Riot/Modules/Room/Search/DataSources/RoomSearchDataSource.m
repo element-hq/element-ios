@@ -64,7 +64,7 @@
         // The search result contains only room message events, no state events.
         // Thus, passing the current room state is not a huge problem. Only
         // the user display name and his avatar may be wrong.
-        RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.room.state andRoomDataSource:roomDataSource];
+        RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.roomState andRoomDataSource:roomDataSource];
         if (cellData)
         {
             // Highlight the search pattern
