@@ -1108,37 +1108,42 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
             MXKRoomDataSource* roomDataSource = nil;
+            MXKRoomDataSourceManager* manager;
             for (MXKAccount* account in mxAccounts)
             {
                 MXRoom* room = [account.mxSession roomWithRoomId:roomId];
                 if (room)
                 {
-                    MXKRoomDataSourceManager* manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+                    manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
                     if (manager)
                     {
-                        roomDataSource = [manager roomDataSourceForRoom:roomId create:YES];
+                        break;
                     }
-                    break;
                 }
             }
-            if (roomDataSource == nil)
+            if (manager == nil)
             {
                 NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room with id %@ not found", roomId);
             }
             else
             {
-                NSString* responseText = [responseInfo objectForKey:UIUserNotificationActionResponseTypedTextKey];
-                if (responseText != nil && responseText.length != 0)
-                {
-                    NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
-                    [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
-                        UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
-                        failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
-                        failureNotification.userInfo = notification.userInfo;
-                        [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
-                        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
-                    }];
-                }
+                [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+                    NSString* responseText = [responseInfo objectForKey:UIUserNotificationActionResponseTypedTextKey];
+                    if (responseText != nil && responseText.length != 0)
+                    {
+                        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
+                        [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
+                            UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
+                            failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+                            failureNotification.userInfo = notification.userInfo;
+                            [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
+                            NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
+                        }];
+                    }
+
+                    completionHandler();
+                }];
+                return;
             }
         }
     }
