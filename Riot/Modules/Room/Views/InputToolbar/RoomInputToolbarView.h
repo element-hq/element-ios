@@ -70,6 +70,11 @@
 @property (nonatomic) BOOL isEncryptionEnabled;
 
 /**
+ Tell whether the input text will be a reply to a message.
+ */
+@property (nonatomic, getter=isReplyToEnabled) BOOL replyToEnabled;
+
+/**
  Tell whether a call is active.
  */
 @property (nonatomic) BOOL activeCall;
