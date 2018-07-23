@@ -1465,10 +1465,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         return;
     }
 
-    [room state:^(MXRoomState *roomState) {
+    [room members:^(MXRoomMembers *roomMembers) {
 
         NSString *notificationBody;
-        NSString *eventSenderName = [roomState.members memberName:event.sender];
+        NSString *eventSenderName = [roomMembers memberName:event.sender];
 
         if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
         {

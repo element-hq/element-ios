@@ -65,9 +65,9 @@
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
         
         // Compute active members count
-        [self.mxRoom state:^(MXRoomState *roomState) {
+        [self.mxRoom members:^(MXRoomMembers *roomMembers) {
 
-            NSArray *members = [roomState.members membersWithMembership:MXMembershipJoin includeConferenceUser:NO];
+            NSArray *members = [roomMembers membersWithMembership:MXMembershipJoin includeConferenceUser:NO];
             NSUInteger activeCount = 0;
             NSUInteger memberCount = 0;
             for (MXRoomMember *mxMember in members)
