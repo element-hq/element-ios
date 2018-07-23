@@ -200,6 +200,8 @@
 
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    BOOL isInReplyMode;
 }
 
 @end
@@ -1074,6 +1076,28 @@
     }
 }
 
+- (void)sendTextMessage:(NSString*)msgTxt
+{
+    if (isInReplyMode && customizedRoomDataSource.selectedEventId)
+    {
+        [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+            // Just log the error. The message will be displayed in red in the room history
+            NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+        }];
+    }
+    else
+    {
+        // Let the datasource send it and manage the local echo
+        [self.roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
+         {
+             // Just log the error. The message will be displayed in red in the room history
+             NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+         }];
+    }
+    
+    [self cancelEventSelection];
+}
+
 - (void)destroy
 {
     rightBarButtonItems = nil;
@@ -1389,6 +1413,13 @@
         [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
         userPictureView.clipsToBounds = YES;
     }
+}
+
+- (void)enableReplyMode:(BOOL)enable
+{
+    isInReplyMode = enable;
+    RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+    roomInputToolbarView.replyToEnabled = enable;
 }
 
 - (void)onSwipeGesture:(UISwipeGestureRecognizer*)swipeGestureRecognizer
@@ -1922,7 +1953,7 @@
             else if (tappedEvent)
             {
                 // Highlight this event in displayed message
-                customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
+                [self selectEventWithId:tappedEvent.eventId];
             }
             
             // Force table refresh
@@ -1965,7 +1996,7 @@
                 else
                 {
                     // Highlight this event in displayed message
-                    customizedRoomDataSource.selectedEventId = ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId;
+                    [self selectEventWithId:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId];
                 }
                 
                 // Force table refresh
@@ -2717,8 +2748,19 @@
     return shouldDoAction;
 }
 
+- (void)selectEventWithId:(NSString*)eventId
+{
+    BOOL shouldEnableReplyMode = [self.roomDataSource canReplyToEventWithId:eventId];;
+    
+    [self enableReplyMode:shouldEnableReplyMode];
+    
+    customizedRoomDataSource.selectedEventId = eventId;
+}
+
 - (void)cancelEventSelection
 {
+    [self enableReplyMode:NO];
+    
     if (currentAlert)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -2966,9 +3008,10 @@
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
 {
     [super roomInputToolbarView:toolbarView isTyping:typing];
-    
+
     // Cancel potential selected event (to leave edition mode)
-    if (typing && customizedRoomDataSource.selectedEventId)
+    NSString *selectedEventId = customizedRoomDataSource.selectedEventId;
+    if (typing && selectedEventId && ![self.roomDataSource canReplyToEventWithId:selectedEventId])
     {
         [self cancelEventSelection];
     }
