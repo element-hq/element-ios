@@ -153,6 +153,41 @@
     self.placeholder = placeholder;
 }
 
+- (void)setReplyToEnabled:(BOOL)isReplyToEnabled
+{
+    _replyToEnabled = isReplyToEnabled;
+    
+    [self updatePlaceholder];
+}
+
+- (void)updatePlaceholder
+{
+    // Consider the default placeholder
+    
+    NSString *placeholder;
+    
+    // Check the device screen size before using large placeholder
+    BOOL shouldDisplayLargePlaceholder = [GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch;
+    
+    if (shouldDisplayLargePlaceholder)
+    {
+        placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+    }
+    else
+    {
+        if (_isEncryptionEnabled)
+        {
+            placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"encrypted_room_message_reply_to_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+        }
+        else
+        {
+            placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+        }
+    }
+    
+    self.placeholder = placeholder;
+}
+
 - (void)setActiveCall:(BOOL)activeCall
 {
     if (_activeCall != activeCall)
