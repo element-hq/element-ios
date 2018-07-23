@@ -336,154 +336,158 @@
     // Cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
 
-    // @TODO(async-state): Need to expose [MXSession preloadRoomsData] to avoid race
-    // between _mxRoom & mxRoom
+    // Make sure we can access synchronously to self.mxRoom and mxRoom data
+    // to avoid race conditions
+    MXWeakify(self);
+    [_mxRoom.mxSession preloadRoomsData:@[_mxRoom.roomId, mxRoom.roomId] onComplete:^{
+        MXStrongifyAndReturnIfNil(self);
 
-    // Remove previous room registration (if any).
-    if (_mxRoom)
-    {
-        // Remove the previous listener
-        if (leaveRoomNotificationObserver)
+        // Remove previous room registration (if any).
+        if (self.mxRoom)
         {
-            [[NSNotificationCenter defaultCenter] removeObserver:leaveRoomNotificationObserver];
-            leaveRoomNotificationObserver = nil;
+            // Remove the previous listener
+            if (self->leaveRoomNotificationObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:self->leaveRoomNotificationObserver];
+                self->leaveRoomNotificationObserver = nil;
+            }
+            if (self->roomDidFlushDataNotificationObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:self->roomDidFlushDataNotificationObserver];
+                self->roomDidFlushDataNotificationObserver = nil;
+            }
+            if (self->membersListener)
+            {
+                MXWeakify(self);
+                [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+                    MXStrongifyAndReturnIfNil(self);
+
+                    [liveTimeline removeListener:self->membersListener];
+                    self->membersListener = nil;
+                }];
+            }
+
+            [self removeMatrixSession:self.mxRoom.mxSession];
         }
-        if (roomDidFlushDataNotificationObserver)
+
+        self->_mxRoom = mxRoom;
+
+        if (self.mxRoom)
         {
-            [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
-            roomDidFlushDataNotificationObserver = nil;
-        }
-        if (membersListener)
-        {
+            self.searchBarHeader.hidden = NO;
+
+            // Update the current matrix session.
+            [self addMatrixSession:self.mxRoom.mxSession];
+
+            // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
+            self->leaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                // Check whether the user will leave the room related to the displayed participants
+                if (notif.object == self.mxRoom.mxSession)
+                {
+                    NSString *roomId = notif.userInfo[kMXSessionNotificationRoomIdKey];
+                    if (roomId && [roomId isEqualToString:self.mxRoom.roomId])
+                    {
+                        // We remove the current view controller.
+                        [self withdrawViewControllerAnimated:YES completion:nil];
+                    }
+                }
+            }];
+
+            // Observe room history flush (sync with limited timeline, or state event redaction)
+            self->roomDidFlushDataNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomDidFlushDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                MXRoom *room = notif.object;
+                if (self.mxRoom.mxSession == room.mxSession && [self.mxRoom.roomId isEqualToString:room.roomId])
+                {
+                    // The existing room history has been flushed during server sync. Take into account the updated room members list.
+                    [self refreshParticipantsFromRoomMembers];
+
+                    [self refreshTableView];
+                }
+
+            }];
+
+            // Register a listener for events that concern room members
+            NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
+
             MXWeakify(self);
             [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
 
-                [liveTimeline removeListener:self->membersListener];
-                self->membersListener = nil;
-            }];
-        }
-        
-        [self removeMatrixSession:_mxRoom.mxSession];
-    }
-    
-    _mxRoom = mxRoom;
-    
-    if (_mxRoom)
-    {
-        _searchBarHeader.hidden = NO;
-        
-        // Update the current matrix session.
-        [self addMatrixSession:_mxRoom.mxSession];
-        
-        // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
-        leaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            // Check whether the user will leave the room related to the displayed participants
-            if (notif.object == _mxRoom.mxSession)
-            {
-                NSString *roomId = notif.userInfo[kMXSessionNotificationRoomIdKey];
-                if (roomId && [roomId isEqualToString:_mxRoom.roomId])
-                {
-                    // We remove the current view controller.
-                    [self withdrawViewControllerAnimated:YES completion:nil];
-                }
-            }
-        }];
-        
-        // Observe room history flush (sync with limited timeline, or state event redaction)
-        roomDidFlushDataNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomDidFlushDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            MXRoom *room = notif.object;
-            if (_mxRoom.mxSession == room.mxSession && [_mxRoom.roomId isEqualToString:room.roomId])
-            {
-                // The existing room history has been flushed during server sync. Take into account the updated room members list.
-                [self refreshParticipantsFromRoomMembers];
-                
-                [self refreshTableView];
-            }
-            
-        }];
-        
-        // Register a listener for events that concern room members
-        NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
+                self->membersListener = [liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
 
-        MXWeakify(self);
-        [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
-            MXStrongifyAndReturnIfNil(self);
-
-            self->membersListener = [liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
-
-                // Consider only live event
-                if (direction == MXTimelineDirectionForwards)
-                {
-                    switch (event.eventType)
+                    // Consider only live event
+                    if (direction == MXTimelineDirectionForwards)
                     {
-                        case MXEventTypeRoomMember:
+                        switch (event.eventType)
                         {
-                            // Take into account updated member
-                            // Ignore here change related to the current user (this change is handled by leaveRoomNotificationObserver)
-                            if ([event.stateKey isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
+                            case MXEventTypeRoomMember:
                             {
-                                MXRoomMember *mxMember = [liveTimeline.state.members memberWithUserId:event.stateKey];
-                                if (mxMember)
+                                // Take into account updated member
+                                // Ignore here change related to the current user (this change is handled by leaveRoomNotificationObserver)
+                                if ([event.stateKey isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
                                 {
-                                    // Remove previous occurrence of this member (if any)
-                                    [self removeParticipantByKey:mxMember.userId];
-
-                                    // If any, remove 3pid invite corresponding to this room member
-                                    if (mxMember.thirdPartyInviteToken)
+                                    MXRoomMember *mxMember = [liveTimeline.state.members memberWithUserId:event.stateKey];
+                                    if (mxMember)
                                     {
-                                        [self removeParticipantByKey:mxMember.thirdPartyInviteToken];
-                                    }
+                                        // Remove previous occurrence of this member (if any)
+                                        [self removeParticipantByKey:mxMember.userId];
 
-                                    [self handleRoomMember:mxMember];
+                                        // If any, remove 3pid invite corresponding to this room member
+                                        if (mxMember.thirdPartyInviteToken)
+                                        {
+                                            [self removeParticipantByKey:mxMember.thirdPartyInviteToken];
+                                        }
+
+                                        [self handleRoomMember:mxMember];
+
+                                        [self finalizeParticipantsList:liveTimeline.state];
+
+                                        [self refreshTableView];
+                                    }
+                                }
+
+                                break;
+                            }
+                            case MXEventTypeRoomThirdPartyInvite:
+                            {
+                                MXRoomThirdPartyInvite *thirdPartyInvite = [liveTimeline.state thirdPartyInviteWithToken:event.stateKey];
+                                if (thirdPartyInvite)
+                                {
+                                    [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
 
                                     [self finalizeParticipantsList:liveTimeline.state];
 
                                     [self refreshTableView];
                                 }
+                                break;
                             }
-
-                            break;
-                        }
-                        case MXEventTypeRoomThirdPartyInvite:
-                        {
-                            MXRoomThirdPartyInvite *thirdPartyInvite = [liveTimeline.state thirdPartyInviteWithToken:event.stateKey];
-                            if (thirdPartyInvite)
+                            case MXEventTypeRoomPowerLevels:
                             {
-                                [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
-
-                                [self finalizeParticipantsList:liveTimeline.state];
+                                [self refreshParticipantsFromRoomMembers];
 
                                 [self refreshTableView];
+                                break;
                             }
-                            break;
+                            default:
+                                break;
                         }
-                        case MXEventTypeRoomPowerLevels:
-                        {
-                            [self refreshParticipantsFromRoomMembers];
-
-                            [self refreshTableView];
-                            break;
-                        }
-                        default:
-                            break;
                     }
-                }
+                }];
             }];
-        }];
-    }
-    else
-    {
-        // Search bar header is hidden when no room is provided
-        _searchBarHeader.hidden = YES;
-    }
-    
-    // Refresh the members list.
-    [self refreshParticipantsFromRoomMembers];
-    
-    [self refreshTableView];
+        }
+        else
+        {
+            // Search bar header is hidden when no room is provided
+            self.searchBarHeader.hidden = YES;
+        }
+
+        // Refresh the members list.
+        [self refreshParticipantsFromRoomMembers];
+
+        [self refreshTableView];
+    }];
 }
 
 - (void)setEnableMention:(BOOL)enableMention
