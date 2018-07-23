@@ -1,6 +1,7 @@
 /*
  Copyright 2017 Vector Creations Ltd
- 
+ Copyright 2018 New Vector Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -525,6 +526,7 @@
 
                     [self.currentRoomViewController displayRoom:roomDataSource];
 
+                    [self setupLeftBarButtonItem];
                 }];
             }
             else
@@ -538,6 +540,8 @@
 
                 [_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
                 _selectedRoomPreviewData = nil;
+
+                [self setupLeftBarButtonItem];
             }
         }
         else if ([[segue identifier] isEqualToString:@"showContactDetails"])
@@ -548,6 +552,8 @@
             _currentContactDetailViewController.contact = _selectedContact;
             
             navigationController.viewControllers = @[_currentContactDetailViewController];
+
+            [self setupLeftBarButtonItem];
         }
         else
         {
@@ -556,28 +562,8 @@
             [_currentGroupDetailViewController setGroup:_selectedGroup withMatrixSession:_selectedGroupSession];
             
             navigationController.viewControllers = @[_currentGroupDetailViewController];
-        }
-        
-        if (self.splitViewController)
-        {
-            // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
-            [self refreshCurrentSelectedCell:NO];
-            
-            if (_currentRoomViewController)
-            {
-                _currentRoomViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-                _currentRoomViewController.navigationItem.leftItemsSupplementBackButton = YES;
-            }
-            else if (_currentContactDetailViewController)
-            {
-                _currentContactDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-                _currentContactDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
-            }
-            else if (_currentGroupDetailViewController)
-            {
-                _currentGroupDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-                _currentGroupDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
-            }
+
+            [self setupLeftBarButtonItem];
         }
     }
     else
@@ -621,7 +607,6 @@
     // Hide back button title
     self.navigationController.topViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
-
 
 /**
  Load the data source of the room to open.
@@ -673,6 +658,31 @@
 
             onComplete(roomDataSource);
         }];
+    }
+}
+
+- (void)setupLeftBarButtonItem
+{
+    if (self.splitViewController)
+    {
+        // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
+        [self refreshCurrentSelectedCell:NO];
+
+        if (_currentRoomViewController)
+        {
+            _currentRoomViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            _currentRoomViewController.navigationItem.leftItemsSupplementBackButton = YES;
+        }
+        else if (_currentContactDetailViewController)
+        {
+            _currentContactDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            _currentContactDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+        }
+        else if (_currentGroupDetailViewController)
+        {
+            _currentGroupDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            _currentGroupDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+        }
     }
 }
 
