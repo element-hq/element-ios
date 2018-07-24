@@ -169,7 +169,7 @@
     // Check the device screen size before using large placeholder
     BOOL shouldDisplayLargePlaceholder = [GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch;
     
-    if (shouldDisplayLargePlaceholder)
+    if (!shouldDisplayLargePlaceholder)
     {
         placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
     }
