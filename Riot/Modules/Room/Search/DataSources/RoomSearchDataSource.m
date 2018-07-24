@@ -52,7 +52,7 @@
     [super destroy];
 }
 
-- (void)convertHomeserverResultsIntoCells:(MXSearchRoomEventResults *)roomEventResults
+- (void)convertHomeserverResultsIntoCells:(MXSearchRoomEventResults *)roomEventResults onComplete:(dispatch_block_t)onComplete
 {
     // Prepare text font used to highlight the search pattern.
     UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
@@ -64,7 +64,7 @@
         // The search result contains only room message events, no state events.
         // Thus, passing the current room state is not a huge problem. Only
         // the user display name and his avatar may be wrong.
-        RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.room.state andRoomDataSource:roomDataSource];
+        RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.roomState andRoomDataSource:roomDataSource];
         if (cellData)
         {
             // Highlight the search pattern
@@ -73,6 +73,8 @@
             [cellDataArray insertObject:cellData atIndex:0];
         }
     }
+
+    onComplete();
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

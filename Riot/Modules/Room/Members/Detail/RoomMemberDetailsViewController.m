@@ -367,22 +367,27 @@
         self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
         
         // Update member badge
-        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-        NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
-        if (powerLevel >= kRiotRoomAdminLevel)
-        {
-            memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
-            memberTitleView.memberBadge.hidden = NO;
-        }
-        else if (powerLevel >= kRiotRoomModeratorLevel)
-        {
-            memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
-            memberTitleView.memberBadge.hidden = NO;
-        }
-        else
-        {
-            memberTitleView.memberBadge.hidden = YES;
-        }
+        MXWeakify(self);
+        [self.mxRoom state:^(MXRoomState *roomState) {
+            MXStrongifyAndReturnIfNil(self);
+
+            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
+            NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
+            if (powerLevel >= kRiotRoomAdminLevel)
+            {
+                self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
+                self->memberTitleView.memberBadge.hidden = NO;
+            }
+            else if (powerLevel >= kRiotRoomModeratorLevel)
+            {
+                self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
+                self->memberTitleView.memberBadge.hidden = NO;
+            }
+            else
+            {
+                self->memberTitleView.memberBadge.hidden = YES;
+            }
+        }];
         
         NSString* presenceText;
         
@@ -477,7 +482,7 @@
     BOOL isOneself = NO;
     
     // Check user's power level before allowing an action (kick, ban, ...)
-    MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+    MXRoomPowerLevels *powerLevels = [self.mxRoom.dangerousSyncState powerLevels];
     NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
     NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
@@ -930,7 +935,9 @@
         {
             case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
             {
-                [self setPowerLevel:self.mxRoom.state.powerLevels.usersDefault promptUser:YES];
+                [self.mxRoom state:^(MXRoomState *roomState) {
+                    [self setPowerLevel:roomState.powerLevels.usersDefault promptUser:YES];
+                }];
                 break;
             }
             case MXKRoomMemberDetailsActionSetModerator:

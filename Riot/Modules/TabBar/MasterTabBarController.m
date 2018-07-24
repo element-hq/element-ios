@@ -1,6 +1,7 @@
 /*
  Copyright 2017 Vector Creations Ltd
- 
+ Copyright 2018 New Vector Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -510,59 +511,37 @@
         
         if ([[segue identifier] isEqualToString:@"showRoomDetails"])
         {
-            // Replace the rootviewcontroller with a room view controller
-            // Get the RoomViewController from the storyboard
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-            _currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
-            
-            navigationController.viewControllers = @[_currentRoomViewController];
-            
             if (!_selectedRoomPreviewData)
             {
-                MXKRoomDataSource *roomDataSource;
-                
-                // Check whether an event has been selected from messages or files search tab.
-                MXEvent *selectedSearchEvent = unifiedSearchViewController.selectedSearchEvent;
-                MXSession *selectedSearchEventSession = unifiedSearchViewController.selectedSearchEventSession;
-                
-                if (!selectedSearchEvent)
-                {
-                    if (!_selectedEventId)
-                    {
-                        // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
-                        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
-                        roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
-                    }
-                    else
-                    {
-                        // Open the room on the requested event
-                        roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
-                        [roomDataSource finalizeInitialization];
-                        
-                        ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
-                        
-                        // Give the data source ownership to the room view controller.
-                        _currentRoomViewController.hasRoomDataSourceOwnership = YES;
-                    }
-                }
-                else
-                {
-                    // Search result: Create a temp timeline from the selected event
-                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
-                    [roomDataSource finalizeInitialization];
-                    
-                    ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
-                    
-                    // Give the data source ownership to the room view controller.
-                    _currentRoomViewController.hasRoomDataSourceOwnership = YES;
-                }
-                
-                [_currentRoomViewController displayRoom:roomDataSource];
+                MXWeakify(self);
+                [self dataSourceOfRoomToDisplay:^(MXKRoomDataSource *roomDataSource) {
+                    MXStrongifyAndReturnIfNil(self);
+
+                    // Replace the rootviewcontroller with a room view controller
+                    // Get the RoomViewController from the storyboard
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                    self->_currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
+
+                    navigationController.viewControllers = @[self.currentRoomViewController];
+
+                    [self.currentRoomViewController displayRoom:roomDataSource];
+
+                    [self setupLeftBarButtonItem];
+                }];
             }
             else
             {
+                // Replace the rootviewcontroller with a room view controller
+                // Get the RoomViewController from the storyboard
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                _currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
+
+                navigationController.viewControllers = @[_currentRoomViewController];
+
                 [_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
                 _selectedRoomPreviewData = nil;
+
+                [self setupLeftBarButtonItem];
             }
         }
         else if ([[segue identifier] isEqualToString:@"showContactDetails"])
@@ -573,6 +552,8 @@
             _currentContactDetailViewController.contact = _selectedContact;
             
             navigationController.viewControllers = @[_currentContactDetailViewController];
+
+            [self setupLeftBarButtonItem];
         }
         else
         {
@@ -581,28 +562,8 @@
             [_currentGroupDetailViewController setGroup:_selectedGroup withMatrixSession:_selectedGroupSession];
             
             navigationController.viewControllers = @[_currentGroupDetailViewController];
-        }
-        
-        if (self.splitViewController)
-        {
-            // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
-            [self refreshCurrentSelectedCell:NO];
-            
-            if (_currentRoomViewController)
-            {
-                _currentRoomViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-                _currentRoomViewController.navigationItem.leftItemsSupplementBackButton = YES;
-            }
-            else if (_currentContactDetailViewController)
-            {
-                _currentContactDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-                _currentContactDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
-            }
-            else if (_currentGroupDetailViewController)
-            {
-                _currentGroupDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-                _currentGroupDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
-            }
+
+            [self setupLeftBarButtonItem];
         }
     }
     else
@@ -645,6 +606,84 @@
     
     // Hide back button title
     self.navigationController.topViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+/**
+ Load the data source of the room to open.
+
+ @param onComplete a block providing the loaded room data source.
+ */
+- (void)dataSourceOfRoomToDisplay:(void (^)(MXKRoomDataSource *roomDataSource))onComplete
+{
+    // Check whether an event has been selected from messages or files search tab.
+    MXEvent *selectedSearchEvent = unifiedSearchViewController.selectedSearchEvent;
+    MXSession *selectedSearchEventSession = unifiedSearchViewController.selectedSearchEventSession;
+
+    if (!selectedSearchEvent)
+    {
+        if (!_selectedEventId)
+        {
+            // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
+
+            [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+                onComplete(roomDataSource);
+            }];
+        }
+        else
+        {
+            // Open the room on the requested event
+            [RoomDataSource loadRoomDataSourceWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession onComplete:^(id roomDataSource) {
+
+                ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
+
+                // Give the data source ownership to the room view controller.
+                self.currentRoomViewController.hasRoomDataSourceOwnership = YES;
+
+                onComplete(roomDataSource);
+            }];
+        }
+    }
+    else
+    {
+        // Search result: Create a temp timeline from the selected event
+        [RoomDataSource loadRoomDataSourceWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession onComplete:^(id roomDataSource) {
+
+            [roomDataSource finalizeInitialization];
+
+            ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
+
+            // Give the data source ownership to the room view controller.
+            self.currentRoomViewController.hasRoomDataSourceOwnership = YES;
+
+            onComplete(roomDataSource);
+        }];
+    }
+}
+
+- (void)setupLeftBarButtonItem
+{
+    if (self.splitViewController)
+    {
+        // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
+        [self refreshCurrentSelectedCell:NO];
+
+        if (_currentRoomViewController)
+        {
+            _currentRoomViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            _currentRoomViewController.navigationItem.leftItemsSupplementBackButton = YES;
+        }
+        else if (_currentContactDetailViewController)
+        {
+            _currentContactDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            _currentContactDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+        }
+        else if (_currentGroupDetailViewController)
+        {
+            _currentGroupDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            _currentGroupDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+        }
+    }
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion

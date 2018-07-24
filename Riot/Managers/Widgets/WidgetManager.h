@@ -74,7 +74,7 @@ WidgetManagerErrorCode;
  @param room the room to check.
  @return a list of widgets.
  */
-- (NSArray<Widget*> *)widgetsInRoom:(MXRoom*)room;
+- (NSArray<Widget*> *)widgetsInRoom:(MXRoom*)room withRoomState:(MXRoomState*)roomState;
 
 /**
  List all active widgets of a given type in a room.
@@ -83,7 +83,7 @@ WidgetManagerErrorCode;
  @param room the room to check.
  @return a list of widgets.
  */
-- (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes inRoom:(MXRoom*)room;
+- (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes inRoom:(MXRoom*)room withRoomState:(MXRoomState*)roomState;
 
 /**
  List all active widgets of a given type in a room, excluding some types.
@@ -92,7 +92,7 @@ WidgetManagerErrorCode;
  @param room the room to check.
  @return a list of widgets.
  */
-- (NSArray<Widget*> *)widgetsNotOfTypes:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room;
+- (NSArray<Widget*> *)widgetsNotOfTypes:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room withRoomState:(MXRoomState*)roomState;
 
 /**
  List all widgets of an account.
@@ -157,7 +157,7 @@ WidgetManagerErrorCode;
  @return a MXHTTPOperation instance.
  */
 - (MXHTTPOperation *)closeWidget:(NSString*)widgetId inRoom:(MXRoom*)room
-                         success:(void (^)())success
+                         success:(void (^)(void))success
                          failure:(void (^)(NSError *error))failure;
 
 

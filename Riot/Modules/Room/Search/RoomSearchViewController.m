@@ -290,14 +290,19 @@
         if (selectedSearchEvent)
         {
             RoomViewController *roomViewController = segue.destinationViewController;
-            RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
-            [roomDataSource finalizeInitialization];
-            roomDataSource.markTimelineInitialEvent = YES;
-            
-            [roomViewController displayRoom:roomDataSource];
-            roomViewController.hasRoomDataSourceOwnership = YES;
-            
-            roomViewController.navigationItem.leftItemsSupplementBackButton = YES;
+
+            [RoomDataSource loadRoomDataSourceWithRoomId:selectedSearchEvent.roomId
+                                          initialEventId:selectedSearchEvent.eventId
+                                        andMatrixSession:selectedSearchEventSession onComplete:^(RoomDataSource *roomDataSource) {
+
+                                            [roomDataSource finalizeInitialization];
+                                            roomDataSource.markTimelineInitialEvent = YES;
+
+                                            [roomViewController displayRoom:roomDataSource];
+                                            roomViewController.hasRoomDataSourceOwnership = YES;
+
+                                            roomViewController.navigationItem.leftItemsSupplementBackButton = YES;
+                                        }];
         }
         
         // Hide back button title
