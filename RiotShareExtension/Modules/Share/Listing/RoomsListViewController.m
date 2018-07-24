@@ -142,7 +142,7 @@
         // The selected room is instanciated here.
         [[ShareExtensionManager sharedManager].fileStore asyncAccountDataOfRoom:recentCellData.roomSummary.roomId success:^(MXRoomAccountData * _Nonnull accountData) {
             
-            [[ShareExtensionManager sharedManager].fileStore asyncStateEventsOfRoom:recentCellData.roomSummary.roomId success:^(NSArray<MXEvent *> * _Nonnull roomStateEvents) {
+            [[ShareExtensionManager sharedManager].fileStore stateOfRoom:recentCellData.roomSummary.roomId success:^(NSArray<MXEvent *> * _Nonnull roomStateEvents) {
                 
                 MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
                 

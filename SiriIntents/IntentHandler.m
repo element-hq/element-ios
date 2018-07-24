@@ -222,7 +222,7 @@
                                         // since it's neccesary to send text message through it rather than directly
                                         // through MXRestClient due to encryption
                                         [fileStore asyncAccountDataOfRoom:roomID success:^(MXRoomAccountData * _Nonnull roomAccountData) {
-                                            [fileStore asyncStateEventsOfRoom:roomID success:^(NSArray<MXEvent *> * _Nonnull stateEvents) {
+                                            [fileStore stateOfRoom:roomID success:^(NSArray<MXEvent *> * _Nonnull stateEvents) {
                                                 
                                                 MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
                                                 [session setStore:[[MXNoStore alloc] init] success:^{
