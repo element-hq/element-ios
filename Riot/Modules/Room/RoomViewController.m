@@ -3198,7 +3198,9 @@
         [self dismissKeyboard];
 
         // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
+        MXWeakify(self);
         [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
 
             [roomDataSource finalizeInitialization];
 
@@ -3476,7 +3478,9 @@
                     // If an event was specified, replace the datasource by a non live datasource showing the event
                     if (eventId)
                     {
+                        MXWeakify(self);
                         [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+                            MXStrongifyAndReturnIfNil(self);
 
                             [roomDataSource finalizeInitialization];
                             ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
@@ -3940,10 +3944,12 @@
         // Switch back to the room live timeline managed by MXKRoomDataSourceManager
         MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
 
+        MXWeakify(self);
         [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
 
             // Scroll to bottom the bubble history on the display refresh.
-            shouldScrollToBottomOnTableRefresh = YES;
+            self->shouldScrollToBottomOnTableRefresh = YES;
 
             [self displayRoom:roomDataSource];
 
