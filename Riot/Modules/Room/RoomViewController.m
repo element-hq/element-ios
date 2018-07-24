@@ -118,6 +118,7 @@
 #import "StickerPickerViewController.h"
 
 #import "EventFormatter.h"
+#import "MXKSlashCommands.h"
 
 #import "Riot-Swift.h"
 
@@ -201,6 +202,7 @@
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
     
+    // Tell whether the input text field is in send reply mode. If true typed message will be sent to highlighted event.
     BOOL isInReplyMode;
 }
 
@@ -990,15 +992,15 @@
 {
     // Override the default behavior for `/join` command in order to open automatically the joined room
     
-    if ([string hasPrefix:kCmdJoinRoom])
+    if ([string hasPrefix:kMXKSlashCmdJoinRoom])
     {
         // Join a room
         NSString *roomAlias;
         
         // Sanity check
-        if (string.length > kCmdJoinRoom.length)
+        if (string.length > kMXKSlashCmdJoinRoom.length)
         {
-            roomAlias = [string substringFromIndex:kCmdJoinRoom.length + 1];
+            roomAlias = [string substringFromIndex:kMXKSlashCmdJoinRoom.length + 1];
             
             // Remove white space from both ends
             roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
