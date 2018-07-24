@@ -118,7 +118,7 @@
 #import "StickerPickerViewController.h"
 
 #import "EventFormatter.h"
-#import "MXKSlashCommands.h"
+#import <MatrixKit/MXKSlashCommands.h>
 
 #import "Riot-Swift.h"
 
