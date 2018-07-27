@@ -1,1 +1,5 @@
-
+// Permissions usage explanations
+"NSCameraUsageDescription" = "A kamera fényképek, videók készítéséhez és videóhívásokhoz lesz használva.";
+"NSPhotoLibraryUsageDescription" = "A fénykép galéria fényképek és videók küldéséhez lesz használva.";
+"NSMicrophoneUsageDescription" = "A mikrofon videók készítéséhez és hívásokhoz lesz használva.";
+"NSContactsUsageDescription" = "A névjegyzék felhasználók e-mail cím vagy telefonszám alapján való kereséséhez lesz felhasználva a Riotban.";
