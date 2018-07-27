@@ -44,6 +44,11 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             // Collapse them by default
             self.collapsed = YES;
         }
+        
+        if (event.eventType == MXEventTypeRoomCreate && roomState.hasRoomPredecessor)
+        {
+            self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
+        }
 
         // Increase maximum number of components
         self.maxComponentCount = 20;
@@ -127,6 +132,11 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             }
         }
 
+        return NO;
+    }
+    
+    if (self.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor || cellData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
+    {
         return NO;
     }
     
@@ -483,6 +493,12 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // We do not want to merge membership event cells with other cell types
         return NO;
     }
+    
+    if (self.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor || bubbleCellData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
+    {
+        // We do not want to merge room create event cells with other cell types
+        return NO;
+    }
 
     return [super hasSameSenderAsBubbleCellData:bubbleCellData];
 }
@@ -492,6 +508,12 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     if (self.tag == RoomBubbleCellDataTagMembership || event.eventType == MXEventTypeRoomMember)
     {
         // One single bubble per membership event
+        return NO;
+    }
+    
+    if (self.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor || event.eventType == MXEventTypeRoomCreate)
+    {
+        // We do not want to merge room create event cells with other cell types
         return NO;
     }
 

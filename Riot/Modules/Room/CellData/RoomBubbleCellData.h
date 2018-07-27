@@ -20,7 +20,8 @@
 typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
 {
     RoomBubbleCellDataTagMessage = 0, // Default value used for messages
-    RoomBubbleCellDataTagMembership
+    RoomBubbleCellDataTagMembership,
+    RoomBubbleCellDataTagRoomCreateWithPredecessor
 };
 
 /**
