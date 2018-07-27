@@ -322,6 +322,57 @@
     [self checkHeight:YES];
 }
 
+- (void)displayRoomReplacementWithRoomLinkTappedHandler:(void (^)(void))onRoomReplacementLinkTapped
+{
+    [self reset];
+    
+    if (onRoomReplacementLinkTapped)
+    {
+        objc_setAssociatedObject(self.messageTextView, "onRoomReplacementLinkTapped", [onRoomReplacementLinkTapped copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        
+        NSDictionary *roomReplacementReasonAttributes = @{
+                                                          NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                          NSFontAttributeName : [UIFont systemFontOfSize:15 weight:UIFontWeightBold]
+                                                          };
+        
+        NSDictionary *roomLinkAttributes = @{
+                                             NSFontAttributeName : [UIFont systemFontOfSize:15],
+                                             NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
+                                             NSLinkAttributeName : @"onRoomReplacementLinkTapped",
+                                             };
+        
+        NSMutableAttributedString *roomReplacementAttributedString = [NSMutableAttributedString new];
+        
+        NSString *roomReplacementReasonString = [NSString stringWithFormat:@"%@\n", NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil)];
+        
+        NSMutableAttributedString *roomReplacementReasonAttributedString = [[NSMutableAttributedString alloc] initWithString:roomReplacementReasonString attributes:roomReplacementReasonAttributes];
+        
+        NSString *roomLinkString = NSLocalizedStringFromTable(@"room_replacement_link", @"Vector", nil);
+        NSMutableAttributedString *roomLinkAttributedString = [[NSMutableAttributedString alloc] initWithString:roomLinkString attributes:roomLinkAttributes];
+        
+        [roomReplacementAttributedString appendAttributedString:roomReplacementReasonAttributedString];
+        [roomReplacementAttributedString appendAttributedString:roomLinkAttributedString];
+        
+        NSRange wholeStringRange = NSMakeRange(0, roomReplacementAttributedString.length);
+        [roomReplacementAttributedString addAttribute:NSForegroundColorAttributeName value:kRiotPrimaryTextColor range:wholeStringRange];
+        
+        self.messageTextView.attributedText = roomReplacementAttributedString;
+    }
+    else
+    {
+        self.messageTextView.text = NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil);
+    }
+    
+    self.messageTextView.tintColor = kRiotPrimaryTextColor;
+    self.messageTextView.hidden = NO;
+    self.messageTextView.backgroundColor = [UIColor clearColor];
+    
+    self.iconImageView.image = [UIImage imageNamed:@"error"];
+    self.iconImageView.hidden = NO;
+    
+    [self checkHeight:YES];
+}
+
 - (void)reset
 {
     self.separatorView.hidden = NO;
@@ -413,7 +464,19 @@
         }
 
         return NO;
-    }    return YES;
+    }
+    else if ([[URL absoluteString] isEqualToString:@"onRoomReplacementLinkTapped"])
+    {
+        void (^onRoomReplacementLinkTapped)(void) = objc_getAssociatedObject(self.messageTextView, "onRoomReplacementLinkTapped");
+        if (onRoomReplacementLinkTapped)
+        {
+            onRoomReplacementLinkTapped();
+        }
+        
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - UIGestureRecognizerDelegate
