@@ -274,6 +274,8 @@
 "room_action_send_sticker" = "Send sticker";
 "room_replacement_information" = "This room has been replaced and is no longer active.";
 "room_replacement_link" = "The conversation continues here.";
+"room_predecessor_information" = "This room is a continuation of another conversation";
+"room_predecessor_link" = "Click here to see older messages";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
