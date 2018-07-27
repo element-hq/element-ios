@@ -1799,6 +1799,11 @@
         {
             cellViewClass = RoomEmptyBubbleCell.class;
         }
+        else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
+        {
+            // TODO: Use a custom suitable cell for room create predecessor
+            cellViewClass = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;            
+        }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
             if (bubbleData.collapsed)
