@@ -328,15 +328,16 @@
     
     if (onRoomReplacementLinkTapped)
     {
+        CGFloat fontSize = 15.0f;
+        
         objc_setAssociatedObject(self.messageTextView, "onRoomReplacementLinkTapped", [onRoomReplacementLinkTapped copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
         NSDictionary *roomReplacementReasonAttributes = @{
-                                                          NSForegroundColorAttributeName : kRiotPrimaryTextColor,
-                                                          NSFontAttributeName : [UIFont systemFontOfSize:15 weight:UIFontWeightBold]
+                                                          NSFontAttributeName : [UIFont systemFontOfSize:fontSize weight:UIFontWeightBold]
                                                           };
         
         NSDictionary *roomLinkAttributes = @{
-                                             NSFontAttributeName : [UIFont systemFontOfSize:15],
+                                             NSFontAttributeName : [UIFont systemFontOfSize:fontSize],
                                              NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
                                              NSLinkAttributeName : @"onRoomReplacementLinkTapped",
                                              };
@@ -345,10 +346,10 @@
         
         NSString *roomReplacementReasonString = [NSString stringWithFormat:@"%@\n", NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil)];
         
-        NSMutableAttributedString *roomReplacementReasonAttributedString = [[NSMutableAttributedString alloc] initWithString:roomReplacementReasonString attributes:roomReplacementReasonAttributes];
+        NSAttributedString *roomReplacementReasonAttributedString = [[NSAttributedString alloc] initWithString:roomReplacementReasonString attributes:roomReplacementReasonAttributes];
         
         NSString *roomLinkString = NSLocalizedStringFromTable(@"room_replacement_link", @"Vector", nil);
-        NSMutableAttributedString *roomLinkAttributedString = [[NSMutableAttributedString alloc] initWithString:roomLinkString attributes:roomLinkAttributes];
+        NSAttributedString *roomLinkAttributedString = [[NSAttributedString alloc] initWithString:roomLinkString attributes:roomLinkAttributes];
         
         [roomReplacementAttributedString appendAttributedString:roomReplacementReasonAttributedString];
         [roomReplacementAttributedString appendAttributedString:roomLinkAttributedString];
