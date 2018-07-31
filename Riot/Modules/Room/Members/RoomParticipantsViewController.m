@@ -339,7 +339,8 @@
     // Make sure we can access synchronously to self.mxRoom and mxRoom data
     // to avoid race conditions
     MXWeakify(self);
-    [_mxRoom.mxSession preloadRoomsData:@[_mxRoom.roomId, mxRoom.roomId] onComplete:^{
+    [mxRoom.mxSession preloadRoomsData:_mxRoom ? @[_mxRoom.roomId, mxRoom.roomId] : @[mxRoom.roomId]
+                             onComplete:^{
         MXStrongifyAndReturnIfNil(self);
 
         // Remove previous room registration (if any).
