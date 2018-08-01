@@ -66,7 +66,8 @@
         
         // Compute active members count
         MXWeakify(self);
-        [self.mxRoom members:^(MXRoomMembers *roomMembers) {
+        void (^onRoomMembers)(MXRoomMembers *roomMembers, BOOL allMembers) = ^void(MXRoomMembers *roomMembers, BOOL allMembers)
+        {
             MXStrongifyAndReturnIfNil(self);
 
             NSArray *members = [roomMembers membersWithMembership:MXMembershipJoin includeConferenceUser:NO];
@@ -109,6 +110,14 @@
                 // Should not happen
                 self.roomMembers.text = nil;
             }
+        };
+
+        [self.mxRoom members:^(MXRoomMembers *roomMembers) {
+            onRoomMembers(roomMembers, YES);
+        } lazyLoadedMembers:^(MXRoomMembers *lazyLoadedMembers) {
+            onRoomMembers(lazyLoadedMembers, NO);
+        } failure:^(NSError *error) {
+            NSLog(@"[ExpandedRoomTitleView] refreshDisplay: Cannot get all room members");
         }];
     }
     else
