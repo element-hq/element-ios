@@ -69,7 +69,12 @@
         {
             // Highlight the search pattern
             [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:kRiotColorGreen andFont:patternFont];
-            
+
+            // Use profile information as data to display
+            MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];
+            cellData.senderDisplayName = userProfile.displayName;
+            cellData.senderAvatarUrl = userProfile.avatarUrl;
+
             [cellDataArray insertObject:cellData atIndex:0];
         }
     }
