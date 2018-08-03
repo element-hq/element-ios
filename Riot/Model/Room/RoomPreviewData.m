@@ -101,14 +101,7 @@
 
             // Room members count
             // Note that room members presence/activity is not available
-             self->_numJoinedMembers = 0;
-            for (MXRoomMember *mxMember in self.roomDataSource.roomState.members.members)
-            {
-                if (mxMember.membership == MXMembershipJoin)
-                {
-                     self->_numJoinedMembers ++;
-                }
-            }
+             self->_numJoinedMembers = self.roomDataSource.roomState.membersCount.joined;
 
             completion(YES);
         }];
