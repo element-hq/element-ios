@@ -145,7 +145,7 @@
         [MXFileStore setPreloadOptions:0];
 
         MXWeakify(session);
-        [session setStore:[[MXNoStore alloc] init] success:^{
+        [session setStore:[ShareExtensionManager sharedManager].fileStore success:^{
             MXStrongifyAndReturnIfNil(session);
 
             MXRoom *selectedRoom = [MXRoom loadRoomFromStore:[ShareExtensionManager sharedManager].fileStore withRoomId:recentCellData.roomSummary.roomId matrixSession:session];
