@@ -1420,8 +1420,12 @@
 - (void)enableReplyMode:(BOOL)enable
 {
     isInReplyMode = enable;
-    RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
-    roomInputToolbarView.replyToEnabled = enable;
+    
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
+    {
+        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        roomInputToolbarView.replyToEnabled = enable;
+    }
 }
 
 - (void)onSwipeGesture:(UISwipeGestureRecognizer*)swipeGestureRecognizer
