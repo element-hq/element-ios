@@ -33,7 +33,7 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         {
             // Patch: Display the verified icon by default on pending outgoing messages in the encrypted rooms when the encryption is enabled
             MXRoom *room = [session roomWithRoomId:event.roomId];
-            if (room.state.isEncrypted && session.crypto)
+            if (room.summary.isEncrypted && session.crypto)
             {
                 // The outgoing message are encrypted by default
                 encryptionIcon = @"e2e_verified";

@@ -65,7 +65,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     
     self.directRoomBorderView.hidden = !room.isDirect;
     
-    self.encryptedRoomIcon.hidden = !room.state.isEncrypted;
+    self.encryptedRoomIcon.hidden = !room.summary.isEncrypted;
 }
 
 - (void)prepareForReuse

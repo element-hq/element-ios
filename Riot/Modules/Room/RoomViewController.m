@@ -99,6 +99,7 @@
 #import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
 
 #import "RoomSelectedStickerBubbleCell.h"
+#import "RoomPredecessorBubbleCell.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
@@ -118,6 +119,7 @@
 #import "StickerPickerViewController.h"
 
 #import "EventFormatter.h"
+#import <MatrixKit/MXKSlashCommands.h>
 
 #import "Riot-Swift.h"
 
@@ -200,6 +202,12 @@
 
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    // Tell whether the input text field is in send reply mode. If true typed message will be sent to highlighted event.
+    BOOL isInReplyMode;
+    
+    // Listener for `m.room.tombstone` event type
+    id tombstoneEventNotificationsListener;
 }
 
 @end
@@ -322,6 +330,7 @@
     [self.bubblesTableView registerClass:RoomMembershipExpandedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
     
     // Prepare expanded header
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
@@ -363,13 +372,7 @@
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass];
-    
-    // Update the inputToolBar height.
-    CGFloat height = [self inputToolbarHeight];
-    // Disable animation during the update
-    [UIView setAnimationsEnabled:NO];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
-    [UIView setAnimationsEnabled:YES];
+    [self updateInputToolBarViewHeight];
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -466,6 +469,7 @@
     [self listenTypingNotifications];
     [self listenCallNotifications];
     [self listenWidgetNotifications];
+    [self listenTombstoneEventNotifications];
     
     if (self.showExpandedHeader)
     {
@@ -514,6 +518,7 @@
     
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
+    [self removeTombstoneEventNotificationsListener];
 
     // Re-enable the read marker display, and disable its update.
     self.roomDataSource.showReadMarker = YES;
@@ -545,15 +550,19 @@
     
     // Observe missed notifications
     mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self refreshMissedDiscussionsCount:NO];
-        
+
+        MXRoomSummary *roomSummary = notif.object;
+
+        if ([roomSummary.roomId isEqualToString:self.roomDataSource.roomId])
+        {
+            [self refreshMissedDiscussionsCount:NO];
+        }
     }];
     [self refreshMissedDiscussionsCount:YES];
     
     // Warn about the beta state of e2e encryption when entering the first time in an encrypted room
     MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:self.roomDataSource.mxSession.myUser.userId];
-    if (account && !account.isWarnedAboutEncryption && self.roomDataSource.room.state.isEncrypted)
+    if (account && !account.isWarnedAboutEncryption && self.roomDataSource.room.summary.isEncrypted)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
@@ -830,7 +839,7 @@
 - (void)onRoomDataSourceReady
 {
     // Handle here invitation
-    if (self.roomDataSource.room.state.membership == MXMembershipInvite)
+    if (self.roomDataSource.room.summary.membership == MXMembershipInvite)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
         
@@ -888,13 +897,7 @@
             if (!self.inputToolbarView)
             {
                 [self setRoomInputToolbarViewClass];
-                
-                // Update the inputToolBar height.
-                CGFloat height = [self inputToolbarHeight];
-                // Disable animation during the update
-                [UIView setAnimationsEnabled:NO];
-                [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
-                [UIView setAnimationsEnabled:YES];
+                [self updateInputToolBarViewHeight];
                 
                 [self refreshRoomInputToolbar];
                 
@@ -931,13 +934,19 @@
     Class roomInputToolbarViewClass = RoomInputToolbarView.class;
 
     // Check the user has enough power to post message
-    if (self.roomDataSource.room.state)
+    if (self.roomDataSource.roomState)
     {
-        MXRoomPowerLevels *powerLevels = self.roomDataSource.room.state.powerLevels;
+        MXRoomPowerLevels *powerLevels = self.roomDataSource.roomState.powerLevels;
         NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
-
+        
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
-        if (!canSend)
+        BOOL isRoomObsolete = self.roomDataSource.roomState.isObsolete;
+        
+        if (isRoomObsolete)
+        {
+            roomInputToolbarViewClass = nil;
+        }
+        else if (!canSend)
         {
             roomInputToolbarViewClass = DisabledRoomInputToolbarView.class;
         }
@@ -984,15 +993,15 @@
 {
     // Override the default behavior for `/join` command in order to open automatically the joined room
     
-    if ([string hasPrefix:kCmdJoinRoom])
+    if ([string hasPrefix:kMXKSlashCmdJoinRoom])
     {
         // Join a room
         NSString *roomAlias;
         
         // Sanity check
-        if (string.length > kCmdJoinRoom.length)
+        if (string.length > kMXKSlashCmdJoinRoom.length)
         {
-            roomAlias = [string substringFromIndex:kCmdJoinRoom.length + 1];
+            roomAlias = [string substringFromIndex:kMXKSlashCmdJoinRoom.length + 1];
             
             // Remove white space from both ends
             roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -1004,7 +1013,7 @@
             [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
                 
                 // Show the room
-                [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
+                [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
                 
             } failure:^(NSError *error) {
                 
@@ -1074,6 +1083,28 @@
     }
 }
 
+- (void)sendTextMessage:(NSString*)msgTxt
+{
+    if (isInReplyMode && customizedRoomDataSource.selectedEventId)
+    {
+        [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+            // Just log the error. The message will be displayed in red in the room history
+            NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+        }];
+    }
+    else
+    {
+        // Let the datasource send it and manage the local echo
+        [self.roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
+         {
+             // Just log the error. The message will be displayed in red in the room history
+             NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+         }];
+    }
+    
+    [self cancelEventSelection];
+}
+
 - (void)destroy
 {
     rightBarButtonItems = nil;
@@ -1124,6 +1155,7 @@
     
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
+    [self removeTombstoneEventNotificationsListener];
 
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
@@ -1232,7 +1264,7 @@
         return YES;
     }
     
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady && self.roomDataSource.room.state.membership == MXMembershipInvite)
+    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady && self.roomDataSource.room.summary.membership == MXMembershipInvite)
     {
         return YES;
     }
@@ -1335,7 +1367,7 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.state.membersCount.joined >= 2;
+        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
         
         // Get user picture view in input toolbar
         userPictureView = roomInputToolbarView.pictureView;
@@ -1357,7 +1389,7 @@
         }
         
         // Check whether the encryption is enabled in the room
-        if (self.roomDataSource.room.state.isEncrypted)
+        if (self.roomDataSource.room.summary.isEncrypted)
         {
             // Encrypt the user's messages as soon as the user supports the encryption?
             roomInputToolbarView.isEncryptionEnabled = (self.mainSession.crypto != nil);
@@ -1391,6 +1423,17 @@
     }
 }
 
+- (void)enableReplyMode:(BOOL)enable
+{
+    isInReplyMode = enable;
+    
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
+    {
+        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        roomInputToolbarView.replyToEnabled = enable;
+    }
+}
+
 - (void)onSwipeGesture:(UISwipeGestureRecognizer*)swipeGestureRecognizer
 {
     UIView *view = swipeGestureRecognizer.view;
@@ -1408,6 +1451,16 @@
     }
 }
 
+- (void)updateInputToolBarViewHeight
+{
+    // Update the inputToolBar height.
+    CGFloat height = [self inputToolbarHeight];
+    // Disable animation during the update
+    [UIView setAnimationsEnabled:NO];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
+    [UIView setAnimationsEnabled:YES];
+}
+
 #pragma mark - Hide/Show expanded header
 
 - (void)showExpandedHeader:(BOOL)isVisible
@@ -1423,7 +1476,7 @@
         // - if the view controller is not embedded inside a split view controller yet.
         // - if the encryption view is displayed
         // - if the event details view is displayed
-        if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.state.membership != MXMembershipJoin) || !self.splitViewController || encryptionInfoView.superview || eventDetailsView.superview))
+        if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.summary.membership != MXMembershipJoin) || !self.splitViewController || encryptionInfoView.superview || eventDetailsView.superview))
         {
             NSLog(@"[RoomVC] Show expanded header ignored");
             return;
@@ -1744,7 +1797,7 @@
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
     Class cellViewClass = nil;
-    BOOL isEncryptedRoom = self.roomDataSource.room.state.isEncrypted;
+    BOOL isEncryptedRoom = self.roomDataSource.room.summary.isEncrypted;
     
     // Sanity check
     if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
@@ -1755,6 +1808,10 @@
         if (bubbleData.hasNoDisplay)
         {
             cellViewClass = RoomEmptyBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
+        {
+            cellViewClass = RoomPredecessorBubbleCell.class;
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
@@ -1894,7 +1951,7 @@
     {
         if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
         {
-            selectedRoomMember = [self.roomDataSource.room.state.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            selectedRoomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
             if (selectedRoomMember)
             {
                 [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
@@ -1903,7 +1960,7 @@
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
         {
             // Add the member display name in text input
-            MXRoomMember *roomMember = [self.roomDataSource.room.state.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            MXRoomMember *roomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
             if (roomMember)
             {
                 [self mention:roomMember];
@@ -1922,7 +1979,7 @@
             else if (tappedEvent)
             {
                 // Highlight this event in displayed message
-                customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
+                [self selectEventWithId:tappedEvent.eventId];
             }
             
             // Force table refresh
@@ -1965,7 +2022,7 @@
                 else
                 {
                     // Highlight this event in displayed message
-                    customizedRoomDataSource.selectedEventId = ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId;
+                    [self selectEventWithId:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId];
                 }
                 
                 // Force table refresh
@@ -2562,7 +2619,7 @@
                                                            }]];
         }
         
-        if (level == 1 && self.roomDataSource.room.state.isEncrypted)
+        if (level == 1 && self.roomDataSource.room.summary.isEncrypted)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_encryption", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -2656,7 +2713,7 @@
             
             NSString *userId = absoluteURLString;
             
-            MXRoomMember* member = [self.roomDataSource.room.state.members memberWithUserId:userId];
+            MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:userId];
             if (member)
             {
                 // Use the room member detail VC for room members
@@ -2717,8 +2774,19 @@
     return shouldDoAction;
 }
 
+- (void)selectEventWithId:(NSString*)eventId
+{
+    BOOL shouldEnableReplyMode = [self.roomDataSource canReplyToEventWithId:eventId];;
+    
+    [self enableReplyMode:shouldEnableReplyMode];
+    
+    customizedRoomDataSource.selectedEventId = eventId;
+}
+
 - (void)cancelEventSelection
 {
+    [self enableReplyMode:NO];
+    
     if (currentAlert)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -2765,7 +2833,11 @@
             // Files tab
             [titles addObject: NSLocalizedStringFromTable(@"room_details_files", @"Vector", nil)];
             RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
-            MXKRoomDataSource *roomFilesDataSource = [[MXKRoomDataSource alloc] initWithRoomId:roomId andMatrixSession:session];
+            // @TODO (async-state): This call should be synchronous. Every thing will be fine
+            __block MXKRoomDataSource *roomFilesDataSource;
+            [MXKRoomDataSource loadRoomDataSourceWithRoomId:roomId andMatrixSession:session onComplete:^(id roomDataSource) {
+                roomFilesDataSource = roomDataSource;
+            }];
             roomFilesDataSource.filterMessagesWithURL = YES;
             [roomFilesDataSource finalizeInitialization];
             // Give the data source ownership to the room files view controller.
@@ -2858,25 +2930,18 @@
         contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
         
         // List all the participants matrix user id to ignore them during the contacts search.
-        MXSession* session = self.roomDataSource.mxSession;
-        NSString* roomId = self.roomDataSource.roomId;
-        MXRoom *room = [session roomWithRoomId:roomId];
-        if (room)
+        NSArray *members = [self.roomDataSource.roomState.members membersWithoutConferenceUser];
+        for (MXRoomMember *mxMember in members)
         {
-            NSArray *members = [room.state.members membersWithoutConferenceUser];
-            
-            for (MXRoomMember *mxMember in members)
+            // Check his status
+            if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
             {
-                // Check his status
-                if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
-                {
-                    // Create the contact related to this member
-                    MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
-                    [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:mxMember.userId];
-                }
+                // Create the contact related to this member
+                MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
+                [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:mxMember.userId];
             }
         }
-        
+
         [contactsPickerViewController showSearch:YES];
         contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
         
@@ -2966,9 +3031,10 @@
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
 {
     [super roomInputToolbarView:toolbarView isTyping:typing];
-    
+
     // Cancel potential selected event (to leave edition mode)
-    if (typing && customizedRoomDataSource.selectedEventId)
+    NSString *selectedEventId = customizedRoomDataSource.selectedEventId;
+    if (typing && selectedEventId && ![self.roomDataSource canReplyToEventWithId:selectedEventId])
     {
         [self cancelEventSelection];
     }
@@ -3015,7 +3081,7 @@
 
     // If enabled, create the conf using jitsi widget and open it directly
     else if (RiotSettings.shared.createConferenceCallsWithJitsi
-             && self.roomDataSource.room.state.membersCount.joined > 2)
+             && self.roomDataSource.room.summary.membersCount.joined > 2)
     {
         [self startActivityIndicator];
 
@@ -3043,7 +3109,7 @@
          }];
     }
     // Classic conference call is not supported in encrypted rooms
-    else if (self.roomDataSource.room.state.isEncrypted && self.roomDataSource.room.state.membersCount.joined > 2)
+    else if (self.roomDataSource.room.summary.isEncrypted && self.roomDataSource.room.summary.membersCount.joined > 2)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
@@ -3066,8 +3132,8 @@
     }
 
     // In case of conference call, check that the user has enough power level
-    else if (self.roomDataSource.room.state.membersCount.joined > 2 &&
-             ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room])
+    else if (self.roomDataSource.room.summary.membersCount.joined > 2 &&
+             ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room roomState:self.roomDataSource.roomState])
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
@@ -3195,18 +3261,21 @@
         [self showExpandedHeader:NO];
         // Dismiss potential keyboard.
         [self dismissKeyboard];
-        
-        MXKRoomDataSource *roomDataSource;
+
         // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
-        roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession];
-        [roomDataSource finalizeInitialization];
-        
-        // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
-        self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
-        [self displayRoom:roomDataSource];
-        
-        // Give the data source ownership to the room view controller.
-        self.hasRoomDataSourceOwnership = YES;
+        MXWeakify(self);
+        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+
+            [roomDataSource finalizeInitialization];
+
+            // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
+            self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
+            [self displayRoom:roomDataSource];
+
+            // Give the data source ownership to the room view controller.
+            self.hasRoomDataSourceOwnership = YES;
+        }];
     }
     else if (sender == self.resetReadMarkerButton)
     {
@@ -3474,25 +3543,23 @@
                     // If an event was specified, replace the datasource by a non live datasource showing the event
                     if (eventId)
                     {
-                        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession];
-                        [roomDataSource finalizeInitialization];
-                        roomDataSource.markTimelineInitialEvent = YES;
-                        
-                        [self displayRoom:roomDataSource];
-                        
-                        self.hasRoomDataSourceOwnership = YES;
+                        MXWeakify(self);
+                        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+                            MXStrongifyAndReturnIfNil(self);
+
+                            [roomDataSource finalizeInitialization];
+                            ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
+
+                            [self displayRoom:roomDataSource];
+
+                            self.hasRoomDataSourceOwnership = YES;
+                        }];
                     }
                     else
                     {
                         // Enable back the text input
                         [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-                        
-                        // Update the inputToolBar height.
-                        CGFloat height = [self inputToolbarHeight];
-                        // Disable animation during the update
-                        [UIView setAnimationsEnabled:NO];
-                        [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
-                        [UIView setAnimationsEnabled:YES];
+                        [self updateInputToolBarViewHeight];
                         
                         // And the extra area
                         [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -3539,7 +3606,7 @@
             } failure:^(NSError *error) {
                 
                 [self stopActivityIndicator];
-                NSLog(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.state.roomId);
+                NSLog(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
                 
             }];
         }
@@ -3555,8 +3622,13 @@
         // Remove the previous live listener
         if (typingNotifListener)
         {
-            [self.roomDataSource.room.liveTimeline removeListener:typingNotifListener];
-            typingNotifListener = nil;
+            MXWeakify(self);
+            [self.roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+                MXStrongifyAndReturnIfNil(self);
+
+                [liveTimeline removeListener:self->typingNotifListener];
+                self->typingNotifListener = nil;
+            }];
         }
     }
     
@@ -3568,8 +3640,10 @@
     if (self.roomDataSource)
     {
         // Add typing notification listener
-        typingNotifListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
-            
+        MXWeakify(self);
+        self->typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+            MXStrongifyAndReturnIfNil(self);
+
             // Handle only live events
             if (direction == MXTimelineDirectionForwards)
             {
@@ -3581,17 +3655,16 @@
                 {
                     [typingUsers removeObjectAtIndex:index];
                 }
-                
+
                 // Ignore this notification if both arrays are empty
-                if (currentTypingUsers.count || typingUsers.count)
+                if (self->currentTypingUsers.count || typingUsers.count)
                 {
-                    currentTypingUsers = typingUsers;
+                    self->currentTypingUsers = typingUsers;
                     [self refreshActivitiesViewDisplay];
                 }
             }
-            
         }];
-        
+
         // Retrieve the current typing users list
         NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
         // Remove typing info for the current user
@@ -3621,7 +3694,7 @@
         {
             NSString* name = [currentTypingUsers objectAtIndex:i];
             
-            MXRoomMember* member = [self.roomDataSource.room.state.members memberWithUserId:name];
+            MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:name];
             
             if (member && member.displayname.length)
             {
@@ -3754,7 +3827,8 @@
 - (NSUInteger)widgetsCount:(BOOL)includeUserWidgets
 {
     NSUInteger widgetsCount = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
-                                                                        inRoom:self.roomDataSource.room].count;
+                                                                        inRoom:self.roomDataSource.room
+                                                                 withRoomState:self.roomDataSource.roomState].count;
     if (includeUserWidgets)
     {
         widgetsCount += [[WidgetManager sharedManager] userWidgets:self.roomDataSource.room.mxSession].count;
@@ -3783,7 +3857,16 @@
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
         }
-        else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
+        else if (customizedRoomDataSource.roomState.isObsolete)
+        {
+            NSString *replacementRoomId = customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
+            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@", [replacementRoomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            
+            [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
+                [[AppDelegate theDelegate] handleUniversalLinkFragment:roomLinkFragment];
+            }];
+        }
+        else if (customizedRoomDataSource.roomState.isOngoingConferenceCall)
         {
             // Show the "Ongoing conference call" banner only if the user is not in the conference
             MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
@@ -3928,24 +4011,28 @@
     {
         // Switch back to the room live timeline managed by MXKRoomDataSourceManager
         MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES];
-        
-        // Scroll to bottom the bubble history on the display refresh.
-        shouldScrollToBottomOnTableRefresh = YES;
-        
-        [self displayRoom:roomDataSource];
-        
-        // The room view controller do not have here the data source ownership.
-        self.hasRoomDataSourceOwnership = NO;
-        
-        [self refreshActivitiesViewDisplay];
-        [self refreshJumpToLastUnreadBannerDisplay];
-        
-        if (self.saveProgressTextInput)
-        {
-            // Restore the potential message partially typed before jump to last unread messages.
-            self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
-        }
+
+        MXWeakify(self);
+        [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+
+            // Scroll to bottom the bubble history on the display refresh.
+            self->shouldScrollToBottomOnTableRefresh = YES;
+
+            [self displayRoom:roomDataSource];
+
+            // The room view controller do not have here the data source ownership.
+            self.hasRoomDataSourceOwnership = NO;
+
+            [self refreshActivitiesViewDisplay];
+            [self refreshJumpToLastUnreadBannerDisplay];
+
+            if (self.saveProgressTextInput)
+            {
+                // Restore the potential message partially typed before jump to last unread messages.
+                self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+            }
+        }];
     }
 }
 
@@ -4664,6 +4751,43 @@
                              }]];
 
     [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+#pragma mark Tombstone event
+
+- (void)listenTombstoneEventNotifications
+{
+    // Room is already obsolete do not listen to tombstone event
+    if (self.roomDataSource.roomState.isObsolete)
+    {
+        return;
+    }
+    
+    MXWeakify(self);
+    
+    tombstoneEventNotificationsListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringRoomTombStone] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        // Update activitiesView with room replacement information
+        [self refreshActivitiesViewDisplay];
+        // Hide inputToolbarView
+        [self setRoomInputToolbarViewClass];
+        [self updateInputToolBarViewHeight];
+    }];
+}
+
+- (void)removeTombstoneEventNotificationsListener
+{
+    if (self.roomDataSource)
+    {
+        // Remove the previous live listener
+        if (tombstoneEventNotificationsListener)
+        {
+            [self.roomDataSource.room removeListener:tombstoneEventNotificationsListener];
+            tombstoneEventNotificationsListener = nil;
+        }
+    }
 }
 
 @end

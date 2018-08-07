@@ -84,29 +84,29 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return self;
 }
 
-- (NSArray<Widget *> *)widgetsInRoom:(MXRoom *)room
+- (NSArray<Widget *> *)widgetsInRoom:(MXRoom*)room withRoomState:(MXRoomState*)roomState
 {
-    return [self widgetsOfTypes:nil inRoom:room];
+    return [self widgetsOfTypes:nil inRoom:room withRoomState:roomState];
 }
 
-- (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes inRoom:(MXRoom*)room;
+- (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes inRoom:(MXRoom*)room withRoomState:(MXRoomState*)roomState
 {
-    return [self widgetsOfTypes:widgetTypes butNotTypesOf:nil inRoom:room];
+    return [self widgetsOfTypes:widgetTypes butNotTypesOf:nil inRoom:room withRoomState:roomState];
 }
 
-- (NSArray<Widget*> *)widgetsNotOfTypes:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room
+- (NSArray<Widget*> *)widgetsNotOfTypes:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room withRoomState:(MXRoomState*)roomState;
 {
-    return [self widgetsOfTypes:nil butNotTypesOf:notWidgetTypes inRoom:room];
+    return [self widgetsOfTypes:nil butNotTypesOf:notWidgetTypes inRoom:room withRoomState:roomState];
 }
 
-- (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes butNotTypesOf:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room;
+- (NSArray<Widget*> *)widgetsOfTypes:(NSArray<NSString*>*)widgetTypes butNotTypesOf:(NSArray<NSString*>*)notWidgetTypes inRoom:(MXRoom*)room withRoomState:(MXRoomState*)roomState;
 {
     // Widget id -> widget
     NSMutableDictionary <NSString*, Widget *> *widgets = [NSMutableDictionary dictionary];
 
     // Get all widgets state events in the room
-    NSMutableArray<MXEvent*> *widgetEvents = [NSMutableArray arrayWithArray:[room.state stateEventsWithType:kWidgetMatrixEventTypeString]];
-    [widgetEvents addObjectsFromArray:[room.state stateEventsWithType:kWidgetModularEventTypeString]];
+    NSMutableArray<MXEvent*> *widgetEvents = [NSMutableArray arrayWithArray:[roomState stateEventsWithType:kWidgetMatrixEventTypeString]];
+    [widgetEvents addObjectsFromArray:[roomState stateEventsWithType:kWidgetModularEventTypeString]];
 
     // There can be several widgets state events for a same widget but
     // only the last one must be considered.
@@ -221,27 +221,38 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                           success:(void (^)(Widget *widget))success
                           failure:(void (^)(NSError *error))failure
 {
-    NSError *permissionError = [self checkWidgetPermissionInRoom:room];
-    if (permissionError)
-    {
+    // Create an empty operation that will be mutated later
+    MXHTTPOperation *operation = [[MXHTTPOperation alloc] init];
+
+    MXWeakify(self);
+    [self checkWidgetPermissionInRoom:room success:^{
+        MXStrongifyAndReturnIfNil(self);
+
+        NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
+        self->successBlockForWidgetCreation[hash][widgetId] = success;
+        self->failureBlockForWidgetCreation[hash][widgetId] = failure;
+
+        // Send a state event with the widget data
+        // TODO: This API will be shortly replaced by a pure modular API
+        // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
+        MXHTTPOperation *operation2 = [room sendStateEventOfType:kWidgetModularEventTypeString
+                                                         content:widgetContent
+                                                        stateKey:widgetId
+                                                         success:nil failure:failure];
+
+        if (operation2)
+        {
+            [operation mutateTo:operation2];
+        }
+
+    } failure:^(NSError *error) {
         if (failure)
         {
-            failure(permissionError);
+            failure(error);
         }
-        return nil;
-    }
+    }];
 
-    NSString *hash = [NSString stringWithFormat:@"%p", room.mxSession];
-    successBlockForWidgetCreation[hash][widgetId] = success;
-    failureBlockForWidgetCreation[hash][widgetId] = failure;
-
-    // Send a state event with the widget data
-    // TODO: This API will be shortly replaced by a pure modular API
-    // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
-    return [room sendStateEventOfType:kWidgetModularEventTypeString
-                              content:widgetContent
-                             stateKey:widgetId
-                              success:nil failure:failure];
+    return operation;
 }
 
 
@@ -279,31 +290,40 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                       failure:failure];
 }
 
-- (MXHTTPOperation *)closeWidget:(NSString *)widgetId inRoom:(MXRoom *)room success:(void (^)())success failure:(void (^)(NSError *))failure
+- (MXHTTPOperation *)closeWidget:(NSString *)widgetId inRoom:(MXRoom *)room success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
-    NSError *permissionError = [self checkWidgetPermissionInRoom:room];
-    if (permissionError)
-    {
+    // Create an empty operation that will be mutated later
+    MXHTTPOperation *operation = [[MXHTTPOperation alloc] init];
+
+    [self checkWidgetPermissionInRoom:room success:^{
+        
+        // Send a state event with an empty content to disable the widget
+        // TODO: This API will be shortly replaced by a pure modular API
+        // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
+        MXHTTPOperation *operation2 = [room sendStateEventOfType:kWidgetModularEventTypeString
+                                  content:@{}
+                                 stateKey:widgetId
+                                  success:^(NSString *eventId)
+                {
+                    if (success)
+                    {
+                        success();
+                    }
+                } failure:failure];
+
+        if (operation2)
+        {
+            [operation mutateTo:operation2];
+        }
+
+    } failure:^(NSError *error) {
         if (failure)
         {
-            failure(permissionError);
+            failure(error);
         }
-        return nil;
-    }
+    }];
 
-    // Send a state event with an empty content to disable the widget
-    // TODO: This API will be shortly replaced by a pure modular API
-    // TODO: Move to kWidgetMatrixEventTypeString ("m.widget") type but when?
-    return [room sendStateEventOfType:kWidgetModularEventTypeString
-                              content:@{}
-                             stateKey:widgetId
-                              success:^(NSString *eventId)
-            {
-                if (success)
-                {
-                    success();
-                }
-            } failure:failure];
+    return operation;
 }
 
 /**
@@ -312,25 +332,35 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
  @param room the room to check.
  @return an NSError if the user cannot act on widgets in this room. Else, nil.
  */
-- (NSError *)checkWidgetPermissionInRoom:(MXRoom *)room
+- (void)checkWidgetPermissionInRoom:(MXRoom *)room success:(dispatch_block_t)success  failure:(void (^)(NSError *))failure
 {
-    NSError *error;
+    [room state:^(MXRoomState *roomState) {
 
-    // Check user's power in the room
-    MXRoomPowerLevels *powerLevels = room.state.powerLevels;
-    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:room.mxSession.myUser.userId];
+        NSError *error;
 
-    // The user must be able to send state events to manage widgets
-    if (oneSelfPowerLevel < powerLevels.stateDefault)
-    {
-        error = [NSError errorWithDomain:WidgetManagerErrorDomain
-                                             code:WidgetManagerErrorCodeNotEnoughPower
-                                         userInfo:@{
-                                                    NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_no_power_to_manage", @"Vector", nil)
-                                                    }];
-    }
+        // Check user's power in the room
+        MXRoomPowerLevels *powerLevels = roomState.powerLevels;
+        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:room.mxSession.myUser.userId];
 
-    return error;
+        // The user must be able to send state events to manage widgets
+        if (oneSelfPowerLevel < powerLevels.stateDefault)
+        {
+            error = [NSError errorWithDomain:WidgetManagerErrorDomain
+                                        code:WidgetManagerErrorCodeNotEnoughPower
+                                    userInfo:@{
+                                               NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_no_power_to_manage", @"Vector", nil)
+                                               }];
+        }
+
+        if (error)
+        {
+            failure(error);
+        }
+        else
+        {
+            success();
+        }
+    }];
 }
 
 - (void)addMatrixSession:(MXSession *)mxSession

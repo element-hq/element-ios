@@ -143,7 +143,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
                 self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
             }
         }
-        else if (roomCellData.roomSummary.room.state.membership == MXMembershipInvite)
+        else if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite)
         {
             self.missedNotifAndUnreadBadgeBgView.hidden = NO;
             self.missedNotifAndUnreadBadgeBgView.backgroundColor = kRiotColorPinkRed;

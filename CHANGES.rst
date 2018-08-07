@@ -1,9 +1,18 @@
-Changes in 0.6.20 ()
+Changes in 0.6.21 ()
 ===============================================
 
 Improvements:
 * Update project structure. Organize UI related files by feature (PR#1932).
 * Move image files to xcassets (PR#1932).
+* Replies: Implement sending (#1911).
+* Support room versioning (#1938).
+* Add support of lazy-loading of room members (#1931).
+
+Changes in 0.6.20 (2018-07-13)
+===============================================
+
+Improvements:
+ * Update contact permission text in order to be clearer about the reasons for access to the address book.
 
 Changes in 0.6.19 (2018-07-05)
 ===============================================
