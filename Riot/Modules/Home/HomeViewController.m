@@ -462,13 +462,13 @@
             if (room)
             {
                 // Display no action for the invited room
-                if (room.state.membership == MXMembershipInvite)
+                if (room.summary.membership == MXMembershipInvite)
                 {
                     return;
                 }
                 
                 // Store the identifier of the room related to the edited cell.
-                selectedRoomId = room.state.roomId;
+                selectedRoomId = room.roomId;
                 // Store the concerned section
                 selectedCollectionViewContentOffset = -1;
                 selectedSection = selectedCell.collectionViewTag;

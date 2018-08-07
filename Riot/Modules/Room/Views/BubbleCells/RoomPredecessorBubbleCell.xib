@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="95" id="dMe-ZD-6zj" customClass="RoomPredecessorBubbleCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="95"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dMe-ZD-6zj" id="7V1-Pv-bKF">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="94.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0VD-Do-08B">
+                        <rect key="frame" x="5" y="5" width="590" height="84.5"/>
+                        <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="error" translatesAutoresizingMaskIntoConstraints="NO" id="Kg8-fW-ayG">
+                        <rect key="frame" x="13" y="32.5" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="UEm-nU-wsT"/>
+                            <constraint firstAttribute="height" constant="30" id="ztv-Cj-g2H"/>
+                        </constraints>
+                    </imageView>
+                    <view hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="zD7-yD-QCd" userLabel="Picture View" customClass="MXKImageView">
+                        <rect key="frame" x="13" y="10" width="30" height="30"/>
+                        <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="PictureView"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="izW-Ct-a8B"/>
+                            <constraint firstAttribute="width" constant="30" id="kMZ-xD-ssu"/>
+                        </constraints>
+                    </view>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="6qp-Wh-8rt">
+                        <rect key="frame" x="51" y="10" width="102" height="74.5"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="MessageTextView"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="57" id="s3p-AJ-aTR"/>
+                            <constraint firstAttribute="width" constant="102" id="t0I-gu-NVk"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                    </textView>
+                    <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U09-Uc-oBb">
+                        <rect key="frame" x="515" y="3" width="70" height="91.5"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="e5E-Nc-Ws4"/>
+                        </constraints>
+                    </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="me4-cu-FFg">
+                        <rect key="frame" x="12" y="3" width="576" height="89"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="6qp-Wh-8rt" secondAttribute="bottom" constant="10" id="2pq-vf-J97"/>
+                    <constraint firstItem="zD7-yD-QCd" firstAttribute="top" secondItem="7V1-Pv-bKF" secondAttribute="top" constant="10" id="4wB-xE-Tzm"/>
+                    <constraint firstAttribute="trailing" secondItem="0VD-Do-08B" secondAttribute="trailing" constant="5" id="6Yn-Of-Y63"/>
+                    <constraint firstItem="0VD-Do-08B" firstAttribute="top" secondItem="7V1-Pv-bKF" secondAttribute="top" constant="5" id="Hxi-fN-aio"/>
+                    <constraint firstItem="Kg8-fW-ayG" firstAttribute="centerY" secondItem="7V1-Pv-bKF" secondAttribute="centerY" id="IWu-Oy-VyE"/>
+                    <constraint firstItem="6qp-Wh-8rt" firstAttribute="top" secondItem="7V1-Pv-bKF" secondAttribute="top" constant="10" id="Kxf-Hg-coJ"/>
+                    <constraint firstAttribute="trailing" secondItem="U09-Uc-oBb" secondAttribute="trailing" constant="15" id="Rvt-Ul-d7S"/>
+                    <constraint firstItem="0VD-Do-08B" firstAttribute="leading" secondItem="7V1-Pv-bKF" secondAttribute="leading" constant="5" id="WsJ-hB-WdT"/>
+                    <constraint firstItem="6qp-Wh-8rt" firstAttribute="leading" secondItem="7V1-Pv-bKF" secondAttribute="leading" constant="51" id="bCI-kX-2ED"/>
+                    <constraint firstItem="Kg8-fW-ayG" firstAttribute="leading" secondItem="7V1-Pv-bKF" secondAttribute="leading" constant="13" id="bzr-Dv-Jun"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="me4-cu-FFg" secondAttribute="trailing" constant="-8" id="caf-G1-Ikh"/>
+                    <constraint firstItem="U09-Uc-oBb" firstAttribute="top" secondItem="7V1-Pv-bKF" secondAttribute="top" constant="3" id="gke-sD-KmR"/>
+                    <constraint firstAttribute="bottom" secondItem="U09-Uc-oBb" secondAttribute="bottom" id="mo9-Ga-XPy"/>
+                    <constraint firstItem="me4-cu-FFg" firstAttribute="leading" secondItem="7V1-Pv-bKF" secondAttribute="leadingMargin" constant="-8" id="peP-h8-OoV"/>
+                    <constraint firstAttribute="bottom" secondItem="0VD-Do-08B" secondAttribute="bottom" constant="5" id="qxD-bI-MjC"/>
+                    <constraint firstItem="me4-cu-FFg" firstAttribute="top" secondItem="7V1-Pv-bKF" secondAttribute="topMargin" constant="-8" id="up4-wO-pWZ"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="me4-cu-FFg" secondAttribute="bottom" constant="-8" id="vX2-kt-mxZ"/>
+                    <constraint firstItem="zD7-yD-QCd" firstAttribute="leading" secondItem="7V1-Pv-bKF" secondAttribute="leading" constant="13" id="vxy-3H-BwZ"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6qp-Wh-8rt" secondAttribute="trailing" constant="15" id="xfk-Wb-4am"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomBubbleCell"/>
+            <connections>
+                <outlet property="bubbleInfoContainer" destination="U09-Uc-oBb" id="qMT-Nf-JsV"/>
+                <outlet property="bubbleInfoContainerTopConstraint" destination="gke-sD-KmR" id="nqE-sV-0rR"/>
+                <outlet property="bubbleOverlayContainer" destination="me4-cu-FFg" id="1Hm-Pt-KT3"/>
+                <outlet property="customBackgroundView" destination="0VD-Do-08B" id="2Sp-8h-LhC"/>
+                <outlet property="messageTextView" destination="6qp-Wh-8rt" id="Qbs-K8-AjP"/>
+                <outlet property="msgTextViewBottomConstraint" destination="2pq-vf-J97" id="L1q-Ch-o1P"/>
+                <outlet property="msgTextViewLeadingConstraint" destination="bCI-kX-2ED" id="aHM-AO-HTR"/>
+                <outlet property="msgTextViewMinHeightConstraint" destination="s3p-AJ-aTR" id="hxB-hg-NUc"/>
+                <outlet property="msgTextViewTopConstraint" destination="Kxf-Hg-coJ" id="kQd-C1-T9J"/>
+                <outlet property="msgTextViewTrailingConstraint" destination="xfk-Wb-4am" id="cjY-cT-Gyz"/>
+                <outlet property="msgTextViewWidthConstraint" destination="t0I-gu-NVk" id="h1Y-hs-TKK"/>
+                <outlet property="pictureView" destination="zD7-yD-QCd" id="TTL-GF-nSx"/>
+            </connections>
+            <point key="canvasLocation" x="25" y="58.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="error" width="25" height="23"/>
+    </resources>
+</document>

@@ -569,13 +569,13 @@
     if ([self.mxSession roomWithRoomId:roomId])
     {
         MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mxSession];
-        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:roomId create:YES];
-        
-        // Open this room
-        RoomViewController *roomViewController = [RoomViewController roomViewController];
-        roomViewController.showMissedDiscussionsBadge = NO;
-        [roomViewController displayRoom:roomDataSource];
-        [self pushViewController:roomViewController];
+        [roomDataSourceManager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+            // Open this room
+            RoomViewController *roomViewController = [RoomViewController roomViewController];
+            roomViewController.showMissedDiscussionsBadge = NO;
+            [roomViewController displayRoom:roomDataSource];
+            [self pushViewController:roomViewController];
+        }];
     }
     else
     {
