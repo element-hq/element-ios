@@ -940,7 +940,7 @@
         NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
         
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
-        BOOL isRoomObsolete = self.roomDataSource.room.state.isObsolete;
+        BOOL isRoomObsolete = self.roomDataSource.roomState.isObsolete;
         
         if (isRoomObsolete)
         {
@@ -4758,14 +4758,14 @@
 - (void)listenTombstoneEventNotifications
 {
     // Room is already obsolete do not listen to tombstone event
-    if (self.roomDataSource.room.state.isObsolete)
+    if (self.roomDataSource.roomState.isObsolete)
     {
         return;
     }
     
     MXWeakify(self);
     
-    tombstoneEventNotificationsListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomTombStone] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+    tombstoneEventNotificationsListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringRoomTombStone] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
         
         MXStrongifyAndReturnIfNil(self);
         
@@ -4784,7 +4784,7 @@
         // Remove the previous live listener
         if (tombstoneEventNotificationsListener)
         {
-            [self.roomDataSource.room.liveTimeline removeListener:tombstoneEventNotificationsListener];
+            [self.roomDataSource.room removeListener:tombstoneEventNotificationsListener];
             tombstoneEventNotificationsListener = nil;
         }
     }
