@@ -552,3 +552,4 @@
 "room_predecessor_link" = "Klicke hier um ältere Nachrichten zu sehen.";
 "settings_labs_room_members_lazy_loading" = "Raummitglieder verzögert laden";
 "settings_labs_room_members_lazy_loading_error_message" = "Dein Heimserver unterstützt das verzögerte Laden von Raummitgliedern noch nicht. Versuche es später erneut.";
+"room_event_action_view_decrypted_source" = "Zeige entschlüsselten Quellcode";
