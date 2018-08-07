@@ -5,6 +5,8 @@ Improvements:
 * Update project structure. Organize UI related files by feature (PR#1932).
 * Move image files to xcassets (PR#1932).
 * Replies: Implement sending (#1911).
+* Support room versioning (#1938).
+* Add support of lazy-loading of room members (#1931).
 
 Changes in 0.6.20 (2018-07-13)
 ===============================================

@@ -114,7 +114,23 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
             return [self renderString:displayText forEvent:event];
         }
     }
-
+    
+    if (event.eventType == MXEventTypeRoomCreate)
+    {
+        MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+        
+        NSString *roomPredecessorId = createContent.roomPredecessorInfo.roomId;
+        
+        if (roomPredecessorId)
+        {
+            return [self roomCreatePredecessorAttributedStringWithPredecessorRoomId:roomPredecessorId];
+        }
+        else
+        {
+            return nil;
+        }
+    }
+    
     NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
 
     if (event.sentState == MXEventSentStateSent
@@ -550,6 +566,39 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         [dateFormatter setDateFormat:@"EEE MMM dd yyyy"];
         return [super dateStringFromDate:date withTime:time];
     }
+}
+
+#pragma mark - Room create predecessor
+
+- (NSAttributedString*)roomCreatePredecessorAttributedStringWithPredecessorRoomId:(NSString*)predecessorRoomId
+{
+    NSString *predecessorRoomPermalink = [MXTools permalinkToRoom:predecessorRoomId];
+    
+    NSDictionary *roomPredecessorReasonAttributes = @{
+                                                      NSFontAttributeName : self.defaultTextFont
+                                                      };
+    
+    NSDictionary *roomLinkAttributes = @{
+                                         NSFontAttributeName : self.defaultTextFont,
+                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
+                                         NSLinkAttributeName : predecessorRoomPermalink,
+                                         };
+    
+    NSMutableAttributedString *roomPredecessorAttributedString = [NSMutableAttributedString new];
+    
+    NSString *roomPredecessorReasonString = [NSString stringWithFormat:@"%@\n", NSLocalizedStringFromTable(@"room_predecessor_information", @"Vector", nil)];
+    NSAttributedString *roomPredecessorReasonAttributedString = [[NSAttributedString alloc] initWithString:roomPredecessorReasonString attributes:roomPredecessorReasonAttributes];
+    
+    NSString *predecessorRoomLinkString = NSLocalizedStringFromTable(@"room_predecessor_link", @"Vector", nil);
+    NSAttributedString *predecessorRoomLinkAttributedString = [[NSAttributedString alloc] initWithString:predecessorRoomLinkString attributes:roomLinkAttributes];
+    
+    [roomPredecessorAttributedString appendAttributedString:roomPredecessorReasonAttributedString];
+    [roomPredecessorAttributedString appendAttributedString:predecessorRoomLinkAttributedString];
+    
+    NSRange wholeStringRange = NSMakeRange(0, roomPredecessorAttributedString.length);
+    [roomPredecessorAttributedString addAttribute:NSForegroundColorAttributeName value:self.defaultTextColor range:wholeStringRange];
+    
+    return roomPredecessorAttributedString;
 }
 
 @end

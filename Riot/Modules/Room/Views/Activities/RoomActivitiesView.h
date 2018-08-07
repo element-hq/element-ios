@@ -77,6 +77,14 @@
  */
 - (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture;
 
+
+/**
+ Notify that the a room is obsolete and a replacement room is available.
+ 
+ @param onRoomReplacementLinkTapped block called when user selects the room replacement link.
+ */
+- (void)displayRoomReplacementWithRoomLinkTappedHandler:(void (^)(void))onRoomReplacementLinkTapped;
+
 /**
  Remove any displayed information.
  */
