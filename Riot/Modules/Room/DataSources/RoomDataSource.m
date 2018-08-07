@@ -271,7 +271,7 @@
                             
                             for (MXReceiptData* data in receipts)
                             {
-                                MXRoomMember * roomMember = [self.room.state.members memberWithUserId:data.userId];
+                                MXRoomMember * roomMember = [self.roomState.members memberWithUserId:data.userId];
                                 if (roomMember)
                                 {
                                     [roomMembers addObject:roomMember];
@@ -495,7 +495,7 @@
     Widget *jitsiWidget;
 
     // Note: Manage only one jitsi widget at a time for the moment
-    jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room].firstObject;
+    jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room withRoomState:self.roomState].firstObject;
 
     return jitsiWidget;
 }

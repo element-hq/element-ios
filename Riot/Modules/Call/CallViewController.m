@@ -387,7 +387,7 @@
     else if (self.mxCall.isConferenceCall)
     {
         peerDisplayName = self.mxCall.room.summary.displayname;
-        peerAvatarURL = self.mxCall.room.state.avatar;
+        peerAvatarURL = self.mxCall.room.summary.avatar;
     }
     
     self.callerNameLabel.text = peerDisplayName;
@@ -447,7 +447,7 @@
                 if (self.mxCall.room)
                 {
                     // Open the room page
-                    [[AppDelegate theDelegate] showRoom:self.mxCall.room.state.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
+                    [[AppDelegate theDelegate] showRoom:self.mxCall.room.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
                 }
                 
             }];

@@ -1085,7 +1085,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 {
                     [lowPriorityCellDataArray addObject:recentCellDataStoring];
                 }
-                else if (room.state.membership == MXMembershipInvite)
+                else if (room.summary.membership == MXMembershipInvite)
                 {
                     [invitesCellDataArray addObject:recentCellDataStoring];
                 }
@@ -1111,7 +1111,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Keep only the direct rooms which are not low priority
                 if (room.isDirect && !room.accountData.tags[kMXRoomTagLowPriority])
                 {
-                    if (room.state.membership == MXMembershipInvite)
+                    if (room.summary.membership == MXMembershipInvite)
                     {
                         [invitesCellDataArray addObject:recentCellDataStoring];
                     }
@@ -1127,7 +1127,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 if (!room.isDirect)
                 {
                     // Keep only the invites, the favourites and the rooms without tag
-                    if (room.state.membership == MXMembershipInvite)
+                    if (room.summary.membership == MXMembershipInvite)
                     {
                         [invitesCellDataArray addObject:recentCellDataStoring];
                     }
@@ -1179,7 +1179,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                     }
                 }
             }
-            else if (room.state.membership == MXMembershipInvite)
+            else if (room.summary.membership == MXMembershipInvite)
             {
                 if (room.isDirect)
                 {
@@ -1489,7 +1489,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             
             NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
             
-            NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.summary.displayname, oldRoomTag, dstRoomTag, tagOrder);
+            NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.roomId, room.summary.displayname, oldRoomTag, dstRoomTag, tagOrder);
             
             [room replaceTag:oldRoomTag
                        byTag:dstRoomTag
@@ -1507,7 +1507,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                          
                      } failure:^(NSError *error) {
                          
-                         NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@)", dstRoomTag, room.state.roomId);
+                         NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@)", dstRoomTag, room.roomId);
                          
                          if (moveFailure)
                          {

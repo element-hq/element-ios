@@ -139,53 +139,34 @@
     
     UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        // The selected room is instanciated here.
-        [[ShareExtensionManager sharedManager].fileStore asyncAccountDataOfRoom:recentCellData.roomSummary.roomId success:^(MXRoomAccountData * _Nonnull accountData) {
-            
-            [[ShareExtensionManager sharedManager].fileStore asyncStateEventsOfRoom:recentCellData.roomSummary.roomId success:^(NSArray<MXEvent *> * _Nonnull roomStateEvents) {
-                
-                MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
-                
-                // To handle correctly the crypto, we have to set a store (use a fake store)
-                __weak MXSession *weakSession = session;
-                [session setStore:[[MXNoStore alloc] init] success:^{
-                    
-                    if (weakSession)
-                    {
-                        __strong MXSession *session = weakSession;
-                        
-                        MXRoom *selectedRoom = [[MXRoom alloc] initWithRoomId:recentCellData.roomSummary.roomId andMatrixSession:session andStateEvents:roomStateEvents andAccountData:accountData];
-                        
-                        [ShareExtensionManager sharedManager].delegate = self;
-                        
-                        [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^(NSError* error) {
-                            
-                            NSString *title;
-                            if ([error.domain isEqualToString:MXEncryptingErrorDomain])
-                            {
-                                title = NSLocalizedStringFromTable(@"share_extension_failed_to_encrypt", @"Vector", nil);
-                            }
-                            
-                            [self showFailureAlert:title];
-                        }];
-                    }
-                    
-                } failure:^(NSError *error) {
-                    
-                    NSLog(@"[RoomsListViewController] failed to prepare matrix session]");
-                    
-                }];
-                
-            } failure:^(NSError * _Nonnull error) {
-                
-                NSLog(@"[RoomsListViewController] failed to get state events");
-                
+        // The selected room is instanciated here
+        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+
+        [MXFileStore setPreloadOptions:0];
+
+        MXWeakify(session);
+        [session setStore:[ShareExtensionManager sharedManager].fileStore success:^{
+            MXStrongifyAndReturnIfNil(session);
+
+            MXRoom *selectedRoom = [MXRoom loadRoomFromStore:[ShareExtensionManager sharedManager].fileStore withRoomId:recentCellData.roomSummary.roomId matrixSession:session];
+
+            [ShareExtensionManager sharedManager].delegate = self;
+
+            [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^(NSError* error) {
+
+                NSString *title;
+                if ([error.domain isEqualToString:MXEncryptingErrorDomain])
+                {
+                    title = NSLocalizedStringFromTable(@"share_extension_failed_to_encrypt", @"Vector", nil);
+                }
+
+                [self showFailureAlert:title];
             }];
-            
-        } failure:^(NSError * _Nonnull error) {
-            
-            NSLog(@"[RoomsListViewController] failed to get account data");
-            
+
+        } failure:^(NSError *error) {
+
+            NSLog(@"[RoomsListViewController] failed to prepare matrix session]");
+
         }];
     }];
     

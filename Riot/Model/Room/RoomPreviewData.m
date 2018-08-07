@@ -79,37 +79,38 @@
 
 - (void)peekInRoom:(void (^)(BOOL succeeded))completion
 {
+    MXWeakify(self);
     [_mxSession peekInRoomWithRoomId:_roomId success:^(MXPeekingRoom *peekingRoom) {
+        MXStrongifyAndReturnIfNil(self);
 
         // Create the room data source
-        _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
-        [_roomDataSource finalizeInitialization];
-        _roomDataSource.markTimelineInitialEvent = YES;
+        MXWeakify(self);
+        [RoomDataSource loadRoomDataSourceWithPeekingRoom:peekingRoom andInitialEventId:self.eventId onComplete:^(id roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
 
-        _roomName = peekingRoom.state.name;
-        _roomAvatarUrl = peekingRoom.state.avatar;
-        
-        _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.state.topic];;
-        _roomAliases = peekingRoom.state.aliases;
-        
-        // Room members count
-        // Note that room members presence/activity is not available
-        _numJoinedMembers = 0;
-        for (MXRoomMember *mxMember in peekingRoom.state.members)
-        {
-            if (mxMember.membership == MXMembershipJoin)
-            {
-                _numJoinedMembers ++;
-            }
-        }
+            self->_roomDataSource = roomDataSource;
 
-        completion(YES);
+            [self.roomDataSource finalizeInitialization];
+            self.roomDataSource.markTimelineInitialEvent = YES;
+
+            self->_roomName = peekingRoom.summary.displayname;
+            self->_roomAvatarUrl = peekingRoom.summary.avatar;
+
+            self->_roomTopic = [MXTools stripNewlineCharacters:peekingRoom.summary.topic];;
+            self->_roomAliases = self.roomDataSource.roomState.aliases;
+
+            // Room members count
+            // Note that room members presence/activity is not available
+             self->_numJoinedMembers = self.roomDataSource.roomState.membersCount.joined;
+
+            completion(YES);
+        }];
 
     } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
         
-        _roomName = _roomId;
+        self->_roomName = self->_roomId;
         completion(NO);
-        
     }];
 }
 

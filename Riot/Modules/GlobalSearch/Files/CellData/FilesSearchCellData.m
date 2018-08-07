@@ -55,21 +55,38 @@
         }
         
         date = [searchDataSource.eventFormatter dateStringFromEvent:event withTime:NO];
-        
+    }
+    return self;
+}
+
++ (void)cellDataWithSearchResult:(MXSearchResult *)searchResult andSearchDataSource:(MXKSearchDataSource *)searchDataSource onComplete:(void (^)(id<MXKSearchCellDataStoring>))onComplete
+{
+    FilesSearchCellData *cellData = [[self alloc] initWithSearchResult:searchResult andSearchDataSource:searchDataSource];
+    if (cellData)
+    {
         // Retrieve the sender display name from the current room state
-        MXRoom *room = [searchDataSource.mxSession roomWithRoomId:roomId];
+        MXRoom *room = [searchDataSource.mxSession roomWithRoomId:cellData.roomId];
         if (room)
         {
-            senderDisplayName = [room.state.members memberName:event.sender];
+            [room state:^(MXRoomState *roomState) {
+                cellData->senderDisplayName = [roomState.members memberName:searchResult.result.sender];
+                cellData->message = cellData->senderDisplayName;
+
+                onComplete(cellData);
+            }];
         }
         else
         {
-            senderDisplayName = event.sender;
+            cellData->senderDisplayName = searchResult.result.sender;
+            cellData->message = cellData->senderDisplayName;
+
+            onComplete(cellData);
         }
-        
-        message = senderDisplayName;
     }
-    return self;
+    else
+    {
+        onComplete(nil);
+    }
 }
 
 - (void)setShouldShowRoomDisplayName:(BOOL)shouldShowRoomDisplayName2

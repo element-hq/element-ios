@@ -218,30 +218,25 @@
             
                                     if (isEncrypted)
                                     {
-                                        // Fetch MXRoomAccountData and list of MXEvent for corresponding room to create MXRoom instance
-                                        // since it's neccesary to send text message through it rather than directly
-                                        // through MXRestClient due to encryption
-                                        [fileStore asyncAccountDataOfRoom:roomID success:^(MXRoomAccountData * _Nonnull roomAccountData) {
-                                            [fileStore asyncStateEventsOfRoom:roomID success:^(NSArray<MXEvent *> * _Nonnull stateEvents) {
+                                        [MXFileStore setPreloadOptions:0];
                                                 
-                                                MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
-                                                [session setStore:[[MXNoStore alloc] init] success:^{
-                                                    MXRoom *room = [[MXRoom alloc] initWithRoomId:roomID
-                                                                                 andMatrixSession:session
-                                                                                   andStateEvents:stateEvents
-                                                                                   andAccountData:roomAccountData];
-                                                    [room sendTextMessage:intent.content
-                                                                  success:^(NSString *eventId) {
-                                                                      completeWithCode(INSendMessageIntentResponseCodeSuccess);
-                                                                  } failure:^(NSError *error) {
-                                                                      completeWithCode(INSendMessageIntentResponseCodeFailure);
-                                                                  }];
-                                                    
-                                                } failure:^(NSError *error) {
-                                                    completeWithCode(INSendMessageIntentResponseCodeFailure);
-                                                }];
-                                            } failure:nil];
-                                        } failure:nil];
+                                        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
+                                        MXWeakify(session);
+                                        [session setStore:fileStore success:^{
+                                            MXStrongifyAndReturnIfNil(session);
+                                            
+                                            MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
+
+                                            [room sendTextMessage:intent.content
+                                                          success:^(NSString *eventId) {
+                                                              completeWithCode(INSendMessageIntentResponseCodeSuccess);
+                                                          } failure:^(NSError *error) {
+                                                              completeWithCode(INSendMessageIntentResponseCodeFailure);
+                                                          }];
+
+                                        } failure:^(NSError *error) {
+                                            completeWithCode(INSendMessageIntentResponseCodeFailure);
+                                        }];
 
                                         return;
                                     }
