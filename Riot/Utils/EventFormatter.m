@@ -115,9 +115,20 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         }
     }
     
-    if (event.eventType == MXEventTypeRoomCreate && roomState.hasRoomPredecessor)
+    if (event.eventType == MXEventTypeRoomCreate)
     {
-        return [self roomCreatePredecessorAttributedStringFromRoomCreateContent:roomState.roomCreateContent];
+        MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+        
+        NSString *roomPredecessorId = createContent.roomPredecessorInfo.roomId;
+        
+        if (roomPredecessorId)
+        {
+            return [self roomCreatePredecessorAttributedStringWithPredecessorRoomId:roomPredecessorId];
+        }
+        else
+        {
+            return nil;
+        }
     }
     
     NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
@@ -559,14 +570,8 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 #pragma mark - Room create predecessor
 
-- (NSAttributedString*)roomCreatePredecessorAttributedStringFromRoomCreateContent:(MXRoomCreateContent*)roomCreateContent
+- (NSAttributedString*)roomCreatePredecessorAttributedStringWithPredecessorRoomId:(NSString*)predecessorRoomId
 {
-    if (!roomCreateContent)
-    {
-        return nil;
-    }
-    
-    NSString *predecessorRoomId = roomCreateContent.roomPredecessorInfo.roomId;
     NSString *predecessorRoomPermalink = [MXTools permalinkToRoom:predecessorRoomId];
     
     NSDictionary *roomPredecessorReasonAttributes = @{
