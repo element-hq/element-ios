@@ -182,51 +182,63 @@
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
         
         // Compute active members count, and look for the inviter
-        NSArray *members = self.mxRoom.state.members.members;
-        NSUInteger activeCount = 0;
-        NSUInteger memberCount = 0;
-        NSString *inviter = nil;
-        
-        for (MXRoomMember *mxMember in members)
+        MXWeakify(self);
+        void (^onRoomMembers)(MXRoomMembers *roomMembers, BOOL allMembers) = ^void(MXRoomMembers *roomMembers, BOOL allMembers)
         {
-            if (mxMember.membership == MXMembershipJoin)
+            MXStrongifyAndReturnIfNil(self);
+
+            NSArray *members = roomMembers.members;
+            NSUInteger activeCount = 0;
+            NSUInteger memberCount = self.mxRoom.summary.membersCount.joined;
+            NSString *inviter = nil;
+
+            for (MXRoomMember *mxMember in members)
             {
-                memberCount ++;
-                
-                // Get the user that corresponds to this member
-                MXUser *user = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
-                // existing user ?
-                if (user && user.presence == MXPresenceOnline)
+                if (mxMember.membership == MXMembershipJoin)
                 {
-                    activeCount ++;
+                    // Get the user that corresponds to this member
+                    MXUser *user = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
+                    // existing user ?
+                    if (user && user.presence == MXPresenceOnline)
+                    {
+                        activeCount ++;
+                    }
+
+                    // Presently only one member is available from invited room data
+                    // This is the inviter
+                    inviter = mxMember.displayname.length ? mxMember.displayname : mxMember.userId;
                 }
-                
-                // Presently only one member is available from invited room data
-                // This is the inviter
-                inviter = mxMember.displayname.length ? mxMember.displayname : mxMember.userId;
             }
-        }
-        
-        // FIXME: Display members status when it will be available
-        self.roomMembers.text = nil;
-//        if (memberCount)
-//        {
-//            if (activeCount > 1)
-//            {
-//                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), @(activeCount), @(memberCount)];
-//            }
-//            else
-//            {
-//                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), @(activeCount), @(memberCount)];
-//            }
-//        }
-//        else
-//        {
-//            // Should not happen
-//            self.roomMembers.text = nil;
-//        }
-        
-        self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), inviter];
+
+            // FIXME: Display members status when it will be available
+            self.roomMembers.text = nil;
+            //                    if (memberCount)
+            //                    {
+            //                        if (activeCount > 1)
+            //                        {
+            //                            self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), @(activeCount), @(memberCount)];
+            //                        }
+            //                        else
+            //                        {
+            //                            self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), @(activeCount), @(memberCount)];
+            //                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        // Should not happen
+            //                        self.roomMembers.text = nil;
+            //                    }
+
+            self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), inviter];
+        };
+
+        [self.mxRoom members:^(MXRoomMembers *roomMembers) {
+            onRoomMembers(roomMembers, YES);
+        }lazyLoadedMembers:^(MXRoomMembers *lazyLoadedMembers) {
+            onRoomMembers(lazyLoadedMembers, NO);
+        } failure:^(NSError *error) {
+            NSLog(@"[PreviewRoomTitleView] refreshDisplay: Cannot get all room members");
+        }];
     }
     else
     {

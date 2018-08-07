@@ -190,8 +190,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [super initWithSession:session andRoomId:roomId];
     
     // Add an additional listener to update banned users
-    extraEventsListener = [mxRoom.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
-        
+    self->extraEventsListener = [mxRoom listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+
         if (direction == MXTimelineDirectionForwards)
         {
             [self updateRoomState:roomState];
@@ -399,8 +399,13 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     if (extraEventsListener)
     {
-        [mxRoom.liveTimeline removeListener:extraEventsListener];
-        extraEventsListener = nil;
+        MXWeakify(self);
+        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+            MXStrongifyAndReturnIfNil(self);
+
+            [liveTimeline removeListener:self->extraEventsListener];
+            self->extraEventsListener = nil;
+        }];
     }
     
     [super destroy];
@@ -467,7 +472,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         if (!eventTypeForSelectedField)
             return;
         
-        MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+        MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
         NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
         
         if (oneSelfPowerLevel < [powerLevels minimumPowerLevelForSendingEventAsStateEvent:eventTypeForSelectedField])
@@ -1963,7 +1968,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         if (self.mainSession)
         {
             // Check user's power level to know whether the user is allowed to add room alias
-            MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+            MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
             NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
             
             if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomAliases])
@@ -1981,7 +1986,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         if (self.mainSession)
         {
             // Check user's power level to know whether the user is allowed to add communities to this room
-            MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+            MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
             NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
             
             if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomRelatedGroups])
@@ -2118,7 +2123,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     UITableViewCell* cell;
     
     // Check user's power level to know which settings are editable.
-    MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+    MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
     NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
     // general settings
@@ -2732,7 +2737,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         else
         {
             // Check user's power level to know whether the user is allowed to turn on the encryption mode
-            MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+            MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
             NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
             
             if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomEncryption])

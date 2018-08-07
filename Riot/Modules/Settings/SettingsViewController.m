@@ -117,7 +117,8 @@ enum
 
 enum
 {
-    LABS_USE_JITSI_WIDGET_INDEX = 0,
+    LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
+    LABS_USE_JITSI_WIDGET_INDEX,
     LABS_CRYPTO_INDEX,
     LABS_COUNT
 };
@@ -2040,7 +2041,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
+        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2884,6 +2896,62 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
+- (void)toggleSyncWithLazyLoadOfRoomMembers:(id)sender
+{
+    if (sender && [sender isKindOfClass:UISwitch.class])
+    {
+        UISwitch *switchButton = (UISwitch*)sender;
+
+        if (!switchButton.isOn)
+        {
+            [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
+            [self launchClearCache];
+        }
+        else
+        {
+            switchButton.enabled = NO;
+            [self startActivityIndicator];
+
+            // Check the user homeserver supports lazy-loading
+            MXSession* session = [AppDelegate theDelegate].mxSessions.firstObject;
+
+            MXWeakify(self);
+            [session setFilter:[MXFilterJSONModel syncFilterForLazyLoading] success:^(NSString *filterId) {
+
+                // Lazy-loading is supported, enable it
+                [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
+                [self launchClearCache];
+
+            } failure:^(NSError *error) {
+                MXStrongifyAndReturnIfNil(self);
+
+                [switchButton setOn:NO animated:YES];
+                switchButton.enabled = YES;
+                [self stopActivityIndicator];
+
+                // No support of lazy-loading, do not engage it and warn the user
+                [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+                self->currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                         message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
+
+                MXWeakify(self);
+                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                       style:UIAlertActionStyleDefault
+                                                                     handler:^(UIAlertAction * action) {
+                                                                         MXStrongifyAndReturnIfNil(self);
+                                                                         self->currentAlert = nil;
+                                                                     }]];
+
+                [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
+                [self presentViewController:self->currentAlert animated:YES completion:nil];
+            }];
+        }
+    }
+}
+
+
 - (void)toggleJitsiForConference:(id)sender
 {
     if (sender && [sender isKindOfClass:UISwitch.class])
@@ -2975,8 +3043,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 {
                     if (room.summary.isEncrypted)
                     {
-                        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO];
-                        [roomDataSource reload];
+                        [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO onComplete:^(MXKRoomDataSource *roomDataSource) {
+                            [roomDataSource reload];
+                        }];
                     }
                 }
                 
@@ -3084,12 +3153,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Feedback: disable button and run activity indicator
     UIButton *button = (UIButton*)sender;
     button.enabled = NO;
+
+    [self launchClearCache];
+}
+
+- (void)launchClearCache
+{
     [self startActivityIndicator];
-    
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        
+
         [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-        
+
     });
 }
 

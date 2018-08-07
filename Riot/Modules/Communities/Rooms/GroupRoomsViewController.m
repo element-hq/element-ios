@@ -534,14 +534,15 @@
         // Check first if the user already joined this room.
         if ([self.mxSession roomWithRoomId:room.roomId])
         {
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mxSession];
-            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:room.roomId create:YES];
-            
             // Open this room
-            RoomViewController *roomViewController = [RoomViewController roomViewController];
-            roomViewController.showMissedDiscussionsBadge = NO;
-            [roomViewController displayRoom:roomDataSource];
-            [self pushViewController:roomViewController];
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mxSession];
+            [roomDataSourceManager roomDataSourceForRoom:room.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+
+                RoomViewController *roomViewController = [RoomViewController roomViewController];
+                roomViewController.showMissedDiscussionsBadge = NO;
+                [roomViewController displayRoom:roomDataSource];
+                [self pushViewController:roomViewController];
+            }];
         }
         else
         {

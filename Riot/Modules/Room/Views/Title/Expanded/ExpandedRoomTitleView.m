@@ -65,46 +65,58 @@
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
         
         // Compute active members count
-        NSArray *members = [self.mxRoom.state.members membersWithMembership:MXMembershipJoin includeConferenceUser:NO];
-        NSUInteger activeCount = 0;
-        NSUInteger memberCount = 0;
-        for (MXRoomMember *mxMember in members)
+        MXWeakify(self);
+        void (^onRoomMembers)(MXRoomMembers *roomMembers, BOOL allMembers) = ^void(MXRoomMembers *roomMembers, BOOL allMembers)
         {
-            memberCount ++;
+            MXStrongifyAndReturnIfNil(self);
 
-            // Get the user that corresponds to this member
-            MXUser *user = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
-            // existing user ?
-            if (user && user.presence == MXPresenceOnline)
+            NSArray *members = [roomMembers membersWithMembership:MXMembershipJoin includeConferenceUser:NO];
+            NSUInteger activeCount = 0;
+            NSUInteger memberCount = self.mxRoom.summary.membersCount.joined;
+            for (MXRoomMember *mxMember in members)
             {
-                activeCount ++;
-            }
-        }
-
-        if (memberCount)
-        {
-            // Check whether the logged in user is alone in this room
-            if (memberCount == 1 && self.mxRoom.summary.membership == MXMembershipJoin)
-            {
-                self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_invite_members", @"Vector", nil);
-            }
-            else
-            {
-                if (activeCount > 1)
+                // Get the user that corresponds to this member
+                MXUser *user = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
+                // existing user ?
+                if (user && user.presence == MXPresenceOnline)
                 {
-                    self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), @(activeCount), @(memberCount)];
+                    activeCount ++;
+                }
+            }
+
+            if (memberCount)
+            {
+                // Check whether the logged in user is alone in this room
+                if (memberCount == 1 && self.mxRoom.summary.membership == MXMembershipJoin)
+                {
+                    self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_invite_members", @"Vector", nil);
                 }
                 else
                 {
-                    self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), @(activeCount), @(memberCount)];
+                    if (activeCount > 1)
+                    {
+                        self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), @(activeCount), @(memberCount)];
+                    }
+                    else
+                    {
+                        self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), @(activeCount), @(memberCount)];
+                    }
                 }
             }
-        }
-        else
-        {
-            // Should not happen
-            self.roomMembers.text = nil;
-        }
+            else
+            {
+                // Should not happen
+                self.roomMembers.text = nil;
+            }
+        };
+
+        [self.mxRoom members:^(MXRoomMembers *roomMembers) {
+            onRoomMembers(roomMembers, YES);
+        } lazyLoadedMembers:^(MXRoomMembers *lazyLoadedMembers) {
+            onRoomMembers(lazyLoadedMembers, NO);
+        } failure:^(NSError *error) {
+            NSLog(@"[ExpandedRoomTitleView] refreshDisplay: Cannot get all room members");
+        }];
     }
     else
     {

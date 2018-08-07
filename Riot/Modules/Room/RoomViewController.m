@@ -550,9 +550,13 @@
     
     // Observe missed notifications
     mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self refreshMissedDiscussionsCount:NO];
-        
+
+        MXRoomSummary *roomSummary = notif.object;
+
+        if ([roomSummary.roomId isEqualToString:self.roomDataSource.roomId])
+        {
+            [self refreshMissedDiscussionsCount:NO];
+        }
     }];
     [self refreshMissedDiscussionsCount:YES];
     
@@ -930,13 +934,13 @@
     Class roomInputToolbarViewClass = RoomInputToolbarView.class;
 
     // Check the user has enough power to post message
-    if (self.roomDataSource.room.state)
+    if (self.roomDataSource.roomState)
     {
-        MXRoomPowerLevels *powerLevels = self.roomDataSource.room.state.powerLevels;
+        MXRoomPowerLevels *powerLevels = self.roomDataSource.roomState.powerLevels;
         NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
         
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
-        BOOL isRoomObsolete = self.roomDataSource.room.state.isObsolete;
+        BOOL isRoomObsolete = self.roomDataSource.roomState.isObsolete;
         
         if (isRoomObsolete)
         {
@@ -1947,7 +1951,7 @@
     {
         if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
         {
-            selectedRoomMember = [self.roomDataSource.room.state.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            selectedRoomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
             if (selectedRoomMember)
             {
                 [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
@@ -1956,7 +1960,7 @@
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
         {
             // Add the member display name in text input
-            MXRoomMember *roomMember = [self.roomDataSource.room.state.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            MXRoomMember *roomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
             if (roomMember)
             {
                 [self mention:roomMember];
@@ -2709,7 +2713,7 @@
             
             NSString *userId = absoluteURLString;
             
-            MXRoomMember* member = [self.roomDataSource.room.state.members memberWithUserId:userId];
+            MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:userId];
             if (member)
             {
                 // Use the room member detail VC for room members
@@ -2829,7 +2833,11 @@
             // Files tab
             [titles addObject: NSLocalizedStringFromTable(@"room_details_files", @"Vector", nil)];
             RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
-            MXKRoomDataSource *roomFilesDataSource = [[MXKRoomDataSource alloc] initWithRoomId:roomId andMatrixSession:session];
+            // @TODO (async-state): This call should be synchronous. Every thing will be fine
+            __block MXKRoomDataSource *roomFilesDataSource;
+            [MXKRoomDataSource loadRoomDataSourceWithRoomId:roomId andMatrixSession:session onComplete:^(id roomDataSource) {
+                roomFilesDataSource = roomDataSource;
+            }];
             roomFilesDataSource.filterMessagesWithURL = YES;
             [roomFilesDataSource finalizeInitialization];
             // Give the data source ownership to the room files view controller.
@@ -2922,25 +2930,18 @@
         contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
         
         // List all the participants matrix user id to ignore them during the contacts search.
-        MXSession* session = self.roomDataSource.mxSession;
-        NSString* roomId = self.roomDataSource.roomId;
-        MXRoom *room = [session roomWithRoomId:roomId];
-        if (room)
+        NSArray *members = [self.roomDataSource.roomState.members membersWithoutConferenceUser];
+        for (MXRoomMember *mxMember in members)
         {
-            NSArray *members = [room.state.members membersWithoutConferenceUser];
-            
-            for (MXRoomMember *mxMember in members)
+            // Check his status
+            if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
             {
-                // Check his status
-                if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
-                {
-                    // Create the contact related to this member
-                    MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
-                    [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:mxMember.userId];
-                }
+                // Create the contact related to this member
+                MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
+                [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:mxMember.userId];
             }
         }
-        
+
         [contactsPickerViewController showSearch:YES];
         contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
         
@@ -3132,7 +3133,7 @@
 
     // In case of conference call, check that the user has enough power level
     else if (self.roomDataSource.room.summary.membersCount.joined > 2 &&
-             ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room])
+             ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room roomState:self.roomDataSource.roomState])
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
@@ -3260,18 +3261,21 @@
         [self showExpandedHeader:NO];
         // Dismiss potential keyboard.
         [self dismissKeyboard];
-        
-        MXKRoomDataSource *roomDataSource;
+
         // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
-        roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession];
-        [roomDataSource finalizeInitialization];
-        
-        // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
-        self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
-        [self displayRoom:roomDataSource];
-        
-        // Give the data source ownership to the room view controller.
-        self.hasRoomDataSourceOwnership = YES;
+        MXWeakify(self);
+        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+
+            [roomDataSource finalizeInitialization];
+
+            // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
+            self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
+            [self displayRoom:roomDataSource];
+
+            // Give the data source ownership to the room view controller.
+            self.hasRoomDataSourceOwnership = YES;
+        }];
     }
     else if (sender == self.resetReadMarkerButton)
     {
@@ -3539,13 +3543,17 @@
                     // If an event was specified, replace the datasource by a non live datasource showing the event
                     if (eventId)
                     {
-                        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession];
-                        [roomDataSource finalizeInitialization];
-                        roomDataSource.markTimelineInitialEvent = YES;
-                        
-                        [self displayRoom:roomDataSource];
-                        
-                        self.hasRoomDataSourceOwnership = YES;
+                        MXWeakify(self);
+                        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+                            MXStrongifyAndReturnIfNil(self);
+
+                            [roomDataSource finalizeInitialization];
+                            ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
+
+                            [self displayRoom:roomDataSource];
+
+                            self.hasRoomDataSourceOwnership = YES;
+                        }];
                     }
                     else
                     {
@@ -3614,8 +3622,13 @@
         // Remove the previous live listener
         if (typingNotifListener)
         {
-            [self.roomDataSource.room.liveTimeline removeListener:typingNotifListener];
-            typingNotifListener = nil;
+            MXWeakify(self);
+            [self.roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+                MXStrongifyAndReturnIfNil(self);
+
+                [liveTimeline removeListener:self->typingNotifListener];
+                self->typingNotifListener = nil;
+            }];
         }
     }
     
@@ -3627,8 +3640,10 @@
     if (self.roomDataSource)
     {
         // Add typing notification listener
-        typingNotifListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
-            
+        MXWeakify(self);
+        self->typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+            MXStrongifyAndReturnIfNil(self);
+
             // Handle only live events
             if (direction == MXTimelineDirectionForwards)
             {
@@ -3640,17 +3655,16 @@
                 {
                     [typingUsers removeObjectAtIndex:index];
                 }
-                
+
                 // Ignore this notification if both arrays are empty
-                if (currentTypingUsers.count || typingUsers.count)
+                if (self->currentTypingUsers.count || typingUsers.count)
                 {
-                    currentTypingUsers = typingUsers;
+                    self->currentTypingUsers = typingUsers;
                     [self refreshActivitiesViewDisplay];
                 }
             }
-            
         }];
-        
+
         // Retrieve the current typing users list
         NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
         // Remove typing info for the current user
@@ -3680,7 +3694,7 @@
         {
             NSString* name = [currentTypingUsers objectAtIndex:i];
             
-            MXRoomMember* member = [self.roomDataSource.room.state.members memberWithUserId:name];
+            MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:name];
             
             if (member && member.displayname.length)
             {
@@ -3813,7 +3827,8 @@
 - (NSUInteger)widgetsCount:(BOOL)includeUserWidgets
 {
     NSUInteger widgetsCount = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
-                                                                        inRoom:self.roomDataSource.room].count;
+                                                                        inRoom:self.roomDataSource.room
+                                                                 withRoomState:self.roomDataSource.roomState].count;
     if (includeUserWidgets)
     {
         widgetsCount += [[WidgetManager sharedManager] userWidgets:self.roomDataSource.room.mxSession].count;
@@ -3842,16 +3857,16 @@
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
         }
-        else if (customizedRoomDataSource.room.state.isObsolete)
+        else if (customizedRoomDataSource.roomState.isObsolete)
         {
-            NSString *replacementRoomId = customizedRoomDataSource.room.state.tombStoneContent.replacementRoomId;
+            NSString *replacementRoomId = customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
             NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@", [replacementRoomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             
             [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
                 [[AppDelegate theDelegate] handleUniversalLinkFragment:roomLinkFragment];
             }];
         }
-        else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
+        else if (customizedRoomDataSource.roomState.isOngoingConferenceCall)
         {
             // Show the "Ongoing conference call" banner only if the user is not in the conference
             MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
@@ -3996,24 +4011,28 @@
     {
         // Switch back to the room live timeline managed by MXKRoomDataSourceManager
         MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-        MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES];
-        
-        // Scroll to bottom the bubble history on the display refresh.
-        shouldScrollToBottomOnTableRefresh = YES;
-        
-        [self displayRoom:roomDataSource];
-        
-        // The room view controller do not have here the data source ownership.
-        self.hasRoomDataSourceOwnership = NO;
-        
-        [self refreshActivitiesViewDisplay];
-        [self refreshJumpToLastUnreadBannerDisplay];
-        
-        if (self.saveProgressTextInput)
-        {
-            // Restore the potential message partially typed before jump to last unread messages.
-            self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
-        }
+
+        MXWeakify(self);
+        [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+
+            // Scroll to bottom the bubble history on the display refresh.
+            self->shouldScrollToBottomOnTableRefresh = YES;
+
+            [self displayRoom:roomDataSource];
+
+            // The room view controller do not have here the data source ownership.
+            self.hasRoomDataSourceOwnership = NO;
+
+            [self refreshActivitiesViewDisplay];
+            [self refreshJumpToLastUnreadBannerDisplay];
+
+            if (self.saveProgressTextInput)
+            {
+                // Restore the potential message partially typed before jump to last unread messages.
+                self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+            }
+        }];
     }
 }
 
@@ -4739,14 +4758,14 @@
 - (void)listenTombstoneEventNotifications
 {
     // Room is already obsolete do not listen to tombstone event
-    if (self.roomDataSource.room.state.isObsolete)
+    if (self.roomDataSource.roomState.isObsolete)
     {
         return;
     }
     
     MXWeakify(self);
     
-    tombstoneEventNotificationsListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomTombStone] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+    tombstoneEventNotificationsListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringRoomTombStone] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
         
         MXStrongifyAndReturnIfNil(self);
         
@@ -4765,7 +4784,7 @@
         // Remove the previous live listener
         if (tombstoneEventNotificationsListener)
         {
-            [self.roomDataSource.room.liveTimeline removeListener:tombstoneEventNotificationsListener];
+            [self.roomDataSource.room removeListener:tombstoneEventNotificationsListener];
             tombstoneEventNotificationsListener = nil;
         }
     }
