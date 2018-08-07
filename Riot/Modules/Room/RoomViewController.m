@@ -99,6 +99,7 @@
 #import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
 
 #import "RoomSelectedStickerBubbleCell.h"
+#import "RoomPredecessorBubbleCell.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
@@ -204,6 +205,9 @@
     
     // Tell whether the input text field is in send reply mode. If true typed message will be sent to highlighted event.
     BOOL isInReplyMode;
+    
+    // Listener for `m.room.tombstone` event type
+    id tombstoneEventNotificationsListener;
 }
 
 @end
@@ -326,6 +330,7 @@
     [self.bubblesTableView registerClass:RoomMembershipExpandedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
     
     // Prepare expanded header
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
@@ -367,13 +372,7 @@
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass];
-    
-    // Update the inputToolBar height.
-    CGFloat height = [self inputToolbarHeight];
-    // Disable animation during the update
-    [UIView setAnimationsEnabled:NO];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
-    [UIView setAnimationsEnabled:YES];
+    [self updateInputToolBarViewHeight];
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -470,6 +469,7 @@
     [self listenTypingNotifications];
     [self listenCallNotifications];
     [self listenWidgetNotifications];
+    [self listenTombstoneEventNotifications];
     
     if (self.showExpandedHeader)
     {
@@ -518,6 +518,7 @@
     
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
+    [self removeTombstoneEventNotificationsListener];
 
     // Re-enable the read marker display, and disable its update.
     self.roomDataSource.showReadMarker = YES;
@@ -892,13 +893,7 @@
             if (!self.inputToolbarView)
             {
                 [self setRoomInputToolbarViewClass];
-                
-                // Update the inputToolBar height.
-                CGFloat height = [self inputToolbarHeight];
-                // Disable animation during the update
-                [UIView setAnimationsEnabled:NO];
-                [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
-                [UIView setAnimationsEnabled:YES];
+                [self updateInputToolBarViewHeight];
                 
                 [self refreshRoomInputToolbar];
                 
@@ -939,9 +934,15 @@
     {
         MXRoomPowerLevels *powerLevels = self.roomDataSource.room.state.powerLevels;
         NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
-
+        
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
-        if (!canSend)
+        BOOL isRoomObsolete = self.roomDataSource.room.state.isObsolete;
+        
+        if (isRoomObsolete)
+        {
+            roomInputToolbarViewClass = nil;
+        }
+        else if (!canSend)
         {
             roomInputToolbarViewClass = DisabledRoomInputToolbarView.class;
         }
@@ -1150,6 +1151,7 @@
     
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
+    [self removeTombstoneEventNotificationsListener];
 
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
@@ -1420,8 +1422,12 @@
 - (void)enableReplyMode:(BOOL)enable
 {
     isInReplyMode = enable;
-    RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
-    roomInputToolbarView.replyToEnabled = enable;
+    
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
+    {
+        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        roomInputToolbarView.replyToEnabled = enable;
+    }
 }
 
 - (void)onSwipeGesture:(UISwipeGestureRecognizer*)swipeGestureRecognizer
@@ -1439,6 +1445,16 @@
         // Dismiss the keyboard when user swipes down on activities view.
         [self.inputToolbarView dismissKeyboard];
     }
+}
+
+- (void)updateInputToolBarViewHeight
+{
+    // Update the inputToolBar height.
+    CGFloat height = [self inputToolbarHeight];
+    // Disable animation during the update
+    [UIView setAnimationsEnabled:NO];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
+    [UIView setAnimationsEnabled:YES];
 }
 
 #pragma mark - Hide/Show expanded header
@@ -1788,6 +1804,10 @@
         if (bubbleData.hasNoDisplay)
         {
             cellViewClass = RoomEmptyBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
+        {
+            cellViewClass = RoomPredecessorBubbleCell.class;
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
@@ -3531,13 +3551,7 @@
                     {
                         // Enable back the text input
                         [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-                        
-                        // Update the inputToolBar height.
-                        CGFloat height = [self inputToolbarHeight];
-                        // Disable animation during the update
-                        [UIView setAnimationsEnabled:NO];
-                        [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
-                        [UIView setAnimationsEnabled:YES];
+                        [self updateInputToolBarViewHeight];
                         
                         // And the extra area
                         [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -3827,6 +3841,15 @@
         if ([AppDelegate theDelegate].isOffline)
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
+        }
+        else if (customizedRoomDataSource.room.state.isObsolete)
+        {
+            NSString *replacementRoomId = customizedRoomDataSource.room.state.tombStoneContent.replacementRoomId;
+            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@", [replacementRoomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            
+            [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
+                [[AppDelegate theDelegate] handleUniversalLinkFragment:roomLinkFragment];
+            }];
         }
         else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
         {
@@ -4709,6 +4732,43 @@
                              }]];
 
     [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+#pragma mark Tombstone event
+
+- (void)listenTombstoneEventNotifications
+{
+    // Room is already obsolete do not listen to tombstone event
+    if (self.roomDataSource.room.state.isObsolete)
+    {
+        return;
+    }
+    
+    MXWeakify(self);
+    
+    tombstoneEventNotificationsListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomTombStone] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        // Update activitiesView with room replacement information
+        [self refreshActivitiesViewDisplay];
+        // Hide inputToolbarView
+        [self setRoomInputToolbarViewClass];
+        [self updateInputToolBarViewHeight];
+    }];
+}
+
+- (void)removeTombstoneEventNotificationsListener
+{
+    if (self.roomDataSource)
+    {
+        // Remove the previous live listener
+        if (tombstoneEventNotificationsListener)
+        {
+            [self.roomDataSource.room.liveTimeline removeListener:tombstoneEventNotificationsListener];
+            tombstoneEventNotificationsListener = nil;
+        }
+    }
 }
 
 @end

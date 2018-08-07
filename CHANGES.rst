@@ -5,6 +5,7 @@ Improvements:
 * Update project structure. Organize UI related files by feature (PR#1932).
 * Move image files to xcassets (PR#1932).
 * Replies: Implement sending (#1911).
+* Support room versioning (vector-im/riot-ios#1938).
 
 Changes in 0.6.20 (2018-07-13)
 ===============================================
