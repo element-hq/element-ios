@@ -45,9 +45,14 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             self.collapsed = YES;
         }
         
-        if (event.eventType == MXEventTypeRoomCreate && roomState.hasRoomPredecessor)
+        if (event.eventType == MXEventTypeRoomCreate)
         {
-            self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
+            MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+            
+            if (createContent.roomPredecessorInfo)
+            {
+                self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
+            }
         }
 
         // Increase maximum number of components
