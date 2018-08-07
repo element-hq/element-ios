@@ -99,6 +99,7 @@
 #import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
 
 #import "RoomSelectedStickerBubbleCell.h"
+#import "RoomPredecessorBubbleCell.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
@@ -329,6 +330,7 @@
     [self.bubblesTableView registerClass:RoomMembershipExpandedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
     
     // Prepare expanded header
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
@@ -1805,8 +1807,7 @@
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
         {
-            // TODO: Use a custom suitable cell for room create predecessor
-            cellViewClass = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;            
+            cellViewClass = RoomPredecessorBubbleCell.class;
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
