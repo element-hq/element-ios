@@ -322,7 +322,7 @@
 "settings_labs_e2e_encryption_prompt_message" = "За да завършите настройката на шифроването, трябва да влезете в профила си отново.";
 "settings_labs_create_conference_with_jitsi" = "Създаване на групови разговори с jitsi";
 "settings_term_conditions" = "Правила и условия";
-"settings_privacy_policy" = "Правила за поверителност";
+"settings_privacy_policy" = "Политика за поверителност";
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Други известия";
 "settings_send_crash_report" = "Изпращане на анон. данни за грешки и използване";
