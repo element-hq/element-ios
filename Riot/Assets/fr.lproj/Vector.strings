@@ -543,3 +543,12 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Demande envoyée";
 "rerequest_keys_alert_message" = "Veuillez lancer Riot sur un autre appareil qui peut déchiffrer le message pour qu'il puisse envoyer les clés sur cet appareil.";
+"room_message_reply_to_placeholder" = "Envoyer une réponse (non chiffrée)…";
+"encrypted_room_message_reply_to_placeholder" = "Envoyer une réponse chiffrée…";
+"room_message_reply_to_short_placeholder" = "Envoyer une réponse…";
+"room_replacement_information" = "Ce salon a été remplacé et n'est plus actif.";
+"room_replacement_link" = "La conversation continue ici.";
+"room_predecessor_information" = "Ce salon est la suite d'une autre conversation.";
+"room_predecessor_link" = "Cliquer ici pour voir les vieux messages.";
+"settings_labs_room_members_lazy_loading" = "Chargement différé des participants des salons";
+"settings_labs_room_members_lazy_loading_error_message" = "Votre serveur d'accueil ne prend pas en charge le chargement différé des participants des salons. Réessayez plus tard.";

@@ -543,3 +543,12 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfrage gesendet";
 "rerequest_keys_alert_message" = "Öffne Riot bitte auf einem anderen Gerät, dass die Nachricht entschlüsseln kann, damit es die Schlüssel an dieses Gerät senden kann.";
+"room_message_reply_to_placeholder" = "Sende eine unverschlüsselte Antwort…";
+"encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
+"room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
+"room_replacement_information" = "Dieser Raum wurde ersetzt und ist nicht länger aktiv.";
+"room_replacement_link" = "Die Konversation wird hier fortgesetzt.";
+"room_predecessor_information" = "Dieser Raum ist die Fortsetzung einer anderen Konversation.";
+"room_predecessor_link" = "Klicke hier um ältere Nachrichten zu sehen.";
+"settings_labs_room_members_lazy_loading" = "Raummitglieder verzögert laden";
+"settings_labs_room_members_lazy_loading_error_message" = "Dein Heimserver unterstützt das verzögerte Laden von Raummitgliedern noch nicht. Versuche es später erneut.";
