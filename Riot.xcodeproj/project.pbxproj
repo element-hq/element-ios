@@ -60,6 +60,7 @@
 		B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */; };
 		B169331620F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */; };
 		B169331720F3CBE000746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
+		B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
@@ -492,6 +493,7 @@
 		B169331020F3CAFC00746532 /* PublicRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableViewCell.h; sourceTree = "<group>"; };
 		B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
 		B169331320F3CAFC00746532 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
+		B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPRConsentViewController.swift; sourceTree = "<group>"; };
 		B1B5567920EE6C4C00210D55 /* CountryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryPickerViewController.h; sourceTree = "<group>"; };
 		B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryPickerViewController.m; sourceTree = "<group>"; };
 		B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
@@ -1274,12 +1276,21 @@
 			path = DataSources;
 			sourceTree = "<group>";
 		};
+		B17982FD2119FEA7001FD722 /* GDPR */ = {
+			isa = PBXGroup;
+			children = (
+				B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */,
+			);
+			path = GDPR;
+			sourceTree = "<group>";
+		};
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
 				B1B556EA20EE6C4C00210D55 /* Main */,
 				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B1B556F920EE6C4C00210D55 /* Authentication */,
+				B17982FD2119FEA7001FD722 /* GDPR */,
 				B1B5568420EE6C4C00210D55 /* Home */,
 				B1B556C720EE6C4C00210D55 /* Favorites */,
 				B1B556E720EE6C4C00210D55 /* People */,
@@ -3080,6 +3091,7 @@
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5575120EE6C4D00210D55 /* AuthenticationViewController.m in Sources */,
 				B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */,
+				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
 				B1B5572820EE6C4D00210D55 /* RoomViewController.m in Sources */,
 				B1B558C720EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
