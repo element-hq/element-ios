@@ -215,6 +215,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
 @property (weak, nonatomic) UIViewController *gdprConsentController;
 
+/**
+ Used to manage on boarding steps, like create DM with riot bot
+ */
+@property (strong, nonatomic) OnBoardingManager *onBoardingManager;
+
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
 
@@ -4049,7 +4054,29 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)gdprConsentViewControllerDidConsentToGDPRWithSucces:(GDPRConsentViewController *)gdprConsentViewController
 {
-    [self dismissGDPRConsent];
+    MXSession *session = mxSessionArray.firstObject;
+    
+    self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
+    
+    MXWeakify(self);
+    MXWeakify(gdprConsentViewController);
+    
+    [gdprConsentViewController startActivityIndicator];
+    
+    void (^createRiotBotDMcompletion)(void) = ^() {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [weakgdprConsentViewController stopActivityIndicator];
+        [self dismissGDPRConsent];
+        self.onBoardingManager = nil;
+    };
+    
+    [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSucess:^{
+        createRiotBotDMcompletion();
+    } failure:^(NSError * _Nonnull error) {
+        createRiotBotDMcompletion();
+    }];
 }
 
 #pragma mark - Settings
