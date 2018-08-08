@@ -21,7 +21,7 @@ import Foundation
 }
 
 /// GPDR consent screen.
-final public class GDPRConsentViewController : WebViewViewController {
+final public class GDPRConsentViewController: WebViewViewController {
     
     // MARK: - Constants
     
