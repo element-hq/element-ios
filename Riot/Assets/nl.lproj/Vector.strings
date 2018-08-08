@@ -569,3 +569,4 @@
 "deactivate_account_validate_action" = "Account deactiveren";
 "deactivate_account_password_alert_title" = "Account deactiveren";
 "deactivate_account_password_alert_message" = "Voer je wachtwoord in om verder te gaan";
+"room_event_action_view_decrypted_source" = "Bekijk ontsleutelde bron";
