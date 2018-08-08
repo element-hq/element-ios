@@ -2508,6 +2508,26 @@
                                                                
                                                            }]];
         }
+
+        // Add "View Decrypted Source" for e2ee event we can decrypt
+        if (level == 1 && selectedEvent.isEncrypted && selectedEvent.clearEvent)
+        {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_decrypted_source", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+
+                                                               if (weakSelf)
+                                                               {
+                                                                   typeof(self) self = weakSelf;
+
+                                                                   [self cancelEventSelection];
+
+                                                                   // Display clear event details
+                                                                   [self showEventDetails:selectedEvent.clearEvent];
+                                                               }
+
+                                                           }]];
+        }
         
         if (level == 1)
         {

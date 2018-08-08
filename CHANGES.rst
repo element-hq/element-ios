@@ -1,4 +1,4 @@
-Changes in 0.6.21 ()
+Changes in 0.7.0 ()
 ===============================================
 
 Improvements:
@@ -7,6 +7,7 @@ Improvements:
 * Replies: Implement sending (#1911).
 * Support room versioning (#1938).
 * Add support of lazy-loading of room members (#1931).
+* Chat screen: Add "view decrypted source" option on the selected event (#1642).
 
 Changes in 0.6.20 (2018-07-13)
 ===============================================
