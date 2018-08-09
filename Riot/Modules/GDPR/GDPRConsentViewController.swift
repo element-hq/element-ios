@@ -17,7 +17,7 @@
 import Foundation
 
 @objc protocol GDPRConsentViewControllerDelegate: class {
-    func gdprConsentViewControllerDidConsentToGDPRWithSucces(_ gdprConsentViewController: GDPRConsentViewController)
+    func gdprConsentViewControllerDidConsentToGDPRWithSuccess(_ gdprConsentViewController: GDPRConsentViewController)
 }
 
 /// GPDR consent screen.
@@ -25,9 +25,9 @@ final public class GDPRConsentViewController: WebViewViewController {
     
     // MARK: - Constants
     
-    private static let consentSuccessURLString = "https://matrix.org/_matrix/consent"
+    private static let consentSuccessURLPath = "/_matrix/consent"
     
-    // MARK: - Properties
+    // MARK: - Properties        
     
     @objc weak var delegate: GDPRConsentViewControllerDelegate?
     
@@ -44,10 +44,10 @@ final public class GDPRConsentViewController: WebViewViewController {
     override public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         super.webView(webView, didFinish: navigation)
         
-        // When navigation finish on URL `consentSuccessURLString`, it means that user consent to GDPR
-        if let url = webView.url, url.absoluteString == GDPRConsentViewController.consentSuccessURLString {
+        // When navigation finish on path `consentSuccessURLPath` with no query, it means that user consent to GDPR
+        if let url = webView.url, url.path == GDPRConsentViewController.consentSuccessURLPath, url.query == nil {
             NSLog("[GDPRConsentViewController] User consent to GDPR")
-            self.delegate?.gdprConsentViewControllerDidConsentToGDPRWithSucces(self)
+            self.delegate?.gdprConsentViewControllerDidConsentToGDPRWithSuccess(self)
         }
     }
 }

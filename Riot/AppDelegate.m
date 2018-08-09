@@ -4052,7 +4052,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark - GDPRConsentViewControllerDelegate
 
-- (void)gdprConsentViewControllerDidConsentToGDPRWithSucces:(GDPRConsentViewController *)gdprConsentViewController
+- (void)gdprConsentViewControllerDidConsentToGDPRWithSuccess:(GDPRConsentViewController *)gdprConsentViewController
 {
     MXSession *session = mxSessionArray.firstObject;
     
