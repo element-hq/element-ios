@@ -8,6 +8,7 @@ Improvements:
 * Support room versioning (#1938).
 * Add support of lazy-loading of room members (#1931).
 * Chat screen: Add "view decrypted source" option on the selected event (#1642).
+* Improve GDPR consent webview management (#1952)
 
 Changes in 0.6.20 (2018-07-13)
 ===============================================
