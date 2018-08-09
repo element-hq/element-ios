@@ -4072,7 +4072,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         self.onBoardingManager = nil;
     };
     
-    [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSucess:^{
+    [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
         createRiotBotDMcompletion();
     } failure:^(NSError * _Nonnull error) {
         createRiotBotDMcompletion();
