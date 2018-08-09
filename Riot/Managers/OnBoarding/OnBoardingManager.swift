@@ -28,11 +28,11 @@ final public class OnBoardingManager: NSObject {
     
     // MARK: - Properties
     
-    private var session: MXSession
+    private let session: MXSession
     
     // MARK: - Setup & Teardown
     
-    @objc init(session: MXSession) {
+    @objc public init(session: MXSession) {
         self.session = session
         
         super.init()
@@ -40,10 +40,12 @@ final public class OnBoardingManager: NSObject {
     
     // MARK: - Public
     
-    @objc func createRiotBotDirectMessageIfNeeded(sucess: (() -> Void)?, failure: ((Error) -> Void)?) {
+    @objc public func createRiotBotDirectMessageIfNeeded(success: (() -> Void)?, failure: ((Error) -> Void)?) {
         
         // Check user has join no rooms so is a new comer
         guard self.isUSerJoinedARoom() == false else {
+            // riot bot already created
+            success?()
             return
         }
         
@@ -53,12 +55,11 @@ final public class OnBoardingManager: NSObject {
             
             switch response {
             case .success(_):
-                sucess?()
+                success?()
             case .failure(let error):
                 NSLog("[OnBoardingManager] Create chat with riot-bot failed with error \(error)");
                 failure?(error)
             }
-            
         }
         
         // Make multipe tries, until we get a response
@@ -68,9 +69,13 @@ final public class OnBoardingManager: NSObject {
     // MARK: - Private
     
     private func isUSerJoinedARoom() -> Bool {
+        guard let roomSummaries = self.session.roomsSummaries() else {
+            return false
+        }
+        
         var isUSerJoinedARoom = false
         
-        for roomSummary in self.session.roomsSummaries() {
+        for roomSummary in roomSummaries {
             if case .join = roomSummary.membership {
                 isUSerJoinedARoom = true
                 break
