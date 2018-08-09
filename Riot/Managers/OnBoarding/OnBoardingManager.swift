@@ -42,9 +42,9 @@ final public class OnBoardingManager: NSObject {
     
     @objc public func createRiotBotDirectMessageIfNeeded(success: (() -> Void)?, failure: ((Error) -> Void)?) {
         
-        // Check user has join no rooms so is a new comer
-        guard self.isUSerJoinedARoom() == false else {
-            // riot bot already created
+        // Check user has joined no rooms so is a new comer
+        guard self.isUserJoinedARoom() == false else {
+            // As the user has already rooms, one of their riot client has already created a room with riot bot
             success?()
             return
         }
@@ -57,7 +57,7 @@ final public class OnBoardingManager: NSObject {
             case .success(_):
                 success?()
             case .failure(let error):
-                NSLog("[OnBoardingManager] Create chat with riot-bot failed with error \(error)");
+                NSLog("[OnBoardingManager] Create chat with riot-bot failed");
                 failure?(error)
             }
         }
@@ -68,7 +68,7 @@ final public class OnBoardingManager: NSObject {
     
     // MARK: - Private
     
-    private func isUSerJoinedARoom() -> Bool {
+    private func isUserJoinedARoom() -> Bool {
         guard let roomSummaries = self.session.roomsSummaries() else {
             return false
         }
