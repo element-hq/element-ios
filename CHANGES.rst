@@ -16,6 +16,9 @@ Improvements:
 * Chat screen: Add "view decrypted source" option on the selected event (#1642).
 * Improve GDPR consent webview management (#1952).
 
+Bug fix:
+* Multiple rooms can be opened (#1967).
+
 Changes in 0.6.20 (2018-07-13)
 ===============================================
 
