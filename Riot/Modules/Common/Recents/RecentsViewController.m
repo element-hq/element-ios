@@ -765,7 +765,7 @@
 // Interactions on reset on viewWillAppear.
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
 {
-    self.recentsTableView.userInteractionEnabled = userInteractionEnabled;
+    self.view.userInteractionEnabled = userInteractionEnabled;
 }
 
 #pragma mark - MXKDataSourceDelegate
