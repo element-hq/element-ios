@@ -232,6 +232,9 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:_screenName];
+
+    // Reset back user interactions
+    self.userInteractionEnabled = YES;
     
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
@@ -739,7 +742,7 @@
 
 #pragma mark - Internal methods
 
--(void)showPublicRoomsDirectory
+- (void)showPublicRoomsDirectory
 {
     // Here the recents view controller is displayed inside a unified search view controller.
     // Sanity check
@@ -748,6 +751,21 @@
         // Show the directory screen
         [((UnifiedSearchViewController*)self.parentViewController) showPublicRoomsDirectory];
     }
+}
+
+- (void)dispayRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+{
+    // Avoid multiple openings of rooms
+    self.userInteractionEnabled = NO;
+
+    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
+}
+
+// Disable UI interactions in this screen while we are going to open another screen.
+// Interactions on reset on viewWillAppear.
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
+{
+    self.view.userInteractionEnabled = userInteractionEnabled;
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -787,7 +805,7 @@
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
         
         // Display the room preview
-        [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:invitedRoom.roomId andEventId:nil inMatrixSession:invitedRoom.mxSession];
+        [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
     {
@@ -1688,33 +1706,35 @@
             [self startActivityIndicator];
             
             // Create an empty room.
+            MXWeakify(self);
             currentRequest = [self.mainSession createRoom:nil
                                                visibility:kMXRoomDirectoryVisibilityPrivate
                                                 roomAlias:nil
                                                     topic:nil
                                                   success:^(MXRoom *room) {
+                                                      MXStrongifyAndReturnIfNil(self);
                                                       
-                                                      currentRequest = nil;
+                                                      self->currentRequest = nil;
                                                       [self stopActivityIndicator];
-                                                      if (currentAlert)
+                                                      if (self->currentAlert)
                                                       {
-                                                          [currentAlert dismissViewControllerAnimated:NO completion:nil];
-                                                          currentAlert = nil;
+                                                          [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+                                                          self->currentAlert = nil;
                                                       }
+
+                                                      [self dispayRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
                                                       
                                                       [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:room.roomId andEventId:nil inMatrixSession:self.mainSession];
-                                                      
-                                                      // Force the expanded header
-                                                      [AppDelegate theDelegate].masterTabBarController.currentRoomViewController.showExpandedHeader = YES;
-                                                      
+
                                                   } failure:^(NSError *error) {
+                                                      MXStrongifyAndReturnIfNil(self);
                                                       
-                                                      currentRequest = nil;
+                                                      self->currentRequest = nil;
                                                       [self stopActivityIndicator];
-                                                      if (currentAlert)
+                                                      if (self->currentAlert)
                                                       {
-                                                          [currentAlert dismissViewControllerAnimated:NO completion:nil];
-                                                          currentAlert = nil;
+                                                          [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+                                                          self->currentAlert = nil;
                                                       }
                                                       
                                                       NSLog(@"[RecentsViewController] Create new room failed");
@@ -1882,8 +1902,7 @@
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
-    // Open the room
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
+    [self dispayRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
 #pragma mark - UISearchBarDelegate

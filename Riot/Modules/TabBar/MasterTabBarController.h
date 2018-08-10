@@ -134,6 +134,7 @@
 @property (nonatomic, readonly) NSString  *selectedRoomId;
 @property (nonatomic, readonly) NSString  *selectedEventId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
+@property (nonatomic, readonly) MXKRoomDataSource *selectedRoomDataSource;
 @property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
 
 // References on the currently selected contact and its view controller

@@ -81,7 +81,7 @@
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
-@interface AppDelegate () <PKPushRegistryDelegate>
+@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate>
 {
     /**
      Reachability observer
@@ -213,7 +213,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 @property (strong, nonatomic) UIAlertController *logoutConfirmation;
 
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
-@property (weak, nonatomic) UIViewController *gdprConsentViewController;
+@property (weak, nonatomic) UIViewController *gdprConsentController;
+
+/**
+ Used to manage on boarding steps, like create DM with riot bot
+ */
+@property (strong, nonatomic) OnBoardingManager *onBoardingManager;
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
@@ -3979,10 +3984,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSString *consentURI = notification.userInfo[kMXHTTPClientUserConsentNotGivenErrorNotificationConsentURIKey];
         if (consentURI
             && self.gdprConsentNotGivenAlertController.presentingViewController == nil
-            && self.gdprConsentViewController.presentingViewController == nil)
+            && self.gdprConsentController.presentingViewController == nil)
         {
             self.gdprConsentNotGivenAlertController = nil;
-            self.gdprConsentViewController = nil;
+            self.gdprConsentController = nil;
             
             UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
             
@@ -4022,26 +4027,56 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)presentGDPRConsentFromViewController:(UIViewController*)viewController consentURI:(NSString*)consentURI
 {
-    WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:consentURI];    
-    webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
+    GDPRConsentViewController *gdprConsentViewController = [[GDPRConsentViewController alloc] initWithURL:consentURI];    
     
     UIBarButtonItem *closeBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"close"]
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self
                                                                           action:@selector(dismissGDPRConsent)];
     
-    webViewViewController.navigationItem.leftBarButtonItem = closeBarButtonItem;
+    gdprConsentViewController.navigationItem.leftBarButtonItem = closeBarButtonItem;
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:gdprConsentViewController];
     
     [viewController presentViewController:navigationController animated:YES completion:nil];
     
-    self.gdprConsentViewController = navigationController;
+    self.gdprConsentController = navigationController;
+    
+    gdprConsentViewController.delegate = self;
 }
 
 - (void)dismissGDPRConsent
 {    
-    [self.gdprConsentViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.gdprConsentController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - GDPRConsentViewControllerDelegate
+
+- (void)gdprConsentViewControllerDidConsentToGDPRWithSuccess:(GDPRConsentViewController *)gdprConsentViewController
+{
+    MXSession *session = mxSessionArray.firstObject;
+    
+    self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
+    
+    MXWeakify(self);
+    MXWeakify(gdprConsentViewController);
+    
+    [gdprConsentViewController startActivityIndicator];
+    
+    void (^createRiotBotDMcompletion)(void) = ^() {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [weakgdprConsentViewController stopActivityIndicator];
+        [self dismissGDPRConsent];
+        self.onBoardingManager = nil;
+    };
+    
+    [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
+        createRiotBotDMcompletion();
+    } failure:^(NSError * _Nonnull error) {
+        createRiotBotDMcompletion();
+    }];
 }
 
 #pragma mark - Settings

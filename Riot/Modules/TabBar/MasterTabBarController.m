@@ -416,7 +416,15 @@
     
     if (roomId && matrixSession)
     {
-        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+        // Preload the data source before performing the segue
+        MXWeakify(self);
+        [self dataSourceOfRoomToDisplay:^(MXKRoomDataSource *roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+
+            self->_selectedRoomDataSource = roomDataSource;
+
+            [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+        }];
     }
     else
     {
@@ -453,6 +461,8 @@
     _selectedRoomId = nil;
     _selectedEventId = nil;
     _selectedRoomSession = nil;
+    _selectedRoomDataSource = nil;
+    _selectedRoomPreviewData = nil;
     
     _selectedContact = nil;
     
@@ -511,25 +521,7 @@
         
         if ([[segue identifier] isEqualToString:@"showRoomDetails"])
         {
-            if (!_selectedRoomPreviewData)
-            {
-                MXWeakify(self);
-                [self dataSourceOfRoomToDisplay:^(MXKRoomDataSource *roomDataSource) {
-                    MXStrongifyAndReturnIfNil(self);
-
-                    // Replace the rootviewcontroller with a room view controller
-                    // Get the RoomViewController from the storyboard
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-                    self->_currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
-
-                    navigationController.viewControllers = @[self.currentRoomViewController];
-
-                    [self.currentRoomViewController displayRoom:roomDataSource];
-
-                    [self setupLeftBarButtonItem];
-                }];
-            }
-            else
+            if (_selectedRoomPreviewData)
             {
                 // Replace the rootviewcontroller with a room view controller
                 // Get the RoomViewController from the storyboard
@@ -542,6 +534,40 @@
                 _selectedRoomPreviewData = nil;
 
                 [self setupLeftBarButtonItem];
+            }
+            else
+            {
+                MXWeakify(self);
+                void (^openRoomDataSource)(MXKRoomDataSource *roomDataSource) = ^(MXKRoomDataSource *roomDataSource) {
+                    MXStrongifyAndReturnIfNil(self);
+
+                    // Replace the rootviewcontroller with a room view controller
+                    // Get the RoomViewController from the storyboard
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                    self->_currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
+
+                    navigationController.viewControllers = @[self.currentRoomViewController];
+
+                    [self.currentRoomViewController displayRoom:roomDataSource];
+
+                    [self setupLeftBarButtonItem];
+
+                };
+
+                if (_selectedRoomDataSource)
+                {
+                    // If the room data source is already loaded, display it
+                    openRoomDataSource(_selectedRoomDataSource);
+                    _selectedRoomDataSource = nil;
+                }
+                else
+                {
+                    // Else, load it. The user may see the EmptyDetailsViewControllerStoryboardId
+                    // screen in this case
+                    [self dataSourceOfRoomToDisplay:^(MXKRoomDataSource *roomDataSource) {
+                        openRoomDataSource(roomDataSource);
+                    }];
+                }
             }
         }
         else if ([[segue identifier] isEqualToString:@"showContactDetails"])
