@@ -49,21 +49,30 @@ final public class OnBoardingManager: NSObject {
             return
         }
         
+//        // Create DM room with Riot-bot
+//        
+//        let httpOperation = self.session.createRoom(name: nil, visibility: .private, alias: nil, topic: nil, invite: [Constants.riotBotMatrixId], invite3PID: nil, isDirect: true, preset: .trustedPrivateChat) { (response) in
+//            
+//            switch response {
+//            case .success(_):
+//                success?()
+//            case .failure(let error):
+//                NSLog("[OnBoardingManager] Create chat with riot-bot failed");
+//                failure?(error)
+//            }
+//        }
+//        
+//        // Make multipe tries, until we get a response
+//        httpOperation.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
+
+        
         // Create DM room with Riot-bot
-        
-        let httpOperation = self.session.createRoom(name: nil, visibility: .private, alias: nil, topic: nil, invite: [Constants.riotBotMatrixId], invite3PID: nil, isDirect: true, preset: .trustedPrivateChat) { (response) in
-            
-            switch response {
-            case .success(_):
-                success?()
-            case .failure(let error):
-                NSLog("[OnBoardingManager] Create chat with riot-bot failed");
-                failure?(error)
-            }
-        }
-        
+
+        let httpOperation = self.session.createRoom(fromSwift: nil, visibility: kMXRoomDirectoryVisibilityPrivate, roomAlias: nil, topic: nil, invite: [Constants.riotBotMatrixId], invite3PID: nil, isDirect: true, preset: kMXRoomPresetTrustedPrivateChat, success: success, failure: nil)
+
+
         // Make multipe tries, until we get a response
-        httpOperation.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
+        httpOperation?.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
     }
     
     // MARK: - Private
@@ -76,12 +85,13 @@ final public class OnBoardingManager: NSObject {
         var isUSerJoinedARoom = false
         
         for roomSummary in roomSummaries {
-            if case .join = roomSummary.membership {
+            // if case .join = roomSummary.membership {
+            if case __MXMembershipJoin = roomSummary.membershipFromSwift {
                 isUSerJoinedARoom = true
                 break
             }
         }
-        
+
         return isUSerJoinedARoom
     }
 }
