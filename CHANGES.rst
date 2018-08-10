@@ -11,6 +11,9 @@ Improvements:
 * Update project structure. Organize UI related files by feature (PR#1932).
 * Move image files to xcassets (PR#1932).
 
+Bug fix:
+* Multiple rooms can be opened (#1967).
+
 Changes in 0.6.20 (2018-07-13)
 ===============================================
 
