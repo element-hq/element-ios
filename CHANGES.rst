@@ -2,13 +2,19 @@ Changes in 0.7.0 ()
 ===============================================
 
 Improvements:
+* RoomVC: Add "view decrypted source" option on the selected event (#1642).
+* RoomVC: Implement replies sending (#1911).
+* Support room versioning (#1938).
+* Add support of lazy-loading of room members (#1931) (disabled for now).
+* i18n: Add Traditional Chinese (zh_Hant).
+* i18n: Add Albanian (sq).
 * Update project structure. Organize UI related files by feature (PR#1932).
 * Move image files to xcassets (PR#1932).
 * Replies: Implement sending (#1911).
 * Support room versioning (#1938).
 * Add support of lazy-loading of room members (#1931).
 * Chat screen: Add "view decrypted source" option on the selected event (#1642).
-* Improve GDPR consent webview management (#1952)
+* Improve GDPR consent webview management (#1952).
 
 Changes in 0.6.20 (2018-07-13)
 ===============================================

@@ -117,8 +117,8 @@ enum
 
 enum
 {
-    LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX,
+    //LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
+    LABS_USE_JITSI_WIDGET_INDEX = 0,
     LABS_CRYPTO_INDEX,
     LABS_COUNT
 };
@@ -2041,7 +2041,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
+        /*if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2052,7 +2052,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             cell = labelAndSwitchCell;
         }
-        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        else*/ if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
