@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RoomActivitiesView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="53"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qhJ-5H-64e" userLabel="Container">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="53"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Mq-77-vvo" userLabel="Separator View">
+                            <rect key="frame" x="13" y="0.0" width="577" height="1"/>
+                            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="jIT-QS-Muj"/>
+                            </constraints>
+                        </view>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="typing" translatesAutoresizingMaskIntoConstraints="NO" id="d6j-oN-9uA">
+                            <rect key="frame" x="13" y="11.5" width="30" height="30"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewIconImageView"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="657-fV-gDE"/>
+                                <constraint firstAttribute="width" constant="30" id="vxL-QJ-z0p"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bS-1u-GUX" userLabel="Message Label">
+                            <rect key="frame" x="56" y="5.5" width="514" height="42"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageLabel"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="42" id="PVB-be-euJ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6ND-Cq-ABj">
+                            <rect key="frame" x="56" y="10" width="514" height="33"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageTextView"/>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <color key="textColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            <connections>
+                                <outlet property="delegate" destination="iN0-l3-epB" id="ZAk-sC-QpQ"/>
+                            </connections>
+                        </textView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="1Mq-77-vvo" firstAttribute="leading" secondItem="qhJ-5H-64e" secondAttribute="leading" constant="13" id="2S8-TD-jHO"/>
+                        <constraint firstItem="7bS-1u-GUX" firstAttribute="leading" secondItem="d6j-oN-9uA" secondAttribute="trailing" constant="13" id="6Js-Lq-pKz"/>
+                        <constraint firstItem="7bS-1u-GUX" firstAttribute="centerY" secondItem="d6j-oN-9uA" secondAttribute="centerY" id="BIB-uG-AY7"/>
+                        <constraint firstAttribute="trailing" secondItem="1Mq-77-vvo" secondAttribute="trailing" constant="10" id="YBp-az-maq"/>
+                        <constraint firstItem="d6j-oN-9uA" firstAttribute="leading" secondItem="qhJ-5H-64e" secondAttribute="leading" constant="13" id="YYC-Q1-IoC"/>
+                        <constraint firstItem="6ND-Cq-ABj" firstAttribute="leading" secondItem="d6j-oN-9uA" secondAttribute="trailing" constant="13" id="ZdK-4Z-Yfz"/>
+                        <constraint firstItem="6ND-Cq-ABj" firstAttribute="top" secondItem="qhJ-5H-64e" secondAttribute="top" constant="10" id="j7I-pC-7fV"/>
+                        <constraint firstAttribute="bottom" secondItem="6ND-Cq-ABj" secondAttribute="bottom" constant="10" id="m0j-16-mJw"/>
+                        <constraint firstItem="d6j-oN-9uA" firstAttribute="centerY" secondItem="qhJ-5H-64e" secondAttribute="centerY" id="rEU-px-J59"/>
+                        <constraint firstItem="1Mq-77-vvo" firstAttribute="top" secondItem="qhJ-5H-64e" secondAttribute="top" id="stG-o2-SK4"/>
+                        <constraint firstAttribute="trailing" secondItem="7bS-1u-GUX" secondAttribute="trailing" constant="30" id="tCW-EI-6Yt"/>
+                        <constraint firstItem="6ND-Cq-ABj" firstAttribute="centerY" secondItem="d6j-oN-9uA" secondAttribute="centerY" id="vF4-wk-Jqe"/>
+                        <constraint firstAttribute="height" constant="53" id="xPK-Yw-hQ9"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomExtrasInfosView"/>
+            <constraints>
+                <constraint firstItem="qhJ-5H-64e" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="4o2-V9-a4L"/>
+                <constraint firstAttribute="trailing" secondItem="6ND-Cq-ABj" secondAttribute="trailing" constant="30" id="82b-uO-ua7"/>
+                <constraint firstItem="qhJ-5H-64e" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wDi-7P-36c"/>
+                <constraint firstItem="qhJ-5H-64e" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="wsu-Zi-OE6"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="iconImageView" destination="d6j-oN-9uA" id="Qhw-fw-uGc"/>
+                <outlet property="mainHeightConstraint" destination="xPK-Yw-hQ9" id="dJ5-pI-KyT"/>
+                <outlet property="messageLabel" destination="7bS-1u-GUX" id="5c1-hT-y49"/>
+                <outlet property="messageTextView" destination="6ND-Cq-ABj" id="xWk-ga-9xS"/>
+                <outlet property="separatorView" destination="1Mq-77-vvo" id="8fc-AO-8hF"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="typing" width="31" height="30"/>
+    </resources>
+</document>

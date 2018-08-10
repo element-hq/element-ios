@@ -2,4 +2,4 @@
 "NSCameraUsageDescription" = "Kamera argazkiak eta bideoak ateratzeko eta bideo deiak egiteko erabiltzen da.";
 "NSPhotoLibraryUsageDescription" = "Argazkien liburutegia argazkiak eta bideoak bidaltzeko erabiltzen da.";
 "NSMicrophoneUsageDescription" = "Mikrofonoa bideoak atera eta deiak egiteko erabiltzen da.";
-"NSContactsUsageDescription" = "Kontaktuen liburua Riot erabiltzaileak e-mail edo telefono zenbaki bidez bilatzeko erabiltzen da.";
+"NSContactsUsageDescription" = "Zure kontaktuetatik Riot edo Matrix jada darabiltenak erakusteko, zure kontaktu liburuko e-mail helbideak eta telefono zenbakiak bidali ditzakegu identitate zerbitzarira. New Vector enpresak ez ditu datu hauek gordetzen edo beste ezertarako erabiltzen. Informazio gehiagorako ikusi pribatutasun politikari buruzko orria aplikazioaren ezarpenetan.";

@@ -322,7 +322,7 @@
 "settings_labs_e2e_encryption_prompt_message" = "За да завършите настройката на шифроването, трябва да влезете в профила си отново.";
 "settings_labs_create_conference_with_jitsi" = "Създаване на групови разговори с jitsi";
 "settings_term_conditions" = "Правила и условия";
-"settings_privacy_policy" = "Правила за поверителност";
+"settings_privacy_policy" = "Политика за поверителност";
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Други известия";
 "settings_send_crash_report" = "Изпращане на анон. данни за грешки и използване";
@@ -542,3 +542,13 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Заявката е изпратена";
 "rerequest_keys_alert_message" = "Моля стартирайте Riot на друго устройство можещо да разшифрова съобщението, за да може то да изпрати ключовете до това устройство.";
+"room_message_reply_to_placeholder" = "Изпрати отговор (нешифрован)…";
+"encrypted_room_message_reply_to_placeholder" = "Изпрати шифрован отговор…";
+"room_message_reply_to_short_placeholder" = "Изпрати отговор…";
+"room_replacement_information" = "Тази стая е била заменена и вече не е активна.";
+"room_replacement_link" = "Кореспонденцията продължава тук.";
+"room_predecessor_information" = "Тази стая е продължение на друга кореспонденция.";
+"room_predecessor_link" = "Натиснете тук за да видите по-стари съобщения.";
+"settings_labs_room_members_lazy_loading" = "Постепенно зареждане на членовете в стаи";
+"settings_labs_room_members_lazy_loading_error_message" = "Сървърът Ви все още не поддържа постепенно зареждане на членовете в стаи. Опитайте по-късно.";
+"room_event_action_view_decrypted_source" = "Прегледай разшифрования източник";

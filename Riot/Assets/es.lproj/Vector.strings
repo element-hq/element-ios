@@ -61,3 +61,51 @@
 "auth_add_email_message" = "Añade un correo electrónico a tu cuenta para poder ser descubierto por otros usuarios, y ser capaz de recomponer tu contraseña.";
 "auth_add_phone_message" = "Añade un número telefónico a tu cuenta para ser descubierto por otros usuarios.";
 "title_groups" = "Comunidades";
+"deactivate_account_password_alert_title" = "Desactivar Cuenta";
+"deactivate_account_validate_action" = "Desactivar cuenta";
+"deactivate_account_password_alert_message" = "Para continuar, ingrese su contraseña";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Advertencia";
+"deactivate_account_informations_part2_emphasize" = "Esta acción es irreversible.";
+"rerequest_keys_alert_message" = "Por favor,  inicie Riot en otro dispositivo que pueda descifrar el mensaje para que pueda enviar las claves a este dispositivo.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Solicitud Enviada";
+"auth_password_dont_match" = "Las contraseñas no coinciden";
+"auth_username_in_use" = "Nombre de usuario en uso";
+"auth_email_in_use" = "Esta dirección de correo electrónico ya está en uso";
+"auth_phone_in_use" = "Este número de teléfono ya está en uso";
+"auth_use_server_options" = "Usar opciones personalizadas del servidor (avanzado)";
+"auth_reset_password_missing_password" = "Se debe introducir una nueva contraseña.";
+"auth_reset_password_next_step_button" = "He verificado mi dirección de correo electrónico";
+"room_creation_appearance" = "Apariencia";
+"room_creation_appearance_name" = "Nombre";
+"room_creation_make_public" = "Hacer público";
+"room_recents_create_empty_room" = "Crear sala";
+// People tab
+"people_invites_section" = "INVITACIONES";
+"people_conversation_section" = "CONVERSACIONES";
+"people_no_conversation" = "No hay conversaciones";
+// Rooms tab
+"room_directory_no_public_room" = "No hay salas públicas disponibles";
+// Groups tab
+"group_invite_section" = "INVITACIONES";
+"group_section" = "COMUNIDADES";
+// Search
+"search_rooms" = "Salas";
+"search_messages" = "Mensajes";
+"search_files" = "Archivos";
+"search_default_placeholder" = "Buscar";
+"search_no_result" = "No hay resultados";
+"search_in_progress" = "Buscando…";
+"directory_searching_title" = "Buscando directorio..";
+// Contacts
+"contacts_address_book_section" = "CONTACTOS LOCALES";
+"contacts_address_book_matrix_users_toggle" = "Solo usuarios de Matrix";
+// Chat participants
+"room_participants_title" = "Participantes";
+"room_participants_add_participant" = "Añadir participante";
+"room_participants_one_participant" = "1 participante";
+"room_participants_multi_participants" = "%d participantes";
+"room_participants_remove_prompt_title" = "Confirmación";
+"room_participants_remove_prompt_msg" = "¿Estas seguro de que quieres eliminar a %@ de este chat?";
+"room_participants_invite_prompt_title" = "Confirmación";
+"room_participants_invite_prompt_msg" = "¿Estás seguro de que quieres invitar a %@ a este chat?";
