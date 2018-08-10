@@ -554,3 +554,4 @@
 "room_predecessor_link" = "Egin klik hemen mezu zaharrak ikusteko.";
 "settings_labs_room_members_lazy_loading" = "Gelako kideen karga alferra";
 "settings_labs_room_members_lazy_loading_error_message" = "Zure hasiera zerbitzariak ez du onartzen gelako kideen karga alferra. Saiatu geroago.";
+"room_event_action_view_decrypted_source" = "Ikusi deszifratutako iturria";

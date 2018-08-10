@@ -551,3 +551,4 @@
 "room_predecessor_link" = "Натиснете тук за да видите по-стари съобщения.";
 "settings_labs_room_members_lazy_loading" = "Постепенно зареждане на членовете в стаи";
 "settings_labs_room_members_lazy_loading_error_message" = "Сървърът Ви все още не поддържа постепенно зареждане на членовете в стаи. Опитайте по-късно.";
+"room_event_action_view_decrypted_source" = "Прегледай разшифрования източник";

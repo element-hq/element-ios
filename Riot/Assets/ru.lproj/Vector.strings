@@ -544,3 +544,10 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Запрос отправлен";
 "rerequest_keys_alert_message" = "Запустите Riot на другом устройстве, которое может расшифровать сообщение, чтобы оно могло отправить ключи этому устройству.";
+"room_message_reply_to_placeholder" = "Отправить ответ (незашифрованный)…";
+"encrypted_room_message_reply_to_placeholder" = "Отправить зашифрованный ответ…";
+"room_message_reply_to_short_placeholder" = "Отправить ответ…";
+"room_replacement_information" = "Эта комната была заменена и больше не активна.";
+"room_replacement_link" = "Этот разговор продолжается здесь.";
+"room_predecessor_information" = "Эта комната является продолжением другого разговора.";
+"room_predecessor_link" = "Нажмите здесь, чтобы просмотреть старые сообщения.";
