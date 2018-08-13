@@ -599,6 +599,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    // Check if an initial sync failure occured while the app was in background
+    MXSession *mainSession = self.mxSessions.firstObject;
+    if (mainSession.state == MXSessionStateInitialSyncFailed)
+    {
+        // Inform the end user why the app appears blank
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:NSURLErrorCannotConnectToHost
+                                         userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"homeserver_connection_lost", @"Vector", nil)}];
+
+        [self showErrorAsAlert:error];
+    }
     
     // Register to GDPR consent not given notification
     [self registerUserConsentNotGivenNotification];
