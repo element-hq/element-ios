@@ -38,3 +38,15 @@
 "USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ 邀请您加入聊天室";
 /* A user has invited you to a named room */
 "USER_INVITE_TO_NAMED_ROOM" = "%@ 邀请您加入聊天室 %@";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "来自 %@ 的通话";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "来自 %@ 的视频通话";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "来自 %@ 的电话会议";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "来自 %@ 的视频会议";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "来自 %@ 的电话会议：“%@”";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "来自 %@ 的视频会议：“%@”";
