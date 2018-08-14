@@ -5,17 +5,17 @@
 /* New message from a specific person, not referencing a room. Content included. */
 "MSG_FROM_USER_WITH_CONTENT" = "%@：%@";
 /* New message from a specific person in a named room. Content included. */
-"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ (%@)：%@";
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@（来自 %@）：%@";
 /* New action message from a specific person, not referencing a room. */
 "ACTION_FROM_USER" = "* %@ %@";
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@：* %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ 给您发了一张图片：%@";
+"IMAGE_FROM_USER" = "%@ 向您发送了一张图片：%@";
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ 发了一张图片：%@ (来自聊天室 %@)";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ 发送了一张图片：%@（来自 %@）";
 /* A single unread message in a room */
-"SINGLE_UNREAD_IN_ROOM" = "你收到了一条消息 (来自聊天室 %@)";
+"SINGLE_UNREAD_IN_ROOM" = "您收到了一条消息（来自 %@）";
 /* A single unread message */
 "SINGLE_UNREAD" = "你收到了一条消息";
 /* Multiple unread messages in a room */
@@ -27,7 +27,7 @@
 /* Multiple unread messages from three people */
 "MSGS_FROM_THREE_USERS" = "%@ 条未读消息 (来自 %@、%@ 和 %@)";
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
-"MSGS_FROM_TWO_PLUS_USERS" = "%@ 条未读消息 (来自 %@、%@ 和更多)";
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ 条未读消息 (来自 %@、%@ 及更多)";
 /* Multiple messages in two rooms */
 "MSGS_IN_TWO_ROOMS" = "%@ 条未读消息 (来自聊天室 %@ 和 %@)";
 /* Look, stuff's happened, alright? Just open the app. */
