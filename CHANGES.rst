@@ -1,3 +1,14 @@
+Changes in 0.7.1 (2018-08-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.1).
+ 
+Bug fix:
+ * Empty app if initial /sync fails (#1975).
+ * Direct rooms can be lost on an initial /sync (vector-im/riot-ios/issues/1983).
+ * Fix possible race conditions in direct rooms management.
+
 Changes in 0.7.0 (2018-08-10)
 ===============================================
 
