@@ -176,7 +176,10 @@
     
     // Observe kAppDelegateNetworkStatusDidChangeNotification to handle network status change.
     id kAppDelegateNetworkStatusDidChangeNotificationObserver;
-    
+
+    // Observers to manage MXSession state (and sync errors)
+    id kMXSessionStateDidChangeObserver;
+
     // Observers to manage ongoing conference call banner
     id kMXCallStateDidChangeObserver;
     id kMXCallManagerConferenceStartedObserver;
@@ -470,6 +473,7 @@
     [self listenCallNotifications];
     [self listenWidgetNotifications];
     [self listenTombstoneEventNotifications];
+    [self listenMXSessionStateChangeNotifications];
     
     if (self.showExpandedHeader)
     {
@@ -519,6 +523,7 @@
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
     [self removeTombstoneEventNotificationsListener];
+    [self removeMXSessionStateChangeNotificationsListener];
 
     // Re-enable the read marker display, and disable its update.
     self.roomDataSource.showReadMarker = YES;
@@ -1156,6 +1161,7 @@
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
     [self removeTombstoneEventNotificationsListener];
+    [self removeMXSessionStateChangeNotificationsListener];
 
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
@@ -3872,8 +3878,21 @@
         }
 
         Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
-        
-        if ([AppDelegate theDelegate].isOffline)
+
+        if ([self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
+        {
+            [roomActivitiesView showResourceLimitExceededError:self.roomDataSource.mxSession.syncError.userInfo onAdminContactTapped:^(NSURL *adminContact) {
+                if ([[UIApplication sharedApplication] canOpenURL:adminContact])
+                {
+                    [[UIApplication sharedApplication] openURL:adminContact];
+                }
+                else
+                {
+                    NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
+                }
+            }];
+        }
+        else if ([AppDelegate theDelegate].isOffline)
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
         }
@@ -4807,6 +4826,30 @@
             [self.roomDataSource.room removeListener:tombstoneEventNotificationsListener];
             tombstoneEventNotificationsListener = nil;
         }
+    }
+}
+
+#pragma mark MXSession state change
+
+- (void)listenMXSessionStateChangeNotifications
+{
+    kMXSessionStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:self.roomDataSource.mxSession queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        if (self.roomDataSource.mxSession.state == MXSessionStateSyncError
+            || self.roomDataSource.mxSession.state == MXSessionStateRunning)
+        {
+            [self refreshActivitiesViewDisplay];
+            [self refreshRoomInputToolbar];
+        }
+    }];
+}
+
+- (void)removeMXSessionStateChangeNotificationsListener
+{
+    if (kMXSessionStateDidChangeObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionStateDidChangeObserver];
+        kMXSessionStateDidChangeObserver = nil;
     }
 }
 
