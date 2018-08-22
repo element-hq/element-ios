@@ -2,4 +2,4 @@
 "NSCameraUsageDescription" = "相機權限會用來拍攝照片與影片，以及進行視訊通話。";
 "NSPhotoLibraryUsageDescription" = "照片圖庫的權限會用來傳送照片與影片。";
 "NSMicrophoneUsageDescription" = "麥克風的權限會用來拍攝影片與進行通話。";
-"NSContactsUsageDescription" = "為了要顯示您的聯絡人中哪些人已在使用 Riot 或 Matrix，我們將會傳送聯絡資訊內的電子郵件位址與電話給您的 Matrix 登入伺服器。New Vector 不會儲存這些資訊，也不會將這些資訊用於其他目的。請檢視應用程式設定的隱私權政策頁面來取得更多資訊。";
+"NSContactsUsageDescription" = "為了要顯示您的聯絡人中哪些人已在使用 Riot 或 Matrix，我們將會傳送聯絡資訊內的電子郵件位址與電話給您的 Matrix 身份伺服器。New Vector 不會儲存這些資訊，也不會將這些資訊用於其他目的。請檢視應用程式設定的隱私權政策頁面來取得更多資訊。";
