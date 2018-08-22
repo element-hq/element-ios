@@ -117,7 +117,7 @@ enum
 
 enum
 {
-    //LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
+    LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
     LABS_USE_JITSI_WIDGET_INDEX = 0,
     LABS_CRYPTO_INDEX,
     LABS_COUNT
@@ -2041,7 +2041,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        /*if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
+        if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2052,7 +2052,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             cell = labelAndSwitchCell;
         }
-        else*/ if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2904,6 +2904,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         if (!switchButton.isOn)
         {
+            // Disable LL and reload
             [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
             [self launchClearCache];
         }
@@ -2916,13 +2917,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXSession* session = [AppDelegate theDelegate].mxSessions.firstObject;
 
             MXWeakify(self);
-            [session setFilter:[MXFilterJSONModel syncFilterForLazyLoading] success:^(NSString *filterId) {
-
-                // Lazy-loading is supported, enable it
-                [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
-                [self launchClearCache];
-
-            } failure:^(NSError *error) {
+            void(^onFailure)(NSError *) = ^(NSError *error) {
                 MXStrongifyAndReturnIfNil(self);
 
                 [switchButton setOn:NO animated:YES];
@@ -2946,7 +2941,27 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
                 [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
                 [self presentViewController:self->currentAlert animated:YES completion:nil];
-            }];
+            };
+
+            // Check first the home server supports m.lazy_load_members
+            [session supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
+
+                if (matrixVersions.supportLazyLoadMembers)
+                {
+                    // Check then, we can create a LL filter on it
+                    [session setFilter:[MXFilterJSONModel syncFilterForLazyLoading] success:^(NSString *filterId) {
+
+                        // Lazy-loading is fully supported, enable it
+                        [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
+                        [self launchClearCache];
+
+                    } failure:onFailure];
+                }
+                else
+                {
+                    onFailure(nil);
+                }
+            } failure:onFailure];
         }
     }
 }
