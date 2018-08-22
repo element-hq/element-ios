@@ -71,7 +71,7 @@
 "auth_username_in_use" = "Потребителското име е вече заето";
 "auth_forgot_password" = "Забравена парола?";
 "auth_email_not_found" = "Неуспешно изпращане на имейл: Този имейл адрес не беше открит";
-"auth_use_server_options" = "Използване на потребителски опции за сървър (разширени)";
+"auth_use_server_options" = "Потребителски опции за сървър (разширени)";
 "auth_email_validation_message" = "Моля, проверете имейла си, за да продължите регистрацията";
 "auth_msisdn_validation_title" = "Очакване на потвърждение";
 "auth_msisdn_validation_message" = "Изпратихме Ви SMS с код за активиране. Моля, въведете този код по-долу.";
