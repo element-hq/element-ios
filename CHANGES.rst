@@ -4,6 +4,9 @@ Changes in 0.7.2 (2018-08-)
 Improvements:
  * Upgrade MatrixKit version (v0.8.1).
  * Server Quota Notices in Riot (#1937).
+ 
+ Bug fix:
+ * User defaults: the preset application language (if any) is ignored.
 
 Changes in 0.7.1 (2018-08-17)
 ===============================================
