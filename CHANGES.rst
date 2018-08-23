@@ -1,23 +1,45 @@
-Changes in 0.7.0 ()
+Changes in 0.7.2 (2018-08-)
 ===============================================
 
 Improvements:
-* RoomVC: Add "view decrypted source" option on the selected event (#1642).
-* RoomVC: Implement replies sending (#1911).
-* Support room versioning (#1938).
-* Add support of lazy-loading of room members (#1931) (disabled for now).
-* i18n: Add Traditional Chinese (zh_Hant).
-* i18n: Add Albanian (sq).
-* Update project structure. Organize UI related files by feature (PR#1932).
-* Move image files to xcassets (PR#1932).
-* Replies: Implement sending (#1911).
-* Support room versioning (#1938).
-* Add support of lazy-loading of room members (#1931).
-* Chat screen: Add "view decrypted source" option on the selected event (#1642).
-* Improve GDPR consent webview management (#1952).
+ * Upgrade MatrixKit version (v0.8.1).
+ * Server Quota Notices in Riot (#1937).
+ 
+ Bug fix:
+ * User defaults: the preset application language (if any) is ignored.
+
+Changes in 0.7.1 (2018-08-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.1).
+ 
+Bug fix:
+ * Empty app if initial /sync fails (#1975).
+ * Direct rooms can be lost on an initial /sync (vector-im/riot-ios/issues/1983).
+ * Fix possible race conditions in direct rooms management.
+
+Changes in 0.7.0 (2018-08-10)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.0).
+ * RoomVC: Add "view decrypted source" option on the selected event (#1642).
+ * RoomVC: Implement replies sending (#1911).
+ * Support room versioning (#1938).
+ * Add support of lazy-loading of room members (#1931) (disabled for now).
+ * i18n: Add Traditional Chinese (zh_Hant).
+ * i18n: Add Albanian (sq).
+ * Update project structure. Organize UI related files by feature (PR#1932).
+ * Move image files to xcassets (PR#1932).
+ * Replies: Implement sending (#1911).
+ * Support room versioning (#1938).
+ * Add support of lazy-loading of room members (#1931).
+ * Chat screen: Add "view decrypted source" option on the selected event (#1642).
+ * Improve GDPR consent webview management (#1952).
 
 Bug fix:
-* Multiple rooms can be opened (#1967).
+ * Multiple rooms can be opened (#1967).
 
 Changes in 0.6.20 (2018-07-13)
 ===============================================
@@ -37,7 +59,6 @@ Changes in 0.6.18 (2018-07-03)
 ===============================================
 
 Improvements:
- * Upgrade MatrixKit version (v0.7.15).
  * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
  * Analytics: Move code from AppDelegate to a dedicated class: Analytics.
  * Analytics: Track Matrix SDK stats (time to startup the app).
