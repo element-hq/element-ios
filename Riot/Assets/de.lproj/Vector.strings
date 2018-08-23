@@ -306,7 +306,7 @@
 "room_participants_action_set_default_power_level" = "Zurück auf normale Berechtigung";
 "room_participants_action_start_voice_call" = "Starte Sprach-Anruf";
 "room_ongoing_conference_call" = "Laufender Konferenz-Anruf. Trete bei als %@ oder %@.";
-"room_event_action_redact" = "Schwärzen";
+"room_event_action_redact" = "Entfernen";
 "room_warning_about_encryption" = "Ende-zu-Ende Verschlüsselung ist in Beta und ist evtl. nicht zuverlässig.\n\nMan sollte noch nicht darauf vertrauen, dass die Daten sicher sind.\n\nGeräte werden den Verlauf vor dem Beitritt des Raumes nicht entschlüsseln können.\n\nVerschlüsselte Nachrichten sind nicht lesbar auf Clients, die Verschlüsselung noch nicht implementiert haben.";
 "unknown_devices_alert" = "Dieser Raum enthält unbekannte Geräte, die nicht verifiziert wurden.\nDas bedeutet, es gibt keine Garantie, dass sie dem User gehören, der angegeben ist.\nWir empfehlen eine Überprüfung für jedes Gerät, bevor du weitermachst, aber du kannst die Nachricht erneut senden ohne Verifikation.";
 "room_preview_unlinked_email_warning" = "Diese Einladung wurde an %@ gesendet, die Adresse ist nicht mit diesem Konto verbunden. Du kannst dich mit einem anderen Konto anmelden, oder diese E-Mail-Adresse deinem Konto hinzufügen.";
@@ -318,7 +318,7 @@
 "settings_add_phone_number" = "Telefonnummer hinzufügen";
 "settings_fail_to_update_profile" = "Profilaktualisierung fehlgeschlagen";
 "settings_global_settings_info" = "Globale Benachrichtungseinstellungen sind verfügbar auf dem %@ Web Client";
-"settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit vepassten Benachrichtigungen";
+"settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit verpassten Benachrichtigungen";
 "settings_pin_rooms_with_unread" = "Pinnen von Räumen mit ungelesenen Nachrichten";
 "settings_on_denied_notification" = "Benachrichtigungen verboten für %@, bitte in den Geräte-Einstellungen erlauben";
 "settings_contacts_discover_matrix_users" = "Entdecke andere Benutzer mittels E-Mail-Adressen oder Telefonnummern";
@@ -439,7 +439,6 @@
 "send_to" = "Sende an %@";
 "sending" = "Senden";
 "room_event_failed_to_send" = "Senden fehlgeschlagen";
-"settings_labs_matrix_apps" = "Matrix Apps";
 "room_details_direct_chat" = "Direkter Chat";
 "room_details_fail_to_update_room_direct" = "Setzen der Direkt-Kennzeichnung in diesem Raum fehlgeschlagen";
 "event_formatter_widget_added" = "Widget %@ wurde von %@ hinzugefügt";
@@ -471,3 +470,86 @@
 "settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Riot-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
 "settings_enable_rageshake" = "Schüttle stark um einen Fehler zu melden";
 "do_not_ask_again" = "Nicht erneut fragen";
+"settings_ui_theme_black" = "Schwarz";
+// Room key request dialog
+"e2e_room_key_request_title" = "Verschlüsselungs-Schlüssel-Anfrage";
+"e2e_room_key_request_message" = "Dein nicht verifiziertes Gerät '%@' fragt Verschlüsselungs-Schlüssel an.";
+"e2e_room_key_request_start_verification" = "Starte Verifikation...";
+"e2e_room_key_request_share_without_verifying" = "Teile ohne zu verifizieren";
+"e2e_room_key_request_ignore_request" = "Ignoriere Anfrage";
+"title_groups" = "Communities";
+// Groups tab
+"group_invite_section" = "EINLADUNGEN";
+"group_section" = "COMMUNITIES";
+"settings_flair" = "Zeigen Sie Flair, wo erlaubt";
+"room_details_flair_section" = "Zeige Flair für Communities";
+"room_details_new_flair_placeholder" = "Füge neue Community-ID hinzu (z.B. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Ungültiges Format";
+"room_details_flair_invalid_id_prompt_msg" = "%@ ist kein valider Bezeichner für eine Community";
+"room_details_fail_to_update_room_communities" = "Verknüpfte Communities konnten nicht aktualisiert werden";
+// Group Details
+"group_details_title" = "Community-Details";
+"group_details_home" = "Startseite";
+"group_details_people" = "Personen";
+"group_details_rooms" = "Räume";
+// Group Home
+"group_home_one_member_format" = "1 Mitglied";
+"group_home_multi_members_format" = "%tu Mitglieder";
+"group_home_one_room_format" = "1 Raum";
+"group_home_multi_rooms_format" = "%tu Räume";
+"group_invitation_format" = "%@ hat dich eingeladen dieser Community beizutreten";
+// Group participants
+"group_participants_add_participant" = "Füge Teilnehmer hinzu";
+"group_participants_leave_prompt_title" = "Gruppe verlassen";
+"group_participants_leave_prompt_msg" = "Bist du sicher, dass du diese Gruppe verlassen willst?";
+"group_participants_remove_prompt_title" = "Bestätigung";
+"group_participants_remove_prompt_msg" = "Bist du sicher, dass du %@ aus dieser Gruppe entfernen möchtest?";
+"group_participants_invite_prompt_title" = "Bestätigung";
+"group_participants_invite_prompt_msg" = "Bist du sicher, dass du %@ dieser Gruppe hinzufügen möchtest?";
+"group_participants_filter_members" = "Filtere Community-Mitglieder";
+"group_participants_invite_another_user" = "Suche / Lade mit Benutzer-ID oder Name ein";
+"group_participants_invite_malformed_id_title" = "Fehler beim Einladen";
+"group_participants_invite_malformed_id" = "ID-Format ungültig. Es sollte eine Matrix-ID wie '@lokal:domain' sein";
+"group_participants_invited_section" = "EINGELADEN";
+// Group rooms
+"group_rooms_filter_rooms" = "Filtere Community-Räume";
+"e2e_room_key_request_message_new_device" = "Du hast ein neues Gerät '%@' hinzugefügt, welches Verschlüsselungs-Schlüssel anfordert.";
+"room_do_not_have_permission_to_post" = "Du hast keine Berechtigung in diesem Raum zu posten";
+"room_event_action_kick_prompt_reason" = "Grund für den Rauswurf des Benutzers";
+"room_event_action_ban_prompt_reason" = "Grund für die Verbannung des Benutzers";
+"room_action_send_photo_or_video" = "Sende Foto oder Video";
+"room_action_send_sticker" = "Sende Sticker";
+"settings_deactivate_account" = "DEAKTIVIERE ACCOUNT";
+"settings_deactivate_my_account" = "Deaktivere meinen Account";
+"widget_sticker_picker_no_stickerpacks_alert" = "Du hast aktuell keine Sticker-Packete aktiviert.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Welche hinzufügen?";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Um den %@ -Heimserver weiter zu verwenden, musst du die Geschäftsbedingungen sichten und ihnen zustimmen.";
+"gdpr_consent_not_given_alert_review_now_action" = "Jetzt sichten";
+"deactivate_account_title" = "Deaktiviere Account";
+"deactivate_account_informations_part1" = "Dies wird deinen Account permanent unbenutzbar machen. Du wirst dich nicht erneut anmelden können und keiner wird dieselbe Nutzer-ID erneut registrieren. Alle Räume, in denen dein Account ist, werden verlassen werden und deine Account-Daten werden vom Identitätsserver gelöscht werden. ";
+"deactivate_account_informations_part2_emphasize" = "Diese Aktion ist irreversibel.";
+"deactivate_account_informations_part3" = "\n\nDeinen Account deaktivieren ";
+"deactivate_account_informations_part4_emphasize" = "wird standardmäßig nicht dafür sorgen, dass wir alle Nachrichten löschen, die du gesendet hast. ";
+"deactivate_account_informations_part5" = "Wenn du möchtest, dass wir deine Nachrichten löschen, wähle das Auswahlfeld unten aus.\n\nDie Sichtbarkeit der Nachrichten in Matrix ist wie bei E-Mails: Wenn wir deine Nachrichten löschen, werden sie nicht mehr mit neuen oder nicht registrierten Benutzern geteilt, aber bereits registrierte Nutzer werden den Zugriff auf ihre Kopie deiner Nachrichten behalten.";
+"deactivate_account_forget_messages_information_part1" = "Bitte vergesst alle Nachrichten, die ich gesendet habe, wenn mein Account deaktiviert wird (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Warnung";
+"deactivate_account_forget_messages_information_part3" = ": Dies wird dafür sorgen, dass zukünftige Nutzer eine unvollständige Konversation sehen)";
+"deactivate_account_validate_action" = "Account deaktiveren";
+"deactivate_account_password_alert_title" = "Account deaktivieren";
+"deactivate_account_password_alert_message" = "Zum Fortfahren, Password eingeben";
+"event_formatter_rerequest_keys_part1_link" = "Verschlüsselungsschlüssel erneut";
+"event_formatter_rerequest_keys_part2" = " von deinen anderen Geräten anfragen.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Anfrage gesendet";
+"rerequest_keys_alert_message" = "Öffne Riot bitte auf einem anderen Gerät, dass die Nachricht entschlüsseln kann, damit es die Schlüssel an dieses Gerät senden kann.";
+"room_message_reply_to_placeholder" = "Sende eine unverschlüsselte Antwort…";
+"encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
+"room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
+"room_replacement_information" = "Dieser Raum wurde ersetzt und ist nicht länger aktiv.";
+"room_replacement_link" = "Die Konversation wird hier fortgesetzt.";
+"room_predecessor_information" = "Dieser Raum ist die Fortsetzung einer anderen Konversation.";
+"room_predecessor_link" = "Klicke hier um ältere Nachrichten zu sehen.";
+"settings_labs_room_members_lazy_loading" = "Raummitglieder verzögert laden";
+"settings_labs_room_members_lazy_loading_error_message" = "Dein Heimserver unterstützt das verzögerte Laden von Raummitgliedern noch nicht. Versuche es später erneut.";
+"room_event_action_view_decrypted_source" = "Zeige entschlüsselten Quellcode";

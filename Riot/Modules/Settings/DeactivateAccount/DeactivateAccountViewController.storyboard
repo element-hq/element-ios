@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IHf-2R-Nmh">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Deactivate Account View Controller-->
+        <scene sceneID="qDi-ox-hHh">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="IHf-2R-Nmh" customClass="DeactivateAccountViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QVw-lB-bra">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSw-nj-Wdk">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r6I-6D-FLD">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="641"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uaL-Wi-UcQ">
+                                                <rect key="frame" x="20" y="15" width="335" height="426.5"/>
+                                                <string key="text">This will make your account permanently unusable. You will not be able to log in, and no one will be able to re-register the same user ID.  This will cause your account to leave all rooms it is participating in, and it will remove your account details from your identity server. This action is irreversible.
+
+Deactivating your account does not by default cause us to forget messages you have sent. If you would like us to forget your messages, please tick the box below.
+
+Message visibility in Matrix is similar to email. Our forgetting your messages means that messages you have sent will not be shared with any new or unregistered users, but registered users who already have access to these messages will still have access to their copy.
+</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UBr-xR-a5z">
+                                                <rect key="frame" x="10" y="449.5" width="44" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="3Bn-lP-a2k"/>
+                                                    <constraint firstAttribute="width" secondItem="UBr-xR-a5z" secondAttribute="height" multiplier="1:1" id="6Nd-IG-Wda"/>
+                                                </constraints>
+                                                <state key="normal" image="selection_untick"/>
+                                                <state key="selected" image="selection_tick"/>
+                                                <connections>
+                                                    <action selector="forgetMessagesButtonAction:" destination="IHf-2R-Nmh" eventType="touchUpInside" id="gbq-6b-IU4"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2AU-Ro-4rr">
+                                                <rect key="frame" x="54" y="459.5" width="301" height="101.5"/>
+                                                <string key="text">Please forget all messages I have sent when my account is deactivated (Warning: this will cause future users to see an incomplete view of conversations)</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fz-Dy-5pc">
+                                                <rect key="frame" x="83" y="586" width="208" height="30"/>
+                                                <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCLoginButton"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="GpW-8Z-aDc"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="gMI-XP-i84"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                <inset key="contentEdgeInsets" minX="30" minY="0.0" maxX="30" maxY="0.0"/>
+                                                <state key="normal" title="Deactivate Account">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="deactivateAccountButtonAction:" destination="IHf-2R-Nmh" eventType="touchUpInside" id="ZgL-dj-3sa"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="2AU-Ro-4rr" firstAttribute="leading" secondItem="UBr-xR-a5z" secondAttribute="trailing" id="2dA-G3-YmX"/>
+                                            <constraint firstAttribute="trailing" secondItem="uaL-Wi-UcQ" secondAttribute="trailing" constant="20" id="3VC-8f-t4r"/>
+                                            <constraint firstItem="7fz-Dy-5pc" firstAttribute="centerX" secondItem="r6I-6D-FLD" secondAttribute="centerX" id="ArL-9U-gev"/>
+                                            <constraint firstItem="7fz-Dy-5pc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r6I-6D-FLD" secondAttribute="leading" constant="20" id="GdW-9q-ham"/>
+                                            <constraint firstItem="UBr-xR-a5z" firstAttribute="leading" secondItem="r6I-6D-FLD" secondAttribute="leading" constant="10" id="HEu-UC-ZqJ"/>
+                                            <constraint firstItem="2AU-Ro-4rr" firstAttribute="top" secondItem="UBr-xR-a5z" secondAttribute="top" constant="10" id="Je8-yX-RL7"/>
+                                            <constraint firstItem="7fz-Dy-5pc" firstAttribute="top" secondItem="2AU-Ro-4rr" secondAttribute="bottom" constant="25" id="Rie-CJ-sjU"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7fz-Dy-5pc" secondAttribute="trailing" constant="20" id="aBJ-Qh-98C"/>
+                                            <constraint firstItem="uaL-Wi-UcQ" firstAttribute="top" secondItem="r6I-6D-FLD" secondAttribute="top" constant="15" id="gNW-9W-tWy"/>
+                                            <constraint firstItem="uaL-Wi-UcQ" firstAttribute="leading" secondItem="r6I-6D-FLD" secondAttribute="leading" constant="20" id="hkc-Mh-1eX"/>
+                                            <constraint firstAttribute="bottom" secondItem="7fz-Dy-5pc" secondAttribute="bottom" constant="25" id="pcJ-cW-k1P"/>
+                                            <constraint firstItem="2AU-Ro-4rr" firstAttribute="trailing" secondItem="uaL-Wi-UcQ" secondAttribute="trailing" id="unG-rW-hIH"/>
+                                            <constraint firstItem="UBr-xR-a5z" firstAttribute="top" secondItem="uaL-Wi-UcQ" secondAttribute="bottom" constant="8" id="ygz-iG-BYI"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="r6I-6D-FLD" secondAttribute="trailing" id="Cv8-1O-u62"/>
+                                    <constraint firstItem="r6I-6D-FLD" firstAttribute="width" secondItem="OSw-nj-Wdk" secondAttribute="width" id="LbL-Rk-YWQ"/>
+                                    <constraint firstItem="r6I-6D-FLD" firstAttribute="top" secondItem="OSw-nj-Wdk" secondAttribute="top" id="bWG-YM-ufd"/>
+                                    <constraint firstAttribute="bottom" secondItem="r6I-6D-FLD" secondAttribute="bottom" id="eTa-ak-f7f"/>
+                                    <constraint firstItem="r6I-6D-FLD" firstAttribute="leading" secondItem="OSw-nj-Wdk" secondAttribute="leading" id="jDI-GL-r0a"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="HwH-O8-jKY" firstAttribute="top" secondItem="OSw-nj-Wdk" secondAttribute="top" id="0VJ-Ig-2ed"/>
+                            <constraint firstItem="HwH-O8-jKY" firstAttribute="leading" secondItem="OSw-nj-Wdk" secondAttribute="leading" id="Hc0-LV-lRt"/>
+                            <constraint firstItem="HwH-O8-jKY" firstAttribute="trailing" secondItem="OSw-nj-Wdk" secondAttribute="trailing" id="slf-Q8-PKr"/>
+                            <constraint firstItem="HwH-O8-jKY" firstAttribute="bottom" secondItem="OSw-nj-Wdk" secondAttribute="bottom" id="vr6-Pc-AP8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="HwH-O8-jKY"/>
+                    </view>
+                    <connections>
+                        <outlet property="deactivateAcccountButton" destination="7fz-Dy-5pc" id="DMS-cL-nZT"/>
+                        <outlet property="deactivateAccountInfosLabel" destination="uaL-Wi-UcQ" id="zDZ-bW-s0Z"/>
+                        <outlet property="forgetMessageButton" destination="UBr-xR-a5z" id="NfP-c4-AxP"/>
+                        <outlet property="forgetMessagesInfoLabel" destination="2AU-Ro-4rr" id="tTS-bh-g58"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dTx-N1-Ytz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-239.19999999999999" y="103.89805097451276"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="selection_tick" width="22" height="22"/>
+        <image name="selection_untick" width="22" height="22"/>
+    </resources>
+</document>

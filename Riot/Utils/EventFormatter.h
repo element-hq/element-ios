@@ -17,6 +17,16 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
+ Link string used in attributed strings to mark a keys re-request action.
+ */
+FOUNDATION_EXPORT NSString *const kEventFormatterOnReRequestKeysLinkAction;
+
+/**
+ Parameters separator in the link string.
+ */
+FOUNDATION_EXPORT NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator;
+
+/**
  `EventFormatter` class inherits from `MXKEventFormatter` to define Vector formatting
  */
 @interface EventFormatter : MXKEventFormatter

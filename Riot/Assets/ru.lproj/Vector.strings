@@ -435,7 +435,6 @@
 "sending" = "Отправка";
 "auth_share_extension_prompt" = "Войти в основное приложение для совместного использования контента";
 "room_event_failed_to_send" = "Не удалось отправить";
-"settings_labs_matrix_apps" = "Приложения Matrix";
 "room_details_direct_chat" = "Прямой чат";
 "room_details_fail_to_update_room_direct" = "Не удается обновить прямой флаг этой комнаты";
 "event_formatter_jitsi_widget_added" = "Конференция добавлена %@";
@@ -472,3 +471,83 @@
 // Share extension
 "share_extension_auth_prompt" = "Вход в основное приложение для совместного использования контента";
 "share_extension_failed_to_encrypt" = "Не удалось отправить. Проверьте в основном приложении параметры шифрования для этой комнаты";
+"settings_ui_theme_black" = "Черная";
+// Room key request dialog
+"e2e_room_key_request_title" = "Запрос ключа шифрования";
+"e2e_room_key_request_message" = "Ваше непроверенное устройство '%@' запрашивает ключи шифрования.";
+"e2e_room_key_request_start_verification" = "Начало верификации...";
+"e2e_room_key_request_share_without_verifying" = "Поделиться без верификации";
+"e2e_room_key_request_ignore_request" = "Игнорировать запрос";
+"title_groups" = "Сообщества";
+// Groups tab
+"group_invite_section" = "ПРИГЛАШЕНИЯ";
+"group_section" = "СООБЩЕСТВА";
+"room_details_new_flair_placeholder" = "Добавить новый идентификатор сообщества (напр. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Неверный формат";
+"room_details_flair_invalid_id_prompt_msg" = "%@ - недопустимый идентификатор сообщества";
+"room_details_fail_to_update_room_communities" = "Не удалось обновить связанные сообщества";
+// Group Details
+"group_details_title" = "Сведения о сообществе";
+"group_details_home" = "Главная";
+"group_details_people" = "Люди";
+"group_details_rooms" = "Комнаты";
+// Group Home
+"group_home_one_member_format" = "1 участник";
+"group_home_multi_members_format" = "%tu участников";
+"group_home_one_room_format" = "1 комната";
+"group_home_multi_rooms_format" = "%tu комнат";
+"group_invitation_format" = "%@ пригласил вас присоединиться к этому сообществу";
+// Group participants
+"group_participants_add_participant" = "Добавить участника";
+"group_participants_leave_prompt_title" = "Покинуть группу";
+"group_participants_leave_prompt_msg" = "Вы уверены, что хотите покинуть группу?";
+"group_participants_remove_prompt_title" = "Подтверждение";
+"group_participants_remove_prompt_msg" = "Вы действительно хотите удалить %@ из этой группы?";
+"group_participants_invite_prompt_title" = "Подтверждение";
+"group_participants_invite_prompt_msg" = "Вы действительно хотите пригласить %@ в эту группу?";
+"group_participants_filter_members" = "Фильтр участников сообщества";
+"group_participants_invite_another_user" = "Поиск / приглашение пользователя по ID или имени";
+"group_participants_invite_malformed_id_title" = "Ошибка приглашения";
+"group_participants_invite_malformed_id" = "Неправильный идентификатор. Должен быть Matrix ID, такой как '@localpart:domain'";
+"group_participants_invited_section" = "ПРИГЛАШЕНЫ";
+// Group rooms
+"group_rooms_filter_rooms" = "Фильтр комнат сообщества";
+"e2e_room_key_request_message_new_device" = "Вы добавили новое устройство '%@', которое запрашивает ключи шифрования.";
+"room_do_not_have_permission_to_post" = "У вас нет разрешения на публикацию в этой комнате";
+"settings_flair" = "Покажите настроение, где это разрешено";
+"room_details_flair_section" = "Показать настроение для сообществ";
+"room_event_action_kick_prompt_reason" = "Причина по которой этот пользователь будет выкинут";
+"room_event_action_ban_prompt_reason" = "Причина по которой этот пользователь будет забанен";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Для продолжения использования сервера %@ вы должны принять условия и положения.";
+"gdpr_consent_not_given_alert_review_now_action" = "Просмотреть сейчас";
+"room_action_send_photo_or_video" = "Отправить фото или видео";
+"room_action_send_sticker" = "Отправить стикер";
+"settings_deactivate_account" = "ДЕАКТИВАЦИЯ АККАУНТА";
+"settings_deactivate_my_account" = "Деактивировать мой аккаунт";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Добавить сейчас?";
+"deactivate_account_title" = "Деактивировать аккаунт";
+"deactivate_account_informations_part1" = "Это действие сделает вашу учетную запись непригодной для дальнейшего использования. Вы не сможете войти в систему и никто другой не сможет заново зарегистрировать учетную запись с вашим идентификатором. Также, это приведет к тому, что вы покинете все комнаты, в которых участвовали и данные о вашей учетной записи будут удалены с сервера идентификации. ";
+"deactivate_account_informations_part2_emphasize" = "Это действие необратимо.";
+"deactivate_account_informations_part3" = "\n\nДеактивация вашего аккаунта ";
+"deactivate_account_informations_part4_emphasize" = "по умолчанию не удаляет отправленные вами сообщения. ";
+"deactivate_account_informations_part5" = "Если вы хотите, чтобы мы удалили все ваши сообщения - поставьте отметку в поле ниже.\n\nВидимость сообщений в Matrix похожа на электронную почту. Удаление ваших сообщений означает, что отправленные вами сообщения не будут показаны новым или не зарегистрированным пользователям, но те пользователи, которые уже получили эти сообщения - по прежнему будут их видеть.";
+"deactivate_account_forget_messages_information_part1" = "Пожалуйста, удалите все сообщения, которые я отправил (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Внимание";
+"deactivate_account_forget_messages_information_part3" = ": будущие участники увидят неполное представление разговоров)";
+"deactivate_account_validate_action" = "Деактивировать аккаунт";
+"deactivate_account_password_alert_title" = "Деактивировать аккаунт";
+"deactivate_account_password_alert_message" = "Чтобы продолжить, введите пароль";
+"widget_sticker_picker_no_stickerpacks_alert" = "У вас пока нет включенных пакетов стикеров.";
+"event_formatter_rerequest_keys_part1_link" = "Повторно запросить ключи шифрования";
+"event_formatter_rerequest_keys_part2" = " с других устройств.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Запрос отправлен";
+"rerequest_keys_alert_message" = "Запустите Riot на другом устройстве, которое может расшифровать сообщение, чтобы оно могло отправить ключи этому устройству.";
+"room_message_reply_to_placeholder" = "Отправить ответ (незашифрованный)…";
+"encrypted_room_message_reply_to_placeholder" = "Отправить зашифрованный ответ…";
+"room_message_reply_to_short_placeholder" = "Отправить ответ…";
+"room_replacement_information" = "Эта комната была заменена и больше не активна.";
+"room_replacement_link" = "Этот разговор продолжается здесь.";
+"room_predecessor_information" = "Эта комната является продолжением другого разговора.";
+"room_predecessor_link" = "Нажмите здесь, чтобы просмотреть старые сообщения.";

@@ -11,9 +11,9 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ sandte dir ein Bild %@";
+"IMAGE_FROM_USER" = "%@ sendet dir ein Bild %@";
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ sandte ein Bild %@ in %@";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ sendet ein Bild %@ in %@";
 /* Multiple unread messages in a room */
 "UNREAD_IN_ROOM" = "%@ neue Nachrichten in %@";
 /* Multiple unread messages from a specific person, not referencing a room */
@@ -46,3 +46,7 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Gruppen-Anruf von %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Video-Gruppen-Anruf von %@: '%@'";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Du hast eine Nachricht in %@ bekommen";
+/* A single unread message */
+"SINGLE_UNREAD" = "Du hast eine Nachricht bekommen";

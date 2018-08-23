@@ -29,4 +29,19 @@ Aram Sargsyan <aram.sargsyan.1997 at gmail.com>
  
 Vivian Lim <vivvnlim at gmail.com>
  * PR #1513 Return key on hardware keyboards now sends messages
+
+Dawid Rączka <dawidraczka at gmail.com>
+ * PR #1729 Fixed keyboard color when entering bug report
  
+Evan Tang <etang110 at gmail.com>
+ * PR #1737 Cancel Buttons use style Cancel
+
+Joey Watts <joey.watts.96 at gmail.com>
+ * PR #1777 Add support for interactive notifications
+ 
+Arash Tabrizian <a.tabriziyan at gmail.com>
+ * PR #1828 Fix issue #1793 Confirmation popup when leaving room
+ * PR #1824 Fix issue #1816 Support specifying kick and ban msgs
+ 
+Doug Earnshaw <pixlwave at users.noreply.github.com>
+ * PR #1865 Fix timezone interval

@@ -22,6 +22,7 @@
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
+#import "Analytics.h"
 
 #import "RiotDesignValues.h"
 
@@ -74,6 +75,9 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 // Current selected room id. nil if no room is presently visible.
 @property (strong, nonatomic) NSString *visibleRoomId;
 
+// New message sound id.
+@property (nonatomic, readonly) SystemSoundID messageSound;
+
 + (AppDelegate*)theDelegate;
 
 #pragma mark - Application layout handling
@@ -101,17 +105,29 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 // Reload all running matrix sessions
 - (void)reloadMatrixSessions:(BOOL)clearCache;
 
-- (void)logout;
+/**
+ Log out all the accounts after asking for a potential confirmation.
+ Show the authentication screen on successful logout.
+ 
+ @param askConfirmation tell whether a confirmation is required before logging out.
+ @param completion the block to execute at the end of the operation.
+ */
+- (void)logoutWithConfirmation:(BOOL)askConfirmation completion:(void (^)(BOOL isLoggedOut))completion;
+
+/**
+ Log out all the accounts without confirmation.
+ Show the authentication screen on successful logout.
+ 
+ @param sendLogoutRequest Indicate whether send logout request to home server.
+ @param completion the block to execute at the end of the operation.
+ */
+- (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
+                        completion:(void (^)(BOOL isLoggedOut))completion;
+
 
 #pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
-
-#pragma mark - Analytics
-
-- (void)startAnalytics;
-- (void)stopAnalytics;
-- (void)trackScreen:(NSString*)screenName;
 
 #pragma mark - Push notifications
 

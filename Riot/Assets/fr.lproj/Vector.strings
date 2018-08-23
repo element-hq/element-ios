@@ -361,7 +361,7 @@
 "room_details_fail_to_update_room_canonical_alias" = "Échec de la mise à jour de l'adresse principale";
 "room_details_fail_to_update_room_direct" = "Échec de mise à jour de l'étiquette de discussion directe";
 "room_details_fail_to_enable_encryption" = "Échec de l'activation du chiffrement de ce salon";
-"room_details_save_changes_prompt" = "Voulez-vous enregistrer les modifications?";
+"room_details_save_changes_prompt" = "Voulez-vous enregistrer les modifications ?";
 "room_details_set_main_address" = "Définir comme adresse principale";
 "room_details_unset_main_address" = "Désactiver comme adresse principale";
 "room_details_copy_room_id" = "Copier l'identifiant du salon";
@@ -381,11 +381,11 @@
 // Group participants
 "group_participants_add_participant" = "Ajouter un membre";
 "group_participants_leave_prompt_title" = "Quitter le groupe";
-"group_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter le groupe?";
+"group_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter le groupe ?";
 "group_participants_remove_prompt_title" = "Confirmation";
-"group_participants_remove_prompt_msg" = "Voulez-vous vraiment exclure %@ de ce groupe?";
+"group_participants_remove_prompt_msg" = "Voulez-vous vraiment exclure %@ de ce groupe ?";
 "group_participants_invite_prompt_title" = "Confirmation";
-"group_participants_invite_prompt_msg" = "Voulez-vous vraiment inviter %@ dans ce groupe?";
+"group_participants_invite_prompt_msg" = "Voulez-vous vraiment inviter %@ dans ce groupe ?";
 "group_participants_filter_members" = "Filtrer les membres de la communauté";
 "group_participants_invite_another_user" = "Rechercher/inviter par identifiant ou nom";
 "group_participants_invite_malformed_id_title" = "Erreur lors de l'invitation";
@@ -481,7 +481,6 @@
 "widget_integration_room_not_visible" = "Le salon %@ n'est pas visible.";
 "auth_share_extension_prompt" = "Se connecter dans l'application principale pour partager du contenu";
 "room_event_failed_to_send" = "Échec de l'envoi";
-"settings_labs_matrix_apps" = "Applications Matrix";
 "event_formatter_jitsi_widget_added" = "Téléconférence en Voix sur IP ajoutée par %@";
 "event_formatter_jitsi_widget_removed" = "Téléconférence en Voix sur IP supprimée par %@";
 // Widget Integration Manager
@@ -501,6 +500,7 @@
 // Share extension
 "share_extension_auth_prompt" = "Connectez-vous dans l'application pour partager du contenu";
 "share_extension_failed_to_encrypt" = "Échec d'envoi. Vérifiez les paramètres de chiffrement de ce salon dans l'application";
+"settings_ui_theme_black" = "Noir";
 // Room key request dialog
 "e2e_room_key_request_title" = "Demande de clés de chiffrement";
 "e2e_room_key_request_message_new_device" = "Vous avez ajouté un nouvel appareil '%@', qui demande les clés de chiffrement.";
@@ -508,3 +508,48 @@
 "e2e_room_key_request_start_verification" = "Commencer la vérification...";
 "e2e_room_key_request_share_without_verifying" = "Partager sans vérifier";
 "e2e_room_key_request_ignore_request" = "Ignorer la demande";
+"settings_flair" = "Afficher le badge aux endroits autorisés";
+"room_details_flair_section" = "Afficher le badge pour des communautés";
+"room_details_new_flair_placeholder" = "Ajouter un nouvel identifiant de communauté (par ex. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Format invalide";
+"room_details_flair_invalid_id_prompt_msg" = "%@ n'est pas un identifiant valide pour une communauté";
+"room_details_fail_to_update_room_communities" = "Échec de la mise à jour des communautés liées";
+"room_do_not_have_permission_to_post" = "Vous n'avez pas la permission d'envoyer des messages dans ce salon";
+"room_event_action_kick_prompt_reason" = "Raison de l'exclusion de l'utilisateur";
+"room_event_action_ban_prompt_reason" = "Raison du bannissement de l'utilisateur";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Pour continuer à utiliser le serveur d'accueil %@, vous devez lire et accepter les conditions générales.";
+"gdpr_consent_not_given_alert_review_now_action" = "Voir maintenant";
+"room_action_send_photo_or_video" = "Envoyer une photo ou une vidéo";
+"room_action_send_sticker" = "Envoyer un sticker";
+"settings_deactivate_account" = "DÉSACTIVER LE COMPTE";
+"settings_deactivate_my_account" = "Désactiver mon compte";
+"widget_sticker_picker_no_stickerpacks_alert" = "Vous n'avez aucun pack de stickers activé.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "En ajouter maintenant ?";
+"deactivate_account_title" = "Désactiver le compte";
+"deactivate_account_informations_part1" = "Votre compte sera inutilisable de façon permanente. Vous ne pourrez plus vous connecter et personne ne pourra se réenregistrer avec le même identifiant d'utilisateur. Votre compte quittera tous les salons auxquels il participe, et tous les détails du compte seront supprimés du serveur d'identité. ";
+"deactivate_account_informations_part2_emphasize" = "Cette action est irréversible.";
+"deactivate_account_informations_part3" = "\n\nLa désactivation de votre compte ";
+"deactivate_account_informations_part4_emphasize" = "ne nous fait pas oublier les messages que vous avez envoyés par défaut. ";
+"deactivate_account_informations_part5" = "Si vous souhaitez que nous oubliions vos messages, cochez la case ci-dessous\n\nLa visibilité des messages dans Matrix est similaire à celle des e-mails. Notre oubli des messages signifie que les messages que vous avez envoyés ne seront pas partagés avec les nouveaux utilisateurs ou les utilisateurs non enregistrés, mais les utilisateurs qui ont déjà accès à ces messages auront toujours accès à leur copie.";
+"deactivate_account_forget_messages_information_part1" = "Veuillez oublier tous les messages que j'ai envoyé quand mon compte sera désactivé (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Avertissement";
+"deactivate_account_forget_messages_information_part3" = ": les futurs utilisateurs auront alors une vue incomplète des conversations)";
+"deactivate_account_validate_action" = "Désactiver le compte";
+"deactivate_account_password_alert_title" = "Désactiver le compte";
+"deactivate_account_password_alert_message" = "Pour continuer, veuillez renseigner votre mot de passe";
+"event_formatter_rerequest_keys_part1_link" = "Redemander les clés de chiffrement";
+"event_formatter_rerequest_keys_part2" = " depuis vos autres appareils.";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Demande envoyée";
+"rerequest_keys_alert_message" = "Veuillez lancer Riot sur un autre appareil qui peut déchiffrer le message pour qu'il puisse envoyer les clés sur cet appareil.";
+"room_message_reply_to_placeholder" = "Envoyer une réponse (non chiffrée)…";
+"encrypted_room_message_reply_to_placeholder" = "Envoyer une réponse chiffrée…";
+"room_message_reply_to_short_placeholder" = "Envoyer une réponse…";
+"room_replacement_information" = "Ce salon a été remplacé et n'est plus actif.";
+"room_replacement_link" = "La conversation continue ici.";
+"room_predecessor_information" = "Ce salon est la suite d'une autre conversation.";
+"room_predecessor_link" = "Cliquer ici pour voir les vieux messages.";
+"settings_labs_room_members_lazy_loading" = "Chargement différé des participants des salons";
+"settings_labs_room_members_lazy_loading_error_message" = "Votre serveur d'accueil ne prend pas en charge le chargement différé des participants des salons. Réessayez plus tard.";
+"room_event_action_view_decrypted_source" = "Voir la source déchiffrée";

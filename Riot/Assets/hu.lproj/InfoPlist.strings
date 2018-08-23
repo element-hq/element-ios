@@ -1,0 +1,5 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "A kamera fényképek, videók készítéséhez és videóhívásokhoz lesz használva.";
+"NSPhotoLibraryUsageDescription" = "A fénykép galéria fényképek és videók küldéséhez lesz használva.";
+"NSMicrophoneUsageDescription" = "A mikrofon videók készítéséhez és hívásokhoz lesz használva.";
+"NSContactsUsageDescription" = "Ahhoz, hogy meg tudjuk mutatni melyik ismerősöd használja már a Riot-ot vagy Matrix-ot, el  tudjuk küldeni az e-mail címeket és telefonszámokat a címjegyzékedből a Matrix Azonosítási Szerverének. „New Vector” nem tárolja és semmilyen más célra nem használja ezeket az információkat. További információkér olvasd el az adatkezelési oldalt az alkalmazás beállításaiban.";

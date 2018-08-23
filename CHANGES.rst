@@ -1,3 +1,211 @@
+Changes in 0.7.2 (2018-08-)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.1).
+ * Server Quota Notices in Riot (#1937).
+ 
+ Bug fix:
+ * User defaults: the preset application language (if any) is ignored.
+
+Changes in 0.7.1 (2018-08-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.1).
+ 
+Bug fix:
+ * Empty app if initial /sync fails (#1975).
+ * Direct rooms can be lost on an initial /sync (vector-im/riot-ios/issues/1983).
+ * Fix possible race conditions in direct rooms management.
+
+Changes in 0.7.0 (2018-08-10)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.0).
+ * RoomVC: Add "view decrypted source" option on the selected event (#1642).
+ * RoomVC: Implement replies sending (#1911).
+ * Support room versioning (#1938).
+ * Add support of lazy-loading of room members (#1931) (disabled for now).
+ * i18n: Add Traditional Chinese (zh_Hant).
+ * i18n: Add Albanian (sq).
+ * Update project structure. Organize UI related files by feature (PR#1932).
+ * Move image files to xcassets (PR#1932).
+ * Replies: Implement sending (#1911).
+ * Support room versioning (#1938).
+ * Add support of lazy-loading of room members (#1931).
+ * Chat screen: Add "view decrypted source" option on the selected event (#1642).
+ * Improve GDPR consent webview management (#1952).
+
+Bug fix:
+ * Multiple rooms can be opened (#1967).
+
+Changes in 0.6.20 (2018-07-13)
+===============================================
+
+Improvements:
+ * Update contact permission text in order to be clearer about the reasons for access to the address book.
+
+Changes in 0.6.19 (2018-07-05)
+===============================================
+
+Improvements:
+
+Bug fix:
+* RoomVC: Fix duplicated read receipts (regression due to read receipts performance improvement).
+
+Changes in 0.6.18 (2018-07-03)
+===============================================
+
+Improvements:
+ * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
+ * Analytics: Move code from AppDelegate to a dedicated class: Analytics.
+ * Analytics: Track Matrix SDK stats (time to startup the app).
+ * Crypto: Add telemetry for events unable to decrypt (UTDs).
+ * Added the i18n localisation strings to the accessibility labels (#1842), thanks to @einMarco (PR#1906).
+ * Added titles to sound files ID3 tags.
+
+Bug fix:
+ * RoomVC: Read receipts processing dramatically slows down UI (#1899).
+ * Lag in typing (#1820).
+ * E2E messages not decrypted in notifs after logging back in (#1914).
+
+Changes in 0.6.17 (2018-06-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.14).
+ * Send Stickers (#1860).
+ * Settings: Add deactivate account (#1870).
+ * Widgets: Update from UIWebView to WKWebView to improve performance.
+ 
+Bug fix:
+ * Quotes (by themselves) render as white blocks (#1877).
+ * GDPR: consent screen could not be closed (#1883).
+ * GDPR: Do not display error alert when receiving GDPR Consent not given (#1886).
+ 
+Translations:
+ * Enable Icelandic.
+
+Changes in 0.6.16 (2018-05-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.12).
+ * Display quick replies in timeline (#1858).
+ * Beginning of "Send sticker" support (#1860).
+ * Use existing message.mp3 for notification sounds, thanks to @pixlwave (PR #1835).
+ * GDPR: Display the consent tool in case of M_CONSENT_NOT_GIVEN error (#1871).
+ 
+Bug fix:
+ * Fix the display of side borders of HTML blockquotes (#1857).
+ * Moved UI update to main queue, thanks to @Taiwo (PR #1854).
+ * Timestamps say 'Yesterday' when it is today (#1274), thanks to @pixlwave (PR #1865).
+ * RoomVC: messages with link blink forever #1869
+
+Changes in 0.6.15 (2018-04-23)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.11).
+ 
+Bug fix:
+ * Regression: Sending a photo from the photo library causes a crash.
+ 
+Changes in 0.6.14 (2018-04-20)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.10).
+ * The minimal iOS version is now 9.0.
+ * Render stickers in the timeline (#1819).
+ * Support specifying kick and ban msgs (#1816), thanks to @atabrizian (PR #1824).
+ * Confirmation popup when leaving room (#1793), thanks to @atabrizian (PR #1828).
+
+Bug fixes:
+ * Global Messages search: some search results are missing.
+ * Crash on URL like https://riot.im/#/app/register?hs_url=... (#1838).
+ * All rooms showing the same avatar (#1673).
+ * App fails to logout on unknown token (#1839).
+
+Changes in 0.6.13 (2018-03-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.9).
+ * Make state event redaction handling gentler with homeserver (vector-im/riot-ios#1823).
+
+Bug fixes:
+ * Room summary is not updated after redaction of the room display name (vector-im/riot-ios#1822). 
+
+Changes in 0.6.12 (2018-03-12)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.8).
+ * Add Catalan, thanks to @salvadorpla.
+ * Add Bulgarian, thanks to @rbozhkova. 
+ * Add quick reply to notifications (#625), thanks to @joeywatts(PR #1777).
+ * Room: Inform user when they cannot post to a room because of low power level.
+ * Matrix Apps: Enable them by default. Remove the settings from LABS section (#1795).
+ * Improve server load on event redaction (vector-im/riot-ios#1730).
+ 
+Bug Fix:
+ * Push: Missing push notifications after answering a call (vector-im/riot-ios#1757).
+ * Fix screen flashing at startup (#1798).
+ * Cannot join from a room preview for room with a long topic (#1645).
+ * Groups: Room summary should not display notices about groups (vector-im/riot-ios#1780).
+ * MXKEventFormatter: Emotes which contain a single emoji are expanded to be enormous (vector-im/riot-ios#1558).
+ * Crypto: e2e devices list not shown (#1782).
+ * Direct Chat: a room was marked as direct by mistake when I joined it.
+ 
+Changes in 0.6.11 (2018-02-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.7).
+
+Bug Fix:
+ * My communities screen is empty despite me being in several groups (#1792).
+
+Changes in 0.6.10 (2018-02-14)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.6).
+ * Group Details: Put the name of the community in the title.
+
+Bug Fix:
+ * App crashes on cold start if no account is defined.
+ * flair labels are a bit confusing (#1772).
+
+Changes in 0.6.9 (2018-02-10)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.7.5).
+ * Add a new tab to list the user's communities (vector-im/riot-meta#114).
+ * Add new screens to display the community details, edition is not supported yet (vector-im/riot-meta#115, vector-im/riot-meta#116, vector-im/riot-meta#117).
+ * Room Settings: handle the related communities in order to show flair for them.
+ * User Settings: Let the user enable his community flair in rooms configured to show it.
+ * Replace Google Analytic by Matomo(Piwik) (PR #1753).
+ * Spontaneous logout: Try to detect it in AuthenticationViewController and crash the app if it happens (PR #1761).
+ * Share: Make sure the progress bar is always displayed.
+ * Jitsi: update lib to jitsi-meet_2794 tag.
+
+Bug Fix:
+ * iPad: export e2e keys failed, there pops no window up where to save the keys (#1733).
+ * Widget can display "Forbidden" (#1723).
+ * keyboard is not dark when entering bug report in dark theme (#1720), thanks to @daverPL (PR #1729).
+ * Contact Details: The contact avatar quality is very low when the contact details screen is opened from a link.
+ * Cancel Buttons use style Cancel (PR #1737), thanks to @tellowkrinkle.
+ * Share Extension: Fix crash on a weak self (PR #1744).
+ * Share: The extension crashes if you try to share a GIF image (#1759)
+ 
+Translations:
+ * Catalan, added thanks to @sim6 and @salvadorpla (PR #1767).
+
 Changes in 0.6.8 (2018-01-03)
 ===============================================
 

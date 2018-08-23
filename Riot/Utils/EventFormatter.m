@@ -21,17 +21,20 @@
 
 #import "WidgetManager.h"
 
+#import "MXDecryptionResult.h"
+#import "DecryptionFailureTracker.h"
+
+#pragma mark - Constants definitions
+
+NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
+NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
+
 @interface EventFormatter ()
 {
     /**
      The calendar used to retrieve the today date.
      */
     NSCalendar *calendar;
-
-    /**
-     The local time zone
-     */
-    NSTimeZone *localTimeZone;
 }
 @end
 
@@ -39,10 +42,10 @@
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
-    // Build strings for modular widget events
-    // TODO: At the moment, we support only jitsi widgets
+    // Build strings for widget events
     if (event.eventType == MXEventTypeCustom
-        && [event.type isEqualToString:kWidgetEventTypeString])
+        && ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+            || [event.type isEqualToString:kWidgetModularEventTypeString]))
     {
         NSString *displayText;
 
@@ -71,7 +74,11 @@
                 // This is a closed widget
                 // Check if it corresponds to a jitsi widget by looking at other state events for
                 // this jitsi widget (widget id = event.stateKey).
-                for (MXEvent *widgetStateEvent in [roomState stateEventsWithType:kWidgetEventTypeString])
+                // Get all widgets state events in the room
+                NSMutableArray<MXEvent*> *widgetStateEvents = [NSMutableArray arrayWithArray:[roomState stateEventsWithType:kWidgetMatrixEventTypeString]];
+                [widgetStateEvents addObjectsFromArray:[roomState stateEventsWithType:kWidgetModularEventTypeString]];
+
+                for (MXEvent *widgetStateEvent in widgetStateEvents)
                 {
                     if ([widgetStateEvent.stateKey isEqualToString:widget.widgetId])
                     {
@@ -107,8 +114,64 @@
             return [self renderString:displayText forEvent:event];
         }
     }
+    
+    if (event.eventType == MXEventTypeRoomCreate)
+    {
+        MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+        
+        NSString *roomPredecessorId = createContent.roomPredecessorInfo.roomId;
+        
+        if (roomPredecessorId)
+        {
+            return [self roomCreatePredecessorAttributedStringWithPredecessorRoomId:roomPredecessorId];
+        }
+        else
+        {
+            return nil;
+        }
+    }
+    
+    NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
 
-    return [super attributedStringFromEvent:event withRoomState:roomState error:error];
+    if (event.sentState == MXEventSentStateSent
+        && [event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain])
+    {
+        // Track e2e failures
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:mxSession.myUser.userId];
+        });
+
+        if (event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
+        {
+            // Append to the displayed error an attibuted string with a tappable link
+            // so that the user can try to fix the UTD
+            NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
+            [attributedStringWithRerequestMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+
+            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", kEventFormatterOnReRequestKeysLinkAction,
+                                          kEventFormatterOnReRequestKeysLinkActionSeparator,
+                                          event.eventId];
+
+            [attributedStringWithRerequestMessage appendAttributedString:
+             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1_link", @"Vector", nil)
+                                             attributes:@{
+                                                          NSLinkAttributeName: linkActionString,
+                                                          NSForegroundColorAttributeName: self.sendingTextColor,
+                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+                                                          }]];
+
+            [attributedStringWithRerequestMessage appendAttributedString:
+             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2", @"Vector", nil)
+                                             attributes:@{
+                                                          NSForegroundColorAttributeName: self.sendingTextColor,
+                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+                                                          }]];
+
+            attributedString = attributedStringWithRerequestMessage;
+        }
+    }
+
+    return attributedString;
 }
 
 - (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
@@ -140,10 +203,6 @@
     if (self)
     {
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-        // Note: NSDate object always shows time according to GMT, so the calendar should be in GMT too.
-        calendar.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-
-        localTimeZone = [NSTimeZone localTimeZone];
         
         // Use the secondary bg color to set the background color in the default CSS.
         NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
@@ -198,7 +257,7 @@
     // Override this method to ignore the identicons defined by default in matrix kit.
     
     // Consider first the avatar url defined in provided room state (Note: this room state is supposed to not take the new event into account)
-    NSString *senderAvatarUrl = [roomState memberWithUserId:event.sender].avatarUrl;
+    NSString *senderAvatarUrl = [roomState.members memberWithUserId:event.sender].avatarUrl;
     
     // Check whether this avatar url is updated by the current event (This happens in case of new joined member)
     NSString* membership = event.content[@"membership"];
@@ -219,9 +278,9 @@
 
 #pragma mark - MXRoomSummaryUpdating
 
-- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
 {
-    BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents];
+    BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
     
     // Check whether the room display name and/or the room avatar url should be updated at Riot level.
     BOOL refreshRiotRoomDisplayName = NO;
@@ -260,7 +319,7 @@
 
     if (refreshRiotRoomDisplayName)
     {
-        NSString *riotRoomDisplayName = [self riotRoomDisplayNameFromRoomState:summary.room.state];
+        NSString *riotRoomDisplayName = [self riotRoomDisplayNameFromRoomState:roomState];
 
         if (riotRoomDisplayName.length && ![summary.displayname isEqualToString:riotRoomDisplayName])
         {
@@ -270,7 +329,7 @@
     }
     if (refreshRiotRoomAvatarURL)
     {
-        NSString *riotRoomAvatarURL = [self riotRoomAvatarURLFromRoomState:summary.room.state];
+        NSString *riotRoomAvatarURL = [self riotRoomAvatarURLFromRoomState:roomState];
 
         if (riotRoomAvatarURL.length && ![summary.avatar isEqualToString:riotRoomAvatarURL])
         {
@@ -318,7 +377,7 @@
     
     NSString* myUserId = mxSession.myUser.userId;
     
-    NSArray* members = roomState.members;
+    NSArray* members = roomState.members.members;
     NSMutableArray* othersActiveMembers = [[NSMutableArray alloc] init];
     NSMutableArray* activeMembers = [[NSMutableArray alloc] init];
     
@@ -378,7 +437,7 @@
                 if (member.originalEvent.sender)
                 {
                     // extract who invited us to the room
-                    displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_invite_from", @"Vector", nil), [roomState memberName:member.originalEvent.sender]];
+                    displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_invite_from", @"Vector", nil), [roomState.members memberName:member.originalEvent.sender]];
                 }
                 else
                 {
@@ -391,19 +450,19 @@
     {
         MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
         
-        displayName = [roomState memberName:member.userId];
+        displayName = [roomState.members memberName:member.userId];
     }
     else if (othersActiveMembers.count == 2)
     {
         MXRoomMember* member1 = [othersActiveMembers objectAtIndex:0];
         MXRoomMember* member2 = [othersActiveMembers objectAtIndex:1];
         
-        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_two_members", @"Vector", nil), [roomState memberName:member1.userId], [roomState memberName:member2.userId]];
+        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_two_members", @"Vector", nil), [roomState.members memberName:member1.userId], [roomState.members memberName:member2.userId]];
     }
     else
     {
         MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
-        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_more_than_two_members", @"Vector", nil), [roomState memberName:member.userId], othersActiveMembers.count - 1];
+        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_more_than_two_members", @"Vector", nil), [roomState.members memberName:member.userId], othersActiveMembers.count - 1];
     }
     
     return displayName;
@@ -418,12 +477,11 @@
     if (!roomAvatarUrl)
     {
         // If the room has only two members, use the avatar of the second member.
-        NSArray* members = roomState.members;
-        
-        if (members.count == 2)
+        if (roomState.membersCount.members == 2)
         {
             NSString* myUserId = mxSession.myUser.userId;
             
+            NSArray* members = roomState.members.members;
             for (MXRoomMember *roomMember in members)
             {
                 if (![roomMember.userId isEqualToString:myUserId])
@@ -453,12 +511,9 @@
     }
     
     // Retrieve today date at midnight
-    NSDateComponents *components = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
-    NSDate *today = [calendar dateFromComponents:components];
+    NSDate *today = [calendar startOfDayForDate:[NSDate date]];
     
-    NSTimeInterval localZoneOffset = [localTimeZone secondsFromGMT];
-    
-    NSTimeInterval interval = -[date timeIntervalSinceDate:today] - localZoneOffset;
+    NSTimeInterval interval = -[date timeIntervalSinceDate:today];
     
     if (interval > 60*60*24*364)
     {
@@ -511,6 +566,39 @@
         [dateFormatter setDateFormat:@"EEE MMM dd yyyy"];
         return [super dateStringFromDate:date withTime:time];
     }
+}
+
+#pragma mark - Room create predecessor
+
+- (NSAttributedString*)roomCreatePredecessorAttributedStringWithPredecessorRoomId:(NSString*)predecessorRoomId
+{
+    NSString *predecessorRoomPermalink = [MXTools permalinkToRoom:predecessorRoomId];
+    
+    NSDictionary *roomPredecessorReasonAttributes = @{
+                                                      NSFontAttributeName : self.defaultTextFont
+                                                      };
+    
+    NSDictionary *roomLinkAttributes = @{
+                                         NSFontAttributeName : self.defaultTextFont,
+                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
+                                         NSLinkAttributeName : predecessorRoomPermalink,
+                                         };
+    
+    NSMutableAttributedString *roomPredecessorAttributedString = [NSMutableAttributedString new];
+    
+    NSString *roomPredecessorReasonString = [NSString stringWithFormat:@"%@\n", NSLocalizedStringFromTable(@"room_predecessor_information", @"Vector", nil)];
+    NSAttributedString *roomPredecessorReasonAttributedString = [[NSAttributedString alloc] initWithString:roomPredecessorReasonString attributes:roomPredecessorReasonAttributes];
+    
+    NSString *predecessorRoomLinkString = NSLocalizedStringFromTable(@"room_predecessor_link", @"Vector", nil);
+    NSAttributedString *predecessorRoomLinkAttributedString = [[NSAttributedString alloc] initWithString:predecessorRoomLinkString attributes:roomLinkAttributes];
+    
+    [roomPredecessorAttributedString appendAttributedString:roomPredecessorReasonAttributedString];
+    [roomPredecessorAttributedString appendAttributedString:predecessorRoomLinkAttributedString];
+    
+    NSRange wholeStringRange = NSMakeRange(0, roomPredecessorAttributedString.length);
+    [roomPredecessorAttributedString addAttribute:NSForegroundColorAttributeName value:self.defaultTextColor range:wholeStringRange];
+    
+    return roomPredecessorAttributedString;
 }
 
 @end

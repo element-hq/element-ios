@@ -133,6 +133,7 @@
 "room_recents_conversations_section" = "ROOMS";
 "room_recents_no_conversation" = "No rooms";
 "room_recents_low_priority_section" = "LOW PRIORITY";
+"room_recents_server_notice_section" = "SYSTEM ALERTS";
 "room_recents_invites_section" = "INVITES";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
@@ -233,8 +234,12 @@
 "room_two_users_are_typing" = "%@ & %@ are typing…";
 "room_many_users_are_typing" = "%@, %@ & others are typing…";
 "room_message_placeholder" = "Send a message (unencrypted)…";
+"room_message_reply_to_placeholder" = "Send a reply (unencrypted)…";
+"room_do_not_have_permission_to_post" = "You do not have permission to post to this room";
 "encrypted_room_message_placeholder" = "Send an encrypted message…";
+"encrypted_room_message_reply_to_placeholder" = "Send an encrypted reply…";
 "room_message_short_placeholder" = "Send a message…";
+"room_message_reply_to_short_placeholder" = "Send a reply…";
 "room_offline_notification" = "Connectivity to the server has been lost.";
 "room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
 "room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present. %@ or %@ now?";
@@ -253,8 +258,11 @@
 "room_event_action_share" = "Share";
 "room_event_action_permalink" = "Permalink";
 "room_event_action_view_source" = "View Source";
+"room_event_action_view_decrypted_source" = "View Decrypted Source";
 "room_event_action_report" = "Report content";
 "room_event_action_report_prompt_reason" = "Reason for reporting this content";
+"room_event_action_kick_prompt_reason" = "Reason for kicking this user";
+"room_event_action_ban_prompt_reason" = "Reason for banning this user";
 "room_event_action_report_prompt_ignore_user" = "Do you want to hide all messages from this user?";
 "room_event_action_save" = "Save";
 "room_event_action_resend" = "Resend";
@@ -264,6 +272,15 @@
 "room_event_action_view_encryption" = "Encryption Information";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
 "room_event_failed_to_send" = "Failed to send";
+"room_action_send_photo_or_video" = "Send photo or video";
+"room_action_send_sticker" = "Send sticker";
+"room_replacement_information" = "This room has been replaced and is no longer active.";
+"room_replacement_link" = "The conversation continues here.";
+"room_predecessor_information" = "This room is a continuation of another conversation.";
+"room_predecessor_link" = "Click here to see older messages.";
+"room_resource_limit_exceeded_message_contact_1" = " Please ";
+"room_resource_limit_exceeded_message_contact_2_link" = "contact your service administrator";
+"room_resource_limit_exceeded_message_contact_3" = " to continue using this service.";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
@@ -310,8 +327,10 @@
 "settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 "settings_labs" = "LABS";
+"settings_flair" = "Show flair where allowed";
 "settings_devices" = "DEVICES";
 "settings_cryptography" = "CRYPTOGRAPHY";
+"settings_deactivate_account" = "DEACTIVATE ACCOUNT";
 
 "settings_sign_out" = "Sign Out";
 "settings_sign_out_confirmation" = "Are you sure?";
@@ -364,7 +383,8 @@
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
-"settings_labs_matrix_apps" = "Matrix Apps";
+"settings_labs_room_members_lazy_loading" = "Lazy load rooms members";
+"settings_labs_room_members_lazy_loading_error_message" = "Your homeserver does not support lazy loading of room members yet. Try later.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 
 "settings_version" = "Version %@";
@@ -392,6 +412,8 @@
 "settings_crypto_device_key" = "\nDevice key: ";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified devices only";
+
+"settings_deactivate_my_account" = "Deactivate my account";
 
 // Room Details
 "room_details_title" = "Room Details";
@@ -426,6 +448,10 @@
 "room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
 "room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
 "room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
+"room_details_flair_section"="Show flair for communities";
+"room_details_new_flair_placeholder" = "Add new community ID (e.g. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Invalid format";
+"room_details_flair_invalid_id_prompt_msg" = "%@ is not a valid identifier for a community";
 "room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
@@ -444,6 +470,7 @@
 "room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
 "room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
 "room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
+"room_details_fail_to_update_room_communities" = "Fail to update the related communities";
 "room_details_fail_to_update_room_direct" = "Fail to update the direct flag of this room";
 "room_details_fail_to_enable_encryption" = "Fail to enable encryption in this room";
 "room_details_save_changes_prompt" = "Do you want to save changes?";
@@ -505,6 +532,8 @@
 "event_formatter_widget_removed" = "%@ widget removed by %@";
 "event_formatter_jitsi_widget_added" = "VoIP conference added by %@";
 "event_formatter_jitsi_widget_removed" = "VoIP conference removed by %@";
+"event_formatter_rerequest_keys_part1_link" = "Re-request encryption keys";
+"event_formatter_rerequest_keys_part2" = " from your other devices.";
 
 // Others
 "or" = "or";
@@ -512,6 +541,7 @@
 "today" = "Today";
 "yesterday" = "Yesterday";
 "network_offline_prompt" = "The Internet connection appears to be offline.";
+"homeserver_connection_lost" = "Could not connect to the homeserver.";
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
@@ -560,6 +590,8 @@
 // Widget
 "widget_no_power_to_manage" = "You need permission to manage widgets in this room";
 "widget_creation_failure" = "Widget creation has failed";
+"widget_sticker_picker_no_stickerpacks_alert" = "You don't currently have any stickerpacks enabled.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Add some now?";
 
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "You need to be able to invite users to do that.";
@@ -585,3 +617,29 @@
 "e2e_room_key_request_share_without_verifying" = "Share without verifying";
 "e2e_room_key_request_ignore_request" = "Ignore request";
 
+// GDPR
+"gdpr_consent_not_given_alert_message" = "To continue using the %@ homeserver you must review and agree to the terms and conditions.";
+"gdpr_consent_not_given_alert_review_now_action" = "Review now";
+
+// Deactivate account
+
+"deactivate_account_title" = "Deactivate Account";
+
+"deactivate_account_informations_part1" = "This will make your account permanently unusable. You will not be able to log in, and no one will be able to re-register the same user ID.  This will cause your account to leave all rooms it is participating in, and it will remove your account details from your identity server. ";
+"deactivate_account_informations_part2_emphasize" = "This action is irreversible.";
+"deactivate_account_informations_part3" = "\n\nDeactivating your account ";
+"deactivate_account_informations_part4_emphasize" = "does not by default cause us to forget messages you have sent. ";
+"deactivate_account_informations_part5" = "If you would like us to forget your messages, please tick the box below\n\nMessage visibility in Matrix is similar to email. Our forgetting your messages means that messages you have sent will not be shared with any new or unregistered users, but registered users who already have access to these messages will still have access to their copy.";
+
+"deactivate_account_forget_messages_information_part1" = "Please forget all messages I have sent when my account is deactivated (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Warning";
+"deactivate_account_forget_messages_information_part3" = ": this will cause future users to see an incomplete view of conversations)";
+
+"deactivate_account_validate_action" = "Deactivate account";
+
+"deactivate_account_password_alert_title" = "Deactivate Account";
+"deactivate_account_password_alert_message" = "To continue, please enter your password";
+
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Request Sent";
+"rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this device.";

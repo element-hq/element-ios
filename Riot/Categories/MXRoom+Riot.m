@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -42,7 +43,7 @@
     
     NSString* tagOrder = [self.mxSession tagOrderToBeAtIndex:0 from:NSNotFound withTag:tag];
     
-    NSLog(@"[MXRoom+Riot] Update the room %@ tag from %@ to %@ with tag order %@", self.state.roomId, oldTag, tag, tagOrder);
+    NSLog(@"[MXRoom+Riot] Update the room %@ tag from %@ to %@ with tag order %@", self.roomId, oldTag, tag, tagOrder);
     
     [self replaceTag:oldTag
                byTag:tag
@@ -56,10 +57,13 @@
                  
              } failure:^(NSError *error) {
                  
-                 NSLog(@"[MXRoom+Riot] Failed to update the tag %@ of room (%@)", tag, self.state.roomId);
+                 NSLog(@"[MXRoom+Riot] Failed to update the tag %@ of room (%@)", tag, self.roomId);
+                 NSString *userId = self.mxSession.myUser.userId;
                  
                  // Notify user
-                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                     object:error
+                                                                   userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
                  
                  if (completion)
                  {
@@ -91,7 +95,7 @@
                         MXJSONModelSetString(key, ruleCondition.parameters[@"key"]);
                         MXJSONModelSetString(pattern, ruleCondition.parameters[@"pattern"]);
                         
-                        if (key && pattern && [key isEqualToString:@"room_id"] && [pattern isEqualToString:self.state.roomId])
+                        if (key && pattern && [key isEqualToString:@"room_id"] && [pattern isEqualToString:self.roomId])
                         {
                             return rule.enabled;
                         }
@@ -333,7 +337,7 @@
         {
             // the rule id is the room Id
             // it is the server trick to avoid duplicated rule on the same room.
-            if ([rule.ruleId isEqualToString:self.state.roomId])
+            if ([rule.ruleId isEqualToString:self.roomId])
             {
                 return rule;
             }
@@ -354,7 +358,7 @@
         {
             // the rule id is the room Id
             // it is the server trick to avoid duplicated rule on the same room.
-            if ([rule.ruleId isEqualToString:self.state.roomId])
+            if ([rule.ruleId isEqualToString:self.roomId])
             {
                 return rule;
             }
@@ -417,7 +421,7 @@
         }];
     }
     
-    [notificationCenter addRoomRule:self.state.roomId
+    [notificationCenter addRoomRule:self.roomId
                              notify:NO
                               sound:NO
                           highlight:NO];
@@ -476,8 +480,8 @@
         }];
     }
     
-    [notificationCenter addOverrideRuleWithId:self.state.roomId
-                                   conditions:@[@{@"kind":@"event_match", @"key":@"room_id", @"pattern":self.state.roomId}]
+    [notificationCenter addOverrideRuleWithId:self.roomId
+                                   conditions:@[@{@"kind":@"event_match", @"key":@"room_id", @"pattern":self.roomId}]
                                        notify:NO
                                         sound:NO
                                     highlight:NO];

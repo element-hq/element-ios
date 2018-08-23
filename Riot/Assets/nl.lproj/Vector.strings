@@ -79,7 +79,7 @@
 "auth_password_dont_match" = "De wachtwoorden komen niet overeen";
 "auth_username_in_use" = "De gebruikersnaam is al in gebruik";
 "auth_forgot_password" = "Wachtwoord vergeten?";
-"auth_use_server_options" = "Gebruik aangepaste server options (geavanceerd)";
+"auth_use_server_options" = "Gebruik alternatieve serverinstellingen (geavanceerd)";
 "auth_email_validation_message" = "Bekijk je e-mail om verder te gaan met de registratie";
 "auth_msisdn_validation_title" = "Verificatie Aanhangig";
 "auth_msisdn_validation_message" = "We hebben een SMS met een activatie code gestuurd. Vul deze code hieronder in.";
@@ -227,7 +227,7 @@
 "room_event_action_cancel_upload" = "Uploaden annuleren";
 "room_event_action_cancel_download" = "Downloaden annuleren";
 "room_event_action_view_encryption" = "Versleutelingsinformatie";
-"room_warning_about_encryption" = "Eind-tot-eind versleuteling is nog in beta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen nog niet de geschiedenis van voordat ze de ruimte betraden kunnen ontsleutelen.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op applicaties die geen versleuteling ondersteunen.";
+"room_warning_about_encryption" = "End-to-endbeveiliging is in bèta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van voordat ze de ruimte betraden nog niet ontsleutelen.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op programma's die geen versleuteling ondersteunen.";
 // Unknown devices
 "unknown_devices_alert_title" = "Ruimte bevat onbekende apparaten";
 "unknown_devices_alert" = "Deze ruimte bevat onbekende apparaten die niet geen geverifieerd.\nDit betekent dat er geen garantie is dat de apparaten bij de gebruikers horen waar het beweert dat het bij hoort.\nWe raden je aan om bij elk apparaat door het verificatieprocces heen te gaan voordat je doorgaat, maar je kan het bericht opnieuw versturen zonder te verifiëren als je dat prefereert.";
@@ -302,7 +302,7 @@
 "settings_unignore_user" = "Alle berichten van %@ laten zien?";
 "settings_contacts_discover_matrix_users" = "Gebruik e-mailadressen en telefoonnummers om gebruikers te vinden";
 "settings_contacts_phonebook_country" = "Telefoonboek land";
-"settings_labs_e2e_encryption" = "Eind-tot-Eind versleuteling";
+"settings_labs_e2e_encryption" = "End-to-endbeveiliging";
 "settings_labs_e2e_encryption_prompt_message" = "Om het opzetten van de versleuteling af te ronden moet je opnieuw inloggen.";
 "settings_version" = "Versie %@";
 "settings_olm_version" = "Olm Versie %@";
@@ -365,8 +365,8 @@
 "room_details_advanced_e2e_encryption_enabled" = "Versleuteling staat aan in deze ruimte";
 "room_details_advanced_e2e_encryption_disabled" = "Versleuteling staat niet aan in deze ruimte.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";
-"room_details_advanced_e2e_encryption_prompt_message" = "Eind-tot-eind versleuteling is experimenteel en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen nog niet de geschiedenis van voordat ze de ruimte betraden kunnen ontsleutelen.\n\nZodra de versleuteling aan staat kan het niet meer worden uitgezet (voor nu).\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op applicaties die geen versleuteling ondersteunen.";
-"room_details_fail_to_update_avatar" = "Ruimte foto vernieuwen mislukt";
+"room_details_advanced_e2e_encryption_prompt_message" = "End-to-endbeveiliging is experimenteel en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van voordat ze de ruimte betraden nog niet ontsleutelen.\n\nZodra de versleuteling aan staat kan het (voorlopig) niet worden uitgezet.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op programma's die geen versleuteling ondersteunen.";
+"room_details_fail_to_update_avatar" = "Ruimte-foto vernieuwen mislukt";
 "room_details_fail_to_update_room_name" = "Ruimtenaam vernieuwen mislukt";
 "room_details_fail_to_update_topic" = "Ruimteonderwerp vernieuwen mislukt";
 "room_details_fail_to_update_room_guest_access" = "Ruimte's gast toegang vernieuwen mislukt";
@@ -420,7 +420,7 @@
 "google_analytics_use_prompt" = "Wil je helpen met het verbeteren van %@ bij het automatisch rapporteren van crash rapporten en data van gebruik?";
 // Crypto
 "e2e_enabling_on_app_update" = "Riot ondersteunt nu eind-tot-eind sleuteling maar je moet opnieuw inloggen om het aan te zetten.\n\nJe kan het nu of later doen vanaf de applicatie instellingen.";
-"e2e_need_log_in_again" = "Je moet opnieuw inloggen om eind-tot-eind versleuteling sleutels te genereren voor dit apparaat en om de publieke sleutel naar de thuisserver te sturen.\nDit is eenmalig; excuses voor het ongemak.";
+"e2e_need_log_in_again" = "Je moet opnieuw inloggen om end-to-endbeveligingssleutels te genereren voor dit apparaat en om de publieke sleutel naar de thuisserver te sturen.\nDit is eenmalig; excuses voor het ongemak.";
 // Bug report
 "bug_report_title" = "Foutmelding";
 "bug_report_description" = "Beschrijf de foutmelding. Wat heb je gedaan? Wat verwachte je dat er zou gebeuren? Wat gebeurde er werkelijk?";
@@ -457,3 +457,116 @@
 // Widget
 "widget_no_power_to_manage" = "Je hebt permissie nodig om widgets in deze ruimte te beheren";
 "widget_creation_failure" = "Het creëren van de widget is fout gegaan";
+"send_to" = "Stuur naar %@";
+"sending" = "Aan het sturen";
+"search_in_progress" = "Aan het zoeken…";
+"room_event_action_cancel_send" = "Annuleer verzending";
+"room_event_failed_to_send" = "Verzenden is gefaald";
+"settings_calls_settings" = "OPROEPEN";
+"settings_show_decrypted_content" = "Geef ontsleutelde content weer";
+"settings_enable_callkit" = "Geïntegreerde oproepen";
+"settings_callkit_info" = "Ontvang inkomende oproepen op je toegangsscherm. Zie je Riot oproepen in de gesprekkengeschiedenis van het systeem. Als iCloud ingeschakeld is zal deze geschiedenis met Apple gedeeld worden.";
+"settings_ui_theme" = "Thema";
+"settings_ui_theme_auto" = "Automatisch";
+"settings_ui_theme_light" = "Licht";
+"settings_ui_theme_dark" = "Donker";
+"settings_ui_theme_black" = "Zwart";
+"settings_ui_theme_picker_title" = "Selecteer een thema";
+"settings_ui_theme_picker_message" = "\"Automatisch\" gebruikt de \"Kleurweergave omkeren\" instelling van je apparaat";
+"settings_enable_rageshake" = "Schud de telefoon om een fout te rapporteren";
+"room_details_direct_chat" = "Privégesprek";
+"room_details_fail_to_update_room_direct" = "Het is niet gelukt om de direct (privé) vlag in deze ruimte te updaten";
+"event_formatter_widget_added" = "%@ widget toegevoegd door %@";
+"event_formatter_widget_removed" = "%@ widget verwijderd door %@";
+"event_formatter_jitsi_widget_added" = "VoIP vergadergesprek toegevoegd door %@";
+"event_formatter_jitsi_widget_removed" = "VoIP vergadergesprek verwijderd door %@";
+"do_not_ask_again" = "Niet opnieuw vragen";
+"call_incoming_voice" = "Inkomende oproep...";
+"call_incoming_video" = "Inkomend videogesprek...";
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Je moet het machtsniveau waarmee je gebruikers kan uitnodigen hebben om dat te kunnen doen.";
+"widget_integration_unable_to_create" = "Niet in staat om een widget aan te maken.";
+"widget_integration_failed_to_send_request" = "Het is niet gelukt om een verzoek te versturen.";
+"widget_integration_room_not_recognised" = "Deze ruimte wordt niet herkend.";
+"widget_integration_positive_power_level" = "Het machtsniveau moet een positief geheel getal zijn.";
+"widget_integration_must_be_in_room" = "Je zit niet in deze ruimte.";
+"widget_integration_no_permission_in_room" = "Je hebt niet de permissie om dat in deze ruimte te doen.";
+"widget_integration_missing_room_id" = "Het room_id mist in het verzoek.";
+"widget_integration_missing_user_id" = "Het user_id mist in het verzoek.";
+"widget_integration_room_not_visible" = "Room %@ is niet zichtbaar.";
+// Share extension
+"share_extension_auth_prompt" = "Log in op de hoofdapplicatie om de content te delen";
+"share_extension_failed_to_encrypt" = "Niet gelukt om te versturen. Controleer in de hoofdapplicatie de versleutelingsinstellingen van deze ruimte";
+// Room key request dialog
+"e2e_room_key_request_title" = "Versleutelingssleutel verzoek";
+"e2e_room_key_request_message" = "Je niet geverifieerde apparaat '%@' vraagt naar versleutelingssleutels.";
+"e2e_room_key_request_start_verification" = "Start verificatie...";
+"e2e_room_key_request_share_without_verifying" = "Delen zonder te verifiëren";
+"e2e_room_key_request_ignore_request" = "Negeer verzoek";
+"title_groups" = "Gemeenschappen";
+// Groups tab
+"group_invite_section" = "UITNODIGINGEN";
+"group_section" = "GEMEENSCHAPPEN";
+"room_do_not_have_permission_to_post" = "Je hebt geen toestemming om in deze ruimte te posten";
+"settings_flair" = "Badge weergeven waar toegestaan";
+"room_details_flair_section" = "Badge voor gemeenschappen weergeven";
+"room_details_new_flair_placeholder" = "Voeg nieuw gemeenschaps-ID toe (bv. +foo%@)";
+"room_details_flair_invalid_id_prompt_title" = "Ongeldig formaat";
+"room_details_flair_invalid_id_prompt_msg" = "%@ is niet een geldige identificatie voor een gemeenschap";
+"room_details_fail_to_update_room_communities" = "Niet gelukt om de gerelateerde gemeenschappen te updaten";
+// Group Details
+"group_details_title" = "Gemeenschapsdetails";
+"group_details_home" = "Home";
+"group_details_people" = "Personen";
+"group_details_rooms" = "Ruimtes";
+// Group Home
+"group_home_one_member_format" = "1 lid";
+"group_home_multi_members_format" = "%tu leden";
+"group_home_one_room_format" = "1 ruimte";
+"group_home_multi_rooms_format" = "%tu ruimtes";
+"group_invitation_format" = "%@ heeft je uitgenodigd om tot deze gemeenschap toe te treden";
+// Group participants
+"group_participants_add_participant" = "Deelnemer toevoegen";
+"group_participants_leave_prompt_title" = "Groep verlaten";
+"group_participants_leave_prompt_msg" = "Weet je zeker dat je de groep wilt verlaten?";
+"group_participants_remove_prompt_title" = "Bevestigen";
+"group_participants_remove_prompt_msg" = "Weet je zeker dat je %@ van deze groep wilt verwijderen?";
+"group_participants_invite_prompt_title" = "Bevestiging";
+"group_participants_invite_prompt_msg" = "Weet je zeker dat je %@ in deze groep wilt uitnodigen?";
+"group_participants_filter_members" = "Gemeenschapsleden filteren";
+"group_participants_invite_another_user" = "Zoeken / uitnodigen bij Gebruikers-ID of Naam";
+"group_participants_invite_malformed_id_title" = "Uitnodigingsfout";
+"group_participants_invite_malformed_id" = "Misvormd ID. Het moet een Matrix ID zijn, zoals '@localpart:domain'";
+"group_participants_invited_section" = "UITGENODIGD";
+// Group rooms
+"group_rooms_filter_rooms" = "Gemeenschapsruimtes filteren";
+"e2e_room_key_request_message_new_device" = "Je hebt een nieuwe apparaat '%@' toegevoegd, die een verzoek doet naar versleutelingssleutels.";
+"room_event_action_kick_prompt_reason" = "Reden voor het verwijderen van deze gebruiker";
+"room_event_action_ban_prompt_reason" = "Reden voor het verbannen van deze gebruiker";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Om de %@ thuisserver te blijven gebruiken moet je de algemeen voorwaarden lezen en daarmee akkoord gaan.";
+"gdpr_consent_not_given_alert_review_now_action" = "Nu doorlezen";
+"room_action_send_photo_or_video" = "Foto of video versturen";
+"room_action_send_sticker" = "Sticker versturen";
+"settings_deactivate_account" = "DEACTIVEER ACCOUNT";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Waarschuwing";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Aanvraag verstuurd";
+"rerequest_keys_alert_message" = "Start Riot alstublieft op een ander apparaat dat het bericht kan ontsleutelen zodat deze de sleutels kan sturen naar dit apparaat.";
+"settings_deactivate_my_account" = "Account deactiveren";
+"event_formatter_rerequest_keys_part1_link" = "Vraag beveiligingssleutels opnieuw aan";
+"event_formatter_rerequest_keys_part2" = " van je andere apparaten.";
+"widget_sticker_picker_no_stickerpacks_alert" = "Je hebt momenteel geen stickerpakketten aan staan.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Wil je er nu een paar toevoegen?";
+"deactivate_account_title" = "Account deactiveren";
+"deactivate_account_informations_part1" = "Dit zal je account voorgoed onbruikbaar maken. Je zal niet meer in kunnen loggen en niemand anders zal met dezelfde gebruikers ID kunnen registreren. Dit zal er voor zorgen dat je account alle ruimtes verlaat waar het momenteel onderdeel van is en het verwijderd de accountgegevens van de identiteitsserver. ";
+"deactivate_account_informations_part2_emphasize" = "Deze actie is onomkeerbaar.";
+"deactivate_account_informations_part3" = "\n\nHet deactiveren van je account ";
+"deactivate_account_informations_part4_emphasize" = "zal er niet standaard voor zorgen dat de berichten die je verzonden hebt vergeten worden. ";
+"deactivate_account_informations_part5" = "Als je wilt dat wij de berichten vergeten, klikt alsjeblieft op het vakje hieronder.\n\nDe zichtbaarheid van berichten in Matrix is hetzelfde als in e-mail. Het vergeten van je berichten betekent dat berichten die je hebt verstuurd niet meer gedeeld worden met nieuwe of ongeregistreerde gebruikers, maar geregistreerde gebruikers die al toegang hebben tot deze berichten zullen alsnog toegang hebben tot hun eigen kopie van het bericht.";
+"deactivate_account_forget_messages_information_part1" = "Vergeet alle berichten die ik heb verstuurd wanneer mijn account gedeactiveerd is (";
+"deactivate_account_forget_messages_information_part3" = ": dit zal er voor zorgen dat toekomstige gebruikers een incompleet beeld krijgen van gesprekken)";
+"deactivate_account_validate_action" = "Account deactiveren";
+"deactivate_account_password_alert_title" = "Account deactiveren";
+"deactivate_account_password_alert_message" = "Voer je wachtwoord in om verder te gaan";
+"room_event_action_view_decrypted_source" = "Bekijk ontsleutelde bron";
