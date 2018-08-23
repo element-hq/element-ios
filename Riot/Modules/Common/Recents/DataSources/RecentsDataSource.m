@@ -32,7 +32,8 @@
 #define RECENTSDATASOURCE_SECTION_FAVORITES     0x04
 #define RECENTSDATASOURCE_SECTION_CONVERSATIONS 0x08
 #define RECENTSDATASOURCE_SECTION_LOWPRIORITY   0x10
-#define RECENTSDATASOURCE_SECTION_PEOPLE        0x20
+#define RECENTSDATASOURCE_SECTION_SERVERNOTICE  0x20
+#define RECENTSDATASOURCE_SECTION_PEOPLE        0x40
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
 #define RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT   65.0
@@ -46,6 +47,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     NSMutableArray* peopleCellDataArray;
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
+    NSMutableArray* serverNoticeCellDataArray;
     
     NSInteger shrinkedSectionsBitMask;
 
@@ -61,9 +63,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
-@synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray;
+@synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray, serverNoticeCellDataArray;
 
 - (instancetype)init
 {
@@ -74,6 +76,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         favoriteCellDataArray = [[NSMutableArray alloc] init];
         peopleCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
+        serverNoticeCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
 
         directorySection = -1;
@@ -82,6 +85,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         peopleSection = -1;
         conversationSection = -1;
         lowPrioritySection = -1;
+        serverNoticeSection = -1;
         
         _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
@@ -242,7 +246,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
+        directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
         
         if (invitesCellDataArray.count > 0)
         {
@@ -274,6 +278,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (lowPriorityCellDataArray.count > 0)
         {
             lowPrioritySection = sectionsCount++;
+        }
+
+        if (serverNoticeCellDataArray.count > 0)
+        {
+            serverNoticeSection = sectionsCount++;
         }
     }
     
@@ -310,6 +319,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (section == lowPrioritySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
     {
         count = lowPriorityCellDataArray.count;
+    }
+    else if (section == serverNoticeSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SERVERNOTICE))
+    {
+        count = serverNoticeCellDataArray.count;
     }
     else if (section == invitesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES))
     {
@@ -378,6 +391,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         count = lowPriorityCellDataArray.count;
         title = NSLocalizedStringFromTable(@"room_recents_low_priority_section", @"Vector", nil);
     }
+    else if (section == serverNoticeSection)
+    {
+        count = serverNoticeCellDataArray.count;
+        title = NSLocalizedStringFromTable(@"room_recents_server_notice_section", @"Vector", nil);
+    }
     else if (section == invitesSection)
     {
         count = invitesCellDataArray.count;
@@ -437,6 +455,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (section == lowPrioritySection)
     {
         sectionArray = lowPriorityCellDataArray;
+    }
+    else if (section == serverNoticeSection)
+    {
+        sectionArray = serverNoticeCellDataArray;
     }
     
     for (id<MXKRecentCellDataStoring> cellData in sectionArray)
@@ -520,6 +542,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         else if (section == lowPrioritySection)
         {
             sectionBitwise = RECENTSDATASOURCE_SECTION_LOWPRIORITY;
+        }
+        else if (section == serverNoticeSection)
+        {
+            sectionBitwise = RECENTSDATASOURCE_SECTION_SERVERNOTICE;
         }
         else if (section == invitesSection)
         {
@@ -889,6 +915,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             cellData = [lowPriorityCellDataArray objectAtIndex:cellDataIndex];
         }
     }
+    else if (tableSection == serverNoticeSection)
+    {
+        if (cellDataIndex < serverNoticeCellDataArray.count)
+        {
+            cellData = [serverNoticeCellDataArray objectAtIndex:cellDataIndex];
+        }
+    }
     else if (tableSection == invitesSection)
     {
         if (cellDataIndex < invitesCellDataArray.count)
@@ -1041,6 +1074,21 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             indexPath = [NSIndexPath indexPathForRow:index inSection:lowPrioritySection];
         }
     }
+
+    if (!indexPath && (serverNoticeSection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:serverNoticeCellDataArray];
+
+        if (index != NSNotFound)
+        {
+            // Check whether the low priority rooms are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SERVERNOTICE)
+            {
+                return nil;
+            }
+            indexPath = [NSIndexPath indexPathForRow:index inSection:serverNoticeSection];
+        }
+    }
     
     return indexPath;
 }
@@ -1055,12 +1103,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [peopleCellDataArray removeAllObjects];
     [conversationCellDataArray removeAllObjects];
     [lowPriorityCellDataArray removeAllObjects];
+    [serverNoticeCellDataArray removeAllObjects];
     
     _missedFavouriteDiscussionsCount = _missedHighlightFavouriteDiscussionsCount = 0;
     _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
     
-    directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
+    directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -1077,7 +1126,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             
             if (_recentsDataSourceMode == RecentsDataSourceModeHome)
             {
-                if (room.accountData.tags[kMXRoomTagFavourite])
+                if (room.accountData.tags[kMXRoomTagServerNotice])
+                {
+                    [serverNoticeCellDataArray addObject:recentCellDataStoring];
+                }
+                else if (room.accountData.tags[kMXRoomTagFavourite])
                 {
                     [favoriteCellDataArray addObject:recentCellDataStoring];
                 }
@@ -1288,6 +1341,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 [peopleCellDataArray sortUsingComparator:comparator];
                 [conversationCellDataArray sortUsingComparator:comparator];
                 [lowPriorityCellDataArray sortUsingComparator:comparator];
+                [serverNoticeCellDataArray sortUsingComparator:comparator];
             }
         }
         else if (favoriteCellDataArray.count > 0 && _recentsDataSourceMode == RecentsDataSourceModeFavourites)
@@ -1421,8 +1475,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         return NO;
     }
-    
-    return (path && ((path.section == favoritesSection) || (path.section == peopleSection) || (path.section == lowPrioritySection) || (path.section == conversationSection)));
+
+    return (path && ((path.section == favoritesSection) || (path.section == peopleSection) || (path.section == lowPrioritySection) || (path.section == serverNoticeSection) || (path.section == conversationSection)));
 }
 
 - (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath
@@ -1450,6 +1504,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (path.section == lowPrioritySection)
     {
         return kMXRoomTagLowPriority;
+    }
+    else if (path.section == serverNoticeSection)
+    {
+        return kMXRoomTagServerNotice;
     }
     
     return nil;
