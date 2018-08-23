@@ -2068,12 +2068,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         if (row == CRYPTOGRAPHY_INFO_INDEX)
         {
-            MXKTableViewCell *cryptoCell = [self getDefaultTableViewCell:tableView];
-
-            cryptoCell.textLabel.attributedText = [self cryptographyInformation];
-            cryptoCell.textLabel.numberOfLines = 0;
+            MXKTableViewCellWithTextView *cryptoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
+            if (!cryptoCell)
+            {
+                cryptoCell = [[MXKTableViewCellWithTextView alloc] init];
+            }
             
-            cryptoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
+            cryptoCell.mxkTextViewLeadingConstraint.constant = cell.separatorInset.left;
+            cryptoCell.mxkTextViewTrailingConstraint.constant = cell.separatorInset.right;
 
             cell = cryptoCell;
         }
