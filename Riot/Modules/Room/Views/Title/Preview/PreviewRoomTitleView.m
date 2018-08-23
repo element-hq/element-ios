@@ -67,6 +67,7 @@
     self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
     
     self.roomTopic.textColor = kRiotTopicTextColor;
+    self.roomTopic.dataDetectorTypes = UIDataDetectorTypeLink;
     
     self.roomMembers.textColor = kRiotColorGreen;
     
