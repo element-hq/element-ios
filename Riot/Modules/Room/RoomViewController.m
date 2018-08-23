@@ -946,8 +946,9 @@
         
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
         BOOL isRoomObsolete = self.roomDataSource.roomState.isObsolete;
+        BOOL isResourceLimitExceeded = [self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded];
         
-        if (isRoomObsolete)
+        if (isRoomObsolete || isResourceLimitExceeded)
         {
             roomInputToolbarViewClass = nil;
         }
@@ -4839,7 +4840,10 @@
             || self.roomDataSource.mxSession.state == MXSessionStateRunning)
         {
             [self refreshActivitiesViewDisplay];
-            [self refreshRoomInputToolbar];
+
+            // update inputToolbarView
+            [self setRoomInputToolbarViewClass];
+            [self updateInputToolBarViewHeight];
         }
     }];
 }
