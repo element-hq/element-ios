@@ -553,3 +553,8 @@
 "settings_labs_room_members_lazy_loading" = "Raummitglieder verzögert laden";
 "settings_labs_room_members_lazy_loading_error_message" = "Dein Heimserver unterstützt das verzögerte Laden von Raummitgliedern noch nicht. Versuche es später erneut.";
 "room_event_action_view_decrypted_source" = "Zeige entschlüsselten Quellcode";
+"room_recents_server_notice_section" = "SYSTEMBENACHRICHTIGUNGEN";
+"room_resource_limit_exceeded_message_contact_1" = " Bitte ";
+"room_resource_limit_exceeded_message_contact_2_link" = "kontaktiere deinen Dienst-Administrator";
+"room_resource_limit_exceeded_message_contact_3" = " um diesen Service weiter zu nutzen.";
+"homeserver_connection_lost" = "Konnte keine Verbindung zum Heimserver herstellen.";
