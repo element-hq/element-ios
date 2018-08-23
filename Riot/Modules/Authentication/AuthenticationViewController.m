@@ -427,20 +427,26 @@
                     }
                     else
                     {
-                        [self isUserNameInUse:^(BOOL isUserNameInUse) {
-                            
-                            if (isUserNameInUse)
+                        [self testUserRegistration:^(MXError *mxError) {
+                            // We consider that a user can be registered if:
+                            //   - the username is not already in use
+                            if ([mxError.errcode isEqualToString:kMXErrCodeStringUserInUse])
                             {
                                 NSLog(@"[AuthenticationVC] User name is already use");
                                 [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_username_in_use"]}]];
                             }
+                            //   - the server quota limits is not reached
+                            else if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
+                            {
+                                [self showResourceLimitExceededError:mxError.userInfo];
+                            }
                             else
                             {
                                 [self.authenticationActivityIndicator stopAnimating];
-                                
+
                                 // Show the supported 3rd party ids which may be added to the account
                                 authInputsview.thirdPartyIdentifiersHidden = NO;
-                                
+
                                 [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];
                             }
                         }];
@@ -534,7 +540,15 @@
     }
     else
     {
-        [super onFailureDuringAuthRequest:error];
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
+        {
+            [self showResourceLimitExceededError:mxError.userInfo];
+        }
+        else
+        {
+            [super onFailureDuringAuthRequest:error];
+        }
     }
 }
 
@@ -706,6 +720,23 @@
         offset.y += self.customServersContainer.frame.size.height;
         self.authenticationScrollView.contentOffset = offset;
     }
+}
+
+- (void)showResourceLimitExceededError:(NSDictionary *)errorDict
+{
+    NSLog(@"[AuthenticationVC] showResourceLimitExceededError");
+
+    [self showResourceLimitExceededError:errorDict onAdminContactTapped:^(NSURL *adminContact) {
+
+        if ([[UIApplication sharedApplication] canOpenURL:adminContact])
+        {
+            [[UIApplication sharedApplication] openURL:adminContact];
+        }
+        else
+        {
+            NSLog(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContact);
+        }
+    }];
 }
 
 #pragma mark - KVO
