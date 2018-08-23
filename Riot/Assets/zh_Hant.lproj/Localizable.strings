@@ -19,34 +19,34 @@
 /* Multiple unread messages from a specific person, not referencing a room */
 "MSGS_FROM_USER" = "%@ 個新訊息在 %@";
 /* Multiple unread messages from two people */
-"MSGS_FROM_TWO_USERS" = "%@ 個新訊息從 %@ 與 %@ 而來";
+"MSGS_FROM_TWO_USERS" = "%@ 個新訊息來自 %@ 與 %@";
 /* Multiple unread messages from three people */
-"MSGS_FROM_THREE_USERS" = "%@ 個新訊息從 %@、%@ 與 %@ 而來";
+"MSGS_FROM_THREE_USERS" = "%@ 個新訊息來自 %@、%@ 與 %@";
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
-"MSGS_FROM_TWO_PLUS_USERS" = "%@ 個新訊息從 %@、%@ 與其他人而來";
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ 個新訊息來自 %@、%@ 與其他人";
 /* Multiple messages in two rooms */
-"MSGS_IN_TWO_ROOMS" = "%@ 個新訊息在 %@ 與 %@";
+"MSGS_IN_TWO_ROOMS" = "%@ 個新訊息來自 %@ 與 %@";
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@ 個新訊息在 %@、%@ 與其他人";
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ 個新訊息來自 %@、%@ 與其他";
 /* A user has invited you to a chat */
 "USER_INVITE_TO_CHAT" = "%@ 已經邀請您來聊天";
 /* A user has invited you to an (unamed) group chat */
 "USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ 已經邀請您到群組聊天中";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ 已經邀請您到 %@";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ 已經邀請您加入 %@";
 /* Incoming one-to-one voice call */
-"VOICE_CALL_FROM_USER" = "從 %@ 而來的通話";
+"VOICE_CALL_FROM_USER" = "來自 %@ 的通話";
 /* Incoming one-to-one video call */
-"VIDEO_CALL_FROM_USER" = "從 %@ 而來的視訊通話";
+"VIDEO_CALL_FROM_USER" = "來自 %@ 的視訊通話";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "從 %@ 而來的群組通話";
+"VOICE_CONF_FROM_USER" = "來自 %@ 的群組通話";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "從 %@ 而來的視訊群組通話";
+"VIDEO_CONF_FROM_USER" = "來自 %@ 的視訊群組通話";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "從 %@ 而來的群組通話：'%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "來自 %@ 的群組通話：'%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "從 %@ 而來的視訊群組通話：'%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "來自 %@ 的視訊群組通話：'%@'";
 /* A single unread message in a room */
-"SINGLE_UNREAD_IN_ROOM" = "你在 %@ 中收到了一則訊息";
+"SINGLE_UNREAD_IN_ROOM" = "您在 %@ 中收到了一則訊息";
 /* A single unread message */
-"SINGLE_UNREAD" = "你收到了一則訊息";
+"SINGLE_UNREAD" = "您收到了一則訊息";
