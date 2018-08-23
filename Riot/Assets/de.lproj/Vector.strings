@@ -58,7 +58,7 @@
 "auth_username_in_use" = "Nutzername bereits verwendet";
 "auth_forgot_password" = "Passwort vergessen?";
 "auth_msisdn_validation_title" = "Verifizierung ausstehend";
-"auth_msisdn_validation_message" = "Wir sandten eine SMS mit einem Aktivierungs-Code. Bitte gebe den unten ein.";
+"auth_msisdn_validation_message" = "Bitte gib unten den Aktivierungs-Code ein, den wir per SMS verschickt haben.";
 "auth_msisdn_validation_error" = "Telefonnummer kann nicht verifiziert werden.";
 "auth_reset_password_missing_password" = "Ein neues Passwort muss eingegeben werden.";
 "auth_reset_password_next_step_button" = "Ich habe meine E-Mail-Adresse verifiziert";
@@ -221,7 +221,7 @@
 "settings_remove_prompt_title" = "Bestätigung";
 "settings_remove_email_prompt_msg" = "Bist du sicher, dass du die E-Mail-Adresse %@ entfernen möchtest?";
 "settings_email_address" = "E-Mail";
-"settings_email_address_placeholder" = "Gebe deine E-Mail-Adresse ein";
+"settings_email_address_placeholder" = "Gib deine E-Mail-Adresse ein";
 "settings_add_email_address" = "Füge E-Mail-Adresse hinzu";
 "settings_remove_phone_prompt_msg" = "Bist du sicher, dass du die Telefon-Nummer %@ entfernen möchtest?";
 "settings_night_mode" = "Nacht Modus";
