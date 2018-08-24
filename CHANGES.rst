@@ -5,9 +5,10 @@ Improvements:
  * Upgrade MatrixKit version (v0.8.1).
  * Server Quota Notices in Riot (#1937).
  
- Bug fix:
-* User defaults: the preset application language (if any) is ignored.
-* Recents: Avoid to open a room twice (it crashed on room creation on quick HSes).
+Bug fix:
+ * User defaults: the preset application language (if any) is ignored.
+ * Recents: Avoid to open a room twice (it crashed on room creation on quick HSes).
+ * Riot-bot: Do not try to create a room with it if the user homeserver is not federated.
 
 Changes in 0.7.1 (2018-08-17)
 ===============================================
