@@ -552,3 +552,8 @@
 "settings_labs_room_members_lazy_loading" = "Постепенно зареждане на членовете в стаи";
 "settings_labs_room_members_lazy_loading_error_message" = "Сървърът Ви все още не поддържа постепенно зареждане на членовете в стаи. Опитайте по-късно.";
 "room_event_action_view_decrypted_source" = "Прегледай разшифрования източник";
+"room_recents_server_notice_section" = "СИСТЕМНИ УВЕДОМЛЕНИЯ";
+"room_resource_limit_exceeded_message_contact_1" = " Моля, ";
+"room_resource_limit_exceeded_message_contact_2_link" = "свържете се с администратора на услугата,";
+"room_resource_limit_exceeded_message_contact_3" = " за да продължите да я използвате.";
+"homeserver_connection_lost" = "Неуспешна връзка със сървъра.";
