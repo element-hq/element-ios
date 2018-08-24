@@ -2138,6 +2138,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 cryptoCell = [[MXKTableViewCellWithTextView alloc] init];
             }
             
+            cryptoCell.mxkTextView.textColor = kRiotPrimaryTextColor;
+            cryptoCell.mxkTextView.backgroundColor = kRiotPrimaryBgColor;
             cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
             cryptoCell.mxkTextViewLeadingConstraint.constant = cell.separatorInset.left;
             cryptoCell.mxkTextViewTrailingConstraint.constant = cell.separatorInset.right;
