@@ -4,4 +4,3 @@
 
 @import MatrixSDK;
 #import "WebViewViewController.h"
-#import "MatrixSDK+Swift.h"
