@@ -6,7 +6,8 @@ Improvements:
  * Server Quota Notices in Riot (#1937).
  
  Bug fix:
- * User defaults: the preset application language (if any) is ignored.
+* User defaults: the preset application language (if any) is ignored.
+* Recents: Avoid to open a room twice (it crashed on room creation on quick HSes).
 
 Changes in 0.7.1 (2018-08-17)
 ===============================================
