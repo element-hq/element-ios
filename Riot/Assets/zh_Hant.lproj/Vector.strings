@@ -68,7 +68,7 @@
 "auth_missing_email_or_phone" = "缺少電子郵件位址或電話號碼";
 "auth_email_in_use" = "這個電子郵件位址已被使用";
 "auth_phone_in_use" = "這個電話號碼已被使用";
-"auth_untrusted_id_server" = "這個驗證伺服器不受信任";
+"auth_untrusted_id_server" = "這個身份伺服器不受信任";
 "auth_password_dont_match" = "兩次密碼輸入不吻合";
 "auth_username_in_use" = "使用者名稱已被使用";
 "auth_forgot_password" = "忘記密碼？";
@@ -84,7 +84,7 @@
 "today" = "今天";
 "yesterday" = "昨天";
 "room_ongoing_conference_call_close" = "關閉";
-"bug_report_send_logs" = "傳送記錄";
+"bug_report_send_logs" = "傳送記錄檔";
 "bug_report_send" = "傳送";
 "room_event_action_resend" = "重新傳送";
 "room_event_action_view_source" = "檢視來源";
@@ -101,7 +101,7 @@
 "auth_reset_password_missing_password" = "一個新的密碼必須被輸入。";
 "auth_reset_password_next_step_button" = "我已經驗證了我的電子郵件地址";
 "auth_reset_password_error_unauthorized" = "電子郵件地址驗證失敗： 請確保你已點擊郵件中的連結";
-"auth_reset_password_error_not_found" = "您的電子郵件地址似乎未在此家伺服器上與 Matrix ID 關聯。";
+"auth_reset_password_error_not_found" = "您的電子郵件地址似乎沒有與在此家伺服器上的 Matrix ID 綁定。";
 "room_creation_account" = "帳號";
 "room_creation_appearance_name" = "名稱";
 "room_recents_start_chat_with" = "開始聊天";
@@ -197,8 +197,8 @@
 "room_recents_join_room_prompt" = "輸入聊天室 ID 或別名";
 // People tab
 "people_invites_section" = "邀請";
-"people_conversation_section" = "聊天";
-"people_no_conversation" = "沒有聊天";
+"people_conversation_section" = "對話";
+"people_no_conversation" = "沒有對話";
 // Rooms tab
 "room_directory_no_public_room" = "沒有公開的聊天室";
 // Groups tab
@@ -268,7 +268,7 @@
 "room_message_short_placeholder" = "傳送訊息…";
 "room_unsent_messages_notification" = "訊息未被傳送。現在 %@ 或 %@ 嗎?";
 "room_unsent_messages_unknown_devices_notification" = "由於存在未知的裝置導致訊息未被傳送。現在 %@ 或 %@ 嗎?";
-"room_conference_call_no_power" = "您需要管理此聊天室會議電話的權限";
+"room_conference_call_no_power" = "您需要管理此聊天室群組通話的權限";
 "room_prompt_resend" = "全部重新傳送";
 "room_prompt_cancel" = "全部取消";
 "room_resend_unsent_messages" = "重送未傳送訊息";
@@ -285,7 +285,7 @@
 "room_event_action_save" = "儲存";
 "room_event_action_cancel_send" = "取消傳送";
 "room_event_action_cancel_download" = "取消下載";
-"room_warning_about_encryption" = "點對點加密仍在測試階段，可能不太可靠。\n\n目前您不該認為他能保護您的資料。\n\n裝置將未能解密加入聊天室前的歷史紀錄。\n\n加密訊息無法顯示在尚未實施加密功能的用戶端。";
+"room_warning_about_encryption" = "點對點加密仍在測試階段，可能不太可靠。\n\n目前您不該認為他能保護您的資料。\n\n裝置將無法解密加入聊天室前的對話紀錄。\n\n加密過的訊息將無法在尚未提供加密功能的用戶端顯示。";
 "room_event_failed_to_send" = "傳送失敗";
 "room_action_send_photo_or_video" = "傳送照片或影片";
 "room_action_send_sticker" = "傳送貼圖";
@@ -311,8 +311,8 @@
 "settings_config_no_build_info" = "沒有編譯訊息";
 "settings_mark_all_as_read" = "將所有訊息設為已讀";
 "settings_report_bug" = "回報 bug";
-"settings_config_home_server" = "主伺服器為 %@";
-"settings_config_identity_server" = "身分認證伺服器為 %@";
+"settings_config_home_server" = "家伺服器為 %@";
+"settings_config_identity_server" = "身份伺服器為 %@";
 "settings_config_user_id" = "以 %@ 登入";
 "settings_user_settings" = "使用者設定";
 "settings_notifications_settings" = "通知設定";
@@ -339,15 +339,15 @@
 "settings_night_mode" = "午夜模式";
 "settings_fail_to_update_profile" = "更新個人檔案失敗";
 "settings_enable_push_notif" = "在此裝置上啟用通知";
-"settings_show_decrypted_content" = "顯示已解密內容";
-"settings_global_settings_info" = "全域通知設定可透過 %@ 網頁用戶端修改";
-"room_ongoing_conference_call" = "會議電話進行中。 以 %@ 或 %@ 加入。";
-"room_ongoing_conference_call_with_close" = "會議電話進行中。 以 %@ 或 %@ 加入。%@ 該通話。";
+"settings_show_decrypted_content" = "顯示已解密的內容";
+"settings_global_settings_info" = "全域通知設定可在 %@ 網頁用戶端上修改";
+"room_ongoing_conference_call" = "群組通話進行中。 以 %@ 或 %@ 加入。";
+"room_ongoing_conference_call_with_close" = "群組通話進行中。 以 %@ 或 %@ 加入。%@ 該通話。";
 "settings_pin_rooms_with_missed_notif" = "釘選含有錯過的通知的聊天室";
 "settings_pin_rooms_with_unread" = "釘選含有未讀訊息的聊天室";
 "settings_on_denied_notification" = "因 %@ 的通知不被允許，請在裝置設定中允許";
 "settings_enable_callkit" = "整合式通話";
-"settings_callkit_info" = "提供在鎖定畫面接聽來電、在通話紀錄中顯示使用 Riot 的通話。 如果已啟用 iCloud ，則通話歷史紀錄會與蘋果公司共享。";
+"settings_callkit_info" = "提供在鎖定畫面接聽 Riot 來電、在通話紀錄中顯示 Riot 通話。 如果您已啟用 iCloud ，則會與蘋果公司共享通話紀錄。";
 "settings_ui_language" = "語言";
 "settings_ui_theme" = "主題";
 "settings_ui_theme_auto" = "自動";
@@ -361,7 +361,7 @@
 "settings_contacts_phonebook_country" = "電話簿所屬國家";
 "settings_labs_e2e_encryption" = "點對點加密";
 "settings_labs_e2e_encryption_prompt_message" = "為完成加密設定，您必須重新登入。";
-"settings_labs_create_conference_with_jitsi" = "使用 jitsi 建立會議電話";
+"settings_labs_create_conference_with_jitsi" = "使用 jitsi 建立群組通話";
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
 "settings_copyright" = "版權";
@@ -409,7 +409,7 @@
 "room_details_advanced_enable_e2e_encryption" = "啟用加密 (警告: 啟用後無法停用)";
 "room_details_advanced_e2e_encryption_disabled" = "此聊天室未啟用加密。";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "只匯出到已驗證的裝置";
-"room_details_advanced_e2e_encryption_prompt_message" = "點對點加密仍在測試階段，可能不夠可靠。\n\n現在您不該認為他能保護您的資料。\n\n裝置尚未能解密在加入聊天室前的聊天紀錄。\n\n一個聊天室一旦啟用加密功能，將無法關閉 (目前)。\n\n加密過的訊息將無法在尚未提供加密功能的用戶端顯示。";
+"room_details_advanced_e2e_encryption_prompt_message" = "點對點加密仍在測試階段，可能不夠可靠。\n\n現在您不該認為他能保護您的資料。\n\n裝置尚未能解密在加入聊天室前的聊天紀錄。\n\n一個聊天室一旦啟用加密功能，將無法關閉 (就目前而言)。\n\n加密過的訊息將無法在尚未提供加密功能的用戶端顯示。";
 "room_details_fail_to_update_avatar" = "更新聊天室圖片失敗";
 "room_details_fail_to_update_room_name" = "更新聊天室名稱失敗";
 "room_details_fail_to_update_topic" = "更新主題失敗";
@@ -460,14 +460,14 @@
 "directory_server_picker_title" = "選擇一個目錄";
 "directory_server_all_rooms" = "在 %@ 伺服器上的所有聊天室";
 "directory_server_all_native_rooms" = "所有本地 Matrix 聊天室";
-"directory_server_type_homeserver" = "輸入一個主伺服器來列出所有公開聊天室";
+"directory_server_type_homeserver" = "輸入一個家伺服器來列出所有公開聊天室";
 "directory_server_placeholder" = "matrix.org";
 // Events formatter
-"event_formatter_member_updates" = "%tu 成員身分改變";
+"event_formatter_member_updates" = "%tu 成員身份改變";
 "event_formatter_widget_added" = "%@ widget 已由 %@ 新增";
 "event_formatter_widget_removed" = "%@ widget 已由 %@ 移除";
-"event_formatter_jitsi_widget_added" = "VoIP 會議已由 %@ 新增";
-"event_formatter_jitsi_widget_removed" = "VoIP 會議已由 %@ 移除";
+"event_formatter_jitsi_widget_added" = "VoIP 群組通話已由 %@ 新增";
+"event_formatter_jitsi_widget_removed" = "VoIP 群組通話已由 %@ 移除";
 "event_formatter_rerequest_keys_part1_link" = "重新請求加密金鑰";
 "event_formatter_rerequest_keys_part2" = " 從您的其他裝置。";
 // Others
@@ -492,7 +492,7 @@
 "call_incoming_voice" = "收到來電…";
 "call_incoming_video" = "收到視訊來電…";
 "call_already_displayed" = "已有通話進行中。";
-"call_jitsi_error" = "加入會議通話失敗。";
+"call_jitsi_error" = "加入群組通話失敗。";
 // No VoIP support
 "no_voip_title" = "來電";
 "no_voip" = "%@ 正在撥打給您，但 %@ 尚不支援通話。\n您可以忽略此通知透過其他裝置接聽或拒絕接聽。";
@@ -504,7 +504,7 @@
 "bug_report_title" = "錯誤回報";
 "bug_report_send_screenshot" = "傳送螢幕截圖";
 "e2e_room_key_request_start_verification" = "開始驗證…";
-"e2e_need_log_in_again" = "您需要登入回帳號以為此設備產生點對點加密密鑰並將公鑰送出到您的主伺服器。\n這僅需要做一次，很抱歉造成您的困擾。";
+"e2e_need_log_in_again" = "您需要登入回帳號以便為此設備產生點對點加密密鑰並將公鑰送出到您的家伺服器。\n這僅需要做一次，很抱歉造成您的困擾。";
 "bug_crash_report_title" = "崩潰報告";
 // Widget
 "widget_no_power_to_manage" = "您需要相關權限以管理此聊天室的 widget";
@@ -514,7 +514,7 @@
 "rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 Riot 以將密鑰傳送到此裝置。";
 "bug_report_description" = "請描述此錯誤。您做了什麼? 本來應該發生什麼? 以及實際發生什麼?";
 "bug_crash_report_description" = "請描述您在崩潰前做了什麼:";
-"bug_report_logs_description" = "為了診斷問題，此用戶端的紀錄將會隨此錯誤報告送出。 如果您只想傳送上面的文字，請取消:";
+"bug_report_logs_description" = "為了診斷問題，此用戶端的記錄檔將會隨此錯誤報告送出。 如果您只想傳送上面的文字，請取消:";
 "widget_integration_missing_room_id" = "在請求中遺失 room_id 。";
 "widget_integration_missing_user_id" = "在請求中遺失  user_id 。";
 "widget_integration_room_not_visible" = "%@  聊天室不可見。";
@@ -524,19 +524,29 @@
 "e2e_room_key_request_message_new_device" = "您新增的裝置 '%@'， 正在請求加密密鑰。";
 "e2e_room_key_request_message" = "您未驗證的裝置 '%@' 正在請求加密密鑰。";
 // GDPR
-"gdpr_consent_not_given_alert_message" = "如要繼續使用此主伺服器，您必須同意該合約條款。";
+"gdpr_consent_not_given_alert_message" = "如要繼續使用此家伺服器，您必須同意該合約條款。";
 "gdpr_consent_not_given_alert_review_now_action" = "現在重新檢視";
 "deactivate_account_title" = "註銷帳號";
 "deactivate_account_informations_part1" = "這會使您的帳號永久無法使用。 您將不能以此帳號登入且任何人都將無法以此帳號的ID重新進行註冊。這會使您的帳號立即離開所有參加的聊天室，並從身份伺服器上將您帳號的詳細資料移除。 ";
 "deactivate_account_informations_part2_emphasize" = "此動作無法回復。";
 "deactivate_account_informations_part3" = "\n\n註銷您的帳號 ";
 "deactivate_account_informations_part4_emphasize" = "在預設情況下我們並不會遺忘您曾傳送的訊息。 ";
-"deactivate_account_informations_part5" = "如果您希望我們遺忘您曾傳送的訊息，請勾選下方的方格\n\n在 Matrix 中，訊息的可見性如同電子郵件。我們遺忘了您曾傳送的訊息表示這些訊息將不會與任何新註冊或未註冊使用者分享，但已有權限讀取您傳送的訊息的已註冊使用者仍能從他們的副本中讀取。";
+"deactivate_account_informations_part5" = "如果您希望我們遺忘您曾傳送的訊息，請選取下方的欄位\n\n在 Matrix 中，訊息的可見性如同電子郵件。我們遺忘了您曾傳送的訊息表示這些訊息將不會與任何新註冊或未註冊的使用者分享，但過去已有權限讀取您的訊息的已註冊使用者仍能從他們的副本中讀取。";
 "deactivate_account_forget_messages_information_part1" = "當我註銷我的帳號時，請遺忘所有我曾傳送的訊息 (";
 "deactivate_account_forget_messages_information_part2_emphasize" = "警告";
-"deactivate_account_forget_messages_information_part3" = ": 這會導致未來的使用者看到不不完整的對話歷史紀錄)";
+"deactivate_account_forget_messages_information_part3" = ": 這會導致未來的使用者看到不不完整的對話紀錄)";
 "deactivate_account_validate_action" = "註銷帳號";
 "deactivate_account_password_alert_title" = "註銷帳號";
 "deactivate_account_password_alert_message" = "若要繼續進行，請輸入您的密碼";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "已傳送請求";
+"room_message_reply_to_placeholder" = "送出回覆（未加密）…";
+"encrypted_room_message_reply_to_placeholder" = "送出加密的回覆…";
+"room_message_reply_to_short_placeholder" = "送出回覆…";
+"room_event_action_view_decrypted_source" = "檢視已解密的來源";
+"room_predecessor_link" = "輕觸此處以檢視更早以前的訊息。";
+"room_replacement_information" = "此聊天室已被取代且不再使用。";
+"room_replacement_link" = "對話自此延續。";
+"room_predecessor_information" = "此聊天室是另一對話的延續。";
+"settings_labs_room_members_lazy_loading" = "延遲載入聊天室成員";
+"settings_labs_room_members_lazy_loading_error_message" = "您的家伺服器尚未支援延遲載入聊天室成員。 請稍後再試。";

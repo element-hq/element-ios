@@ -133,6 +133,7 @@
 "room_recents_conversations_section" = "ROOMS";
 "room_recents_no_conversation" = "No rooms";
 "room_recents_low_priority_section" = "LOW PRIORITY";
+"room_recents_server_notice_section" = "SYSTEM ALERTS";
 "room_recents_invites_section" = "INVITES";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
@@ -277,6 +278,9 @@
 "room_replacement_link" = "The conversation continues here.";
 "room_predecessor_information" = "This room is a continuation of another conversation.";
 "room_predecessor_link" = "Click here to see older messages.";
+"room_resource_limit_exceeded_message_contact_1" = " Please ";
+"room_resource_limit_exceeded_message_contact_2_link" = "contact your service administrator";
+"room_resource_limit_exceeded_message_contact_3" = " to continue using this service.";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";

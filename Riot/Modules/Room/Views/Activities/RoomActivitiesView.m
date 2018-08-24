@@ -374,6 +374,82 @@
     [self checkHeight:YES];
 }
 
+- (void)showResourceLimitExceededError:(NSDictionary *)errorDict onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped
+{
+    [self reset];
+
+    CGFloat fontSize = 15;
+
+    // Parse error data
+    NSString *limitType, *adminContactString;
+    NSURL *adminContact;
+
+    MXJSONModelSetString(limitType, errorDict[kMXErrorResourceLimitExceededLimitTypeKey]);
+    MXJSONModelSetString(adminContactString, errorDict[kMXErrorResourceLimitExceededAdminContactKey]);
+
+    if (adminContactString)
+    {
+        adminContact = [NSURL URLWithString:adminContactString];
+    }
+
+    // Build the message content
+    // Reuse MatrixKit as is for the beginning
+    NSMutableString *message = [NSMutableString new];
+    if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
+    {
+        [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_monthly_active_user"]];
+    }
+    else
+    {
+        [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_default"]];
+    }
+
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName: [UIFont systemFontOfSize:fontSize],
+                                 NSForegroundColorAttributeName: kRiotPrimaryBgColor
+                                 };
+
+    NSDictionary *messageContact2LinkAttributes;
+    if (adminContact && onAdminContactTapped)
+    {
+        void (^onAdminContactTappedLink)(void) = ^() {
+            onAdminContactTapped(adminContact);
+        };
+
+        objc_setAssociatedObject(self.messageTextView, "onAdminContactTappedLink", [onAdminContactTappedLink copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        messageContact2LinkAttributes = @{
+                                             NSFontAttributeName : [UIFont systemFontOfSize:fontSize],
+                                             NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
+                                             NSLinkAttributeName : @"onAdminContactTappedLink",
+                                             };
+    }
+    else
+    {
+        messageContact2LinkAttributes = attributes;
+    }
+
+    NSAttributedString *messageContact1 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_1", @"Vector", nil) attributes:attributes];
+    NSAttributedString *messageContact2Link =  [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_2_link", @"Vector", nil) attributes:messageContact2LinkAttributes];
+    NSAttributedString *messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_3", @"Vector", nil) attributes:attributes];
+
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:message attributes:attributes];
+    [attributedText appendAttributedString:messageContact1];
+    [attributedText appendAttributedString:messageContact2Link];
+    [attributedText appendAttributedString:messageContact3];
+
+    self.messageTextView.attributedText = attributedText;
+    self.messageTextView.tintColor = kRiotPrimaryBgColor;
+    self.messageTextView.hidden = NO;
+
+    self.backgroundColor = kRiotColorPinkRed;
+    self.messageTextView.backgroundColor = kRiotColorPinkRed;
+
+    // Hide the separator to display correctly the banner
+    self.separatorView.hidden = YES;
+
+    [self checkHeight:YES];
+}
+
 - (void)reset
 {
     self.separatorView.hidden = NO;
@@ -474,6 +550,16 @@
             onRoomReplacementLinkTapped();
         }
         
+        return NO;
+    }
+    else if ([[URL absoluteString] isEqualToString:@"onAdminContactTappedLink"])
+    {
+        void (^onAdminContactTappedLink)(void) = objc_getAssociatedObject(self.messageTextView, "onAdminContactTappedLink");
+        if (onAdminContactTappedLink)
+        {
+            onAdminContactTappedLink();
+        }
+
         return NO;
     }
     
