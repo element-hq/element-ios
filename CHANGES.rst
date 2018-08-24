@@ -1,8 +1,8 @@
-Changes in 0.7.2 (2018-08-)
+Changes in 0.7.2 (2018-08-24)
 ===============================================
 
 Improvements:
- * Upgrade MatrixKit version (v0.8.1).
+ * Upgrade MatrixKit version (v0.8.2).
  * Server Quota Notices in Riot (#1937).
  
 Bug fix:
