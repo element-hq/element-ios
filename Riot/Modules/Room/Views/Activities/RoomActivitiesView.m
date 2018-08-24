@@ -404,6 +404,11 @@
         [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_default"]];
     }
 
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName: [UIFont systemFontOfSize:fontSize],
+                                 NSForegroundColorAttributeName: kRiotPrimaryBgColor
+                                 };
+
     NSDictionary *messageContact2LinkAttributes;
     if (adminContact && onAdminContactTapped)
     {
@@ -418,11 +423,10 @@
                                              NSLinkAttributeName : @"onAdminContactTappedLink",
                                              };
     }
-
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName: [UIFont systemFontOfSize:fontSize],
-                                 NSForegroundColorAttributeName: kRiotPrimaryBgColor
-                                 };
+    else
+    {
+        messageContact2LinkAttributes = attributes;
+    }
 
     NSAttributedString *messageContact1 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_1", @"Vector", nil) attributes:attributes];
     NSAttributedString *messageContact2Link =  [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_2_link", @"Vector", nil) attributes:messageContact2LinkAttributes];
