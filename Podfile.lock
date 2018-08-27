@@ -43,37 +43,37 @@ PODS:
   - GZIP (1.2.1)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.9.13)
-  - MatrixKit (0.8.2):
+  - MatrixKit (0.8.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.8.2)
-    - MatrixSDK (= 0.11.2)
-  - MatrixKit/AppExtension (0.8.2):
+    - MatrixKit/Core (= 0.8.3)
+    - MatrixSDK (= 0.11.3)
+  - MatrixKit/AppExtension (0.8.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.11.2)
-  - MatrixKit/Core (0.8.2):
+    - MatrixSDK (= 0.11.3)
+  - MatrixKit/Core (0.8.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.11.2)
-  - MatrixSDK (0.11.2):
-    - MatrixSDK/Core (= 0.11.2)
-  - MatrixSDK/Core (0.11.2):
+    - MatrixSDK (= 0.11.3)
+  - MatrixSDK (0.11.3):
+    - MatrixSDK/Core (= 0.11.3)
+  - MatrixSDK/Core (0.11.3):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.1)
     - OLMKit (~> 2.3.0)
     - Realm (~> 3.7.4)
-  - MatrixSDK/JingleCallStack (0.11.2):
+  - MatrixSDK/JingleCallStack (0.11.3):
     - MatrixSDK/Core
     - WebRTC (= 63.11.20455)
-  - MatrixSDK/SwiftSupport (0.11.2):
+  - MatrixSDK/SwiftSupport (0.11.3):
     - MatrixSDK/Core
   - OLMKit (2.3.0):
     - OLMKit/olmc (= 2.3.0)
@@ -92,8 +92,8 @@ DEPENDENCIES:
   - cmark
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
-  - MatrixKit (= 0.8.2)
-  - MatrixKit/AppExtension (= 0.8.2)
+  - MatrixKit (= 0.8.3)
+  - MatrixKit/AppExtension (= 0.8.3)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
@@ -134,13 +134,13 @@ SPEC CHECKSUMS:
   GZIP: 7ee835f989fb3c6ea79005fc90b8fa6af710a70d
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatrixKit: 3298906547560da76ad4dd01b607dc27b7938371
-  MatrixSDK: 9fda4563dc398d760298d3b82e8d05101af28c51
+  MatrixKit: 16cf30e3779b5c35dbc84175d399ddc154ae4a97
+  MatrixSDK: 599c356af3e2aa573849adfcd4dbd1dc370ef68e
   OLMKit: dd79cdc5fab9ec04c940a901e025195b7801f306
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
   Realm: 9eaecad54712d6246d08ba34c10f354e4715d7d3
   WebRTC: f2a6203584745fe53532633397557876b5d71640
 
-PODFILE CHECKSUM: 0807128485e75d14b4d87b3915e903962101ea7f
+PODFILE CHECKSUM: ad4c9542b6861fb086e1ee2f5600a816b1cf6711
 
 COCOAPODS: 1.5.3
