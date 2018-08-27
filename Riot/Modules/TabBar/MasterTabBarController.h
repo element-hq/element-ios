@@ -73,6 +73,16 @@
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)mxSession;
 
 /**
+ Open the room with the provided identifier in a specific matrix session.
+ 
+ @param roomId the room identifier.
+ @param eventId if not nil, the room will be opened on this event.
+ @param mxSession the matrix session in which the room should be available.
+ @param completion the block to execute at the end of the operation.
+ */
+- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion;
+
+/**
  Open the RoomViewController to display the preview of a room that is unknown for the user.
  
  This room can come from an email invitation link or a simple link to a room.

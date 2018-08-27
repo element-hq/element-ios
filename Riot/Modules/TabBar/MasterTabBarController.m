@@ -402,11 +402,20 @@
 
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
 {
+    [self selectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:nil];
+}
+
+- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion
+{
     if (_selectedRoomId && [_selectedRoomId isEqualToString:roomId]
         && _selectedEventId && [_selectedEventId isEqualToString:eventId]
         && _selectedRoomSession && _selectedRoomSession == matrixSession)
     {
         // Nothing to do
+        if (completion)
+        {
+            completion();
+        }
         return;
     }
     
@@ -420,15 +429,24 @@
         MXWeakify(self);
         [self dataSourceOfRoomToDisplay:^(MXKRoomDataSource *roomDataSource) {
             MXStrongifyAndReturnIfNil(self);
-
+            
             self->_selectedRoomDataSource = roomDataSource;
-
+            
             [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+            
+            if (completion)
+            {
+                completion();
+            }
         }];
     }
     else
     {
         [self releaseSelectedItem];
+        if (completion)
+        {
+            completion();
+        }
     }
 }
 
