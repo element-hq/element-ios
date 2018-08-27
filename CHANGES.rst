@@ -1,3 +1,13 @@
+Changes in 0.7.3 (2018-08-27)
+===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.8.3).
+
+Bug fix:
+* Fix input toolbar reset in RoomViewController on MXSession state change (#2006 and #2008).
+* Fix user interaction disabled in master view of UISplitViewContoller when selecting a room (#2005).
+
 Changes in 0.7.2 (2018-08-24)
 ===============================================
 

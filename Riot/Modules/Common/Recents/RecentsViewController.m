@@ -757,8 +757,10 @@
 {
     // Avoid multiple openings of rooms
     self.userInteractionEnabled = NO;
-
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
+        
+    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession completion:^{
+        self.userInteractionEnabled = YES;
+    }];
 }
 
 // Disable UI interactions in this screen while we are going to open another screen.

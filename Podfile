@@ -9,7 +9,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.8.2'
+$matrixKitVersion = '0.8.3'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -29,7 +29,7 @@ def import_MatrixKit
     else
         if $matrixKitVersion == 'develop'
             pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
-            #pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
+            pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
             pod 'MatrixSDK/JingleCallStack', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
             pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
         else
