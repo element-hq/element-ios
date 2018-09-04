@@ -154,3 +154,8 @@
 "room_participants_leave_prompt_msg" = "Você tem certeza que deseja sair da sala?";
 "room_participants_remove_prompt_title" = "Confirmação";
 "room_participants_remove_prompt_msg" = "Você tem certeza que deseja remover %@ desta conversa?";
+// Chat creation
+"room_creation_title" = "Nova Sala";
+"room_creation_account" = "Conta";
+// Room recents
+"room_recents_directory_section" = "LISTA PÚBLICA DE SALAS";
