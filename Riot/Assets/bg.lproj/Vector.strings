@@ -189,8 +189,8 @@
 "room_participants_action_remove" = "Премахни от тази стая";
 "room_participants_action_ban" = "Блокирай в тази стая";
 "room_participants_action_unban" = "Отблокирай";
-"room_participants_action_ignore" = "Скрий всички съобщения от този потребител";
-"room_participants_action_unignore" = "Покажи всички съобщения от този потребител";
+"room_participants_action_ignore" = "Скрий всички съобщения от потребителя";
+"room_participants_action_unignore" = "Покажи всички съобщения от потребителя";
 "room_participants_action_set_moderator" = "Направи модератор";
 "room_participants_action_set_admin" = "Направи администратор";
 "room_participants_action_start_new_chat" = "Започни нов чат";
