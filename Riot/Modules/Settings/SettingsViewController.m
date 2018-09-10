@@ -273,6 +273,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
     [self.tableView registerClass:GroupTableViewCellWithSwitch.class forCellReuseIdentifier:[GroupTableViewCellWithSwitch defaultReuseIdentifier]];
+    [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -1352,6 +1353,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return cell;
 }
 
+- (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
+    
+    textViewCell.mxkTextView.textColor = kRiotPrimaryTextColor;
+    textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
+    textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextView.accessibilityIdentifier = nil;
+    
+    return textViewCell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
@@ -1865,14 +1880,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
-        MXKTableViewCell *configCell = [self getDefaultTableViewCell:tableView];
+        MXKTableViewCellWithTextView *configCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
         
         NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@", [NSBundle mxk_localizedStringForKey:@"settings_config_user_id"], [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
         
-        configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
-        configCell.textLabel.numberOfLines = 0;
-        configCell.textLabel.accessibilityIdentifier=@"SettingsVCConfigStaticText";
-        configCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        configCell.mxkTextView.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
+        configCell.mxkTextView.accessibilityIdentifier=@"SettingsVCConfigStaticText";
         
         cell = configCell;
     }
@@ -2132,17 +2145,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         if (row == CRYPTOGRAPHY_INFO_INDEX)
         {
-            MXKTableViewCellWithTextView *cryptoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
-            if (!cryptoCell)
-            {
-                cryptoCell = [[MXKTableViewCellWithTextView alloc] init];
-            }
+            MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
             
-            cryptoCell.mxkTextView.textColor = kRiotPrimaryTextColor;
-            cryptoCell.mxkTextView.backgroundColor = kRiotPrimaryBgColor;
             cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
-            cryptoCell.mxkTextViewLeadingConstraint.constant = cell.separatorInset.left;
-            cryptoCell.mxkTextViewTrailingConstraint.constant = cell.separatorInset.right;
 
             cell = cryptoCell;
         }
