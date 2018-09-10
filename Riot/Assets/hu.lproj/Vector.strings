@@ -552,3 +552,8 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Kérés elküldve";
 "rerequest_keys_alert_message" = "Kérlek indítsd el a Riot-ot egy másik eszközödön amelyik vissza tudja fejteni az üzenetet, hogy el tudja küldeni a kulcsokat ennek az eszköznek.";
+"room_recents_server_notice_section" = "RENDSZER FIGYELMEZTETÉSEK";
+"room_resource_limit_exceeded_message_contact_1" = " Kérlek ";
+"room_resource_limit_exceeded_message_contact_2_link" = "vedd fel a kapcsolatot a szolgáltatás adminisztrátorával";
+"room_resource_limit_exceeded_message_contact_3" = " , hogy tovább használhasd a szolgáltatást.";
+"homeserver_connection_lost" = "A Matrix szerverhez nem lehet kapcsolódni.";

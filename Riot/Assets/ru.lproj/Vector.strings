@@ -551,3 +551,7 @@
 "room_replacement_link" = "Этот разговор продолжается здесь.";
 "room_predecessor_information" = "Эта комната является продолжением другого разговора.";
 "room_predecessor_link" = "Нажмите здесь, чтобы просмотреть старые сообщения.";
+"room_recents_server_notice_section" = "СИСТЕМНЫЕ ПРЕДУПРЕЖДЕНИЯ";
+"room_resource_limit_exceeded_message_contact_1" = " Пожалуйста ";
+"room_resource_limit_exceeded_message_contact_2_link" = "обратитесь к администратору сервиса";
+"room_resource_limit_exceeded_message_contact_3" = " для продолжения его использования.";
