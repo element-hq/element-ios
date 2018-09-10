@@ -4067,20 +4067,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)gdprConsentViewControllerDidConsentToGDPRWithSuccess:(GDPRConsentViewController *)gdprConsentViewController
 {
     MXSession *session = mxSessionArray.firstObject;
-    
+
+    // Leave the GDPR consent right now
+    [self dismissGDPRConsent];
+
+    // And create the room with riot bot in //
     self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
     
     MXWeakify(self);
-    MXWeakify(gdprConsentViewController);
-    
-    [gdprConsentViewController startActivityIndicator];
-    
     void (^createRiotBotDMcompletion)(void) = ^() {
-        
         MXStrongifyAndReturnIfNil(self);
-        
-        [weakgdprConsentViewController stopActivityIndicator];
-        [self dismissGDPRConsent];
+
         self.onBoardingManager = nil;
     };
     
