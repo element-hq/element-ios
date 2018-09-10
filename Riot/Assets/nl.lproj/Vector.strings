@@ -570,3 +570,6 @@
 "deactivate_account_password_alert_title" = "Account deactiveren";
 "deactivate_account_password_alert_message" = "Voer je wachtwoord in om verder te gaan";
 "room_event_action_view_decrypted_source" = "Bekijk ontsleutelde bron";
+"room_message_reply_to_placeholder" = "Verstuur een antwoord (onversleuteld)…";
+"encrypted_room_message_reply_to_placeholder" = "Verstuur een versleuteld antwoord…";
+"room_message_reply_to_short_placeholder" = "Verstuur een antwoord…";
