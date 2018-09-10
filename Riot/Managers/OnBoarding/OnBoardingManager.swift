@@ -48,31 +48,33 @@ final public class OnBoardingManager: NSObject {
             success?()
             return
         }
-        
-//        // Create DM room with Riot-bot
-//        
-//        let httpOperation = self.session.createRoom(name: nil, visibility: .private, alias: nil, topic: nil, invite: [Constants.riotBotMatrixId], invite3PID: nil, isDirect: true, preset: .trustedPrivateChat) { (response) in
-//            
-//            switch response {
-//            case .success(_):
-//                success?()
-//            case .failure(let error):
-//                NSLog("[OnBoardingManager] Create chat with riot-bot failed");
-//                failure?(error)
-//            }
-//        }
-//        
-//        // Make multipe tries, until we get a response
-//        httpOperation.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
 
-        
-        // Create DM room with Riot-bot
+        // Check first that the user homeserver is federated with the  Riot-bot homeserver
+        self.session.matrixRestClient.avatarUrl(forUser: Constants.riotBotMatrixId) { (response) in
 
-        let httpOperation = self.session.createRoom(fromSwift: nil, visibility: kMXRoomDirectoryVisibilityPrivate, roomAlias: nil, topic: nil, invite: [Constants.riotBotMatrixId], invite3PID: nil, isDirect: true, preset: kMXRoomPresetTrustedPrivateChat, success: success, failure: nil)
+            switch response {
+            case .success(_):
 
+                // Create DM room with Riot-bot
+                let httpOperation = self.session.createRoom(name: nil, visibility: .private, alias: nil, topic: nil, invite: [Constants.riotBotMatrixId], invite3PID: nil, isDirect: true, preset: .trustedPrivateChat) { (response) in
 
-        // Make multipe tries, until we get a response
-        httpOperation?.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
+                    switch response {
+                    case .success(_):
+                        success?()
+                    case .failure(let error):
+                        NSLog("[OnBoardingManager] Create chat with riot-bot failed");
+                        failure?(error)
+                    }
+                }
+
+                // Make multipe tries, until we get a response
+                httpOperation.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
+
+            case .failure(let error):
+                NSLog("[OnBoardingManager] riot-bot is unknown or the user hs is non federated. Do not try to create a room with riot-bot");
+                failure?(error)
+            }
+        }
     }
     
     // MARK: - Private
@@ -85,8 +87,7 @@ final public class OnBoardingManager: NSObject {
         var isUSerJoinedARoom = false
         
         for roomSummary in roomSummaries {
-            // if case .join = roomSummary.membership {
-            if case __MXMembershipJoin = roomSummary.membershipFromSwift {
+            if case .join = roomSummary.membership {
                 isUSerJoinedARoom = true
                 break
             }
