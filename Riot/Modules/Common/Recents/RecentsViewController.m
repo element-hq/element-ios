@@ -757,8 +757,10 @@
 {
     // Avoid multiple openings of rooms
     self.userInteractionEnabled = NO;
-
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
+        
+    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession completion:^{
+        self.userInteractionEnabled = YES;
+    }];
 }
 
 // Disable UI interactions in this screen while we are going to open another screen.
@@ -1723,8 +1725,6 @@
                                                       }
 
                                                       [self dispayRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
-                                                      
-                                                      [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:room.roomId andEventId:nil inMatrixSession:self.mainSession];
 
                                                   } failure:^(NSError *error) {
                                                       MXStrongifyAndReturnIfNil(self);

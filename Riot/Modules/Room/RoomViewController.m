@@ -374,8 +374,7 @@
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
-    [self setRoomInputToolbarViewClass];
-    [self updateInputToolBarViewHeight];
+    [self updateRoomInputToolbarViewClassIfNeeded];
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -901,8 +900,7 @@
             // Restore tool bar view and room activities view if none
             if (!self.inputToolbarView)
             {
-                [self setRoomInputToolbarViewClass];
-                [self updateInputToolBarViewHeight];
+                [self updateRoomInputToolbarViewClassIfNeeded];
                 
                 [self refreshRoomInputToolbar];
                 
@@ -934,7 +932,7 @@
 }
 
 // Set the input toolbar according to the current display
-- (void)setRoomInputToolbarViewClass
+- (void)updateRoomInputToolbarViewClassIfNeeded
 {
     Class roomInputToolbarViewClass = RoomInputToolbarView.class;
 
@@ -964,7 +962,12 @@
         roomInputToolbarViewClass = nil;
     }
     
-    [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+    // Change inputToolbarView class only if given class is different from current one
+    if (!self.inputToolbarView || ![self.inputToolbarView isMemberOfClass:roomInputToolbarViewClass])
+    {
+        [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+        [self updateInputToolBarViewHeight];
+    }
 }
 
 // Get the height of the current room input toolbar
@@ -4812,8 +4815,7 @@
         // Update activitiesView with room replacement information
         [self refreshActivitiesViewDisplay];
         // Hide inputToolbarView
-        [self setRoomInputToolbarViewClass];
-        [self updateInputToolBarViewHeight];
+        [self updateRoomInputToolbarViewClassIfNeeded];
     }];
 }
 
@@ -4842,8 +4844,7 @@
             [self refreshActivitiesViewDisplay];
 
             // update inputToolbarView
-            [self setRoomInputToolbarViewClass];
-            [self updateInputToolBarViewHeight];
+            [self updateRoomInputToolbarViewClassIfNeeded];
         }
     }];
 }
