@@ -7,6 +7,9 @@ Improvements:
 * Settings: Make advanced info copyable (#2023).
 * Settings: Made cryptography info copyable, thanks to @daverPL (PR #1999).
 
+Bug fix:
+* Fix missing read receipts when lazy-loading room members.
+
 Changes in 0.7.3 (2018-08-27)
 ===============================================
 
