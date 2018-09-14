@@ -97,11 +97,11 @@
             self->_roomAvatarUrl = peekingRoom.summary.avatar;
 
             self->_roomTopic = [MXTools stripNewlineCharacters:peekingRoom.summary.topic];;
-            self->_roomAliases = self.roomDataSource.roomState.aliases;
+            self->_roomAliases = peekingRoom.summary.aliases;
 
             // Room members count
             // Note that room members presence/activity is not available
-             self->_numJoinedMembers = self.roomDataSource.roomState.membersCount.joined;
+            self->_numJoinedMembers = peekingRoom.summary.membersCount.joined;
 
             completion(YES);
         }];
