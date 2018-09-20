@@ -550,10 +550,6 @@
 "large_badge_value_k_format" = "%.1fK";
 
 // room display name
-"room_displayname_invite_from" = "Invite from %@";
-"room_displayname_room_invite" = "Room Invite";
-"room_displayname_two_members" = "%@ and %@";
-"room_displayname_more_than_two_members" = "%@ and %u others";
 "room_displayname_no_title" = "Empty room";
 
 // Call
