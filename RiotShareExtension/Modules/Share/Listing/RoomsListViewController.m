@@ -129,7 +129,7 @@
     NSString *roomName = recentCellData.roomSummary.displayname;
     if (!roomName.length)
     {
-        roomName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+        roomName = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
     }
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), roomName] message:nil preferredStyle:UIAlertControllerStyleAlert];
