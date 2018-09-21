@@ -6,6 +6,7 @@ Improvements:
 * i18n: Add Spanish (sp).
 * Settings: Make advanced info copyable (#2023).
 * Settings: Made cryptography info copyable, thanks to @daverPL (PR #1999).
+* Room settings: Anyone can now set a room alias (#2033).
 
 Bug fix:
 * Fix missing read receipts when lazy-loading room members.
