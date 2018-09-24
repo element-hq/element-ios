@@ -383,12 +383,6 @@
 "rage_shake_prompt" = "你似乎在沮丧地摇晃手机。您要提交 bug 报告吗？";
 "camera_access_not_granted" = "%@ 没有使用摄像头的权限，请修改隐私设置";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "从 %@ 邀请";
-"room_displayname_room_invite" = "聊天室邀请";
-"room_displayname_two_members" = "%@ 和 %@";
-"room_displayname_more_than_two_members" = "%@ 和 %u 个其他人";
-"room_displayname_no_title" = "空聊天室";
 // Call
 "call_incoming_voice_prompt" = "来自 %@ 的语音通话";
 "call_incoming_video_prompt" = "来自 %@ 的视频通话";

@@ -381,12 +381,6 @@
 "rage_shake_prompt" = "Du scheinst das Gerät frustriert zu schütteln. Möchtest du einen Bug Report senden?";
 "camera_access_not_granted" = "%@ hat keine Berechtigung die Kamera zu nutzen, bitte berechtigen";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Einladung von %@";
-"room_displayname_room_invite" = "Raum-Einladung";
-"room_displayname_two_members" = "%@ und %@";
-"room_displayname_more_than_two_members" = "%@ und %u andere";
-"room_displayname_no_title" = "Leerer Raum";
 // Call
 "call_incoming_voice_prompt" = "Eingehender Sprach-Anruf von %@";
 "call_incoming_video_prompt" = "Eingehender Video-Anruf von %@";

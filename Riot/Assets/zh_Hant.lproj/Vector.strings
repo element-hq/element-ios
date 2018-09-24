@@ -480,12 +480,6 @@
 "do_not_ask_again" = "不再詢問";
 "camera_access_not_granted" = "%@ 沒有使用相機的權限，請修改隱私權設定";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "從 %@ 邀請";
-"room_displayname_room_invite" = "聊天室邀請";
-"room_displayname_two_members" = "%@ 和 %@";
-"room_displayname_more_than_two_members" = "%@ 和 %u 個其他人";
-"room_displayname_no_title" = "空的聊天室";
 // Call
 "call_incoming_voice_prompt" = "來自  %@ 的語音通話";
 "call_incoming_video_prompt" = "來自 %@ 的視訊通話";
