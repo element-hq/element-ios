@@ -19,6 +19,7 @@
 #import "EventFormatter.h"
 
 #import "AvatarGenerator.h"
+#import "Tools.h"
 
 static NSAttributedString *timestampVerticalWhitespace = nil;
 static NSAttributedString *readReceiptVerticalWhitespace = nil;
@@ -194,12 +195,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index && componentString.length)
             {
                 // Apply alpha to blur this component
-                NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
-                UIColor *color = [componentString attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:nil];
-                color = [color colorWithAlphaComponent:0.2];
-                
-                [customComponentString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, customComponentString.length)];
-                componentString = customComponentString;
+                componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
             }
             
             // Check whether the timestamp is displayed for this component, and check whether a vertical whitespace is required
@@ -238,12 +234,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index && componentString.length)
             {
                 // Apply alpha to blur this component
-                NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
-                UIColor *color = [componentString attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:nil];
-                color = [color colorWithAlphaComponent:0.2];
-                
-                [customComponentString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, customComponentString.length)];
-                componentString = customComponentString;
+                componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
             }
             
             // Check whether the timestamp is displayed

@@ -9,7 +9,8 @@ Improvements:
 * Room settings: Anyone can now set a room alias (#2033).
 
 Bug fix:
-* Fix missing read receipts when lazy-loading room members.
+* Fix missing read receipts when lazy-loading room members.]
+* Weird text color when selecting a message (#2046).
 
 Changes in 0.7.3 (2018-08-27)
 ===============================================
