@@ -66,7 +66,7 @@
         self.roomTitleLabel.text = roomCellData.roomSummary.displayname;
         if (!self.roomTitleLabel.text.length)
         {
-            self.roomTitleLabel.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+            self.roomTitleLabel.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
         }  
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.isDirect;

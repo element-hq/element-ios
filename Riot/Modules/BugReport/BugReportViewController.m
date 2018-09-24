@@ -304,6 +304,9 @@
     userInfo[@"default_app_language"] = [[NSBundle mainBundle] preferredLocalizations][0]; // The language chosen by the OS
     userInfo[@"app_language"] = [NSBundle mxk_language] ? [NSBundle mxk_language] : userInfo[@"default_app_language"]; // The language chosen by the user
 
+    // Application settings
+    userInfo[@"lazy_loading"] = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers ? @"ON" : @"OFF";
+
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
