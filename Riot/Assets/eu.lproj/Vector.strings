@@ -54,8 +54,8 @@
 "auth_user_name_placeholder" = "Erabiltzaile-izena";
 "auth_add_email_message" = "Gehitu e-mail helbide bat zure kontura erabiltzaileek zu aurkitzea baimentzeko, eta zuk pasahitza berrezarri ahal izateko.";
 "auth_add_phone_message" = "Gehitu telefono zenbaki bat zure kontura beste erabiltzaileek zu aurkitzea ahalbidetzeko.";
-"auth_optional_email_placeholder" = "E-mail helbidea (aukerazkoa)";
-"auth_optional_phone_placeholder" = "Telefono zenbakia (aukerazkoa)";
+"auth_optional_email_placeholder" = "E-mail helbidea (aukerakoa)";
+"auth_optional_phone_placeholder" = "Telefono zenbakia (aukerakoa)";
 "auth_repeat_password_placeholder" = "Errepikatu pasahitza";
 "auth_repeat_new_password_placeholder" = "Berretsi zure pasahitza";
 "auth_invalid_login_param" = "Erabiltzaile-izen eta/edo pasahitz okerra";
@@ -227,7 +227,7 @@
 "auth_reset_password_error_not_found" = "Zure e-mail helbidea ez dago antza hasiera zerbitzari honetako Matrix ID batekin lotuta.";
 "room_creation_account" = "Kontua";
 "room_creation_appearance" = "Itxura";
-"room_creation_appearance_picture" = "Txateko irudia (aukerazkoa)";
+"room_creation_appearance_picture" = "Txateko irudia (aukerakoa)";
 "room_creation_privacy" = "Pribatutasuna";
 "room_creation_private_room" = "Txat hau pribatua da";
 "room_creation_public_room" = "Txat hau publikoa da";
