@@ -10,6 +10,7 @@ Improvements:
 
 Bug fix:
 * Fix missing read receipts when lazy-loading room members.
+* Weird text color when selecting a message (#2046).
 
 Changes in 0.7.3 (2018-08-27)
 ===============================================
