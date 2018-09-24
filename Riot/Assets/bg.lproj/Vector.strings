@@ -454,12 +454,6 @@
 "do_not_ask_again" = "Не питай отново";
 "camera_access_not_granted" = "%@ няма разрешение да използва камерата. Моля, проверете настройките за сигурност";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Покана от %@";
-"room_displayname_room_invite" = "Покана за стая";
-"room_displayname_two_members" = "%@ и %@";
-"room_displayname_more_than_two_members" = "%@ и %u други";
-"room_displayname_no_title" = "Празна стая";
 // Call
 "call_incoming_voice_prompt" = "Входящо гласово повикване от %@";
 "call_incoming_video_prompt" = "Входящо видео повикване от %@";

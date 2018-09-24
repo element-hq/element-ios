@@ -418,12 +418,6 @@
 "do_not_ask_again" = "Ne plus demander";
 "camera_access_not_granted" = "%@ n'a pas la permission pour utiliser l'appareil photo, veuillez modifier les options de vie privée";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Invitation de %@";
-"room_displayname_room_invite" = "Invitation sur un salon";
-"room_displayname_two_members" = "%@ et %@";
-"room_displayname_more_than_two_members" = "%@ et %u autres";
-"room_displayname_no_title" = "Salon vide";
 // Call
 "call_incoming_voice_prompt" = "Appel vocal entrant de %@";
 "call_incoming_video_prompt" = "Appel vidéo entrant de %@";

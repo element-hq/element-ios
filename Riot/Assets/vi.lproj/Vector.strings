@@ -420,12 +420,6 @@
 "do_not_ask_again" = "Đừng hỏi lại";
 "camera_access_not_granted" = "%@ không có quyền để sử dụng máy ảnh, vui lòng thay đổi thiết lập riêng tư";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Mời từ %@";
-"room_displayname_room_invite" = "Phòng mời";
-"room_displayname_two_members" = "%@ và %@";
-"room_displayname_more_than_two_members" = "%@ và %u người khác";
-"room_displayname_no_title" = "Phòng trống";
 // Call
 "call_incoming_voice_prompt" = "Cuộc gọi thoại đến từ %@";
 "call_incoming_video_prompt" = "Cuộc gọi video đến từ %@";
