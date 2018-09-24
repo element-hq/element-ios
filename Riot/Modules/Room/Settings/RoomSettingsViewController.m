@@ -707,7 +707,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         
         // Check whether the user is allowed to modify the main address.
-        if (roomAddressNewAliasIndex != -1)
+        if ([self canSetCanonicalAlias])
         {
             // Compare the selected alias with the current main address
             NSString *currentCanonicalAlias = mxRoomState.canonicalAlias;
@@ -791,23 +791,21 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            
                                                        }]];
         
-        // Check whether the user is allowed to remove a room alias.
-        if (roomAddressNewAliasIndex != -1)
-        {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                                   
-                                                                   [self removeRoomAlias:roomAliasLabel.text];
-                                                               }
-                                                               
-                                                           }]];
-        }
+        // The user can only delete alias they has created, even if the Admin has set it as canonical.
+        // So, let the server answer if it's possible to delete an alias.
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               self->currentAlert = nil;
+
+                                                               [self removeRoomAlias:roomAliasLabel.text];
+                                                           }
+
+                                                       }]];
         
         [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                          style:UIAlertActionStyleCancel
@@ -1964,18 +1962,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         roomAddressNewAliasIndex = -1;
         
         count = (localAddressesCount ? roomAddresses.count : roomAddresses.count + 1);
-        
-        if (self.mainSession)
-        {
-            // Check user's power level to know whether the user is allowed to add room alias
-            MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
-            NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
-            
-            if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomAliases])
-            {
-                roomAddressNewAliasIndex = count++;
-            }
-        }
+
+        // Everyone can add an alias: display the "add address" entry
+        roomAddressNewAliasIndex = count++;
     }
     else if (section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX)
     {
@@ -2786,8 +2775,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         if (localAddressesCount != 0 || indexPath.row != 0)
         {
-            // The user is allowed to remove a room alias only if he is allowed to create alias too.
-            return (roomAddressNewAliasIndex != -1);
+            // The user can only delete alias they has created, even if the Admin has set it as canonical.
+            // So, let the server answer if it's possible to delete an alias.
+            return YES;
         }
     }
     else if (indexPath.section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX && indexPath.row != relatedGroupsNewGroupIndex)
@@ -3216,6 +3206,24 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     }
+}
+
+- (BOOL)canSetCanonicalAlias
+{
+    BOOL canSetCanonicalAlias = NO;
+    if (self.mainSession)
+    {
+        // Check user's power level to know whether the user is allowed to set the main address
+        MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
+        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+
+        if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomAliases])
+        {
+            canSetCanonicalAlias = YES;
+        }
+    }
+
+    return canSetCanonicalAlias;
 }
 
 - (void)shouldRemoveCanonicalAlias:(void (^)())didRemoveCanonicalAlias
