@@ -2059,7 +2059,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers;
+
+            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            labelAndSwitchCell.mxkSwitch.on = account.mxSession.syncWithLazyLoadOfRoomMembers;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2924,54 +2926,43 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [self startActivityIndicator];
 
             // Check the user homeserver supports lazy-loading
-            MXSession* session = [AppDelegate theDelegate].mxSessions.firstObject;
+            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
             MXWeakify(self);
-            void(^onFailure)(NSError *) = ^(NSError *error) {
+            [account supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
                 MXStrongifyAndReturnIfNil(self);
 
-                [switchButton setOn:NO animated:YES];
-                switchButton.enabled = YES;
-                [self stopActivityIndicator];
-
-                // No support of lazy-loading, do not engage it and warn the user
-                [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-                self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                         message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
-                                                                  preferredStyle:UIAlertControllerStyleAlert];
-
-                MXWeakify(self);
-                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                       style:UIAlertActionStyleDefault
-                                                                     handler:^(UIAlertAction * action) {
-                                                                         MXStrongifyAndReturnIfNil(self);
-                                                                         self->currentAlert = nil;
-                                                                     }]];
-
-                [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
-                [self presentViewController:self->currentAlert animated:YES completion:nil];
-            };
-
-            // Check first the home server supports m.lazy_load_members
-            [session supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
-
-                if (matrixVersions.supportLazyLoadMembers)
+                if (supportLazyLoadOfRoomMembers)
                 {
-                    // Check then, we can create a LL filter on it
-                    [session setFilter:[MXFilterJSONModel syncFilterForLazyLoading] success:^(NSString *filterId) {
-
-                        // Lazy-loading is fully supported, enable it
-                        [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
-                        [self launchClearCache];
-
-                    } failure:onFailure];
+                    // Lazy-loading is fully supported, enable it
+                    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
+                    [self launchClearCache];
                 }
                 else
                 {
-                    onFailure(nil);
+                    [switchButton setOn:NO animated:YES];
+                    switchButton.enabled = YES;
+                    [self stopActivityIndicator];
+
+                    // No support of lazy-loading, do not engage it and warn the user
+                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+                    MXWeakify(self);
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                           style:UIAlertActionStyleDefault
+                                                                         handler:^(UIAlertAction * action) {
+                                                                             MXStrongifyAndReturnIfNil(self);
+                                                                             self->currentAlert = nil;
+                                                                         }]];
+
+                    [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
+                    [self presentViewController:self->currentAlert animated:YES completion:nil];
                 }
-            } failure:onFailure];
+            }];
         }
     }
 }
