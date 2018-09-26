@@ -69,6 +69,26 @@
     return self;
 }
 
+- (void)finalizeInitialization
+{
+    [super finalizeInitialization];
+
+    // Sadly, we need to make sure we have fetched all room members from the HS
+    // to be able to display read receipts
+    if (![self.mxSession.store hasLoadedAllRoomMembersForRoom:self.roomId])
+    {
+        [self.room members:^(MXRoomMembers *roomMembers) {
+            NSLog(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
+
+            // Refresh the full table
+            [self.delegate dataSource:self didCellChange:nil];
+
+        } failure:^(NSError *error) {
+            NSLog(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
+        }];
+    }
+}
+
 - (void)updateEventFormatter
 {
     // Set a new event formatter

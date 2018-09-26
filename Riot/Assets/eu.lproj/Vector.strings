@@ -54,8 +54,8 @@
 "auth_user_name_placeholder" = "Erabiltzaile-izena";
 "auth_add_email_message" = "Gehitu e-mail helbide bat zure kontura erabiltzaileek zu aurkitzea baimentzeko, eta zuk pasahitza berrezarri ahal izateko.";
 "auth_add_phone_message" = "Gehitu telefono zenbaki bat zure kontura beste erabiltzaileek zu aurkitzea ahalbidetzeko.";
-"auth_optional_email_placeholder" = "E-mail helbidea (aukerazkoa)";
-"auth_optional_phone_placeholder" = "Telefono zenbakia (aukerazkoa)";
+"auth_optional_email_placeholder" = "E-mail helbidea (aukerakoa)";
+"auth_optional_phone_placeholder" = "Telefono zenbakia (aukerakoa)";
 "auth_repeat_password_placeholder" = "Errepikatu pasahitza";
 "auth_repeat_new_password_placeholder" = "Berretsi zure pasahitza";
 "auth_invalid_login_param" = "Erabiltzaile-izen eta/edo pasahitz okerra";
@@ -131,8 +131,6 @@
 "room_event_action_report_prompt_ignore_user" = "Erabiltzaile honen mezu guztiak  ezkutatu nahi dituzu?";
 "room_event_action_cancel_upload" = "Utzi igoera";
 "room_event_action_cancel_download" = "Utzi deskarga";
-"room_displayname_room_invite" = "Gela gonbidapena";
-"room_displayname_no_title" = "Gela hutsa";
 "room_participants_filter_room_members" = "Iragazi gelako kideak";
 "room_recents_conversations_section" = "GELAK";
 "room_recents_people_section" = "JENDEA";
@@ -227,7 +225,7 @@
 "auth_reset_password_error_not_found" = "Zure e-mail helbidea ez dago antza hasiera zerbitzari honetako Matrix ID batekin lotuta.";
 "room_creation_account" = "Kontua";
 "room_creation_appearance" = "Itxura";
-"room_creation_appearance_picture" = "Txateko irudia (aukerazkoa)";
+"room_creation_appearance_picture" = "Txateko irudia (aukerakoa)";
 "room_creation_privacy" = "Pribatutasuna";
 "room_creation_private_room" = "Txat hau pribatua da";
 "room_creation_public_room" = "Txat hau publikoa da";
@@ -398,16 +396,12 @@
 "public_room_section_title" = "Gela publikoak (%@ zerbitzarian):";
 "camera_access_not_granted" = "%@(e)k ez du kamera erabiltzeko baimenik, aldatu pribatutasun ezarpenak";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Gonbidatu %@ gelatik";
 "auth_add_email_and_phone_warning" = "E-maila eta telefono zenbakia aldi berean erabiliz erregistratzea ez da onartzen APIa ez dagoen bitartean. Telefono zenbakia besterik ez da hartu aintzat. E-maila zure profilera gehitu dezakezu ezarpenetan.";
 "room_participants_remove_third_party_invite_msg" = "Hirugarrengoen gonbidapenak kentzea ez da onartzen APIa ez dagoen bitartean";
 "settings_sign_out_e2e_warn" = "Zure muturretik muturrerako zifratze gakoak galduko dituzu. Horrek esan nahi du ezin izango dituzula mezu zaharrak irakurri zifratutako geletan gailu honetatik.";
 "settings_global_settings_info" = "Jakinarazpen orokorren ezarpenak eskuragarri daude zure %@ web bezeroan";
 "settings_on_denied_notification" = "Jakinarazpenak ukatu dira %@(e)n, baimendu zure gailuaren ezarpenetan";
 "room_details_history_section_prompt_msg" = "Historiala nork irakurri dezakeen aldatzea gelak honetara aurrerantzean bidalitako mezuei besterik ez zaie aplikatuako. Badagoen historialaren ikusgaitasuna ez da aldatuko.";
-"room_displayname_two_members" = "%@ eta %@";
-"room_displayname_more_than_two_members" = "%@ eta beste %u";
 // Call
 "call_incoming_voice_prompt" = "%@ erabiltzailearen deia jasotzen";
 "call_incoming_video_prompt" = "%@ erabiltzailearen bideo-deia jasotzen";
@@ -555,3 +549,8 @@
 "settings_labs_room_members_lazy_loading" = "Gelako kideen karga alferra";
 "settings_labs_room_members_lazy_loading_error_message" = "Zure hasiera zerbitzariak ez du onartzen gelako kideen karga alferra. Saiatu geroago.";
 "room_event_action_view_decrypted_source" = "Ikusi deszifratutako iturria";
+"room_recents_server_notice_section" = "SISTEMAKO ALERTAK";
+"room_resource_limit_exceeded_message_contact_1" = " Mesedez ";
+"room_resource_limit_exceeded_message_contact_2_link" = "Jarri zure zerbitzuaren administratzailearekin kontaktuan";
+"room_resource_limit_exceeded_message_contact_3" = " zerbitzu hau erabiltzen jarraitzeko.";
+"homeserver_connection_lost" = "Ezin izan da hasiera zerbitzarira konektatu.";

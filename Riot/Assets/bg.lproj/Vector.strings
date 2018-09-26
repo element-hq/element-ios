@@ -189,8 +189,8 @@
 "room_participants_action_remove" = "Премахни от тази стая";
 "room_participants_action_ban" = "Блокирай в тази стая";
 "room_participants_action_unban" = "Отблокирай";
-"room_participants_action_ignore" = "Скрий всички съобщения от този потребител";
-"room_participants_action_unignore" = "Покажи всички съобщения от този потребител";
+"room_participants_action_ignore" = "Скрий всички съобщения от потребителя";
+"room_participants_action_unignore" = "Покажи всички съобщения от потребителя";
 "room_participants_action_set_moderator" = "Направи модератор";
 "room_participants_action_set_admin" = "Направи администратор";
 "room_participants_action_start_new_chat" = "Започни нов чат";
@@ -454,12 +454,6 @@
 "do_not_ask_again" = "Не питай отново";
 "camera_access_not_granted" = "%@ няма разрешение да използва камерата. Моля, проверете настройките за сигурност";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Покана от %@";
-"room_displayname_room_invite" = "Покана за стая";
-"room_displayname_two_members" = "%@ и %@";
-"room_displayname_more_than_two_members" = "%@ и %u други";
-"room_displayname_no_title" = "Празна стая";
 // Call
 "call_incoming_voice_prompt" = "Входящо гласово повикване от %@";
 "call_incoming_video_prompt" = "Входящо видео повикване от %@";
@@ -552,3 +546,8 @@
 "settings_labs_room_members_lazy_loading" = "Постепенно зареждане на членовете в стаи";
 "settings_labs_room_members_lazy_loading_error_message" = "Сървърът Ви все още не поддържа постепенно зареждане на членовете в стаи. Опитайте по-късно.";
 "room_event_action_view_decrypted_source" = "Прегледай разшифрования източник";
+"room_recents_server_notice_section" = "СИСТЕМНИ УВЕДОМЛЕНИЯ";
+"room_resource_limit_exceeded_message_contact_1" = " Моля, ";
+"room_resource_limit_exceeded_message_contact_2_link" = "свържете се с администратора на услугата,";
+"room_resource_limit_exceeded_message_contact_3" = " за да продължите да я използвате.";
+"homeserver_connection_lost" = "Неуспешна връзка със сървъра.";

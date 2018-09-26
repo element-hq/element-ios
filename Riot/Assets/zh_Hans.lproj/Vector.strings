@@ -202,7 +202,7 @@
 "room_event_action_more" = "移动";
 "room_event_action_share" = "分享";
 "room_event_action_permalink" = "永久链接";
-"room_event_action_view_source" = "查看源";
+"room_event_action_view_source" = "查看源数据";
 "room_event_action_report" = "报告内容";
 "room_event_action_report_prompt_reason" = "报告内容的原因";
 "room_event_action_report_prompt_ignore_user" = "你想隐藏所有来自此用户的消息吗？";
@@ -383,12 +383,6 @@
 "rage_shake_prompt" = "你似乎在沮丧地摇晃手机。您要提交 bug 报告吗？";
 "camera_access_not_granted" = "%@ 没有使用摄像头的权限，请修改隐私设置";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "从 %@ 邀请";
-"room_displayname_room_invite" = "聊天室邀请";
-"room_displayname_two_members" = "%@ 和 %@";
-"room_displayname_more_than_two_members" = "%@ 和 %u 个其他人";
-"room_displayname_no_title" = "空聊天室";
 // Call
 "call_incoming_voice_prompt" = "来自 %@ 的语音通话";
 "call_incoming_video_prompt" = "来自 %@ 的视频通话";
@@ -502,3 +496,27 @@
 "widget_creation_failure" = "小部件创建失败";
 // Room key request dialog
 "e2e_room_key_request_title" = "密钥共享请求";
+"room_recents_server_notice_section" = "系统警告";
+"room_message_reply_to_placeholder" = "发送回复（未加密）…";
+"encrypted_room_message_reply_to_placeholder" = "发送加密回复…";
+"room_message_reply_to_short_placeholder" = "发送回复…";
+"room_event_action_view_decrypted_source" = "查看经过解密的源数据";
+"room_action_send_photo_or_video" = "发送照片或视频";
+"room_action_send_sticker" = "发送贴纸";
+"room_resource_limit_exceeded_message_contact_1" = " 请 ";
+"room_resource_limit_exceeded_message_contact_2_link" = "联系您的服务管理员";
+"room_resource_limit_exceeded_message_contact_3" = " 以继续使用本服务。";
+"settings_deactivate_account" = "注销账户";
+"settings_labs_room_members_lazy_loading" = "延迟加载聊天室成员";
+"settings_labs_room_members_lazy_loading_error_message" = "您的主服务器尚不支持延迟加载聊天室成员。请稍后再试。";
+"settings_deactivate_my_account" = "注销我的账户";
+"event_formatter_jitsi_widget_added" = "";
+"event_formatter_rerequest_keys_part1_link" = "重新请求加密密钥";
+"event_formatter_rerequest_keys_part2" = " （从您的其他设备中）。";
+"homeserver_connection_lost" = "无法连接至主服务器。";
+"call_jitsi_error" = "电话会议加入失败。";
+"deactivate_account_forget_messages_information_part2_emphasize" = "警告";
+"deactivate_account_validate_action" = "注销账户";
+"deactivate_account_password_alert_title" = "注销账户";
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "请求已发送";

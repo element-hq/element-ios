@@ -368,12 +368,6 @@
 "rage_shake_prompt" = "Вы потрясли свой телефон и нам показалось, что вы в отчаянии от использования Riot. Хотите отправить отчет об ошибке?";
 "camera_access_not_granted" = "%@ не имеет разрешения на использование камеры, пожалуйста, измените настройки конфиденциальности";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Приглашение от %@";
-"room_displayname_room_invite" = "Приглашение в комнату";
-"room_displayname_two_members" = "%@ и %@";
-"room_displayname_more_than_two_members" = "%@ и %u другие";
-"room_displayname_no_title" = "Пустая комната";
 // Call
 "call_incoming_voice_prompt" = "Входящий голосовой вызов от %@";
 "call_incoming_video_prompt" = "Входящий видеозвонок от %@";
@@ -551,3 +545,7 @@
 "room_replacement_link" = "Этот разговор продолжается здесь.";
 "room_predecessor_information" = "Эта комната является продолжением другого разговора.";
 "room_predecessor_link" = "Нажмите здесь, чтобы просмотреть старые сообщения.";
+"room_recents_server_notice_section" = "СИСТЕМНЫЕ ПРЕДУПРЕЖДЕНИЯ";
+"room_resource_limit_exceeded_message_contact_1" = " Пожалуйста ";
+"room_resource_limit_exceeded_message_contact_2_link" = "обратитесь к администратору сервиса";
+"room_resource_limit_exceeded_message_contact_3" = " для продолжения его использования.";

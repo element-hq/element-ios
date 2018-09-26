@@ -273,6 +273,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
     [self.tableView registerClass:GroupTableViewCellWithSwitch.class forCellReuseIdentifier:[GroupTableViewCellWithSwitch defaultReuseIdentifier]];
+    [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -1352,6 +1353,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return cell;
 }
 
+- (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
+    
+    textViewCell.mxkTextView.textColor = kRiotPrimaryTextColor;
+    textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
+    textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextView.accessibilityIdentifier = nil;
+    
+    return textViewCell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
@@ -1865,14 +1880,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
-        MXKTableViewCell *configCell = [self getDefaultTableViewCell:tableView];
+        MXKTableViewCellWithTextView *configCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
         
         NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@", [NSBundle mxk_localizedStringForKey:@"settings_config_user_id"], [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
         
-        configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
-        configCell.textLabel.numberOfLines = 0;
-        configCell.textLabel.accessibilityIdentifier=@"SettingsVCConfigStaticText";
-        configCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        configCell.mxkTextView.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
+        configCell.mxkTextView.accessibilityIdentifier=@"SettingsVCConfigStaticText";
         
         cell = configCell;
     }
@@ -2046,7 +2059,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers;
+
+            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            labelAndSwitchCell.mxkSwitch.on = account.mxSession.syncWithLazyLoadOfRoomMembers;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2132,12 +2147,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         if (row == CRYPTOGRAPHY_INFO_INDEX)
         {
-            MXKTableViewCell *cryptoCell = [self getDefaultTableViewCell:tableView];
-
-            cryptoCell.textLabel.attributedText = [self cryptographyInformation];
-            cryptoCell.textLabel.numberOfLines = 0;
+            MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
             
-            cryptoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
 
             cell = cryptoCell;
         }
@@ -2914,54 +2926,43 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [self startActivityIndicator];
 
             // Check the user homeserver supports lazy-loading
-            MXSession* session = [AppDelegate theDelegate].mxSessions.firstObject;
+            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
             MXWeakify(self);
-            void(^onFailure)(NSError *) = ^(NSError *error) {
+            [account supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
                 MXStrongifyAndReturnIfNil(self);
 
-                [switchButton setOn:NO animated:YES];
-                switchButton.enabled = YES;
-                [self stopActivityIndicator];
-
-                // No support of lazy-loading, do not engage it and warn the user
-                [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-                self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                         message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
-                                                                  preferredStyle:UIAlertControllerStyleAlert];
-
-                MXWeakify(self);
-                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                       style:UIAlertActionStyleDefault
-                                                                     handler:^(UIAlertAction * action) {
-                                                                         MXStrongifyAndReturnIfNil(self);
-                                                                         self->currentAlert = nil;
-                                                                     }]];
-
-                [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
-                [self presentViewController:self->currentAlert animated:YES completion:nil];
-            };
-
-            // Check first the home server supports m.lazy_load_members
-            [session supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
-
-                if (matrixVersions.supportLazyLoadMembers)
+                if (supportLazyLoadOfRoomMembers)
                 {
-                    // Check then, we can create a LL filter on it
-                    [session setFilter:[MXFilterJSONModel syncFilterForLazyLoading] success:^(NSString *filterId) {
-
-                        // Lazy-loading is fully supported, enable it
-                        [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
-                        [self launchClearCache];
-
-                    } failure:onFailure];
+                    // Lazy-loading is fully supported, enable it
+                    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
+                    [self launchClearCache];
                 }
                 else
                 {
-                    onFailure(nil);
+                    [switchButton setOn:NO animated:YES];
+                    switchButton.enabled = YES;
+                    [self stopActivityIndicator];
+
+                    // No support of lazy-loading, do not engage it and warn the user
+                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+                    MXWeakify(self);
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                           style:UIAlertActionStyleDefault
+                                                                         handler:^(UIAlertAction * action) {
+                                                                             MXStrongifyAndReturnIfNil(self);
+                                                                             self->currentAlert = nil;
+                                                                         }]];
+
+                    [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
+                    [self presentViewController:self->currentAlert animated:YES completion:nil];
                 }
-            } failure:onFailure];
+            }];
         }
     }
 }

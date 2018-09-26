@@ -44,7 +44,7 @@
             self.roomNameLabel.text = room.summary.displayname;
             if (!self.roomNameLabel.text.length)
             {
-                self.roomNameLabel.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+                self.roomNameLabel.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
             }
         }
         else

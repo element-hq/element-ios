@@ -101,7 +101,7 @@
             roomDisplayName = room.summary.displayname;
             if (!roomDisplayName.length)
             {
-                roomDisplayName = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+                roomDisplayName = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
             }
         }
         else

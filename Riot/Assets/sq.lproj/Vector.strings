@@ -354,11 +354,6 @@
 "network_offline_prompt" = "Lidhja Internet duket se është jashtë linje.";
 "public_room_section_title" = "Dhoma Publike (at %@):";
 "do_not_ask_again" = "Mos pyet sërish";
-// room display name
-"room_displayname_invite_from" = "Ftesë nga %@";
-"room_displayname_room_invite" = "Ftesë Dhome";
-"room_displayname_more_than_two_members" = "%@ dhe %u të tjerë";
-"room_displayname_no_title" = "Dhomë e zbrazët";
 // Call
 "call_incoming_voice_prompt" = "Thirrje audio ardhëse nga %@";
 "call_incoming_video_prompt" = "Thirrje video ardhëse nga %@";

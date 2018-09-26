@@ -259,9 +259,6 @@
 "network_offline_prompt" = "Internettenging virðist vera ótengd.";
 "do_not_ask_again" = "Ekki spyrja aftur";
 "large_badge_value_k_format" = "%.1fK";
-"room_displayname_two_members" = "%@ og %@";
-"room_displayname_more_than_two_members" = "%@ og %u til viðbótar";
-"room_displayname_no_title" = "Tóm spjallrás";
 // Call
 "call_incoming_voice_prompt" = "Innhringing raddsamtals frá %@";
 "call_incoming_video_prompt" = "Innhringing myndsamtals frá %@";
@@ -425,9 +422,6 @@
 "directory_server_type_homeserver" = "Skrifaðu heimanetþjón til að telja upp opinberar spjallrásir á";
 "bug_report_prompt" = "Forritið hrundi síðast. Myndirðu vilja senda inn villuskýrslu?";
 "rage_shake_prompt" = "Það er eins og þú sért að hrista símann ákveðið. Myndirðu vilja senda villuskýrslu?";
-// room display name
-"room_displayname_invite_from" = "Boð frá %@";
-"room_displayname_room_invite" = "Boð á spjallrás";
 "call_jitsi_error" = "Mistókst að taka þátt í símafundi.";
 "bug_report_description" = "Lýstu villunni. Hvað varstu að gera? Hverju áttirðu von á? Hvað gerðist í raun?";
 "bug_crash_report_description" = "Lýstu því hvað þú varst að gera þegar forritið hrundi (á ensku):";

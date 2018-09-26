@@ -457,12 +457,6 @@
 "do_not_ask_again" = "No preguntar més";
 "camera_access_not_granted" = "%@ no té permís per usar la càmera, si us plau canvia els ajustos de privacitat";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Convidat des de %@";
-"room_displayname_room_invite" = "Convida a la sala";
-"room_displayname_two_members" = "%@ i %@";
-"room_displayname_more_than_two_members" = "%@ i %u més";
-"room_displayname_no_title" = "Sala buida";
 // Call
 "call_incoming_voice_prompt" = "Trucada de veu entrant de %@";
 "call_incoming_video_prompt" = "Trucada de vídeo entrant de %@";

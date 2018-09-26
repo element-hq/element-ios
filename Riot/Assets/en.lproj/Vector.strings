@@ -549,13 +549,6 @@
 "camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
 "large_badge_value_k_format" = "%.1fK";
 
-// room display name
-"room_displayname_invite_from" = "Invite from %@";
-"room_displayname_room_invite" = "Room Invite";
-"room_displayname_two_members" = "%@ and %@";
-"room_displayname_more_than_two_members" = "%@ and %u others";
-"room_displayname_no_title" = "Empty room";
-
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";
 "call_incoming_video_prompt" = "Incoming video call from %@";

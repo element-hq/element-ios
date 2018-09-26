@@ -1,3 +1,18 @@
+Changes in 0.7.4 (2018-09-26)
+===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.8.4).
+* Lazy loading: Enable it by default (if the homeserver supports it).
+* i18n: Add Spanish (sp).
+* Settings: Make advanced info copyable (#2023).
+* Settings: Made cryptography info copyable, thanks to @daverPL (PR #1999).
+* Room settings: Anyone can now set a room alias (#2033).
+
+Bug fix:
+* Fix missing read receipts when lazy-loading room members.
+* Weird text color when selecting a message (#2046).
+
 Changes in 0.7.3 (2018-08-27)
 ===============================================
 

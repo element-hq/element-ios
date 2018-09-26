@@ -418,12 +418,6 @@
 "do_not_ask_again" = "Ne plus demander";
 "camera_access_not_granted" = "%@ n'a pas la permission pour utiliser l'appareil photo, veuillez modifier les options de vie privée";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Invitation de %@";
-"room_displayname_room_invite" = "Invitation sur un salon";
-"room_displayname_two_members" = "%@ et %@";
-"room_displayname_more_than_two_members" = "%@ et %u autres";
-"room_displayname_no_title" = "Salon vide";
 // Call
 "call_incoming_voice_prompt" = "Appel vocal entrant de %@";
 "call_incoming_video_prompt" = "Appel vidéo entrant de %@";
@@ -553,3 +547,8 @@
 "settings_labs_room_members_lazy_loading" = "Chargement différé des participants des salons";
 "settings_labs_room_members_lazy_loading_error_message" = "Votre serveur d'accueil ne prend pas en charge le chargement différé des participants des salons. Réessayez plus tard.";
 "room_event_action_view_decrypted_source" = "Voir la source déchiffrée";
+"room_recents_server_notice_section" = "ALERTES SYSTÈME";
+"room_resource_limit_exceeded_message_contact_1" = " Veuillez ";
+"room_resource_limit_exceeded_message_contact_2_link" = "contacter l'administrateur de votre service";
+"room_resource_limit_exceeded_message_contact_3" = " pour continuer à l'utiliser.";
+"homeserver_connection_lost" = "Connexion impossible au serveur d'accueil.";

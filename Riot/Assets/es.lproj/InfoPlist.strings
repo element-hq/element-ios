@@ -1,0 +1,5 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "La cámara se utiliza para tomar fotos y vídeos, realizar llamadas de vídeo.";
+"NSPhotoLibraryUsageDescription" = "La biblioteca de fotos se utiliza para enviar fotos y vídeos.";
+"NSMicrophoneUsageDescription" = "El micrófono se utiliza para tomar vídeos, realizar llamadas.";
+"NSContactsUsageDescription" = "Para mostrarte cuáles de tus contactos ya utilizan Riot o Matrix, podemos enviar las direcciones de correo electrónico y números telefónicos de tu agenda de contactos a tu Servidor de Identidad de Matrix. New Vector no almacena estos datos ni los utiliza para ningún otro propósito. Para obtener más información, por favor consulta la página de política de privacidad en los ajustes de la aplicación.";

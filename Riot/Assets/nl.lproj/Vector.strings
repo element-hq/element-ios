@@ -404,12 +404,6 @@
 "rage_shake_prompt" = "Het ziet er naar uit dat je de telefoon in frustratie schudt. Wil je een foutmelding indienen?";
 "camera_access_not_granted" = "%@ heeft geen permission om de Camera te gebruiken, verander de privacy instellingen";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Uitnodiging van %@";
-"room_displayname_room_invite" = "Ruimte Uitnodiging";
-"room_displayname_two_members" = "%@ en %@";
-"room_displayname_more_than_two_members" = "%@ en %u anderen";
-"room_displayname_no_title" = "Lege ruimte";
 // Call
 "call_incoming_voice_prompt" = "Inkomende spraakoproep van %@";
 "call_incoming_video_prompt" = "Inkomende video oproep van %@";
@@ -570,3 +564,6 @@
 "deactivate_account_password_alert_title" = "Account deactiveren";
 "deactivate_account_password_alert_message" = "Voer je wachtwoord in om verder te gaan";
 "room_event_action_view_decrypted_source" = "Bekijk ontsleutelde bron";
+"room_message_reply_to_placeholder" = "Verstuur een antwoord (onversleuteld)…";
+"encrypted_room_message_reply_to_placeholder" = "Verstuur een versleuteld antwoord…";
+"room_message_reply_to_short_placeholder" = "Verstuur een antwoord…";
