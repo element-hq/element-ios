@@ -32,12 +32,12 @@ private_lane :xcargs_app_versioning do
   xcargs = ""
   
   if git_branch
-    xcargs << " GIT_BRANCH=" + git_branch
+    xcargs << " GIT_BRANCH='" + git_branch + "'"
   end
 
   # Jenkins build number
   if ENV["$BUILD_NUMBER"]
-    xcargs << " BUILD_NUMBER=" + ENV["$BUILD_NUMBER"]  
+    xcargs << " BUILD_NUMBER='" + ENV["$BUILD_NUMBER"] + "'"
   end
   
   xcargs 
