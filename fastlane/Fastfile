@@ -1,0 +1,45 @@
+
+
+desc "Test"
+lane :test do
+  UI.message "[Test] xcargs_app_versioning:" + xcargs_app_versioning
+end
+
+
+desc "Builds (and submits) an ipa for the App Store"
+lane :release do
+  
+  build_app(export_options: {
+    method: "app-store",
+    # Naming each provining profiles is required :/
+    provisioningProfiles: { 
+    "im.vector.app" => "Vector App Store",
+    "im.vector.app.shareExtension" => "Vector Share Extension: App Store",
+    "im.vector.app.SiriIntents" => "Vector Siri Intents: App Store"
+    },
+  },
+  # Inject app version in the code
+  xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(GCC_PREPROCESSOR_DEFINITIONS)" + xcargs_app_versioning + "'"
+  )
+  
+  # TODO: To test
+  #upload_to_testflight
+  
+end
+
+
+desc "Returns version identifiers to inject in GCC_PREPROCESSOR_DEFINITIONS"
+private_lane :xcargs_app_versioning do
+  xcargs = ""
+  
+  if git_branch
+    xcargs << " GIT_BRANCH=" + git_branch
+  end
+
+  # Jenkins build number
+  if ENV["$BUILD_NUMBER"]
+    xcargs << " BUILD_NUMBER=" + ENV["$BUILD_NUMBER"]
+  end
+  
+  xcargs 
+end
