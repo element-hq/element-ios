@@ -17,9 +17,10 @@ lane :release do
     "im.vector.app.shareExtension" => "Vector Share Extension: App Store",
     "im.vector.app.SiriIntents" => "Vector Siri Intents: App Store"
     },
-    # Inject app version in the code
-    xcargs: "GCC_PREPROCESSOR_DEFINITIONS=$(GCC_PREPROCESSOR_DEFINITIONS)" + xcargs_app_versioning
-  })
+  },
+  # Inject app version in the code
+  xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(GCC_PREPROCESSOR_DEFINITIONS)" + xcargs_app_versioning + "'"
+  )
   
   # TODO: To test
   #upload_to_testflight
@@ -32,12 +33,12 @@ private_lane :xcargs_app_versioning do
   xcargs = ""
   
   if git_branch
-    xcargs << " GIT_BRANCH='" + git_branch + "'"
+    xcargs << " GIT_BRANCH=" + git_branch
   end
 
   # Jenkins build number
   if ENV["$BUILD_NUMBER"]
-    xcargs << " BUILD_NUMBER='" + ENV["$BUILD_NUMBER"] + "'"
+    xcargs << " BUILD_NUMBER=" + ENV["$BUILD_NUMBER"]
   end
   
   xcargs 
