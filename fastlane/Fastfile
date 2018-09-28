@@ -1,5 +1,4 @@
 
-
 desc "Test"
 lane :test do
   UI.message "[Test] xcargs_app_versioning:" + xcargs_app_versioning
@@ -9,17 +8,21 @@ end
 desc "Builds (and submits) an ipa for the App Store"
 lane :release do
   
-  build_app(export_options: {
-    method: "app-store",
-    # Naming each provining profiles is required :/
-    provisioningProfiles: { 
-    "im.vector.app" => "Vector App Store",
-    "im.vector.app.shareExtension" => "Vector Share Extension: App Store",
-    "im.vector.app.SiriIntents" => "Vector Siri Intents: App Store"
-    },
-  },
-  # Inject app version in the code
-  xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(GCC_PREPROCESSOR_DEFINITIONS)" + xcargs_app_versioning + "'"
+  build_app(
+    clean: true,
+    
+    # Inject app version in the code
+    xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(GCC_PREPROCESSOR_DEFINITIONS)" + xcargs_app_versioning + "'",
+    
+    export_options: {
+      method: "app-store",
+      # Naming each provining profiles is required :/
+      provisioningProfiles: { 
+        "im.vector.app" => "Vector App Store",
+        "im.vector.app.shareExtension" => "Vector Share Extension: App Store",
+        "im.vector.app.SiriIntents" => "Vector Siri Intents: App Store"
+      }
+    }
   )
   
   # TODO: To test
@@ -33,7 +36,7 @@ private_lane :xcargs_app_versioning do
   xcargs = ""
   
   if git_branch
-    xcargs << " GIT_BRANCH=" + git_branch
+    xcargs << " GIT_BRANCH=" + git_branch.sub("origin/", "")
   end
 
   # Jenkins build number
