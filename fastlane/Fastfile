@@ -21,9 +21,7 @@ lane :release do
         "im.vector.app" => "Vector App Store",
         "im.vector.app.shareExtension" => "Vector Share Extension: App Store",
         "im.vector.app.SiriIntents" => "Vector Siri Intents: App Store"
-      },
-      archivePath: "out/Riot.xcarchive",
-      exportPath: "out"
+      }
     },
     
     archive_path: "out/Riot.xcarchive"
