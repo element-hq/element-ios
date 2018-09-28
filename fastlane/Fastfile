@@ -37,8 +37,8 @@ private_lane :xcargs_app_versioning do
   end
 
   # Jenkins build number
-  if ENV["$BUILD_NUMBER"]
-    xcargs << " BUILD_NUMBER=" + ENV["$BUILD_NUMBER"]
+  if ENV["BUILD_NUMBER"]
+    xcargs << " BUILD_NUMBER=" + ENV["BUILD_NUMBER"]
   end
   
   xcargs 
