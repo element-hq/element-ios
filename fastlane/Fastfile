@@ -24,7 +24,9 @@ lane :release do
       },
       archivePath: "out/Riot.xcarchive",
       exportPath: "out"
-    }
+    },
+    
+    archive_path: "out/Riot.xcarchive"
   )
   
   # TODO: To test
