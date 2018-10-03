@@ -17,9 +17,9 @@ platform :ios do
 
 	#### Pre ####
 
-	before_all do    
+	before_all do
 		# Ensure used Xcode version
-		xcversion(version: "~> 9.4.1")		
+		xcversion(version: "~> 9.4.1")
 	end
 
 	#### Public ####
@@ -27,7 +27,7 @@ platform :ios do
 	desc "Builds (and upload) an ipa for the App Store"
 	lane :app_store do |options|
 
-		UI.user_error!("'APPLE_ID' environment variable should be set to use this lane") unless !ENV["APPLE_ID"].to_s.empty?		
+		UI.user_error!("'APPLE_ID' environment variable should be set to use this lane") unless !ENV["APPLE_ID"].to_s.empty?
 
 		build_number = options[:build_number]
 		UI.user_error!("'build_number' parameter is missing") unless !build_number.to_s.empty?
@@ -38,7 +38,7 @@ platform :ios do
 
 		# Fetch team id from Appfile
 		team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
-		UI.user_error!("Fail to fetch team id from Appfile") unless !team_id.to_s.empty?	
+		UI.user_error!("Fail to fetch team id from Appfile") unless !team_id.to_s.empty?
 
 		# Generate versioning preprocessor macros
 		additional_preprocessor_definitions_hash = release_versioning_preprocessor_definitions(git_branch: git_branch_name, build_number: build_number)
@@ -46,42 +46,42 @@ platform :ios do
 
 		# Generate xcodebuild additional arguments
 		xcargs_hash = {
-			'GCC_PREPROCESSOR_DEFINITIONS' => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}"	     
+			'GCC_PREPROCESSOR_DEFINITIONS' => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}"
 		}
 
 		xcargs = xcargs_hash.map { |k,v| "#{k}=#{v.shellescape}" }.join(' ')
 
-		# Clear derived data 		
+		# Clear derived data
 		clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
 
-        # Setup project provisioning profiles
-        download_provisioning_profiles
-        disable_automatic_code_signing
-        update_project_provisioning_profiles
+		# Setup project provisioning profiles
+		download_provisioning_profiles
+		disable_automatic_code_signing
+		update_project_provisioning_profiles
 
 		# Update build number
 		update_build_number(build_number: build_number)
 
 		# Perform a pod install
-		cocoapods(repo_update: true)	
+		cocoapods(repo_update: true)
 
 		# Build app and create ipa
 		build_app(
-			clean: true,			
+			clean: true,
 			scheme: ENV["SCHEME"],
 			xcargs: xcargs,
 			export_method: "app-store",
-			derived_data_path: ENV["DERIVED_DATA_PATH"],	
+			derived_data_path: ENV["DERIVED_DATA_PATH"],
 			archive_path: ENV["ARCHIVE_PATH"],
-			output_directory: ENV["BUILD_OUTPUT_DIRECTORY"],			
-			output_name: "#{ENV['IPA_NAME']}.ipa",			
+			output_directory: ENV["BUILD_OUTPUT_DIRECTORY"],
+			output_name: "#{ENV['IPA_NAME']}.ipa",
 			codesigning_identity: ENV["APPSTORE_CODESIGNING_IDENTITY"],
-			export_options: {      
+			export_options: {
 				method: "app-store",
 				signingStyle: "manual",
 				teamID: team_id,
 				signingCertificate: ENV["APPSTORE_SIGNING_CERTIFICATE"],
-				provisioningProfiles: { 
+				provisioningProfiles: {
 					ENV["MAIN_BUNDLE_ID"] => ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"],
 					ENV["SHARE_EXTENSION_BUNDLE_ID"] => ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"],
 					ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
@@ -99,7 +99,7 @@ platform :ios do
 	#### Private ####
 
 	desc "Download App Store or Ad-Hoc provisioning profiles"
-	private_lane :download_provisioning_profiles do |options|		
+	private_lane :download_provisioning_profiles do |options|
 		adhoc = options.fetch(:adhoc, false)
 
 		output_path = ENV["PROVISIONING_PROFILES_PATH"]
@@ -112,7 +112,7 @@ platform :ios do
 			skip_certificate_verification: skip_certificate_verification,
 			output_path: output_path,
 			filename: ENV["MAIN_PROVISIONING_PROFILE_FILENAME"],
-			readonly: true  
+			readonly: true
 		)
 		# Share extension
 		get_provisioning_profile(
@@ -135,8 +135,8 @@ platform :ios do
 	end
 
 	desc "Update provisioning profiles for each target"
-	private_lane :update_project_provisioning_profiles do  
-		provisioning_profiles_path = ENV["PROVISIONING_PROFILES_PATH"]			
+	private_lane :update_project_provisioning_profiles do
+		provisioning_profiles_path = ENV["PROVISIONING_PROFILES_PATH"]
 		build_configuration = 'Release'
 		xcodeproj = ENV["PROJECT_PATH"]
 
@@ -145,7 +145,7 @@ platform :ios do
 			xcodeproj: xcodeproj,
 			profile: "#{provisioning_profiles_path}#{ENV["MAIN_PROVISIONING_PROFILE_FILENAME"]}",
 			target_filter: ENV["MAIN_TARGET"],
-			build_configuration: build_configuration			
+			build_configuration: build_configuration
 		)
 		# Share extension
 		update_project_provisioning(
@@ -168,18 +168,18 @@ platform :ios do
 		build_number = options[:build_number]
 
 		# Main application
-		increment_build_number_in_plist(		  
-			build_number: build_number, 
+		increment_build_number_in_plist(
+			build_number: build_number,
 			target: ENV["MAIN_TARGET"]
-		)	
+		)
 		# Share extension
-		increment_build_number_in_plist(		  
-			build_number: build_number, 
+		increment_build_number_in_plist(
+			build_number: build_number,
 			target: ENV["SHARE_EXTENSION_TARGET"]
 		)
 		# Siri Intents extension
-		increment_build_number_in_plist(		  
-			build_number: build_number, 
+		increment_build_number_in_plist(
+			build_number: build_number,
 			target: ENV["SIRI_INTENTS_EXTENSION_TARGET"]
 		)
 	end
@@ -195,11 +195,11 @@ platform :ios do
 			preprocessor_definitions["GIT_BRANCH"] = git_branch_name.sub("origin/", "")
 		end
 
-		if !build_number.to_s.empty?	    	
+		if !build_number.to_s.empty?
 			preprocessor_definitions["BUILD_NUMBER"] = build_number
 		end
 
-		preprocessor_definitions	  	 
+		preprocessor_definitions
 	end
 
 end
