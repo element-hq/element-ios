@@ -28,3 +28,8 @@ Pods/
 
 # Do not track our workspace since it is created by CocoaPods
 *.xcworkspace
+
+# Fastlane
+fastlane/report.xml
+fastlane/Reports
+fastlane/README.md
