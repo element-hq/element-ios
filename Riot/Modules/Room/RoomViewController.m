@@ -123,7 +123,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RoomViewController ()
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
