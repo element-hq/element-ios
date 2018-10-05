@@ -123,7 +123,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RoomViewController ()
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -211,6 +211,9 @@
     
     // Listener for `m.room.tombstone` event type
     id tombstoneEventNotificationsListener;
+
+    // Homeserver notices
+    MXServerNotices *serverNotices;
 }
 
 @end
@@ -821,6 +824,8 @@
     
     if (self.roomDataSource)
     {
+        [self listenToServerNotices];
+
         self.eventsAcknowledgementEnabled = YES;
         
         // Set room title view
@@ -1166,6 +1171,7 @@
     [self removeWidgetNotificationsListeners];
     [self removeTombstoneEventNotificationsListener];
     [self removeMXSessionStateChangeNotificationsListener];
+    [self removeServerNoticesListener];
 
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
@@ -3810,6 +3816,32 @@
     }];
 }
 
+
+#pragma mark - Server notices management
+
+- (void)removeServerNoticesListener
+{
+    if (serverNotices)
+    {
+        [serverNotices close];
+        serverNotices = nil;
+    }
+}
+
+- (void)listenToServerNotices
+{
+    if (!serverNotices)
+    {
+        serverNotices = [[MXServerNotices alloc] initWithMatrixSession:self.roomDataSource.mxSession];
+        serverNotices.delegate = self;
+    }
+}
+
+- (void)serverNoticesDidChangeState:(MXServerNotices *)serverNotices
+{
+    [self refreshActivitiesViewDisplay];
+}
+
 #pragma mark - Widget notifications management
 
 - (void)removeWidgetNotificationsListeners
@@ -4024,6 +4056,20 @@
                     
                     [self goBackToLive];
                     
+                }];
+            }
+            else if (serverNotices.usageLimit && serverNotices.usageLimit.isServerNoticeUsageLimit)
+            {
+                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContact) {
+
+                    if ([[UIApplication sharedApplication] canOpenURL:adminContact])
+                    {
+                        [[UIApplication sharedApplication] openURL:adminContact];
+                    }
+                    else
+                    {
+                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
+                    }
                 }];
             }
             else

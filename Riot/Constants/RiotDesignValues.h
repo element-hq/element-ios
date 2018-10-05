@@ -53,6 +53,7 @@ extern UIColor *kRiotColorRed;
 extern UIColor *kRiotColorIndigo;
 extern UIColor *kRiotColorOrange;
 extern UIColor *kRiotColorBlue;
+extern UIColor *kRiotColorCuriousBlue;
 
 #pragma mark - Riot Standard Room Member Power Level
 extern NSInteger const kRiotRoomModeratorLevel;
