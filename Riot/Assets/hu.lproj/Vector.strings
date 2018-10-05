@@ -557,3 +557,7 @@
 "room_resource_limit_exceeded_message_contact_2_link" = "vedd fel a kapcsolatot a szolgáltatás adminisztrátorával";
 "room_resource_limit_exceeded_message_contact_3" = " , hogy tovább használhasd a szolgáltatást.";
 "homeserver_connection_lost" = "A Matrix szerverhez nem lehet kapcsolódni.";
+"room_resource_usage_limit_reached_message_1_default" = "Ez a Matrix szerver túllépte egyik erőforrás korlátját így ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Ez a Matrix szerver elérte a havi aktív felhasználói korlátját, így ";
+"room_resource_usage_limit_reached_message_2" = "néhány felhasználó nem tud majd bejelentkezni.";
+"room_resource_usage_limit_reached_message_contact_3" = " hogy korlátot megemeljék.";
