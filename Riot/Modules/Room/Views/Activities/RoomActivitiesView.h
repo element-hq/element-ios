@@ -94,6 +94,14 @@
 - (void)showResourceLimitExceededError:(NSDictionary *)errorDict onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped;
 
 /**
+ Display a usage limit notice sent in a system alert room.
+
+ @param usageLimit the usage limit data.
+ @param onAdminContactTapped a callback indicating if the user wants to contact their admin.
+ */
+- (void)showResourceUsageLimitNotice:(MXServerNoticeContent *)usageLimit onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped;
+
+/**
  Remove any displayed information.
  */
 - (void)reset;
