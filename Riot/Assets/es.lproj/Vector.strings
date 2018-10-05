@@ -126,7 +126,7 @@
 "auth_reset_password_missing_email" = "Debes ingresar la dirección de correo electrónico vinculada a tu cuenta.";
 "auth_reset_password_email_validation_message" = "Se envió un correo electrónico a %@. Una vez que hayas seguido el enlace que contiene, haz clic a continuación.";
 "auth_reset_password_error_unauthorized" = "No se pudo verificar la dirección de correo electrónico: asegúrate de hacer clic en el enlace del correo electrónico";
-"auth_reset_password_error_not_found" = "Tu dirección de correo electrónico no parece estar asociada con una ID de Matrix en este Servidor Doméstico.";
+"auth_reset_password_error_not_found" = "Tu dirección de correo electrónico no parece estar asociada a una ID de Matrix en este Servidor Doméstico.";
 "auth_reset_password_success_message" = "Tu contraseña fue restablecida.\n\nSe ha cerrado sesión en todos tus dispositivos y ya no recibirás notificaciones push. Para volver a habilitar las notificaciones, vuelve a iniciar sesión en cada dispositivo.";
 "auth_add_email_and_phone_warning" = "Todavía no es posible registrarse con correo electrónico y número telefónico a la vez, hasta que exista la API. Solo se tendrá en cuenta el número telefónico. Puedes añadir tu correo electrónico a tu perfil en ajustes.";
 // Chat creation
@@ -262,7 +262,7 @@
 "unknown_devices_alert" = "Esta sala contiene dispositivos desconocidos que no han sido verificados.\nEsto significa que no hay garantía de que los dispositivos pertenezcan a los usuarios a los que dicen pertenecer.\nRecomendamos que pases por el proceso de verificación para cada dispositivo antes de continuar, pero puedes reenviar el mensaje sin verificarlos si prefieres.";
 "unknown_devices_send_anyway" = "Enviar de Todos Modos";
 "unknown_devices_call_anyway" = "Llamar de todos modos";
-"unknown_devices_answer_anyway" = "Responder de todos modos";
+"unknown_devices_answer_anyway" = "Contestar de Todos Modos";
 "unknown_devices_verify" = "Verificar…";
 "unknown_devices_title" = "Dispositivos desconocidos";
 // Room Title
