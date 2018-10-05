@@ -281,6 +281,10 @@
 "room_resource_limit_exceeded_message_contact_1" = " Please ";
 "room_resource_limit_exceeded_message_contact_2_link" = "contact your service administrator";
 "room_resource_limit_exceeded_message_contact_3" = " to continue using this service.";
+"room_resource_usage_limit_reached_message_1_default" = "This homeserver has exceeded one of its resource limits so ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "This homeserver has hit its Monthly Active User limit so ";
+"room_resource_usage_limit_reached_message_2" = "some users will not be able to log in.";
+"room_resource_usage_limit_reached_message_contact_3" = " to get this limit increased.";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";

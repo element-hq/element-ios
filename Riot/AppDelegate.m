@@ -2683,6 +2683,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [_masterTabBarController showAuthenticationScreen];
         
         // Note: Keep App settings
+        // But enforce usage of member lazy loading
+        [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
         
         // Reset the contact manager
         [[MXKContactManager sharedManager] reset];

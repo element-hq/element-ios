@@ -1,8 +1,16 @@
-Changes in 0.7.4 (2018-09-)
+Changes in 0.7.5 (2018-10-05)
+===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.8.5).
+* Server Quota Notices: Implement the blue banner (#1937).
+
+Changes in 0.7.4 (2018-09-26)
 ===============================================
 
 Improvements:
 * Upgrade MatrixKit version (v0.8.4).
+* Lazy loading: Enable it by default (if the homeserver supports it).
 * i18n: Add Spanish (sp).
 * Settings: Make advanced info copyable (#2023).
 * Settings: Made cryptography info copyable, thanks to @daverPL (PR #1999).

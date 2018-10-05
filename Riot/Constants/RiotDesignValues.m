@@ -47,6 +47,7 @@ UIColor *kRiotColorRed;
 UIColor *kRiotColorIndigo;
 UIColor *kRiotColorOrange;
 UIColor *kRiotColorBlue;
+UIColor *kRiotColorCuriousBlue;
 
 // Riot Background Colors
 UIColor *kRiotBgColorWhite;
@@ -101,7 +102,8 @@ UIKeyboardAppearance kRiotKeyboard;
     kRiotColorIndigo = UIColorFromRGB(0xBD79CC);
     kRiotColorOrange = UIColorFromRGB(0xF8A15F);
     kRiotColorBlue = UIColorFromRGB(0x81BDDB);
-    
+    kRiotColorCuriousBlue = UIColorFromRGB(0x2A9EDB);
+
     kRiotBgColorWhite = [UIColor whiteColor];
     kRiotBgColorBlack = UIColorFromRGB(0x2D2D2D);
     kRiotBgColorOLEDBlack = [UIColor blackColor];

@@ -376,32 +376,63 @@
 
 - (void)showResourceLimitExceededError:(NSDictionary *)errorDict onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped
 {
-    [self reset];
-
-    CGFloat fontSize = 15;
-
     // Parse error data
     NSString *limitType, *adminContactString;
-    NSURL *adminContact;
 
     MXJSONModelSetString(limitType, errorDict[kMXErrorResourceLimitExceededLimitTypeKey]);
     MXJSONModelSetString(adminContactString, errorDict[kMXErrorResourceLimitExceededAdminContactKey]);
 
+    [self showResourceLimit:limitType adminContactString:adminContactString hardLimit:YES onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped];
+}
+
+- (void)showResourceUsageLimitNotice:(MXServerNoticeContent *)usageLimit onAdminContactTapped:(void (^)(NSURL *))onAdminContactTapped
+{
+    [self showResourceLimit:usageLimit.limitType adminContactString:usageLimit.adminContact hardLimit:NO onAdminContactTapped:onAdminContactTapped];
+}
+
+- (void)showResourceLimit:(NSString *)limitType adminContactString:(NSString *)adminContactString hardLimit:(BOOL)hardLimit onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped
+{
+    [self reset];
+
+    CGFloat fontSize = 15;
+
+    NSURL *adminContact;
     if (adminContactString)
     {
         adminContact = [NSURL URLWithString:adminContactString];
     }
 
     // Build the message content
-    // Reuse MatrixKit as is for the beginning
     NSMutableString *message = [NSMutableString new];
-    if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
+    NSAttributedString *message2;
+    if (hardLimit)
     {
-        [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_monthly_active_user"]];
+        // Reuse MatrixKit as is for the beginning of hardLimit
+        if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
+        {
+            [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_monthly_active_user"]];
+        }
+        else
+        {
+            [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_default"]];
+        }
     }
     else
     {
-        [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_default"]];
+        if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
+        {
+            [message appendString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_1_monthly_active_user", @"Vector", nil)];
+        }
+        else
+        {
+            [message appendString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_1_default", @"Vector", nil)];
+        }
+
+        message2 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_2", @"Vector", nil)
+                                                   attributes:@{
+                                                                NSFontAttributeName: [UIFont boldSystemFontOfSize:fontSize],
+                                                                NSForegroundColorAttributeName: kRiotPrimaryBgColor
+                                                                }];
     }
 
     NSDictionary *attributes = @{
@@ -430,9 +461,21 @@
 
     NSAttributedString *messageContact1 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_1", @"Vector", nil) attributes:attributes];
     NSAttributedString *messageContact2Link =  [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_2_link", @"Vector", nil) attributes:messageContact2LinkAttributes];
-    NSAttributedString *messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_3", @"Vector", nil) attributes:attributes];
+    NSAttributedString *messageContact3;
+    if (hardLimit)
+    {
+        messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_3", @"Vector", nil) attributes:attributes];
+    }
+    else
+    {
+        messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_contact_3", @"Vector", nil) attributes:attributes];
+    }
 
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:message attributes:attributes];
+    if (message2)
+    {
+        [attributedText appendAttributedString:message2];
+    }
     [attributedText appendAttributedString:messageContact1];
     [attributedText appendAttributedString:messageContact2Link];
     [attributedText appendAttributedString:messageContact3];
@@ -441,8 +484,16 @@
     self.messageTextView.tintColor = kRiotPrimaryBgColor;
     self.messageTextView.hidden = NO;
 
-    self.backgroundColor = kRiotColorPinkRed;
-    self.messageTextView.backgroundColor = kRiotColorPinkRed;
+    if (hardLimit)
+    {
+        self.backgroundColor = kRiotColorPinkRed;
+        self.messageTextView.backgroundColor = kRiotColorPinkRed;
+    }
+    else
+    {
+        self.backgroundColor = kRiotColorCuriousBlue;
+        self.messageTextView.backgroundColor = kRiotColorCuriousBlue;
+    }
 
     // Hide the separator to display correctly the banner
     self.separatorView.hidden = YES;
