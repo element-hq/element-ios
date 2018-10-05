@@ -1,3 +1,10 @@
+Changes in 0.7.5 (2018-10-05)
+===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.8.5).
+* Server Quota Notices: Implement the blue banner (#1937).
+
 Changes in 0.7.4 (2018-09-26)
 ===============================================
 
