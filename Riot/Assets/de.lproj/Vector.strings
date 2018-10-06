@@ -313,7 +313,7 @@
 "room_preview_try_join_an_unknown_room" = "Du versuchst auf %@ zuzugreifen.  Möchtest du dem Raum beitreten um teilzunehmen?";
 "settings_config_identity_server" = "Identitätsserver ist %@";
 "settings_labs" = "Labor";
-"settings_sign_out_e2e_warn" = "Du wirst die Ende-zu-Ende Schlüssel verlieren. Du kannst dann keine alten Nachrichten mehr in verschlüsselten Räumen auf diesem Gerät lesen.";
+"settings_sign_out_e2e_warn" = "Du wirst die Ende-zu-Ende Schlüssel verlieren. Du kannst dann auf diesem Gerät in verschlüsselten Räumen keine alten Nachrichten mehr lesen.";
 "settings_phone_number" = "Telefon";
 "settings_add_phone_number" = "Telefonnummer hinzufügen";
 "settings_fail_to_update_profile" = "Profilaktualisierung fehlgeschlagen";
