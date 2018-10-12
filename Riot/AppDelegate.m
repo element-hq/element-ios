@@ -2933,7 +2933,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             return;
         }
-        
+
+        // If the app is doing an initial sync, ignore all events from which we
+        // did not receive a notification from APNS/PushKit
+        if (!mxSession.isEventStreamInitialised && !self->incomingPushPayloads[event.eventId])
+        {
+            NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: Initial sync in progress. Ignore event %@", event.eventId);
+            return;
+        }
+
         // Sanity check
         if (event.eventId && event.roomId && rule)
         {
