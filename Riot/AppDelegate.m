@@ -414,10 +414,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             // Move this setting into the shared userDefaults object to apply it to the extensions.
             [sharedUserDefaults setObject:language forKey:@"appLanguage"];
-            [sharedUserDefaults synchronize];
-            
+
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"appLanguage"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
     [NSBundle mxk_setLanguage:language];
@@ -2994,7 +2992,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (!isErrorNotificationSuspended && ![[NSUserDefaults standardUserDefaults] boolForKey:@"deviceIdAtStartupChecked"])
     {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deviceIdAtStartupChecked"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
         
         // Check if there is a device id
         if (!mxSession.matrixRestClient.credentials.deviceId)

@@ -527,7 +527,6 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     NSUserDefaults *userDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
 
     [userDefaults setObject:scalarTokens forKey:@"scalarTokens"];
-    [userDefaults synchronize];
 }
 
 @end
