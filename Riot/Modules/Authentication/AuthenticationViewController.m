@@ -682,9 +682,7 @@
         {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customIdentityServerURL"];
         }
-        
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
+                
         // Restore default configuration
         [self setHomeServerTextFieldText:self.defaultHomeServerUrl];
         [self setIdentityServerTextFieldText:self.defaultIdentityServerUrl];
