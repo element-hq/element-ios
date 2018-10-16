@@ -561,3 +561,4 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Ez a Matrix szerver elérte a havi aktív felhasználói korlátját, így ";
 "room_resource_usage_limit_reached_message_2" = "néhány felhasználó nem tud majd bejelentkezni.";
 "room_resource_usage_limit_reached_message_contact_3" = " hogy korlátot megemeljék.";
+"auth_accept_policies" = "A Matrix szerver felhasználási feltételeit kérlek nézd át és fogadd el:";
