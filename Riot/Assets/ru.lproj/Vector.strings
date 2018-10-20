@@ -404,7 +404,7 @@
 "unknown_devices_alert" = "Эта комната содержит устройства, которые еще не были проверены.\nЭто означает, что нет гарантии, что устройства принадлежат пользователям, тем, за кого они сами себя выдают.\nПеред продолжением рекомендуется пройти процедуру проверки для каждого устройства, но при желании можно повторно отправить сообщение без проверки.";
 "room_preview_try_join_an_unknown_room" = "Вы пытаетесь получить доступ к %@. Хотите присоединиться к обсуждению?";
 "settings_config_no_build_info" = "Нет информации о выпуске";
-"settings_sign_out_e2e_warn" = "Будут утеряны сквозные ключи шифрования. Это означает, что вы не сможете читать старые сообщения в зашифрованных комнатах на этом устройстве.";
+"settings_sign_out_e2e_warn" = "Будут утеряны сквозные ключи шифрования. Это означает, что вы больше не сможете читать старые сообщения в зашифрованных комнатах на этом устройстве.";
 "settings_remove_email_prompt_msg" = "Вы действительно хотите удалить адрес электронной почты %@?";
 "settings_remove_phone_prompt_msg" = "Вы действительно хотите удалить номер телефона %@?";
 "settings_pin_rooms_with_missed_notif" = "Закрепить комнаты с пропущенными уведомлениями";
@@ -549,3 +549,11 @@
 "room_resource_limit_exceeded_message_contact_1" = " Пожалуйста ";
 "room_resource_limit_exceeded_message_contact_2_link" = "обратитесь к администратору сервиса";
 "room_resource_limit_exceeded_message_contact_3" = " для продолжения его использования.";
+"room_event_action_view_decrypted_source" = "Посмотреть расшифрованные исходники";
+"room_resource_usage_limit_reached_message_1_default" = "Этот сервер превысил один из лимитов ресурсов, так что ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Этот сервер превысил месячный лимит активных пользователей, так что ";
+"room_resource_usage_limit_reached_message_2" = "некоторые пользователи не смогут залогиниться.";
+"room_resource_usage_limit_reached_message_contact_3" = " что бы увеличить лимит.";
+"settings_labs_room_members_lazy_loading" = "Ленивая подгрузка собеседников";
+"settings_labs_room_members_lazy_loading_error_message" = "Ваш сервер не поддерживает ленивую подгрузку собеседников. Попробуйте позже.";
+"homeserver_connection_lost" = "Невозможно соединиться с этим сервером.";
