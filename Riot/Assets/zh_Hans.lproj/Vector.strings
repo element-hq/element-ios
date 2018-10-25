@@ -521,3 +521,10 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "请求已发送";
 "settings_callkit_info" = "在您的锁屏界面接听 Riot 来电。在系统通话记录中显示 Riot 通话记录。若您已启用 iCloud，通话记录将会与 Apple 共享。";
+"room_replacement_link" = "对话自此继续。";
+"room_predecessor_information" = "本聊天室延续了另一对话。";
+"room_predecessor_link" = "点击查看更早消息。";
+"room_resource_usage_limit_reached_message_1_default" = "此主服务器已超出某一资源使用限制，导致 ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "此主服务器已达到月活跃用户限制，导致 ";
+"room_resource_usage_limit_reached_message_2" = "部分用户将无法登录。";
+"room_resource_usage_limit_reached_message_contact_3" = " 若想提高限制。";
