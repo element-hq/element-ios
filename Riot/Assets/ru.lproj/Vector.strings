@@ -557,3 +557,4 @@
 "settings_labs_room_members_lazy_loading" = "Ленивая подгрузка собеседников";
 "settings_labs_room_members_lazy_loading_error_message" = "Ваш сервер не поддерживает ленивую подгрузку собеседников. Попробуйте позже.";
 "homeserver_connection_lost" = "Невозможно соединиться с этим сервером.";
+"auth_accept_policies" = "Пожалуйста ознакомьтесь и подтвердите согласие с политикой этого сервера:";
