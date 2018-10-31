@@ -3,13 +3,13 @@
 "title_favourites" = "Избранное";
 "title_people" = "Люди";
 "title_rooms" = "Комнаты";
-"warning" = "Внимание";
+"warning" = "Предупреждение";
 // Actions
 "view" = "Просмотр";
 "back" = "Назад";
 "continue" = "Продолжить";
 "create" = "Создать";
-"start" = "Старт";
+"start" = "Начать";
 "leave" = "Покинуть";
 "remove" = "Удалить";
 "invite" = "Пригласить";
@@ -17,7 +17,7 @@
 "retry" = "Попробовать снова";
 "cancel" = "Отмена";
 "save" = "Сохранить";
-"join" = "Войти";
+"join" = "Присоединиться";
 "accept" = "Принять";
 "decline" = "Отклонить";
 "camera" = "Камера";
@@ -194,7 +194,7 @@
 "room_delete_unsent_messages" = "Удалить неотправленные сообщения";
 "room_event_action_copy" = "Скопировать";
 "room_event_action_quote" = "Цитировать";
-"room_event_action_redact" = "Редактировать";
+"room_event_action_redact" = "Удалить";
 "room_event_action_more" = "Больше";
 "room_event_action_share" = "Поделиться";
 "room_event_action_permalink" = "Постоянная ссылка";
@@ -365,7 +365,7 @@
 "network_offline_prompt" = "Подключение к интернету отключено.";
 "public_room_section_title" = "Публичные комнаты (в%@):";
 "bug_report_prompt" = "Приложение некорректно завершило работу в прошлый раз. Хотите отправить отчет о сбое?";
-"rage_shake_prompt" = "Вы потрясли свой телефон и нам показалось, что вы в отчаянии от использования Riot. Хотите отправить отчет об ошибке?";
+"rage_shake_prompt" = "Похоже вы трясёте телефоном от безысходности. Хотите отправить отчет об ошибке?";
 "camera_access_not_granted" = "%@ не имеет разрешения на использование камеры, пожалуйста, измените настройки конфиденциальности";
 "large_badge_value_k_format" = "%.1fK";
 // Call
@@ -379,7 +379,7 @@
 "e2e_enabling_on_app_update" = "Riot теперь поддерживает сквозное шифрование, но вам нужно снова войти в систему, чтобы включить его.\n\nВы можете сделать это сейчас или позже из настроек приложения.";
 "e2e_need_log_in_again" = "Вам нужно войти в систему, чтобы сгенерировать ключи шифрования для этого устройства и отправлять публичный ключ вашему серверу.\nЭто необходимо только один раз; извините за неудобства.";
 // Bug report
-"bug_report_title" = "Отчет об ошибке";
+"bug_report_title" = "Сообщить об ошибке";
 "bug_report_description" = "Опишите ошибку. Что сделали? Чего ожидали? Что на самом деле произошло?";
 "bug_crash_report_title" = "Отчет о сбое";
 "bug_crash_report_description" = "Пожалуйста, опишите, что вы делали до сбоя:";
@@ -389,8 +389,8 @@
 "bug_report_progress_zipping" = "Сбор журналов";
 "bug_report_progress_uploading" = "Отправка отчета";
 "bug_report_send" = "Отправить";
-"on" = "Вкл";
-"off" = "Выкл";
+"on" = "Включить";
+"off" = "Выключить";
 "preview" = "Просмотр";
 "room_creation_account" = "Учетная запись";
 "directory_searching_title" = "Поиск в каталоге…";
@@ -404,7 +404,7 @@
 "unknown_devices_alert" = "Эта комната содержит устройства, которые еще не были проверены.\nЭто означает, что нет гарантии, что устройства принадлежат пользователям, тем, за кого они сами себя выдают.\nПеред продолжением рекомендуется пройти процедуру проверки для каждого устройства, но при желании можно повторно отправить сообщение без проверки.";
 "room_preview_try_join_an_unknown_room" = "Вы пытаетесь получить доступ к %@. Хотите присоединиться к обсуждению?";
 "settings_config_no_build_info" = "Нет информации о выпуске";
-"settings_sign_out_e2e_warn" = "Будут утеряны сквозные ключи шифрования. Это означает, что вы не сможете читать старые сообщения в зашифрованных комнатах на этом устройстве.";
+"settings_sign_out_e2e_warn" = "Будут утеряны сквозные ключи шифрования. Это означает, что вы больше не сможете читать старые сообщения в зашифрованных комнатах на этом устройстве.";
 "settings_remove_email_prompt_msg" = "Вы действительно хотите удалить адрес электронной почты %@?";
 "settings_remove_phone_prompt_msg" = "Вы действительно хотите удалить номер телефона %@?";
 "settings_pin_rooms_with_missed_notif" = "Закрепить комнаты с пропущенными уведомлениями";
@@ -549,3 +549,11 @@
 "room_resource_limit_exceeded_message_contact_1" = " Пожалуйста ";
 "room_resource_limit_exceeded_message_contact_2_link" = "обратитесь к администратору сервиса";
 "room_resource_limit_exceeded_message_contact_3" = " для продолжения его использования.";
+"room_event_action_view_decrypted_source" = "Посмотреть расшифрованные исходники";
+"room_resource_usage_limit_reached_message_1_default" = "Этот сервер превысил один из лимитов ресурсов, так что ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Этот сервер превысил месячный лимит активных пользователей, так что ";
+"room_resource_usage_limit_reached_message_2" = "некоторые пользователи не смогут залогиниться.";
+"room_resource_usage_limit_reached_message_contact_3" = " что бы увеличить лимит.";
+"settings_labs_room_members_lazy_loading" = "Ленивая подгрузка собеседников";
+"settings_labs_room_members_lazy_loading_error_message" = "Ваш сервер не поддерживает ленивую подгрузку собеседников. Попробуйте позже.";
+"homeserver_connection_lost" = "Невозможно соединиться с этим сервером.";
