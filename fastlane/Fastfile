@@ -15,191 +15,222 @@ fastlane_require 'dotenv'
 default_platform(:ios)
 platform :ios do
 
-	#### Pre ####
+    #### Pre ####
 
-	before_all do
-		# Ensure used Xcode version
-		xcversion(version: "~> 9.4.1")
-	end
+    before_all do
+        # Ensure used Xcode version
+        xcversion(version: "~> 9.4.1")
+    end
 
-	#### Public ####
+    #### Public ####
 
-	desc "Builds (and upload) an ipa for the App Store"
-	lane :app_store do |options|
+    desc "Builds an adhoc ipa"
+    lane :adhoc do |options|
 
-		UI.user_error!("'APPLE_ID' environment variable should be set to use this lane") unless !ENV["APPLE_ID"].to_s.empty?
+        options[:adhoc] = true
+        build_release(options)
+    end
 
-		build_number = options[:build_number]
-		UI.user_error!("'build_number' parameter is missing") unless !build_number.to_s.empty?
+    desc "Builds (and upload) an ipa for the App Store"
+    lane :app_store do |options|
 
-		# Retrieve GIT branch name
-		git_branch_name = git_branch
-		UI.user_error!("Unable to retrieve GIT branch name") unless !git_branch_name.to_s.empty?
+        build_release(options)
 
-		# Fetch team id from Appfile
-		team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
-		UI.user_error!("Fail to fetch team id from Appfile") unless !team_id.to_s.empty?
+        # Upload ipa to TestFlight
+        #upload_to_testflight(
+        #    skip_submission: true, # Only upload the build
+        #    skip_waiting_for_build_processing: true # Don't wait for the build to process
+        #)
+    end
 
-		# Generate versioning preprocessor macros
-		additional_preprocessor_definitions_hash = release_versioning_preprocessor_definitions(git_branch: git_branch_name, build_number: build_number)
-		additional_preprocessor_definitions = additional_preprocessor_definitions_hash.map { |k,v| "#{k}=\"#{v}\"" }.join(' ')
+    #### Private ####
 
-		# Generate xcodebuild additional arguments
-		xcargs_hash = {
-			'GCC_PREPROCESSOR_DEFINITIONS' => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}"
-		}
+    desc "Download App Store or Ad-Hoc provisioning profiles"
+    private_lane :build_release do |options|
 
-		xcargs = xcargs_hash.map { |k,v| "#{k}=#{v.shellescape}" }.join(' ')
+        UI.user_error!("'APPLE_ID' environment variable should be set to use this lane") unless !ENV["APPLE_ID"].to_s.empty?
 
-		# Clear derived data
-		clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
+        build_number = options[:build_number]
+        UI.user_error!("'build_number' parameter is missing") unless !build_number.to_s.empty?
 
-		# Setup project provisioning profiles
-		download_provisioning_profiles
-		disable_automatic_code_signing
-		update_project_provisioning_profiles
+        # ad-hoc or app-store?
+        adhoc = options.fetch(:adhoc, false)
 
-		# Update build number
-		update_build_number(build_number: build_number)
+        # Retrieve GIT branch name
+        git_branch_name = git_branch
+        UI.user_error!("Unable to retrieve GIT branch name") unless !git_branch_name.to_s.empty?
 
-		# Perform a pod install
-		cocoapods(repo_update: true)
+        # Fetch team id from Appfile
+        team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+        UI.user_error!("Fail to fetch team id from Appfile") unless !team_id.to_s.empty?
 
-		# Build app and create ipa
-		build_app(
-			clean: true,
-			scheme: ENV["SCHEME"],
-			xcargs: xcargs,
-			export_method: "app-store",
-			derived_data_path: ENV["DERIVED_DATA_PATH"],
-			archive_path: ENV["ARCHIVE_PATH"],
-			output_directory: ENV["BUILD_OUTPUT_DIRECTORY"],
-			output_name: "#{ENV['IPA_NAME']}.ipa",
-			codesigning_identity: ENV["APPSTORE_CODESIGNING_IDENTITY"],
-			export_options: {
-				method: "app-store",
-				signingStyle: "manual",
-				teamID: team_id,
-				signingCertificate: ENV["APPSTORE_SIGNING_CERTIFICATE"],
-				provisioningProfiles: {
-					ENV["MAIN_BUNDLE_ID"] => ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"],
-					ENV["SHARE_EXTENSION_BUNDLE_ID"] => ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"],
-					ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
-				}
-			}
-		)
+        # Generate versioning preprocessor macros
+        additional_preprocessor_definitions_hash = release_versioning_preprocessor_definitions(git_branch: git_branch_name, build_number: build_number)
+        additional_preprocessor_definitions = additional_preprocessor_definitions_hash.map { |k,v| "#{k}=\"#{v}\"" }.join(' ')
 
-		# Upload ipa to TestFlight
-		#upload_to_testflight(
-		#	skip_submission: true, # Only upload the build
-		#	skip_waiting_for_build_processing: true # Don't wait for the build to process
-		#)
-	end
+        # Generate xcodebuild additional arguments
+        xcargs_hash = {
+            'GCC_PREPROCESSOR_DEFINITIONS' => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}"
+        }
 
-	#### Private ####
+        xcargs = xcargs_hash.map { |k,v| "#{k}=#{v.shellescape}" }.join(' ')
 
-	desc "Download App Store or Ad-Hoc provisioning profiles"
-	private_lane :download_provisioning_profiles do |options|
-		adhoc = options.fetch(:adhoc, false)
+        # Clear derived data
+        clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
 
-		output_path = ENV["PROVISIONING_PROFILES_PATH"]
-		skip_certificate_verification = true
+        # Setup project provisioning profiles
+        download_provisioning_profiles(adhoc: adhoc)
+        disable_automatic_code_signing
+        update_project_provisioning_profiles
 
-		# Main application
-		get_provisioning_profile(
-			app_identifier: ENV["MAIN_BUNDLE_ID"],
-			adhoc: adhoc,
-			skip_certificate_verification: skip_certificate_verification,
-			output_path: output_path,
-			filename: ENV["MAIN_PROVISIONING_PROFILE_FILENAME"],
-			readonly: true
-		)
-		# Share extension
-		get_provisioning_profile(
-			app_identifier: ENV["SHARE_EXTENSION_BUNDLE_ID"],
-			adhoc: adhoc,
-			skip_certificate_verification: skip_certificate_verification,
-			output_path: output_path,
-			filename: ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
-			readonly: true
-		)
-		# Siri Intents extension
-		get_provisioning_profile(
-			app_identifier: ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"],
-			adhoc: adhoc,
-			skip_certificate_verification: skip_certificate_verification,
-			output_path: output_path,
-			filename: ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
-			readonly: true
-		)
-	end
+        # Update build number
+        update_build_number(build_number: build_number)
 
-	desc "Update provisioning profiles for each target"
-	private_lane :update_project_provisioning_profiles do
-		provisioning_profiles_path = ENV["PROVISIONING_PROFILES_PATH"]
-		build_configuration = 'Release'
-		xcodeproj = ENV["PROJECT_PATH"]
+        # Perform a pod install
+        cocoapods(repo_update: true)
 
-		# Main application
-		update_project_provisioning(
-			xcodeproj: xcodeproj,
-			profile: "#{provisioning_profiles_path}#{ENV["MAIN_PROVISIONING_PROFILE_FILENAME"]}",
-			target_filter: ENV["MAIN_TARGET"],
-			build_configuration: build_configuration
-		)
-		# Share extension
-		update_project_provisioning(
-			xcodeproj: xcodeproj,
-			profile: "#{provisioning_profiles_path}#{ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
-			target_filter: ENV["SHARE_EXTENSION_TARGET"],
-			build_configuration: build_configuration
-		)
-		# Siri Intents extension
-		update_project_provisioning(
-			xcodeproj: xcodeproj,
-			profile: "#{provisioning_profiles_path}#{ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
-			target_filter: ENV["SIRI_INTENTS_EXTENSION_TARGET"],
-			build_configuration: build_configuration
-		)
-	end
+        # Select a config
+        if adhoc
+            export_method = "ad-hoc"
+            main_provisioning_profile = ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+            share_extension_provisioning_profile = ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+            siri_intents_provisioning_profile = ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] 
+        else
+            export_method = "app-store"
+            main_provisioning_profile = ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+            share_extension_provisioning_profile = ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+            siri_intents_provisioning_profile = ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+        end
 
-	desc "Update application build number for all targets"
-	private_lane :update_build_number do |options|
-		build_number = options[:build_number]
+        # Build app and create ipa
+        build_app(
+            clean: true,
+            scheme: ENV["SCHEME"],
+            xcargs: xcargs,
+            export_method: export_method,
+            derived_data_path: ENV["DERIVED_DATA_PATH"],
+            archive_path: ENV["ARCHIVE_PATH"],
+            output_directory: ENV["BUILD_OUTPUT_DIRECTORY"],
+            output_name: "#{ENV['IPA_NAME']}.ipa",
+            codesigning_identity: ENV["APPSTORE_CODESIGNING_IDENTITY"],
+            export_options: {
+                method: export_method,
+                signingStyle: "manual",
+                teamID: team_id,
+                signingCertificate: ENV["APPSTORE_SIGNING_CERTIFICATE"],
+                provisioningProfiles: {
+                    ENV["MAIN_BUNDLE_ID"] => main_provisioning_profile,
+                    ENV["SHARE_EXTENSION_BUNDLE_ID"] => share_extension_provisioning_profile,
+                    ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => siri_intents_provisioning_profile
+                }
+            }
+        )
+    end
 
-		# Main application
-		increment_build_number_in_plist(
-			build_number: build_number,
-			target: ENV["MAIN_TARGET"]
-		)
-		# Share extension
-		increment_build_number_in_plist(
-			build_number: build_number,
-			target: ENV["SHARE_EXTENSION_TARGET"]
-		)
-		# Siri Intents extension
-		increment_build_number_in_plist(
-			build_number: build_number,
-			target: ENV["SIRI_INTENTS_EXTENSION_TARGET"]
-		)
-	end
+    #### Private ####
 
-	desc "Returns version identifiers hash to inject in GCC_PREPROCESSOR_DEFINITIONS for release builds"
-	private_lane :release_versioning_preprocessor_definitions do |options|
-		preprocessor_definitions = Hash.new
+    desc "Download App Store or Ad-Hoc provisioning profiles"
+    private_lane :download_provisioning_profiles do |options|
+        adhoc = options.fetch(:adhoc, false)
 
-		git_branch_name = options[:git_branch]
-		build_number = options[:build_number]
+        output_path = ENV["PROVISIONING_PROFILES_PATH"]
+        skip_certificate_verification = true
 
-		if !git_branch_name.to_s.empty?
-			preprocessor_definitions["GIT_BRANCH"] = git_branch_name.sub("origin/", "")
-		end
+        # Main application
+        get_provisioning_profile(
+            app_identifier: ENV["MAIN_BUNDLE_ID"],
+            adhoc: adhoc,
+            skip_certificate_verification: skip_certificate_verification,
+            output_path: output_path,
+            filename: ENV["MAIN_PROVISIONING_PROFILE_FILENAME"],
+            readonly: true
+        )
+        # Share extension
+        get_provisioning_profile(
+            app_identifier: ENV["SHARE_EXTENSION_BUNDLE_ID"],
+            adhoc: adhoc,
+            skip_certificate_verification: skip_certificate_verification,
+            output_path: output_path,
+            filename: ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
+            readonly: true
+        )
+        # Siri Intents extension
+        get_provisioning_profile(
+            app_identifier: ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"],
+            adhoc: adhoc,
+            skip_certificate_verification: skip_certificate_verification,
+            output_path: output_path,
+            filename: ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
+            readonly: true
+        )
+    end
 
-		if !build_number.to_s.empty?
-			preprocessor_definitions["BUILD_NUMBER"] = build_number
-		end
+    desc "Update provisioning profiles for each target"
+    private_lane :update_project_provisioning_profiles do
+        provisioning_profiles_path = ENV["PROVISIONING_PROFILES_PATH"]
+        build_configuration = 'Release'
+        xcodeproj = ENV["PROJECT_PATH"]
 
-		preprocessor_definitions
-	end
+        # Main application
+        update_project_provisioning(
+            xcodeproj: xcodeproj,
+            profile: "#{provisioning_profiles_path}#{ENV["MAIN_PROVISIONING_PROFILE_FILENAME"]}",
+            target_filter: ENV["MAIN_TARGET"],
+            build_configuration: build_configuration
+        )
+        # Share extension
+        update_project_provisioning(
+            xcodeproj: xcodeproj,
+            profile: "#{provisioning_profiles_path}#{ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
+            target_filter: ENV["SHARE_EXTENSION_TARGET"],
+            build_configuration: build_configuration
+        )
+        # Siri Intents extension
+        update_project_provisioning(
+            xcodeproj: xcodeproj,
+            profile: "#{provisioning_profiles_path}#{ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
+            target_filter: ENV["SIRI_INTENTS_EXTENSION_TARGET"],
+            build_configuration: build_configuration
+        )
+    end
+
+    desc "Update application build number for all targets"
+    private_lane :update_build_number do |options|
+        build_number = options[:build_number]
+
+        # Main application
+        increment_build_number_in_plist(
+            build_number: build_number,
+            target: ENV["MAIN_TARGET"]
+        )
+        # Share extension
+        increment_build_number_in_plist(
+            build_number: build_number,
+            target: ENV["SHARE_EXTENSION_TARGET"]
+        )
+        # Siri Intents extension
+        increment_build_number_in_plist(
+            build_number: build_number,
+            target: ENV["SIRI_INTENTS_EXTENSION_TARGET"]
+        )
+    end
+
+    desc "Returns version identifiers hash to inject in GCC_PREPROCESSOR_DEFINITIONS for release builds"
+    private_lane :release_versioning_preprocessor_definitions do |options|
+        preprocessor_definitions = Hash.new
+
+        git_branch_name = options[:git_branch]
+        build_number = options[:build_number]
+
+        if !git_branch_name.to_s.empty?
+            preprocessor_definitions["GIT_BRANCH"] = git_branch_name.sub("origin/", "")
+        end
+
+        if !build_number.to_s.empty?
+            preprocessor_definitions["BUILD_NUMBER"] = build_number
+        end
+
+        preprocessor_definitions
+    end
 
 end

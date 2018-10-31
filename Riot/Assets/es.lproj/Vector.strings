@@ -229,7 +229,7 @@
 "room_delete_unsent_messages" = "Eliminar mensajes no enviados";
 "room_event_action_copy" = "Copiar";
 "room_event_action_quote" = "Citar";
-"room_event_action_redact" = "Redactar";
+"room_event_action_redact" = "Quitar";
 "room_event_action_more" = "Más";
 "room_event_action_share" = "Compartir";
 "room_event_action_permalink" = "Enlace Permanente";

@@ -552,3 +552,7 @@
 "room_resource_limit_exceeded_message_contact_2_link" = "contacter l'administrateur de votre service";
 "room_resource_limit_exceeded_message_contact_3" = " pour continuer à l'utiliser.";
 "homeserver_connection_lost" = "Connexion impossible au serveur d'accueil.";
+"room_resource_usage_limit_reached_message_1_default" = "Ce serveur d'accueil a dépassé une de ses limites de ressources donc ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Ce serveur d'accueil a atteint sa limite mensuelle d'utilisateurs actifs donc ";
+"room_resource_usage_limit_reached_message_2" = "quelques utilisateurs ne pourront pas se connecter.";
+"room_resource_usage_limit_reached_message_contact_3" = " pour augmenter cette limite.";
