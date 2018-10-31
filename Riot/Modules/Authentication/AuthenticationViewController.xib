@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -102,13 +102,13 @@
                                             </userDefinedRuntimeAttributes>
                                         </activityIndicatorView>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currently we do not support authentication flows defined by this Home Server" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="54b-4O-ip9" userLabel="noFlowLabel">
-                                            <rect key="frame" x="28.333333333333343" y="8" width="319.33333333333326" height="33.666666666666664"/>
+                                            <rect key="frame" x="28" y="8" width="319.33333333333331" height="33.666666666666664"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wIH-Kd-r7q" userLabel="retryButton">
-                                            <rect key="frame" x="165.66666666666666" y="46.666666666666686" width="45" height="30"/>
+                                            <rect key="frame" x="165" y="46.666666666666686" width="45" height="30"/>
                                             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCRetryButton"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="WtO-NT-ei8"/>
@@ -242,7 +242,7 @@
                                                                         <constraint firstAttribute="height" constant="21" id="RT2-FT-tLZ"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="done" textContentType="url"/>
                                                                     <connections>
                                                                         <outlet property="delegate" destination="-1" id="UVr-c4-V8L"/>
                                                                     </connections>
@@ -290,7 +290,7 @@
                                                                         <constraint firstAttribute="height" constant="21" id="XTt-dw-c6p"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="done" textContentType="url"/>
                                                                     <connections>
                                                                         <outlet property="delegate" destination="-1" id="nZF-by-6t6"/>
                                                                     </connections>

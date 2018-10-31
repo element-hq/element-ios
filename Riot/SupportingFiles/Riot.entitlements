@@ -10,6 +10,7 @@
 		<string>applinks:vector.im</string>
 		<string>applinks:riot.im</string>
 		<string>applinks:www.riot.im</string>
+		<string>webcredentials:riot.im</string>
 	</array>
 	<key>com.apple.developer.siri</key>
 	<true/>
