@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,7 +24,7 @@
                                 <constraint firstAttribute="height" constant="21" id="x3j-uC-j0U"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" textContentType="username"/>
                             <connections>
                                 <outlet property="delegate" destination="x74-04-ezp" id="cIj-f6-NKj"/>
                             </connections>
@@ -59,7 +59,7 @@
                                 <constraint firstAttribute="height" constant="21" id="iai-tB-l7T"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES" textContentType="password"/>
                             <connections>
                                 <outlet property="delegate" destination="x74-04-ezp" id="GjY-xZ-s5J"/>
                             </connections>
@@ -94,7 +94,7 @@
                                 <constraint firstAttribute="height" constant="21" id="Kvu-hz-22A"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" textContentType="email"/>
                             <connections>
                                 <outlet property="delegate" destination="x74-04-ezp" id="ViI-x8-eWu"/>
                             </connections>
@@ -162,7 +162,7 @@
                                 <constraint firstAttribute="height" constant="21" id="Atb-T3-6eG"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad" returnKeyType="next"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad" returnKeyType="next" textContentType="tel"/>
                             <connections>
                                 <action selector="textFieldDidChange:" destination="x74-04-ezp" eventType="editingChanged" id="kR9-TL-ZDM"/>
                                 <outlet property="delegate" destination="x74-04-ezp" id="5Vt-tC-vJ4"/>
@@ -205,7 +205,7 @@
                                 <constraint firstAttribute="height" constant="21" id="87Q-0f-X45"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES" textContentType="new-password"/>
                             <connections>
                                 <outlet property="delegate" destination="x74-04-ezp" id="28g-3U-BBM"/>
                             </connections>
