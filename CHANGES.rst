@@ -1,5 +1,8 @@
-Changes in 0.7.6 (2018-10-)
+Changes in 0.7.7 (2018-10-31)
 ===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.8.6).
 
 Bug fix:
 * Notifications: old notifications can reappear (#1985).
