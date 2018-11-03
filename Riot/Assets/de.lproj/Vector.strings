@@ -556,3 +556,4 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Dieser Heimserver hat sein Limit an monatlich aktiven Benutzern überschritten, sodass ";
 "room_resource_usage_limit_reached_message_2" = "einige Benutzer nicht in der Lage sein werden, sich einzuloggen.";
 "room_resource_usage_limit_reached_message_contact_3" = " um dieses Limit erhöhen zu lassen.";
+"auth_accept_policies" = "Bitte Regeln dieses Heimservers ansehen und akzeptieren:";
