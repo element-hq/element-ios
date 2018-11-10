@@ -2333,7 +2333,7 @@
                 selectedEvent.sentState == MXEventSentStateSending)
             {
                 // Upload id is stored in attachment url (nasty trick)
-                NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
+                NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.contentURL;
                 if ([MXMediaManager existingUploaderWithId:uploadId])
                 {
                     [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_send", @"Vector", nil)
@@ -2357,7 +2357,7 @@
                                                                            
                                                                            // Remove the outgoing message and its related cached file.
                                                                            [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath error:nil];
-                                                                           [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheThumbnailPath error:nil];
+                                                                           [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.thumbnailCachePath error:nil];
 
                                                                            // Cancel and remove the outgoing message
                                                                            [self.roomDataSource.room cancelSendingOperation:selectedEvent.eventId];
@@ -2418,8 +2418,8 @@
         // Check whether download is in progress
         if (level == 0 && selectedEvent.isMediaAttachment)
         {
-            NSString *cacheFilePath = roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath;
-            if ([MXMediaManager existingDownloaderWithOutputFilePath:cacheFilePath])
+            NSString *downloadId = roomBubbleTableViewCell.bubbleData.attachment.downloadId;
+            if ([MXMediaManager existingDownloaderWithIdentifier:downloadId])
             {
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_download", @"Vector", nil)
                                                                  style:UIAlertActionStyleDefault
@@ -2432,7 +2432,7 @@
                                                                        [self cancelEventSelection];
                                                                        
                                                                        // Get again the loader
-                                                                       MXMediaLoader *loader = [MXMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
+                                                                       MXMediaLoader *loader = [MXMediaManager existingDownloaderWithIdentifier:downloadId];
                                                                        if (loader)
                                                                        {
                                                                            [loader cancel];

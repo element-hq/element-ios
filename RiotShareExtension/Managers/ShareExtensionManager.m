@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         sharedInstance.pendingImages = [NSMutableArray array];
         sharedInstance.imageUploadProgresses = [NSMutableDictionary dictionary];
         
-        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(onMediaUploadProgress:) name:kMXMediaUploadProgressNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(onMediaLoaderStateDidChange:) name:kMXMediaLoaderStateDidChangeNotification object:nil];
         
         // Add observer to handle logout
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:kMXKAccountManagerDidRemoveAccountNotification object:nil];
@@ -503,21 +503,30 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 #pragma mark - Notifications
 
-- (void)onMediaUploadProgress:(NSNotification *)notification
+- (void)onMediaLoaderStateDidChange:(NSNotification *)notification
 {
-    self.imageUploadProgresses[notification.object] = (NSNumber *)notification.userInfo[kMXMediaLoaderProgressValueKey];
-    
-    if ([self.delegate respondsToSelector:@selector(shareExtensionManager:mediaUploadProgress:)])
-    {
-        const NSInteger totalImagesCount = self.pendingImages.count;
-        CGFloat totalProgress = 0.0;
-        
-        for (NSNumber *progress in self.imageUploadProgresses.allValues)
+    MXMediaLoader *loader = (MXMediaLoader*)notification.object;
+    // Consider only upload progress
+    switch (loader.state) {
+        case MXMediaLoaderStateUploadInProgress:
         {
-            totalProgress += progress.floatValue/totalImagesCount;
+            self.imageUploadProgresses[loader.uploadId] = (NSNumber *)loader.statisticsDict[kMXMediaLoaderProgressValueKey];
+            if ([self.delegate respondsToSelector:@selector(shareExtensionManager:mediaUploadProgress:)])
+            {
+                const NSInteger totalImagesCount = self.pendingImages.count;
+                CGFloat totalProgress = 0.0;
+                
+                for (NSNumber *progress in self.imageUploadProgresses.allValues)
+                {
+                    totalProgress += progress.floatValue/totalImagesCount;
+                }
+                
+                [self.delegate shareExtensionManager:self mediaUploadProgress:totalProgress];
+            }
+            break;
         }
-        
-        [self.delegate shareExtensionManager:self mediaUploadProgress:totalProgress];
+        default:
+            break;
     }
 }
 
