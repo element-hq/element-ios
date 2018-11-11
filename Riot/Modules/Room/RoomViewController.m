@@ -1426,14 +1426,16 @@
     if (userPictureView)
     {
         UIImage *preview = [AvatarGenerator generateAvatarForMatrixItem:self.mainSession.myUser.userId withDisplayName:self.mainSession.myUser.displayname];
-        NSString *avatarThumbURL = nil;
-        if (self.mainSession.myUser.avatarUrl)
-        {
-            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
-        }
+        
+        // Suppose the avatar is stored unencrypted on the Matrix media repository.
         userPictureView.enableInMemoryCache = YES;
-        [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
+        [userPictureView setImageURI:self.mainSession.myUser.avatarUrl
+                            withType:nil
+                 andImageOrientation:UIImageOrientationUp
+                       toFitViewSize:userPictureView.frame.size
+                          withMethod:MXThumbnailingMethodCrop
+                        previewImage:preview
+                        mediaManager:self.mainSession.mediaManager];
         [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
         userPictureView.clipsToBounds = YES;
     }
@@ -1731,9 +1733,7 @@
             // Set the avatar provided in preview data
             if (roomPreviewData.roomAvatarUrl)
             {
-                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:previewHeader.roomAvatar.frame.size withMethod:MXThumbnailingMethodCrop];
-                
-                previewHeader.roomAvatarURL = roomAvatarUrl;
+                previewHeader.roomAvatarURL = roomPreviewData.roomAvatarUrl;
             }
             else if (roomPreviewData.roomId && roomPreviewData.roomName)
             {

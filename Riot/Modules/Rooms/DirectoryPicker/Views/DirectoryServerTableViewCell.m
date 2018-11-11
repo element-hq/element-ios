@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -49,7 +50,15 @@
     }
     else  if (cellData.thirdPartyProtocolInstance.icon)
     {
+        // Presently the thirdPartyProtocolInstance.icon is not a Matrix Content URI. We could not use here MXKImageView setImageURI method
+        // without breaking the instance icon rendering. We use the deprecated interface until this point is fixed on the server side.
+        // TODO: MEDIA: remove the deprecated interface use.
         [self.iconImageView setImageURL:cellData.thirdPartyProtocolInstance.icon withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
+//        [self.iconImageView setImageURI:cellData.thirdPartyProtocolInstance.icon
+//                               withType:nil
+//                    andImageOrientation:UIImageOrientationUp
+//                           previewImage:[UIImage imageNamed:@"placeholder"]
+//                           mediaManager:cellData.mediaManager];
     }
     else
     {

@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -735,22 +736,25 @@
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
         
+        MXWeakify(self);
         [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+            
+            MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];
             [avatarFullScreenView removeFromSuperview];
             
             avatarFullScreenView = nil;
             
-            isStatusBarHidden = NO;
+            self->isStatusBarHidden = NO;
             // Trigger status bar update
             [self setNeedsStatusBarAppearanceUpdate];
         }];
         
-        NSString *avatarURL = [self.mainSession.matrixRestClient urlOfContent:_group.summary.profile.avatarUrl];
-        [avatarFullScreenView setImageURL:avatarURL
+        [avatarFullScreenView setImageURI:_group.summary.profile.avatarUrl
                                  withType:nil
                       andImageOrientation:UIImageOrientationUp
-                             previewImage:self.groupAvatar.image];
+                             previewImage:self.groupAvatar.image
+                             mediaManager:_mxSession.mediaManager];
         
         [avatarFullScreenView showFullScreen];
         isStatusBarHidden = YES;
