@@ -50,15 +50,20 @@
     }
     else  if (cellData.thirdPartyProtocolInstance.icon)
     {
-        // Presently the thirdPartyProtocolInstance.icon is not a Matrix Content URI. We could not use here MXKImageView setImageURI method
-        // without breaking the instance icon rendering. We use the deprecated interface until this point is fixed on the server side.
-        // TODO: MEDIA: remove the deprecated interface use.
-        [self.iconImageView setImageURL:cellData.thirdPartyProtocolInstance.icon withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
-//        [self.iconImageView setImageURI:cellData.thirdPartyProtocolInstance.icon
-//                               withType:nil
-//                    andImageOrientation:UIImageOrientationUp
-//                           previewImage:[UIImage imageNamed:@"placeholder"]
-//                           mediaManager:cellData.mediaManager];
+        // Presently the thirdPartyProtocolInstance.icon is not a Matrix Content URI (https://github.com/matrix-org/synapse/issues/4175).
+        // Patch: We extract the expected URI from the URL
+        NSString *iconURL = cellData.thirdPartyProtocolInstance.icon;
+        NSString *mxMediaPrefix = [NSString stringWithFormat:@"/%@/download/", kMXContentPrefixPath];
+        NSRange range = [iconURL rangeOfString:mxMediaPrefix];
+        if (range.location != NSNotFound)
+        {
+            iconURL = [NSString stringWithFormat:@"%@%@", kMXContentUriScheme, [iconURL substringFromIndex:range.location + range.length]];
+        }
+        [self.iconImageView setImageURI:iconURL
+                               withType:nil
+                    andImageOrientation:UIImageOrientationUp
+                           previewImage:[UIImage imageNamed:@"placeholder"]
+                           mediaManager:cellData.mediaManager];
     }
     else
     {
