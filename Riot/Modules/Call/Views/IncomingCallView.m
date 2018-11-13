@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -46,7 +47,11 @@ static const CGFloat kButtonSize = 80.0;
     return CGSizeMake(kAvatarSize, kAvatarSize);
 }
 
-- (instancetype)initWithCallerAvatarURL:(NSString *)callerAvatarURL placeholderImage:(UIImage *)placeholderImage callerName:(NSString *)callerName callInfo:(NSString *)callInfo
+- (instancetype)initWithCallerAvatar:(NSString *)mxcAvatarURI
+                        mediaManager:(MXMediaManager *)mediaManager
+                    placeholderImage:(UIImage *)placeholderImage
+                          callerName:(NSString *)callerName
+                            callInfo:(NSString *)callInfo
 {
     self = [super initWithFrame:CGRectZero];
     if (self)
@@ -59,10 +64,13 @@ static const CGFloat kButtonSize = 80.0;
         self.callerImageView.clipsToBounds = YES;
         self.callerImageView.mediaFolder = kMXMediaManagerAvatarThumbnailFolder;
         self.callerImageView.enableInMemoryCache = YES;
-        [self.callerImageView setImageURL:callerAvatarURL
+        [self.callerImageView setImageURI:mxcAvatarURI
                                  withType:nil
                       andImageOrientation:UIImageOrientationUp
-                             previewImage:placeholderImage];
+                            toFitViewSize:IncomingCallView.callerAvatarSize
+                               withMethod:MXThumbnailingMethodCrop
+                             previewImage:placeholderImage
+                             mediaManager:mediaManager];
         
         self.callerNameLabel = [[UILabel alloc] init];
         self.callerNameLabel.backgroundColor = kRiotPrimaryBgColor;

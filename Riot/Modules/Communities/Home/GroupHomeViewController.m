@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -497,39 +498,78 @@
                                                  ];
         
         // Do some sanitisation by handling the potential image
+        MXWeakify(self);
         sanitisedGroupLongDescription = [MXKTools sanitiseHTML:_group.summary.profile.longDescription withAllowedHTMLTags:allowedHTMLTags imageHandler:^NSString *(NSString *sourceURL, CGFloat width, CGFloat height) {
             
-            NSString *imageURL;
+            MXStrongifyAndReturnValueIfNil(self, nil);
+            NSString *localSourcePath;
             
             if (width != -1 && height != -1)
             {
                 CGSize size = CGSizeMake(width, height);
-                imageURL = [self.mxSession.matrixRestClient urlOfContentThumbnail:sourceURL toFitViewSize:size withMethod:MXThumbnailingMethodScale];
+                // Build the cache path for the a thumbnail of this image.
+                NSString *cacheFilePath = [MXMediaManager thumbnailCachePathForMatrixContentURI:sourceURL
+                                                                              andType:nil
+                                                                             inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                        toFitViewSize:size
+                                                                           withMethod:MXThumbnailingMethodScale];
+                // Check whether the provided URL is a valid Matrix Content URI.
+                if (cacheFilePath)
+                {
+                    // Download the thumbnail if it is not already stored in the cache.
+                    if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
+                    {
+                        MXWeakify(self);
+                        [self.mxSession.mediaManager downloadThumbnailFromMatrixContentURI:sourceURL
+                                                                                  withType:nil
+                                                                                  inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                             toFitViewSize:size
+                                                                                withMethod:MXThumbnailingMethodScale
+                                                                                   success:^(NSString *outputFilePath) {
+                                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                                       [self refreshGroupLongDescription];
+                                                                                   }
+                                                                                   failure:nil];
+                    }
+                    else
+                    {
+                        // Update the local path
+                        localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
+                    }
+                }
             }
             else
             {
-                imageURL = [self.mxSession.matrixRestClient urlOfContent:sourceURL];
+                // Build the cache path for this image.
+                NSString* cacheFilePath = [MXMediaManager cachePathForMatrixContentURI:sourceURL
+                                                                 andType:nil
+                                                                inFolder:kMXMediaManagerDefaultCacheFolder];
+                
+                // Check whether the provided URL is a valid Matrix Content URI.
+                if (cacheFilePath)
+                {
+                    // Download the image if it is not already stored in the cache.
+                    if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
+                    {
+                        MXWeakify(self);
+                        [self.mxSession.mediaManager downloadMediaFromMatrixContentURI:sourceURL
+                                                                              withType:nil
+                                                                              inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                               success:^(NSString *outputFilePath) {
+                                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                                   [self refreshGroupLongDescription];
+                                                                               }
+                                                                               failure:nil];
+                    }
+                    else
+                    {
+                        // Update the local path
+                        localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
+                    }
+                }
             }
+            return localSourcePath;
             
-            NSString *mimeType = nil;
-            // Check if the extension could not be deduced from url
-            if (![imageURL pathExtension].length)
-            {
-                // Set default mime type if no information is available
-                mimeType = @"image/jpeg";
-            }
-            
-            NSString *cacheFilePath = [MXMediaManager cachePathForMediaWithURL:imageURL andType:mimeType inFolder:kMXMediaManagerDefaultCacheFolder];
-            if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
-            {
-                [MXMediaManager downloadMediaFromURL:imageURL andSaveAtFilePath:cacheFilePath success:^{
-                    
-                    [self renderGroupLongDescription];
-                    
-                } failure:nil];
-            }
-            
-            return [NSString stringWithFormat:@"file://%@", cacheFilePath];
         }];
     }
     else
@@ -701,22 +741,25 @@
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
         
+        MXWeakify(self);
         [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+            
+            MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];
             [avatarFullScreenView removeFromSuperview];
             
             avatarFullScreenView = nil;
             
-            isStatusBarHidden = NO;
+            self->isStatusBarHidden = NO;
             // Trigger status bar update
             [self setNeedsStatusBarAppearanceUpdate];
         }];
         
-        NSString *avatarURL = [self.mainSession.matrixRestClient urlOfContent:_group.summary.profile.avatarUrl];
-        [avatarFullScreenView setImageURL:avatarURL
+        [avatarFullScreenView setImageURI:_group.summary.profile.avatarUrl
                                  withType:nil
                       andImageOrientation:UIImageOrientationUp
-                             previewImage:self.groupAvatar.image];
+                             previewImage:self.groupAvatar.image
+                             mediaManager:_mxSession.mediaManager];
         
         [avatarFullScreenView showFullScreen];
         isStatusBarHidden = YES;

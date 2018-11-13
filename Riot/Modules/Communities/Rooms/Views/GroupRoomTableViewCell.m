@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -75,11 +76,13 @@
     {
         _roomAvatar.enableInMemoryCache = YES;
 
-        [_roomAvatar setImageURL:[mxSession.matrixRestClient urlOfContentThumbnail:groupRoom.avatarUrl
-                                                                    toFitViewSize:_roomAvatar.frame.size
-                                                                       withMethod:MXThumbnailingMethodCrop]
+        [_roomAvatar setImageURI:groupRoom.avatarUrl
                         withType:nil
-             andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+             andImageOrientation:UIImageOrientationUp
+                   toFitViewSize:_roomAvatar.frame.size
+                      withMethod:MXThumbnailingMethodCrop
+                    previewImage:avatarImage
+                    mediaManager:mxSession.mediaManager];
     }
     else
     {

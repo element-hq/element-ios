@@ -1451,7 +1451,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 {
                     profileCell.mxkImageView.enableInMemoryCache = YES;
                     
-                    [profileCell.mxkImageView setImageURL:[session.matrixRestClient urlOfContentThumbnail:myUser.avatarUrl toFitViewSize:profileCell.mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+                    [profileCell.mxkImageView setImageURI:myUser.avatarUrl
+                                                 withType:nil
+                                      andImageOrientation:UIImageOrientationUp
+                                            toFitViewSize:profileCell.mxkImageView.frame.size
+                                               withMethod:MXThumbnailingMethodCrop
+                                             previewImage:avatarImage
+                                             mediaManager:session.mediaManager];
                 }
                 else
                 {

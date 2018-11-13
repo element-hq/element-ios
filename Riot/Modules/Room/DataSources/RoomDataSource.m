@@ -304,7 +304,7 @@
                         if (roomMembers.count)
                         {
                             // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
-                            MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 13, 150, 12) andRestClient:self.mxSession.matrixRestClient];
+                            MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 13, 150, 12) andMediaManager:self.mxSession.mediaManager];
                             
                             // Custom avatar display
                             avatarsContainer.maxDisplayedAvatars = 5;
