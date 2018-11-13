@@ -516,8 +516,6 @@
                 // Check whether the provided URL is a valid Matrix Content URI.
                 if (cacheFilePath)
                 {
-                    localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
-                    
                     // Download the thumbnail if it is not already stored in the cache.
                     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
                     {
@@ -529,9 +527,14 @@
                                                                                 withMethod:MXThumbnailingMethodScale
                                                                                    success:^(NSString *outputFilePath) {
                                                                                        MXStrongifyAndReturnIfNil(self);
-                                                                                       [self renderGroupLongDescription];
+                                                                                       [self refreshGroupLongDescription];
                                                                                    }
                                                                                    failure:nil];
+                    }
+                    else
+                    {
+                        // Update the local path
+                        localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
                     }
                 }
             }
@@ -545,8 +548,6 @@
                 // Check whether the provided URL is a valid Matrix Content URI.
                 if (cacheFilePath)
                 {
-                    localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
-                    
                     // Download the image if it is not already stored in the cache.
                     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
                     {
@@ -556,9 +557,14 @@
                                                                               inFolder:kMXMediaManagerDefaultCacheFolder
                                                                                success:^(NSString *outputFilePath) {
                                                                                    MXStrongifyAndReturnIfNil(self);
-                                                                                   [self renderGroupLongDescription];
+                                                                                   [self refreshGroupLongDescription];
                                                                                }
                                                                                failure:nil];
+                    }
+                    else
+                    {
+                        // Update the local path
+                        localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
                     }
                 }
             }
