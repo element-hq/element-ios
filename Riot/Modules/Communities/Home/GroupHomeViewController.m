@@ -501,6 +501,7 @@
         MXWeakify(self);
         sanitisedGroupLongDescription = [MXKTools sanitiseHTML:_group.summary.profile.longDescription withAllowedHTMLTags:allowedHTMLTags imageHandler:^NSString *(NSString *sourceURL, CGFloat width, CGFloat height) {
             
+            MXStrongifyAndReturnValueIfNil(self, nil);
             NSString *localSourcePath;
             
             if (width != -1 && height != -1)
@@ -520,7 +521,6 @@
                     // Download the thumbnail if it is not already stored in the cache.
                     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
                     {
-                        MXStrongifyAndReturnValueIfNil(self, nil);
                         MXWeakify(self);
                         [self.mxSession.mediaManager downloadThumbnailFromMatrixContentURI:sourceURL
                                                                                   withType:nil
@@ -550,7 +550,6 @@
                     // Download the image if it is not already stored in the cache.
                     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
                     {
-                        MXStrongifyAndReturnValueIfNil(self, nil);
                         MXWeakify(self);
                         [self.mxSession.mediaManager downloadMediaFromMatrixContentURI:sourceURL
                                                                               withType:nil
