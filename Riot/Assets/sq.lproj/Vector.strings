@@ -11,7 +11,7 @@
 "continue" = "Vazhdo";
 "create" = "Krijoje";
 "start" = "Fillo";
-"leave" = "Dil";
+"leave" = "Dilni";
 "remove" = "Hiqe";
 "invite" = "Ftoje";
 "retry" = "Riprovo";
@@ -36,14 +36,14 @@
 "auth_register" = "Regjistrohuni";
 "auth_submit" = "Parashtroje";
 "auth_skip" = "Anashkaloje";
-"auth_send_reset_email" = "Dërgo Email Ricaktimi";
+"auth_send_reset_email" = "Ridërgo Email Ricaktimi";
 "auth_return_to_login" = "Kthehuni te skena e hyrjeve";
 "auth_password_placeholder" = "Fjalëkalim";
 "auth_new_password_placeholder" = "Fjalëkalim i ri";
 "auth_user_name_placeholder" = "Emër përdoruesi";
-"auth_optional_email_placeholder" = "Adresë email (në daçi)";
+"auth_optional_email_placeholder" = "Adresë email (opsionale)";
 "auth_email_placeholder" = "Adresë email";
-"auth_optional_phone_placeholder" = "Numër telefoni (në daçi)";
+"auth_optional_phone_placeholder" = "Numër telefoni (opsionale)";
 "auth_phone_placeholder" = "Numër telefoni";
 "auth_repeat_password_placeholder" = "Rijepeni fjalëkalimin";
 "auth_repeat_new_password_placeholder" = "Ripohoni fjalëkalimin tuaj të ri";
@@ -131,7 +131,7 @@
 "room_participants_add_participant" = "Shtoni pjesmarrës";
 "room_participants_one_participant" = "1 pjesmarrës";
 "room_participants_multi_participants" = "%d pjesëmarrës";
-"room_participants_leave_prompt_title" = "Dilni nga dhoma";
+"room_participants_leave_prompt_title" = "Dilni nga dhomë";
 "room_participants_leave_prompt_msg" = "Jeni i sigurt se doni të ikni nga dhoma?";
 "room_participants_remove_prompt_title" = "Ripohim";
 "room_participants_remove_prompt_msg" = "Jeni i sigurt se doni të hiqet %@ nga kjo fjalosje?";
@@ -149,13 +149,13 @@
 "room_participants_action_section_admin_tools" = "Mjete përgjegjësi";
 "room_participants_action_section_direct_chats" = "Fjalosje të drejtpërdrejta";
 "room_participants_action_section_devices" = "Pajisje";
-"room_participants_action_section_other" = "Tjetër";
+"room_participants_action_section_other" = "Të tjera";
 "room_participants_action_invite" = "Ftoje";
 "room_participants_action_leave" = "Braktiseni këtë dhomë";
 "room_participants_action_remove" = "Hiqeni prej kësaj dhome";
-"room_participants_action_unban" = "Zhdëboje";
-"room_participants_action_set_default_power_level" = "Riktheje në përdorues normal";
-"room_participants_action_set_moderator" = "Kaloje moderator";
+"room_participants_action_unban" = "Hiqi dëbimin";
+"room_participants_action_set_default_power_level" = "Rikthejeni në përdorues normal";
+"room_participants_action_set_moderator" = "Kalojeni moderator";
 "room_participants_action_set_admin" = "Kalojeni përgjegjës";
 "room_participants_action_start_new_chat" = "Filloni fjalosje të re";
 "room_participants_action_start_voice_call" = "Nis thirrje audio";
@@ -170,14 +170,14 @@
 "room_many_users_are_typing" = "%@, %@ & të tjerë po shtypin…";
 "room_message_placeholder" = "Dërgoni një mesazh (të pafshehtëzuar)…";
 "room_do_not_have_permission_to_post" = "S’keni leje të postoni në këtë dhomë";
-"encrypted_room_message_placeholder" = "Dërgoni një mesazh të fshehtëzuar…";
+"encrypted_room_message_placeholder" = "Dërgoni një mesazhi të fshehtëzuar…";
 "room_message_short_placeholder" = "Dërgoni një mesazh…";
 "room_offline_notification" = "Humbi lidhja me shërbyesin.";
 "room_unsent_messages_notification" = "Mesazhet s’u dërguan. %@ apo %@ tani?";
 "room_ongoing_conference_call_close" = "Mbylle";
 "room_prompt_resend" = "Ridërgoji krejt";
 "room_prompt_cancel" = "anuloji krejt";
-"room_delete_unsent_messages" = "Fshi mesazhet e padërguar";
+"room_delete_unsent_messages" = "Fshi mesazhet e padërguara";
 "room_event_action_copy" = "Kopjoje";
 "room_event_action_quote" = "Citim";
 "room_event_action_more" = "Më tepër";
@@ -229,7 +229,7 @@
 "settings_sign_out" = "Dilni";
 "settings_sign_out_confirmation" = "Jeni i sigurt?";
 "settings_profile_picture" = "Foto Profili";
-"settings_display_name" = "Emër në Ekran";
+"settings_display_name" = "Emër Në Ekran";
 "settings_first_name" = "Emër";
 "settings_remove_prompt_title" = "Ripohim";
 "settings_remove_email_prompt_msg" = "Jeni i sigurt se doni të hiqet adresa email %@?";
@@ -287,11 +287,11 @@
 "room_details_access_section_directory_toggle" = "Shfaqe këtë dhomë te drejtori dhomash";
 "room_details_history_section" = "Kush mund të lexojë historikun?";
 "room_details_history_section_anyone" = "Cilido";
-"room_details_history_section_members_only_since_invited" = "Vetëm anëtarë (ngaqë qenë ftuar)";
+"room_details_history_section_members_only_since_invited" = "Vetëm anëtarë (ngaqë janë të ftuar)";
 "room_details_history_section_members_only_since_joined" = "Vetëm anëtarë (ngaqë janë bërë pjesë)";
 "room_details_history_section_prompt_title" = "Sinjalizim privatësie";
 "room_details_addresses_section" = "Adresa";
-"room_details_no_local_addresses" = "Kjo dhomë s’ka adresa vendore";
+"room_details_no_local_addresses" = "Kjo dhomë s’ka adresë vendore";
 "room_details_new_address" = "Shtoni adresë të re";
 "room_details_addresses_invalid_address_prompt_title" = "Format i pavlefshëm aliasesh";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ s’është format i vlefshëm aliasesh";
@@ -314,7 +314,7 @@
 // Group Details
 "group_details_title" = "Hollësi Bashkësie";
 "group_details_home" = "Kreu";
-"group_details_people" = "Njerëz";
+"group_details_people" = "Persona";
 "group_details_rooms" = "Dhoma";
 // Group Home
 "group_home_one_member_format" = "1 anëtar";
@@ -388,13 +388,13 @@
 "auth_reset_password_email_validation_message" = "Te %@ u dërgua një email. Pasi të ndiqni lidhjen që përmban, klikoni më poshtë.";
 "auth_reset_password_next_step_button" = "E kam verifikuar adresën time email";
 "on" = "On";
-"auth_add_phone_message" = "Shtoni te llogaria juaj një numër telefoni, që përdoruesit të mund t’ju zbulojnë.";
+"auth_add_phone_message" = "Shtoni te llogaria juaj një numër telefoni, për t’u dhënë mundësinë përdoruesve t’ju zbulojnë.";
 "auth_msisdn_validation_message" = "Kemi dërguar një SMS me një kod aktivizimi. Ju lutemi, jepeni këtë kod më poshtë.";
 "auth_recaptcha_message" = "Ky Shërbyes Home do të donte të sigurohej se s’jeni robot";
 "auth_reset_password_error_unauthorized" = "Verifikimi i adresës email dështoi: sigurohuni se keni klikuar lidhjen te email-i";
 "auth_reset_password_error_not_found" = "Adresa juaj email s’duket të jetë e përshoqëruar me ID Matrix në këtë shërbyes Home.";
 "title_favourites" = "Të parapëlqyer";
-"join" = "Bëhuni pjesë";
+"join" = "Merrni pjesë";
 "auth_add_email_message" = "Shtoni te llogaria juaj një adresë email, për t’u dhënë mundësinë përdoruesve t’ju zbulojnë dhe që t’ju lejojë të ricaktoni fjalëkalimin.";
 "auth_add_email_phone_message" = "Shtoni te llogaria juaj një adresë email dhe/ose një numër telefoni, për t’u dhënë mundësinë përdoruesve t’ju zbulojnë. Adresa email do t’ju lejojë edhe të ricaktoni fjalëkalimin tuaj.";
 "auth_add_email_and_phone_message" = "Shtoni te llogaria juaj një adresë email dhe një numër telefoni, për t’u dhënë mundësinë përdoruesve t’ju zbulojnë. Adresa email do t’ju lejojë edhe të ricaktoni fjalëkalimin tuaj.";
@@ -419,7 +419,7 @@
 "room_replacement_link" = "Biseda vazhdon këtu.";
 "room_predecessor_link" = "Klikoni këtu për të parë mesazhe më të vjetër.";
 "room_resource_limit_exceeded_message_contact_1" = " Ju lutemi, ";
-"room_resource_limit_exceeded_message_contact_2_link" = "lidhuni me përgjegjësin e shërbimit tuaj";
+"room_resource_limit_exceeded_message_contact_2_link" = "lidhuni me përgjegjësin tuaj të shërbimit";
 "room_resource_limit_exceeded_message_contact_3" = " që të vazhdoni përdorimin e këtij shërbimi.";
 "room_resource_usage_limit_reached_message_2" = "disa përdorues s’do të jenë në gjendje të bëjnë hyrjen.";
 "room_resource_usage_limit_reached_message_contact_3" = " për ta zmadhuar këtë kufi.";
@@ -461,7 +461,7 @@
 "widget_creation_failure" = "Krijimi i widget-it dështoi";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Të shtohen ca tani?";
 "widget_integration_room_not_visible" = "Dhoma %s s’është e dukshme.";
-"gdpr_consent_not_given_alert_review_now_action" = "Shqyrtojeni tani";
+"gdpr_consent_not_given_alert_review_now_action" = "Shqyrtojini tani";
 "deactivate_account_title" = "Çaktivizoni Llogarinë";
 "deactivate_account_informations_part2_emphasize" = "Ky veprim është i paprapakthyeshëm.";
 "deactivate_account_informations_part3" = "\n\nÇaktivizimi i llogarisë tuaj, ";
@@ -483,7 +483,7 @@
 "room_ongoing_conference_call" = "Thirrje konference që po zhvillohet. Merrni pjesë si %@ ose %@.";
 "room_ongoing_conference_call_with_close" = "Thirrje konference që po zhvillohet. Merrni pjesë si %@ ose %@. %@.";
 "room_conference_call_no_power" = "Ju duhen leje për të administruar thirrje konferencë në këtë dhomë";
-"room_event_action_share" = "Ndaje";
+"room_event_action_share" = "Ndajeni me të tjerë";
 "room_event_action_report_prompt_ignore_user" = "Doni të fshihen krejt mesazhet nga ky përdorues?";
 "room_warning_about_encryption" = "Fshehtëzimi skaj-më-skaj është në fazën beta dhe mund të mos jetë i qëndrueshëm.\n\nS’duhet t’i zini ende besë për sigurim të dhënash.\n\nPajisjet s’do të jenë ende në gjendje të shfshehtëzojnë historik nga periudha përpara se të merrnin pjesë te dhomë.\n\nMesazhet e fshehtëzuar s’do të jenë të dukshëm në klientë që nuk sendërtojnë ende fshehtëzimin.";
 "room_replacement_information" = "Kjo dhomë është zëvendësuar dhe s’është më aktive.";
