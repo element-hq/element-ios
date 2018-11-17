@@ -549,3 +549,6 @@
 "rerequest_keys_alert_message" = "Ju lutemi, niseni Riot-in në një tjetër pajisje që mundet të shfshehtëzojë mesazhin, që kështu të mund të dërgojë kyçet te kjo pajisje.";
 "room_event_action_redact" = "Redaktojeni";
 "e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë pajisje, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj homë.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
+"room_action_send_sticker" = "Dërgoni ngjitës";
+"settings_flair" = "Shfaq simbole, kur lejohet";
+"room_details_flair_section" = "Shfaq simbole për bashkësi";
