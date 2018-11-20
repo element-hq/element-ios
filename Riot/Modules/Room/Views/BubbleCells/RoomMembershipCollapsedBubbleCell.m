@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -65,14 +66,8 @@
     {
         MXKImageView *avatarView = [[MXKImageView alloc] initWithFrame:CGRectMake(12 * self.avatarsView.subviews.count, 0, 16, 16)];
 
-        // Handle user's picture
-        NSString *avatarThumbURL = nil;
-        if (nextBubbleData.senderAvatarUrl)
-        {
-            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            avatarThumbURL = [nextBubbleData.mxSession.matrixRestClient urlOfContentThumbnail:nextBubbleData.senderAvatarUrl toFitViewSize:avatarView.frame.size withMethod:MXThumbnailingMethodCrop];
-        }
-
+        // Handle user's picture by considering it is stored unencrypted on Matrix media repository
+        
         // Use the Riot style placeholder
         if (!nextBubbleData.senderAvatarPlaceholder)
         {
@@ -80,7 +75,13 @@
         }
         
         avatarView.enableInMemoryCache = YES;
-        [avatarView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage: nextBubbleData.senderAvatarPlaceholder];
+        [avatarView setImageURI:nextBubbleData.senderAvatarUrl
+                       withType:nil
+            andImageOrientation:UIImageOrientationUp
+                  toFitViewSize:avatarView.frame.size
+                     withMethod:MXThumbnailingMethodCrop
+                   previewImage:nextBubbleData.senderAvatarPlaceholder
+                   mediaManager:nextBubbleData.mxSession.mediaManager];
 
         // Clear the default background color of a MXKImageView instance
         avatarView.defaultBackgroundColor = [UIColor clearColor];

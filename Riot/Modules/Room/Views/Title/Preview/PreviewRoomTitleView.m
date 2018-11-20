@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -96,7 +97,13 @@
     {
         if (self.roomAvatarURL)
         {
-            [self.roomAvatar setImageURL:self.roomAvatarURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
+            [self.roomAvatar setImageURI:self.roomAvatarURL
+                                withType:nil
+                     andImageOrientation:UIImageOrientationUp
+                           toFitViewSize:self.roomAvatar.frame.size
+                              withMethod:MXThumbnailingMethodCrop
+                            previewImage:[UIImage imageNamed:@"placeholder"]
+                            mediaManager:self.mxRoom.mxSession.mediaManager];
         }
         else
         {

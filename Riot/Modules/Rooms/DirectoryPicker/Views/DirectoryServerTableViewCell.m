@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -49,7 +50,20 @@
     }
     else  if (cellData.thirdPartyProtocolInstance.icon)
     {
-        [self.iconImageView setImageURL:cellData.thirdPartyProtocolInstance.icon withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
+        // Presently the thirdPartyProtocolInstance.icon is not a Matrix Content URI (https://github.com/matrix-org/synapse/issues/4175).
+        // Patch: We extract the expected URI from the URL
+        NSString *iconURL = cellData.thirdPartyProtocolInstance.icon;
+        NSString *mxMediaPrefix = [NSString stringWithFormat:@"/%@/download/", kMXContentPrefixPath];
+        NSRange range = [iconURL rangeOfString:mxMediaPrefix];
+        if (range.location != NSNotFound)
+        {
+            iconURL = [NSString stringWithFormat:@"%@%@", kMXContentUriScheme, [iconURL substringFromIndex:range.location + range.length]];
+        }
+        [self.iconImageView setImageURI:iconURL
+                               withType:nil
+                    andImageOrientation:UIImageOrientationUp
+                           previewImage:[UIImage imageNamed:@"placeholder"]
+                           mediaManager:cellData.mediaManager];
     }
     else
     {

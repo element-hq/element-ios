@@ -1101,38 +1101,31 @@
     }
     else if (view == memberTitleView.memberAvatarMask || view == self.roomMemberAvatarMask)
     {
-        __weak typeof(self) weakSelf = self;
+        MXWeakify(self);
         
         // Show the avatar in full screen
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
 
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle)
-         {
-             [avatarFullScreenView dismissSelection];
-             [avatarFullScreenView removeFromSuperview];
-             
-             avatarFullScreenView = nil;
-             
-             if (weakSelf)
-             {
-                 // Restore the status bar
-                 isStatusBarHidden = NO;
-                 typeof(self) self = weakSelf;
-                 [self setNeedsStatusBarAppearanceUpdate];
-             }            
-        }];
+        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                          handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+                                              
+                                              MXStrongifyAndReturnIfNil(self);
+                                              [avatarFullScreenView dismissSelection];
+                                              [avatarFullScreenView removeFromSuperview];
+                                              
+                                              avatarFullScreenView = nil;
+                                              
+                                              // Restore the status bar
+                                              self->isStatusBarHidden = NO;
+                                              [self setNeedsStatusBarAppearanceUpdate];
+                                          }];
 
-        NSString *avatarURL = nil;
-        if (self.mxRoomMember.avatarUrl)
-        {
-            avatarURL = [self.mainSession.matrixRestClient urlOfContent:self.mxRoomMember.avatarUrl];
-        }
-
-        [avatarFullScreenView setImageURL:avatarURL
+        [avatarFullScreenView setImageURI:self.mxRoomMember.avatarUrl
                                  withType:nil
                       andImageOrientation:UIImageOrientationUp
-                             previewImage:self.memberThumbnail.image];
+                             previewImage:self.memberThumbnail.image
+                             mediaManager:self.mainSession.mediaManager];
 
         [avatarFullScreenView showFullScreen];
         
