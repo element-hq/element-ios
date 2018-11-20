@@ -86,16 +86,17 @@
                 self.paginationTitleView.hidden = YES;
             }
             
-            // Hanlde sender avatar
+            // Hanlde sender avatar (Supposed his avatar is stored unencrypted on Matrix media repo)
             self.pictureView.hidden = NO;
-            NSString *avatarThumbURL = nil;
-            if (bubbleData.senderAvatarUrl)
-            {
-                // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-                avatarThumbURL = [bubbleData.mxSession.matrixRestClient urlOfContentThumbnail:bubbleData.senderAvatarUrl toFitViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
-            }
+            
             self.pictureView.enableInMemoryCache = YES;
-            [self.pictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage: bubbleData.senderAvatarPlaceholder ? bubbleData.senderAvatarPlaceholder : self.picturePlaceholder];
+            [self.pictureView setImageURI:bubbleData.senderAvatarUrl
+                                 withType:nil
+                      andImageOrientation:UIImageOrientationUp
+                            toFitViewSize:self.pictureView.frame.size
+                               withMethod:MXThumbnailingMethodCrop
+                             previewImage:bubbleData.senderAvatarPlaceholder ? bubbleData.senderAvatarPlaceholder : self.picturePlaceholder
+                             mediaManager:bubbleData.mxSession.mediaManager];
             
             // Display sender's name except if the name appears in the displayed text (see emote and membership events)
             if (bubbleData.shouldHideSenderName == NO)
@@ -139,8 +140,6 @@
         
         // Display the sticker
         self.attachmentView.backgroundColor = [UIColor clearColor];
-        self.attachmentView.mediaFolder = bubbleData.roomId;
-        self.attachmentView.enableInMemoryCache = YES;
         [self.attachmentView setAttachmentThumb:bubbleData.attachment];
         
         // Set the description
