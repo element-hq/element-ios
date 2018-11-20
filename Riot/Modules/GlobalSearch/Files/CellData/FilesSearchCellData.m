@@ -41,7 +41,7 @@
         if ([searchDataSource.eventFormatter isSupportedAttachment:event])
         {
             // Note: event.eventType may be equal here to MXEventTypeRoomMessage or MXEventTypeSticker
-            attachment = [[MXKAttachment alloc] initWithEvent:event andMatrixSession:searchDataSource.mxSession];
+            attachment = [[MXKAttachment alloc] initWithEvent:event andMediaManager:searchDataSource.mxSession.mediaManager];
         }
         
         // Append the file size if any

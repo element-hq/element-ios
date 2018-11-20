@@ -19,6 +19,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^IncomingCallViewAction)();
+@class MXMediaManager;
 
 @interface IncomingCallView : UIView
 
@@ -37,10 +38,20 @@ typedef void (^IncomingCallViewAction)();
  */
 @property (nonatomic, nullable, copy) IncomingCallViewAction onReject;
 
-- (instancetype)initWithCallerAvatarURL:(NSString *)callerAvatarURL
-                       placeholderImage:(UIImage *)placeholderImage
-                             callerName:(NSString *)callerName
-                               callInfo:(NSString *)callInfo;
+/**
+ Contructors.
+ 
+ @param mxcAvatarURI the Matrix Content URI of the caller avatar.
+ @param mediaManager the media manager used to download this avatar if it is not cached yet.
+ @param placeholderImage
+ @param callerName
+ @param callInfo
+ */
+- (instancetype)initWithCallerAvatar:(NSString *)mxcAvatarURI
+                        mediaManager:(MXMediaManager *)mediaManager
+                    placeholderImage:(UIImage *)placeholderImage
+                          callerName:(NSString *)callerName
+                            callInfo:(NSString *)callInfo;
 
 @end
 

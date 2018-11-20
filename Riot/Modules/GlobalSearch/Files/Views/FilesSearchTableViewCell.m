@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -74,29 +75,8 @@
             
             if (bubbleData.isAttachmentWithThumbnail)
             {
-                // Set attached media folders
-                self.attachmentImageView.mediaFolder = bubbleData.roomId;
-                
-                NSString *mimetype = nil;
-                if (bubbleData.attachment.thumbnailInfo)
-                {
-                    mimetype = bubbleData.attachment.thumbnailInfo[@"mimetype"];
-                }
-                else if (bubbleData.attachment.contentInfo)
-                {
-                    mimetype = bubbleData.attachment.contentInfo[@"mimetype"];
-                }
-                
-                NSString *url = bubbleData.attachment.thumbnailURL;
-                UIImage *preview = bubbleData.attachment.previewImage;
-                
-                if (url.length || preview)
-                {
-                    self.attachmentImageView.enableInMemoryCache = YES;
-                    [self.attachmentImageView setImageURL:url withType:mimetype andImageOrientation:bubbleData.attachment.thumbnailOrientation previewImage:preview];
-                    
-                    self.attachmentImageView.backgroundColor = kRiotPrimaryBgColor;
-                }
+                self.attachmentImageView.backgroundColor = kRiotPrimaryBgColor;
+                [self.attachmentImageView setAttachmentThumb:bubbleData.attachment];
             }
             
             self.iconImage.image = [self attachmentIcon:bubbleData.attachment.type];

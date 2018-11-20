@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -199,20 +200,17 @@
 
 - (UIView *)createIncomingCallView
 {
-    NSString *avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.peer.avatarUrl
-                                                                          toFitViewSize:IncomingCallView.callerAvatarSize
-                                                                             withMethod:MXThumbnailingMethodCrop];
-    
     NSString *callInfo;
     if (self.mxCall.isVideoCall)
         callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
     else
         callInfo = NSLocalizedStringFromTable(@"call_incoming_voice", @"Vector", nil);
     
-    IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatarURL:avatarThumbURL
-                                                                          placeholderImage:self.picturePlaceholder
-                                                                                callerName:self.peer.displayname
-                                                                                  callInfo:callInfo];
+    IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatar:self.peer.avatarUrl
+                                                                           mediaManager:self.mainSession.mediaManager
+                                                                       placeholderImage:self.picturePlaceholder
+                                                                             callerName:self.peer.displayname
+                                                                               callInfo:callInfo];
     
     // Incoming call is retained by call vc so use weak to avoid retain cycle
     __weak typeof(self) weakSelf = self;
@@ -396,8 +394,11 @@
     if (peerAvatarURL)
     {
         // Retrieve the avatar in full resolution
-        NSString *avatarThumbURL = [self.mainSession.matrixRestClient urlOfContent:peerAvatarURL];
-        [self.callerImageView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:self.picturePlaceholder];
+        [self.callerImageView setImageURI:peerAvatarURL
+                                 withType:nil
+                      andImageOrientation:UIImageOrientationUp
+                             previewImage:self.picturePlaceholder
+                             mediaManager:self.mainSession.mediaManager];
     }
     else
     {
