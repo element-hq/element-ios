@@ -4,6 +4,7 @@ Changes in 0.7.x (2018-xx-xx)
 Improvements:
  * Replace the deprecated MXMediaManager and MXMediaLoader interfaces use (see matrix-org/matrix-ios-sdk/pull/593).
  * Replace the deprecated MXKAttachment and MXKImageView interfaces use (see matrix-org/matrix-ios-kit/pull/487).
+ * i18n: Enable Japanese (ja)
 
 Changes in 0.7.7 (2018-10-31)
 ===============================================
