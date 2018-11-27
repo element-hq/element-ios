@@ -710,6 +710,30 @@
                                    @"auth": @{@"session":currentSession.session, @"username": self.userLoginTextField.text, @"password": self.passWordTextField.text, @"type": kMXLoginFlowTypePassword}
                                    };
                 }
+                else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
+                {
+                    NSLog(@"[AuthInputsView] Prepare terms stage");
+
+                    MXWeakify(self);
+                    [self displayTermsView:^{
+                        MXStrongifyAndReturnIfNil(self);
+
+                        NSDictionary *parameters = @{
+                                                     @"auth": @{
+                                                             @"session":self->currentSession.session,
+                                                             @"type": kMXLoginFlowTypeTerms
+                                                             },
+                                                     @"username": self.userLoginTextField.text,
+                                                     @"password": self.passWordTextField.text,
+                                                     @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
+                                                     @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
+                                                     };
+                        callback(parameters, nil);
+                    }];
+
+                    // Async response
+                    return;
+                }
             }
         }
         
@@ -779,6 +803,15 @@
                     
                 }];
                 
+                return;
+            }
+            // TODO: avoid that
+            else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
+            {
+                NSLog(@"[AuthInputsView] Prepare a new terms stage");
+
+                [self prepareParameters:callback];
+
                 return;
             }
         }
@@ -1158,7 +1191,7 @@
         UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];
         phoneNumberCountryPicker.navigationItem.leftBarButtonItem = leftBarButtonItem;
         
-        [self.delegate authInputsView:self presentViewController:phoneNumberPickerNavigationController];
+        [self.delegate authInputsView:self presentViewController:phoneNumberPickerNavigationController animated:YES];
     }
 }
 
@@ -1259,6 +1292,7 @@
     self.messageLabelTopConstraint.constant = 8;
     self.messageLabel.hidden = YES;
     self.recaptchaWebView.hidden = YES;
+    self.termsView.hidden = YES;
     
     _currentLastContainer = nil;
 }
@@ -1339,7 +1373,11 @@
     {
         return YES;
     }
-    
+    else if ([flowType isEqualToString:kMXLoginFlowTypeTerms])
+    {
+        return YES;
+    }
+
     return NO;
 }
 
@@ -1564,6 +1602,32 @@
     
     [inputsAlert mxk_setAccessibilityIdentifier:@"AuthInputsViewMsisdnValidationAlert"];
     [self.delegate authInputsView:self presentAlertController:inputsAlert];
+}
+
+- (BOOL)displayTermsView:(dispatch_block_t)onAcceptedCallback
+{
+    // Extract data
+    NSDictionary *loginTermsData = currentSession.params[kMXLoginFlowTypeTerms];
+    MXLoginTerms *loginTerms;
+    MXJSONModelSetMXJSONModel(loginTerms, MXLoginTerms.class, loginTermsData);
+
+    if (loginTerms)
+    {
+        [self hideInputsContainer];
+
+        self.messageLabel.hidden = NO;
+        self.messageLabel.text = NSLocalizedStringFromTable(@"auth_accept_policies", @"Vector", nil);
+
+        self.termsView.hidden = NO;
+        self.currentLastContainer = self.termsView;
+
+        self.termsView.delegate = self.delegate;
+        [self.termsView displayTermsWithTerms:loginTerms onAccepted:onAcceptedCallback];
+
+        return YES;
+    }
+
+    return NO;
 }
 
 #pragma mark - Flow state

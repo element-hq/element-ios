@@ -17,6 +17,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "Riot-Swift.h"
+
 @interface AuthInputsView : MXKAuthInputsView <MXKCountryPickerViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *userLoginTextField;
@@ -50,6 +52,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 
 @property (weak, nonatomic) IBOutlet MXKAuthenticationRecaptchaWebView *recaptchaWebView;
+@property (weak, nonatomic) IBOutlet TermsView *termsView;
 
 /**
  Tell whether some third-party identifiers may be added during the account registration.
