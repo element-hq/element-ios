@@ -766,46 +766,33 @@
                      && [self isFlowSupported:kMXLoginFlowTypeRecaptcha] && ![self isFlowCompleted:kMXLoginFlowTypeRecaptcha])
             {
                 NSLog(@"[AuthInputsView] Display reCaptcha stage");
-                
-                [self displayRecaptchaForm:^(NSString *response) {
-                    
-                    if (response.length)
-                    {
-                        // Update the parameters dict
-                        NSDictionary *parameters;
-                        
-                        if (externalRegistrationParameters)
+
+                if (externalRegistrationParameters)
+                {
+                    [self displayRecaptchaForm:^(NSString *response) {
+
+                        if (response.length)
                         {
                             // We finalize here a registration triggered from external inputs. All the required data are handled by the session id
-                            parameters = @{
+                            NSDictionary *parameters = @{
                                            @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
                                            };
+                            callback (parameters, nil);
                         }
                         else
                         {
-                            parameters = @{
-                                           @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
-                                           @"username": self.userLoginTextField.text,
-                                           @"password": self.passWordTextField.text,
-                                           @"bind_msisdn": [NSNumber numberWithBool:isMSISDNFlowCompleted],
-                                           @"bind_email": [NSNumber numberWithBool:isEmailFlowCompleted]
-                                           };
+                            NSLog(@"[AuthInputsView] reCaptcha stage failed");
+                            callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
                         }
-                        
-                        
-                        callback (parameters, nil);
-                    }
-                    else
-                    {
-                        NSLog(@"[AuthInputsView] reCaptcha stage failed");
-                        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
-                    }
-                    
-                }];
+                    }];
+                }
+                else
+                {
+                    [self prepareParameters:callback];
+                }
                 
                 return;
             }
-            // TODO: avoid that
             else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
             {
                 NSLog(@"[AuthInputsView] Prepare a new terms stage");
