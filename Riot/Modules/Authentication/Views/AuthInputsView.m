@@ -664,7 +664,7 @@
                     }
                     NSLog(@"[AuthInputsView] Authentication failed during the email identity stage");
                 }
-                else if ([self isFlowSupported:kMXLoginFlowTypeRecaptcha])
+                else if ([self isFlowSupported:kMXLoginFlowTypeRecaptcha] && ![self isFlowCompleted:kMXLoginFlowTypeRecaptcha])
                 {
                     NSLog(@"[AuthInputsView] Prepare reCaptcha stage");
                     
@@ -693,7 +693,7 @@
                     // Async response
                     return;
                 }
-                else if ([self isFlowSupported:kMXLoginFlowTypeDummy])
+                else if ([self isFlowSupported:kMXLoginFlowTypeDummy] && ![self isFlowCompleted:kMXLoginFlowTypeDummy])
                 {
                     parameters = @{
                                    @"auth": @{@"session":currentSession.session, @"type": kMXLoginFlowTypeDummy},
@@ -703,7 +703,7 @@
                                    @"bind_email": @(NO)
                                    };
                 }
-                else if ([self isFlowSupported:kMXLoginFlowTypePassword])
+                else if ([self isFlowSupported:kMXLoginFlowTypePassword] && ![self isFlowCompleted:kMXLoginFlowTypePassword])
                 {
                     // Note: this use case was not tested yet.
                     parameters = @{
@@ -738,7 +738,8 @@
                 
                 return;
             }
-            else if ((isMSISDNFlowCompleted || isEmailFlowCompleted) && [self isFlowSupported:kMXLoginFlowTypeRecaptcha])
+            else if ((isMSISDNFlowCompleted || isEmailFlowCompleted)
+                     && [self isFlowSupported:kMXLoginFlowTypeRecaptcha] && ![self isFlowCompleted:kMXLoginFlowTypeRecaptcha])
             {
                 NSLog(@"[AuthInputsView] Display reCaptcha stage");
                 
