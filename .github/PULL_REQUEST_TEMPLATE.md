@@ -1,0 +1,6 @@
+### Pull Request Checklist
+
+<!-- Please read CONTRIBUTING.rst before submitting your pull request -->
+
+* [ ] Pull request is based on the develop branch
+* [ ] Pull request includes a [sign off](https://github.com/matrix-org/synapse/blob/master/CONTRIBUTING.rst#sign-off)
