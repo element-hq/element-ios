@@ -247,7 +247,7 @@
     
     if (type == MXKAuthenticationTypeLogin)
     {
-        if (self.isPasswordBasedFlowSupported)
+        if ([self isFlowSupported:kMXLoginFlowTypePassword])
         {
             // Check required fields
             if ((!self.userLoginTextField.text.length && !nbPhoneNumber) || !self.passWordTextField.text.length)
@@ -301,14 +301,14 @@
         else
         {
             // Check email field
-            if (self.isEmailIdentityFlowSupported && !self.emailTextField.text.length)
+            if ([self isFlowSupported:kMXLoginFlowTypeEmailIdentity] && !self.emailTextField.text.length)
             {
                 if (self.areAllThirdPartyIdentifiersRequired)
                 {
                     NSLog(@"[AuthInputsView] Missing email");
                     errorMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
                 }
-                else if (self.isMSISDNFlowSupported && !self.phoneTextField.text.length && self.isThirdPartyIdentifierRequired)
+                else if ([self isFlowSupported:kMXLoginFlowTypeMSISDN] && !self.phoneTextField.text.length && self.isThirdPartyIdentifierRequired)
                 {
                     NSLog(@"[AuthInputsView] Missing email or phone number");
                     errorMsg = NSLocalizedStringFromTable(@"auth_missing_email_or_phone", @"Vector", nil);
@@ -318,7 +318,7 @@
             if (!errorMsg)
             {
                 // Check phone field
-                if (self.isMSISDNFlowSupported && !self.phoneTextField.text.length)
+                if ([self isFlowSupported:kMXLoginFlowTypeMSISDN] && !self.phoneTextField.text.length)
                 {
                     if (self.areAllThirdPartyIdentifiersRequired)
                     {
@@ -402,7 +402,7 @@
             // Handle here the supported login flow
             if (type == MXKAuthenticationTypeLogin)
             {
-                if (self.isPasswordBasedFlowSupported)
+                if ([self isFlowSupported:kMXLoginFlowTypePassword])
                 {
                     // Check whether the user login has been set.
                     NSString *user = self.userLoginTextField.text;
@@ -473,7 +473,7 @@
             else if (type == MXKAuthenticationTypeRegister)
             {
                 // Check whether a phone number has been set, and if it is not handled yet
-                if (nbPhoneNumber && !self.isMSISDNFlowCompleted)
+                if (nbPhoneNumber && ![self isFlowCompleted:kMXLoginFlowTypeMSISDN])
                 {
                     NSLog(@"[AuthInputsView] Prepare msisdn stage");
                     
@@ -488,7 +488,7 @@
                     if (restClient)
                     {
                         // Check whether a second 3pid is available
-                        _isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && !self.isEmailIdentityFlowCompleted);
+                        _isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity]);
                         
                         // Launch msisdn validation
                         NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
@@ -563,7 +563,7 @@
                     NSLog(@"[AuthInputsView] Authentication failed during the msisdn stage");
                 }
                 // Check whether an email has been set, and if it is not handled yet
-                else if (!self.emailContainer.isHidden && self.emailTextField.text.length && !self.isEmailIdentityFlowCompleted)
+                else if (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
                 {
                     NSLog(@"[AuthInputsView] Prepare email identity stage");
                     
@@ -578,7 +578,7 @@
                     if (restClient)
                     {
                         // Check whether a second 3pid is available
-                        _isThirdPartyIdentifierPending = (nbPhoneNumber && !self.isMSISDNFlowCompleted);
+                        _isThirdPartyIdentifierPending = (nbPhoneNumber && ![self isFlowCompleted:kMXLoginFlowTypeMSISDN]);
                         
                         // Launch email validation
                         submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:self.emailTextField.text];
@@ -603,7 +603,7 @@
                                             @"auth": @{@"session":currentSession.session, @"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
                                             @"username": self.userLoginTextField.text,
                                             @"password": self.passWordTextField.text,
-                                            @"bind_msisdn": [NSNumber numberWithBool:self.isMSISDNFlowCompleted],
+                                            @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
                                             @"bind_email": @(YES)
                                             };
                              
@@ -664,7 +664,7 @@
                     }
                     NSLog(@"[AuthInputsView] Authentication failed during the email identity stage");
                 }
-                else if (self.isRecaptchaFlowRequired)
+                else if ([self isFlowSupported:kMXLoginFlowTypeRecaptcha])
                 {
                     NSLog(@"[AuthInputsView] Prepare reCaptcha stage");
                     
@@ -676,8 +676,8 @@
                                                          @"auth": @{@"session":currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
                                                          @"username": self.userLoginTextField.text,
                                                          @"password": self.passWordTextField.text,
-                                                         @"bind_msisdn": [NSNumber numberWithBool:self.isMSISDNFlowCompleted],
-                                                         @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
+                                                         @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
+                                                         @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
                                                          };
                             
                             callback(parameters, nil);
@@ -693,7 +693,7 @@
                     // Async response
                     return;
                 }
-                else if (self.isDummyFlowSupported)
+                else if ([self isFlowSupported:kMXLoginFlowTypeDummy])
                 {
                     parameters = @{
                                    @"auth": @{@"session":currentSession.session, @"type": kMXLoginFlowTypeDummy},
@@ -703,7 +703,7 @@
                                    @"bind_email": @(NO)
                                    };
                 }
-                else if (self.isPasswordBasedFlowSupported)
+                else if ([self isFlowSupported:kMXLoginFlowTypePassword])
                 {
                     // Note: this use case was not tested yet.
                     parameters = @{
@@ -725,8 +725,8 @@
         {
             currentSession.completed = completedStages;
             
-            BOOL isMSISDNFlowCompleted = self.isMSISDNFlowCompleted;
-            BOOL isEmailFlowCompleted = self.isEmailIdentityFlowCompleted;
+            BOOL isMSISDNFlowCompleted = [self isFlowCompleted:kMXLoginFlowTypeMSISDN];
+            BOOL isEmailFlowCompleted = [self isFlowCompleted:kMXLoginFlowTypeEmailIdentity];
             
             // Check the supported use cases
             if (isMSISDNFlowCompleted && self.isThirdPartyIdentifierPending)
@@ -738,7 +738,7 @@
                 
                 return;
             }
-            else if ((isMSISDNFlowCompleted || isEmailFlowCompleted) && self.isRecaptchaFlowRequired)
+            else if ((isMSISDNFlowCompleted || isEmailFlowCompleted) && [self isFlowSupported:kMXLoginFlowTypeRecaptcha])
             {
                 NSLog(@"[AuthInputsView] Display reCaptcha stage");
                 
@@ -930,7 +930,7 @@
 
 - (BOOL)areThirdPartyIdentifiersSupported
 {
-    return (self.isEmailIdentityFlowSupported || self.isMSISDNFlowSupported);
+    return ([self isFlowSupported:kMXLoginFlowTypeEmailIdentity] || [self isFlowSupported:kMXLoginFlowTypeMSISDN]);
 }
 
 - (BOOL)isThirdPartyIdentifierRequired
@@ -974,8 +974,8 @@
         return NO;
     }
     
-    BOOL isEmailIdentityFlowSupported = self.isEmailIdentityFlowSupported;
-    BOOL isMSISDNFlowSupported = self.isMSISDNFlowSupported;
+    BOOL isEmailIdentityFlowSupported = [self isFlowSupported:kMXLoginFlowTypeEmailIdentity];
+    BOOL isMSISDNFlowSupported = [self isFlowSupported:kMXLoginFlowTypeMSISDN];
     
     for (MXLoginFlow *loginFlow in currentSession.flows)
     {
@@ -1036,7 +1036,7 @@
     }
     else
     {
-        if (self.isEmailIdentityFlowSupported)
+        if ([self isFlowSupported:kMXLoginFlowTypeEmailIdentity])
         {
             if (self.isThirdPartyIdentifierRequired)
             {
@@ -1062,7 +1062,7 @@
             lastViewContainer = self.emailContainer;
         }
         
-        if (self.isMSISDNFlowSupported)
+        if ([self isFlowSupported:kMXLoginFlowTypeMSISDN])
         {
             self.phoneTextField.returnKeyType = UIReturnKeyDone;
             
@@ -1499,7 +1499,7 @@
                                                                                  @"username": self.userLoginTextField.text,
                                                                                  @"password": self.passWordTextField.text,
                                                                                  @"bind_msisdn": @(YES),
-                                                                                 @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
+                                                                                 @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
                                                                                  };
                                                                   
                                                                   callback(parameters, nil);
@@ -1565,111 +1565,40 @@
     [self.delegate authInputsView:self presentAlertController:inputsAlert];
 }
 
-- (BOOL)isPasswordBasedFlowSupported
-{
-    if (currentSession)
-    {
-        for (MXLoginFlow *loginFlow in currentSession.flows)
-        {
-            if ([loginFlow.type isEqualToString:kMXLoginFlowTypePassword] || [loginFlow.stages indexOfObject:kMXLoginFlowTypePassword] != NSNotFound)
-            {
-                return YES;
-            }
-        }
-    }
-    
-    return NO;
-}
+#pragma mark - Flow state
 
-- (BOOL)isEmailIdentityFlowSupported
-{
-    if (currentSession)
-    {
-        for (MXLoginFlow *loginFlow in currentSession.flows)
-        {
-            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound || [loginFlow.type isEqualToString:kMXLoginFlowTypeEmailIdentity])
-            {
-                return YES;
-            }
-        }
-    }
-    
-    return NO;
-}
+/**
+ Check if a flow (kMXLoginFlowType*) is part of the required flows steps.
 
-- (BOOL)isEmailIdentityFlowCompleted
+ @param flow the flow type to check.
+ @return YES if the the flow must be implemented.
+ */
+- (BOOL)isFlowSupported:(NSString *)flow
 {
-    if (currentSession && currentSession.completed)
+    for (MXLoginFlow *loginFlow in currentSession.flows)
     {
-        if ([currentSession.completed indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound)
+        if ([loginFlow.type isEqualToString:flow] || [loginFlow.stages indexOfObject:flow] != NSNotFound)
         {
             return YES;
         }
     }
-    
+
     return NO;
 }
 
-- (BOOL)isMSISDNFlowSupported
-{
-    if (currentSession)
-    {
-        for (MXLoginFlow *loginFlow in currentSession.flows)
-        {
-            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeMSISDN] != NSNotFound || [loginFlow.type isEqualToString:kMXLoginFlowTypeMSISDN])
-            {
-                return YES;
-            }
-        }
-    }
-    
-    return NO;
-}
+/**
+ Check if a flow (kMXLoginFlowType*) has already been completed.
 
-- (BOOL)isMSISDNFlowCompleted
+ @param flow the flow type to check.
+ @return YES if the the flow has been completedd.
+ */
+- (BOOL)isFlowCompleted:(NSString *)flow
 {
-    if (currentSession && currentSession.completed)
+    if (currentSession.completed && [currentSession.completed indexOfObject:flow] != NSNotFound)
     {
-        if ([currentSession.completed indexOfObject:kMXLoginFlowTypeMSISDN] != NSNotFound)
-        {
-            return YES;
-        }
-    }
-    
-    return NO;
-}
-
-- (BOOL)isRecaptchaFlowRequired
-{
-    if (currentSession && currentSession.flows)
-    {
-        for (MXLoginFlow *loginFlow in currentSession.flows)
-        {
-            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeRecaptcha] == NSNotFound && ![loginFlow.type isEqualToString:kMXLoginFlowTypeRecaptcha])
-            {
-                return NO;
-            }
-        }
-        
         return YES;
     }
-    
-    return NO;
-}
 
-- (BOOL)isDummyFlowSupported
-{
-    if (currentSession)
-    {
-        for (MXLoginFlow *loginFlow in currentSession.flows)
-        {
-            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeDummy] != NSNotFound || [loginFlow.type isEqualToString:kMXLoginFlowTypeDummy])
-            {
-                return YES;
-            }
-        }
-    }
-    
     return NO;
 }
 
