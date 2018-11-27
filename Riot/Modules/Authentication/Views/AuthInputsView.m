@@ -1151,7 +1151,7 @@
 
 - (IBAction)selectPhoneNumberCountry:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(authInputsView:presentViewController:)])
+    if ([self.delegate respondsToSelector:@selector(authInputsView:presentViewController:animated:)])
     {
         phoneNumberCountryPicker = [CountryPickerViewController countryPickerViewController];
         phoneNumberCountryPicker.delegate = self;

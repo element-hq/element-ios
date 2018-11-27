@@ -184,7 +184,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         webViewViewController.navigationItem.rightBarButtonItem = rightBarButtonItem
 
         navigationController = RiotNavigationController()
-        delegate?.authInputsView!(nil, present: navigationController, animated: true)
+        delegate?.authInputsView!(nil, present: navigationController, animated: false)
         navigationController?.pushViewController(webViewViewController, animated: false)
     }
 
