@@ -130,9 +130,10 @@
 
 - (void)userInterfaceThemeDidChange
 {
+    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
     self.view.backgroundColor = kRiotSecondaryBgColor;
-    
-    self.navigationBar.barTintColor = kRiotSecondaryBgColor;
+
     self.authenticationScrollView.backgroundColor = kRiotPrimaryBgColor;
     self.authFallbackContentView.backgroundColor = kRiotPrimaryBgColor;
     
@@ -173,9 +174,7 @@
     
     self.identityServerTextField.textColor = kRiotPrimaryTextColor;
     self.identityServerLabel.textColor = kRiotSecondaryTextColor;
-    
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     [self.authInputsView customizeViewRendering];

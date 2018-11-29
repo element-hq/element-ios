@@ -112,8 +112,8 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.view.backgroundColor = kRiotPrimaryBgColor;

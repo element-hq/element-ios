@@ -111,9 +111,9 @@
 
 - (void)userInterfaceThemeDidChange
 {
+    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
     self.assetsCollectionView.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
 }
 

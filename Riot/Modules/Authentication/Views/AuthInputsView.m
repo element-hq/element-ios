@@ -1139,18 +1139,7 @@
         phoneNumberPickerNavigationController = [[RiotNavigationController alloc] init];
         
         // Set Riot navigation bar colors
-        phoneNumberPickerNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
-        NSDictionary<NSString *,id> *titleTextAttributes = phoneNumberPickerNavigationController.navigationBar.titleTextAttributes;
-        if (titleTextAttributes)
-        {
-            NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-            textAttributes[NSForegroundColorAttributeName] = kRiotPrimaryTextColor;
-            phoneNumberPickerNavigationController.navigationBar.titleTextAttributes = textAttributes;
-        }
-        else if (kRiotPrimaryTextColor)
-        {
-            phoneNumberPickerNavigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
-        }
+        [RiotDesignValues applyStyleOnNavigationBar:phoneNumberPickerNavigationController.navigationBar];
         
         [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
         

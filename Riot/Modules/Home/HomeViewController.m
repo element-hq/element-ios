@@ -80,7 +80,9 @@
     [super viewWillAppear:animated];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;
+
+    [RiotDesignValues applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
+
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
     
     if (recentsDataSource)

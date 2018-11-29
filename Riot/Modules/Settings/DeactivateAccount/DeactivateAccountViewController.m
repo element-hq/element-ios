@@ -122,8 +122,8 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
 }
 

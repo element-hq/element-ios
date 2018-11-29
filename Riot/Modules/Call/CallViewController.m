@@ -97,8 +97,8 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
+    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
     self.barTitleColor = kRiotPrimaryTextColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
@@ -282,19 +282,9 @@
                                                                UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
                                                                
                                                                // Set Riot navigation bar colors
+                                                               [RiotDesignValues applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
                                                                usersDevicesNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
-                                                               NSDictionary<NSString *,id> *titleTextAttributes = usersDevicesNavigationController.navigationBar.titleTextAttributes;
-                                                               if (titleTextAttributes)
-                                                               {
-                                                                   NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-                                                                   textAttributes[NSForegroundColorAttributeName] = kRiotPrimaryTextColor;
-                                                                   usersDevicesNavigationController.navigationBar.titleTextAttributes = textAttributes;
-                                                               }
-                                                               else if (kRiotPrimaryTextColor)
-                                                               {
-                                                                   usersDevicesNavigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
-                                                               }
-                                                               
+
                                                                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
                                                                
                                                                [self presentViewController:usersDevicesNavigationController animated:YES completion:nil];

@@ -108,26 +108,12 @@
     }
 
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorOrange;
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorOrange;
     
     if (recentsDataSource)
     {
         // Take the lead on the shared data source.
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModePeople];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    if ([AppDelegate theDelegate].masterTabBarController.tabBar.tintColor == kRiotColorOrange)
-    {
-        // Restore default tintColor
-        [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;
-        [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
     }
 }
 

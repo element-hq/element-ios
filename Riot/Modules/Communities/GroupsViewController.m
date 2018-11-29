@@ -115,8 +115,8 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Use the primary bg color for the recents table view in plain style.
@@ -203,8 +203,6 @@
     }];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorBlue;
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorBlue;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -218,13 +216,6 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
-    }
-    
-    if ([AppDelegate theDelegate].masterTabBarController.tabBar.tintColor == kRiotColorBlue && ![AppDelegate theDelegate].masterTabBarController.selectedGroup)
-    {
-        // Restore default tintColor
-        [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;
-        [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
     }
 }
 

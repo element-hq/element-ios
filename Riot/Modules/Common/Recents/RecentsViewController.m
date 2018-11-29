@@ -158,8 +158,8 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Use the primary bg color for the recents table view in plain style.
@@ -169,6 +169,7 @@
     
     tableSearchBar.barStyle = self.recentsSearchBar.barStyle = kRiotDesignSearchBarStyle;
     tableSearchBar.tintColor = self.recentsSearchBar.tintColor = kRiotDesignSearchBarTintColor;
+    tableSearchBar.barTintColor = self.recentsSearchBar.barTintColor = kRiotDesignSearchBarBarTintColor;
     
     if (self.recentsTableView.dataSource)
     {

@@ -219,4 +219,12 @@ UIKeyboardAppearance kRiotKeyboard;
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
 }
 
++ (void)applyStyleOnNavigationBar:(UINavigationBar *)navigationBar
+{
+    navigationBar.tintColor = kRiotDesignNavigationBarTintColor;
+    navigationBar.titleTextAttributes = kRiotDesignNavigationBarTitleTextAttributes;
+    navigationBar.barTintColor = kRiotDesignNavigationBarBarTintColor;
+    navigationBar.translucent = kRiotDesignNavigationBarTranslucent;
+}
+
 @end

@@ -114,6 +114,8 @@
 
 - (void)userInterfaceThemeDidChange
 {
+    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
     self.tabBar.tintColor = kRiotColorGreen;
     self.tabBar.barTintColor = kRiotSecondaryBgColor;
     

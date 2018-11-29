@@ -17,6 +17,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Posted when the user interface theme has been changed.
  */
@@ -76,4 +78,13 @@ extern UIKeyboardAppearance kRiotKeyboard;
  */
 @interface RiotDesignValues : NSObject
 
+/**
+ Apply the current style on a navigation bar.
+
+ @param navigationBar the navigation bar to customise.
+ */
++ (void)applyStyleOnNavigationBar:(UINavigationBar *)navigationBar;
+
 @end
+
+NS_ASSUME_NONNULL_END
