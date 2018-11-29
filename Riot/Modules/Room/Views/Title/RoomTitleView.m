@@ -132,8 +132,10 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
+
+    // Use same color as navigation bar
+    self.backgroundColor = kRiotDesignNavigationBarBarTintColor;
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotDesignNavigationBarTintColor : kRiotSecondaryTextColor);
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -162,7 +164,7 @@
         }
         else
         {
-            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
+            self.displayNameTextField.textColor = kRiotDesignNavigationBarTintColor;
         }
     }
 }

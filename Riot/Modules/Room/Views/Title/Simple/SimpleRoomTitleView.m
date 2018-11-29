@@ -87,30 +87,5 @@
     }
 }
 
--(void)customizeViewRendering
-{
-    [super customizeViewRendering];
-    
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
-}
-
-- (void)refreshDisplay
-{
-    [super refreshDisplay];
-    
-    if (self.mxRoom)
-    {
-        self.displayNameTextField.text = self.mxRoom.summary.displayname;
-        if (!self.displayNameTextField.text.length)
-        {
-            self.displayNameTextField.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
-            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
-        }
-        else
-        {
-            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
-        }
-    }
-}
 
 @end

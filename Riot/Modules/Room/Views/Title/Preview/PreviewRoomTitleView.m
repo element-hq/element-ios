@@ -61,11 +61,10 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    
-    self.backgroundColor = kRiotPrimaryBgColor;
-    self.mainHeaderBackground.backgroundColor = kRiotSecondaryBgColor;
-    
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
+
+    // Use same color as navigation bar
+    self.mainHeaderBackground.backgroundColor = kRiotDesignNavigationBarBarTintColor;
+
     
     self.roomTopic.textColor = kRiotTopicTextColor;
     
@@ -172,18 +171,6 @@
     else if (self.mxRoom)
     {
         [self.mxRoom.summary setRoomAvatarImageIn:self.roomAvatar];
-        
-        // The user is here invited to join a room (This invitation has been received from server sync)
-        self.displayNameTextField.text = self.mxRoom.summary.displayname;
-        if (!self.displayNameTextField.text.length)
-        {
-            self.displayNameTextField.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
-            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
-        }
-        else
-        {
-            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
-        }
         
         // Display room topic
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];

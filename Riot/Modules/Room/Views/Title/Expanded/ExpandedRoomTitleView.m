@@ -38,7 +38,6 @@
 {
     [super customizeViewRendering];
     
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
     self.roomTopic.textColor = kRiotTopicTextColor;
     self.roomMembers.textColor = kRiotColorGreen;
 }
@@ -50,17 +49,6 @@
     if (self.mxRoom)
     {
         [self.mxRoom.summary setRoomAvatarImageIn:self.roomAvatar];
-        
-        self.displayNameTextField.text = self.mxRoom.summary.displayname;
-        if (!self.displayNameTextField.text.length)
-        {
-            self.displayNameTextField.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
-            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
-        }
-        else
-        {
-            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
-        }
         
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
         
