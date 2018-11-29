@@ -39,7 +39,7 @@ extern UIColor *kRiotSecondaryTextColor; //subtitle, sending messages color.
 extern UIColor *kRiotPlaceholderTextColor; // nil is used to keep the default color.
 extern UIColor *kRiotTopicTextColor;
 extern UIColor *kRiotSelectedBgColor; // nil is used to keep the default color.
-extern UIColor *kRiotAuxiliaryColor; // kRiotColorSilver by default.
+extern UIColor *kRiotAuxiliaryColor;
 extern UIColor *kRiotOverlayColor; // fading behind dialog modals. This color includes the transparency value.
 extern UIColor *kRiotKeyboardColor;
 
@@ -47,7 +47,6 @@ extern UIColor *kRiotKeyboardColor;
 extern UIColor *kRiotColorGreen;
 extern UIColor *kRiotColorLightGreen;
 extern UIColor *kRiotColorLightOrange;
-extern UIColor *kRiotColorSilver;
 extern UIColor *kRiotColorPinkRed;
 extern UIColor *kRiotColorRed;
 extern UIColor *kRiotColorIndigo;
@@ -60,9 +59,15 @@ extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;
 
 #pragma mark - Riot bar style
-extern UIStatusBarStyle kRiotDesignStatusBarStyle;
-extern UIBarStyle kRiotDesignSearchBarStyle;
-extern UIColor *kRiotDesignSearchBarTintColor;
+extern UIStatusBarStyle  kRiotDesignStatusBarStyle;
+extern UIColor          *kRiotDesignNavigationBarTintColor;
+extern UIColor          *kRiotDesignNavigationBarBarTintColor;
+extern NSDictionary     *kRiotDesignNavigationBarTitleTextAttributes;
+extern BOOL              kRiotDesignNavigationBarTranslucent;
+
+extern UIBarStyle    kRiotDesignSearchBarStyle;
+extern UIColor      *kRiotDesignSearchBarTintColor;
+extern UIColor      *kRiotDesignSearchBarBarTintColor;
 
 extern UIKeyboardAppearance kRiotKeyboard;
 

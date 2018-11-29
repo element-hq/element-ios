@@ -167,7 +167,7 @@ static CGFloat const kTextFontSize = 15.0;
     self.deactivateAcccountButton.layer.masksToBounds = YES;
     self.deactivateAcccountButton.backgroundColor = kRiotColorGreen;
     [self.deactivateAcccountButton setTitle:NSLocalizedStringFromTable(@"deactivate_account_validate_action", @"Vector", nil) forState:UIControlStateNormal];    
-    [self.deactivateAcccountButton setTitleColor:kRiotColorSilver forState:UIControlStateDisabled];
+    [self.deactivateAcccountButton setTitleColor:kRiotAuxiliaryColor forState:UIControlStateDisabled];
 }
 
 - (void)setupDeactivateAccountInfosLabel
