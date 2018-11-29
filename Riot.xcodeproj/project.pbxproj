@@ -10,6 +10,12 @@
 		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
+		3223D9C021B00615000321C1 /* ColorValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9BE21B00615000321C1 /* ColorValues.swift */; };
+		3223D9C121B00615000321C1 /* DefaultColorValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9BF21B00615000321C1 /* DefaultColorValues.swift */; };
+		3223D9C321B0065A000321C1 /* DarkColorValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9C221B0065A000321C1 /* DarkColorValues.swift */; };
+		3223D9C421B0077D000321C1 /* ColorValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9BE21B00615000321C1 /* ColorValues.swift */; };
+		3223D9C521B00781000321C1 /* DarkColorValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9C221B0065A000321C1 /* DarkColorValues.swift */; };
+		3223D9C621B00788000321C1 /* DefaultColorValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9BF21B00615000321C1 /* DefaultColorValues.swift */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
@@ -380,6 +386,9 @@
 		24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RiotShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2510A69B4A681C1FEC36E848 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		319CD7C67A47A3D35959E18F /* Pods-RiotPods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"; sourceTree = "<group>"; };
+		3223D9BE21B00615000321C1 /* ColorValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorValues.swift; sourceTree = "<group>"; };
+		3223D9BF21B00615000321C1 /* DefaultColorValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultColorValues.swift; sourceTree = "<group>"; };
+		3223D9C221B0065A000321C1 /* DarkColorValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarkColorValues.swift; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -968,6 +977,16 @@
 			path = RiotShareExtension;
 			sourceTree = "<group>";
 		};
+		3223D9BD21B00615000321C1 /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				3223D9BE21B00615000321C1 /* ColorValues.swift */,
+				3223D9C221B0065A000321C1 /* DarkColorValues.swift */,
+				3223D9BF21B00615000321C1 /* DefaultColorValues.swift */,
+			);
+			path = Colors;
+			sourceTree = "<group>";
+		};
 		3233F7291F31F3B4006ACA81 /* libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1142,6 +1161,7 @@
 		B16932A620F3A6FA00746532 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				3223D9BD21B00615000321C1 /* Colors */,
 				B16932AA20F3A7B000746532 /* RiotDesignValues.h */,
 				B16932AB20F3A7B000746532 /* RiotDesignValues.m */,
 			);
@@ -2949,13 +2969,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3223D9C621B00788000321C1 /* DefaultColorValues.swift in Sources */,
 				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
+				3223D9C521B00781000321C1 /* DarkColorValues.swift in Sources */,
 				B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */,
 				B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */,
 				B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
 				B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
+				3223D9C421B0077D000321C1 /* ColorValues.swift in Sources */,
 				B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */,
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
 				B169328320F38AE600746532 /* RiotSettings.swift in Sources */,
@@ -3081,6 +3104,7 @@
 				B1B5572620EE6C4D00210D55 /* RoomFilesSearchViewController.m in Sources */,
 				B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
+				3223D9C321B0065A000321C1 /* DarkColorValues.swift in Sources */,
 				B1B557B420EF5AEF00210D55 /* EventDetailsView.m in Sources */,
 				B1B5577E20EE84BF00210D55 /* IncomingCallView.m in Sources */,
 				B1B5578F20EF568D00210D55 /* GroupTableViewCell.m in Sources */,
@@ -3106,6 +3130,7 @@
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5575120EE6C4D00210D55 /* AuthenticationViewController.m in Sources */,
+				3223D9C121B00615000321C1 /* DefaultColorValues.swift in Sources */,
 				B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */,
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
@@ -3140,6 +3165,7 @@
 				B1B558EE20EF768F00210D55 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
+				3223D9C021B00615000321C1 /* ColorValues.swift in Sources */,
 				B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */,
 				B1B558F520EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F820EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
