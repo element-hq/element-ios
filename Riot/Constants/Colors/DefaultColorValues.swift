@@ -26,6 +26,8 @@ final class DefaultColorValues: NSObject, ColorValues {
     let background: UIColor = UIColor(rgb: 0xFFFFFF)
 
     let base: UIColor = UIColor(rgb: 0x2E3648)
+    let baseTextPrimary: UIColor = UIColor(rgb: 0xFFFFFF)
+    let baseTextSecondary: UIColor = UIColor(rgb: 0xFFFFFF)
 
     let searchBackground: UIColor = UIColor(rgb: 0xFFFFFF)
     let searchText: UIColor = UIColor(rgb: 0xACB3C2)

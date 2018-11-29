@@ -23,6 +23,9 @@ import UIKit
     var background: UIColor { get }
     var base: UIColor { get }
 
+    var baseTextPrimary: UIColor { get }
+    var baseTextSecondary: UIColor { get }
+
     var searchBackground: UIColor { get }
     var searchText: UIColor { get }
 

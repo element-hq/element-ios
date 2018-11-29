@@ -26,6 +26,8 @@ final class DarkColorValues: NSObject, ColorValues {
     let background: UIColor = UIColor(rgb: 0x212224)
 
     let base: UIColor = UIColor(rgb: 0x292E37)
+    let baseTextPrimary: UIColor = UIColor(rgb: 0xFFFFFF)
+    let baseTextSecondary: UIColor = UIColor(rgb: 0xFFFFFF)
 
     let searchBackground: UIColor = UIColor(rgb: 0x3E434B)
     let searchText: UIColor = UIColor(rgb: 0xACB3C2)
