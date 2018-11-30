@@ -54,7 +54,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
     
     // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, kDirectRoomBorderColorAlpha);
+    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(RiotDesignValues.colorValues.accent.CGColor, kDirectRoomBorderColorAlpha);
     
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;

@@ -20,6 +20,7 @@
 #import "RoomBubbleCellData.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import <objc/runtime.h>
 
@@ -208,7 +209,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
                                                                 markPosY,
                                                                 VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH,
                                                                 markHeight)];
-        markerView.backgroundColor = kRiotColorGreen;
+        markerView.backgroundColor = RiotDesignValues.colorValues.accent;
 
         [markerView setTranslatesAutoresizingMaskIntoConstraints:NO];
         markerView.accessibilityIdentifier = @"markerView";

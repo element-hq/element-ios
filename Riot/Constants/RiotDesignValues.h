@@ -48,7 +48,6 @@ extern UIColor *kRiotOverlayColor; // fading behind dialog modals. This color in
 extern UIColor *kRiotKeyboardColor;
 
 #pragma mark - Riot Colors
-extern UIColor *kRiotColorGreen;
 extern UIColor *kRiotColorPinkRed;
 extern UIColor *kRiotColorRed;
 extern UIColor *kRiotColorBlue;

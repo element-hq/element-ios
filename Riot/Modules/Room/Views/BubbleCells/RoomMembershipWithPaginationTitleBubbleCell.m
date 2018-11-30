@@ -17,6 +17,7 @@
 #import "RoomMembershipWithPaginationTitleBubbleCell.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "RoomBubbleCellData.h"
 
@@ -26,8 +27,8 @@
 {
     [super customizeTableViewCellRendering];
 
-    self.paginationLabel.textColor = kRiotColorGreen;
-    self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
+    self.paginationLabel.textColor = RiotDesignValues.colorValues.accent;
+    self.paginationSeparatorView.backgroundColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)render:(MXKCellData *)cellData

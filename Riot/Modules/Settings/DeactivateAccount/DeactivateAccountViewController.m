@@ -17,6 +17,7 @@
 #import "DeactivateAccountViewController.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 #import "AppDelegate.h"
 
 #pragma mark - Defines & Constants
@@ -165,7 +166,7 @@ static CGFloat const kTextFontSize = 15.0;
     self.deactivateAcccountButton.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     
     self.deactivateAcccountButton.layer.masksToBounds = YES;
-    self.deactivateAcccountButton.backgroundColor = kRiotColorGreen;
+    self.deactivateAcccountButton.backgroundColor = RiotDesignValues.colorValues.accent;
     [self.deactivateAcccountButton setTitle:NSLocalizedStringFromTable(@"deactivate_account_validate_action", @"Vector", nil) forState:UIControlStateNormal];    
     [self.deactivateAcccountButton setTitleColor:kRiotAuxiliaryColor forState:UIControlStateDisabled];
 }

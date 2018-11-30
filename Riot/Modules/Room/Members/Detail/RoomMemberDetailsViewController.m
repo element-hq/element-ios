@@ -19,6 +19,7 @@
 #import "RoomMemberDetailsViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "RoomMemberTitleView.h"
 
@@ -223,7 +224,7 @@
     
     self.memberHeaderView.backgroundColor = kRiotSecondaryBgColor;
     self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;
-    self.roomMemberStatusLabel.textColor = kRiotColorGreen;
+    self.roomMemberStatusLabel.textColor = RiotDesignValues.colorValues.accent;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);

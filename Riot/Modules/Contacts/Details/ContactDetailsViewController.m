@@ -19,6 +19,7 @@
 #import "ContactDetailsViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "RoomMemberTitleView.h"
 
@@ -236,7 +237,7 @@
     
     self.headerView.backgroundColor = kRiotSecondaryBgColor;
     self.contactNameLabel.textColor = kRiotPrimaryTextColor;
-    self.contactStatusLabel.textColor = kRiotColorGreen;
+    self.contactStatusLabel.textColor = RiotDesignValues.colorValues.accent;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);

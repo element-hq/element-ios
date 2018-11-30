@@ -1404,7 +1404,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         [signOutCell.mxkButton setTitle:title forState:UIControlStateNormal];
         [signOutCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-        [signOutCell.mxkButton setTintColor:kRiotColorGreen];
+        [signOutCell.mxkButton setTintColor:RiotDesignValues.colorValues.accent];
         signOutCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
         
         [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1559,7 +1559,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     newEmailTextField = newEmailCell.mxkTextField;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:kRiotColorGreen];
+                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:RiotDesignValues.colorValues.accent];
                 newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
             }
             
@@ -1652,7 +1652,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     newPhoneNumberCell = newPhoneCell;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:kRiotColorGreen];
+                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:RiotDesignValues.colorValues.accent];
                 newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
                 
                 cell = newPhoneCell;
@@ -1998,7 +1998,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_mark_all_as_read", @"Vector", nil);
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [markAllBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            [markAllBtnCell.mxkButton setTintColor:RiotDesignValues.colorValues.accent];
             markAllBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [markAllBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2023,7 +2023,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil);
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [clearCacheBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            [clearCacheBtnCell.mxkButton setTintColor:RiotDesignValues.colorValues.accent];
             clearCacheBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [clearCacheBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2048,7 +2048,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [reportBugBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            [reportBugBtnCell.mxkButton setTintColor:RiotDesignValues.colorValues.accent];
             reportBugBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
             [reportBugBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2186,7 +2186,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
             [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [exportKeysBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            [exportKeysBtnCell.mxkButton setTintColor:RiotDesignValues.colorValues.accent];
             exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
             [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];

@@ -19,6 +19,12 @@
 
 #import "RiotDesignValues.h"
 
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
+
 @interface SegmentedViewController ()
 {
     // Tell whether the segmented view is appeared (see viewWillAppear/viewWillDisappear).
@@ -130,7 +136,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     
-    self.sectionHeaderTintColor = kRiotColorGreen;
+    self.sectionHeaderTintColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)viewDidLoad

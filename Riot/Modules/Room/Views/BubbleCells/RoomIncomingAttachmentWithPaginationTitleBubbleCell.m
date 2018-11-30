@@ -18,6 +18,7 @@
 #import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation RoomIncomingAttachmentWithPaginationTitleBubbleCell
 
@@ -27,9 +28,9 @@
     
     self.userNameLabel.textColor = kRiotPrimaryTextColor;
     
-    self.paginationLabel.textColor = kRiotColorGreen;
-    self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
-    self.messageTextView.tintColor = kRiotColorGreen;
+    self.paginationLabel.textColor = RiotDesignValues.colorValues.accent;
+    self.paginationSeparatorView.backgroundColor = RiotDesignValues.colorValues.accent;
+    self.messageTextView.tintColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)render:(MXKCellData *)cellData

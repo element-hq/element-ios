@@ -18,6 +18,7 @@
 #import "AttachmentsViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface AttachmentsViewController ()
 {
@@ -63,7 +64,7 @@
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.backButton.tintColor = kRiotColorGreen;
+    self.backButton.tintColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)viewWillAppear:(BOOL)animated

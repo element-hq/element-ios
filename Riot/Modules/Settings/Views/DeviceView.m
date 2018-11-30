@@ -18,6 +18,7 @@
 #import "DeviceView.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation DeviceView
 
@@ -30,9 +31,9 @@
     self.containerView.backgroundColor = kRiotSecondaryBgColor;
     self.textView.backgroundColor = kRiotPrimaryBgColor;
     self.defaultTextColor = kRiotPrimaryTextColor;
-    self.cancelButton.tintColor = kRiotColorGreen;
-    self.deleteButton.tintColor = kRiotColorGreen;
-    self.renameButton.tintColor = kRiotColorGreen;
+    self.cancelButton.tintColor = RiotDesignValues.colorValues.accent;
+    self.deleteButton.tintColor = RiotDesignValues.colorValues.accent;
+    self.renameButton.tintColor = RiotDesignValues.colorValues.accent;
 }
 
 @end

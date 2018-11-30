@@ -17,6 +17,7 @@
 #import "DisabledRoomInputToolbarView.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation DisabledRoomInputToolbarView
 
@@ -51,7 +52,7 @@
 
     self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
     self.disabledReasonTextView.textColor = kRiotPrimaryTextColor;
-    self.disabledReasonTextView.tintColor = kRiotColorGreen;
+    self.disabledReasonTextView.tintColor = RiotDesignValues.colorValues.accent;
     self.disabledReasonTextView.editable = NO;
     self.disabledReasonTextView.scrollEnabled = NO;
 }

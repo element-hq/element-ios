@@ -19,6 +19,7 @@
 #import "CallViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "AvatarGenerator.h"
 
@@ -105,7 +106,7 @@
     self.callerNameLabel.textColor = kRiotPrimaryTextColor;
     self.callStatusLabel.textColor = kRiotTopicTextColor;
     
-    self.localPreviewContainerView.layer.borderColor = kRiotColorGreen.CGColor;
+    self.localPreviewContainerView.layer.borderColor = RiotDesignValues.colorValues.accent.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;

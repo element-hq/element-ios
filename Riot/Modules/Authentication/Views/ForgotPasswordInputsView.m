@@ -19,6 +19,7 @@
 
 #import "MXHTTPOperation.h"
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @interface ForgotPasswordInputsView ()
 
@@ -114,7 +115,7 @@
     
     [self.nextStepButton.layer setCornerRadius:5];
     self.nextStepButton.clipsToBounds = YES;
-    self.nextStepButton.backgroundColor = kRiotColorGreen;
+    self.nextStepButton.backgroundColor = RiotDesignValues.colorValues.accent;
     
     if (kRiotPlaceholderTextColor)
     {

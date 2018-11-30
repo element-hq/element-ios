@@ -18,6 +18,7 @@
 #import "RoomOutgoingAttachmentBubbleCell.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation RoomOutgoingAttachmentBubbleCell
 
@@ -26,7 +27,7 @@
     [super customizeTableViewCellRendering];
     
     self.userNameLabel.textColor = kRiotPrimaryTextColor;
-    self.messageTextView.tintColor = kRiotColorGreen;
+    self.messageTextView.tintColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)render:(MXKCellData *)cellData

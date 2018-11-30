@@ -22,6 +22,7 @@
 
 #import "CircleButton.h"
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 static const CGFloat kAvatarSize = 100.0;
 static const CGFloat kButtonSize = 80.0;
@@ -86,7 +87,7 @@ static const CGFloat kButtonSize = 80.0;
         self.callInfoLabel.text = callInfo;
         self.callInfoLabel.textAlignment = NSTextAlignmentCenter;
         
-        UIColor *answerButtonBorderColor = kRiotColorGreen;
+        UIColor *answerButtonBorderColor = RiotDesignValues.colorValues.accent;
         
         self.answerButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_icon"]
                                                     borderColor:answerButtonBorderColor];

@@ -20,6 +20,7 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
@@ -222,11 +223,11 @@
         }
         else if ((!contact.isMatrixContact && contact.phoneNumbers.count && !contact.emailAddresses.count))
         {
-            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:kRiotColorGreen];
+            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:RiotDesignValues.colorValues.accent];
         }
         else
         {
-            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:kRiotColorGreen];
+            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:RiotDesignValues.colorValues.accent];
         }
     }
     

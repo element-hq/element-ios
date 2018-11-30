@@ -29,6 +29,7 @@
 #import "MXRoomSummary+Riot.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "RoomMemberDetailsViewController.h"
 
@@ -2212,7 +2213,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 topicTextView.text = mxRoomState.topic;
             }
             
-            topicTextView.tintColor = kRiotColorGreen;
+            topicTextView.tintColor = RiotDesignValues.colorValues.accent;
             topicTextView.font = [UIFont systemFontOfSize:15];
             topicTextView.bounces = NO;
             topicTextView.delegate = self;
@@ -2241,7 +2242,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             nameTextField = roomNameCell.mxkTextField;
             
-            nameTextField.tintColor = kRiotColorGreen;
+            nameTextField.tintColor = RiotDesignValues.colorValues.accent;
             nameTextField.font = [UIFont systemFontOfSize:17];
             nameTextField.borderStyle = UITextBorderStyleNone;
             nameTextField.textAlignment = NSTextAlignmentRight;
@@ -2319,7 +2320,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
             [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-            [leaveCell.mxkButton setTintColor:kRiotColorGreen];
+            [leaveCell.mxkButton setTintColor:RiotDesignValues.colorValues.accent];
             leaveCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [leaveCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2508,7 +2509,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addAddressTextField.text = currentValue;
             addAddressTextField.textColor = kRiotSecondaryTextColor;
             
-            addAddressTextField.tintColor = kRiotColorGreen;
+            addAddressTextField.tintColor = RiotDesignValues.colorValues.accent;
             addAddressTextField.font = [UIFont systemFontOfSize:17];
             addAddressTextField.borderStyle = UITextBorderStyleNone;
             addAddressTextField.textAlignment = NSTextAlignmentLeft;
@@ -2599,7 +2600,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addGroupTextField.text = currentValue;
             addGroupTextField.textColor = kRiotSecondaryTextColor;
 
-            addGroupTextField.tintColor = kRiotColorGreen;
+            addGroupTextField.tintColor = RiotDesignValues.colorValues.accent;
             addGroupTextField.font = [UIFont systemFontOfSize:17];
             addGroupTextField.borderStyle = UITextBorderStyleNone;
             addGroupTextField.textAlignment = NSTextAlignmentLeft;
@@ -2671,7 +2672,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 MXKTableViewCellWithLabelAndSwitch *roomBlacklistUnverifiedDevicesCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
                 [roomBlacklistUnverifiedDevicesCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevice:) forControlEvents:UIControlEventValueChanged];
-                roomBlacklistUnverifiedDevicesCell.mxkSwitch.onTintColor = kRiotColorGreen;
+                roomBlacklistUnverifiedDevicesCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
                 
                 roomBlacklistUnverifiedDevicesCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_blacklist_unverified_devices", @"Vector", nil);
                 
@@ -2802,7 +2803,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     cell.mxkLabel.textColor = kRiotPrimaryTextColor;
     
-    cell.mxkSwitch.onTintColor = kRiotColorGreen;
+    cell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
     
     // Reset the stored `directoryVisibilitySwitch` if the corresponding cell is reused.

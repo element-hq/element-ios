@@ -19,6 +19,7 @@
 #import "PreviewRoomTitleView.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
 
@@ -68,7 +69,7 @@
     
     self.roomTopic.textColor = kRiotTopicTextColor;
     
-    self.roomMembers.textColor = kRiotColorGreen;
+    self.roomMembers.textColor = RiotDesignValues.colorValues.accent;
     
     self.previewLabel.textColor = kRiotTopicTextColor;
     self.previewLabel.numberOfLines = 0;
@@ -80,11 +81,11 @@
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kRiotColorGreen;
+    self.leftButton.backgroundColor = RiotDesignValues.colorValues.accent;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kRiotColorGreen;
+    self.rightButton.backgroundColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)refreshDisplay

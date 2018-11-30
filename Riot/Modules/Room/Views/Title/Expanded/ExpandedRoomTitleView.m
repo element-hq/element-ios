@@ -18,6 +18,7 @@
 #import "ExpandedRoomTitleView.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
 
@@ -39,7 +40,7 @@
     [super customizeViewRendering];
     
     self.roomTopic.textColor = kRiotTopicTextColor;
-    self.roomMembers.textColor = kRiotColorGreen;
+    self.roomMembers.textColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)refreshDisplay

@@ -17,6 +17,7 @@
 #import "EventDetailsView.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation EventDetailsView
 
@@ -27,8 +28,8 @@
     self.backgroundColor = kRiotSecondaryBgColor;
     self.textView.backgroundColor = kRiotPrimaryBgColor;
     self.textView.textColor = kRiotPrimaryTextColor;
-    self.redactButton.tintColor = kRiotColorGreen;
-    self.closeButton.tintColor = kRiotColorGreen;
+    self.redactButton.tintColor = RiotDesignValues.colorValues.accent;
+    self.closeButton.tintColor = RiotDesignValues.colorValues.accent;
 }
 
 @end

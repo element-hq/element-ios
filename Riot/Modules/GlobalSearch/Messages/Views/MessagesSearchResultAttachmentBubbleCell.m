@@ -18,6 +18,7 @@
 #import "MessagesSearchResultAttachmentBubbleCell.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation MessagesSearchResultAttachmentBubbleCell
 
@@ -29,7 +30,7 @@
     
     self.roomNameLabel.textColor = kRiotSecondaryTextColor;
     
-    self.messageTextView.tintColor = kRiotColorGreen;
+    self.messageTextView.tintColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)render:(MXKCellData *)cellData

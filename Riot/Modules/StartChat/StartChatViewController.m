@@ -621,8 +621,8 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = kRiotColorGreen;
-    searchBar.tintColor = kRiotColorGreen;
+    searchBar.barTintColor = searchBar.tintColor = RiotDesignValues.colorValues.accent;
+    searchBar.tintColor = RiotDesignValues.colorValues.accent;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
 
@@ -633,7 +633,7 @@
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = kRiotColorGreen;
+    leftImageView.tintColor = RiotDesignValues.colorValues.accent;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -646,8 +646,8 @@
     {
         searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                    attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                                NSUnderlineColorAttributeName: kRiotColorGreen,
-                                                                                                NSForegroundColorAttributeName: kRiotColorGreen}];
+                                                                                                NSUnderlineColorAttributeName: RiotDesignValues.colorValues.accent,
+                                                                                                NSForegroundColorAttributeName: RiotDesignValues.colorValues.accent}];
     }
 }
 

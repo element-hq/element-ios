@@ -18,6 +18,7 @@
 #import "RoomInputToolbarView.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -71,8 +72,8 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateHighlighted];
+    [self.rightInputToolbarButton setTitleColor:RiotDesignValues.colorValues.accent forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitleColor:RiotDesignValues.colorValues.accent forState:UIControlStateHighlighted];
     
     self.isEncryptionEnabled = _isEncryptionEnabled;
 }
@@ -95,7 +96,7 @@
     
     growingTextView.font = [UIFont systemFontOfSize:15];
     growingTextView.textColor = kRiotPrimaryTextColor;
-    growingTextView.tintColor = kRiotColorGreen;
+    growingTextView.tintColor = RiotDesignValues.colorValues.accent;
     
     growingTextView.internalTextView.keyboardAppearance = kRiotKeyboard;
 }

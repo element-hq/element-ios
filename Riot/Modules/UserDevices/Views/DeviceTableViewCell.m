@@ -18,6 +18,8 @@
 #import "DeviceTableViewCell.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
+
 #import "MXRoom+Riot.h"
 
 #define DEVICE_TABLEVIEW_ROW_CELL_HEIGHT_WITHOUT_LABEL_HEIGHT 59
@@ -34,11 +36,11 @@
     
     [self.verifyButton.layer setCornerRadius:5];
     self.verifyButton.clipsToBounds = YES;
-    self.verifyButton.backgroundColor = kRiotColorGreen;
+    self.verifyButton.backgroundColor = RiotDesignValues.colorValues.accent;
     
     [self.blockButton.layer setCornerRadius:5];
     self.blockButton.clipsToBounds = YES;
-    self.blockButton.backgroundColor = kRiotColorGreen;
+    self.blockButton.backgroundColor = RiotDesignValues.colorValues.accent;
 }
 
 - (void)render:(MXDeviceInfo *)deviceInfo

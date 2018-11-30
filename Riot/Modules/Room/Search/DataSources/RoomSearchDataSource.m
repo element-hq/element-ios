@@ -20,6 +20,7 @@
 #import "RoomBubbleCellData.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
@@ -68,7 +69,7 @@
         if (cellData)
         {
             // Highlight the search pattern
-            [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:kRiotColorGreen andFont:patternFont];
+            [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:RiotDesignValues.colorValues.accent andFont:patternFont];
 
             // Use profile information as data to display
             MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];

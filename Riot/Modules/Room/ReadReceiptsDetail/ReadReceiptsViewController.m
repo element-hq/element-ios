@@ -20,6 +20,7 @@
 
 #import "RageShakeManager.h"
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @interface ReadReceiptsViewController () <UITableViewDataSource, UITableViewDelegate>
 {
@@ -106,7 +107,7 @@
     // Check the table view style to select its bg color.
     self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
     
-    self.closeButton.tintColor = kRiotColorGreen;
+    self.closeButton.tintColor = RiotDesignValues.colorValues.accent;
     
     if (self.receiptsTableView.dataSource)
     {

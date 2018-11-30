@@ -18,6 +18,7 @@
 #import "HomeViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "RecentsDataSource.h"
 
@@ -83,7 +84,7 @@
 
     [RiotDesignValues applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = RiotDesignValues.colorValues.accent;
     
     if (recentsDataSource)
     {

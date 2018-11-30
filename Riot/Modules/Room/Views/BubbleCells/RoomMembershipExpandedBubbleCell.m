@@ -17,6 +17,7 @@
 #import "RoomMembershipExpandedBubbleCell.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "RoomBubbleCellData.h"
 
@@ -39,7 +40,7 @@ NSString *const kRoomMembershipExpandedBubbleCellTapOnCollapseButton = @"kRoomMe
     
     self.separatorView.backgroundColor = kRiotSecondaryBgColor;
     
-    [self.collapseButton setTintColor:kRiotColorGreen];
+    [self.collapseButton setTintColor:RiotDesignValues.colorValues.accent];
     self.collapseButton.titleLabel.font = [UIFont systemFontOfSize:14];
 }
 

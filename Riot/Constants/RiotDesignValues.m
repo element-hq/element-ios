@@ -38,7 +38,6 @@ UIColor *kRiotOverlayColor;
 UIColor *kRiotKeyboardColor;
 
 // Riot Colors
-UIColor *kRiotColorGreen;
 UIColor *kRiotColorPinkRed;
 UIColor *kRiotColorRed;
 UIColor *kRiotColorBlue;
@@ -84,7 +83,6 @@ UIKeyboardAppearance kRiotKeyboard;
     // Load colors at the app load time for the life of the app
 
     // Colors as defined by the design
-    kRiotColorGreen = UIColorFromRGB(0x62CE9C);
     kRiotColorPinkRed = UIColorFromRGB(0xFF0064);
     kRiotColorRed = UIColorFromRGB(0xFF4444);
     kRiotColorBlue = UIColorFromRGB(0x81BDDB);

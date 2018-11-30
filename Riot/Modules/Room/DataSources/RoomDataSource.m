@@ -23,6 +23,7 @@
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 #import "AvatarGenerator.h"
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "MXRoom+Riot.h"
 
@@ -385,7 +386,7 @@
                         if ([component.event.eventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
                             bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - 2, bubbleCell.bubbleOverlayContainer.frame.size.width, 2)];
-                            bubbleCell.readMarkerView.backgroundColor = kRiotColorGreen;
+                            bubbleCell.readMarkerView.backgroundColor = RiotDesignValues.colorValues.accent;
                             // Hide by default the marker, it will be shown and animated when the cell will be rendered.
                             bubbleCell.readMarkerView.hidden = YES;
                             bubbleCell.readMarkerView.tag = index;

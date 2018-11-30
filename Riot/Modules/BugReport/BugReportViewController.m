@@ -17,6 +17,7 @@
 #import "BugReportViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -153,13 +154,13 @@
     self.sendingLabel.textColor = kRiotPrimaryTextColor;
     self.descriptionLabel.textColor = kRiotPrimaryTextColor;
     self.bugReportDescriptionTextView.textColor = kRiotPrimaryTextColor;
-    self.bugReportDescriptionTextView.tintColor = kRiotColorGreen;
+    self.bugReportDescriptionTextView.tintColor = RiotDesignValues.colorValues.accent;
     self.logsDescriptionLabel.textColor = kRiotPrimaryTextColor;
     self.sendLogsLabel.textColor = kRiotPrimaryTextColor;
     self.sendScreenshotLabel.textColor = kRiotPrimaryTextColor;
     
-    self.sendButton.tintColor = kRiotColorGreen;
-    self.cancelButton.tintColor = kRiotColorGreen;
+    self.sendButton.tintColor = RiotDesignValues.colorValues.accent;
+    self.cancelButton.tintColor = RiotDesignValues.colorValues.accent;
     
     _bugReportDescriptionTextView.layer.borderColor = kRiotSecondaryBgColor.CGColor;
 }
