@@ -94,8 +94,7 @@
         self.searchBar.text = @"";
         
         // Customize search bar
-        self.searchBar.barStyle = kRiotDesignSearchBarStyle;
-        self.searchBar.tintColor = kRiotDesignSearchBarTintColor;
+        [RiotDesignValues applyStyleOnSearchBar:self.searchBar];
         
         // Remove navigation buttons
         self.navigationItem.hidesBackButton = YES;

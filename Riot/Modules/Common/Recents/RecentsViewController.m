@@ -166,11 +166,10 @@
     self.recentsTableView.backgroundColor = kRiotPrimaryBgColor;
     topview.backgroundColor = kRiotSecondaryBgColor;
     self.view.backgroundColor = kRiotPrimaryBgColor;
-    
-    tableSearchBar.barStyle = self.recentsSearchBar.barStyle = kRiotDesignSearchBarStyle;
-    tableSearchBar.tintColor = self.recentsSearchBar.tintColor = kRiotDesignSearchBarTintColor;
-    tableSearchBar.barTintColor = self.recentsSearchBar.barTintColor = kRiotDesignSearchBarBarTintColor;
-    
+
+    [RiotDesignValues applyStyleOnSearchBar:tableSearchBar];
+    [RiotDesignValues applyStyleOnSearchBar:self.recentsSearchBar];
+
     if (self.recentsTableView.dataSource)
     {
         // Force table refresh

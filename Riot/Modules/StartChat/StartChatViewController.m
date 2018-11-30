@@ -18,6 +18,7 @@
 #import "StartChatViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface StartChatViewController ()
 {
@@ -148,7 +149,7 @@
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
+    _searchBarHeaderBorder.backgroundColor = RiotDesignValues.colorValues.headerBorder;
     
     // Check the table view style to select its bg color.
     self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);

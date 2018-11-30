@@ -92,6 +92,13 @@ extern UIKeyboardAppearance kRiotKeyboard;
  */
 + (void)applyStyleOnNavigationBar:(UINavigationBar *)navigationBar;
 
+/**
+ Apply the current style on a search bar.
+
+ @param searchBar the search bar to customise.
+ */
++ (void)applyStyleOnSearchBar:(UISearchBar *)searchBar;
+
 @end
 
 NS_ASSUME_NONNULL_END

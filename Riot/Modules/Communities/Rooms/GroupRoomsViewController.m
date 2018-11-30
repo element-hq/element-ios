@@ -17,6 +17,7 @@
 #import "GroupRoomsViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "GroupRoomTableViewCell.h"
 
@@ -131,7 +132,7 @@
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
+    _searchBarHeaderBorder.backgroundColor = RiotDesignValues.colorValues.headerBorder;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);

@@ -124,9 +124,9 @@
     self.groupsTableView.backgroundColor = kRiotPrimaryBgColor;
     topview.backgroundColor = kRiotSecondaryBgColor;
     self.view.backgroundColor = kRiotPrimaryBgColor;
-    
-    tableSearchBar.barStyle = self.groupsSearchBar.barStyle = kRiotDesignSearchBarStyle;
-    tableSearchBar.tintColor = self.groupsSearchBar.tintColor = kRiotDesignSearchBarTintColor;
+
+    [RiotDesignValues applyStyleOnSearchBar:tableSearchBar];
+    [RiotDesignValues applyStyleOnSearchBar:self.groupsSearchBar];
     
     if (self.groupsTableView.dataSource)
     {

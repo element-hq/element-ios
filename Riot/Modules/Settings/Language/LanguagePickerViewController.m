@@ -72,8 +72,7 @@
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.searchBar.barStyle = kRiotDesignSearchBarStyle;
-    self.searchBar.tintColor = kRiotDesignSearchBarTintColor;
+    [RiotDesignValues applyStyleOnSearchBar:self.searchBar];
     
     // Use the primary bg color for the table view in plain style.
     self.tableView.backgroundColor = kRiotPrimaryBgColor;

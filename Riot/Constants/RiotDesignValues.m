@@ -250,4 +250,13 @@ UIKeyboardAppearance kRiotKeyboard;
     navigationBar.translucent = kRiotDesignNavigationBarTranslucent;
 }
 
++ (void)applyStyleOnSearchBar:(UISearchBar *)searchBar
+{
+    searchBar.barStyle = kRiotDesignSearchBarStyle;
+    searchBar.tintColor = kRiotDesignSearchBarTintColor;
+    searchBar.barTintColor = kRiotDesignSearchBarBarTintColor;
+    searchBar.layer.borderWidth = 1;
+    searchBar.layer.borderColor = RiotDesignValues.colorValues.headerBorder.CGColor;
+}
+
 @end
