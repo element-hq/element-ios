@@ -39,12 +39,8 @@ UIColor *kRiotKeyboardColor;
 
 // Riot Colors
 UIColor *kRiotColorGreen;
-UIColor *kRiotColorLightGreen;
-UIColor *kRiotColorLightOrange;
 UIColor *kRiotColorPinkRed;
 UIColor *kRiotColorRed;
-UIColor *kRiotColorIndigo;
-UIColor *kRiotColorOrange;
 UIColor *kRiotColorBlue;
 UIColor *kRiotColorCuriousBlue;
 
@@ -91,17 +87,11 @@ UIKeyboardAppearance kRiotKeyboard;
     kRiotColorGreen = UIColorFromRGB(0x62CE9C);
     kRiotColorPinkRed = UIColorFromRGB(0xFF0064);
     kRiotColorRed = UIColorFromRGB(0xFF4444);
-    kRiotColorIndigo = UIColorFromRGB(0xBD79CC);
-    kRiotColorOrange = UIColorFromRGB(0xF8A15F);
     kRiotColorBlue = UIColorFromRGB(0x81BDDB);
     kRiotColorCuriousBlue = UIColorFromRGB(0x2A9EDB);
 
     kRiotColorLightKeyboard = UIColorFromRGB(0xE7E7E7);
     kRiotColorDarkKeyboard = UIColorFromRGB(0x7E7E7E);
-
-    // Colors copied from Vector web
-    kRiotColorLightGreen = UIColorFromRGB(0x50e2c2);
-    kRiotColorLightOrange = UIColorFromRGB(0xf4c371);
 
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[RiotDesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];

@@ -46,7 +46,8 @@ final class DefaultColorValues: NSObject, ColorValues {
     let notificationUnread: UIColor = UIColor(rgb: 0x7AC9A1)
     let notificationMention: UIColor = UIColor(rgb: 0xF56679)
 
-    let avatarColor1: UIColor = UIColor(rgb: 0x7AC9A1)
-    let avatarColor2: UIColor = UIColor(rgb: 0x1E7DDC)
-    let avatarColor3: UIColor = UIColor(rgb: 0x76DDD7)
+    let avatars: [UIColor] = [
+        UIColor(rgb: 0x7AC9A1),
+        UIColor(rgb: 0x1E7DDC),
+        UIColor(rgb: 0x76DDD7)]
 }

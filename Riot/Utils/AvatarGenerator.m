@@ -19,6 +19,12 @@
 
 #import "RiotDesignValues.h"
 
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
+
 @implementation AvatarGenerator
 
 static NSMutableDictionary *imageByKeyDict = nil;
@@ -33,10 +39,7 @@ static UILabel* backgroundLabel = nil;
 {
     if (!colorsList)
     {
-        colorsList = [[NSMutableArray alloc] init];
-        [colorsList addObject:kRiotColorGreen];
-        [colorsList addObject:kRiotColorLightGreen];
-        [colorsList addObject:kRiotColorLightOrange];
+        colorsList = RiotDesignValues.colorValues.avatars;
     }
 }
 

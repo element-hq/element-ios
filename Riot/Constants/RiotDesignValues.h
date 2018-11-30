@@ -49,12 +49,8 @@ extern UIColor *kRiotKeyboardColor;
 
 #pragma mark - Riot Colors
 extern UIColor *kRiotColorGreen;
-extern UIColor *kRiotColorLightGreen;
-extern UIColor *kRiotColorLightOrange;
 extern UIColor *kRiotColorPinkRed;
 extern UIColor *kRiotColorRed;
-extern UIColor *kRiotColorIndigo;
-extern UIColor *kRiotColorOrange;
 extern UIColor *kRiotColorBlue;
 extern UIColor *kRiotColorCuriousBlue;
 

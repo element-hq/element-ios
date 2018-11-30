@@ -43,9 +43,7 @@ import UIKit
     var notificationUnread: UIColor { get }
     var notificationMention: UIColor { get }
 
-    var avatarColor1: UIColor { get }
-    var avatarColor2: UIColor { get }
-    var avatarColor3: UIColor { get }
+    var avatars: [UIColor] { get }
 }
 
 extension UIColor {
