@@ -20,6 +20,7 @@
 #import "GroupInviteTableViewCell.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface GroupsViewController ()
 {
@@ -460,9 +461,9 @@
         {
             NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
             NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                                    attributes:@{NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
+                                                                                                    attributes:@{NSForegroundColorAttributeName: RiotDesignValues.colorValues.headerTextPrimary}];
             [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                               attributes:@{NSForegroundColorAttributeName: kRiotAuxiliaryColor}]];
+                                                                                               attributes:@{NSForegroundColorAttributeName: RiotDesignValues.colorValues.headerTextSecondary}]];
 
             sectionHeader.mxkLabel.attributedText = mutableSectionTitle;
         }
