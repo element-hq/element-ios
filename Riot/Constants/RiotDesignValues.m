@@ -139,14 +139,9 @@ UIKeyboardAppearance kRiotKeyboard;
         theme = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
     }
 
-
-    id<ColorValues> colorValues;
-    
     if ([theme isEqualToString:@"dark"])
     {
         // Set dark theme colors
-        colorValues = DarkColorValues.shared;
-
         kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         kRiotSelectedBgColor = [UIColor blackColor];
         
@@ -161,9 +156,6 @@ UIKeyboardAppearance kRiotKeyboard;
     }
     else if ([theme isEqualToString:@"black"])
     {
-        // TODO: Use dark theme colors for the moment
-        colorValues = DarkColorValues.shared;
-
         // Set black theme colors
         kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         kRiotSelectedBgColor = [UIColor blackColor];
@@ -180,8 +172,6 @@ UIKeyboardAppearance kRiotKeyboard;
     else
     {
         // Set light theme colors by default.
-        colorValues = DefaultColorValues.shared;
-
         kRiotPlaceholderTextColor = nil; // Use default 70% gray color.
         kRiotSelectedBgColor = nil; // Use the default selection color.
         
@@ -198,6 +188,8 @@ UIKeyboardAppearance kRiotKeyboard;
     }
 
     // Apply theme color constants
+    id<ColorValues> colorValues = [RiotDesignValues colorValues];
+
     kRiotPrimaryBgColor = colorValues.background;
     kRiotSecondaryBgColor = colorValues.headerBackground;
     kRiotPrimaryTextColor = colorValues.textPrimary;
@@ -217,6 +209,37 @@ UIKeyboardAppearance kRiotKeyboard;
 
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
+}
+
++ (id<ColorValues>)colorValues
+{
+    id<ColorValues> colorValues;
+
+    // Retrieve the current selected theme ("light" if none. "auto" is used as default from iOS 11).
+    NSString *theme = RiotSettings.shared.userInterfaceTheme;
+
+    if (!theme || [theme isEqualToString:@"auto"])
+    {
+        theme = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+    }
+
+    if ([theme isEqualToString:@"dark"])
+    {
+        // Set dark theme colors
+        colorValues = DarkColorValues.shared;
+    }
+    else if ([theme isEqualToString:@"black"])
+    {
+        // TODO: Use dark theme colors for the moment
+        colorValues = DarkColorValues.shared;
+    }
+    else
+    {
+        // Set light theme colors by default.
+        colorValues = DefaultColorValues.shared;
+    }
+
+    return colorValues;
 }
 
 + (void)applyStyleOnNavigationBar:(UINavigationBar *)navigationBar
