@@ -18,6 +18,7 @@
 #import "EventFormatter.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "WidgetManager.h"
 
@@ -219,7 +220,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         self.defaultTextColor = kRiotPrimaryTextColor;
         self.subTitleTextColor = kRiotSecondaryTextColor;
         self.prefixTextColor = kRiotSecondaryTextColor;
-        self.bingTextColor = kRiotColorPinkRed;
+        self.bingTextColor = RiotDesignValues.colorValues.notificationMention;
         self.encryptingTextColor = kRiotColorGreen;
         self.sendingTextColor = kRiotSecondaryTextColor;
         self.errorTextColor = kRiotColorRed;

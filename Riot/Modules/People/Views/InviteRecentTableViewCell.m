@@ -22,6 +22,7 @@
 #import "MXEvent.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #pragma mark - Constant definitions
 
@@ -62,7 +63,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     self.leftButton.backgroundColor = kRiotColorGreen;
     self.rightButton.backgroundColor = kRiotColorGreen;
     
-    self.noticeBadgeView.backgroundColor = kRiotColorPinkRed;
+    self.noticeBadgeView.backgroundColor = RiotDesignValues.colorValues.notificationMention;
 }
 
 - (void)onDeclinePressed:(id)sender

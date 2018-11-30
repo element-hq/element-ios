@@ -22,6 +22,7 @@
 #import "MXEvent.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
 
@@ -108,7 +109,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             
             if (0 < roomCellData.notificationCount)
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? kRiotColorPinkRed : kRiotColorGreen;
+                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? RiotDesignValues.colorValues.notificationMention : RiotDesignValues.colorValues.notificationUnread;
                 
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;

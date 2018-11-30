@@ -4219,11 +4219,11 @@
             // Set the right background color
             if (highlightCount)
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = kRiotColorPinkRed;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = RiotDesignValues.colorValues.notificationMention;
             }
             else
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = kRiotColorGreen;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = RiotDesignValues.colorValues.notificationUnread;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)

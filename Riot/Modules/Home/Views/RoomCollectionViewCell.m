@@ -19,6 +19,7 @@
 #import "AvatarGenerator.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
 
@@ -125,7 +126,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             if (0 < roomCellData.notificationCount)
             {
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? kRiotColorPinkRed : kRiotColorGreen;
+                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? RiotDesignValues.colorValues.notificationMention : RiotDesignValues.colorValues.notificationUnread;
                 
                 self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
@@ -146,7 +147,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         else if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite)
         {
             self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-            self.missedNotifAndUnreadBadgeBgView.backgroundColor = kRiotColorPinkRed;
+            self.missedNotifAndUnreadBadgeBgView.backgroundColor = RiotDesignValues.colorValues.notificationMention;
             
             self.missedNotifAndUnreadBadgeLabel.text = @"!";
             [self.missedNotifAndUnreadBadgeLabel sizeToFit];
