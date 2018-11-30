@@ -59,6 +59,12 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         commonInit()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        acceptButton.layer.cornerRadius = 5
+    }
+
     private func commonInit() {
 
         tableView.delegate = self
@@ -66,7 +72,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         tableView.separatorStyle = .none
         tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
 
-        acceptButton.layer.cornerRadius = 5
         acceptButton.clipsToBounds = true
         acceptButton.setTitle(NSLocalizedString("accept", tableName: "Vector", comment: ""), for: .normal)
         acceptButton.setTitle(NSLocalizedString("accept", tableName: "Vector", comment: ""), for: .highlighted)
@@ -139,8 +144,11 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         gesture.numberOfTouchesRequired = 1
 
         cell.checkBox.tag = indexPath.row
+
         cell.checkBox?.isUserInteractionEnabled = true
-        cell.checkBox?.addGestureRecognizer(gesture)
+        if (cell.checkBox?.gestureRecognizers?.count == 0) {
+            cell.checkBox?.addGestureRecognizer(gesture)
+        }
 
         return cell
     }
@@ -152,17 +160,17 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
 
     @objc private func didTapCheckbox(sender: UITapGestureRecognizer) {
 
-        if let policyIndex = sender.view?.tag {
-
-            if acceptedPolicies.contains(policyIndex) {
-                acceptedPolicies.remove(policyIndex)
-            }
-            else {
-                acceptedPolicies.insert(policyIndex)
-            }
-
-            reload()
+        guard let policyIndex = sender.view?.tag else {
+            return
         }
+
+        if acceptedPolicies.contains(policyIndex) {
+            acceptedPolicies.remove(policyIndex)
+        } else {
+            acceptedPolicies.insert(policyIndex)
+        }
+
+        reload()
     }
 
 
@@ -184,7 +192,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         webViewViewController.navigationItem.rightBarButtonItem = rightBarButtonItem
 
         navigationController = RiotNavigationController()
-        delegate?.authInputsView!(nil, present: navigationController, animated: false)
+        delegate?.authInputsView?(nil, present: navigationController, animated: false)
         navigationController?.pushViewController(webViewViewController, animated: false)
     }
 
@@ -193,7 +201,10 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
     }
 
     @objc private func didAcceptPolicy() {
-        acceptedPolicies.insert(displayedPolicyIndex!)
+
+        if let displayedPolicyIndex = self.displayedPolicyIndex {
+            acceptedPolicies.insert(displayedPolicyIndex)
+        }
 
         removePolicyScreen()
         reload()
