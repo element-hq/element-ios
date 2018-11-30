@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TermsView" customModule="Riot" customModuleProvider="target">
+            <connections>
+                <outlet property="acceptButton" destination="pgo-gb-fHn" id="sV0-9y-b7D"/>
+                <outlet property="tableView" destination="l6d-Uv-u3V" id="ykF-cd-vcl"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="TermsView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l6d-Uv-u3V">
+                    <rect key="frame" x="10" y="10" width="590" height="158"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pgo-gb-fHn">
+                    <rect key="frame" x="180" y="168" width="240" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="240" id="pZU-Wt-tc1"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                    <state key="normal" title="Accept">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="didAcceptButtonTapped:" destination="-1" eventType="touchUpInside" id="mUx-Zz-ffi"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="pgo-gb-fHn" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8T5-O0-con"/>
+                <constraint firstAttribute="bottom" secondItem="pgo-gb-fHn" secondAttribute="bottom" id="MP0-f7-neR"/>
+                <constraint firstAttribute="trailing" secondItem="l6d-Uv-u3V" secondAttribute="trailing" id="QFo-tz-WHJ"/>
+                <constraint firstItem="l6d-Uv-u3V" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="fUE-f8-ZPG"/>
+                <constraint firstAttribute="top" secondItem="l6d-Uv-u3V" secondAttribute="top" constant="-10" id="iAm-3I-sHR"/>
+                <constraint firstItem="l6d-Uv-u3V" firstAttribute="bottom" secondItem="pgo-gb-fHn" secondAttribute="top" id="kaa-aS-QqM"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>
