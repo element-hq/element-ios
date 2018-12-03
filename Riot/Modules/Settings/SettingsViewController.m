@@ -1695,6 +1695,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1706,8 +1707,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
+            
             
             cell = labelAndSwitchCell;
         }
@@ -1730,6 +1733,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1740,7 +1744,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;                        
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1754,6 +1759,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1858,6 +1864,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             labelAndSwitchCell.mxkLabel.numberOfLines = 0;
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -1966,6 +1973,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
             sendCrashReportCell.mxkSwitch.on = RiotSettings.shared.enableCrashReport;
+            sendCrashReportCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             sendCrashReportCell.mxkSwitch.enabled = YES;
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1977,6 +1985,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             enableRageShakeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_rageshake", @"Vector", nil);
             enableRageShakeCell.mxkSwitch.on = RiotSettings.shared.enableRageShake;
+            enableRageShakeCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             enableRageShakeCell.mxkSwitch.enabled = YES;
             [enableRageShakeCell.mxkSwitch addTarget:self action:@selector(toggleEnableRageShake:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2068,6 +2077,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
             labelAndSwitchCell.mxkSwitch.on = account.mxSession.syncWithLazyLoadOfRoomMembers;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2079,6 +2089,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.createConferenceCallsWithJitsi;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2092,6 +2103,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = (nil != session.crypto);
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2165,6 +2177,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.mxSession.crypto.globalBlacklistUnverifiedDevices;
+            labelAndSwitchCell.mxkSwitch.onTintColor = RiotDesignValues.colorValues.accent;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
 
