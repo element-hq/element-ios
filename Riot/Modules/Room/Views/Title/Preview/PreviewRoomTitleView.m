@@ -102,7 +102,8 @@
                      andImageOrientation:UIImageOrientationUp
                            toFitViewSize:self.roomAvatar.frame.size
                               withMethod:MXThumbnailingMethodCrop
-                            previewImage:[UIImage imageNamed:@"placeholder"]
+                            previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                                                    withColor:RiotDesignValues.colorValues.accent]
                             mediaManager:self.mxRoom.mxSession.mediaManager];
         }
         else

@@ -349,7 +349,8 @@
         return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.summary.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
     }
     
-    return [UIImage imageNamed:@"placeholder"];
+    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                      withColor:RiotDesignValues.colorValues.accent];
 }
 
 - (void)setMxCall:(MXCall *)call

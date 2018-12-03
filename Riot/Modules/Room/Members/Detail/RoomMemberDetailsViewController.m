@@ -358,7 +358,8 @@
         return [AvatarGenerator generateAvatarForMatrixItem:self.mxRoomMember.userId withDisplayName:self.mxRoomMember.displayname];
     }
     
-    return [UIImage imageNamed:@"placeholder"];
+    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                      withColor:RiotDesignValues.colorValues.accent];
 }
 
 - (void)updateMemberInfo

@@ -1741,7 +1741,8 @@
             }
             else
             {
-                previewHeader.roomAvatarPlaceholder = [UIImage imageNamed:@"placeholder"];
+                previewHeader.roomAvatarPlaceholder = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                                                                 withColor:RiotDesignValues.colorValues.accent];
             }
         }
         

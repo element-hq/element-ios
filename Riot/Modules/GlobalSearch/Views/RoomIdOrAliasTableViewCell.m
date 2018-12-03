@@ -19,6 +19,7 @@
 
 #import "AvatarGenerator.h"
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation RoomIdOrAliasTableViewCell
 
@@ -48,7 +49,8 @@
     }
     else
     {
-        self.avatarImageView.image = [UIImage imageNamed:@"placeholder"];
+        self.avatarImageView.image = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                                                withColor:RiotDesignValues.colorValues.accent];
     }
     
     self.titleLabel.text = roomIdOrAlias;

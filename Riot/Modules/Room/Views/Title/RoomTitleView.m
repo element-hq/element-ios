@@ -18,6 +18,7 @@
 #import "RoomTitleView.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation RoomTitleView
 
@@ -70,6 +71,9 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+
+    self.roomDetailsIconImageView.image = [MXKTools paintImage:self.roomDetailsIconImageView.image
+                                                     withColor:RiotDesignValues.colorValues.accent];
     
     if (self.superview)
     {

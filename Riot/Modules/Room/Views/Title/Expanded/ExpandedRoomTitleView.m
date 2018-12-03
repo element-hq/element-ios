@@ -35,6 +35,18 @@
     [super awakeFromNib];
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    self.membersListIcon.image = [MXKTools paintImage:self.membersListIcon.image
+                                            withColor:RiotDesignValues.colorValues.accent];
+
+    // TODO: paintImage does not work here because addParticipantIcon has 2 colors
+//    self.addParticipantIcon.image = [MXKTools paintImage:self.addParticipantIcon.image
+//                                            withColor:RiotDesignValues.colorValues.accent];
+}
+
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];

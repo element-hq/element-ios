@@ -19,6 +19,7 @@
 
 #import "AvatarGenerator.h"
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation DirectoryServerTableViewCell
 
@@ -62,7 +63,8 @@
         [self.iconImageView setImageURI:iconURL
                                withType:nil
                     andImageOrientation:UIImageOrientationUp
-                           previewImage:[UIImage imageNamed:@"placeholder"]
+                           previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                                                   withColor:RiotDesignValues.colorValues.accent]
                            mediaManager:cellData.mediaManager];
     }
     else

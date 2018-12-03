@@ -27,4 +27,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *bottomBorderView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *membersListIcon;
+@property (weak, nonatomic) IBOutlet UIImageView *addParticipantIcon;
+
 @end
