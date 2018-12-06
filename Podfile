@@ -65,6 +65,7 @@ end
 abstract_target 'RiotPods' do
 
     pod 'GBDeviceInfo', '~> 5.2.0'
+    pod 'Reusable', '~> 4.0'
 
     # Piwik for analytics
     # While https://github.com/matomo-org/matomo-sdk-ios/pull/223 is not released, use the PR branch
