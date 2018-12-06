@@ -801,11 +801,10 @@
 
 #pragma mark - MXKAuthInputsViewDelegate
 
-- (void)authInputsView:(MXKAuthInputsView *)authInputsView presentViewController:(UIViewController*)viewControllerToPresent
+- (void)authInputsView:(MXKAuthInputsView *)authInputsView presentViewController:(UIViewController*)viewControllerToPresent animated:(BOOL)animated
 {
     [self dismissKeyboard];
-    
-    [self presentViewController:viewControllerToPresent animated:YES completion:nil];
+    [self presentViewController:viewControllerToPresent animated:animated completion:nil];
 }
 
 - (void)authInputsViewDidCancelOperation:(MXKAuthInputsView *)authInputsView
