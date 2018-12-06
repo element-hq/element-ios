@@ -552,3 +552,4 @@
 "room_action_send_sticker" = "Dërgoni ngjitës";
 "settings_flair" = "Shfaq simbole, kur lejohet";
 "room_details_flair_section" = "Shfaq simbole për bashkësi";
+"auth_accept_policies" = "Ju lutemi, shqyrtoni dhe pranoni rregullat e këtij shërbyesi Home:";
