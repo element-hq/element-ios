@@ -51,7 +51,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 
-@property (weak, nonatomic) IBOutlet MXKAuthenticationRecaptchaWebView *recaptchaWebView;
+@property (weak, nonatomic) IBOutlet UIView *recaptchaContainer;
 @property (weak, nonatomic) IBOutlet TermsView *termsView;
 
 /**

@@ -1278,7 +1278,7 @@
     // Hide other items
     self.messageLabelTopConstraint.constant = 8;
     self.messageLabel.hidden = YES;
-    self.recaptchaWebView.hidden = YES;
+    self.recaptchaContainer.hidden = YES;
     self.termsView.hidden = YES;
     
     _currentLastContainer = nil;
@@ -1326,10 +1326,43 @@
         self.messageLabel.hidden = NO;
         self.messageLabel.text = NSLocalizedStringFromTable(@"auth_recaptcha_message", @"Vector", nil);
         
-        self.recaptchaWebView.hidden = NO;
-        self.currentLastContainer = self.recaptchaWebView;
-        
-        [self.recaptchaWebView openRecaptchaWidgetWithSiteKey:siteKey fromHomeServer:restClient.homeserver callback:callback];
+        self.recaptchaContainer.hidden = NO;
+        self.currentLastContainer = self.recaptchaContainer;
+
+        // IB does not support WKWebview in a xib before iOS 11
+        // So, add it by coding
+
+        // Do some cleaning/reset before
+        for (UIView *view in self.recaptchaContainer.subviews)
+        {
+            [view removeFromSuperview];
+        }
+
+        MXKAuthenticationRecaptchaWebView *reCaptchaWebView = [MXKAuthenticationRecaptchaWebView new];
+        reCaptchaWebView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.recaptchaContainer addSubview:reCaptchaWebView];
+
+        [self.recaptchaContainer addConstraints:
+         [NSLayoutConstraint constraintsWithVisualFormat:@"|-[view]-|"
+                                                 options:0
+                                                 metrics:0
+                                                   views:@{
+                                                           @"view": reCaptchaWebView
+                                                           }
+          ]
+         ];
+        [self.recaptchaContainer addConstraints:
+         [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view]-|"
+                                                 options:0
+                                                 metrics:0
+                                                   views:@{
+                                                           @"view": reCaptchaWebView
+                                                           }
+          ]
+         ];
+
+
+        [reCaptchaWebView openRecaptchaWidgetWithSiteKey:siteKey fromHomeServer:restClient.homeserver callback:callback];
         
         return YES;
     }

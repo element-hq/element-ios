@@ -1,6 +1,9 @@
 Changes in 0.7.x (2018-xx-xx)
 ===============================================
 
+Bug fix:
+ * Registration: reCAPTCHA does not work anymore on iOS 10 (#2119).
+
 Improvements:
  * Replace the deprecated MXMediaManager and MXMediaLoader interfaces use (see matrix-org/matrix-ios-sdk/pull/593).
  * Replace the deprecated MXKAttachment and MXKImageView interfaces use (see matrix-org/matrix-ios-kit/pull/487).
