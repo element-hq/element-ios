@@ -416,3 +416,59 @@
 "room_details_people" = "Członkowie";
 "room_details_access_section_invited_only" = "Tylko ludzie, którzy zostali zaproszeni";
 "room_details_new_flair_placeholder" = "Dodaj nowe ID społeczności (np. +foo%@)";
+"room_creation_keep_private" = "Zachowaj prywatny";
+"auth_email_not_found" = "Nie udało się wysłać e-maila: Ten adres e-mail nie został znaleziony";
+"auth_accept_policies" = "Przeczytaj i zaakceptuj zasady tego serwera domowego:";
+"room_creation_wait_for_creation" = "Pokój jest już tworzony. Proszę czekaj.";
+"room_creation_invite_another_user" = "Szukaj / zaproś przez ID Użytkownika, Nazwę lub e-mail";
+"search_people_placeholder" = "Szukaj przez ID Użytkownika, Nazwę lub e-mail";
+"contacts_user_directory_offline_section" = "KATALOG UŻYTKOWNIKA (offline)";
+"room_participants_remove_prompt_msg" = "Czy na pewno chcesz usunąć %@ z tej rozmowy?";
+"room_participants_invite_prompt_msg" = "Czy na pewno chcesz zaprosić %@ do tej rozmowy?";
+"room_participants_invite_another_user" = "Szukaj / zaproś przez ID Użytkownika, Nazwę lub e-mail";
+"room_event_action_report_prompt_ignore_user" = "Czy chcesz ukryć wszystkie wiadomości od tego użytkownika?";
+"settings_sign_out_e2e_warn" = "Utracisz klucze szyfrowania end-to-end. Oznacza to, że nie będziesz już mógł czytać starych wiadomości w zaszyfrowanych pokojach na tym urządzeniu.";
+"settings_surname" = "Nazwisko";
+"settings_first_name" = "Imię";
+"settings_unignore_user" = "Pokazać wszystkie wiadomości od %@?";
+"settings_contacts_discover_matrix_users" = "Użyj e-maili i numerów telefonów do odkrycia użytkowników";
+"settings_labs_e2e_encryption_prompt_message" = "Aby zakończyć konfigurowanie szyfrowania, musisz zalogować się ponownie.";
+"room_details_mute_notifs" = "Wycisz powiadomienia";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Aby kontynuować korzystanie z serwera domowego %@, musisz przejrzeć i zaakceptować warunki użytkowania.";
+"e2e_room_key_request_ignore_request" = "Zignoruj żądanie";
+"widget_integration_room_not_visible" = "Pokój %@ nie jest widoczny.";
+"widget_integration_missing_user_id" = "Brakujące user_id w żądaniu.";
+"widget_integration_missing_room_id" = "Brakujące room_id w żądaniu.";
+"widget_integration_no_permission_in_room" = "Nie masz pozwolenia na wykonanie tej akcji w tym pokoju.";
+"widget_integration_must_be_in_room" = "Nie jesteś w tym pokoju.";
+"widget_integration_positive_power_level" = "Poziom uprawnień musi być liczbą dodatnią.";
+"widget_integration_room_not_recognised" = "Ten pokój nie jest rozpoznany.";
+"widget_integration_failed_to_send_request" = "Nie udało się wysłać żądania.";
+"widget_integration_unable_to_create" = "Nie można utworzyć widżetu.";
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Aby to zrobić musisz mieć możliwość zapraszania użytkowników.";
+"widget_sticker_picker_no_stickerpacks_alert" = "Nie masz obecnie włączonych żadnych pakietów naklejek.";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Czy chcesz dodać teraz kilka?";
+"widget_creation_failure" = "Utworzenie widżetu nie powiodło się";
+// Widget
+"widget_no_power_to_manage" = "Potrzebujesz uprawnień do zarządzania widżetami w tym pokoju";
+"bug_report_send" = "Wyślij";
+"bug_report_progress_zipping" = "Zbieranie dzienników";
+"bug_report_progress_uploading" = "Wysyłanie raportu";
+"bug_report_send_screenshot" = "Wyślij zrzut ekranu";
+"bug_report_logs_description" = "W celu zdiagnozowania problemów, logi z tego klienta zostaną wysłane wraz z tym raportem o błędzie. Jeśli wolisz wysłać tylko powyższy tekst, odznacz:";
+"bug_report_send_logs" = "Wyślij logi";
+// Bug report
+"bug_report_title" = "Zgłoś błąd";
+"e2e_need_log_in_again" = "Należy się ponownie zalogować w celu wygenerowania kluczy szyfrowania end-to-end dla tego urządzenia i wysłania klucza publicznego do Twojego serwera domowego.\nJest to jednorazowe działanie; przepraszamy za trudności.";
+// Crypto
+"e2e_enabling_on_app_update" = "Riot obsługuje już szyfrowanie end-to-end (E2E), ale musisz zalogować się ponownie, aby je włączyć.\n\nMożesz to zrobić teraz lub później z poziomu ustawień aplikacji.";
+// No VoIP support
+"no_voip_title" = "Połączenie przychodzące";
+"call_incoming_video" = "Przychodzące połączenie wideo…";
+"call_incoming_voice" = "Połączenie przychodzące…";
+"call_incoming_video_prompt" = "Przychodzące połączenie wideo od %@";
+// Call
+"call_incoming_voice_prompt" = "Przychodzące połączenie głosowe od %@";
+"do_not_ask_again" = "Nie pytaj ponownie";
