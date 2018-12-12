@@ -558,3 +558,4 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Hasiera zerbitzari honek hilabeteko erabiltzaile aktiboen muga jo du ";
 "room_resource_usage_limit_reached_message_2" = "erabiltzaile batzuk ezin izango dute saioa hasi.";
 "room_resource_usage_limit_reached_message_contact_3" = " muga hau areagotzeko.";
+"auth_accept_policies" = "Irakurri eta onartu hasiera-zerbitzariaren baldintzak:";

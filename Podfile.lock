@@ -42,38 +42,40 @@ PODS:
   - GBDeviceInfo/Core (5.2.0)
   - GZIP (1.2.2)
   - HPGrowingTextView (1.1)
+  - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.13)
-  - MatrixKit (0.8.6):
+  - MatrixKit (0.9.1):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.8.6)
-    - MatrixSDK (= 0.11.6)
-  - MatrixKit/AppExtension (0.8.6):
+    - MatrixKit/Core (= 0.9.1)
+    - MatrixSDK (= 0.12.0)
+  - MatrixKit/AppExtension (0.9.1):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.11.6)
-  - MatrixKit/Core (0.8.6):
+    - MatrixSDK (= 0.12.0)
+  - MatrixKit/Core (0.9.1):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.11.6)
-  - MatrixSDK (0.11.6):
-    - MatrixSDK/Core (= 0.11.6)
-  - MatrixSDK/Core (0.11.6):
+    - MatrixSDK (= 0.12.0)
+  - MatrixSDK (0.12.0):
+    - MatrixSDK/Core (= 0.12.0)
+  - MatrixSDK/Core (0.12.0):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.2)
+    - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.0.0)
     - Realm (~> 3.11.1)
-  - MatrixSDK/JingleCallStack (0.11.6):
+  - MatrixSDK/JingleCallStack (0.12.0):
     - MatrixSDK/Core
     - WebRTC (= 63.11.20455)
-  - MatrixSDK/SwiftSupport (0.11.6):
+  - MatrixSDK/SwiftSupport (0.12.0):
     - MatrixSDK/Core
   - OLMKit (3.0.0):
     - OLMKit/olmc (= 3.0.0)
@@ -83,21 +85,27 @@ PODS:
   - PiwikTracker (4.4.2):
     - PiwikTracker/Core (= 4.4.2)
   - PiwikTracker/Core (4.4.2)
-  - Realm (3.11.1):
-    - Realm/Headers (= 3.11.1)
-  - Realm/Headers (3.11.1)
+  - Realm (3.11.2):
+    - Realm/Headers (= 3.11.2)
+  - Realm/Headers (3.11.2)
+  - Reusable (4.0.5):
+    - Reusable/Storyboard (= 4.0.5)
+    - Reusable/View (= 4.0.5)
+  - Reusable/Storyboard (4.0.5)
+  - Reusable/View (4.0.5)
   - WebRTC (63.11.20455)
 
 DEPENDENCIES:
   - cmark
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
-  - MatrixKit (= 0.8.6)
-  - MatrixKit/AppExtension (= 0.8.6)
+  - MatrixKit (= 0.9.1)
+  - MatrixKit/AppExtension (= 0.9.1)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
   - PiwikTracker (from `https://github.com/manuroe/matomo-sdk-ios.git`, branch `feature/CustomVariables`)
+  - Reusable (~> 4.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -108,11 +116,13 @@ SPEC REPOS:
     - GBDeviceInfo
     - GZIP
     - HPGrowingTextView
+    - libbase58
     - libPhoneNumber-iOS
     - MatrixKit
     - MatrixSDK
     - OLMKit
     - Realm
+    - Reusable
     - WebRTC
 
 EXTERNAL SOURCES:
@@ -133,14 +143,16 @@ SPEC CHECKSUMS:
   GBDeviceInfo: 2c65ceb9404f9079264d4c238f5b81916fdfc5e2
   GZIP: 12374d285e3b5d46cfcd480700fcfc7e16caf4f1
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
+  libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatrixKit: d9caa711e67070e5fb348d4237f6c81ea274e17a
-  MatrixSDK: c167aeef005954ab0c15267f00694259070182e2
+  MatrixKit: 84242042ce625d06f4fabc440a2df56e9188e45e
+  MatrixSDK: 34972f2cd8ac5e2c7f58dc9e5395c3ff8360661f
   OLMKit: 88eda69110489f817d59bcb4353b7c247570aa4f
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
-  Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
+  Realm: 864477d028db77f7c5a0cba64a4892ad53db128a
+  Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   WebRTC: f2a6203584745fe53532633397557876b5d71640
 
-PODFILE CHECKSUM: dc6706b7e2aa657e688e75f5c2e4a8b9e14bd876
+PODFILE CHECKSUM: 8e6ec927e33f0f90bfb6e18f4489e3e9c4fc43db
 
 COCOAPODS: 1.6.0.beta.2

@@ -555,3 +555,4 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Сървърът е достигнал ограничението си за активни потребители на месец, така че ";
 "room_resource_usage_limit_reached_message_2" = "някои потребители няма да могат да влязат.";
 "room_resource_usage_limit_reached_message_contact_3" = " за да увеличите този лимит.";
+"auth_accept_policies" = "Моля, прегледайте и приемете политиките на този сървър:";

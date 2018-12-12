@@ -509,7 +509,7 @@
 "room_details_flair_invalid_id_prompt_msg" = "%@ n'est pas un identifiant valide pour une communauté";
 "room_details_fail_to_update_room_communities" = "Échec de la mise à jour des communautés liées";
 "room_do_not_have_permission_to_post" = "Vous n'avez pas la permission d'envoyer des messages dans ce salon";
-"room_event_action_kick_prompt_reason" = "Raison de l'exclusion de l'utilisateur";
+"room_event_action_kick_prompt_reason" = "Motif de l'expulsion de l'utilisateur";
 "room_event_action_ban_prompt_reason" = "Raison du bannissement de l'utilisateur";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Pour continuer à utiliser le serveur d'accueil %@, vous devez lire et accepter les conditions générales.";
@@ -556,3 +556,4 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Ce serveur d'accueil a atteint sa limite mensuelle d'utilisateurs actifs donc ";
 "room_resource_usage_limit_reached_message_2" = "quelques utilisateurs ne pourront pas se connecter.";
 "room_resource_usage_limit_reached_message_contact_3" = " pour augmenter cette limite.";
+"auth_accept_policies" = "Veuillez lire et accepter les politiques de ce serveur d'accueil :";

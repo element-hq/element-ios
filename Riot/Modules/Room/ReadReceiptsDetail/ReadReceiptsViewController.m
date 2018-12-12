@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Aram Sargsyan
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -26,7 +27,6 @@
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic) MXRestClient* restClient;
 @property (nonatomic) MXSession *session;
 
 @property (nonatomic) NSArray <MXRoomMember *> *roomMembers;
@@ -48,7 +48,6 @@
 + (void)openInViewController:(UIViewController *)viewController fromContainer:(MXKReceiptSendersContainer *)receiptSendersContainer withSession:(MXSession *)session
 {
     ReadReceiptsViewController *receiptsController = [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
-    receiptsController.restClient = receiptSendersContainer.restClient;
     receiptsController.session = session;
     
     receiptsController.roomMembers = receiptSendersContainer.roomMembers;
@@ -210,12 +209,14 @@
     if (indexPath.row < self.placeholders.count)
     {
         NSString *avatarUrl = self.roomMembers[indexPath.row].avatarUrl;
-        if (self.restClient && avatarUrl)
-        {
-            CGFloat side = CGRectGetWidth(cell.avatarImageView.frame);
-            avatarUrl = [self.restClient urlOfContentThumbnail:avatarUrl toFitViewSize:CGSizeMake(side, side) withMethod:MXThumbnailingMethodCrop];
-        }
-        [cell.avatarImageView setImageURL:avatarUrl withType:nil andImageOrientation:UIImageOrientationUp previewImage:self.placeholders[indexPath.row]];
+        CGFloat side = CGRectGetWidth(cell.avatarImageView.frame);
+        [cell.avatarImageView setImageURI:avatarUrl
+                                 withType:nil
+                      andImageOrientation:UIImageOrientationUp
+                            toFitViewSize:CGSizeMake(side, side)
+                               withMethod:MXThumbnailingMethodCrop
+                             previewImage:self.placeholders[indexPath.row]
+                             mediaManager:self.session.mediaManager];
     }
     if (indexPath.row < self.receipts.count)
     {

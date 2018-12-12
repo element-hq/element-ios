@@ -1,49 +1,62 @@
+Changes in 0.7.8 (2018-12-12)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.1).
+ * Replace the deprecated MXMediaManager and MXMediaLoader interfaces use (see matrix-org/matrix-ios-sdk/pull/593).
+ * Replace the deprecated MXKAttachment and MXKImageView interfaces use (see matrix-org/matrix-ios-kit/pull/487).
+ * i18n: Enable Japanese (ja)
+ * i18n: Enable Hungarian (hu)
+ 
+Bug fix:
+ * Registration: reCAPTCHA does not work anymore on iOS 10 (#2119).
+
 Changes in 0.7.7 (2018-10-31)
 ===============================================
 
 Improvements:
-* Upgrade MatrixKit version (v0.8.6).
+ * Upgrade MatrixKit version (v0.8.6).
 
 Bug fix:
-* Notifications: old notifications can reappear (#1985).
+ * Notifications: old notifications can reappear (#1985).
 
 Changes in 0.7.6 (2018-10-05)
 ===============================================
 
 Bug fix:
-* Wrong version number.
+ * Wrong version number.
 
 Changes in 0.7.5 (2018-10-05)
 ===============================================
 
 Improvements:
-* Upgrade MatrixKit version (v0.8.5).
-* Server Quota Notices: Implement the blue banner (#1937).
+ * Upgrade MatrixKit version (v0.8.5).
+ * Server Quota Notices: Implement the blue banner (#1937).
 
 Changes in 0.7.4 (2018-09-26)
 ===============================================
 
 Improvements:
-* Upgrade MatrixKit version (v0.8.4).
-* Lazy loading: Enable it by default (if the homeserver supports it).
-* i18n: Add Spanish (sp).
-* Settings: Make advanced info copyable (#2023).
-* Settings: Made cryptography info copyable, thanks to @daverPL (PR #1999).
-* Room settings: Anyone can now set a room alias (#2033).
+ * Upgrade MatrixKit version (v0.8.4).
+ * Lazy loading: Enable it by default (if the homeserver supports it).
+ * i18n: Add Spanish (sp).
+ * Settings: Make advanced info copyable (#2023).
+ * Settings: Made cryptography info copyable, thanks to @daverPL (PR #1999).
+ * Room settings: Anyone can now set a room alias (#2033).
 
 Bug fix:
-* Fix missing read receipts when lazy-loading room members.
-* Weird text color when selecting a message (#2046).
+ * Fix missing read receipts when lazy-loading room members.
+ * Weird text color when selecting a message (#2046).
 
 Changes in 0.7.3 (2018-08-27)
 ===============================================
 
 Improvements:
-* Upgrade MatrixKit version (v0.8.3).
+ * Upgrade MatrixKit version (v0.8.3).
 
 Bug fix:
-* Fix input toolbar reset in RoomViewController on MXSession state change (#2006 and #2008).
-* Fix user interaction disabled in master view of UISplitViewContoller when selecting a room (#2005).
+ * Fix input toolbar reset in RoomViewController on MXSession state change (#2006 and #2008).
+ * Fix user interaction disabled in master view of UISplitViewContoller when selecting a room (#2005).
 
 Changes in 0.7.2 (2018-08-24)
 ===============================================
