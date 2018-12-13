@@ -300,7 +300,7 @@
 "room_participants_invite_another_user" = "Suchen/Einladen mittels Benutzer ID, Name oder E-Mail-Adresse";
 "room_participants_invite_malformed_id" = "Ungültige ID. Sollte eine E-Mail-Adresse oder Matrix-ID wie \"@thomas:matrix.org' sein";
 "room_participants_idle" = "Untätig";
-"room_participants_ago" = "her";
+"room_participants_since" = "seit";
 "room_participants_action_section_admin_tools" = "Admin Werkzeuge";
 "room_participants_action_unban" = "Entsperren";
 "room_participants_action_set_default_power_level" = "Zurück auf normale Berechtigung";

@@ -205,7 +205,7 @@
 "room_participants_unknown" = "Unknown";
 "room_participants_idle" = "Idle";
 "room_participants_now" = "now";
-"room_participants_ago" = "ago";
+"room_participants_since" = "since";
 
 "room_participants_action_section_admin_tools" = "Admin tools";
 "room_participants_action_section_direct_chats" = "Direct chats";
