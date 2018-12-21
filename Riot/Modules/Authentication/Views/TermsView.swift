@@ -80,7 +80,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
     }
 
     func customizeViewRendering() {
-        acceptButton.backgroundColor = kRiotColorGreen
+        acceptButton.backgroundColor = RiotDesignValues.colorValues().accent
     }
 
 
