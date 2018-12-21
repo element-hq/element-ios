@@ -556,3 +556,4 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Ce serveur d'accueil a atteint sa limite mensuelle d'utilisateurs actifs donc ";
 "room_resource_usage_limit_reached_message_2" = "quelques utilisateurs ne pourront pas se connecter.";
 "room_resource_usage_limit_reached_message_contact_3" = " pour augmenter cette limite.";
+"auth_accept_policies" = "Veuillez lire et accepter les politiques de ce serveur d'accueil :";

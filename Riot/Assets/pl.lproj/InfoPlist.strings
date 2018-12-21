@@ -1,0 +1,3 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Aparat służy do robienia zdjęć i nagrywania filmów, prowadzenia rozmów wideo.";
+"NSPhotoLibraryUsageDescription" = "Biblioteka zdjęć służy do wysyłania zdjęć i filmów.";

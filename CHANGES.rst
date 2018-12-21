@@ -1,11 +1,15 @@
-Changes in 0.7.x (2018-xx-xx)
+Changes in 0.7.8 (2018-12-12)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version (v0.9.1).
  * Replace the deprecated MXMediaManager and MXMediaLoader interfaces use (see matrix-org/matrix-ios-sdk/pull/593).
  * Replace the deprecated MXKAttachment and MXKImageView interfaces use (see matrix-org/matrix-ios-kit/pull/487).
  * i18n: Enable Japanese (ja)
  * i18n: Enable Hungarian (hu)
+ 
+Bug fix:
+ * Registration: reCAPTCHA does not work anymore on iOS 10 (#2119).
 
 Changes in 0.7.7 (2018-10-31)
 ===============================================
