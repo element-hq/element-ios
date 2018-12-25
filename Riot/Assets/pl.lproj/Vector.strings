@@ -472,3 +472,18 @@
 // Call
 "call_incoming_voice_prompt" = "Przychodzące połączenie głosowe od %@";
 "do_not_ask_again" = "Nie pytaj ponownie";
+"start" = "Rozpocznij";
+"settings_config_home_server" = "Serwerem domowym jest %@";
+"settings_config_identity_server" = "Serwerem tożsamości jest %@";
+"settings_remove_email_prompt_msg" = "Czy na pewno chcesz usunąć adres e-mail %@?";
+"settings_remove_phone_prompt_msg" = "Czy na pewno chcesz usunąć numer telefonu %@?";
+"settings_labs_room_members_lazy_loading_error_message" = "Twój serwer nie obsługuje jeszcze powolnego ładowania członków pokoju. Spróbuj później.";
+"settings_labs_room_members_lazy_loading" = "Powolne ładowanie członków pokojów";
+"settings_send_crash_report" = "Wyślij anonimowe dane o awariach i użytkowaniu";
+"room_details_save_changes_prompt" = "Czy chcesz zapisać zmiany?";
+// Group participants
+"group_participants_add_participant" = "Dodaj uczestnika";
+"group_participants_invite_another_user" = "Szukaj / zaproś przez ID Użytkownika lub Nazwę";
+// Media picker
+"media_picker_library" = "Biblioteka";
+"large_badge_value_k_format" = "%.1fK";
