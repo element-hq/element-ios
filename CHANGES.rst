@@ -1,3 +1,12 @@
+Changes in 0.7.9 (2018-12-)
+===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.9.2).
+
+Bug fix:
+* Registration: email or phone number is no more skippable (#2140).
+
 Changes in 0.7.8 (2018-12-12)
 ===============================================
 
