@@ -966,7 +966,7 @@
     for (MXLoginFlow *loginFlow in currentSession.flows)
     {
         if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeEmailIdentity] == NSNotFound
-             && [loginFlow.stages indexOfObject:kMXLoginFlowTypeEmailCode] == NSNotFound)
+             && [loginFlow.stages indexOfObject:kMXLoginFlowTypeMSISDN] == NSNotFound)
         {
             // There is a flow with no 3pids
             return NO;
