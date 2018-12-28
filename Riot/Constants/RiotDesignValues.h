@@ -62,7 +62,6 @@ extern UIStatusBarStyle  kRiotDesignStatusBarStyle;
 extern UIColor          *kRiotDesignNavigationBarTintColor;
 extern UIColor          *kRiotDesignNavigationBarBarTintColor;
 extern NSDictionary     *kRiotDesignNavigationBarTitleTextAttributes;
-extern BOOL              kRiotDesignNavigationBarTranslucent;
 
 extern UIBarStyle    kRiotDesignSearchBarStyle;
 extern UIColor      *kRiotDesignSearchBarTintColor;

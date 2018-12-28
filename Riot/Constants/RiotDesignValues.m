@@ -54,7 +54,6 @@ UIStatusBarStyle  kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
 UIColor          *kRiotDesignNavigationBarTintColor;
 UIColor          *kRiotDesignNavigationBarBarTintColor;
 NSDictionary     *kRiotDesignNavigationBarTitleTextAttributes;
-BOOL              kRiotDesignNavigationBarTranslucent = YES;
 
 UIBarStyle kRiotDesignSearchBarStyle = UIBarStyleDefault;
 UIColor *kRiotDesignSearchBarTintColor = nil;
@@ -164,7 +163,6 @@ UIKeyboardAppearance kRiotKeyboard;
         kRiotSelectedBgColor = nil; // Use the default selection color.
         
         kRiotDesignStatusBarStyle = UIStatusBarStyleLightContent;
-        kRiotDesignNavigationBarTranslucent = NO;
         
         kRiotDesignSearchBarStyle = UIBarStyleDefault;
 
@@ -235,7 +233,9 @@ UIKeyboardAppearance kRiotKeyboard;
     navigationBar.tintColor = kRiotDesignNavigationBarTintColor;
     navigationBar.titleTextAttributes = kRiotDesignNavigationBarTitleTextAttributes;
     navigationBar.barTintColor = kRiotDesignNavigationBarBarTintColor;
-    navigationBar.translucent = kRiotDesignNavigationBarTranslucent;
+
+    // The navigation bar needs to be opaque so that its background color is the expected one
+    navigationBar.translucent = NO;
 }
 
 + (void)applyStyleOnSearchBar:(UISearchBar *)searchBar

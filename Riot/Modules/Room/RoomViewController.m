@@ -1483,6 +1483,12 @@
 
 - (void)showExpandedHeader:(BOOL)isVisible
 {
+    // Use a transparent navigation bar when displaying the expanded header
+    // Retrieve the main navigation controller if the current view controller
+    // is embedded inside a split view controlle
+    self.navigationController.navigationBar.translucent = isVisible;
+    self.mxk_mainNavigationController.navigationBar.translucent = isVisible;
+
     if (self.expandedHeaderContainer.isHidden == isVisible)
     {
         // Check conditions before making the expanded room header visible.
