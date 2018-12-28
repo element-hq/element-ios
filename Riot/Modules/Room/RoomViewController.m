@@ -419,6 +419,7 @@
 - (void)userInterfaceThemeDidChange
 {
     [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    self.navigationController.navigationBar.translucent = YES;
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
@@ -1483,12 +1484,6 @@
 
 - (void)showExpandedHeader:(BOOL)isVisible
 {
-    // Use a transparent navigation bar when displaying the expanded header
-    // Retrieve the main navigation controller if the current view controller
-    // is embedded inside a split view controlle
-    self.navigationController.navigationBar.translucent = isVisible;
-    self.mxk_mainNavigationController.navigationBar.translucent = isVisible;
-
     if (self.expandedHeaderContainer.isHidden == isVisible)
     {
         // Check conditions before making the expanded room header visible.
@@ -1549,6 +1544,7 @@
         // Report shadow image
         [mainNavigationController.navigationBar setShadowImage:shadowImage];
         [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
+        mainNavigationController.navigationBar.translucent = isVisible;
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
