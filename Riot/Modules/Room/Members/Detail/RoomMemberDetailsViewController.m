@@ -219,10 +219,11 @@
 - (void)userInterfaceThemeDidChange
 {
     [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    self.navigationController.navigationBar.translucent = YES;
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.memberHeaderView.backgroundColor = kRiotSecondaryBgColor;
+    self.memberHeaderView.backgroundColor = kRiotDesignNavigationBarBarTintColor;
     self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;
     self.roomMemberStatusLabel.textColor = RiotDesignValues.colorValues.accent;
     
@@ -473,6 +474,9 @@
         [mainNavigationController.navigationBar setShadowImage:nil];
         [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     }
+
+    // Main Navigation bar opacity must follow
+    mainNavigationController.navigationBar.translucent = isHidden;
 }
 
 #pragma mark - TableView data source
