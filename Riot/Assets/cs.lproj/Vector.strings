@@ -234,3 +234,6 @@
 "settings_config_home_server" = "Domácího serveru je %@";
 "settings_config_identity_server" = "Server identit je %@";
 "settings_config_user_id" = "Přihlášen/a jako %@";
+"auth_msisdn_validation_message" = "Odeslali jsme vám SMS aktivační kod. Prosím, zadejte jej níže.";
+"auth_msisdn_validation_error" = "Nelze ověřit telefonní číslo.";
+"auth_reset_password_success_message" = "Vaše heslo bylo úspěšně resetováno.\n\nByl jste právě odhlášen na všech vašich zařízeních a nebudete vánm nadále zasíláno oznámení. Pro znovu povolení zasílání oznámení, přihlašte se znovu na každém zařízení.";
