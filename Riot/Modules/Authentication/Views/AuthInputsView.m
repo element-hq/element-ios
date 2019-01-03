@@ -965,21 +965,10 @@
     // Check whether an account may be created without third-party identifiers.
     for (MXLoginFlow *loginFlow in currentSession.flows)
     {
-        if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeDummy] != NSNotFound || [loginFlow.type isEqualToString:kMXLoginFlowTypeDummy])
+        if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeEmailIdentity] == NSNotFound
+             && [loginFlow.stages indexOfObject:kMXLoginFlowTypeMSISDN] == NSNotFound)
         {
-            // The dummy flow is supported, the 3pid are then optional.
-            return NO;
-        }
-        
-        if ((loginFlow.stages.count == 1 && [loginFlow.stages[0] isEqualToString:kMXLoginFlowTypeRecaptcha]) || [loginFlow.type isEqualToString:kMXLoginFlowTypeRecaptcha])
-        {
-            // The recaptcha flow is supported alone, the 3pids are then optional.
-            return NO;
-        }
-        
-        if ((loginFlow.stages.count == 1 && [loginFlow.stages[0] isEqualToString:kMXLoginFlowTypePassword]) || [loginFlow.type isEqualToString:kMXLoginFlowTypePassword])
-        {
-            // The password flow is supported alone, the 3pids are then optional.
+            // There is a flow with no 3pids
             return NO;
         }
     }
