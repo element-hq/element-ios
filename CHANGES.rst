@@ -6,6 +6,7 @@ Improvements:
 
 Bug fix:
 * Registration: email or phone number is no more skippable (#2140).
+* Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.
 
 Changes in 0.7.8 (2018-12-12)
 ===============================================
