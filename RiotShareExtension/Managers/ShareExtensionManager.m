@@ -254,10 +254,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          
                          if ([self areAttachmentsFullyLoaded])
                          {
-                             UIAlertController *compressionPrompt = [self compressionPromptForImage:self.pendingImages.firstObject shareBlock:^{
+                             UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
                                  [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
                              }];
-
+                             
                              if (compressionPrompt)
                              {
                                  [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
@@ -348,15 +348,46 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     [self.primaryViewController destroy];
     self.primaryViewController = nil;
+
+- (BOOL)isAPendingImageNotOrientedUp
+{
+    BOOL isAPendingImageNotOrientedUp = NO;
+    
+    for (NSData *imageData in self.pendingImages)
+    {
+        @autoreleasepool
+        {
+            UIImage *image = [UIImage imageWithData:imageData];
+            
+            if (image && image.imageOrientation != UIImageOrientationUp)
+            {
+                isAPendingImageNotOrientedUp = YES;
+                break;
+            }
+        }
+    }
+    
+    return isAPendingImageNotOrientedUp;
 }
 
-- (UIAlertController *)compressionPromptForImage:(NSData *)imageData shareBlock:(void(^)())shareBlock
+// TODO: When select multiple images:
+// - Enhance prompt to display sum of all file sizes for each compression.
+// - Find a way to choose compression sizes for all images.
+- (UIAlertController *)compressionPromptForPendingImagesWithShareBlock:(void(^)(void))shareBlock
 {
+    if (!self.pendingImages.count)
+    {
+        return nil;
+    }
+    
     UIAlertController *compressionPrompt;
-    UIImage *image = [UIImage imageWithData:imageData];
+    BOOL isAPendingImageNotOrientedUp = [self isAPendingImageNotOrientedUp];
+    
+    NSData *firstImageData = self.pendingImages.firstObject;
+    UIImage *firstImage = [UIImage imageWithData:firstImageData];
     
     // Get available sizes for this image
-    MXKImageCompressionSizes compressionSizes = [MXKTools availableCompressionSizesForImage:image originalFileSize:imageData.length];
+    MXKImageCompressionSizes compressionSizes = [MXKTools availableCompressionSizesForImage:firstImage originalFileSize:firstImageData.length];
     
     // Apply the compression mode
     if (compressionSizes.small.fileSize || compressionSizes.medium.fileSize || compressionSizes.large.fileSize)
@@ -385,8 +416,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         {
                                                                             shareBlock();
                                                                         }
-                                                                        
-                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
                                                                     }
                                                                     
                                                                 }]];
@@ -412,8 +441,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         {
                                                                             shareBlock();
                                                                         }
-                                                                        
-                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
                                                                     }
                                                                     
                                                                 }]];
@@ -440,15 +467,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         {
                                                                             shareBlock();
                                                                         }
-                                                                        
-                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
                                                                     }
                                                                     
                                                                 }]];
         }
         
         // To limit memory consumption, we suggest the original resolution only if the image orientation is up, or if the image size is moderate
-        if (image.imageOrientation == UIImageOrientationUp || !compressionSizes.large.fileSize)
+        if (!isAPendingImageNotOrientedUp || !compressionSizes.large.fileSize)
         {
             NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.original.fileSize round:NO], (int)compressionSizes.original.imageSize.width, (int)compressionSizes.original.imageSize.height];
             
@@ -467,8 +492,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         {
                                                                             shareBlock();
                                                                         }
-                                                                        
-                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
                                                                     }
                                                                     
                                                                 }]];
@@ -476,20 +499,21 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                               style:UIAlertActionStyleCancel
-                                                            handler:^(UIAlertAction * action) {
-                                                                
-                                                                if (weakSelf)
-                                                                {
-                                                                    [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
-                                                                }
-                                                                
-                                                            }]];
+                                                            handler:nil]];
         
         
     }
     else
     {
-        self.imageCompressionMode = ImageCompressionModeNone;
+        if (isAPendingImageNotOrientedUp && self.pendingImages.count > 1)
+        {
+            self.imageCompressionMode = ImageCompressionModeSmall;
+        }
+        else
+        {
+            self.imageCompressionMode = ImageCompressionModeNone;
+        }
+        
         if (shareBlock)
         {
             shareBlock();
