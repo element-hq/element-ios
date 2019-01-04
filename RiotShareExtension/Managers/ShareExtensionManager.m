@@ -19,6 +19,7 @@
 #import <MatrixKit/MatrixKit.h>
 @import MobileCoreServices;
 #import "objc/runtime.h"
+#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 
 NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
@@ -73,6 +74,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         sdkOptions.disableIdenticonUseForUserAvatar = YES;
         // Enable e2e encryption for newly created MXSession
         sdkOptions.enableCryptoWhenStartingMXSession = YES;
+        // Use UIKit BackgroundTask for handling background tasks in the SDK
+        sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
         
         // Customize the localized string table
         [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
