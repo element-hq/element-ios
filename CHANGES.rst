@@ -1,3 +1,9 @@
+Changes in 0.7.10 (2019-01-04)
+===============================================
+
+Bug fix:
+ * Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.
+
 Changes in 0.7.9 (2019-01-04)
 ===============================================
 
