@@ -644,113 +644,139 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
+    if (imageDatas.count == 0)
+    {
+        NSLog(@"[ShareExtensionManager] sendImages: no images to send.");
+        
+        if (failureBlock)
+        {
+            failureBlock(nil);
+        }
+        return;
+    }
+    
     [self didStartSendingToRoom:room];
     
     __block NSUInteger count = imageDatas.count;
     
     for (NSInteger index = 0; index < imageDatas.count; index++)
     {
-        NSItemProvider *itemProvider = itemProviders[index];
-        NSData *imageData = imageDatas[index];
-        UIImage *image = [UIImage imageWithData:imageData];
-        
-        if (!image)
+        @autoreleasepool
         {
-            NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
-            if (failureBlock)
-            {
-                failureBlock(nil);
-                failureBlock = nil;
-            }
-            return;
-        }
-        
-        // Prepare the image
-        UIImage *convertedImage = image;
-        
-        if (self.imageCompressionMode == ImageCompressionModeSmall)
-        {
-            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE)];
-        }
-        else if (self.imageCompressionMode == ImageCompressionModeMedium)
-        {
-            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE)];
-        }
-        else if (self.imageCompressionMode == ImageCompressionModeLarge)
-        {
-            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(self.actualLargeSize, self.actualLargeSize)];
-        }
-        
-        // Make sure the uploaded image orientation is up
-        convertedImage = [MXKTools forceImageOrientationUp:convertedImage];
-        
-        NSString *mimeType;
-        if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
-        {
-            mimeType = @"image/png";
-            if (convertedImage != image)
-            {
-                imageData = UIImagePNGRepresentation(convertedImage);
-            }
-        }
-        else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
-        {
-            mimeType = @"image/jpeg";
-            if (convertedImage != image)
-            {
-                imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
-            }
-        }
-        else
-        {
-            // Other image types like GIF 
-            NSString *imageFileName = itemProvider.registeredTypeIdentifiers[0];
-            mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)imageFileName, kUTTagClassMIMEType);
-        }
-
-        // Sanity check
-        if (!mimeType)
-        {
-            NSLog(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
-            if (failureBlock)
-            {
-                failureBlock(nil);
-            }
-            return;
-        }
-        
-        UIImage *thumbnail = nil;
-        // Thumbnail is useful only in case of encrypted room
-        if (room.summary.isEncrypted)
-        {
-            thumbnail = [MXKTools reduceImage:convertedImage toFitInSize:CGSizeMake(800, 600)];
-            if (thumbnail == convertedImage)
-            {
-                thumbnail = nil;
-            }
-        }
-        
-        __weak typeof(self) weakSelf = self;
-        
-        [room sendImage:imageData withImageSize:convertedImage.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+            NSItemProvider *itemProvider = itemProviders[index];
+            NSData *imageData = imageDatas[index];
+            UIImage *image = [UIImage imageWithData:imageData];
             
-            if (!--count && weakSelf)
+            if (!image)
             {
-                typeof(self) self = weakSelf;
+                NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+                if (failureBlock)
+                {
+                    failureBlock(nil);
+                }
+                return;
+            }
+            
+            // Prepare the image
+            UIImage *convertedImage;
+            CGSize newImageSize;
+            
+            switch (self.imageCompressionMode) {
+                case ImageCompressionModeSmall:
+                    newImageSize = CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE);
+                    break;
+                case ImageCompressionModeMedium:
+                    newImageSize = CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE);
+                    break;
+                case ImageCompressionModeLarge:
+                    newImageSize = CGSizeMake(self.actualLargeSize, self.actualLargeSize);
+                    break;
+                default:
+                    newImageSize = CGSizeZero;
+                    break;
+            }
+            
+            if (CGSizeEqualToSize(newImageSize, CGSizeZero))
+            {
+                // No resize to make
+                // Make sure the uploaded image orientation is up
+                convertedImage = [MXKTools forceImageOrientationUp:image];
+            }
+            else
+            {
+                // Resize the image and set image in right orientation too
+                convertedImage = [MXKTools resizeImageWithData:imageData toFitInSize:newImageSize];
+            }
+            
+            NSString *mimeType;
+            if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
+            {
+                mimeType = @"image/png";
+                if (convertedImage != image)
+                {
+                    imageData = UIImagePNGRepresentation(convertedImage);
+                }
+            }
+            else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
+            {
+                mimeType = @"image/jpeg";
+                if (convertedImage != image)
+                {
+                    imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
+                }
+            }
+            else
+            {
+                // Other image types like GIF
+                NSString *imageFileName = itemProvider.registeredTypeIdentifiers[0];
+                mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)imageFileName, kUTTagClassMIMEType);
+            }
+            
+            // Sanity check
+            if (!mimeType)
+            {
+                NSLog(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
+                if (failureBlock)
+                {
+                    failureBlock(nil);
+                }
+                return;
+            }
+            
+            UIImage *thumbnail = nil;
+            // Thumbnail is useful only in case of encrypted room
+            if (room.summary.isEncrypted)
+            {
+                thumbnail = [MXKTools reduceImage:convertedImage toFitInSize:CGSizeMake(800, 600)];
+                if (thumbnail == convertedImage)
+                {
+                    thumbnail = nil;
+                }
+            }
+            
+            __weak typeof(self) weakSelf = self;
+            
+            [room sendImage:imageData withImageSize:convertedImage.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
                 
-                [self resetPendingData];
-                [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
-            }
+                if (!--count && weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self resetPendingData];
+                    [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+                }
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[ShareExtensionManager] sendImage failed.");
+                if (failureBlock)
+                {
+                    failureBlock(error);
+                }
+                
+            }];
             
-        } failure:^(NSError *error) {
-            
-            NSLog(@"[ShareExtensionManager] sendImage failed.");
-            if (failureBlock)
-            {
-                failureBlock(error);
-            }
-            
-        }];
+        }
     }
 }
 
