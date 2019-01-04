@@ -218,13 +218,31 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
             {
                 itemProvider.isLoaded = NO;
-                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(NSData *imageData, NSError * _Null_unspecified error)
+                
+                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(id<NSSecureCoding> _Nullable itemProviderItem, NSError * _Null_unspecified error)
                  {
                      if (weakSelf)
                      {
                          typeof(self) self = weakSelf;
                          itemProvider.isLoaded = YES;
-
+                         
+                         NSData *imageData;
+                         
+                         if ([(NSObject *)itemProviderItem isKindOfClass:[NSData class]])
+                         {
+                             imageData = (NSData*)itemProviderItem;
+                         }
+                         else if ([(NSObject *)itemProviderItem isKindOfClass:[NSURL class]])
+                         {
+                             NSURL *imageURL = (NSURL*)itemProviderItem;
+                             imageData = [NSData dataWithContentsOfURL:imageURL];
+                         }
+                         else if ([(NSObject *)itemProviderItem isKindOfClass:[UIImage class]])
+                         {
+                             UIImage *image = (UIImage*)itemProviderItem;
+                             imageData = UIImageJPEGRepresentation(image, 1.0);
+                         }
+                         
                          if (imageData)
                          {
                              [self.pendingImages addObject:imageData];
