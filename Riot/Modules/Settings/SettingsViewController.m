@@ -132,7 +132,7 @@ enum {
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
-typedef void (^blockSettingsViewController_onReadyToDestroy)();
+typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
 @interface SettingsViewController () <DeactivateAccountViewControllerDelegate>
