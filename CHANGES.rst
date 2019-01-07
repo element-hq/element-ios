@@ -1,6 +1,9 @@
 Changes in 0.7.10 (2019-01-04)
 ===============================================
 
+Improvements:
+* Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+
 Bug fix:
  * Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.
 
