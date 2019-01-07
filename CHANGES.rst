@@ -1,3 +1,9 @@
+Changes in 0.7.x (2019-xx-xx)
+===============================================
+
+Bug fix:
+ * Use white scroll bar on dark themes (#2158)
+
 Changes in 0.7.10 (2019-01-04)
 ===============================================
 
@@ -8,10 +14,10 @@ Changes in 0.7.9 (2019-01-04)
 ===============================================
 
 Improvements:
-* Upgrade MatrixKit version (v0.9.2).
+ * Upgrade MatrixKit version (v0.9.2).
 
 Bug fix:
-* Registration: email or phone number is no more skippable (#2140).
+ * Registration: email or phone number is no more skippable (#2140).
 
 Changes in 0.7.8 (2018-12-12)
 ===============================================
