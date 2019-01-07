@@ -51,7 +51,7 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
 - (void)migrateFromFourPointFourSharedInstance
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"migratedFromFourPointFourSharedInstance"]) return;
-    
+    [self copyFromOldSharedInstance];
     [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"migratedFromFourPointFourSharedInstance"];
 }
 @end
