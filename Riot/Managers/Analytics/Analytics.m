@@ -36,7 +36,7 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
 @interface MatomoTracker (MatomoTrackerMigration)
 + (MatomoTracker *)shared;
 
-+ (void)migrateFromFourPointFourSharedInstance;
+- (void)migrateFromFourPointFourSharedInstance;
 @end
 
 @implementation MatomoTracker (MatomoTrackerMigration)
@@ -44,10 +44,11 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
 {
     NSDictionary *piwikConfig = [[NSUserDefaults standardUserDefaults] objectForKey:@"piwik"];
     MatomoTracker *matomoTracker = [[MatomoTracker alloc] initWithSiteId:piwikConfig[@"siteId"] baseURL:[NSURL URLWithString:piwikConfig[@"url"]] userAgent:@"iOSMatomoTracker"];
+    [matomoTracker migrateFromFourPointFourSharedInstance];
     return matomoTracker;
 }
 
-+ (void)migrateFromFourPointFourSharedInstance
+- (void)migrateFromFourPointFourSharedInstance
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"migratedFromFourPointFourSharedInstance"]) return;
     
