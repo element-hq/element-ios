@@ -837,7 +837,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)setIsLoaded:(BOOL)isLoaded
 {
-    NSNumber *number = [NSNumber numberWithBool:isLoaded];
+    NSNumber *number = @(isLoaded);
     objc_setAssociatedObject(self, @selector(isLoaded), number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

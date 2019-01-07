@@ -1224,7 +1224,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             count = session.ignoredUsers.count;
         }
         else
@@ -1383,7 +1383,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         return cell;
     }
     
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXSession* session = [AppDelegate theDelegate].mxSessions[0];
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
     if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
@@ -1626,7 +1626,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                     if (!countryCode)
                     {
                         // If none, consider the preferred locale
-                        NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
+                        NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[NSBundle mainBundle] preferredLocalizations][0]];
                         if ([local respondsToSelector:@selector(countryCode)])
                         {
                             countryCode = local.countryCode;
@@ -1715,7 +1715,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
 
-            NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+            NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
             globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil), appDisplayName];
             globalInfoCell.textLabel.numberOfLines = 0;
@@ -1872,7 +1872,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             }
             
             NSString* countryCode = [[MXKAppSettings standardAppSettings] phonebookCountryCode];
-            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
+            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[NSBundle mainBundle] preferredLocalizations][0]];
             NSString *countryName = [local displayNameForKey:NSLocaleCountryCode value:countryCode];
             
             cell.textLabel.textColor = kRiotPrimaryTextColor;
@@ -2086,7 +2086,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         }
         else if (row == LABS_CRYPTO_INDEX)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2252,7 +2252,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         // Check whether this section is visible
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             if (session.ignoredUsers.count)
             {
                 return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
@@ -2379,7 +2379,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             if (session.ignoredUsers.count == 0)
             {
                 // Hide this section
@@ -2411,7 +2411,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             if (session.ignoredUsers.count == 0)
             {
                 // Hide this section
@@ -2492,7 +2492,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         }
         else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
             NSString *ignoredUserId;
             if (indexPath.row < session.ignoredUsers.count)
@@ -2517,7 +2517,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                                        typeof(self) self = weakSelf;
                                                                        self->currentAlert = nil;
                                                                        
-                                                                       MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+                                                                       MXSession* session = [AppDelegate theDelegate].mxSessions[0];
                                                                        
                                                                        // Remove the member from the ignored user list
                                                                        [self startActivityIndicator];
@@ -2794,7 +2794,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         __weak typeof(self) weakSelf = self;
 
-        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+        NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
         
         currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
         
@@ -3048,7 +3048,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             [self startActivityIndicator];
             
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             [session enableCrypto:switchButton.isOn success:^{
 
                 // When disabling crypto, reset the current device id as it cannot be reused.
@@ -3478,7 +3478,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Dismiss the keyboard
     [newEmailTextField resignFirstResponder];
 
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
     MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmailTextField.text];
     [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
@@ -3569,7 +3569,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Dismiss the keyboard
     [newPhoneNumberCell.mxkTextField resignFirstResponder];
     
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXSession* session = [AppDelegate theDelegate].mxSessions[0];
     
     NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
     NSString *msisdn;
@@ -3635,7 +3635,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     if ([AppDelegate theDelegate].mxSessions.count > 0)
     {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        MXSession* session = [AppDelegate theDelegate].mxSessions[0];
         MXMyUser* myUser = session.myUser;
         
         BOOL saveButtonEnabled = (nil != newAvatarImage);

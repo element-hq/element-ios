@@ -754,11 +754,11 @@
         NSNumber *actionNumber;
         if (indexPath.section == adminToolsIndex && indexPath.row < adminActionsArray.count)
         {
-            actionNumber = [adminActionsArray objectAtIndex:indexPath.row];
+            actionNumber = adminActionsArray[indexPath.row];
         }
         else if (indexPath.section == otherActionsIndex && indexPath.row < otherActionsArray.count)
         {
-            actionNumber = [otherActionsArray objectAtIndex:indexPath.row];
+            actionNumber = otherActionsArray[indexPath.row];
         }
         
         if (actionNumber)

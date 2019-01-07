@@ -103,7 +103,7 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
 - (void)trackScreen:(NSString *)screenName
 {
     // Use the same pattern as Android
-    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     NSString *appVersion = [AppDelegate theDelegate].appVersion;
 
     [[PiwikTracker shared] trackWithView:@[@"ios", appName, appVersion, screenName]

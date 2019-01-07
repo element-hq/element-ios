@@ -102,7 +102,7 @@
     else
     {
         NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
-        NSString *bundleDisplayName = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+        NSString *bundleDisplayName = infoDictionary[@"CFBundleDisplayName"];
         self.tittleLabel.text = bundleDisplayName;
         [self configureFallbackViewController];
     }

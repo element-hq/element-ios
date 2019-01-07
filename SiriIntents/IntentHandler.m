@@ -330,7 +330,7 @@
                         if (userRoomSummaries)
                             [userRoomSummaries addObject:summary];
                         else
-                            roomSummaries[diretUserId] = [NSMutableArray arrayWithObject:summary];
+                            roomSummaries[diretUserId] = [@[summary] mutableCopy];
                     }
                 }
                 
