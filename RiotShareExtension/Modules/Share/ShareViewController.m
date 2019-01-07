@@ -114,7 +114,7 @@
     
     NSArray *titles = @[NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil) , NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
     
-    void (^failureBlock)() = ^void() {
+    void (^failureBlock)(void) = ^void() {
         [self dismissViewControllerAnimated:YES completion:^{
             [[ShareExtensionManager sharedManager] terminateExtensionCanceled:NO];
         }];

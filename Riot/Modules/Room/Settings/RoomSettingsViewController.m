@@ -3226,7 +3226,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     return canSetCanonicalAlias;
 }
 
-- (void)shouldRemoveCanonicalAlias:(void (^)())didRemoveCanonicalAlias
+- (void)shouldRemoveCanonicalAlias:(void (^)(void))didRemoveCanonicalAlias
 {
     // Prompt the user before removing the current main address
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
