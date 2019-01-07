@@ -817,7 +817,7 @@
         
         self.tabBar.items[index].badgeValue = badgeValue;
         
-        if ([UITabBarItem instancesRespondToSelector:@selector(setBadgeColor:)])
+        if (@available(iOS 10, *))
         {
             self.tabBar.items[index].badgeColor = badgeColor;
         }
@@ -834,7 +834,7 @@
     {
         self.tabBar.items[index].badgeValue = mark;
         
-        if ([UITabBarItem instancesRespondToSelector:@selector(setBadgeColor:)])
+        if (@available(iOS 10, *))
         {
             self.tabBar.items[index].badgeColor = badgeColor;
         }
