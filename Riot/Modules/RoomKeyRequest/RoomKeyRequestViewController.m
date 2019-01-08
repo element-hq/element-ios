@@ -21,7 +21,7 @@
 
 @interface RoomKeyRequestViewController ()
 {
-    void (^onComplete)();
+    void (^onComplete)(void);
 
     EncryptionInfoView *encryptionInfoView;
 
@@ -31,7 +31,7 @@
 
 @implementation RoomKeyRequestViewController
 
-- (instancetype)initWithDeviceInfo:(MXDeviceInfo *)deviceInfo wasNewDevice:(BOOL)theWasNewDevice andMatrixSession:(MXSession *)session onComplete:(void (^)())onCompleteBlock
+- (instancetype)initWithDeviceInfo:(MXDeviceInfo *)deviceInfo wasNewDevice:(BOOL)theWasNewDevice andMatrixSession:(MXSession *)session onComplete:(void (^)(void))onCompleteBlock
 {
     self = [super init];
     if (self)

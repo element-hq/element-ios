@@ -1,3 +1,10 @@
+Changes in 0.7.11 (2019-01-08)
+===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.9.3).
+* Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+
 Changes in 0.7.10 (2019-01-04)
 ===============================================
 

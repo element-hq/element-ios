@@ -18,7 +18,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^IncomingCallViewAction)();
+typedef void (^IncomingCallViewAction)(void);
 @class MXMediaManager;
 
 @interface IncomingCallView : UIView
