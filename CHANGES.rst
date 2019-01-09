@@ -1,9 +1,13 @@
-Changes in 0.7.10 (2019-01-04)
+Changes in 0.7.11 (2019-01-08)
 ===============================================
 
 Improvements:
- * Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+ * Upgrade MatrixKit version (v0.9.3).
  * Use modern literals and array/dictionary syntax where possible (PR #2160).
+ * Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+
+Changes in 0.7.10 (2019-01-04)
+===============================================
 
 Bug fix:
  * Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.

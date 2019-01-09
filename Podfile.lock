@@ -44,21 +44,21 @@ PODS:
   - HPGrowingTextView (1.1)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.13)
-  - MatrixKit (0.9.2):
+  - MatrixKit (0.9.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.9.2)
+    - MatrixKit/Core (= 0.9.3)
     - MatrixSDK (= 0.12.1)
-  - MatrixKit/AppExtension (0.9.2):
+  - MatrixKit/AppExtension (0.9.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
     - MatrixSDK (= 0.12.1)
-  - MatrixKit/Core (0.9.2):
+  - MatrixKit/Core (0.9.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
@@ -99,8 +99,8 @@ DEPENDENCIES:
   - cmark
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
-  - MatrixKit (= 0.9.2)
-  - MatrixKit/AppExtension (= 0.9.2)
+  - MatrixKit (= 0.9.3)
+  - MatrixKit/AppExtension (= 0.9.3)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
@@ -145,7 +145,7 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatrixKit: 211e18fe45b1809fc773a00ec4749aaa7c85842b
+  MatrixKit: af9f94f36644bc21b63b114413f7bb510506b7d1
   MatrixSDK: f1f510d467d127a5f7afafaafa1554ac5d602132
   OLMKit: 88eda69110489f817d59bcb4353b7c247570aa4f
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
@@ -153,6 +153,6 @@ SPEC CHECKSUMS:
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   WebRTC: f2a6203584745fe53532633397557876b5d71640
 
-PODFILE CHECKSUM: c43860700c490d04f7c96ecaa573cd991c27a3c4
+PODFILE CHECKSUM: fc0574145026734bcc9f3266b7b92f815ebf97e4
 
 COCOAPODS: 1.6.0.beta.2
