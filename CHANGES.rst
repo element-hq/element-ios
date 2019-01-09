@@ -1,3 +1,25 @@
+Changes in 0.7.11 (2019-01-08)
+===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.9.3).
+* Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+
+Changes in 0.7.10 (2019-01-04)
+===============================================
+
+Bug fix:
+ * Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.
+
+Changes in 0.7.9 (2019-01-04)
+===============================================
+
+Improvements:
+* Upgrade MatrixKit version (v0.9.2).
+
+Bug fix:
+* Registration: email or phone number is no more skippable (#2140).
+
 Changes in 0.7.8 (2018-12-12)
 ===============================================
 

@@ -162,7 +162,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      Completion block called when [self popToHomeViewControllerAnimated:] has been
      completed.
      */
-    void (^popToHomeViewControllerCompletion)();
+    void (^popToHomeViewControllerCompletion)(void);
     
     /**
      The listeners to call events.
@@ -755,7 +755,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark - Application layout handling
 
-- (void)restoreInitialDisplay:(void (^)())completion
+- (void)restoreInitialDisplay:(void (^)(void))completion
 {
     // Suspend error notifications during navigation stack change.
     isErrorNotificationSuspended = YES;
@@ -976,7 +976,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark
 
-- (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
+- (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
     UINavigationController *secondNavController = self.secondaryNavigationController;
     if (secondNavController)
@@ -1024,7 +1024,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         if (popToHomeViewControllerCompletion)
         {
-            void (^popToHomeViewControllerCompletion2)() = popToHomeViewControllerCompletion;
+            void (^popToHomeViewControllerCompletion2)(void) = popToHomeViewControllerCompletion;
             popToHomeViewControllerCompletion = nil;
             
             // Dispatch the completion in order to let navigation stack refresh itself.
@@ -1114,6 +1114,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+// "This block is not a prototype" - don't fix this, or it won't match Apple's definition
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
 {
     if ([identifier isEqualToString: @"inline-reply"])
@@ -3373,7 +3374,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark - MXKCallViewControllerDelegate
 
-- (void)dismissCallViewController:(MXKCallViewController *)callViewController completion:(void (^)())completion
+- (void)dismissCallViewController:(MXKCallViewController *)callViewController completion:(void (^)(void))completion
 {
     if (currentCallViewController && callViewController == currentCallViewController)
     {
@@ -3467,7 +3468,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)presentJitsiViewController:(void (^)())completion
+- (void)presentJitsiViewController:(void (^)(void))completion
 {
     [self removeCallStatusBar];
 
@@ -3484,7 +3485,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)())completion
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)(void))completion
 {
     if (jitsiViewController == _jitsiViewController)
     {
@@ -3495,7 +3496,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)())completion
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)(void))completion
 {
     if (jitsiViewController == _jitsiViewController)
     {
@@ -3607,7 +3608,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)presentCallViewController:(BOOL)animated completion:(void (^)())completion
+- (void)presentCallViewController:(BOOL)animated completion:(void (^)(void))completion
 {
     [self removeCallStatusBar];
     
@@ -3936,7 +3937,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 {
                     BOOL wasNewDevice = (deviceInfo.verified == MXDeviceUnknown);
 
-                    void (^openDialog)() = ^void()
+                    void (^openDialog)(void) = ^void()
                     {
                         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
 
