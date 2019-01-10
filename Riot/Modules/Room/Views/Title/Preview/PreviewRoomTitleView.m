@@ -67,11 +67,11 @@
     self.mainHeaderBackground.backgroundColor = RiotDesignValues.theme.baseColor;
 
     
-    self.roomTopic.textColor = kRiotTopicTextColor;
+    self.roomTopic.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
     
     self.roomMembers.textColor = RiotDesignValues.theme.tintColor;
     
-    self.previewLabel.textColor = kRiotTopicTextColor;
+    self.previewLabel.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
     self.previewLabel.numberOfLines = 0;
     
     self.subNoticeLabel.textColor = RiotDesignValues.theme.textSecondaryColor;

@@ -104,7 +104,7 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.callerNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.callStatusLabel.textColor = kRiotTopicTextColor;
+    self.callStatusLabel.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
     
     self.localPreviewContainerView.layer.borderColor = RiotDesignValues.theme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;

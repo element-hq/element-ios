@@ -51,7 +51,7 @@
 {
     [super customizeViewRendering];
     
-    self.roomTopic.textColor = kRiotTopicTextColor;
+    self.roomTopic.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
     self.roomMembers.textColor = RiotDesignValues.theme.tintColor;
 }
 

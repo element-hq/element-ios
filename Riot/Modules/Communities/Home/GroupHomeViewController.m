@@ -122,10 +122,10 @@
     
     _groupName.textColor = RiotDesignValues.theme.textPrimaryColor;
     
-    _groupDescription.textColor = kRiotTopicTextColor;
+    _groupDescription.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
     _groupDescription.numberOfLines = 0;
     
-    self.inviteLabel.textColor = kRiotTopicTextColor;
+    self.inviteLabel.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
     self.inviteLabel.numberOfLines = 0;
     
     self.separatorView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
