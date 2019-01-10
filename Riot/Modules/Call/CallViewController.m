@@ -106,7 +106,7 @@
     self.callerNameLabel.textColor = kRiotPrimaryTextColor;
     self.callStatusLabel.textColor = kRiotTopicTextColor;
     
-    self.localPreviewContainerView.layer.borderColor = RiotDesignValues.colorValues.tintColor.CGColor;
+    self.localPreviewContainerView.layer.borderColor = RiotDesignValues.theme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
@@ -350,7 +350,7 @@
     }
     
     return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                      withColor:RiotDesignValues.colorValues.tintColor];
+                      withColor:RiotDesignValues.theme.tintColor];
 }
 
 - (void)setMxCall:(MXCall *)call

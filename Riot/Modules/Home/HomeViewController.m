@@ -84,7 +84,7 @@
 
     [RiotDesignValues applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = RiotDesignValues.colorValues.tintColor;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = RiotDesignValues.theme.tintColor;
     
     if (recentsDataSource)
     {

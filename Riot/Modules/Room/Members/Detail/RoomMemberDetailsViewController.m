@@ -225,7 +225,7 @@
     
     self.memberHeaderView.backgroundColor = kRiotDesignNavigationBarBarTintColor;
     self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;
-    self.roomMemberStatusLabel.textColor = RiotDesignValues.colorValues.tintColor;
+    self.roomMemberStatusLabel.textColor = RiotDesignValues.theme.tintColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
@@ -360,7 +360,7 @@
     }
     
     return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                      withColor:RiotDesignValues.colorValues.tintColor];
+                      withColor:RiotDesignValues.theme.tintColor];
 }
 
 - (void)updateMemberInfo

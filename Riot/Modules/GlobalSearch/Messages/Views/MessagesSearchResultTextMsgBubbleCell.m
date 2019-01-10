@@ -30,7 +30,7 @@
     
     self.roomNameLabel.textColor = kRiotSecondaryTextColor;
     
-    self.messageTextView.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.messageTextView.tintColor = RiotDesignValues.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

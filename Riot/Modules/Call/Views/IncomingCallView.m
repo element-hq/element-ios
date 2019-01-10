@@ -87,7 +87,7 @@ static const CGFloat kButtonSize = 80.0;
         self.callInfoLabel.text = callInfo;
         self.callInfoLabel.textAlignment = NSTextAlignmentCenter;
         
-        UIColor *answerButtonBorderColor = RiotDesignValues.colorValues.tintColor;
+        UIColor *answerButtonBorderColor = RiotDesignValues.theme.tintColor;
         
         self.answerButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_icon"]
                                                     borderColor:answerButtonBorderColor];

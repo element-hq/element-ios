@@ -223,11 +223,11 @@
         }
         else if ((!contact.isMatrixContact && contact.phoneNumbers.count && !contact.emailAddresses.count))
         {
-            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:RiotDesignValues.colorValues.tintColor];
+            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:RiotDesignValues.theme.tintColor];
         }
         else
         {
-            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:RiotDesignValues.colorValues.tintColor];
+            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:RiotDesignValues.theme.tintColor];
         }
     }
     

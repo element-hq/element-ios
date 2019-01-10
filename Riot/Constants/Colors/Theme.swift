@@ -18,7 +18,7 @@ import UIKit
 
 /// Provide color constant values defined by the designer
 /// https://app.zeplin.io/project/5b857c64b1747a2c472290da/screen/5bf2cc89a4a6973f47883c6e
-@objc protocol ColorValues {
+@objc protocol Theme {
 
     var backgroundColor: UIColor { get }
     var baseColor: UIColor { get }

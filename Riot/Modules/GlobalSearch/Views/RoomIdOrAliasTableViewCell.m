@@ -50,7 +50,7 @@
     else
     {
         self.avatarImageView.image = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                withColor:RiotDesignValues.colorValues.tintColor];
+                                                withColor:RiotDesignValues.theme.tintColor];
     }
     
     self.titleLabel.text = roomIdOrAlias;

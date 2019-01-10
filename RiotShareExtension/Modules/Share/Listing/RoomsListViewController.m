@@ -96,7 +96,7 @@
     
     self.recentsSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
-    self.recentsSearchBar.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.recentsSearchBar.tintColor = RiotDesignValues.theme.tintColor;
     
     _tableSearchBar.tintColor = self.recentsSearchBar.tintColor;
 }

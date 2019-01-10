@@ -115,7 +115,7 @@
     
     [self.nextStepButton.layer setCornerRadius:5];
     self.nextStepButton.clipsToBounds = YES;
-    self.nextStepButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
+    self.nextStepButton.backgroundColor = RiotDesignValues.theme.tintColor;
     
     if (kRiotPlaceholderTextColor)
     {

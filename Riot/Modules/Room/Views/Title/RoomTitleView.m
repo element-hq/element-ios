@@ -73,7 +73,7 @@
     [super layoutSubviews];
 
     self.roomDetailsIconImageView.image = [MXKTools paintImage:self.roomDetailsIconImageView.image
-                                                     withColor:RiotDesignValues.colorValues.tintColor];
+                                                     withColor:RiotDesignValues.theme.tintColor];
     
     if (self.superview)
     {

@@ -136,7 +136,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     
-    self.sectionHeaderTintColor = RiotDesignValues.colorValues.tintColor;
+    self.sectionHeaderTintColor = RiotDesignValues.theme.tintColor;
 }
 
 - (void)viewDidLoad

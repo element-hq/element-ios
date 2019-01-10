@@ -166,7 +166,7 @@ static CGFloat const kTextFontSize = 15.0;
     self.deactivateAcccountButton.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     
     self.deactivateAcccountButton.layer.masksToBounds = YES;
-    self.deactivateAcccountButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
+    self.deactivateAcccountButton.backgroundColor = RiotDesignValues.theme.tintColor;
     [self.deactivateAcccountButton setTitle:NSLocalizedStringFromTable(@"deactivate_account_validate_action", @"Vector", nil) forState:UIControlStateNormal];    
     [self.deactivateAcccountButton setTitleColor:kRiotAuxiliaryColor forState:UIControlStateDisabled];
 }

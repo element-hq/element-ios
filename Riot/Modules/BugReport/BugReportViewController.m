@@ -154,13 +154,13 @@
     self.sendingLabel.textColor = kRiotPrimaryTextColor;
     self.descriptionLabel.textColor = kRiotPrimaryTextColor;
     self.bugReportDescriptionTextView.textColor = kRiotPrimaryTextColor;
-    self.bugReportDescriptionTextView.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.bugReportDescriptionTextView.tintColor = RiotDesignValues.theme.tintColor;
     self.logsDescriptionLabel.textColor = kRiotPrimaryTextColor;
     self.sendLogsLabel.textColor = kRiotPrimaryTextColor;
     self.sendScreenshotLabel.textColor = kRiotPrimaryTextColor;
     
-    self.sendButton.tintColor = RiotDesignValues.colorValues.tintColor;
-    self.cancelButton.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.sendButton.tintColor = RiotDesignValues.theme.tintColor;
+    self.cancelButton.tintColor = RiotDesignValues.theme.tintColor;
     
     _bugReportDescriptionTextView.layer.borderColor = kRiotSecondaryBgColor.CGColor;
 }

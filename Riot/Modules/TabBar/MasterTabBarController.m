@@ -116,7 +116,7 @@
 {
     [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.tabBar.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.tabBar.tintColor = RiotDesignValues.theme.tintColor;
     self.tabBar.barTintColor = kRiotSecondaryBgColor;
     
     self.view.backgroundColor = kRiotPrimaryBgColor;
@@ -798,15 +798,15 @@
     // Use a middle dot to signal missed notif in favourites
     [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
                       onTabBarItem:TABBAR_FAVOURITES_INDEX
-                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? RiotDesignValues.colorValues.notificationMentionColor : RiotDesignValues.colorValues.notificationUnreadColor)];
+                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? RiotDesignValues.theme.notificationMentionColor : RiotDesignValues.theme.notificationUnreadColor)];
     
     // Update the badge on People and Rooms tabs
     [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
                        onTabBarItem:TABBAR_PEOPLE_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? RiotDesignValues.colorValues.notificationMentionColor : RiotDesignValues.colorValues.notificationUnreadColor)];
+                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? RiotDesignValues.theme.notificationMentionColor : RiotDesignValues.theme.notificationUnreadColor)];
     [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
                        onTabBarItem:TABBAR_ROOMS_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? RiotDesignValues.colorValues.notificationMentionColor : RiotDesignValues.colorValues.notificationUnreadColor)];
+                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? RiotDesignValues.theme.notificationMentionColor : RiotDesignValues.theme.notificationUnreadColor)];
 }
 
 - (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor

@@ -54,7 +54,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
     
     // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(RiotDesignValues.colorValues.tintColor.CGColor, kDirectRoomBorderColorAlpha);
+    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(RiotDesignValues.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
     
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
@@ -109,7 +109,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             
             if (0 < roomCellData.notificationCount)
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? RiotDesignValues.colorValues.notificationMentionColor : RiotDesignValues.colorValues.notificationUnreadColor;
+                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? RiotDesignValues.theme.notificationMentionColor : RiotDesignValues.theme.notificationUnreadColor;
                 
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;

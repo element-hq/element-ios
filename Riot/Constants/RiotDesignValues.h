@@ -17,7 +17,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@protocol ColorValues;
+@protocol Theme;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -77,9 +77,9 @@ extern UIKeyboardAppearance kRiotKeyboard;
 @interface RiotDesignValues : NSObject
 
 /**
- The current style color constants.
+ The current theme.
  */
-+ (id<ColorValues>)colorValues;
++ (id<Theme>)theme;
 
 /**
  Apply the current style on a navigation bar.

@@ -1752,7 +1752,7 @@
             else
             {
                 previewHeader.roomAvatarPlaceholder = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                                 withColor:RiotDesignValues.colorValues.tintColor];
+                                                                 withColor:RiotDesignValues.theme.tintColor];
             }
         }
         
@@ -4230,11 +4230,11 @@
             // Set the right background color
             if (highlightCount)
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = RiotDesignValues.colorValues.notificationMentionColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = RiotDesignValues.theme.notificationMentionColor;
             }
             else
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = RiotDesignValues.colorValues.notificationUnreadColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = RiotDesignValues.theme.notificationUnreadColor;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)

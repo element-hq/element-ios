@@ -72,8 +72,8 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    [self.rightInputToolbarButton setTitleColor:RiotDesignValues.colorValues.tintColor forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitleColor:RiotDesignValues.colorValues.tintColor forState:UIControlStateHighlighted];
+    [self.rightInputToolbarButton setTitleColor:RiotDesignValues.theme.tintColor forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitleColor:RiotDesignValues.theme.tintColor forState:UIControlStateHighlighted];
     
     self.isEncryptionEnabled = _isEncryptionEnabled;
 }
@@ -96,7 +96,7 @@
     
     growingTextView.font = [UIFont systemFontOfSize:15];
     growingTextView.textColor = kRiotPrimaryTextColor;
-    growingTextView.tintColor = RiotDesignValues.colorValues.tintColor;
+    growingTextView.tintColor = RiotDesignValues.theme.tintColor;
     
     growingTextView.internalTextView.keyboardAppearance = kRiotKeyboard;
 }

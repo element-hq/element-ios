@@ -17,34 +17,34 @@
 import Foundation
 import UIKit
 
-/// Color constants for the dart theme
+/// Color constants for the default theme
 @objcMembers
-final class DarkColorValues: NSObject, ColorValues {
+final class DefaultTheme: NSObject, Theme {
 
-    static let shared = DarkColorValues()
+    static let shared = DefaultTheme()
 
-    let backgroundColor: UIColor = UIColor(rgb: 0x212224)
+    let backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    let baseColor: UIColor = UIColor(rgb: 0x292E37)
+    let baseColor: UIColor = UIColor(rgb: 0x2E3648)
     let baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     let baseTextSecondaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    let searchBackgroundColor: UIColor = UIColor(rgb: 0x3E434B)
+    let searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
     let searchTextColor: UIColor = UIColor(rgb: 0xACB3C2)
 
-    let headerBackgroundColor: UIColor = UIColor(rgb: 0x303540)
-    let headerBorderColor: UIColor  = UIColor(rgb: 0x2E2F31)
+    let headerBackgroundColor: UIColor = UIColor(rgb: 0xF1F5F8)
+    let headerBorderColor: UIColor  = UIColor(rgb: 0xEAEEF2)
     let headerTextPrimaryColor: UIColor = UIColor(rgb: 0x96A1B7)
     let headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
-    let textPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    let textSecondaryColor: UIColor = UIColor(rgb: 0xD8D8D8)
+    let textPrimaryColor: UIColor = UIColor(rgb: 0x383838)
+    let textSecondaryColor: UIColor = UIColor(rgb: 0x9E9E9E)
 
     let tintColor: UIColor = UIColor(rgb: 0x7AC9A1)
     let unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     
     let notificationUnreadColor: UIColor = UIColor(rgb: 0x7AC9A1)
-    let notificationMentionColor: UIColor = UIColor(rgb: 0x3F4147)
+    let notificationMentionColor: UIColor = UIColor(rgb: 0xF56679)
 
     let avatarColors: [UIColor] = [
         UIColor(rgb: 0x7AC9A1),

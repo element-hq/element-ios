@@ -124,14 +124,14 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
 - (void)userInterfaceThemeDidChange
 {
     // Retrieve the current selected theme ("light" if none. "auto" is used as default from iOS 11).
-    NSString *theme = RiotSettings.shared.userInterfaceTheme;
+    NSString *themeId = RiotSettings.shared.userInterfaceTheme;
 
-    if (!theme || [theme isEqualToString:@"auto"])
+    if (!themeId || [themeId isEqualToString:@"auto"])
     {
-        theme = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+        themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
     }
 
-    if ([theme isEqualToString:@"dark"])
+    if ([themeId isEqualToString:@"dark"])
     {
         // Set dark theme colors
         kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
@@ -146,7 +146,7 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         kRiotKeyboard = UIKeyboardAppearanceDark;
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
     }
-    else if ([theme isEqualToString:@"black"])
+    else if ([themeId isEqualToString:@"black"])
     {
         // Set black theme colors
         kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
@@ -179,59 +179,59 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     }
 
     // Apply theme color constants
-    id<ColorValues> colorValues = [RiotDesignValues colorValues];
+    id<Theme> theme = [RiotDesignValues theme];
 
-    kRiotPrimaryBgColor = colorValues.backgroundColor;
-    kRiotSecondaryBgColor = colorValues.headerBackgroundColor;
-    kRiotPrimaryTextColor = colorValues.textPrimaryColor;
-    kRiotSecondaryTextColor = colorValues.textSecondaryColor;
+    kRiotPrimaryBgColor = theme.backgroundColor;
+    kRiotSecondaryBgColor = theme.headerBackgroundColor;
+    kRiotPrimaryTextColor = theme.textPrimaryColor;
+    kRiotSecondaryTextColor = theme.textSecondaryColor;
 
-    kRiotDesignNavigationBarBarTintColor = colorValues.baseColor;
-    kRiotDesignNavigationBarTintColor = colorValues.baseTextPrimaryColor;
+    kRiotDesignNavigationBarBarTintColor = theme.baseColor;
+    kRiotDesignNavigationBarTintColor = theme.baseTextPrimaryColor;
     kRiotDesignNavigationBarTitleTextAttributes = @{
-                                                    NSForegroundColorAttributeName: colorValues.baseTextPrimaryColor
+                                                    NSForegroundColorAttributeName: theme.baseTextPrimaryColor
                                                     };
 
-    kRiotDesignSearchBarBarTintColor = colorValues.headerBackgroundColor;
-    kRiotDesignSearchBarTintColor = colorValues.searchTextColor;
+    kRiotDesignSearchBarBarTintColor = theme.headerBackgroundColor;
+    kRiotDesignSearchBarTintColor = theme.searchTextColor;
 
-    kRiotTopicTextColor = colorValues.baseTextSecondaryColor;
-    kRiotAuxiliaryColor = colorValues.headerTextSecondaryColor;
+    kRiotTopicTextColor = theme.baseTextSecondaryColor;
+    kRiotAuxiliaryColor = theme.headerTextSecondaryColor;
 
     [UIScrollView appearance].indicatorStyle = kRiotScrollBarStyle;
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
 }
 
-+ (id<ColorValues>)colorValues
++ (id<Theme>)theme
 {
-    id<ColorValues> colorValues;
+    id<Theme> theme;
 
     // Retrieve the current selected theme ("light" if none. "auto" is used as default from iOS 11).
-    NSString *theme = RiotSettings.shared.userInterfaceTheme;
+    NSString *themeId = RiotSettings.shared.userInterfaceTheme;
 
-    if (!theme || [theme isEqualToString:@"auto"])
+    if (!themeId || [themeId isEqualToString:@"auto"])
     {
-        theme = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+        themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
     }
 
-    if ([theme isEqualToString:@"dark"])
+    if ([themeId isEqualToString:@"dark"])
     {
         // Set dark theme colors
-        colorValues = DarkColorValues.shared;
+        theme = DarkTheme.shared;
     }
-    else if ([theme isEqualToString:@"black"])
+    else if ([themeId isEqualToString:@"black"])
     {
         // TODO: Use dark theme colors for the moment
-        colorValues = DarkColorValues.shared;
+        theme = DarkTheme.shared;
     }
     else
     {
         // Set light theme colors by default.
-        colorValues = DefaultColorValues.shared;
+        theme = DefaultTheme.shared;
     }
 
-    return colorValues;
+    return theme;
 }
 
 + (void)applyStyleOnNavigationBar:(UINavigationBar *)navigationBar
@@ -250,7 +250,7 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     searchBar.tintColor = kRiotDesignSearchBarTintColor;
     searchBar.barTintColor = kRiotDesignSearchBarBarTintColor;
     searchBar.layer.borderWidth = 1;
-    searchBar.layer.borderColor = RiotDesignValues.colorValues.headerBorderColor.CGColor;
+    searchBar.layer.borderColor = RiotDesignValues.theme.headerBorderColor.CGColor;
 }
 
 @end

@@ -40,11 +40,11 @@
     [super layoutSubviews];
 
     self.membersListIcon.image = [MXKTools paintImage:self.membersListIcon.image
-                                            withColor:RiotDesignValues.colorValues.tintColor];
+                                            withColor:RiotDesignValues.theme.tintColor];
 
     // TODO: paintImage does not work here because addParticipantIcon has 2 colors
 //    self.addParticipantIcon.image = [MXKTools paintImage:self.addParticipantIcon.image
-//                                            withColor:RiotDesignValues.colorValues.accent];
+//                                            withColor:RiotDesignValues.theme.accent];
 }
 
 -(void)customizeViewRendering
@@ -52,7 +52,7 @@
     [super customizeViewRendering];
     
     self.roomTopic.textColor = kRiotTopicTextColor;
-    self.roomMembers.textColor = RiotDesignValues.colorValues.tintColor;
+    self.roomMembers.textColor = RiotDesignValues.theme.tintColor;
 }
 
 - (void)refreshDisplay

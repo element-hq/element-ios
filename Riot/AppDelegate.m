@@ -422,7 +422,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [NSBundle mxk_setFallbackLanguage:@"en"];
 
     // Define the navigation bar text color
-    [[UINavigationBar appearance] setTintColor:RiotDesignValues.colorValues.tintColor];
+    [[UINavigationBar appearance] setTintColor:RiotDesignValues.theme.tintColor];
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
@@ -3542,7 +3542,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         _callStatusBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
     }
     
-    [_callStatusBarButton setBackgroundColor:RiotDesignValues.colorValues.tintColor];
+    [_callStatusBarButton setBackgroundColor:RiotDesignValues.theme.tintColor];
     [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
