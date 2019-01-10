@@ -109,7 +109,7 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return RiotDesignValues.theme.statusBarStyle;
 }
 
 #pragma mark - Private

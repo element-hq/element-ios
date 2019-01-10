@@ -51,6 +51,7 @@ final class DarkTheme: NSObject, Theme {
         UIColor(rgb: 0x1E7DDC),
         UIColor(rgb: 0x76DDD7)]
 
+    let statusBarStyle: UIStatusBarStyle = .lightContent
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;

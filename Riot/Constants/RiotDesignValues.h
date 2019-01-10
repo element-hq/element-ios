@@ -59,16 +59,6 @@ extern UIColor *kRiotColorOrange;
 extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;
 
-#pragma mark - Riot bar style
-extern UIStatusBarStyle  kRiotDesignStatusBarStyle;
-extern UIColor          *kRiotDesignNavigationBarTintColor;
-extern UIColor          *kRiotDesignNavigationBarBarTintColor;
-extern NSDictionary     *kRiotDesignNavigationBarTitleTextAttributes;
-
-extern UIBarStyle    kRiotDesignSearchBarStyle;
-extern UIColor      *kRiotDesignSearchBarTintColor;
-extern UIColor      *kRiotDesignSearchBarBarTintColor;
-
 extern UIKeyboardAppearance kRiotKeyboard;
 
 /**

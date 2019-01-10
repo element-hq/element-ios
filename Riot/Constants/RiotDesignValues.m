@@ -52,15 +52,6 @@ UIColor *kRiotColorDarkKeyboard;    // TO REMOVE
 NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
 
-UIStatusBarStyle  kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
-UIColor          *kRiotDesignNavigationBarTintColor;
-UIColor          *kRiotDesignNavigationBarBarTintColor;
-NSDictionary     *kRiotDesignNavigationBarTitleTextAttributes;
-
-UIBarStyle kRiotDesignSearchBarStyle = UIBarStyleDefault;
-UIColor *kRiotDesignSearchBarTintColor = nil;
-UIColor *kRiotDesignSearchBarBarTintColor = nil;
-
 UIKeyboardAppearance kRiotKeyboard;
 UIScrollViewIndicatorStyle kRiotScrollBarStyle;
 
@@ -136,9 +127,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         // Set dark theme colors
         kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         kRiotSelectedBgColor = [UIColor blackColor];
-        
-        kRiotDesignStatusBarStyle = UIStatusBarStyleLightContent;
-        kRiotDesignSearchBarStyle = UIBarStyleBlack;
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
         kRiotKeyboardColor = kRiotColorDarkKeyboard;
@@ -151,9 +139,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         // Set black theme colors
         kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         kRiotSelectedBgColor = [UIColor blackColor];
-        
-        kRiotDesignStatusBarStyle = UIStatusBarStyleLightContent;
-        kRiotDesignSearchBarStyle = UIBarStyleBlack;
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
         kRiotKeyboardColor = kRiotColorDarkKeyboard;
@@ -166,10 +151,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         // Set light theme colors by default.
         kRiotPlaceholderTextColor = nil; // Use default 70% gray color.
         kRiotSelectedBgColor = nil; // Use the default selection color.
-        
-        kRiotDesignStatusBarStyle = UIStatusBarStyleLightContent;
-        
-        kRiotDesignSearchBarStyle = UIBarStyleDefault;
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
         kRiotKeyboardColor = kRiotColorLightKeyboard;
@@ -185,15 +166,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     kRiotSecondaryBgColor = theme.headerBackgroundColor;
     kRiotPrimaryTextColor = theme.textPrimaryColor;
     kRiotSecondaryTextColor = theme.textSecondaryColor;
-
-    kRiotDesignNavigationBarBarTintColor = theme.baseColor;
-    kRiotDesignNavigationBarTintColor = theme.baseTextPrimaryColor;
-    kRiotDesignNavigationBarTitleTextAttributes = @{
-                                                    NSForegroundColorAttributeName: theme.baseTextPrimaryColor
-                                                    };
-
-    kRiotDesignSearchBarBarTintColor = theme.headerBackgroundColor;
-    kRiotDesignSearchBarTintColor = theme.searchTextColor;
 
     kRiotTopicTextColor = theme.baseTextSecondaryColor;
     kRiotAuxiliaryColor = theme.headerTextSecondaryColor;

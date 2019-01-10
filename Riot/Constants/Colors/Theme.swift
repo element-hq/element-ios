@@ -46,6 +46,8 @@ import UIKit
 
     var avatarColors: [UIColor] { get }
 
+    var statusBarStyle: UIStatusBarStyle { get }
+
     /// Apply the theme on a navigation bar
     ///
     /// - Parameter navigationBar: the navigation bar to customise.

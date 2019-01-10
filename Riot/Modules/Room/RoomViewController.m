@@ -447,7 +447,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return RiotDesignValues.theme.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning

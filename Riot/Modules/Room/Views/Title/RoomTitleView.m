@@ -138,8 +138,8 @@
     [super customizeViewRendering];
 
     // Use same color as navigation bar
-    self.backgroundColor = kRiotDesignNavigationBarBarTintColor;
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotDesignNavigationBarTintColor : kRiotSecondaryTextColor);
+    self.backgroundColor = RiotDesignValues.theme.baseColor;
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? RiotDesignValues.theme.baseTextPrimaryColor : kRiotSecondaryTextColor);
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -168,7 +168,7 @@
         }
         else
         {
-            self.displayNameTextField.textColor = kRiotDesignNavigationBarTintColor;
+            self.displayNameTextField.textColor = RiotDesignValues.theme.baseTextPrimaryColor;
         }
     }
 }

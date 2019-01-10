@@ -282,7 +282,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return RiotDesignValues.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -223,7 +223,7 @@
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.memberHeaderView.backgroundColor = kRiotDesignNavigationBarBarTintColor;
+    self.memberHeaderView.backgroundColor = RiotDesignValues.theme.baseColor;
     self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;
     self.roomMemberStatusLabel.textColor = RiotDesignValues.theme.tintColor;
     
@@ -239,7 +239,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return RiotDesignValues.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden

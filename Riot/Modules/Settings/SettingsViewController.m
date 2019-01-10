@@ -350,7 +350,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return RiotDesignValues.theme.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning

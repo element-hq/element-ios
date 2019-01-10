@@ -64,7 +64,7 @@
     [super customizeViewRendering];
 
     // Use same color as navigation bar
-    self.mainHeaderBackground.backgroundColor = kRiotDesignNavigationBarBarTintColor;
+    self.mainHeaderBackground.backgroundColor = RiotDesignValues.theme.baseColor;
 
     
     self.roomTopic.textColor = kRiotTopicTextColor;

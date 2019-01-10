@@ -21,6 +21,7 @@
 #import "GroupRoomsViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface GroupDetailsViewController ()
 {
@@ -121,7 +122,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return RiotDesignValues.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
