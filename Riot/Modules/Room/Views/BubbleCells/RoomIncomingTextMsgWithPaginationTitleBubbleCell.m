@@ -26,7 +26,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kRiotPrimaryTextColor;
+    self.userNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     self.paginationLabel.textColor = RiotDesignValues.theme.tintColor;
     self.paginationSeparatorView.backgroundColor = RiotDesignValues.theme.tintColor;

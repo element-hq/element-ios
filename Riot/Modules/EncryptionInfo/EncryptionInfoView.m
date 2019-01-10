@@ -30,7 +30,7 @@
     
     self.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     self.textView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.defaultTextColor = kRiotPrimaryTextColor;
+    self.defaultTextColor = RiotDesignValues.theme.textPrimaryColor;
     self.cancelButton.tintColor = RiotDesignValues.theme.tintColor;
     self.verifyButton.tintColor = RiotDesignValues.theme.tintColor;
     self.blockButton.tintColor = RiotDesignValues.theme.tintColor;

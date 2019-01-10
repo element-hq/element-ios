@@ -356,7 +356,7 @@
         [roomReplacementAttributedString appendAttributedString:roomLinkAttributedString];
         
         NSRange wholeStringRange = NSMakeRange(0, roomReplacementAttributedString.length);
-        [roomReplacementAttributedString addAttribute:NSForegroundColorAttributeName value:kRiotPrimaryTextColor range:wholeStringRange];
+        [roomReplacementAttributedString addAttribute:NSForegroundColorAttributeName value:RiotDesignValues.theme.textPrimaryColor range:wholeStringRange];
         
         self.messageTextView.attributedText = roomReplacementAttributedString;
     }
@@ -365,7 +365,7 @@
         self.messageTextView.text = NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil);
     }
     
-    self.messageTextView.tintColor = kRiotPrimaryTextColor;
+    self.messageTextView.tintColor = RiotDesignValues.theme.textPrimaryColor;
     self.messageTextView.hidden = NO;
     self.messageTextView.backgroundColor = [UIColor clearColor];
     

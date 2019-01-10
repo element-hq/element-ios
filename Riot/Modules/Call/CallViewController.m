@@ -100,10 +100,10 @@
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.barTitleColor = kRiotPrimaryTextColor;
+    self.barTitleColor = RiotDesignValues.theme.textPrimaryColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.callerNameLabel.textColor = kRiotPrimaryTextColor;
+    self.callerNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.callStatusLabel.textColor = kRiotTopicTextColor;
     
     self.localPreviewContainerView.layer.borderColor = RiotDesignValues.theme.tintColor.CGColor;

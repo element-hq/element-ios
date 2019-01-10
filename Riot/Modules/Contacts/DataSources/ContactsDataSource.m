@@ -970,7 +970,7 @@
         }
         
         // Apply UI theme
-        checkboxLabel.textColor = kRiotPrimaryTextColor;
+        checkboxLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
         
         // Set the right value of the tick box
         localContactsCheckbox.image = hideNonMatrixEnabledContacts ? [UIImage imageNamed:@"selection_tick"] : [UIImage imageNamed:@"selection_untick"];

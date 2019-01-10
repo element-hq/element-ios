@@ -150,14 +150,14 @@
     
     self.bugReportDescriptionTextView.keyboardAppearance = RiotDesignValues.theme.keyboardAppearance;
     
-    self.titleLabel.textColor = kRiotPrimaryTextColor;
-    self.sendingLabel.textColor = kRiotPrimaryTextColor;
-    self.descriptionLabel.textColor = kRiotPrimaryTextColor;
-    self.bugReportDescriptionTextView.textColor = kRiotPrimaryTextColor;
+    self.titleLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.sendingLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.descriptionLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.bugReportDescriptionTextView.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.bugReportDescriptionTextView.tintColor = RiotDesignValues.theme.tintColor;
-    self.logsDescriptionLabel.textColor = kRiotPrimaryTextColor;
-    self.sendLogsLabel.textColor = kRiotPrimaryTextColor;
-    self.sendScreenshotLabel.textColor = kRiotPrimaryTextColor;
+    self.logsDescriptionLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.sendLogsLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.sendScreenshotLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     self.sendButton.tintColor = RiotDesignValues.theme.tintColor;
     self.cancelButton.tintColor = RiotDesignValues.theme.tintColor;

@@ -132,13 +132,13 @@ static CGFloat const kTextFontSize = 15.0;
 {
     self.normalStringAttributes = @{
                                     NSFontAttributeName: [UIFont systemFontOfSize:kTextFontSize],
-                                    NSForegroundColorAttributeName: kRiotPrimaryTextColor
+                                    NSForegroundColorAttributeName: RiotDesignValues.theme.textPrimaryColor
                                     };
     
     
     self.emphasizeStringAttributes = @{
                                        NSFontAttributeName: [UIFont systemFontOfSize:kTextFontSize weight:UIFontWeightBold],
-                                       NSForegroundColorAttributeName: kRiotPrimaryTextColor
+                                       NSForegroundColorAttributeName: RiotDesignValues.theme.textPrimaryColor
                                        };
 }
 

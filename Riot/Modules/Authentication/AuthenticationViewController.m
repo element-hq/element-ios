@@ -170,10 +170,10 @@
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
-    self.homeServerTextField.textColor = kRiotPrimaryTextColor;
+    self.homeServerTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.homeServerLabel.textColor = kRiotSecondaryTextColor;
     
-    self.identityServerTextField.textColor = kRiotPrimaryTextColor;
+    self.identityServerTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.identityServerLabel.textColor = kRiotSecondaryTextColor;
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;

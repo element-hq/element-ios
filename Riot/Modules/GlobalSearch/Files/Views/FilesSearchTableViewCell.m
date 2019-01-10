@@ -28,7 +28,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.title.textColor = kRiotPrimaryTextColor;
+    self.title.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     self.message.textColor = kRiotSecondaryTextColor;
     

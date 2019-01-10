@@ -103,15 +103,15 @@
 {
     [super customizeViewRendering];
     
-    self.repeatPasswordTextField.textColor = kRiotPrimaryTextColor;
-    self.userLoginTextField.textColor = kRiotPrimaryTextColor;
-    self.passWordTextField.textColor = kRiotPrimaryTextColor;
+    self.repeatPasswordTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.userLoginTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.passWordTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
     
-    self.emailTextField.textColor = kRiotPrimaryTextColor;
-    self.phoneTextField.textColor = kRiotPrimaryTextColor;
+    self.emailTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.phoneTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
     
-    self.isoCountryCodeLabel.textColor = kRiotPrimaryTextColor;
-    self.callingCodeLabel.textColor = kRiotPrimaryTextColor;
+    self.isoCountryCodeLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.callingCodeLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     self.messageLabel.textColor = kRiotSecondaryTextColor;
     self.messageLabel.numberOfLines = 0;

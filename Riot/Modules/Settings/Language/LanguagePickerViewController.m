@@ -114,7 +114,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.textLabel.textColor = kRiotPrimaryTextColor;
+    cell.textLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     cell.detailTextLabel.textColor = kRiotSecondaryTextColor;
     cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     

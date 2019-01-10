@@ -105,11 +105,11 @@
 {
     [super customizeViewRendering];
     
-    self.messageLabel.textColor = kRiotPrimaryTextColor;
+    self.messageLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
-    self.emailTextField.textColor = kRiotPrimaryTextColor;
-    self.passWordTextField.textColor = kRiotPrimaryTextColor;
-    self.repeatPasswordTextField.textColor = kRiotPrimaryTextColor;
+    self.emailTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.passWordTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.repeatPasswordTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     self.messageLabel.numberOfLines = 0;
     

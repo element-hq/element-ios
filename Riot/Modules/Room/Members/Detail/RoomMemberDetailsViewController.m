@@ -224,7 +224,7 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.memberHeaderView.backgroundColor = RiotDesignValues.theme.baseColor;
-    self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;
+    self.roomMemberNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.roomMemberStatusLabel.textColor = RiotDesignValues.theme.tintColor;
     
     // Check the table view style to select its bg color.
@@ -781,8 +781,8 @@
             }
             else
             {
-                [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:RiotDesignValues.theme.textPrimaryColor forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:RiotDesignValues.theme.textPrimaryColor forState:UIControlStateHighlighted];
             }
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];

@@ -120,7 +120,7 @@
     self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.mainHeaderContainer.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     
-    _groupName.textColor = kRiotPrimaryTextColor;
+    _groupName.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     _groupDescription.textColor = kRiotTopicTextColor;
     _groupDescription.numberOfLines = 0;

@@ -66,9 +66,9 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super customizeCollectionViewCellRendering];
     
-    self.roomTitle.textColor = kRiotPrimaryTextColor;
-    self.roomTitle1.textColor = kRiotPrimaryTextColor;
-    self.roomTitle2.textColor = kRiotPrimaryTextColor;
+    self.roomTitle.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.roomTitle1.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.roomTitle2.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.missedNotifAndUnreadBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;
     
     // Prepare direct room border

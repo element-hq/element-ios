@@ -26,7 +26,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kRiotPrimaryTextColor;
+    self.userNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.messageTextView.tintColor = RiotDesignValues.theme.tintColor;
 }
 

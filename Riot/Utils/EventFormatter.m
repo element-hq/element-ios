@@ -217,7 +217,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
                            font-size: small; \
                            }", (unsigned long)bgColor];
         
-        self.defaultTextColor = kRiotPrimaryTextColor;
+        self.defaultTextColor = RiotDesignValues.theme.textPrimaryColor;
         self.subTitleTextColor = kRiotSecondaryTextColor;
         self.prefixTextColor = kRiotSecondaryTextColor;
         self.bingTextColor = RiotDesignValues.theme.notificationMentionColor;

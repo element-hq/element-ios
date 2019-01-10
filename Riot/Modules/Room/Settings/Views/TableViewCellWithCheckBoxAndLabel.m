@@ -18,6 +18,7 @@
 #import "TableViewCellWithCheckBoxAndLabel.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation TableViewCellWithCheckBoxAndLabel
 
@@ -25,7 +26,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    _label.textColor = kRiotPrimaryTextColor;
+    _label.textColor = RiotDesignValues.theme.textPrimaryColor;
 }
 
 - (void)setEnabled:(BOOL)enabled

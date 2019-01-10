@@ -101,7 +101,7 @@
     self.overlayView.backgroundColor = kRiotOverlayColor;
     self.overlayView.alpha = 1.0;
     
-    self.titleLabel.textColor = kRiotPrimaryTextColor;
+    self.titleLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.containerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Check the table view style to select its bg color.
@@ -196,7 +196,7 @@
 {
     MXKReadReceiptTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[MXKReadReceiptTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.displayNameLabel.textColor = kRiotPrimaryTextColor;
+    cell.displayNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     cell.receiptDescriptionLabel.textColor = kRiotSecondaryTextColor;
     
     if (indexPath.row < self.roomMembers.count)

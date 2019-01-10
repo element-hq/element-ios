@@ -955,30 +955,30 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Crypto information
     NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
                                                           initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
-                                                          attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                          attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textPrimaryColor,
                                                                        NSFontAttributeName: [UIFont systemFontOfSize:17]}];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:account.device.displayName ? account.device.displayName : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:account.device.deviceId ? account.device.deviceId : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:fingerprint ? fingerprint : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
     
     return cryptoInformationString;
@@ -1295,7 +1295,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    cell.mxkLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     cell.mxkTextField.userInteractionEnabled = YES;
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
@@ -1322,7 +1322,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    cell.mxkLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
     
@@ -1348,7 +1348,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     }
     cell.textLabel.accessibilityIdentifier = nil;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
-    cell.textLabel.textColor = kRiotPrimaryTextColor;
+    cell.textLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     return cell;
 }
@@ -1357,7 +1357,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
     
-    textViewCell.mxkTextView.textColor = kRiotPrimaryTextColor;
+    textViewCell.mxkTextView.textColor = RiotDesignValues.theme.textPrimaryColor;
     textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
     textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
     textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
@@ -1436,7 +1436,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
             profileCell.accessibilityIdentifier=@"SettingsVCProfilPictureStaticText";
-            profileCell.mxkLabel.textColor = kRiotPrimaryTextColor;
+            profileCell.mxkLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
             
             // if the user defines a new avatar
             if (newAvatarImage)
@@ -1796,7 +1796,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:language];
             languageDescription = [languageDescription capitalizedStringWithLocale:locale];
 
-            cell.textLabel.textColor = kRiotPrimaryTextColor;
+            cell.textLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
 
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
             cell.detailTextLabel.text = languageDescription;
@@ -1833,7 +1833,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                               @"Vector",
                                                              nil);
 
-            cell.textLabel.textColor = kRiotPrimaryTextColor;
+            cell.textLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
 
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
             cell.detailTextLabel.text = i18nTheme;
@@ -1882,7 +1882,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[NSBundle mainBundle] preferredLocalizations][0]];
             NSString *countryName = [local displayNameForKey:NSLocaleCountryCode value:countryCode];
             
-            cell.textLabel.textColor = kRiotPrimaryTextColor;
+            cell.textLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
             
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
@@ -2334,7 +2334,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = kRiotPrimaryTextColor;
+        tableViewHeaderFooterView.textLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
         tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
     }
 }

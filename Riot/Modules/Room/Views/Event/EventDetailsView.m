@@ -27,7 +27,7 @@
     
     self.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     self.textView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.textView.textColor = kRiotPrimaryTextColor;
+    self.textView.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.redactButton.tintColor = RiotDesignValues.theme.tintColor;
     self.closeButton.tintColor = RiotDesignValues.theme.tintColor;
 }

@@ -236,7 +236,7 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.headerView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-    self.contactNameLabel.textColor = kRiotPrimaryTextColor;
+    self.contactNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.contactStatusLabel.textColor = RiotDesignValues.theme.tintColor;
     
     // Check the table view style to select its bg color.
@@ -735,8 +735,8 @@
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
             
-            [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
-            [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
+            [cellWithButton.mxkButton setTitleColor:RiotDesignValues.theme.textPrimaryColor forState:UIControlStateNormal];
+            [cellWithButton.mxkButton setTitleColor:RiotDesignValues.theme.textPrimaryColor forState:UIControlStateHighlighted];
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             

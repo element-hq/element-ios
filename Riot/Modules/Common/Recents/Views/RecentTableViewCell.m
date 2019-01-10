@@ -48,7 +48,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super customizeTableViewCellRendering];
     
-    self.roomTitle.textColor = kRiotPrimaryTextColor;
+    self.roomTitle.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.lastEventDescription.textColor = kRiotSecondaryTextColor;
     self.lastEventDate.textColor = kRiotSecondaryTextColor;
     self.missedNotifAndUnreadBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;

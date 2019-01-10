@@ -915,7 +915,7 @@
     {
         sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
         sectionHeader.mxkContentView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-        sectionHeader.mxkLabel.textColor = kRiotPrimaryTextColor;
+        sectionHeader.mxkLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
         sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
         sectionHeader.mxkLabel.text = NSLocalizedStringFromTable(@"group_participants_invited_section", @"Vector", nil);

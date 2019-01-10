@@ -20,6 +20,7 @@
 #import "AvatarGenerator.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation GroupRoomTableViewCell
 
@@ -36,7 +37,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.roomDisplayName.textColor = kRiotPrimaryTextColor;
+    self.roomDisplayName.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.roomTopic.textColor = kRiotSecondaryTextColor;
     
     _roomAvatar.defaultBackgroundColor = [UIColor clearColor];

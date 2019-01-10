@@ -754,7 +754,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
         
         // Apply the current UI theme.
-        networkLabel.textColor = kRiotPrimaryTextColor;
+        networkLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
         directoryServerLabel.textColor = kRiotSecondaryTextColor;
 
         // Set the current directory server name

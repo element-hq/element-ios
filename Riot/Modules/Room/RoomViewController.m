@@ -425,7 +425,7 @@
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadBannerContainer.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotPrimaryTextColor, NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: RiotDesignValues.theme.textPrimaryColor, NSForegroundColorAttributeName: RiotDesignValues.theme.textPrimaryColor}];
     
     
     self.expandedHeaderContainer.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;

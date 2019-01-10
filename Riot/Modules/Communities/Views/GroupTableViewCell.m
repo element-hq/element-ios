@@ -41,7 +41,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.groupName.textColor = kRiotPrimaryTextColor;
+    self.groupName.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.groupDescription.textColor = kRiotSecondaryTextColor;
     self.memberCount.textColor = kRiotSecondaryTextColor;
     

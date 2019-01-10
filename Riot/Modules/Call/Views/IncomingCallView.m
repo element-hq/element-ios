@@ -75,7 +75,7 @@ static const CGFloat kButtonSize = 80.0;
         
         self.callerNameLabel = [[UILabel alloc] init];
         self.callerNameLabel.backgroundColor = RiotDesignValues.theme.backgroundColor;
-        self.callerNameLabel.textColor = kRiotPrimaryTextColor;
+        self.callerNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
         self.callerNameLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightMedium];
         self.callerNameLabel.text = callerName;
         self.callerNameLabel.textAlignment = NSTextAlignmentCenter;

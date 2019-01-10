@@ -32,7 +32,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.deviceName.textColor = kRiotPrimaryTextColor;
+    self.deviceName.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     [self.verifyButton.layer setCornerRadius:5];
     self.verifyButton.clipsToBounds = YES;

@@ -53,7 +53,7 @@
     [super customizeTableViewCellRendering];
     
     // apply the vector colours
-    self.contactDisplayNameLabel.textColor = kRiotPrimaryTextColor;
+    self.contactDisplayNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.contactInformationLabel.textColor = kRiotSecondaryTextColor;
     
     // Clear the default background color of a MXKImageView instance

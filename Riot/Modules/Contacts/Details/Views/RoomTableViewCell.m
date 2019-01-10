@@ -35,7 +35,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = kRiotPrimaryTextColor;
+    self.titleLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
     // Prepare direct room border
     CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(RiotDesignValues.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);

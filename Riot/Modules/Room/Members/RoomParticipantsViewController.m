@@ -1223,7 +1223,7 @@
         frame.size.width = sectionHeader.frame.size.width - 10;
         frame.size.height -= 10;
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-        headerLabel.textColor = kRiotPrimaryTextColor;
+        headerLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
         headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
         headerLabel.backgroundColor = [UIColor clearColor];
         

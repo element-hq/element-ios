@@ -51,7 +51,7 @@
     self.separatorView.backgroundColor = kRiotAuxiliaryColor;
 
     self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
-    self.disabledReasonTextView.textColor = kRiotPrimaryTextColor;
+    self.disabledReasonTextView.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.disabledReasonTextView.tintColor = RiotDesignValues.theme.tintColor;
     self.disabledReasonTextView.editable = NO;
     self.disabledReasonTextView.scrollEnabled = NO;

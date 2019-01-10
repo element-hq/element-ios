@@ -17,6 +17,7 @@
 #import "TableViewCellWithPhoneNumberTextField.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "NBPhoneNumberUtil.h"
 
@@ -26,10 +27,10 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.mxkLabel.textColor = kRiotPrimaryTextColor;
-    self.mxkTextField.textColor = kRiotPrimaryTextColor;
+    self.mxkLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.mxkTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
     
-    _isoCountryCodeLabel.textColor = kRiotPrimaryTextColor;
+    _isoCountryCodeLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
 }
 
 - (void)setIsoCountryCode:(NSString *)isoCountryCode

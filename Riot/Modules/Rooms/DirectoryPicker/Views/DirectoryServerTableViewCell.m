@@ -29,7 +29,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.descLabel.textColor = kRiotPrimaryTextColor;
+    self.descLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
 }
 
 - (void)layoutSubviews

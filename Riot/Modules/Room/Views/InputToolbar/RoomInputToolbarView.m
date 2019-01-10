@@ -95,7 +95,7 @@
     growingTextView.backgroundColor = [UIColor clearColor];
     
     growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = kRiotPrimaryTextColor;
+    growingTextView.textColor = RiotDesignValues.theme.textPrimaryColor;
     growingTextView.tintColor = RiotDesignValues.theme.tintColor;
     
     growingTextView.internalTextView.keyboardAppearance = RiotDesignValues.theme.keyboardAppearance;
