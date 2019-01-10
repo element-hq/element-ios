@@ -516,7 +516,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = kRiotSecondaryBgColor;
+    sectionHeader.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     NSInteger sectionBitwise = 0;
     UIImageView *chevronView;
     UIView *accessoryView;

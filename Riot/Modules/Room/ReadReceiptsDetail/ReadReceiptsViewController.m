@@ -105,7 +105,7 @@
     self.containerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Check the table view style to select its bg color.
-    self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
+    self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
     
     self.closeButton.tintColor = RiotDesignValues.theme.tintColor;
     

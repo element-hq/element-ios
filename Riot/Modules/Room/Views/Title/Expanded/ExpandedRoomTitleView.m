@@ -131,7 +131,7 @@
     self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
     self.roomAvatar.clipsToBounds = YES;
     
-    self.roomAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
+    self.roomAvatar.defaultBackgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     
     // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
     [self layoutIfNeeded];

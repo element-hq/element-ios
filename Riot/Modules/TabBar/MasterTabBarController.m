@@ -117,7 +117,7 @@
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.tabBar.tintColor = RiotDesignValues.theme.tintColor;
-    self.tabBar.barTintColor = kRiotSecondaryBgColor;
+    self.tabBar.barTintColor = RiotDesignValues.theme.headerBackgroundColor;
     
     self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
     

@@ -162,7 +162,7 @@
     self.sendButton.tintColor = RiotDesignValues.theme.tintColor;
     self.cancelButton.tintColor = RiotDesignValues.theme.tintColor;
     
-    _bugReportDescriptionTextView.layer.borderColor = kRiotSecondaryBgColor.CGColor;
+    _bugReportDescriptionTextView.layer.borderColor = RiotDesignValues.theme.headerBackgroundColor.CGColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -428,15 +428,15 @@
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotPrimaryTextColor, NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
     
     
-    self.expandedHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
-    self.previewHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
+    self.expandedHeaderContainer.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
+    self.previewHeaderContainer.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     
     missedDiscussionsBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)

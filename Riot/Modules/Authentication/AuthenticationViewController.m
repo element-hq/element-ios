@@ -133,7 +133,7 @@
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.view.backgroundColor = kRiotSecondaryBgColor;
+    self.view.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
 
     self.authenticationScrollView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.authFallbackContentView.backgroundColor = RiotDesignValues.theme.backgroundColor;

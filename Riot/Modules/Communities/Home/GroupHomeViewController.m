@@ -118,7 +118,7 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.mainHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
+    self.mainHeaderContainer.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     
     _groupName.textColor = kRiotPrimaryTextColor;
     
@@ -128,7 +128,7 @@
     self.inviteLabel.textColor = kRiotTopicTextColor;
     self.inviteLabel.numberOfLines = 0;
     
-    self.separatorView.backgroundColor = kRiotSecondaryBgColor;
+    self.separatorView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
@@ -144,7 +144,7 @@
         _groupLongDescription.tintColor = kRiotColorBlue;
         
         // Update HTML loading options
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:RiotDesignValues.theme.headerBackgroundColor];
         NSString *defaultCSS = [NSString stringWithFormat:@" \
                       pre,code { \
                       background-color: #%06lX; \
@@ -481,7 +481,7 @@
     _groupAvatar.layer.cornerRadius = _groupAvatar.frame.size.width / 2;
     _groupAvatar.clipsToBounds = YES;
     
-    _groupAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
+    _groupAvatar.defaultBackgroundColor = RiotDesignValues.theme.headerBackgroundColor;
 }
 
 - (void)refreshGroupLongDescription

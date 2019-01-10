@@ -271,7 +271,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -3117,7 +3117,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
             }];
             
-            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
+            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
             [actions insertObject:removeAction atIndex:0];
         }
     }
@@ -3132,7 +3132,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
         }];
         
-        removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
+        removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:removeAction atIndex:0];
     }
     

@@ -76,7 +76,7 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Check the table view style to select its bg color.
-    self.searchTableView.backgroundColor = ((self.searchTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
+    self.searchTableView.backgroundColor = ((self.searchTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
     self.view.backgroundColor = self.searchTableView.backgroundColor;
     
     self.noResultsLabel.textColor = RiotDesignValues.theme.backgroundColor;

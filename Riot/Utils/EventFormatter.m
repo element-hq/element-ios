@@ -206,7 +206,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         
         // Use the secondary bg color to set the background color in the default CSS.
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:RiotDesignValues.theme.headerBackgroundColor];
         self.defaultCSS = [NSString stringWithFormat:@" \
                            pre,code { \
                            background-color: #%06lX; \

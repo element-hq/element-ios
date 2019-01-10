@@ -122,7 +122,7 @@
     
     // Use the primary bg color for the recents table view in plain style.
     self.groupsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    topview.backgroundColor = kRiotSecondaryBgColor;
+    topview.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
 
     [RiotDesignValues.theme applyStyleOnSearchBar:tableSearchBar];
@@ -452,7 +452,7 @@
     if (tableView.numberOfSections > 1)
     {
         sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
-        sectionHeader.mxkContentView.backgroundColor = kRiotSecondaryBgColor;
+        sectionHeader.mxkContentView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
         sectionHeader.mxkLabel.textColor = kRiotPrimaryTextColor;
         sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
@@ -512,7 +512,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     

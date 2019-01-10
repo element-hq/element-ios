@@ -235,12 +235,12 @@
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.headerView.backgroundColor = kRiotSecondaryBgColor;
+    self.headerView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     self.contactNameLabel.textColor = kRiotPrimaryTextColor;
     self.contactStatusLabel.textColor = RiotDesignValues.theme.tintColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)

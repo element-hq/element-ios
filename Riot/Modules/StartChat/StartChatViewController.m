@@ -152,7 +152,7 @@
     _searchBarHeaderBorder.backgroundColor = RiotDesignValues.theme.headerBorderColor;
     
     // Check the table view style to select its bg color.
-    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
+    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
     self.view.backgroundColor = self.contactsTableView.backgroundColor;
     
     if (self.contactsTableView.dataSource)
@@ -453,7 +453,7 @@
         
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     

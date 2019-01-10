@@ -166,7 +166,7 @@
     _searchBarHeaderBorder.backgroundColor = RiotDesignValues.theme.headerBorderColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     // Update the gradient view above the screen
@@ -1215,7 +1215,7 @@
     if (section == invitedSection)
     {
         sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
-        sectionHeader.backgroundColor = kRiotSecondaryBgColor;
+        sectionHeader.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
         
         CGRect frame = sectionHeader.frame;
         frame.origin.x = 20;
@@ -1327,7 +1327,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     

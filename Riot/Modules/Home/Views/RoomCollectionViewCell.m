@@ -81,7 +81,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     
     CFRelease(directRoomBorderColor);
     
-    self.editionArrowView.backgroundColor = kRiotSecondaryBgColor;
+    self.editionArrowView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     
     self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }

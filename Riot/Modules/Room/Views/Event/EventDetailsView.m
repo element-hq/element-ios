@@ -25,7 +25,7 @@
 {
     [super customizeViewRendering];
     
-    self.backgroundColor = kRiotSecondaryBgColor;
+    self.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     self.textView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.textView.textColor = kRiotPrimaryTextColor;
     self.redactButton.tintColor = RiotDesignValues.theme.tintColor;

@@ -165,7 +165,7 @@
     
     // Use the primary bg color for the recents table view in plain style.
     self.recentsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    topview.backgroundColor = kRiotSecondaryBgColor;
+    topview.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
 
     [RiotDesignValues.theme applyStyleOnSearchBar:tableSearchBar];
@@ -868,7 +868,7 @@
         }];
         
         UIImage *actionIcon = isDirect ? [UIImage imageNamed:@"directChatOff"] : [UIImage imageNamed:@"directChatOn"];
-        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:directAction atIndex:0];
         
         
@@ -882,7 +882,7 @@
         }];
         
         actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
         
         // Favorites management
@@ -907,7 +907,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favouriteOff"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -919,7 +919,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favourite"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -932,7 +932,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityHigh"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -944,7 +944,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityLow"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -955,7 +955,7 @@
         }];
         
         actionIcon = [UIImage imageNamed:@"leave"];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         
         [actions insertObject:leaveAction atIndex:0];
     }

@@ -28,7 +28,7 @@
 {
     [super customizeViewRendering];
     
-    self.containerView.backgroundColor = kRiotSecondaryBgColor;
+    self.containerView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     self.textView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.defaultTextColor = kRiotPrimaryTextColor;
     self.cancelButton.tintColor = RiotDesignValues.theme.tintColor;

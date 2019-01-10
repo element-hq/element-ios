@@ -112,7 +112,7 @@
 {
     [super customizeViewRendering];
     
-    self.separatorView.backgroundColor = kRiotSecondaryBgColor;
+    self.separatorView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     if (self.messageLabel.textColor != kRiotColorPinkRed)
     {
         self.messageLabel.textColor = kRiotSecondaryTextColor;

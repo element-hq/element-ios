@@ -767,7 +767,7 @@
     NSInteger sectionBitwise = 0;
     
     sectionHeader = [[UIView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = kRiotSecondaryBgColor;
+    sectionHeader.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     
     frame.origin.x = 20;
     frame.origin.y = 5;
