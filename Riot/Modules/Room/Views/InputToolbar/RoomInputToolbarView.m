@@ -98,7 +98,7 @@
     growingTextView.textColor = kRiotPrimaryTextColor;
     growingTextView.tintColor = RiotDesignValues.theme.tintColor;
     
-    growingTextView.internalTextView.keyboardAppearance = kRiotKeyboard;
+    growingTextView.internalTextView.keyboardAppearance = RiotDesignValues.theme.keyboardAppearance;
 }
 
 #pragma mark -

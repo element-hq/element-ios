@@ -46,8 +46,14 @@ import UIKit
 
     var avatarColors: [UIColor] { get }
 
+
+    // MARK: - Appearance and style
+
+
     /// Status bar style to use
     var statusBarStyle: UIStatusBarStyle { get }
+
+    var keyboardAppearance : UIKeyboardAppearance { get }
 
 
     // MARK: - Colors that have currently few usage and may disappear in a redesign

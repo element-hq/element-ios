@@ -53,6 +53,8 @@ final class DarkTheme: NSObject, Theme {
 
     let statusBarStyle: UIStatusBarStyle = .lightContent
 
+    let keyboardAppearance: UIKeyboardAppearance = .dark
+
     let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {

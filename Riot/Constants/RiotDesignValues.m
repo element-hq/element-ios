@@ -48,7 +48,6 @@ UIColor *kRiotColorOrange;
 NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
 
-UIKeyboardAppearance kRiotKeyboard;
 UIScrollViewIndicatorStyle kRiotScrollBarStyle;
 
 @implementation RiotDesignValues
@@ -123,7 +122,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
         
-        kRiotKeyboard = UIKeyboardAppearanceDark;
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
     }
     else if ([themeId isEqualToString:@"black"])
@@ -133,8 +131,7 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         kRiotSelectedBgColor = [UIColor blackColor];
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
-        
-        kRiotKeyboard = UIKeyboardAppearanceDark;
+
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
     }
     else
@@ -144,8 +141,7 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         kRiotSelectedBgColor = nil; // Use the default selection color.
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
-        
-        kRiotKeyboard = UIKeyboardAppearanceLight;
+
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleDefault;
     }
 

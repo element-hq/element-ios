@@ -53,6 +53,8 @@ final class DefaultTheme: NSObject, Theme {
 
     let statusBarStyle: UIStatusBarStyle = .lightContent
 
+    let keyboardAppearance: UIKeyboardAppearance = .light
+
     let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {

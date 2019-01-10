@@ -2222,7 +2222,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
             topicTextView.textColor = kRiotSecondaryTextColor;
             
-            topicTextView.keyboardAppearance = kRiotKeyboard;
+            topicTextView.keyboardAppearance = RiotDesignValues.theme.keyboardAppearance;
             
             cell = roomTopicCell;
         }

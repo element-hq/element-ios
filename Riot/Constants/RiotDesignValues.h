@@ -58,8 +58,6 @@ extern UIColor *kRiotColorOrange;
 extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;
 
-extern UIKeyboardAppearance kRiotKeyboard;
-
 /**
  `RiotDesignValues` class manages the Riot design parameters
  */
