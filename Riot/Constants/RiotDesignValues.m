@@ -73,6 +73,7 @@ UIBarStyle kRiotDesignSearchBarStyle = UIBarStyleDefault;
 UIColor *kRiotDesignSearchBarTintColor = nil;
 
 UIKeyboardAppearance kRiotKeyboard;
+UIScrollViewIndicatorStyle kRiotScrollBarStyle;
 
 @implementation RiotDesignValues
 
@@ -179,8 +180,8 @@ UIKeyboardAppearance kRiotKeyboard;
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
         kRiotKeyboardColor = kRiotColorDarkKeyboard;
         
-        [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceDark;
         kRiotKeyboard = UIKeyboardAppearanceDark;
+        kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
     }
     else if ([theme isEqualToString:@"black"])
     {
@@ -201,8 +202,8 @@ UIKeyboardAppearance kRiotKeyboard;
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
         kRiotKeyboardColor = kRiotColorDarkKeyboard;
         
-        [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceDark;
         kRiotKeyboard = UIKeyboardAppearanceDark;
+        kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
     }
     else
     {
@@ -222,10 +223,13 @@ UIKeyboardAppearance kRiotKeyboard;
         kRiotAuxiliaryColor = kRiotColorSilver;
         kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
         kRiotKeyboardColor = kRiotColorLightKeyboard;
-                
-        [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceLight;
+        
         kRiotKeyboard = UIKeyboardAppearanceLight;
+        kRiotScrollBarStyle = UIScrollViewIndicatorStyleDefault;
     }
+    
+    [UITextField appearance].keyboardAppearance = kRiotKeyboard;
+    [UIScrollView appearance].indicatorStyle = kRiotScrollBarStyle;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
 }
