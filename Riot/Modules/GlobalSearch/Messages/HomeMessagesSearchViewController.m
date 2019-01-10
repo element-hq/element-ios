@@ -18,6 +18,7 @@
 #import "HomeMessagesSearchViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "HomeViewController.h"
 
@@ -77,7 +78,7 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     

@@ -20,6 +20,7 @@
 #import <objc/runtime.h>
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 /**
  `UIViewControllerRiotSearchInternals` is the internal single point storage for the search feature.
@@ -94,7 +95,7 @@
         self.searchBar.text = @"";
         
         // Customize search bar
-        [RiotDesignValues applyStyleOnSearchBar:self.searchBar];
+        [RiotDesignValues.theme applyStyleOnSearchBar:self.searchBar];
         
         // Remove navigation buttons
         self.navigationItem.hidesBackButton = YES;

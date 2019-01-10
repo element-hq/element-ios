@@ -21,6 +21,8 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "Riot-Swift.h"
+
 @interface MediaAlbumContentViewController ()
 {
     /**
@@ -111,7 +113,7 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.assetsCollectionView.backgroundColor = kRiotPrimaryBgColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;

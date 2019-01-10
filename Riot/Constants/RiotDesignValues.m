@@ -234,23 +234,4 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     return theme;
 }
 
-+ (void)applyStyleOnNavigationBar:(UINavigationBar *)navigationBar
-{
-    navigationBar.tintColor = kRiotDesignNavigationBarTintColor;
-    navigationBar.titleTextAttributes = kRiotDesignNavigationBarTitleTextAttributes;
-    navigationBar.barTintColor = kRiotDesignNavigationBarBarTintColor;
-
-    // The navigation bar needs to be opaque so that its background color is the expected one
-    navigationBar.translucent = NO;
-}
-
-+ (void)applyStyleOnSearchBar:(UISearchBar *)searchBar
-{
-    searchBar.barStyle = kRiotDesignSearchBarStyle;
-    searchBar.tintColor = kRiotDesignSearchBarTintColor;
-    searchBar.barTintColor = kRiotDesignSearchBarBarTintColor;
-    searchBar.layer.borderWidth = 1;
-    searchBar.layer.borderColor = RiotDesignValues.theme.headerBorderColor.CGColor;
-}
-
 @end

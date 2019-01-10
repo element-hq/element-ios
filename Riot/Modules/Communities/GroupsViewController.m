@@ -116,7 +116,7 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
@@ -125,8 +125,8 @@
     topview.backgroundColor = kRiotSecondaryBgColor;
     self.view.backgroundColor = kRiotPrimaryBgColor;
 
-    [RiotDesignValues applyStyleOnSearchBar:tableSearchBar];
-    [RiotDesignValues applyStyleOnSearchBar:self.groupsSearchBar];
+    [RiotDesignValues.theme applyStyleOnSearchBar:tableSearchBar];
+    [RiotDesignValues.theme applyStyleOnSearchBar:self.groupsSearchBar];
     
     if (self.groupsTableView.dataSource)
     {

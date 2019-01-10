@@ -82,7 +82,7 @@
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
 
-    [RiotDesignValues applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = RiotDesignValues.theme.tintColor;
     

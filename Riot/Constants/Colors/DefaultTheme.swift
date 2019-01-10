@@ -50,4 +50,23 @@ final class DefaultTheme: NSObject, Theme {
         UIColor(rgb: 0x7AC9A1),
         UIColor(rgb: 0x1E7DDC),
         UIColor(rgb: 0x76DDD7)]
+
+    func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
+        navigationBar.tintColor = self.baseTextPrimaryColor;
+        navigationBar.titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: self.baseTextPrimaryColor
+        ]
+        navigationBar.barTintColor = self.baseColor;
+
+        // The navigation bar needs to be opaque so that its background color is the expected one
+        navigationBar.isTranslucent = false;
+    }
+
+    func applyStyle(onSearchBar searchBar: UISearchBar) {
+        searchBar.barStyle = .default
+        searchBar.tintColor = self.searchTextColor;
+        searchBar.barTintColor = self.headerBackgroundColor;
+        searchBar.layer.borderWidth = 1;
+        searchBar.layer.borderColor = self.headerBorderColor.cgColor;
+    }
 }

@@ -45,8 +45,20 @@ import UIKit
     var notificationMentionColor: UIColor { get }
 
     var avatarColors: [UIColor] { get }
+
+    /// Apply the theme on a navigation bar
+    ///
+    /// - Parameter navigationBar: the navigation bar to customise.
+    func applyStyle(onNavigationBar: UINavigationBar)
+
+    ///  Apply the theme on a search bar.
+    ///
+    /// - Parameter searchBar: the search bar to customise.
+    func applyStyle(onSearchBar: UISearchBar)
 }
 
+
+/// TODO: to move
 extension UIColor {
     convenience init(rgb: UInt) {
         self.init(

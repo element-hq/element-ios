@@ -17,6 +17,7 @@
 #import "CountryPickerViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface CountryPickerViewController ()
 {
@@ -71,11 +72,11 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    [RiotDesignValues applyStyleOnSearchBar:self.searchBar];
+    [RiotDesignValues.theme applyStyleOnSearchBar:self.searchBar];
     
     // Use the primary bg color for the table view in plain style.
     self.tableView.backgroundColor = kRiotPrimaryBgColor;

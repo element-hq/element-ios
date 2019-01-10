@@ -1149,7 +1149,7 @@
         phoneNumberPickerNavigationController = [[RiotNavigationController alloc] init];
         
         // Set Riot navigation bar colors
-        [RiotDesignValues applyStyleOnNavigationBar:phoneNumberPickerNavigationController.navigationBar];
+        [RiotDesignValues.theme applyStyleOnNavigationBar:phoneNumberPickerNavigationController.navigationBar];
         
         [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
         

@@ -98,7 +98,7 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.barTitleColor = kRiotPrimaryTextColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
@@ -283,7 +283,7 @@
                                                                UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
                                                                
                                                                // Set Riot navigation bar colors
-                                                               [RiotDesignValues applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
+                                                               [RiotDesignValues.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
                                                                usersDevicesNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
 
                                                                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];

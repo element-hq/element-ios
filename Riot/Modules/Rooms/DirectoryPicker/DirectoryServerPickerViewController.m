@@ -19,6 +19,7 @@
 #import "DirectoryServerDetailTableViewCell.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface DirectoryServerPickerViewController ()
 {
@@ -119,7 +120,7 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     

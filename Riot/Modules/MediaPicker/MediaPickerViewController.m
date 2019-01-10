@@ -18,6 +18,7 @@
 #import "MediaPickerViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import <Photos/Photos.h>
 
@@ -181,7 +182,7 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     

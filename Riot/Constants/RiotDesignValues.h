@@ -81,20 +81,6 @@ extern UIKeyboardAppearance kRiotKeyboard;
  */
 + (id<Theme>)theme;
 
-/**
- Apply the current style on a navigation bar.
-
- @param navigationBar the navigation bar to customise.
- */
-+ (void)applyStyleOnNavigationBar:(UINavigationBar *)navigationBar;
-
-/**
- Apply the current style on a search bar.
-
- @param searchBar the search bar to customise.
- */
-+ (void)applyStyleOnSearchBar:(UISearchBar *)searchBar;
-
 @end
 
 NS_ASSUME_NONNULL_END

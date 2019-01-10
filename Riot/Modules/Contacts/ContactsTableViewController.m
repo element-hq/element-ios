@@ -20,6 +20,7 @@
 #import "UIViewController+RiotSearch.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE 0x01
 #define CONTACTS_TABLEVC_USERDIRECTORY_BITWISE 0x02
@@ -103,7 +104,7 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
