@@ -46,7 +46,19 @@ import UIKit
 
     var avatarColors: [UIColor] { get }
 
+    /// Status bar style to use
     var statusBarStyle: UIStatusBarStyle { get }
+
+
+    // MARK: - Colors that have currently few usage and may disappear in a redesign
+
+
+    /// Color to tint the search background image
+    var matrixSearchBackgroundImageTintColor: UIColor { get }
+
+
+    // MARK: - Customisation methods
+
 
     /// Apply the theme on a navigation bar
     ///

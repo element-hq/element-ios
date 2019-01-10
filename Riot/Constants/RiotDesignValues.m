@@ -35,7 +35,6 @@ UIColor *kRiotTopicTextColor;
 UIColor *kRiotSelectedBgColor;
 UIColor *kRiotAuxiliaryColor;
 UIColor *kRiotOverlayColor;
-UIColor *kRiotKeyboardColor;
 
 // Riot Colors
 UIColor *kRiotColorPinkRed;
@@ -45,9 +44,6 @@ UIColor *kRiotColorCuriousBlue;
 UIColor *kRiotColorIndigo;
 UIColor *kRiotColorOrange;
 
-// Riot Background Colors
-UIColor *kRiotColorLightKeyboard;   // TO REMOVE
-UIColor *kRiotColorDarkKeyboard;    // TO REMOVE
 
 NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
@@ -82,9 +78,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     kRiotColorCuriousBlue = UIColorFromRGB(0x2A9EDB);
     kRiotColorIndigo = UIColorFromRGB(0xBD79CC);
     kRiotColorOrange = UIColorFromRGB(0xF8A15F);
-
-    kRiotColorLightKeyboard = UIColorFromRGB(0xE7E7E7);
-    kRiotColorDarkKeyboard = UIColorFromRGB(0x7E7E7E);
 
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[RiotDesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
@@ -129,7 +122,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         kRiotSelectedBgColor = [UIColor blackColor];
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
-        kRiotKeyboardColor = kRiotColorDarkKeyboard;
         
         kRiotKeyboard = UIKeyboardAppearanceDark;
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
@@ -141,7 +133,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         kRiotSelectedBgColor = [UIColor blackColor];
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
-        kRiotKeyboardColor = kRiotColorDarkKeyboard;
         
         kRiotKeyboard = UIKeyboardAppearanceDark;
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
@@ -153,7 +144,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
         kRiotSelectedBgColor = nil; // Use the default selection color.
 
         kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
-        kRiotKeyboardColor = kRiotColorLightKeyboard;
         
         kRiotKeyboard = UIKeyboardAppearanceLight;
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleDefault;
