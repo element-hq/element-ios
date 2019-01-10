@@ -76,10 +76,10 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Check the table view style to select its bg color.
-    self.searchTableView.backgroundColor = ((self.searchTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.searchTableView.backgroundColor = ((self.searchTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
     self.view.backgroundColor = self.searchTableView.backgroundColor;
     
-    self.noResultsLabel.textColor = kRiotPrimaryBgColor;
+    self.noResultsLabel.textColor = RiotDesignValues.theme.backgroundColor;
     
     if (self.searchTableView.dataSource)
     {
@@ -153,7 +153,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
     if (kRiotSelectedBgColor)

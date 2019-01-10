@@ -135,8 +135,8 @@
 
     self.view.backgroundColor = kRiotSecondaryBgColor;
 
-    self.authenticationScrollView.backgroundColor = kRiotPrimaryBgColor;
-    self.authFallbackContentView.backgroundColor = kRiotPrimaryBgColor;
+    self.authenticationScrollView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.authFallbackContentView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     if (kRiotPlaceholderTextColor)
     {

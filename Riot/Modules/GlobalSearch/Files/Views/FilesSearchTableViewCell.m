@@ -19,6 +19,7 @@
 #import "FilesSearchTableViewCell.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 @implementation FilesSearchTableViewCell
 @synthesize delegate, mxkCellData;
@@ -75,7 +76,7 @@
             
             if (bubbleData.isAttachmentWithThumbnail)
             {
-                self.attachmentImageView.backgroundColor = kRiotPrimaryBgColor;
+                self.attachmentImageView.backgroundColor = RiotDesignValues.theme.backgroundColor;
                 [self.attachmentImageView setAttachmentThumb:bubbleData.attachment];
             }
             

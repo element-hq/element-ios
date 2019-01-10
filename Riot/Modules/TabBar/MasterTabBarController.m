@@ -119,7 +119,7 @@
     self.tabBar.tintColor = RiotDesignValues.theme.tintColor;
     self.tabBar.barTintColor = kRiotSecondaryBgColor;
     
-    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -786,7 +786,7 @@
 {
     _hidden = hidden;
     
-    [self.view superview].backgroundColor = kRiotPrimaryBgColor;
+    [self.view superview].backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.view.hidden = hidden;
     self.navigationController.navigationBar.hidden = hidden;
 }

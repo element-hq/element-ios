@@ -164,9 +164,9 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Use the primary bg color for the recents table view in plain style.
-    self.recentsTableView.backgroundColor = kRiotPrimaryBgColor;
+    self.recentsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     topview.backgroundColor = kRiotSecondaryBgColor;
-    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
 
     [RiotDesignValues.theme applyStyleOnSearchBar:tableSearchBar];
     [RiotDesignValues.theme applyStyleOnSearchBar:self.recentsSearchBar];
@@ -1185,7 +1185,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
     if (kRiotSelectedBgColor)
@@ -1413,7 +1413,7 @@
             if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
             {
                 UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
-                cell.backgroundColor = kRiotPrimaryBgColor;
+                cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
                 
                 // snapshot the cell
                 UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);

@@ -321,7 +321,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     if (blurred)
     {
         self.bubbleOverlayContainer.hidden = NO;
-        self.bubbleOverlayContainer.backgroundColor = kRiotPrimaryBgColor;
+        self.bubbleOverlayContainer.backgroundColor = RiotDesignValues.theme.backgroundColor;
         self.bubbleOverlayContainer.alpha = 0.8;
         self.bubbleOverlayContainer.userInteractionEnabled = YES;
         

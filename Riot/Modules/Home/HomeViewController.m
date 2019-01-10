@@ -416,7 +416,7 @@
         }
     }
     
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     return cell;
 }

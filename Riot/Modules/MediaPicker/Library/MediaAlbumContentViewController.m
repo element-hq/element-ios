@@ -115,7 +115,7 @@
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.assetsCollectionView.backgroundColor = kRiotPrimaryBgColor;
+    self.assetsCollectionView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
 }
 

@@ -186,11 +186,11 @@ static void *RecordingContext = &RecordingContext;
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.cameraVideoCaptureProgressView.progressColor = kRiotPrimaryBgColor;
+    self.cameraVideoCaptureProgressView.progressColor = RiotDesignValues.theme.backgroundColor;
     self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
     
-    self.userAlbumsTableView.backgroundColor = kRiotPrimaryBgColor;
-    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.userAlbumsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -343,12 +343,12 @@ static void *RecordingContext = &RecordingContext;
         if (self.cameraVideoCaptureProgressView.progressColor != [UIColor lightGrayColor])
         {
             self.cameraVideoCaptureProgressView.progressColor = [UIColor lightGrayColor];
-            self.cameraVideoCaptureProgressView.unprogressColor = kRiotPrimaryBgColor;
+            self.cameraVideoCaptureProgressView.unprogressColor = RiotDesignValues.theme.backgroundColor;
         }
     }
-    else if (self.cameraVideoCaptureProgressView.progressColor != kRiotPrimaryBgColor)
+    else if (self.cameraVideoCaptureProgressView.progressColor != RiotDesignValues.theme.backgroundColor)
     {
-        self.cameraVideoCaptureProgressView.progressColor = kRiotPrimaryBgColor;
+        self.cameraVideoCaptureProgressView.progressColor = RiotDesignValues.theme.backgroundColor;
         self.cameraVideoCaptureProgressView.unprogressColor = [UIColor lightGrayColor];
     }
     
@@ -1765,7 +1765,7 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
     if (kRiotSelectedBgColor)

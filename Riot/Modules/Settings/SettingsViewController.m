@@ -339,7 +339,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -2362,7 +2362,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     if (cell.selectionStyle != UITableViewCellSelectionStyleNone)
     {        

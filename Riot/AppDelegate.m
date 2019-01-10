@@ -444,8 +444,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     UINavigationController *secondNavController = self.secondaryNavigationController;
     if (secondNavController)
     {
-        secondNavController.navigationBar.barTintColor = kRiotPrimaryBgColor;
-        secondNavController.topViewController.view.backgroundColor = kRiotPrimaryBgColor;
+        secondNavController.navigationBar.barTintColor = RiotDesignValues.theme.backgroundColor;
+        secondNavController.topViewController.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
     }
     
     // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
@@ -835,7 +835,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-            emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+            emptyDetailsViewController.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
             
             splitViewController.viewControllers = @[mainViewController, emptyDetailsViewController];
         }
@@ -2825,7 +2825,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (!launchAnimationContainerView && window)
             {
                 launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = kRiotPrimaryBgColor;
+                launchAnimationContainerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
                 launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [window addSubview:launchAnimationContainerView];
                 
@@ -3531,7 +3531,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    _callStatusBarButton.titleLabel.textColor = kRiotPrimaryBgColor;
+    _callStatusBarButton.titleLabel.textColor = RiotDesignValues.theme.backgroundColor;
     
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
     {
@@ -3691,7 +3691,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-    emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+    emptyDetailsViewController.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
     return emptyDetailsViewController;
 }
 

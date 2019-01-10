@@ -154,12 +154,12 @@
     _searchBarHeaderBorder.backgroundColor = RiotDesignValues.theme.headerBorderColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     // Update the gradient view above the screen
     CGFloat white = 1.0;
-    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    [RiotDesignValues.theme.backgroundColor getWhite:&white alpha:nil];
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
@@ -444,9 +444,9 @@
     // Add blur mask programmatically
     tableViewMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the kRiotPrimaryBgColor.
+    // Consider the grayscale components of the RiotDesignValues.theme.backgroundColor.
     CGFloat white = 1.0;
-    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    [RiotDesignValues.theme.backgroundColor getWhite:&white alpha:nil];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
@@ -877,7 +877,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
     if (kRiotSelectedBgColor)

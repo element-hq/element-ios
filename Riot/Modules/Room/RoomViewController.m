@@ -424,19 +424,19 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = kRiotPrimaryBgColor;
+    self.jumpToLastUnreadBannerContainer.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotPrimaryTextColor, NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
     
     
     self.expandedHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
     self.previewHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
     
-    missedDiscussionsBadgeLabel.textColor = kRiotPrimaryBgColor;
+    missedDiscussionsBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -3338,7 +3338,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
     if (kRiotSelectedBgColor)

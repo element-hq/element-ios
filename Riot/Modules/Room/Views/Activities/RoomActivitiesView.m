@@ -18,6 +18,7 @@
 #import "RoomActivitiesView.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import <objc/runtime.h>
 
@@ -259,12 +260,12 @@
 
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
-    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:kRiotPrimaryBgColor range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:RiotDesignValues.theme.backgroundColor range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
 
     self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
-    self.messageTextView.tintColor = kRiotPrimaryBgColor;
+    self.messageTextView.tintColor = RiotDesignValues.theme.backgroundColor;
     self.messageTextView.hidden = NO;
 
     self.backgroundColor = kRiotColorPinkRed;
@@ -431,13 +432,13 @@
         message2 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_2", @"Vector", nil)
                                                    attributes:@{
                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:fontSize],
-                                                                NSForegroundColorAttributeName: kRiotPrimaryBgColor
+                                                                NSForegroundColorAttributeName: RiotDesignValues.theme.backgroundColor
                                                                 }];
     }
 
     NSDictionary *attributes = @{
                                  NSFontAttributeName: [UIFont systemFontOfSize:fontSize],
-                                 NSForegroundColorAttributeName: kRiotPrimaryBgColor
+                                 NSForegroundColorAttributeName: RiotDesignValues.theme.backgroundColor
                                  };
 
     NSDictionary *messageContact2LinkAttributes;
@@ -481,7 +482,7 @@
     [attributedText appendAttributedString:messageContact3];
 
     self.messageTextView.attributedText = attributedText;
-    self.messageTextView.tintColor = kRiotPrimaryBgColor;
+    self.messageTextView.tintColor = RiotDesignValues.theme.backgroundColor;
     self.messageTextView.hidden = NO;
 
     if (hardLimit)

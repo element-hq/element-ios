@@ -121,9 +121,9 @@
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Use the primary bg color for the recents table view in plain style.
-    self.groupsTableView.backgroundColor = kRiotPrimaryBgColor;
+    self.groupsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     topview.backgroundColor = kRiotSecondaryBgColor;
-    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
 
     [RiotDesignValues.theme applyStyleOnSearchBar:tableSearchBar];
     [RiotDesignValues.theme applyStyleOnSearchBar:self.groupsSearchBar];
@@ -424,7 +424,7 @@
 {
     [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
     if (kRiotSelectedBgColor)

@@ -102,10 +102,10 @@
     self.overlayView.alpha = 1.0;
     
     self.titleLabel.textColor = kRiotPrimaryTextColor;
-    self.containerView.backgroundColor = kRiotPrimaryBgColor;
+    self.containerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Check the table view style to select its bg color.
-    self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : kRiotSecondaryBgColor);
     
     self.closeButton.tintColor = RiotDesignValues.theme.tintColor;
     
@@ -240,7 +240,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
     if (kRiotSelectedBgColor)

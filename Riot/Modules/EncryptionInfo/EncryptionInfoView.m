@@ -29,7 +29,7 @@
     [super customizeViewRendering];
     
     self.backgroundColor = kRiotSecondaryBgColor;
-    self.textView.backgroundColor = kRiotPrimaryBgColor;
+    self.textView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.defaultTextColor = kRiotPrimaryTextColor;
     self.cancelButton.tintColor = RiotDesignValues.theme.tintColor;
     self.verifyButton.tintColor = RiotDesignValues.theme.tintColor;

@@ -17,6 +17,7 @@
 #import "GroupTableViewCell.h"
 
 #import "RiotDesignValues.h"
+#import "Riot-Swift.h"
 
 #import "MXGroup+Riot.h"
 
@@ -46,7 +47,7 @@
     
     if (self.missedNotifAndUnreadBadgeLabel)
     {
-        self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
+        self.missedNotifAndUnreadBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;
     }
     
     self.groupAvatar.defaultBackgroundColor = [UIColor clearColor];

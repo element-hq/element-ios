@@ -117,7 +117,7 @@
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.mainHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
     
     _groupName.textColor = kRiotPrimaryTextColor;

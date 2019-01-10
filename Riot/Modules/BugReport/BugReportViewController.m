@@ -145,8 +145,8 @@
     self.overlayView.backgroundColor = kRiotOverlayColor;
     self.overlayView.alpha = 1.0;
     
-    self.containerView.backgroundColor = kRiotPrimaryBgColor;
-    self.sendingContainer.backgroundColor = kRiotPrimaryBgColor;
+    self.containerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.sendingContainer.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     self.bugReportDescriptionTextView.keyboardAppearance = RiotDesignValues.theme.keyboardAppearance;
     

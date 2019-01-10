@@ -69,7 +69,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.roomTitle.textColor = kRiotPrimaryTextColor;
     self.roomTitle1.textColor = kRiotPrimaryTextColor;
     self.roomTitle2.textColor = kRiotPrimaryTextColor;
-    self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;
     
     // Prepare direct room border
     CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(RiotDesignValues.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);

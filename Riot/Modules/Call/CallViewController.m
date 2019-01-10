@@ -111,7 +111,7 @@
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
     
-    self.remotePreviewContainerView.backgroundColor = kRiotPrimaryBgColor;
+    self.remotePreviewContainerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     if (gradientMaskLayer)
     {
@@ -121,9 +121,9 @@
     // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
     gradientMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the kRiotPrimaryBgColor.
+    // Consider the grayscale components of the RiotDesignValues.theme.backgroundColor.
     CGFloat white = 1.0;
-    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    [RiotDesignValues.theme.backgroundColor getWhite:&white alpha:nil];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
@@ -284,7 +284,7 @@
                                                                
                                                                // Set Riot navigation bar colors
                                                                [RiotDesignValues.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
-                                                               usersDevicesNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
+                                                               usersDevicesNavigationController.navigationBar.barTintColor = RiotDesignValues.theme.backgroundColor;
 
                                                                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
                                                                

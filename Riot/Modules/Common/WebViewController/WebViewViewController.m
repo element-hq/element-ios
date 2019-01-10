@@ -56,7 +56,7 @@
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    webView.backgroundColor = kRiotPrimaryBgColor;
+    webView.backgroundColor = RiotDesignValues.theme.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

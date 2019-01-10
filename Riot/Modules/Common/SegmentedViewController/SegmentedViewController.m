@@ -182,7 +182,7 @@
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -469,7 +469,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (count)
     {
         UILabel *missedNotifAndUnreadBadgeLabel = [[UILabel alloc] init];
-        missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
+        missedNotifAndUnreadBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;
         missedNotifAndUnreadBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
         if (count > 1000)
         {

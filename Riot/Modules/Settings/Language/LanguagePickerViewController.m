@@ -76,8 +76,8 @@
     [RiotDesignValues.theme applyStyleOnSearchBar:self.searchBar];
     
     // Use the primary bg color for the table view in plain style.
-    self.tableView.backgroundColor = kRiotPrimaryBgColor;
-    topview.backgroundColor = kRiotPrimaryBgColor;
+    self.tableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    topview.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     if (self.tableView.dataSource)
     {
@@ -116,7 +116,7 @@
 {
     cell.textLabel.textColor = kRiotPrimaryTextColor;
     cell.detailTextLabel.textColor = kRiotSecondaryTextColor;
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
     if (kRiotSelectedBgColor)
