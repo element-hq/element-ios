@@ -82,7 +82,7 @@ static const CGFloat kButtonSize = 80.0;
         
         self.callInfoLabel = [[UILabel alloc] init];
         self.callInfoLabel.backgroundColor = RiotDesignValues.theme.backgroundColor;
-        self.callInfoLabel.textColor = kRiotSecondaryTextColor;
+        self.callInfoLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
         self.callInfoLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.callInfoLabel.text = callInfo;
         self.callInfoLabel.textAlignment = NSTextAlignmentCenter;

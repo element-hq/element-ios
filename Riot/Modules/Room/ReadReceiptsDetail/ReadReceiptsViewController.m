@@ -197,7 +197,7 @@
     MXKReadReceiptTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[MXKReadReceiptTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
     
     cell.displayNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    cell.receiptDescriptionLabel.textColor = kRiotSecondaryTextColor;
+    cell.receiptDescriptionLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     
     if (indexPath.row < self.roomMembers.count)
     {
@@ -224,9 +224,9 @@
         NSString *receiptReadText = NSLocalizedStringFromTable(@"receipt_status_read", @"Vector", nil);
         NSString *receiptTimeText = [(MXKEventFormatter*)self.session.roomSummaryUpdateDelegate dateStringFromTimestamp:self.receipts[indexPath.row].ts withTime:YES];
         
-        NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : kRiotSecondaryTextColor, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];
+        NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textSecondaryColor, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];
         
-        [receiptDescription appendAttributedString:[[NSAttributedString alloc] initWithString:receiptTimeText attributes:@{NSForegroundColorAttributeName : kRiotSecondaryTextColor, NSFontAttributeName : [UIFont  systemFontOfSize:15]}]];
+        [receiptDescription appendAttributedString:[[NSAttributedString alloc] initWithString:receiptTimeText attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textSecondaryColor, NSFontAttributeName : [UIFont  systemFontOfSize:15]}]];
         
         cell.receiptDescriptionLabel.attributedText = receiptDescription;
     }

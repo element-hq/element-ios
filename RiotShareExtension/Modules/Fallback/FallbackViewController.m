@@ -17,6 +17,12 @@
 #import "FallbackViewController.h"
 #import "RiotDesignValues.h"
 
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
+
 @interface FallbackViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -29,7 +35,7 @@
 {
     [super viewDidLoad];
     
-    self.titleLabel.textColor = kRiotSecondaryTextColor;
+    self.titleLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     self.titleLabel.text = NSLocalizedStringFromTable(@"share_extension_auth_prompt", @"Vector", nil);
 }
 

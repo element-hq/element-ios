@@ -218,11 +218,11 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
                            }", (unsigned long)bgColor];
         
         self.defaultTextColor = RiotDesignValues.theme.textPrimaryColor;
-        self.subTitleTextColor = kRiotSecondaryTextColor;
-        self.prefixTextColor = kRiotSecondaryTextColor;
+        self.subTitleTextColor = RiotDesignValues.theme.textSecondaryColor;
+        self.prefixTextColor = RiotDesignValues.theme.textSecondaryColor;
         self.bingTextColor = RiotDesignValues.theme.notificationMentionColor;
         self.encryptingTextColor = RiotDesignValues.theme.tintColor;
-        self.sendingTextColor = kRiotSecondaryTextColor;
+        self.sendingTextColor = RiotDesignValues.theme.textSecondaryColor;
         self.errorTextColor = kRiotColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];

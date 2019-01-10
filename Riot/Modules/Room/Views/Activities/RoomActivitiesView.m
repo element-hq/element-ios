@@ -115,7 +115,7 @@
     self.separatorView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
     if (self.messageLabel.textColor != kRiotColorPinkRed)
     {
-        self.messageLabel.textColor = kRiotSecondaryTextColor;
+        self.messageLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     }
 }
 
@@ -535,7 +535,7 @@
     [self.messageTextView resignFirstResponder];
     self.messageTextView.hidden = YES;
     
-    self.messageLabel.textColor = kRiotSecondaryTextColor;
+    self.messageLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
 
     objc_removeAssociatedObjects(self.messageTextView);
 }

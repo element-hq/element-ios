@@ -38,7 +38,7 @@
     [super customizeTableViewCellRendering];
     
     self.roomDisplayName.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.roomTopic.textColor = kRiotSecondaryTextColor;
+    self.roomTopic.textColor = RiotDesignValues.theme.textSecondaryColor;
     
     _roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }

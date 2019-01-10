@@ -2220,7 +2220,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             // disable the edition if the user cannot update it
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
-            topicTextView.textColor = kRiotSecondaryTextColor;
+            topicTextView.textColor = RiotDesignValues.theme.textSecondaryColor;
             
             topicTextView.keyboardAppearance = RiotDesignValues.theme.keyboardAppearance;
             
@@ -2259,7 +2259,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             // disable the edition if the user cannot update it
             nameTextField.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
-            nameTextField.textColor = kRiotSecondaryTextColor;
+            nameTextField.textColor = RiotDesignValues.theme.textSecondaryColor;
             
             // Add a "textFieldDidChange" notification method to the text field control.
             [nameTextField addTarget:self action:@selector(onTextFieldUpdate:) forControlEvents:UIControlEventEditingChanged];
@@ -2507,7 +2507,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             addAddressTextField.userInteractionEnabled = YES;
             addAddressTextField.text = currentValue;
-            addAddressTextField.textColor = kRiotSecondaryTextColor;
+            addAddressTextField.textColor = RiotDesignValues.theme.textSecondaryColor;
             
             addAddressTextField.tintColor = RiotDesignValues.theme.tintColor;
             addAddressTextField.font = [UIFont systemFontOfSize:17];
@@ -2598,7 +2598,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             addGroupTextField.userInteractionEnabled = YES;
             addGroupTextField.text = currentValue;
-            addGroupTextField.textColor = kRiotSecondaryTextColor;
+            addGroupTextField.textColor = RiotDesignValues.theme.textSecondaryColor;
 
             addGroupTextField.tintColor = RiotDesignValues.theme.tintColor;
             addGroupTextField.font = [UIFont systemFontOfSize:17];
@@ -2660,7 +2660,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
             cell.detailTextLabel.text = mxRoomState.roomId;
-            cell.detailTextLabel.textColor = kRiotSecondaryTextColor;
+            cell.detailTextLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
             cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;

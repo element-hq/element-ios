@@ -606,7 +606,7 @@
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = kRiotSecondaryTextColor;
+    searchBarTextField.textColor = RiotDesignValues.theme.textSecondaryColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;

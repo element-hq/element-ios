@@ -113,7 +113,7 @@
     self.isoCountryCodeLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.callingCodeLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
-    self.messageLabel.textColor = kRiotSecondaryTextColor;
+    self.messageLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     self.messageLabel.numberOfLines = 0;
     
     if (kRiotPlaceholderTextColor)

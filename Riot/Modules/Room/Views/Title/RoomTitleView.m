@@ -139,7 +139,7 @@
 
     // Use same color as navigation bar
     self.backgroundColor = RiotDesignValues.theme.baseColor;
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? RiotDesignValues.theme.baseTextPrimaryColor : kRiotSecondaryTextColor);
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? RiotDesignValues.theme.baseTextPrimaryColor : RiotDesignValues.theme.textSecondaryColor);
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -164,7 +164,7 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
-            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
+            self.displayNameTextField.textColor = RiotDesignValues.theme.textSecondaryColor;
         }
         else
         {

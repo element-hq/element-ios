@@ -42,8 +42,8 @@
     [super customizeTableViewCellRendering];
     
     self.groupName.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.groupDescription.textColor = kRiotSecondaryTextColor;
-    self.memberCount.textColor = kRiotSecondaryTextColor;
+    self.groupDescription.textColor = RiotDesignValues.theme.textSecondaryColor;
+    self.memberCount.textColor = RiotDesignValues.theme.textSecondaryColor;
     
     if (self.missedNotifAndUnreadBadgeLabel)
     {

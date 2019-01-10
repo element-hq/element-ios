@@ -28,7 +28,7 @@
     
     self.userNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
     
-    self.roomNameLabel.textColor = kRiotSecondaryTextColor;
+    self.roomNameLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     
     self.messageTextView.tintColor = RiotDesignValues.theme.tintColor;
 }

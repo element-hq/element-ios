@@ -166,15 +166,15 @@
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
     [self updateForgotPwdButtonVisibility];
     
-    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : kRiotSecondaryTextColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
+    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
     self.homeServerTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.homeServerLabel.textColor = kRiotSecondaryTextColor;
+    self.homeServerLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     
     self.identityServerTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.identityServerLabel.textColor = kRiotSecondaryTextColor;
+    self.identityServerLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
 
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     

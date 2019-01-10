@@ -54,7 +54,7 @@
     
     // apply the vector colours
     self.contactDisplayNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.contactInformationLabel.textColor = kRiotSecondaryTextColor;
+    self.contactInformationLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     
     // Clear the default background color of a MXKImageView instance
     self.thumbnailView.defaultBackgroundColor = [UIColor clearColor];

@@ -119,7 +119,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     cell.textLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    cell.detailTextLabel.textColor = kRiotSecondaryTextColor;
+    cell.detailTextLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view

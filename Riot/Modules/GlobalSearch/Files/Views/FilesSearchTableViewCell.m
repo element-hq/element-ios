@@ -30,9 +30,9 @@
     
     self.title.textColor = RiotDesignValues.theme.textPrimaryColor;
     
-    self.message.textColor = kRiotSecondaryTextColor;
+    self.message.textColor = RiotDesignValues.theme.textSecondaryColor;
     
-    self.date.tintColor = kRiotSecondaryTextColor;
+    self.date.tintColor = RiotDesignValues.theme.textSecondaryColor;
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth

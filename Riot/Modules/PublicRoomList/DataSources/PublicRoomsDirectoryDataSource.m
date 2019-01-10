@@ -20,6 +20,7 @@
 #import "PublicRoomTableViewCell.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #pragma mark - Constants definitions
 
@@ -338,7 +339,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotSecondaryTextColor;
+            tableViewCell.textLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }

@@ -62,7 +62,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         
         timeLabel.text = [bubbleData.eventFormatter timeStringFromDate:component.date];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = kRiotSecondaryTextColor;
+        timeLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
              timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
@@ -264,7 +264,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = kRiotSecondaryTextColor;
+        timeLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
             timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];

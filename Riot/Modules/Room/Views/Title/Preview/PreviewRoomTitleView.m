@@ -74,7 +74,7 @@
     self.previewLabel.textColor = kRiotTopicTextColor;
     self.previewLabel.numberOfLines = 0;
     
-    self.subNoticeLabel.textColor = kRiotSecondaryTextColor;
+    self.subNoticeLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     self.subNoticeLabel.numberOfLines = 0;
     
     self.bottomBorderView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;

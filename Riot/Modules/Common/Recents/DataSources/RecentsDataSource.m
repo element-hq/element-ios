@@ -755,7 +755,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         // Apply the current UI theme.
         networkLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-        directoryServerLabel.textColor = kRiotSecondaryTextColor;
+        directoryServerLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
 
         // Set the current directory server name
         directoryServerLabel.text = _publicRoomsDirectoryDataSource.directoryServerDisplayname;
@@ -846,7 +846,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotSecondaryTextColor;
+            tableViewCell.textLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }

@@ -27,7 +27,7 @@
     [super customizeTableViewCellRendering];
     
     self.albumDisplayNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.albumCountLabel.textColor = kRiotSecondaryTextColor;
+    self.albumCountLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
 }
 
 @end

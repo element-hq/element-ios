@@ -1300,7 +1300,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     cell.mxkTextField.userInteractionEnabled = YES;
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
     cell.mxkTextField.textAlignment = NSTextAlignmentRight;
-    cell.mxkTextField.textColor = kRiotSecondaryTextColor;
+    cell.mxkTextField.textColor = RiotDesignValues.theme.textSecondaryColor;
     cell.mxkTextField.font = [UIFont systemFontOfSize:16];
     cell.mxkTextField.placeholder = nil;
     

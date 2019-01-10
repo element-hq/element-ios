@@ -31,7 +31,7 @@
     [super customizeTableViewCellRendering];
     
     self.titleLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.descriptionLabel.textColor = kRiotSecondaryTextColor;
+    self.descriptionLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
 }
 
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource

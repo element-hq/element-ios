@@ -140,7 +140,7 @@
     
     if (_groupLongDescription)
     {
-        _groupLongDescription.textColor = kRiotSecondaryTextColor;
+        _groupLongDescription.textColor = RiotDesignValues.theme.textSecondaryColor;
         _groupLongDescription.tintColor = kRiotColorBlue;
         
         // Update HTML loading options
