@@ -2413,6 +2413,7 @@
 			);
 			path = Riot;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		F083BB0E1E7009EC00A9B29C /* Assets */ = {
 			isa = PBXGroup;
@@ -2513,6 +2514,7 @@
 				A237FB70534FB8ADA0D7CFEE /* Pods */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		F094A9A31B78D8F000B1FBBF /* Products */ = {
 			isa = PBXGroup;
