@@ -53,6 +53,8 @@ import UIKit
     /// Status bar style to use
     var statusBarStyle: UIStatusBarStyle { get }
 
+    var scrollBarStyle: UIScrollViewIndicatorStyle { get }
+
     var keyboardAppearance : UIKeyboardAppearance { get }
 
 

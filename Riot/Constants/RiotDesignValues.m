@@ -38,8 +38,6 @@ UIColor *kRiotColorOrange;
 NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
 
-UIScrollViewIndicatorStyle kRiotScrollBarStyle;
-
 @implementation RiotDesignValues
 
 + (RiotDesignValues *)sharedInstance
@@ -96,31 +94,7 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
 
 - (void)userInterfaceThemeDidChange
 {
-    // Retrieve the current selected theme ("light" if none. "auto" is used as default from iOS 11).
-    NSString *themeId = RiotSettings.shared.userInterfaceTheme;
-
-    if (!themeId || [themeId isEqualToString:@"auto"])
-    {
-        themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
-    }
-
-    if ([themeId isEqualToString:@"dark"])
-    {
-        // Set dark theme colors
-        kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
-    }
-    else if ([themeId isEqualToString:@"black"])
-    {
-        // Set black theme colors
-        kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
-    }
-    else
-    {
-        // Set light theme colors by default.
-        kRiotScrollBarStyle = UIScrollViewIndicatorStyleDefault;
-    }
-
-    [UIScrollView appearance].indicatorStyle = kRiotScrollBarStyle;
+    [UIScrollView appearance].indicatorStyle = RiotDesignValues.theme.scrollBarStyle;
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
 }

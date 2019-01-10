@@ -53,6 +53,8 @@ final class DefaultTheme: NSObject, Theme {
 
     let statusBarStyle: UIStatusBarStyle = .lightContent
 
+    let scrollBarStyle: UIScrollViewIndicatorStyle = .default
+
     let keyboardAppearance: UIKeyboardAppearance = .light
 
     // Use default 70% gray color.

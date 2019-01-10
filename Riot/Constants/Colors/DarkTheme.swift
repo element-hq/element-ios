@@ -53,6 +53,8 @@ final class DarkTheme: NSObject, Theme {
 
     let statusBarStyle: UIStatusBarStyle = .lightContent
 
+    let scrollBarStyle: UIScrollViewIndicatorStyle = .white
+
     let keyboardAppearance: UIKeyboardAppearance = .dark
 
     let placeholderTextColor: UIColor? = UIColor(white: 1.0, alpha: 0.3)
