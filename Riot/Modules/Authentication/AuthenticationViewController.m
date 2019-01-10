@@ -138,19 +138,19 @@
     self.authenticationScrollView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     self.authFallbackContentView.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
-    if (kRiotPlaceholderTextColor)
+    if (RiotDesignValues.theme.placeholderTextColor)
     {
         if (self.homeServerTextField.placeholder)
         {
             self.homeServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.homeServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
         if (self.identityServerTextField.placeholder)
         {
             self.identityServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.identityServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
     }
     
@@ -176,7 +176,7 @@
     self.identityServerTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
     self.identityServerLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     [self.authInputsView customizeViewRendering];
     

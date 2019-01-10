@@ -221,7 +221,7 @@
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     self.navigationController.navigationBar.translucent = YES;
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     self.memberHeaderView.backgroundColor = RiotDesignValues.theme.baseColor;
     self.roomMemberNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
@@ -846,10 +846,10 @@
     cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (RiotDesignValues.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
     }
     else
     {

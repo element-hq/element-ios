@@ -336,7 +336,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
@@ -1527,11 +1527,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             {
                 newEmailCell.mxkLabel.text = nil;
                 newEmailCell.mxkTextField.placeholder = NSLocalizedStringFromTable(@"settings_email_address_placeholder", @"Vector", nil);
-                if (kRiotPlaceholderTextColor)
+                if (RiotDesignValues.theme.placeholderTextColor)
                 {
                     newEmailCell.mxkTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                  initWithString:newEmailCell.mxkTextField.placeholder
-                                                                 attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                                 attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
                 }
                 newEmailCell.mxkTextField.text = newEmailTextField.text;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
@@ -2367,10 +2367,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     if (cell.selectionStyle != UITableViewCellSelectionStyleNone)
     {        
         // Update the selected background view
-        if (kRiotSelectedBgColor)
+        if (RiotDesignValues.theme.selectedBackgroundColor)
         {
             cell.selectedBackgroundView = [[UIView alloc] init];
-            cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+            cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
         }
         else
         {

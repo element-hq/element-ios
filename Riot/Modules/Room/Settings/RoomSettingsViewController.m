@@ -268,7 +268,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
@@ -2499,11 +2499,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             addAddressTextField = addAddressCell.mxkTextField;
             addAddressTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_address_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
-            if (kRiotPlaceholderTextColor)
+            if (RiotDesignValues.theme.placeholderTextColor)
             {
                 addAddressTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:addAddressTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
             }
             addAddressTextField.userInteractionEnabled = YES;
             addAddressTextField.text = currentValue;
@@ -2590,11 +2590,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
             addGroupTextField = addCommunityCell.mxkTextField;
             addGroupTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_flair_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
-            if (kRiotPlaceholderTextColor)
+            if (RiotDesignValues.theme.placeholderTextColor)
             {
                 addGroupTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:addGroupTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
             }
             addGroupTextField.userInteractionEnabled = YES;
             addGroupTextField.text = currentValue;
@@ -2825,10 +2825,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (RiotDesignValues.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
     }
     else
     {

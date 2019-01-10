@@ -62,7 +62,7 @@
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     self.backButton.tintColor = RiotDesignValues.theme.tintColor;
 }

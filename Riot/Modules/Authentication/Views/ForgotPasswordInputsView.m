@@ -60,7 +60,7 @@
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_new_password_placeholder", @"Vector", nil);
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_new_password_placeholder", @"Vector", nil);
     
-    if (kRiotPlaceholderTextColor)
+    if (RiotDesignValues.theme.placeholderTextColor)
     {
         // Apply placeholder color
         [self customizeViewRendering];
@@ -117,25 +117,25 @@
     self.nextStepButton.clipsToBounds = YES;
     self.nextStepButton.backgroundColor = RiotDesignValues.theme.tintColor;
     
-    if (kRiotPlaceholderTextColor)
+    if (RiotDesignValues.theme.placeholderTextColor)
     {
         if (self.emailTextField.placeholder)
         {
             self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                          initWithString:self.emailTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                         attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
         if (self.passWordTextField.placeholder)
         {
             self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                          initWithString:self.passWordTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                         attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
         if (self.repeatPasswordTextField.placeholder)
         {
             self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                             initWithString:self.repeatPasswordTextField.placeholder
-                                                            attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                            attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
     }
 }

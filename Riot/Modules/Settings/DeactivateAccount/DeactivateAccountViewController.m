@@ -125,7 +125,7 @@ static CGFloat const kTextFontSize = 15.0;
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
 }
 
 - (void)setupStringAttributes

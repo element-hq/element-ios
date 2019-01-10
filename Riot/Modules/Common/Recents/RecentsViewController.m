@@ -161,7 +161,7 @@
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     // Use the primary bg color for the recents table view in plain style.
     self.recentsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
@@ -1188,10 +1188,10 @@
     cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (RiotDesignValues.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
     }
     else
     {

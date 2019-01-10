@@ -55,6 +55,14 @@ final class DefaultTheme: NSObject, Theme {
 
     let keyboardAppearance: UIKeyboardAppearance = .light
 
+    // Use default 70% gray color.
+    var placeholderTextColor: UIColor?
+
+    // Use the default selection color
+    var selectedBackgroundColor: UIColor?
+
+    let overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
+
     let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {

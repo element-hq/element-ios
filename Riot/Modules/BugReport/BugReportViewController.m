@@ -140,9 +140,9 @@
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
-    self.overlayView.backgroundColor = kRiotOverlayColor;
+    self.overlayView.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     self.overlayView.alpha = 1.0;
     
     self.containerView.backgroundColor = RiotDesignValues.theme.backgroundColor;

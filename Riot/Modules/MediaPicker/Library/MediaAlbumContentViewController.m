@@ -116,7 +116,7 @@
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.assetsCollectionView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

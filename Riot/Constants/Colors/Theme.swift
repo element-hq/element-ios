@@ -56,8 +56,17 @@ import UIKit
     var keyboardAppearance : UIKeyboardAppearance { get }
 
 
-    // MARK: - Colors that have currently few usage and may disappear in a redesign
+    // MARK: - Colors not defined in the design palette
 
+
+    /// nil is used to keep the default color
+    var placeholderTextColor: UIColor? { get }
+
+    /// nil is used to keep the default color
+    var selectedBackgroundColor: UIColor? { get }
+
+    /// fading behind dialog modals
+    var overlayBackgroundColor: UIColor { get }
 
     /// Color to tint the search background image
     var matrixSearchBackgroundImageTintColor: UIColor { get }

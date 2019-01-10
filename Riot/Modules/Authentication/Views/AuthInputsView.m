@@ -72,7 +72,7 @@
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
     
-    if (kRiotPlaceholderTextColor)
+    if (RiotDesignValues.theme.placeholderTextColor)
     {
         // Apply placeholder color
         [self customizeViewRendering];
@@ -116,20 +116,20 @@
     self.messageLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
     self.messageLabel.numberOfLines = 0;
     
-    if (kRiotPlaceholderTextColor)
+    if (RiotDesignValues.theme.placeholderTextColor)
     {
         if (self.userLoginTextField.placeholder)
         {
             self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.userLoginTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
         
         if (self.repeatPasswordTextField.placeholder)
         {
             self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                   initWithString:self.repeatPasswordTextField.placeholder
-                                                                  attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                                  attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
             
         }
         
@@ -137,21 +137,21 @@
         {
             self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                             initWithString:self.passWordTextField.placeholder
-                                                            attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                            attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
         
         if (self.phoneTextField.placeholder)
         {
             self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                          initWithString:self.phoneTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                         attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
         
         if (self.emailTextField.placeholder)
         {
             self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                          initWithString:self.emailTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                         attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
     }
 }
@@ -196,14 +196,14 @@
                 self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
                 
-                if (kRiotPlaceholderTextColor)
+                if (RiotDesignValues.theme.placeholderTextColor)
                 {
                     self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                      initWithString:self.userLoginTextField.placeholder
-                                                                     attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                                     attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
                     self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                  initWithString:self.phoneTextField.placeholder
-                                                                 attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                                 attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
                 }
                 
                 self.userLoginContainer.hidden = NO;
@@ -1025,11 +1025,11 @@
     {
         self.passWordTextField.returnKeyType = UIReturnKeyNext;
         
-        if (kRiotPlaceholderTextColor)
+        if (RiotDesignValues.theme.placeholderTextColor)
         {
             self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil)
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
         }
         else
         {
@@ -1057,11 +1057,11 @@
                 self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
             }
             
-            if (kRiotPlaceholderTextColor)
+            if (RiotDesignValues.theme.placeholderTextColor)
             {
                 self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.emailTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
             }
             
             self.emailContainer.hidden = NO;
@@ -1085,11 +1085,11 @@
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_phone_placeholder", @"Vector", nil);
             }
             
-            if (kRiotPlaceholderTextColor)
+            if (RiotDesignValues.theme.placeholderTextColor)
             {
                 self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.phoneTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
             }
             
             self.phoneContainer.hidden = NO;

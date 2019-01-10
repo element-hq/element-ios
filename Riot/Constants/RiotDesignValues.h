@@ -35,11 +35,6 @@ extern NSString *const kRiotDesignValuesDidChangeThemeNotification;
                      blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
                     alpha:1.0]
 
-#pragma mark - Riot Theme Colors (depends on the selected theme light or dark).
-extern UIColor *kRiotPlaceholderTextColor; // nil is used to keep the default color.
-extern UIColor *kRiotSelectedBgColor; // nil is used to keep the default color.
-extern UIColor *kRiotOverlayColor; // fading behind dialog modals. This color includes the transparency value.
-
 #pragma mark - Riot Colors
 extern UIColor *kRiotColorPinkRed;
 extern UIColor *kRiotColorRed;

@@ -122,7 +122,7 @@
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
@@ -229,10 +229,10 @@
     cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (RiotDesignValues.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
     }
     else
     {

@@ -159,7 +159,7 @@
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
@@ -1178,10 +1178,10 @@
     cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (RiotDesignValues.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
     }
     else
     {

@@ -26,10 +26,6 @@
 
 NSString *const kRiotDesignValuesDidChangeThemeNotification = @"kRiotDesignValuesDidChangeThemeNotification";
 
-UIColor *kRiotPlaceholderTextColor;
-UIColor *kRiotSelectedBgColor;
-UIColor *kRiotOverlayColor;
-
 // Riot Colors
 UIColor *kRiotColorPinkRed;
 UIColor *kRiotColorRed;
@@ -111,31 +107,16 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     if ([themeId isEqualToString:@"dark"])
     {
         // Set dark theme colors
-        kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-        kRiotSelectedBgColor = [UIColor blackColor];
-
-        kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
-        
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
     }
     else if ([themeId isEqualToString:@"black"])
     {
         // Set black theme colors
-        kRiotPlaceholderTextColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-        kRiotSelectedBgColor = [UIColor blackColor];
-
-        kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
-
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleWhite;
     }
     else
     {
         // Set light theme colors by default.
-        kRiotPlaceholderTextColor = nil; // Use default 70% gray color.
-        kRiotSelectedBgColor = nil; // Use the default selection color.
-
-        kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
-
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleDefault;
     }
 

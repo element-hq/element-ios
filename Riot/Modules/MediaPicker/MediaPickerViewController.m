@@ -184,7 +184,7 @@ static void *RecordingContext = &RecordingContext;
 {
     [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
     
     self.cameraVideoCaptureProgressView.progressColor = RiotDesignValues.theme.backgroundColor;
     self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
@@ -1768,10 +1768,10 @@ static void *RecordingContext = &RecordingContext;
     cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (RiotDesignValues.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
     }
     else
     {
