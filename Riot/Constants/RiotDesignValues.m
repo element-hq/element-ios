@@ -42,6 +42,8 @@ UIColor *kRiotColorPinkRed;
 UIColor *kRiotColorRed;
 UIColor *kRiotColorBlue;
 UIColor *kRiotColorCuriousBlue;
+UIColor *kRiotColorIndigo;
+UIColor *kRiotColorOrange;
 
 // Riot Background Colors
 UIColor *kRiotColorLightKeyboard;   // TO REMOVE
@@ -87,6 +89,8 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     kRiotColorRed = UIColorFromRGB(0xFF4444);
     kRiotColorBlue = UIColorFromRGB(0x81BDDB);
     kRiotColorCuriousBlue = UIColorFromRGB(0x2A9EDB);
+    kRiotColorIndigo = UIColorFromRGB(0xBD79CC);
+    kRiotColorOrange = UIColorFromRGB(0xF8A15F);
 
     kRiotColorLightKeyboard = UIColorFromRGB(0xE7E7E7);
     kRiotColorDarkKeyboard = UIColorFromRGB(0x7E7E7E);

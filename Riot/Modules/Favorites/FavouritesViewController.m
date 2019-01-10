@@ -55,6 +55,7 @@
     [super viewWillAppear:animated];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorIndigo;
     
     if (recentsDataSource)
     {
@@ -63,7 +64,6 @@
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeFavourites];
     }
 }
-
 
 - (void)dealloc
 {

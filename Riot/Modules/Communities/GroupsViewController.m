@@ -204,6 +204,7 @@
     }];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorBlue;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
