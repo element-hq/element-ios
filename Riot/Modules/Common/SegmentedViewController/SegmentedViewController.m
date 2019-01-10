@@ -249,7 +249,7 @@
         // create programmatically each label
         UILabel *label = [[UILabel alloc] init];
         
-        label.text = [sectionTitles objectAtIndex:index];
+        label.text = sectionTitles[index];
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = _sectionHeaderTintColor;
@@ -269,7 +269,7 @@
             leftConstraint = [NSLayoutConstraint constraintWithItem:label
                                                           attribute:NSLayoutAttributeLeading
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:[labels objectAtIndex:(index-1)]
+                                                             toItem:labels[index - 1]
                                                           attribute:NSLayoutAttributeTrailing
                                                          multiplier:1.0
                                                            constant:0];
@@ -345,7 +345,7 @@
     leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
                                                             attribute:NSLayoutAttributeLeading
                                                             relatedBy:NSLayoutRelationEqual
-                                                               toItem:[sectionLabels objectAtIndex:_selectedIndex]
+                                                               toItem:sectionLabels[_selectedIndex]
                                                             attribute:NSLayoutAttributeLeading
                                                            multiplier:1.0
                                                              constant:0];
@@ -392,7 +392,7 @@
         
         if (index != NSNotFound)
         {
-            UILabel* label = [sectionLabels objectAtIndex:index];
+            UILabel* label = sectionLabels[index];
             label.font = [UIFont systemFontOfSize:17];
         }
         
@@ -404,7 +404,7 @@
         [NSLayoutConstraint deactivateConstraints:@[displayedVCTopConstraint, displayedVCLeftConstraint, displayedVCWidthConstraint, displayedVCHeightConstraint]];
     }
     
-    UILabel* label = [sectionLabels objectAtIndex:_selectedIndex];
+    UILabel* label = sectionLabels[_selectedIndex];
     label.font = [UIFont boldSystemFontOfSize:17];
 
     // update the marker view position
@@ -413,7 +413,7 @@
     leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
                                                             attribute:NSLayoutAttributeLeading
                                                             relatedBy:NSLayoutRelationEqual
-                                                               toItem:[sectionLabels objectAtIndex:_selectedIndex]
+                                                               toItem:sectionLabels[_selectedIndex]
                                                             attribute:NSLayoutAttributeLeading
                                                            multiplier:1.0
                                                              constant:0];
@@ -421,7 +421,7 @@
     [NSLayoutConstraint activateConstraints:@[leftMarkerViewConstraint]];
 
     // Set the new selected view controller
-    _selectedViewController = [viewControllers objectAtIndex:_selectedIndex];
+    _selectedViewController = viewControllers[_selectedIndex];
 
     // Make iOS invoke selectedViewController viewWillAppear when the segmented view is already visible
     if (isViewAppeared)

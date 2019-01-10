@@ -162,7 +162,7 @@
     [kRiotPrimaryBgColor getWhite:&white alpha:nil];
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
-    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
     
     if (self.tableView.dataSource)
     {
@@ -451,13 +451,12 @@
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     
-    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
     
     // display a gradient to the rencents bottom (20% of the bottom of the screen)
-    tableViewMaskLayer.locations = [NSArray arrayWithObjects:
-                                    [NSNumber numberWithFloat:0],
-                                    [NSNumber numberWithFloat:0.85],
-                                    [NSNumber numberWithFloat:1.0], nil];
+    tableViewMaskLayer.locations = @[@0.0F,
+            @0.85F,
+            @1.0F];
     
     tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     tableViewMaskLayer.anchorPoint = CGPointZero;
@@ -541,11 +540,11 @@
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
     {
-        [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxGroupUser.userId];
+        contactsDataSource.ignoredContactsByMatrixId[contact.mxGroupUser.userId] = contact;
     }
     for (Contact *contact in invitedParticipants)
     {
-        [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxGroupUser.userId];
+        contactsDataSource.ignoredContactsByMatrixId[contact.mxGroupUser.userId] = contact;
     }
     
     [contactsPickerViewController showSearch:YES];

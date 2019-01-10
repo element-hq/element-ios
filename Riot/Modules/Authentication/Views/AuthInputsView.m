@@ -1281,11 +1281,11 @@
     // Retrieve the site key
     NSString *siteKey;
     
-    id recaptchaParams = [currentSession.params objectForKey:kMXLoginFlowTypeRecaptcha];
+    id recaptchaParams = currentSession.params[kMXLoginFlowTypeRecaptcha];
     if (recaptchaParams && [recaptchaParams isKindOfClass:NSDictionary.class])
     {
         NSDictionary *recaptchaParamsDict = (NSDictionary*)recaptchaParams;
-        siteKey = [recaptchaParamsDict objectForKey:@"public_key"];
+        siteKey = recaptchaParamsDict[@"public_key"];
     }
     
     // Retrieve the REST client from delegate

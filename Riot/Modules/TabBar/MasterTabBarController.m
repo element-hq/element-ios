@@ -74,11 +74,11 @@
     // Do any additional setup after loading the view, typically from a nib.
 
     // Retrieve the all view controllers
-    _homeViewController = [self.viewControllers objectAtIndex:TABBAR_HOME_INDEX];
-    _favouritesViewController = [self.viewControllers objectAtIndex:TABBAR_FAVOURITES_INDEX];
-    _peopleViewController = [self.viewControllers objectAtIndex:TABBAR_PEOPLE_INDEX];
-    _roomsViewController = [self.viewControllers objectAtIndex:TABBAR_ROOMS_INDEX];
-    _groupsViewController = [self.viewControllers objectAtIndex:TABBAR_GROUPS_INDEX];
+    _homeViewController = self.viewControllers[TABBAR_HOME_INDEX];
+    _favouritesViewController = self.viewControllers[TABBAR_FAVOURITES_INDEX];
+    _peopleViewController = self.viewControllers[TABBAR_PEOPLE_INDEX];
+    _roomsViewController = self.viewControllers[TABBAR_ROOMS_INDEX];
+    _groupsViewController = self.viewControllers[TABBAR_GROUPS_INDEX];
     
     // Set the accessibility labels for all buttons #1842
     [_settingsBarButtonItem setAccessibilityLabel:NSLocalizedStringFromTable(@"settings_title", @"Vector", nil)];
@@ -872,7 +872,7 @@
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     
     currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
     

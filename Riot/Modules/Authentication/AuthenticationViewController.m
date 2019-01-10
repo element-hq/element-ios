@@ -160,7 +160,7 @@
     self.noFlowLabel.textColor = kRiotColorRed;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
-    [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, forgotPasswordTitle.length)];
     [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:RiotDesignValues.colorValues.accent range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
@@ -290,7 +290,7 @@
         if (!countryCode)
         {
             // If none, consider the preferred locale
-            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
+            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[NSBundle mainBundle] preferredLocalizations][0]];
             if ([local respondsToSelector:@selector(countryCode)])
             {
                 countryCode = local.countryCode;

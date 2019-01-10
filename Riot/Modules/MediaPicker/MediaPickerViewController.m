@@ -306,7 +306,7 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)checkDeviceAuthorizationStatus
 {
-    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
     [MXKTools checkAccessForMediaType:AVMediaTypeVideo
                   manualChangeMessage:[NSString stringWithFormat:NSLocalizedStringFromTable(@"camera_access_not_granted", @"Vector", nil), appDisplayName]
@@ -1324,7 +1324,7 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)caughtAVRuntimeError:(NSNotification*)note
 {
-    NSError *error = [[note userInfo] objectForKey:AVCaptureSessionErrorKey];
+    NSError *error = [note userInfo][AVCaptureSessionErrorKey];
     NSLog(@"[MediaPickerVC] AV Session Error: %@", error);
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1838,7 +1838,7 @@ static void *RecordingContext = &RecordingContext;
 {
     if (validationView)
     {
-        validationView.image = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
+        validationView.image = [notification userInfo][MPMoviePlayerThumbnailImageKey];
         [validationView bringSubviewToFront:videoPlayerControl];
 
         // Now, there is a thumbnail, show the video control

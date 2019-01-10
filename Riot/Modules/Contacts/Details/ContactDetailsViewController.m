@@ -728,7 +728,7 @@
         
         if (indexPath.row < actionsArray.count)
         {
-            NSNumber *actionNumber = [actionsArray objectAtIndex:indexPath.row];
+            NSNumber *actionNumber = actionsArray[indexPath.row];
             
             NSString *title = [self actionButtonTitle:actionNumber.unsignedIntegerValue];
             

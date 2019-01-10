@@ -376,7 +376,7 @@
         NSArray *identifiers = contact.matrixIdentifiers;
         if (identifiers.count)
         {
-            if ([_ignoredContactsByMatrixId objectForKey:identifiers.firstObject])
+            if (_ignoredContactsByMatrixId[identifiers.firstObject])
             {
                 [unfilteredLocalContacts removeObjectAtIndex:index];
                 continue;
@@ -397,7 +397,7 @@
                 MXKEmail *email = emails.firstObject;
                 
                 // Trick: ignore @facebook.com email addresses from the results - facebook have discontinued that service...
-                if ([_ignoredContactsByEmail objectForKey:email.emailAddress] || [email.emailAddress hasSuffix:@"@facebook.com"])
+                if (_ignoredContactsByEmail[email.emailAddress] || [email.emailAddress hasSuffix:@"@facebook.com"])
                 {
                     [unfilteredLocalContacts removeObjectAtIndex:index];
                     continue;
@@ -435,7 +435,7 @@
         {
             for (NSString *userId in identifiers)
             {
-                if ([_ignoredContactsByMatrixId objectForKey:userId] == nil)
+                if (_ignoredContactsByMatrixId[userId] == nil)
                 {
                     MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                     [unfilteredMatrixContacts addObject:splitContact];
@@ -445,7 +445,7 @@
         else if (identifiers.count)
         {
             NSString *userId = identifiers.firstObject;
-            if ([_ignoredContactsByMatrixId objectForKey:userId] == nil)
+            if (_ignoredContactsByMatrixId[userId] == nil)
             {
                 [unfilteredMatrixContacts addObject:contact];
             }

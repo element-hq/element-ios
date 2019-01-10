@@ -304,7 +304,7 @@
                 NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
                 if (tags.count)
                 {
-                    currentTag = [tags objectAtIndex:0];
+                    currentTag = tags[0];
                 }
             }
             

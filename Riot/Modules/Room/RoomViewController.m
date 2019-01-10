@@ -2236,7 +2236,7 @@
                                                                    
                                                                    [self cancelEventSelection];
                                                                    
-                                                                   NSArray *activityItems = [NSArray arrayWithObjects:selectedComponent.textMessage, nil];
+                                                                   NSArray *activityItems = @[selectedComponent.textMessage];
                                                                    
                                                                    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
                                                                    
@@ -2977,7 +2977,7 @@
             {
                 // Create the contact related to this member
                 MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
-                [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:mxMember.userId];
+                contactsDataSource.ignoredContactsByMatrixId[mxMember.userId] = contact;
             }
         }
 
@@ -3083,7 +3083,7 @@
 {
     __weak __typeof(self) weakSelf = self;
 
-    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
     // Check app permissions first
     [MXKTools checkAccessForCall:video
@@ -3403,7 +3403,7 @@
         [super scrollViewWillBeginDragging:scrollView];
     }
     
-    if (self.expandedHeaderContainer.isHidden == NO)
+    if (!self.expandedHeaderContainer.isHidden)
     {
         // Store here the position of the first touch down event
         UIPanGestureRecognizer *panGestureRecognizer = scrollView.panGestureRecognizer;
@@ -3731,7 +3731,7 @@
         // keeps the only the first two users
         for(int i = 0; i < MIN(count, 2); i++)
         {
-            NSString* name = [currentTypingUsers objectAtIndex:i];
+            NSString* name = currentTypingUsers[i];
             
             MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:name];
             
@@ -3753,15 +3753,15 @@
         }
         else if (1 == names.count)
         {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), names[0]];
         }
         else if (2 == names.count)
         {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), names[0], names[1]];
         }
         else
         {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), names[0], names[1]];
         }
         
         [((RoomActivitiesView*) self.activitiesView) displayTypingNotification:text];
@@ -3988,7 +3988,7 @@
                     NSLog(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
 
                     __weak __typeof(self) weakSelf = self;
-                    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+                    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
                     // Check app permissions first
                     [MXKTools checkAccessForCall:video

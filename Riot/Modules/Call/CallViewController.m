@@ -128,7 +128,7 @@
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     
-    gradientMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)opaqueWhiteColor, (__bridge id)transparentWhiteColor, nil];
+    gradientMaskLayer.colors = @[(__bridge id) opaqueWhiteColor, (__bridge id) transparentWhiteColor];
     
     gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
     gradientMaskLayer.anchorPoint = CGPointZero;

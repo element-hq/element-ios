@@ -167,12 +167,12 @@ static UILabel* backgroundLabel = nil;
         imageByKeyDict = [[NSMutableDictionary alloc] init];
     }
     
-    UIImage* image = [imageByKeyDict objectForKey:key];
+    UIImage* image = imageByKeyDict[key];
     
     if (!image)
     {
-        image = [AvatarGenerator imageFromText:firstChar withBackgroundColor:[colorsList objectAtIndex:colorIndex]];
-        [imageByKeyDict setObject:image forKey:key];
+        image = [AvatarGenerator imageFromText:firstChar withBackgroundColor:colorsList[colorIndex]];
+        imageByKeyDict[key] = image;
     }
     
     return image;
@@ -193,7 +193,7 @@ static UILabel* backgroundLabel = nil;
     NSString* firstChar = [AvatarGenerator firstChar:(displayname ? displayname : itemId)];
     NSUInteger colorIndex = [AvatarGenerator colorIndexForText:itemId];
     
-    return [AvatarGenerator imageFromText:firstChar withBackgroundColor:[colorsList objectAtIndex:colorIndex] size:size andFontSize:fontSize];
+    return [AvatarGenerator imageFromText:firstChar withBackgroundColor:colorsList[colorIndex] size:size andFontSize:fontSize];
 }
 
 + (void)clear
