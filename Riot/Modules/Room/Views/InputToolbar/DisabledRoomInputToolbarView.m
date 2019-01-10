@@ -52,7 +52,7 @@
 
     self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
     self.disabledReasonTextView.textColor = kRiotPrimaryTextColor;
-    self.disabledReasonTextView.tintColor = RiotDesignValues.colorValues.accent;
+    self.disabledReasonTextView.tintColor = RiotDesignValues.colorValues.tintColor;
     self.disabledReasonTextView.editable = NO;
     self.disabledReasonTextView.scrollEnabled = NO;
 }

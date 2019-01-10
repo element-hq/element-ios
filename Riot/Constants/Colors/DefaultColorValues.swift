@@ -23,30 +23,30 @@ final class DefaultColorValues: NSObject, ColorValues {
 
     static let shared = DefaultColorValues()
 
-    let background: UIColor = UIColor(rgb: 0xFFFFFF)
+    let backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    let base: UIColor = UIColor(rgb: 0x2E3648)
-    let baseTextPrimary: UIColor = UIColor(rgb: 0xFFFFFF)
-    let baseTextSecondary: UIColor = UIColor(rgb: 0xFFFFFF)
+    let baseColor: UIColor = UIColor(rgb: 0x2E3648)
+    let baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    let baseTextSecondaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    let searchBackground: UIColor = UIColor(rgb: 0xFFFFFF)
-    let searchText: UIColor = UIColor(rgb: 0xACB3C2)
+    let searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    let searchTextColor: UIColor = UIColor(rgb: 0xACB3C2)
 
-    let headerBackground: UIColor = UIColor(rgb: 0xF1F5F8)
-    let headerBorder: UIColor  = UIColor(rgb: 0xEAEEF2)
-    let headerTextPrimary: UIColor = UIColor(rgb: 0x96A1B7)
-    let headerTextSecondary: UIColor = UIColor(rgb: 0xC8C8CD)
+    let headerBackgroundColor: UIColor = UIColor(rgb: 0xF1F5F8)
+    let headerBorderColor: UIColor  = UIColor(rgb: 0xEAEEF2)
+    let headerTextPrimaryColor: UIColor = UIColor(rgb: 0x96A1B7)
+    let headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
-    let textPrimary: UIColor = UIColor(rgb: 0x383838)
-    let textSecondary: UIColor = UIColor(rgb: 0x9E9E9E)
+    let textPrimaryColor: UIColor = UIColor(rgb: 0x383838)
+    let textSecondaryColor: UIColor = UIColor(rgb: 0x9E9E9E)
 
-    let accent: UIColor = UIColor(rgb: 0x7AC9A1)
-    let unreadRoomIndent: UIColor = UIColor(rgb: 0x2E3648)
+    let tintColor: UIColor = UIColor(rgb: 0x7AC9A1)
+    let unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     
-    let notificationUnread: UIColor = UIColor(rgb: 0x7AC9A1)
-    let notificationMention: UIColor = UIColor(rgb: 0xF56679)
+    let notificationUnreadColor: UIColor = UIColor(rgb: 0x7AC9A1)
+    let notificationMentionColor: UIColor = UIColor(rgb: 0xF56679)
 
-    let avatars: [UIColor] = [
+    let avatarColors: [UIColor] = [
         UIColor(rgb: 0x7AC9A1),
         UIColor(rgb: 0x1E7DDC),
         UIColor(rgb: 0x76DDD7)]

@@ -20,30 +20,31 @@ import UIKit
 /// https://app.zeplin.io/project/5b857c64b1747a2c472290da/screen/5bf2cc89a4a6973f47883c6e
 @objc protocol ColorValues {
 
-    var background: UIColor { get }
-    var base: UIColor { get }
+    var backgroundColor: UIColor { get }
+    var baseColor: UIColor { get }
 
-    var baseTextPrimary: UIColor { get }
-    var baseTextSecondary: UIColor { get }
+    var baseTextPrimaryColor: UIColor { get }
+    var baseTextSecondaryColor: UIColor { get }
 
-    var searchBackground: UIColor { get }
-    var searchText: UIColor { get }
+    var searchBackgroundColor: UIColor { get }
+    var searchTextColor: UIColor { get }
 
-    var headerBackground: UIColor { get }
-    var headerBorder: UIColor { get }
-    var headerTextPrimary: UIColor { get }
-    var headerTextSecondary: UIColor { get }
+    var headerBackgroundColor: UIColor { get }
+    var headerBorderColor: UIColor { get }
+    var headerTextPrimaryColor: UIColor { get }
+    var headerTextSecondaryColor: UIColor { get }
 
-    var textPrimary: UIColor { get }
-    var textSecondary: UIColor { get }
+    var textPrimaryColor: UIColor { get }
+    var textSecondaryColor: UIColor { get }
 
-    var accent: UIColor { get }
-    var unreadRoomIndent: UIColor { get }
-    
-    var notificationUnread: UIColor { get }
-    var notificationMention: UIColor { get }
+    var tintColor: UIColor { get }
 
-    var avatars: [UIColor] { get }
+    var unreadRoomIndentColor: UIColor { get }
+
+    var notificationUnreadColor: UIColor { get }
+    var notificationMentionColor: UIColor { get }
+
+    var avatarColors: [UIColor] { get }
 }
 
 extension UIColor {

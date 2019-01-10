@@ -60,10 +60,10 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 {
     [super customizeTableViewCellRendering];
     
-    self.leftButton.backgroundColor = RiotDesignValues.colorValues.accent;
-    self.rightButton.backgroundColor = RiotDesignValues.colorValues.accent;
+    self.leftButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
+    self.rightButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
     
-    self.noticeBadgeView.backgroundColor = RiotDesignValues.colorValues.notificationMention;
+    self.noticeBadgeView.backgroundColor = RiotDesignValues.colorValues.notificationMentionColor;
 }
 
 - (void)onDeclinePressed:(id)sender

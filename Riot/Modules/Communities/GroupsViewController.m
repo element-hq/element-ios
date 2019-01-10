@@ -462,9 +462,9 @@
         {
             NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
             NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                                    attributes:@{NSForegroundColorAttributeName: RiotDesignValues.colorValues.headerTextPrimary}];
+                                                                                                    attributes:@{NSForegroundColorAttributeName: RiotDesignValues.colorValues.headerTextPrimaryColor}];
             [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                               attributes:@{NSForegroundColorAttributeName: RiotDesignValues.colorValues.headerTextSecondary}]];
+                                                                                               attributes:@{NSForegroundColorAttributeName: RiotDesignValues.colorValues.headerTextSecondaryColor}]];
 
             sectionHeader.mxkLabel.attributedText = mutableSectionTitle;
         }

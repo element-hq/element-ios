@@ -64,7 +64,7 @@
                                withType:nil
                     andImageOrientation:UIImageOrientationUp
                            previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                   withColor:RiotDesignValues.colorValues.accent]
+                                                   withColor:RiotDesignValues.colorValues.tintColor]
                            mediaManager:cellData.mediaManager];
     }
     else

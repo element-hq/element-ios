@@ -64,7 +64,7 @@
     self.view.backgroundColor = kRiotPrimaryBgColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.backButton.tintColor = RiotDesignValues.colorValues.accent;
+    self.backButton.tintColor = RiotDesignValues.colorValues.tintColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated

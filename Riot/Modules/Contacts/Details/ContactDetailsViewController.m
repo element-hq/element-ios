@@ -237,7 +237,7 @@
     
     self.headerView.backgroundColor = kRiotSecondaryBgColor;
     self.contactNameLabel.textColor = kRiotPrimaryTextColor;
-    self.contactStatusLabel.textColor = RiotDesignValues.colorValues.accent;
+    self.contactStatusLabel.textColor = RiotDesignValues.colorValues.tintColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);

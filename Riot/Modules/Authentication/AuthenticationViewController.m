@@ -154,14 +154,14 @@
         }
     }
     
-    self.submitButton.backgroundColor = RiotDesignValues.colorValues.accent;
-    self.skipButton.backgroundColor = RiotDesignValues.colorValues.accent;
+    self.submitButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
+    self.skipButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
     
     self.noFlowLabel.textColor = kRiotColorRed;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
     [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, forgotPasswordTitle.length)];
-    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:RiotDesignValues.colorValues.accent range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:RiotDesignValues.colorValues.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
     [self updateForgotPwdButtonVisibility];

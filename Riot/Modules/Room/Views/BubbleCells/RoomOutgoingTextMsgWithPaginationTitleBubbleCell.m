@@ -26,8 +26,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.paginationLabel.textColor = RiotDesignValues.colorValues.accent;
-    self.paginationSeparatorView.backgroundColor = RiotDesignValues.colorValues.accent;
+    self.paginationLabel.textColor = RiotDesignValues.colorValues.tintColor;
+    self.paginationSeparatorView.backgroundColor = RiotDesignValues.colorValues.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

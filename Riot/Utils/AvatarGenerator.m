@@ -39,7 +39,7 @@ static UILabel* backgroundLabel = nil;
 {
     if (!colorsList)
     {
-        colorsList = RiotDesignValues.colorValues.avatars;
+        colorsList = RiotDesignValues.colorValues.avatarColors;
     }
 }
 

@@ -36,11 +36,11 @@
     
     [self.verifyButton.layer setCornerRadius:5];
     self.verifyButton.clipsToBounds = YES;
-    self.verifyButton.backgroundColor = RiotDesignValues.colorValues.accent;
+    self.verifyButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
     
     [self.blockButton.layer setCornerRadius:5];
     self.blockButton.clipsToBounds = YES;
-    self.blockButton.backgroundColor = RiotDesignValues.colorValues.accent;
+    self.blockButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
 }
 
 - (void)render:(MXDeviceInfo *)deviceInfo

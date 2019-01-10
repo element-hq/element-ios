@@ -69,7 +69,7 @@
         if (cellData)
         {
             // Highlight the search pattern
-            [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:RiotDesignValues.colorValues.accent andFont:patternFont];
+            [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:RiotDesignValues.colorValues.tintColor andFont:patternFont];
 
             // Use profile information as data to display
             MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];

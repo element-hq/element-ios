@@ -28,8 +28,8 @@
     self.backgroundColor = kRiotSecondaryBgColor;
     self.textView.backgroundColor = kRiotPrimaryBgColor;
     self.textView.textColor = kRiotPrimaryTextColor;
-    self.redactButton.tintColor = RiotDesignValues.colorValues.accent;
-    self.closeButton.tintColor = RiotDesignValues.colorValues.accent;
+    self.redactButton.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.closeButton.tintColor = RiotDesignValues.colorValues.tintColor;
 }
 
 @end

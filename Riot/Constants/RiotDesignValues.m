@@ -181,22 +181,22 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     // Apply theme color constants
     id<ColorValues> colorValues = [RiotDesignValues colorValues];
 
-    kRiotPrimaryBgColor = colorValues.background;
-    kRiotSecondaryBgColor = colorValues.headerBackground;
-    kRiotPrimaryTextColor = colorValues.textPrimary;
-    kRiotSecondaryTextColor = colorValues.textSecondary;
+    kRiotPrimaryBgColor = colorValues.backgroundColor;
+    kRiotSecondaryBgColor = colorValues.headerBackgroundColor;
+    kRiotPrimaryTextColor = colorValues.textPrimaryColor;
+    kRiotSecondaryTextColor = colorValues.textSecondaryColor;
 
-    kRiotDesignNavigationBarBarTintColor = colorValues.base;
-    kRiotDesignNavigationBarTintColor = colorValues.baseTextPrimary;
+    kRiotDesignNavigationBarBarTintColor = colorValues.baseColor;
+    kRiotDesignNavigationBarTintColor = colorValues.baseTextPrimaryColor;
     kRiotDesignNavigationBarTitleTextAttributes = @{
-                                                    NSForegroundColorAttributeName: colorValues.baseTextPrimary
+                                                    NSForegroundColorAttributeName: colorValues.baseTextPrimaryColor
                                                     };
 
-    kRiotDesignSearchBarBarTintColor = colorValues.headerBackground;
-    kRiotDesignSearchBarTintColor = colorValues.searchText;
+    kRiotDesignSearchBarBarTintColor = colorValues.headerBackgroundColor;
+    kRiotDesignSearchBarTintColor = colorValues.searchTextColor;
 
-    kRiotTopicTextColor = colorValues.baseTextSecondary;
-    kRiotAuxiliaryColor = colorValues.headerTextSecondary;
+    kRiotTopicTextColor = colorValues.baseTextSecondaryColor;
+    kRiotAuxiliaryColor = colorValues.headerTextSecondaryColor;
 
     [UIScrollView appearance].indicatorStyle = kRiotScrollBarStyle;
 
@@ -250,7 +250,7 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
     searchBar.tintColor = kRiotDesignSearchBarTintColor;
     searchBar.barTintColor = kRiotDesignSearchBarBarTintColor;
     searchBar.layer.borderWidth = 1;
-    searchBar.layer.borderColor = RiotDesignValues.colorValues.headerBorder.CGColor;
+    searchBar.layer.borderColor = RiotDesignValues.colorValues.headerBorderColor.CGColor;
 }
 
 @end

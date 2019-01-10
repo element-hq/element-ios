@@ -31,9 +31,9 @@
     self.containerView.backgroundColor = kRiotSecondaryBgColor;
     self.textView.backgroundColor = kRiotPrimaryBgColor;
     self.defaultTextColor = kRiotPrimaryTextColor;
-    self.cancelButton.tintColor = RiotDesignValues.colorValues.accent;
-    self.deleteButton.tintColor = RiotDesignValues.colorValues.accent;
-    self.renameButton.tintColor = RiotDesignValues.colorValues.accent;
+    self.cancelButton.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.deleteButton.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.renameButton.tintColor = RiotDesignValues.colorValues.tintColor;
 }
 
 @end

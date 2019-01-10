@@ -31,10 +31,10 @@
     self.backgroundColor = kRiotSecondaryBgColor;
     self.textView.backgroundColor = kRiotPrimaryBgColor;
     self.defaultTextColor = kRiotPrimaryTextColor;
-    self.cancelButton.tintColor = RiotDesignValues.colorValues.accent;
-    self.verifyButton.tintColor = RiotDesignValues.colorValues.accent;
-    self.blockButton.tintColor = RiotDesignValues.colorValues.accent;
-    self.confirmVerifyButton.tintColor = RiotDesignValues.colorValues.accent;
+    self.cancelButton.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.verifyButton.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.blockButton.tintColor = RiotDesignValues.colorValues.tintColor;
+    self.confirmVerifyButton.tintColor = RiotDesignValues.colorValues.tintColor;
 }
 
 @end

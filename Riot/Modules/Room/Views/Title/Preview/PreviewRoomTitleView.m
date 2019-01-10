@@ -69,7 +69,7 @@
     
     self.roomTopic.textColor = kRiotTopicTextColor;
     
-    self.roomMembers.textColor = RiotDesignValues.colorValues.accent;
+    self.roomMembers.textColor = RiotDesignValues.colorValues.tintColor;
     
     self.previewLabel.textColor = kRiotTopicTextColor;
     self.previewLabel.numberOfLines = 0;
@@ -81,11 +81,11 @@
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = RiotDesignValues.colorValues.accent;
+    self.leftButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = RiotDesignValues.colorValues.accent;
+    self.rightButton.backgroundColor = RiotDesignValues.colorValues.tintColor;
 }
 
 - (void)refreshDisplay
@@ -103,7 +103,7 @@
                            toFitViewSize:self.roomAvatar.frame.size
                               withMethod:MXThumbnailingMethodCrop
                             previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                    withColor:RiotDesignValues.colorValues.accent]
+                                                    withColor:RiotDesignValues.colorValues.tintColor]
                             mediaManager:self.mxRoom.mxSession.mediaManager];
         }
         else

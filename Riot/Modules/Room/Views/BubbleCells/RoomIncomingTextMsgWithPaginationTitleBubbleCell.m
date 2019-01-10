@@ -28,9 +28,9 @@
     
     self.userNameLabel.textColor = kRiotPrimaryTextColor;
     
-    self.paginationLabel.textColor = RiotDesignValues.colorValues.accent;
-    self.paginationSeparatorView.backgroundColor = RiotDesignValues.colorValues.accent;
-    self.messageTextView.tintColor = RiotDesignValues.colorValues.accent;
+    self.paginationLabel.textColor = RiotDesignValues.colorValues.tintColor;
+    self.paginationSeparatorView.backgroundColor = RiotDesignValues.colorValues.tintColor;
+    self.messageTextView.tintColor = RiotDesignValues.colorValues.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

@@ -26,7 +26,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.messageTextView.tintColor = RiotDesignValues.colorValues.accent;
+    self.messageTextView.tintColor = RiotDesignValues.colorValues.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

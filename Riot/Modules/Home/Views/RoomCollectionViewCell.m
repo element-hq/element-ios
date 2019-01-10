@@ -72,7 +72,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
     
     // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(RiotDesignValues.colorValues.accent.CGColor, kDirectRoomBorderColorAlpha);
+    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(RiotDesignValues.colorValues.tintColor.CGColor, kDirectRoomBorderColorAlpha);
     
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
@@ -126,7 +126,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             if (0 < roomCellData.notificationCount)
             {
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? RiotDesignValues.colorValues.notificationMention : RiotDesignValues.colorValues.notificationUnread;
+                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? RiotDesignValues.colorValues.notificationMentionColor : RiotDesignValues.colorValues.notificationUnreadColor;
                 
                 self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
@@ -147,7 +147,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         else if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite)
         {
             self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-            self.missedNotifAndUnreadBadgeBgView.backgroundColor = RiotDesignValues.colorValues.notificationMention;
+            self.missedNotifAndUnreadBadgeBgView.backgroundColor = RiotDesignValues.colorValues.notificationMentionColor;
             
             self.missedNotifAndUnreadBadgeLabel.text = @"!";
             [self.missedNotifAndUnreadBadgeLabel sizeToFit];
