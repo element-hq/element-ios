@@ -275,7 +275,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             for (; index < bubbleComponents.count; index++)
             {
                 // Compute the vertical position for next component
-                component = [bubbleComponents objectAtIndex:index];
+                component = bubbleComponents[index];
                 
                 component.position = CGPointMake(0, positionY);
                 
@@ -316,7 +316,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 for (index++; index < bubbleComponents.count; index++)
                 {
                     // Compute the vertical position for next component
-                    component = [bubbleComponents objectAtIndex:index];
+                    component = bubbleComponents[index];
                     
                     if (component.attributedTextMessage)
                     {

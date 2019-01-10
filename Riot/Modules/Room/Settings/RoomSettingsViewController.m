@@ -713,9 +713,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             NSString *currentCanonicalAlias = mxRoomState.canonicalAlias;
             NSString *canonicalAlias;
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey])
+            if (updatedItemsDict[kRoomSettingsCanonicalAliasKey])
             {
-                canonicalAlias = [updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey];
+                canonicalAlias = updatedItemsDict[kRoomSettingsCanonicalAliasKey];
             }
             else
             {
@@ -849,7 +849,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             if (directoryVisibilitySwitch)
             {
                 // Check a potential user's change before the end of the request
-                MXRoomDirectoryVisibility modifiedDirectoryVisibility = [updatedItemsDict objectForKey:kRoomSettingsDirectoryKey];
+                MXRoomDirectoryVisibility modifiedDirectoryVisibility = updatedItemsDict[kRoomSettingsDirectoryKey];
                 if (modifiedDirectoryVisibility)
                 {
                     if ([modifiedDirectoryVisibility isEqualToString:directoryVisibility])
@@ -882,7 +882,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // Refresh here the related communities list.
     [relatedGroups removeAllObjects];
     [relatedGroups addObjectsFromArray:mxRoomState.relatedGroups];
-    NSArray *removedCommunities = [updatedItemsDict objectForKey:kRoomSettingsRemovedRelatedGroupKey];
+    NSArray *removedCommunities = updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey];
     if (removedCommunities.count)
     {
         for (NSUInteger index = 0; index < relatedGroups.count;)
@@ -900,7 +900,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
         }
     }
-    NSArray *communities = [updatedItemsDict objectForKey:kRoomSettingsNewRelatedGroupKey];
+    NSArray *communities = updatedItemsDict[kRoomSettingsNewRelatedGroupKey];
     if (communities)
     {
         [relatedGroups addObjectsFromArray:communities];
@@ -947,7 +947,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Check whether the topic has been actually changed
         if ((topic || currentTopic) && ([topic isEqualToString:currentTopic] == NO))
         {
-            [updatedItemsDict setObject:(topic ? topic : @"") forKey:kRoomSettingsTopicKey];
+            updatedItemsDict[kRoomSettingsTopicKey] = topic ? topic : @"";
         }
         else
         {
@@ -1098,7 +1098,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Check whether the name has been actually changed
         if ((displayName || currentName) && ([displayName isEqualToString:currentName] == NO))
         {
-            [updatedItemsDict setObject:(displayName ? displayName : @"") forKey:kRoomSettingsNameKey];
+            updatedItemsDict[kRoomSettingsNameKey] = displayName ? displayName : @"";
         }
         else
         {
@@ -1187,10 +1187,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // check if there is some updates related to room state
         if (mxRoomState)
         {
-            if ([updatedItemsDict objectForKey:kRoomSettingsAvatarKey])
+            if (updatedItemsDict[kRoomSettingsAvatarKey])
             {
                 // Retrieve the current picture and make sure its orientation is up
-                UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[updatedItemsDict objectForKey:kRoomSettingsAvatarKey]];
+                UIImage *updatedPicture = [MXKTools forceImageOrientationUp:updatedItemsDict[kRoomSettingsAvatarKey]];
                 
                 // Upload picture
                 uploader = [MXMediaManager prepareUploaderWithMatrixSession:mxRoom.mxSession initialRange:0 andRange:1.0];
@@ -1204,7 +1204,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         self->uploader = nil;
                         
                         [self->updatedItemsDict removeObjectForKey:kRoomSettingsAvatarKey];
-                        [self->updatedItemsDict setObject:url forKey:kRoomSettingsAvatarURLKey];
+                        self->updatedItemsDict[kRoomSettingsAvatarURLKey] = url;
                         
                         [self onSave:nil];
                     }
@@ -1236,7 +1236,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 return;
             }
             
-            NSString* photoUrl = [updatedItemsDict objectForKey:kRoomSettingsAvatarURLKey];
+            NSString* photoUrl = updatedItemsDict[kRoomSettingsAvatarURLKey];
             if (photoUrl)
             {
                 pendingOperation = [mxRoom setAvatar:photoUrl success:^{
@@ -1278,7 +1278,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // has a new room name
-            NSString* roomName = [updatedItemsDict objectForKey:kRoomSettingsNameKey];
+            NSString* roomName = updatedItemsDict[kRoomSettingsNameKey];
             if (roomName)
             {
                 pendingOperation = [mxRoom setName:roomName success:^{
@@ -1320,7 +1320,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // has a new room topic
-            NSString* roomTopic = [updatedItemsDict objectForKey:kRoomSettingsTopicKey];
+            NSString* roomTopic = updatedItemsDict[kRoomSettingsTopicKey];
             if (roomTopic)
             {
                 pendingOperation = [mxRoom setTopic:roomTopic success:^{
@@ -1362,7 +1362,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // Room guest access
-            MXRoomGuestAccess guestAccess = [updatedItemsDict objectForKey:kRoomSettingsGuestAccessKey];
+            MXRoomGuestAccess guestAccess = updatedItemsDict[kRoomSettingsGuestAccessKey];
             if (guestAccess)
             {
                 pendingOperation = [mxRoom setGuestAccess:guestAccess success:^{
@@ -1404,7 +1404,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // Room join rule
-            MXRoomJoinRule joinRule = [updatedItemsDict objectForKey:kRoomSettingsJoinRuleKey];
+            MXRoomJoinRule joinRule = updatedItemsDict[kRoomSettingsJoinRuleKey];
             if (joinRule)
             {
                 pendingOperation = [mxRoom setJoinRule:joinRule success:^{
@@ -1446,7 +1446,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // History visibility
-            MXRoomHistoryVisibility visibility = [updatedItemsDict objectForKey:kRoomSettingsHistoryVisibilityKey];
+            MXRoomHistoryVisibility visibility = updatedItemsDict[kRoomSettingsHistoryVisibilityKey];
             if (visibility)
             {
                 pendingOperation = [mxRoom setHistoryVisibility:visibility success:^{
@@ -1488,7 +1488,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // Room addresses
-            NSMutableArray<NSString *> *aliases = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
+            NSMutableArray<NSString *> *aliases = updatedItemsDict[kRoomSettingsNewAliasesKey];
             if (aliases.count)
             {
                 NSString *roomAlias = aliases.firstObject;
@@ -1504,7 +1504,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         if (aliases.count > 1)
                         {
                             [aliases removeObjectAtIndex:0];
-                            [self->updatedItemsDict setObject:aliases forKey:kRoomSettingsNewAliasesKey];
+                            self->updatedItemsDict[kRoomSettingsNewAliasesKey] = aliases;
                         }
                         else
                         {
@@ -1541,7 +1541,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 return;
             }
             
-            aliases = [updatedItemsDict objectForKey:kRoomSettingsRemovedAliasesKey];
+            aliases = updatedItemsDict[kRoomSettingsRemovedAliasesKey];
             if (aliases.count)
             {
                 NSString *roomAlias = aliases.firstObject;
@@ -1557,7 +1557,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         if (aliases.count > 1)
                         {
                             [aliases removeObjectAtIndex:0];
-                            [self->updatedItemsDict setObject:aliases forKey:kRoomSettingsRemovedAliasesKey];
+                            self->updatedItemsDict[kRoomSettingsRemovedAliasesKey] = aliases;
                         }
                         else
                         {
@@ -1594,7 +1594,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 return;
             }
             
-            NSString* canonicalAlias = [updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey];
+            NSString* canonicalAlias = updatedItemsDict[kRoomSettingsCanonicalAliasKey];
             if (canonicalAlias)
             {
                 pendingOperation = [mxRoom setCanonicalAlias:canonicalAlias success:^{
@@ -1636,7 +1636,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // Related groups
-            if ([updatedItemsDict objectForKey:kRoomSettingsNewRelatedGroupKey] || [updatedItemsDict objectForKey:kRoomSettingsRemovedRelatedGroupKey])
+            if (updatedItemsDict[kRoomSettingsNewRelatedGroupKey] || updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey])
             {
                 [self refreshRelatedGroups];
                 
@@ -1683,7 +1683,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         // Update here other room settings
-        NSString *roomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
+        NSString *roomTag = updatedItemsDict[kRoomSettingsTagKey];
         if (roomTag)
         {
             if (!roomTag.length)
@@ -1706,9 +1706,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             return;
         }
         
-        if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
+        if (updatedItemsDict[kRoomSettingsMuteNotifKey])
         {
-            if (((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey]).boolValue)
+            if (((NSNumber*) updatedItemsDict[kRoomSettingsMuteNotifKey]).boolValue)
             {
                 [mxRoom mentionsOnly:^{
                     
@@ -1739,9 +1739,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             return;
         }
         
-        if ([updatedItemsDict objectForKey:kRoomSettingsDirectChatKey])
+        if (updatedItemsDict[kRoomSettingsDirectChatKey])
         {
-            pendingOperation = [mxRoom setIsDirect:((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectChatKey]).boolValue withUserId:nil success:^{
+            pendingOperation = [mxRoom setIsDirect:((NSNumber*) updatedItemsDict[kRoomSettingsDirectChatKey]).boolValue withUserId:nil success:^{
                 
                 if (weakSelf)
                 {
@@ -1752,7 +1752,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     [self onSave:nil];
                 }
                 
-            } failure:^(NSError *error) {
+            }                              failure:^(NSError *error) {
                 
                 NSLog(@"[RoomSettingsViewController] Altering DMness failed");
                 
@@ -1779,7 +1779,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         // Room directory visibility
-        MXRoomDirectoryVisibility directoryVisibility = [updatedItemsDict objectForKey:kRoomSettingsDirectoryKey];
+        MXRoomDirectoryVisibility directoryVisibility = updatedItemsDict[kRoomSettingsDirectoryKey];
         if (directoryVisibility)
         {
             [mxRoom setDirectoryVisibility:directoryVisibility success:^{
@@ -1820,7 +1820,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         // Room encryption
-        if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey])
+        if (updatedItemsDict[kRoomSettingsEncryptionKey])
         {
             pendingOperation = [mxRoom enableEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm success:^{
                 
@@ -1862,7 +1862,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         // Room settings on blacklist unverified devices
-        if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
+        if (updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
         {
             BOOL blacklistUnverifiedDevices = [((NSNumber*)updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey]) boolValue];
             [mxRoom.mxSession.crypto setBlacklistUnverifiedDevicesInRoom:mxRoom.roomId blacklist:blacklistUnverifiedDevices];
@@ -1884,7 +1884,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [roomAddresses removeAllObjects];
     localAddressesCount = 0;
     
-    NSArray *removedAliases = [updatedItemsDict objectForKey:kRoomSettingsRemovedAliasesKey];
+    NSArray *removedAliases = updatedItemsDict[kRoomSettingsRemovedAliasesKey];
     
     NSArray *aliases = mxRoomState.aliases;
     if (aliases)
@@ -1908,7 +1908,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
     }
     
-    aliases = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
+    aliases = updatedItemsDict[kRoomSettingsNewAliasesKey];
     for (NSString *alias in aliases)
     {
         // Add this new alias to local addresses
@@ -1938,7 +1938,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         count = ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_SUB_COUNT;
         
         // Check whether a room address is required for the current join rule
-        NSString *joinRule = [updatedItemsDict objectForKey:kRoomSettingsJoinRuleKey];
+        NSString *joinRule = updatedItemsDict[kRoomSettingsJoinRuleKey];
         if (!joinRule)
         {
             // Use the actual values if no change is pending.
@@ -2126,9 +2126,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
+            if (updatedItemsDict[kRoomSettingsMuteNotifKey])
             {
-                roomNotifCell.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey]).boolValue;
+                roomNotifCell.mxkSwitch.on = ((NSNumber*) updatedItemsDict[kRoomSettingsMuteNotifKey]).boolValue;
             }
             else
             {
@@ -2145,9 +2145,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             roomDirectChat.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_direct_chat", @"Vector", nil);
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsDirectChatKey])
+            if (updatedItemsDict[kRoomSettingsDirectChatKey])
             {
-                roomDirectChat.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectChatKey]).boolValue;
+                roomDirectChat.mxkSwitch.on = ((NSNumber*) updatedItemsDict[kRoomSettingsDirectChatKey]).boolValue;
             }
             else
             {
@@ -2179,9 +2179,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
             roomPhotoCell.mxkLabel.textColor = kRiotPrimaryTextColor;
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsAvatarKey])
+            if (updatedItemsDict[kRoomSettingsAvatarKey])
             {
-                roomPhotoCell.mxkImageView.image = (UIImage*)[updatedItemsDict objectForKey:kRoomSettingsAvatarKey];
+                roomPhotoCell.mxkImageView.image = (UIImage*) updatedItemsDict[kRoomSettingsAvatarKey];
             }
             else
             {
@@ -2203,9 +2203,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             topicTextView = roomTopicCell.textView;
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsTopicKey])
+            if (updatedItemsDict[kRoomSettingsTopicKey])
             {
-                topicTextView.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsTopicKey];
+                topicTextView.text = (NSString*) updatedItemsDict[kRoomSettingsTopicKey];
             }
             else
             {
@@ -2247,9 +2247,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             nameTextField.textAlignment = NSTextAlignmentRight;
             nameTextField.delegate = self;
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsNameKey])
+            if (updatedItemsDict[kRoomSettingsNameKey])
             {
-                nameTextField.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsNameKey];
+                nameTextField.text = (NSString*) updatedItemsDict[kRoomSettingsNameKey];
             }
             else
             {
@@ -2285,9 +2285,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             label.textColor = kRiotPrimaryTextColor;
             label.text = NSLocalizedStringFromTable(@"room_details_low_priority_tag", @"Vector", nil);
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsTagKey])
+            if (updatedItemsDict[kRoomSettingsTagKey])
             {
-                NSString *roomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
+                NSString *roomTag = updatedItemsDict[kRoomSettingsTagKey];
                 if ([roomTag isEqualToString:kMXRoomTagFavourite])
                 {
                     [roomTagCell setCheckBoxValue:YES atIndex:0];
@@ -2338,9 +2338,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [directoryToggleCell.mxkSwitch addTarget:self action:@selector(toggleDirectoryVisibility:) forControlEvents:UIControlEventValueChanged];
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsDirectoryKey])
+            if (updatedItemsDict[kRoomSettingsDirectoryKey])
             {
-                directoryToggleCell.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectoryKey]).boolValue;
+                directoryToggleCell.mxkSwitch.on = ((NSNumber*) updatedItemsDict[kRoomSettingsDirectoryKey]).boolValue;
             }
             else
             {
@@ -2375,8 +2375,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomAccessCell.checkBoxLeadingConstraint.constant = roomAccessCell.separatorInset.left;
             
             // Retrieve the potential updated values for joinRule and guestAccess
-            NSString *joinRule = [updatedItemsDict objectForKey:kRoomSettingsJoinRuleKey];
-            NSString *guestAccess = [updatedItemsDict objectForKey:kRoomSettingsGuestAccessKey];
+            NSString *joinRule = updatedItemsDict[kRoomSettingsJoinRuleKey];
+            NSString *guestAccess = updatedItemsDict[kRoomSettingsGuestAccessKey];
             
             // Use the actual values if no change is pending
             if (!joinRule)
@@ -2427,7 +2427,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         historyVisibilityCell.checkBoxLeadingConstraint.constant = historyVisibilityCell.separatorInset.left;
         
         // Retrieve first the potential updated value for history visibility
-        NSString *visibility = [updatedItemsDict objectForKey:kRoomSettingsHistoryVisibilityKey];
+        NSString *visibility = updatedItemsDict[kRoomSettingsHistoryVisibilityKey];
         
         // Use the actual value if no change is pending
         if (!visibility)
@@ -2442,7 +2442,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityWorldReadable]);
             
-            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityWorldReadable];
+            historyVisibilityTickCells[kMXRoomHistoryVisibilityWorldReadable] = historyVisibilityCell;
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY)
         {
@@ -2451,7 +2451,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityShared]);
             
-            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityShared];
+            historyVisibilityTickCells[kMXRoomHistoryVisibilityShared] = historyVisibilityCell;
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_INVITED)
         {
@@ -2460,7 +2460,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityInvited]);
             
-            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityInvited];
+            historyVisibilityTickCells[kMXRoomHistoryVisibilityInvited] = historyVisibilityCell;
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_JOINED)
         {
@@ -2469,7 +2469,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityJoined]);
             
-            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityJoined];
+            historyVisibilityTickCells[kMXRoomHistoryVisibilityJoined] = historyVisibilityCell;
         }
         
         // Check whether the user can change this option
@@ -2544,9 +2544,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     NSString *alias = roomAddresses[row];
                     NSString *canonicalAlias;
                     
-                    if ([updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey])
+                    if (updatedItemsDict[kRoomSettingsCanonicalAliasKey])
                     {
-                        canonicalAlias = [updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey];
+                        canonicalAlias = updatedItemsDict[kRoomSettingsCanonicalAliasKey];
                     }
                     else
                     {
@@ -2690,7 +2690,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 {
                     roomBlacklistUnverifiedDevicesCell.mxkSwitch.enabled = YES;
                     
-                    if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
+                    if (updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
                     {
                         blacklistUnverifiedDevices = [((NSNumber*)updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey]) boolValue];
                     }
@@ -2737,7 +2737,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
                 roomEncryptionCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_enable_e2e_encryption", @"Vector", nil);
                 
-                roomEncryptionCell.mxkSwitch.on = ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey] != nil);
+                roomEncryptionCell.mxkSwitch.on = (updatedItemsDict[kRoomSettingsEncryptionKey] != nil);
                 
                 cell = roomEncryptionCell;
             }
@@ -2886,7 +2886,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     }
                     else
                     {
-                        [updatedItemsDict setObject:kMXRoomJoinRuleInvite forKey:kRoomSettingsJoinRuleKey];
+                        updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRuleInvite;
                         
                         // Update guest access to allow guest on invitation.
                         // Note: if guest_access is "forbidden" here, guests cannot join this room even if explicitly invited.
@@ -2896,7 +2896,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomGuestAccessCanJoin forKey:kRoomSettingsGuestAccessKey];
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessCanJoin;
                         }
                     }
                     
@@ -2929,7 +2929,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomJoinRulePublic forKey:kRoomSettingsJoinRuleKey];
+                            updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRulePublic;
                         }
                         
                         if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessForbidden])
@@ -2938,7 +2938,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomGuestAccessForbidden forKey:kRoomSettingsGuestAccessKey];
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessForbidden;
                         }
                     }
                     
@@ -2971,7 +2971,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomJoinRulePublic forKey:kRoomSettingsJoinRuleKey];
+                            updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRulePublic;
                         }
                         
                         if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessCanJoin])
@@ -2980,7 +2980,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomGuestAccessCanJoin forKey:kRoomSettingsGuestAccessKey];
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessCanJoin;
                         }
                     }
                     
@@ -3201,7 +3201,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         else
         {
-            [updatedItemsDict setObject:historyVisibility forKey:kRoomSettingsHistoryVisibilityKey];
+            updatedItemsDict[kRoomSettingsHistoryVisibilityKey] = historyVisibility;
         }
         
         [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
@@ -3259,7 +3259,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            // Remove the canonical address
                                                            if (self->mxRoomState.canonicalAlias.length)
                                                            {
-                                                               [self->updatedItemsDict setObject:@"" forKey:kRoomSettingsCanonicalAliasKey];
+                                                               self->updatedItemsDict[kRoomSettingsCanonicalAliasKey] = @"";
                                                            }
                                                            else
                                                            {
@@ -3305,7 +3305,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             [self getNavigationItem].rightBarButtonItem.enabled = YES;
             
-            [updatedItemsDict setObject:image forKey:kRoomSettingsAvatarKey];
+            updatedItemsDict[kRoomSettingsAvatarKey] = image;
             
             [self refreshRoomSettings];
         }
@@ -3401,7 +3401,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        [updatedItemsDict setObject:[NSNumber numberWithBool:theSwitch.on] forKey:kRoomSettingsMuteNotifKey];
+        updatedItemsDict[kRoomSettingsMuteNotifKey] = @(theSwitch.on);
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
@@ -3415,7 +3415,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        [updatedItemsDict setObject:[NSNumber numberWithBool:theSwitch.on] forKey:kRoomSettingsDirectChatKey];
+        updatedItemsDict[kRoomSettingsDirectChatKey] = @(theSwitch.on);
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
@@ -3458,7 +3458,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                typeof(self) self = weakSelf;
                                                                self->currentAlert = nil;
                                                                
-                                                               [self->updatedItemsDict setObject:@(YES) forKey:kRoomSettingsEncryptionKey];
+                                                               self->updatedItemsDict[kRoomSettingsEncryptionKey] = @(YES);
                                                                
                                                                [self getNavigationItem].rightBarButtonItem.enabled = self->updatedItemsDict.count;
                                                            }
@@ -3504,12 +3504,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         else
         {
-            [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
+            updatedItemsDict[kRoomSettingsDirectoryKey] = visibility;
         }
     }
     else
     {
-        [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
+        updatedItemsDict[kRoomSettingsDirectoryKey] = visibility;
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
@@ -3526,7 +3526,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        [updatedItemsDict setObject:alias forKey:kRoomSettingsCanonicalAliasKey];
+        updatedItemsDict[kRoomSettingsCanonicalAliasKey] = alias;
     }
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX];
@@ -3559,9 +3559,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 {
     NSString *canonicalAlias;
     
-    if ([updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey])
+    if (updatedItemsDict[kRoomSettingsCanonicalAliasKey])
     {
-        canonicalAlias = [updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey];
+        canonicalAlias = updatedItemsDict[kRoomSettingsCanonicalAliasKey];
     }
     else
     {
@@ -3582,7 +3582,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     else
     {
         // Check whether the alias has just been added
-        NSMutableArray<NSString *> *addedAlias = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
+        NSMutableArray<NSString *> *addedAlias = updatedItemsDict[kRoomSettingsNewAliasesKey];
         if (addedAlias && [addedAlias indexOfObject:roomAlias] != NSNotFound)
         {
             [addedAlias removeObject:roomAlias];
@@ -3594,11 +3594,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         else
         {
-            NSMutableArray<NSString *> *removedAlias = [updatedItemsDict objectForKey:kRoomSettingsRemovedAliasesKey];
+            NSMutableArray<NSString *> *removedAlias = updatedItemsDict[kRoomSettingsRemovedAliasesKey];
             if (!removedAlias)
             {
                 removedAlias = [NSMutableArray array];
-                [updatedItemsDict setObject:removedAlias forKey:kRoomSettingsRemovedAliasesKey];
+                updatedItemsDict[kRoomSettingsRemovedAliasesKey] = removedAlias;
             }
             
             [removedAlias addObject:roomAlias];
@@ -3622,7 +3622,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 - (void)removeCommunity:(NSString*)groupId
 {
     // Check whether the alias has just been added
-    NSMutableArray<NSString *> *addedGroup = [updatedItemsDict objectForKey:kRoomSettingsNewRelatedGroupKey];
+    NSMutableArray<NSString *> *addedGroup = updatedItemsDict[kRoomSettingsNewRelatedGroupKey];
     if (addedGroup && [addedGroup indexOfObject:groupId] != NSNotFound)
     {
         [addedGroup removeObject:groupId];
@@ -3634,11 +3634,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        NSMutableArray<NSString *> *removedGroup = [updatedItemsDict objectForKey:kRoomSettingsRemovedRelatedGroupKey];
+        NSMutableArray<NSString *> *removedGroup = updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey];
         if (!removedGroup)
         {
             removedGroup = [NSMutableArray array];
-            [updatedItemsDict setObject:removedGroup forKey:kRoomSettingsRemovedRelatedGroupKey];
+            updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey] = removedGroup;
         }
         
         [removedGroup addObject:groupId];
@@ -3656,7 +3656,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     if ([MXTools isMatrixRoomAlias:roomAlias])
     {
         // Check whether this alias has just been deleted
-        NSMutableArray<NSString *> *removedAlias = [updatedItemsDict objectForKey:kRoomSettingsRemovedAliasesKey];
+        NSMutableArray<NSString *> *removedAlias = updatedItemsDict[kRoomSettingsRemovedAliasesKey];
         if (removedAlias && [removedAlias indexOfObject:roomAlias] != NSNotFound)
         {
             [removedAlias removeObject:roomAlias];
@@ -3669,11 +3669,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Check whether this alias is not already defined for this room
         else if ([roomAddresses indexOfObject:roomAlias] == NSNotFound)
         {
-            NSMutableArray<NSString *> *addedAlias = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
+            NSMutableArray<NSString *> *addedAlias = updatedItemsDict[kRoomSettingsNewAliasesKey];
             if (!addedAlias)
             {
                 addedAlias = [NSMutableArray array];
-                [updatedItemsDict setObject:addedAlias forKey:kRoomSettingsNewAliasesKey];
+                updatedItemsDict[kRoomSettingsNewAliasesKey] = addedAlias;
             }
             
             [addedAlias addObject:roomAlias];
@@ -3693,7 +3693,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else
             {
-                [updatedItemsDict setObject:roomAlias forKey:kRoomSettingsCanonicalAliasKey];
+                updatedItemsDict[kRoomSettingsCanonicalAliasKey] = roomAlias;
             }
             
             if (missingAddressWarningIndex != -1)
@@ -3746,7 +3746,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     if ([MXTools isMatrixGroupIdentifier:groupId])
     {
         // Check whether this group has just been deleted
-        NSMutableArray<NSString *> *removedGroups = [updatedItemsDict objectForKey:kRoomSettingsRemovedRelatedGroupKey];
+        NSMutableArray<NSString *> *removedGroups = updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey];
         if (removedGroups && [removedGroups indexOfObject:groupId] != NSNotFound)
         {
             [removedGroups removeObject:groupId];
@@ -3759,11 +3759,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Check whether this alias is not already defined for this room
         else if ([relatedGroups indexOfObject:groupId] == NSNotFound)
         {
-            NSMutableArray<NSString *> *addedGroup = [updatedItemsDict objectForKey:kRoomSettingsNewRelatedGroupKey];
+            NSMutableArray<NSString *> *addedGroup = updatedItemsDict[kRoomSettingsNewRelatedGroupKey];
             if (!addedGroup)
             {
                 addedGroup = [NSMutableArray array];
-                [updatedItemsDict setObject:addedGroup forKey:kRoomSettingsNewRelatedGroupKey];
+                updatedItemsDict[kRoomSettingsNewRelatedGroupKey] = addedGroup;
             }
             
             [addedGroup addObject:groupId];
@@ -3819,7 +3819,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             // The user wants to unselect this tag
             // Retrieve the current change on room tag (if any)
-            NSString *updatedRoomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
+            NSString *updatedRoomTag = updatedItemsDict[kRoomSettingsTagKey];
             
             // Check the actual tag on mxRoom
             if (mxRoom.accountData.tags[tappedRoomTag])
@@ -3827,7 +3827,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 // The actual tag must be updated, check whether another tag is already set
                 if (!updatedRoomTag)
                 {
-                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
+                    updatedItemsDict[kRoomSettingsTagKey] = @"";
                 }
             }
             else if (updatedRoomTag && [updatedRoomTag isEqualToString:tappedRoomTag])
@@ -3835,7 +3835,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 // Cancel the updated tag, but take into account the cancellation of another tag when 'tappedRoomTag' was selected.
                 if (mxRoom.accountData.tags.count)
                 {
-                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
+                    updatedItemsDict[kRoomSettingsTagKey] = @"";
                 }
                 else
                 {
@@ -3856,7 +3856,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else
             {
-                [updatedItemsDict setObject:tappedRoomTag forKey:kRoomSettingsTagKey];
+                updatedItemsDict[kRoomSettingsTagKey] = tappedRoomTag;
             }
             
             // Select the tapped tag

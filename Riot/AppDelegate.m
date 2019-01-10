@@ -389,7 +389,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     // Log app information
-    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     NSString* appVersion = [AppDelegate theDelegate].appVersion;
     NSString* build = [AppDelegate theDelegate].build;
     
@@ -437,7 +437,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
     splitViewController.delegate = self;
     
-    _masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
+    _masterNavigationController = splitViewController.viewControllers[0];
     _masterTabBarController = _masterNavigationController.viewControllers.firstObject;
     
     // Force the background color of the fake view controller displayed when there is no details.
@@ -1080,7 +1080,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
             UIMutableUserNotificationCategory* quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
             quickReplyCategory.identifier = @"QUICK_REPLY";
-            [quickReplyCategory setActions:[NSArray arrayWithObjects:quickReply, nil] forContext:UIUserNotificationActionContextDefault];
+            [quickReplyCategory setActions:@[quickReply] forContext:UIUserNotificationActionContextDefault];
             [notificationCategories addObject:quickReplyCategory];
         }
 
@@ -1144,7 +1144,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             else
             {
                 [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
-                    NSString* responseText = [responseInfo objectForKey:UIUserNotificationActionResponseTypedTextKey];
+                    NSString* responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
                     if (responseText != nil && responseText.length != 0)
                     {
                         NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
@@ -2144,10 +2144,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         for (NSString *keyValue in [fragments[1] componentsSeparatedByString:@"&"])
         {
             // Get the parameter name
-            NSString *key = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:0];
+            NSString *key = [keyValue componentsSeparatedByString:@"="][0];
             
             // Get the parameter value
-            NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
+            NSString *value = [keyValue componentsSeparatedByString:@"="][1];
             if (value.length)
             {
                 value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
@@ -3777,7 +3777,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                  callerDisplayname = event.sender;
                                              }
                                              
-                                             NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+                                             NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
                                              
                                              NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"no_voip", @"Vector", nil), callerDisplayname, appDisplayName];
                                              

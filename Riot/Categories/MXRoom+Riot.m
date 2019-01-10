@@ -32,7 +32,7 @@
     
     if (self.accountData.tags && self.accountData.tags.count)
     {
-        oldTag = [self.accountData.tags.allKeys objectAtIndex:0];
+        oldTag = self.accountData.tags.allKeys[0];
     }
     
     // support only kMXRoomTagFavourite or kMXRoomTagLowPriority tags by now

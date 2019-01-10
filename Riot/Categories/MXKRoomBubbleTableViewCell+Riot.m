@@ -315,7 +315,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
 
 - (void)setBlurred:(BOOL)blurred
 {
-    objc_setAssociatedObject(self, @selector(blurred), [NSNumber numberWithBool:blurred], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(blurred), @(blurred), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     if (blurred)
     {

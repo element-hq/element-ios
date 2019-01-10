@@ -156,7 +156,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // sanity check
     if (matrixSession.myUser && matrixSession.myUser.userId)
     {
-        id roomTagListener = [roomTagsListenerByUserId objectForKey:matrixSession.myUser.userId];
+        id roomTagListener = roomTagsListenerByUserId[matrixSession.myUser.userId];
         
         if (roomTagListener)
         {
@@ -204,7 +204,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
                                                                 }];
 
-            [roomTagsListenerByUserId setObject:roomTagsListener forKey:dataSource.mxSession.myUser.userId];
+            roomTagsListenerByUserId[dataSource.mxSession.myUser.userId] = roomTagsListener;
         }
     }
 }
@@ -891,42 +891,42 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         if (cellDataIndex < favoriteCellDataArray.count)
         {
-            cellData = [favoriteCellDataArray objectAtIndex:cellDataIndex];
+            cellData = favoriteCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == peopleSection)
     {
         if (cellDataIndex < peopleCellDataArray.count)
         {
-            cellData = [peopleCellDataArray objectAtIndex:cellDataIndex];
+            cellData = peopleCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection== conversationSection)
     {
         if (cellDataIndex < conversationCellDataArray.count)
         {
-            cellData = [conversationCellDataArray objectAtIndex:cellDataIndex];
+            cellData = conversationCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == lowPrioritySection)
     {
         if (cellDataIndex < lowPriorityCellDataArray.count)
         {
-            cellData = [lowPriorityCellDataArray objectAtIndex:cellDataIndex];
+            cellData = lowPriorityCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == serverNoticeSection)
     {
         if (cellDataIndex < serverNoticeCellDataArray.count)
         {
-            cellData = [serverNoticeCellDataArray objectAtIndex:cellDataIndex];
+            cellData = serverNoticeCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == invitesSection)
     {
         if (cellDataIndex < invitesCellDataArray.count)
         {
-            cellData = [invitesCellDataArray objectAtIndex:cellDataIndex];
+            cellData = invitesCellDataArray[cellDataIndex];
         }
     }
     
@@ -983,7 +983,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         for (int index = 0; index < cellDataArray.count; index++)
         {
-            id<MXKRecentCellDataStoring> cellDataStoring = [cellDataArray objectAtIndex:index];
+            id<MXKRecentCellDataStoring> cellDataStoring = cellDataArray[index];
 
             if ([roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == cellDataStoring.roomSummary.room.mxSession))
             {
@@ -1114,7 +1114,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (displayedRecentsDataSourceArray.count > 0)
     {
         // FIXME manage multi accounts
-        MXKSessionRecentsDataSource *recentsDataSource = [displayedRecentsDataSourceArray objectAtIndex:0];
+        MXKSessionRecentsDataSource *recentsDataSource = displayedRecentsDataSourceArray[0];
         MXSession* session = recentsDataSource.mxSession;
         
         NSInteger count = recentsDataSource.numberOfCells;

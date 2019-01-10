@@ -1,6 +1,9 @@
 Changes in 0.7.x (2019-xx-xx)
 ===============================================
 
+Improvements:
+ * Use modern literals and array/dictionary syntax where possible (PR #2160).
+ 
 Bug fix:
  * Use white scroll bar on dark themes (#2158)
 
