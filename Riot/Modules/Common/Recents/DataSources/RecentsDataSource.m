@@ -487,7 +487,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         missedNotifAndUnreadBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bgViewWidth, 20)];
         [missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
-        missedNotifAndUnreadBadgeBgView.backgroundColor = kRiotAuxiliaryColor;
+        missedNotifAndUnreadBadgeBgView.backgroundColor = RiotDesignValues.theme.headerTextSecondaryColor;
         
         [missedNotifAndUnreadBadgeBgView addSubview:missedNotifAndUnreadBadgeLabel];
         missedNotifAndUnreadBadgeLabel.center = missedNotifAndUnreadBadgeBgView.center;

@@ -121,7 +121,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             }
             else
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = kRiotAuxiliaryColor;
+                self.missedNotifAndUnreadIndicator.backgroundColor = RiotDesignValues.theme.headerTextSecondaryColor;
             }
             
             // Use bold font for the room title

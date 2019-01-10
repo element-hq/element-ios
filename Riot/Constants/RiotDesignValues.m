@@ -28,7 +28,6 @@ NSString *const kRiotDesignValuesDidChangeThemeNotification = @"kRiotDesignValue
 
 UIColor *kRiotPlaceholderTextColor;
 UIColor *kRiotSelectedBgColor;
-UIColor *kRiotAuxiliaryColor;
 UIColor *kRiotOverlayColor;
 
 // Riot Colors
@@ -139,11 +138,6 @@ UIScrollViewIndicatorStyle kRiotScrollBarStyle;
 
         kRiotScrollBarStyle = UIScrollViewIndicatorStyleDefault;
     }
-
-    // Apply theme color constants
-    id<Theme> theme = [RiotDesignValues theme];
-
-    kRiotAuxiliaryColor = theme.headerTextSecondaryColor;
 
     [UIScrollView appearance].indicatorStyle = kRiotScrollBarStyle;
 

@@ -87,7 +87,7 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = kRiotAuxiliaryColor;
+    self.separatorView.backgroundColor = RiotDesignValues.theme.headerTextSecondaryColor;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;

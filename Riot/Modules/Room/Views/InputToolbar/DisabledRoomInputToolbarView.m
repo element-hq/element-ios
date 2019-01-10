@@ -48,7 +48,7 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = kRiotAuxiliaryColor;
+    self.separatorView.backgroundColor = RiotDesignValues.theme.headerTextSecondaryColor;
 
     self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
     self.disabledReasonTextView.textColor = RiotDesignValues.theme.textPrimaryColor;
