@@ -82,7 +82,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 #pragma mark - Application layout handling
 
-- (void)restoreInitialDisplay:(void (^)())completion;
+- (void)restoreInitialDisplay:(void (^)(void))completion;
 
 /**
  Replace the secondary view controller of the split view controller (if any) with the default empty details view controller.
