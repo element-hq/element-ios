@@ -49,7 +49,7 @@
         // Show a red border when the attachment sending failed
         if (bubbleCell->bubbleData.attachment.eventSentState == MXEventSentStateFailed)
         {
-            bubbleCell.attachmentView.layer.borderColor = kRiotColorPinkRed.CGColor;
+            bubbleCell.attachmentView.layer.borderColor = ThemeService.shared.riotColorPinkRed.CGColor;
             bubbleCell.attachmentView.layer.borderWidth = 1;
         }
         else

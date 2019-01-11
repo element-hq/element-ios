@@ -55,7 +55,7 @@
     [super viewWillAppear:animated];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorIndigo;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.riotColorIndigo;
     
     if (recentsDataSource)
     {

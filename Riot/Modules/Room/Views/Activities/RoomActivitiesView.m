@@ -113,7 +113,7 @@
     [super customizeViewRendering];
     
     self.separatorView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    if (self.messageLabel.textColor != kRiotColorPinkRed)
+    if (self.messageLabel.textColor != ThemeService.shared.riotColorPinkRed)
     {
         self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     }
@@ -145,18 +145,18 @@
         [tappableNotif addAttribute:NSLinkAttributeName value:@"onCancelLink" range:range];
         
         NSRange wholeString = NSMakeRange(0, tappableNotif.length);
-        [tappableNotif addAttribute:NSForegroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
+        [tappableNotif addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.riotColorPinkRed range:wholeString];
         [tappableNotif addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
         
         self.messageTextView.attributedText = tappableNotif;
-        self.messageTextView.tintColor = kRiotColorPinkRed;
+        self.messageTextView.tintColor = ThemeService.shared.riotColorPinkRed;
         self.messageTextView.hidden = NO;
         self.messageTextView.backgroundColor = [UIColor clearColor];
     }
     else
     {
         self.messageLabel.text = notification;
-        self.messageLabel.textColor = kRiotColorPinkRed;
+        self.messageLabel.textColor = ThemeService.shared.riotColorPinkRed;
         self.messageLabel.hidden = NO;
     }
     
@@ -187,7 +187,7 @@
     {
         self.iconImageView.image = [UIImage imageNamed:@"error"];
         self.messageLabel.text = labelText;
-        self.messageLabel.textColor = kRiotColorPinkRed;
+        self.messageLabel.textColor = ThemeService.shared.riotColorPinkRed;
         
         self.iconImageView.hidden = NO;
         self.messageLabel.hidden = NO;
@@ -261,15 +261,15 @@
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
     [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.backgroundColor range:wholeString];
-    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:ThemeService.shared.riotColorPinkRed range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
 
     self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
     self.messageTextView.tintColor = ThemeService.shared.theme.backgroundColor;
     self.messageTextView.hidden = NO;
 
-    self.backgroundColor = kRiotColorPinkRed;
-    self.messageTextView.backgroundColor = kRiotColorPinkRed;
+    self.backgroundColor = ThemeService.shared.riotColorPinkRed;
+    self.messageTextView.backgroundColor = ThemeService.shared.riotColorPinkRed;
 
     // Hide the separator to display correctly the red pink conf call banner
     self.separatorView.hidden = YES;
@@ -295,7 +295,7 @@
             notification = NSLocalizedStringFromTable(@"room_new_message_notification", @"Vector", nil);
         }
         self.messageLabel.text = [NSString stringWithFormat:notification, newMessagesCount];
-        self.messageLabel.textColor = kRiotColorPinkRed;
+        self.messageLabel.textColor = ThemeService.shared.riotColorPinkRed;
         self.messageLabel.hidden = NO;
     }
     else
@@ -487,13 +487,13 @@
 
     if (hardLimit)
     {
-        self.backgroundColor = kRiotColorPinkRed;
-        self.messageTextView.backgroundColor = kRiotColorPinkRed;
+        self.backgroundColor = ThemeService.shared.riotColorPinkRed;
+        self.messageTextView.backgroundColor = ThemeService.shared.riotColorPinkRed;
     }
     else
     {
-        self.backgroundColor = kRiotColorCuriousBlue;
-        self.messageTextView.backgroundColor = kRiotColorCuriousBlue;
+        self.backgroundColor = ThemeService.shared.riotColorCuriousBlue;
+        self.messageTextView.backgroundColor = ThemeService.shared.riotColorCuriousBlue;
     }
 
     // Hide the separator to display correctly the banner

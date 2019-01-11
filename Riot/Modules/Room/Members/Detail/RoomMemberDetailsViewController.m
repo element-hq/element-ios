@@ -776,8 +776,8 @@
             
             if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
             {
-                [cellWithButton.mxkButton setTitleColor:kRiotColorPinkRed forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kRiotColorPinkRed forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.riotColorPinkRed forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.riotColorPinkRed forState:UIControlStateHighlighted];
             }
             else
             {

@@ -72,7 +72,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.sectionHeaderTintColor = kRiotColorBlue;
+    self.sectionHeaderTintColor = ThemeService.shared.riotColorBlue;
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;

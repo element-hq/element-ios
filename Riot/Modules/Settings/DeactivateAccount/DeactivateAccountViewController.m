@@ -152,7 +152,7 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (void)setupNavigationBar
 {
-    self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName: kRiotColorRed };
+    self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName: ThemeService.shared.riotColorRed };
     
     UIBarButtonItem *cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
     self.navigationItem.rightBarButtonItem = cancelBarButtonItem;

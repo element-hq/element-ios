@@ -132,16 +132,16 @@
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kRiotColorBlue;
+    self.leftButton.backgroundColor = ThemeService.shared.riotColorBlue;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kRiotColorBlue;
+    self.rightButton.backgroundColor = ThemeService.shared.riotColorBlue;
     
     if (_groupLongDescription)
     {
         _groupLongDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
-        _groupLongDescription.tintColor = kRiotColorBlue;
+        _groupLongDescription.tintColor = ThemeService.shared.riotColorBlue;
         
         // Update HTML loading options
         NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];

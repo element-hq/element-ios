@@ -36,14 +36,6 @@ extern NSString *const kThemeServiceDidChangeThemeNotification;
                      blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
                     alpha:1.0]
 
-#pragma mark - Riot Colors
-extern UIColor *kRiotColorPinkRed;
-extern UIColor *kRiotColorRed;
-extern UIColor *kRiotColorBlue;
-extern UIColor *kRiotColorCuriousBlue;
-extern UIColor *kRiotColorIndigo;
-extern UIColor *kRiotColorOrange;
-
 #pragma mark - Riot Standard Room Member Power Level
 extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;
@@ -77,6 +69,15 @@ extern NSInteger const kRiotRoomAdminLevel;
  @return the theme.
  */
 - (id<Theme>)themeWithThemeId:(NSString*)themeId;
+
+#pragma mark - Riot Colors not yet themeable
+
+@property (nonatomic, readonly) UIColor *riotColorPinkRed;
+@property (nonatomic, readonly) UIColor *riotColorRed;
+@property (nonatomic, readonly) UIColor *riotColorBlue;
+@property (nonatomic, readonly) UIColor *riotColorCuriousBlue;
+@property (nonatomic, readonly) UIColor *riotColorIndigo;
+@property (nonatomic, readonly) UIColor *riotColorOrange;
 
 @end
 

@@ -27,15 +27,6 @@
 
 NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
 
-// Riot Colors
-UIColor *kRiotColorPinkRed;
-UIColor *kRiotColorRed;
-UIColor *kRiotColorBlue;
-UIColor *kRiotColorCuriousBlue;
-UIColor *kRiotColorIndigo;
-UIColor *kRiotColorOrange;
-
-
 NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
 
@@ -87,28 +78,27 @@ NSInteger const kRiotRoomAdminLevel = 100;
 
 #pragma mark - Private methods
 
-+ (void)load
+- (instancetype)init
 {
-    [super load];
+    self = [super init];
+    if (self)
+    {
+        // Riot Colors not yet themeable
+        _riotColorPinkRed = UIColorFromRGB(0xFF0064);
+        _riotColorRed = UIColorFromRGB(0xFF4444);
+        _riotColorBlue = UIColorFromRGB(0x81BDDB);
+        _riotColorCuriousBlue = UIColorFromRGB(0x2A9EDB);
+        _riotColorIndigo = UIColorFromRGB(0xBD79CC);
+        _riotColorOrange = UIColorFromRGB(0xF8A15F);
 
-    // Load colors at the app load time for the life of the app
+        // Observe user interface theme change.
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"userInterfaceTheme" options:0 context:nil];
+        [self userInterfaceThemeDidChange];
 
-    // Colors as defined by the design
-    kRiotColorPinkRed = UIColorFromRGB(0xFF0064);
-    kRiotColorRed = UIColorFromRGB(0xFF4444);
-    kRiotColorBlue = UIColorFromRGB(0x81BDDB);
-    kRiotColorCuriousBlue = UIColorFromRGB(0x2A9EDB);
-    kRiotColorIndigo = UIColorFromRGB(0xBD79CC);
-    kRiotColorOrange = UIColorFromRGB(0xF8A15F);
-
-    ThemeService *themeService = ThemeService.shared;
-
-    // Observe user interface theme change.
-    [[NSUserDefaults standardUserDefaults] addObserver:themeService forKeyPath:@"userInterfaceTheme" options:0 context:nil];
-    [themeService userInterfaceThemeDidChange];
-
-    // Observe "Invert Colours" settings changes (available since iOS 11)
-    [[NSNotificationCenter defaultCenter] addObserver:themeService selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+        // Observe "Invert Colours" settings changes (available since iOS 11)
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+    }
+    return self;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
