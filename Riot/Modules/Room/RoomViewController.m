@@ -4230,11 +4230,11 @@
             // Set the right background color
             if (highlightCount)
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationMentionColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationPrimaryColor;
             }
             else
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationUnreadColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationSecondaryColor;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)

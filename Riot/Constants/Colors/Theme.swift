@@ -41,8 +41,10 @@ import UIKit
 
     var unreadRoomIndentColor: UIColor { get }
 
-    var notificationUnreadColor: UIColor { get }
-    var notificationMentionColor: UIColor { get }
+    /// Color for notifications for unread messages
+    var notificationSecondaryColor: UIColor { get }
+    /// Color for notifications for mention messages
+    var notificationPrimaryColor: UIColor { get }
 
     var avatarColors: [UIColor] { get }
 

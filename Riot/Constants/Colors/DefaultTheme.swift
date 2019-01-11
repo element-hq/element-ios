@@ -43,8 +43,8 @@ final class DefaultTheme: NSObject, Theme {
     let tintColor: UIColor = UIColor(rgb: 0x7AC9A1)
     let unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     
-    let notificationUnreadColor: UIColor = UIColor(rgb: 0x7AC9A1)
-    let notificationMentionColor: UIColor = UIColor(rgb: 0xF56679)
+    let notificationSecondaryColor: UIColor = UIColor(rgb: 0x7AC9A1)
+    let notificationPrimaryColor: UIColor = UIColor(rgb: 0xF56679)
 
     let avatarColors: [UIColor] = [
         UIColor(rgb: 0x7AC9A1),
