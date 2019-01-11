@@ -19,13 +19,13 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @interface ReadReceiptsViewController () <UITableViewDataSource, UITableViewDelegate>
 {
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @property (nonatomic) MXSession *session;
@@ -78,7 +78,7 @@
     [self addOverlayViewGesture];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -94,20 +94,20 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
-    self.overlayView.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.overlayView.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     self.overlayView.alpha = 1.0;
     
-    self.titleLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.containerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.titleLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.containerView.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Check the table view style to select its bg color.
-    self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
+    self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? ThemeService.theme.backgroundColor : ThemeService.theme.headerBackgroundColor);
     
-    self.closeButton.tintColor = RiotDesignValues.theme.tintColor;
+    self.closeButton.tintColor = ThemeService.theme.tintColor;
     
     if (self.receiptsTableView.dataSource)
     {
@@ -118,15 +118,15 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)destroy
 {
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [super destroy];
@@ -196,8 +196,8 @@
 {
     MXKReadReceiptTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[MXKReadReceiptTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.displayNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    cell.receiptDescriptionLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
+    cell.displayNameLabel.textColor = ThemeService.theme.textPrimaryColor;
+    cell.receiptDescriptionLabel.textColor = ThemeService.theme.textSecondaryColor;
     
     if (indexPath.row < self.roomMembers.count)
     {
@@ -224,9 +224,9 @@
         NSString *receiptReadText = NSLocalizedStringFromTable(@"receipt_status_read", @"Vector", nil);
         NSString *receiptTimeText = [(MXKEventFormatter*)self.session.roomSummaryUpdateDelegate dateStringFromTimestamp:self.receipts[indexPath.row].ts withTime:YES];
         
-        NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textSecondaryColor, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];
+        NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : ThemeService.theme.textSecondaryColor, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];
         
-        [receiptDescription appendAttributedString:[[NSAttributedString alloc] initWithString:receiptTimeText attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textSecondaryColor, NSFontAttributeName : [UIFont  systemFontOfSize:15]}]];
+        [receiptDescription appendAttributedString:[[NSAttributedString alloc] initWithString:receiptTimeText attributes:@{NSForegroundColorAttributeName : ThemeService.theme.textSecondaryColor, NSFontAttributeName : [UIFont  systemFontOfSize:15]}]];
         
         cell.receiptDescriptionLabel.attributedText = receiptDescription;
     }
@@ -240,13 +240,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Update the selected background view
-    if (RiotDesignValues.theme.selectedBackgroundColor)
+    if (ThemeService.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
     }
     else
     {

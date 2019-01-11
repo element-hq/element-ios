@@ -37,9 +37,9 @@
     NSString *defaultCountryCode;
     
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -121,7 +121,7 @@
     self.authInputsView = authInputsView;
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -131,52 +131,52 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.view.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.theme.headerBackgroundColor;
 
-    self.authenticationScrollView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.authFallbackContentView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.authenticationScrollView.backgroundColor = ThemeService.theme.backgroundColor;
+    self.authFallbackContentView.backgroundColor = ThemeService.theme.backgroundColor;
     
-    if (RiotDesignValues.theme.placeholderTextColor)
+    if (ThemeService.theme.placeholderTextColor)
     {
         if (self.homeServerTextField.placeholder)
         {
             self.homeServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.homeServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
         }
         if (self.identityServerTextField.placeholder)
         {
             self.identityServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.identityServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
         }
     }
     
-    self.submitButton.backgroundColor = RiotDesignValues.theme.tintColor;
-    self.skipButton.backgroundColor = RiotDesignValues.theme.tintColor;
+    self.submitButton.backgroundColor = ThemeService.theme.tintColor;
+    self.skipButton.backgroundColor = ThemeService.theme.tintColor;
     
     self.noFlowLabel.textColor = kRiotColorRed;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
     [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, forgotPasswordTitle.length)];
-    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:RiotDesignValues.theme.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:ThemeService.theme.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
     [self updateForgotPwdButtonVisibility];
     
-    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : RiotDesignValues.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
+    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : ThemeService.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
-    self.homeServerTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.homeServerLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
+    self.homeServerTextField.textColor = ThemeService.theme.textPrimaryColor;
+    self.homeServerLabel.textColor = ThemeService.theme.textSecondaryColor;
     
-    self.identityServerTextField.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.identityServerLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
+    self.identityServerTextField.textColor = ThemeService.theme.textPrimaryColor;
+    self.identityServerLabel.textColor = ThemeService.theme.textSecondaryColor;
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
     [self.authInputsView customizeViewRendering];
     
@@ -185,7 +185,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -218,10 +218,10 @@
 {
     [super destroy];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 

@@ -37,8 +37,8 @@
     // Current alert (if any).
     UIAlertController *currentAlert;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -88,7 +88,7 @@
     [self updateLocalPreviewLayout];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -98,20 +98,20 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.barTitleColor = RiotDesignValues.theme.textPrimaryColor;
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.barTitleColor = ThemeService.theme.textPrimaryColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
-    self.callerNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.callStatusLabel.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
+    self.callerNameLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.callStatusLabel.textColor = ThemeService.theme.baseTextSecondaryColor;
     
-    self.localPreviewContainerView.layer.borderColor = RiotDesignValues.theme.tintColor.CGColor;
+    self.localPreviewContainerView.layer.borderColor = ThemeService.theme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
     
-    self.remotePreviewContainerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.remotePreviewContainerView.backgroundColor = ThemeService.theme.backgroundColor;
     
     if (gradientMaskLayer)
     {
@@ -121,9 +121,9 @@
     // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
     gradientMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the RiotDesignValues.theme.backgroundColor.
+    // Consider the grayscale components of the ThemeService.theme.backgroundColor.
     CGFloat white = 1.0;
-    [RiotDesignValues.theme.backgroundColor getWhite:&white alpha:nil];
+    [ThemeService.theme.backgroundColor getWhite:&white alpha:nil];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
@@ -189,10 +189,10 @@
 {
     [super destroy];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [gradientMaskLayer removeFromSuperlayer];
@@ -283,8 +283,8 @@
                                                                UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
                                                                
                                                                // Set Riot navigation bar colors
-                                                               [RiotDesignValues.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
-                                                               usersDevicesNavigationController.navigationBar.barTintColor = RiotDesignValues.theme.backgroundColor;
+                                                               [ThemeService.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
+                                                               usersDevicesNavigationController.navigationBar.barTintColor = ThemeService.theme.backgroundColor;
 
                                                                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
                                                                
@@ -350,7 +350,7 @@
     }
     
     return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                      withColor:RiotDesignValues.theme.tintColor];
+                      withColor:ThemeService.theme.tintColor];
 }
 
 - (void)setMxCall:(MXCall *)call

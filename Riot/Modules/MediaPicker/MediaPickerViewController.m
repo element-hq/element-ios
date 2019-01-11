@@ -84,9 +84,9 @@ static void *RecordingContext = &RecordingContext;
     NSDate *videoRecordStartDate;
     
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     /**
      The current visibility of the status bar in this view controller.
@@ -172,7 +172,7 @@ static void *RecordingContext = &RecordingContext;
     }];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -182,20 +182,20 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
-    self.cameraVideoCaptureProgressView.progressColor = RiotDesignValues.theme.backgroundColor;
+    self.cameraVideoCaptureProgressView.progressColor = ThemeService.theme.backgroundColor;
     self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
     
-    self.userAlbumsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.userAlbumsTableView.backgroundColor = ThemeService.theme.backgroundColor;
+    self.view.backgroundColor = ThemeService.theme.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -343,12 +343,12 @@ static void *RecordingContext = &RecordingContext;
         if (self.cameraVideoCaptureProgressView.progressColor != [UIColor lightGrayColor])
         {
             self.cameraVideoCaptureProgressView.progressColor = [UIColor lightGrayColor];
-            self.cameraVideoCaptureProgressView.unprogressColor = RiotDesignValues.theme.backgroundColor;
+            self.cameraVideoCaptureProgressView.unprogressColor = ThemeService.theme.backgroundColor;
         }
     }
-    else if (self.cameraVideoCaptureProgressView.progressColor != RiotDesignValues.theme.backgroundColor)
+    else if (self.cameraVideoCaptureProgressView.progressColor != ThemeService.theme.backgroundColor)
     {
-        self.cameraVideoCaptureProgressView.progressColor = RiotDesignValues.theme.backgroundColor;
+        self.cameraVideoCaptureProgressView.progressColor = ThemeService.theme.backgroundColor;
         self.cameraVideoCaptureProgressView.unprogressColor = [UIColor lightGrayColor];
     }
     
@@ -1005,10 +1005,10 @@ static void *RecordingContext = &RecordingContext;
 {
     [self stopAVCapture];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     if (UIApplicationWillEnterForegroundNotificationObserver)
@@ -1765,13 +1765,13 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Update the selected background view
-    if (RiotDesignValues.theme.selectedBackgroundColor)
+    if (ThemeService.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
     }
     else
     {

@@ -20,8 +20,8 @@
 
 @interface WebViewViewController ()
 {
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -42,7 +42,7 @@
     [super viewDidLoad];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -52,24 +52,24 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
-    webView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    webView.backgroundColor = ThemeService.theme.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)destroy
 {
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [super destroy];

@@ -17,7 +17,7 @@
 
 #import "DeviceTableViewCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 #import "MXRoom+Riot.h"
@@ -32,15 +32,15 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.deviceName.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.deviceName.textColor = ThemeService.theme.textPrimaryColor;
     
     [self.verifyButton.layer setCornerRadius:5];
     self.verifyButton.clipsToBounds = YES;
-    self.verifyButton.backgroundColor = RiotDesignValues.theme.tintColor;
+    self.verifyButton.backgroundColor = ThemeService.theme.tintColor;
     
     [self.blockButton.layer setCornerRadius:5];
     self.blockButton.clipsToBounds = YES;
-    self.blockButton.backgroundColor = RiotDesignValues.theme.tintColor;
+    self.blockButton.backgroundColor = ThemeService.theme.tintColor;
 }
 
 - (void)render:(MXDeviceInfo *)deviceInfo

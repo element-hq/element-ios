@@ -17,7 +17,7 @@
 
 #import "TableViewCellWithLabelAndLargeTextView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation TableViewCellWithLabelAndLargeTextView
@@ -37,8 +37,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    _label.textColor = RiotDesignValues.theme.textPrimaryColor;
-    _textView.textColor = RiotDesignValues.theme.textPrimaryColor;
+    _label.textColor = ThemeService.theme.textPrimaryColor;
+    _textView.textColor = ThemeService.theme.textPrimaryColor;
 }
 
 - (void)layoutSubviews

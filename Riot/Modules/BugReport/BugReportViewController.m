@@ -28,8 +28,8 @@
     // The temporary file used to store the screenshot
     NSURL *screenShotFile;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @property (nonatomic) BOOL sendLogs;
@@ -128,7 +128,7 @@
     _bugReportDescriptionTextView.inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
 
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -138,44 +138,44 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
-    self.overlayView.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.overlayView.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     self.overlayView.alpha = 1.0;
     
-    self.containerView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.sendingContainer.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.containerView.backgroundColor = ThemeService.theme.backgroundColor;
+    self.sendingContainer.backgroundColor = ThemeService.theme.backgroundColor;
     
-    self.bugReportDescriptionTextView.keyboardAppearance = RiotDesignValues.theme.keyboardAppearance;
+    self.bugReportDescriptionTextView.keyboardAppearance = ThemeService.theme.keyboardAppearance;
     
-    self.titleLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.sendingLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.descriptionLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.bugReportDescriptionTextView.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.bugReportDescriptionTextView.tintColor = RiotDesignValues.theme.tintColor;
-    self.logsDescriptionLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.sendLogsLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.sendScreenshotLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.titleLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.sendingLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.descriptionLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.bugReportDescriptionTextView.textColor = ThemeService.theme.textPrimaryColor;
+    self.bugReportDescriptionTextView.tintColor = ThemeService.theme.tintColor;
+    self.logsDescriptionLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.sendLogsLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.sendScreenshotLabel.textColor = ThemeService.theme.textPrimaryColor;
     
-    self.sendButton.tintColor = RiotDesignValues.theme.tintColor;
-    self.cancelButton.tintColor = RiotDesignValues.theme.tintColor;
+    self.sendButton.tintColor = ThemeService.theme.tintColor;
+    self.cancelButton.tintColor = ThemeService.theme.tintColor;
     
-    _bugReportDescriptionTextView.layer.borderColor = RiotDesignValues.theme.headerBackgroundColor.CGColor;
+    _bugReportDescriptionTextView.layer.borderColor = ThemeService.theme.headerBackgroundColor.CGColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)destroy
 {
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [super destroy];

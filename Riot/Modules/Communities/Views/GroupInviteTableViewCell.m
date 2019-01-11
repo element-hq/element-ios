@@ -16,7 +16,7 @@
 
 #import "GroupInviteTableViewCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 #pragma mark - Constant definitions
@@ -58,7 +58,7 @@ NSString *const kGroupInviteTableViewCellRoomKey = @"kGroupInviteTableViewCellRo
     self.leftButton.backgroundColor = kRiotColorBlue;
     self.rightButton.backgroundColor = kRiotColorBlue;
     
-    self.noticeBadgeView.backgroundColor = RiotDesignValues.theme.notificationMentionColor;
+    self.noticeBadgeView.backgroundColor = ThemeService.theme.notificationMentionColor;
 }
 
 - (void)onDeclinePressed:(id)sender

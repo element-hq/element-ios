@@ -52,19 +52,12 @@ final class DefaultTheme: NSObject, Theme {
         UIColor(rgb: 0x76DDD7)]
 
     let statusBarStyle: UIStatusBarStyle = .lightContent
-
     let scrollBarStyle: UIScrollViewIndicatorStyle = .default
-
     let keyboardAppearance: UIKeyboardAppearance = .light
 
-    // Use default 70% gray color.
-    var placeholderTextColor: UIColor?
-
-    // Use the default selection color
-    var selectedBackgroundColor: UIColor?
-
+    var placeholderTextColor: UIColor?      // Use default 70% gray color
+    var selectedBackgroundColor: UIColor?   // Use the default selection color
     let overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
-
     let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {

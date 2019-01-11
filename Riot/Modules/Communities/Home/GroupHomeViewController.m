@@ -20,7 +20,7 @@
 #import "AppDelegate.h"
 #import "Riot-Swift.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Tools.h"
 
 #import "MXGroup+Riot.h"
@@ -36,8 +36,8 @@
      */
     BOOL isStatusBarHidden;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     // The options used to load long description html content.
     NSDictionary *options;
@@ -103,7 +103,7 @@
     _groupAvatarMask.userInteractionEnabled = YES;
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -113,22 +113,22 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
-    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.mainHeaderContainer.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.theme.backgroundColor;
+    self.mainHeaderContainer.backgroundColor = ThemeService.theme.headerBackgroundColor;
     
-    _groupName.textColor = RiotDesignValues.theme.textPrimaryColor;
+    _groupName.textColor = ThemeService.theme.textPrimaryColor;
     
-    _groupDescription.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
+    _groupDescription.textColor = ThemeService.theme.baseTextSecondaryColor;
     _groupDescription.numberOfLines = 0;
     
-    self.inviteLabel.textColor = RiotDesignValues.theme.baseTextSecondaryColor;
+    self.inviteLabel.textColor = ThemeService.theme.baseTextSecondaryColor;
     self.inviteLabel.numberOfLines = 0;
     
-    self.separatorView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
+    self.separatorView.backgroundColor = ThemeService.theme.headerBackgroundColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
@@ -140,11 +140,11 @@
     
     if (_groupLongDescription)
     {
-        _groupLongDescription.textColor = RiotDesignValues.theme.textSecondaryColor;
+        _groupLongDescription.textColor = ThemeService.theme.textSecondaryColor;
         _groupLongDescription.tintColor = kRiotColorBlue;
         
         // Update HTML loading options
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:RiotDesignValues.theme.headerBackgroundColor];
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.theme.headerBackgroundColor];
         NSString *defaultCSS = [NSString stringWithFormat:@" \
                       pre,code { \
                       background-color: #%06lX; \
@@ -170,7 +170,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -259,10 +259,10 @@
     [currentRequest cancel];
     currentRequest = nil;
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -481,7 +481,7 @@
     _groupAvatar.layer.cornerRadius = _groupAvatar.frame.size.width / 2;
     _groupAvatar.clipsToBounds = YES;
     
-    _groupAvatar.defaultBackgroundColor = RiotDesignValues.theme.headerBackgroundColor;
+    _groupAvatar.defaultBackgroundColor = ThemeService.theme.headerBackgroundColor;
 }
 
 - (void)refreshGroupLongDescription

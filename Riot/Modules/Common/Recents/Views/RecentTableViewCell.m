@@ -21,7 +21,7 @@
 
 #import "MXEvent.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
@@ -48,13 +48,13 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super customizeTableViewCellRendering];
     
-    self.roomTitle.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.lastEventDescription.textColor = RiotDesignValues.theme.textSecondaryColor;
-    self.lastEventDate.textColor = RiotDesignValues.theme.textSecondaryColor;
-    self.missedNotifAndUnreadBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;
+    self.roomTitle.textColor = ThemeService.theme.textPrimaryColor;
+    self.lastEventDescription.textColor = ThemeService.theme.textSecondaryColor;
+    self.lastEventDate.textColor = ThemeService.theme.textSecondaryColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.theme.backgroundColor;
     
     // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(RiotDesignValues.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
+    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
     
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
@@ -94,7 +94,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         {
             // Force the default text color for the last message (cancel highlighted message color)
             NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
-            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:RiotDesignValues.theme.textSecondaryColor range:NSMakeRange(0, lastEventDescription.length)];
+            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:ThemeService.theme.textSecondaryColor range:NSMakeRange(0, lastEventDescription.length)];
             self.lastEventDescription.attributedText = lastEventDescription;
         }
         else
@@ -109,7 +109,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             
             if (0 < roomCellData.notificationCount)
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? RiotDesignValues.theme.notificationMentionColor : RiotDesignValues.theme.notificationUnreadColor;
+                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? ThemeService.theme.notificationMentionColor : ThemeService.theme.notificationUnreadColor;
                 
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;
@@ -121,7 +121,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             }
             else
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = RiotDesignValues.theme.headerTextSecondaryColor;
+                self.missedNotifAndUnreadIndicator.backgroundColor = ThemeService.theme.headerTextSecondaryColor;
             }
             
             // Use bold font for the room title
@@ -136,7 +136,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         }
         else
         {
-            self.lastEventDate.textColor = RiotDesignValues.theme.textSecondaryColor;
+            self.lastEventDate.textColor = ThemeService.theme.textSecondaryColor;
             
             // The room title is not bold anymore
             if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])

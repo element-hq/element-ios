@@ -19,7 +19,7 @@
 
 #import <objc/runtime.h>
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 /**
@@ -95,7 +95,7 @@
         self.searchBar.text = @"";
         
         // Customize search bar
-        [RiotDesignValues.theme applyStyleOnSearchBar:self.searchBar];
+        [ThemeService.theme applyStyleOnSearchBar:self.searchBar];
         
         // Remove navigation buttons
         self.navigationItem.hidesBackButton = YES;
@@ -134,7 +134,7 @@
 
 - (void)addBackgroundImageViewToView:(UIView*)view
 {
-    UIImage *searchBgImage = [MXKTools paintImage:[UIImage imageNamed:@"search_bg"] withColor:RiotDesignValues.theme.matrixSearchBackgroundImageTintColor];
+    UIImage *searchBgImage = [MXKTools paintImage:[UIImage imageNamed:@"search_bg"] withColor:ThemeService.theme.matrixSearchBackgroundImageTintColor];
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:searchBgImage];
     backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
 

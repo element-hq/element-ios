@@ -17,7 +17,7 @@
 
 #import "RoomOutgoingAttachmentBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation RoomOutgoingAttachmentBubbleCell
@@ -26,8 +26,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.messageTextView.tintColor = RiotDesignValues.theme.tintColor;
+    self.userNameLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.messageTextView.tintColor = ThemeService.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

@@ -19,7 +19,7 @@
 #import "NSBundle+MatrixKit.h"
 #import "ShareExtensionManager.h"
 #import "RecentCellData.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import <MatrixKit/MatrixKit.h>
 
 #ifdef IS_SHARE_EXTENSION
@@ -96,7 +96,7 @@
     
     self.recentsSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
-    self.recentsSearchBar.tintColor = RiotDesignValues.theme.tintColor;
+    self.recentsSearchBar.tintColor = ThemeService.theme.tintColor;
     
     _tableSearchBar.tintColor = self.recentsSearchBar.tintColor;
 }

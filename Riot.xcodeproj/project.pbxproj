@@ -51,8 +51,8 @@
 		B169329B20F39E6300746532 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
 		B16932A320F3A21C00746532 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B169329F20F3A21B00746532 /* main.m */; };
 		B16932A520F3A21C00746532 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16932A220F3A21B00746532 /* empty.mm */; };
-		B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
-		B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
+		B16932AC20F3A7B100746532 /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* ThemeService.m */; };
+		B16932AD20F3A7B100746532 /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* ThemeService.m */; };
 		B16932B120F3AC9200746532 /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AF20F3AC9200746532 /* RoomSearchDataSource.m */; };
 		B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */; };
 		B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E920F3C39000746532 /* UnifiedSearchRecentsDataSource.m */; };
@@ -484,8 +484,8 @@
 		B16932A020F3A21B00746532 /* Riot.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Riot.entitlements; sourceTree = "<group>"; };
 		B16932A120F3A21B00746532 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B16932A220F3A21B00746532 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
-		B16932AA20F3A7B000746532 /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
-		B16932AB20F3A7B000746532 /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
+		B16932AA20F3A7B000746532 /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
+		B16932AB20F3A7B000746532 /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
 		B16932AF20F3AC9200746532 /* RoomSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchDataSource.m; sourceTree = "<group>"; };
 		B16932B020F3AC9200746532 /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
 		B16932E520F3C37100746532 /* HomeMessagesSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchDataSource.h; sourceTree = "<group>"; };
@@ -1166,8 +1166,8 @@
 			isa = PBXGroup;
 			children = (
 				3223D9BD21B00615000321C1 /* Colors */,
-				B16932AA20F3A7B000746532 /* RiotDesignValues.h */,
-				B16932AB20F3A7B000746532 /* RiotDesignValues.m */,
+				B16932AA20F3A7B000746532 /* ThemeService.h */,
+				B16932AB20F3A7B000746532 /* ThemeService.m */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -2983,7 +2983,7 @@
 				3223D9C621B00788000321C1 /* DefaultTheme.swift in Sources */,
 				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
 				3223D9C521B00781000321C1 /* DarkTheme.swift in Sources */,
-				B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */,
+				B16932AD20F3A7B100746532 /* ThemeService.m in Sources */,
 				B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */,
 				B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
@@ -3013,7 +3013,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1B557D120EF5E3500210D55 /* MediaAlbumTableCell.m in Sources */,
-				B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */,
+				B16932AC20F3A7B100746532 /* ThemeService.m in Sources */,
 				B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */,
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
 				B1B5573A20EE6C4D00210D55 /* GroupRoomsViewController.m in Sources */,

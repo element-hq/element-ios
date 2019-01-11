@@ -22,15 +22,15 @@
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 #import "AvatarGenerator.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 #import "MXRoom+Riot.h"
 
 @interface RoomDataSource()
 {
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -59,7 +59,7 @@
         self.markTimelineInitialEvent = NO;
         
         // Observe user interface theme change.
-        kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
             
             // Force room data reload.
             [self updateEventFormatter];
@@ -106,10 +106,10 @@
 
 - (void)destroy
 {
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [super destroy];
@@ -386,7 +386,7 @@
                         if ([component.event.eventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
                             bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - 2, bubbleCell.bubbleOverlayContainer.frame.size.width, 2)];
-                            bubbleCell.readMarkerView.backgroundColor = RiotDesignValues.theme.tintColor;
+                            bubbleCell.readMarkerView.backgroundColor = ThemeService.theme.tintColor;
                             // Hide by default the marker, it will be shown and animated when the cell will be rendered.
                             bubbleCell.readMarkerView.hidden = YES;
                             bubbleCell.readMarkerView.tag = index;

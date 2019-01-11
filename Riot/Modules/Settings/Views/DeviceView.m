@@ -17,7 +17,7 @@
 
 #import "DeviceView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation DeviceView
@@ -28,12 +28,12 @@
 {
     [super customizeViewRendering];
     
-    self.containerView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-    self.textView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.defaultTextColor = RiotDesignValues.theme.textPrimaryColor;
-    self.cancelButton.tintColor = RiotDesignValues.theme.tintColor;
-    self.deleteButton.tintColor = RiotDesignValues.theme.tintColor;
-    self.renameButton.tintColor = RiotDesignValues.theme.tintColor;
+    self.containerView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.textView.backgroundColor = ThemeService.theme.backgroundColor;
+    self.defaultTextColor = ThemeService.theme.textPrimaryColor;
+    self.cancelButton.tintColor = ThemeService.theme.tintColor;
+    self.deleteButton.tintColor = ThemeService.theme.tintColor;
+    self.renameButton.tintColor = ThemeService.theme.tintColor;
 }
 
 @end

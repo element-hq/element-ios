@@ -18,7 +18,7 @@
 
 #import "FilesSearchTableViewCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation FilesSearchTableViewCell
@@ -28,11 +28,11 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.title.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.title.textColor = ThemeService.theme.textPrimaryColor;
     
-    self.message.textColor = RiotDesignValues.theme.textSecondaryColor;
+    self.message.textColor = ThemeService.theme.textSecondaryColor;
     
-    self.date.tintColor = RiotDesignValues.theme.textSecondaryColor;
+    self.date.tintColor = ThemeService.theme.textSecondaryColor;
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
@@ -76,7 +76,7 @@
             
             if (bubbleData.isAttachmentWithThumbnail)
             {
-                self.attachmentImageView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+                self.attachmentImageView.backgroundColor = ThemeService.theme.backgroundColor;
                 [self.attachmentImageView setAttachmentThumb:bubbleData.attachment];
             }
             

@@ -19,7 +19,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 #import "AvatarGenerator.h"
@@ -53,8 +53,8 @@
     [super customizeTableViewCellRendering];
     
     // apply the vector colours
-    self.contactDisplayNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.contactInformationLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
+    self.contactDisplayNameLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.contactInformationLabel.textColor = ThemeService.theme.textSecondaryColor;
     
     // Clear the default background color of a MXKImageView instance
     self.thumbnailView.defaultBackgroundColor = [UIColor clearColor];
@@ -223,11 +223,11 @@
         }
         else if ((!contact.isMatrixContact && contact.phoneNumbers.count && !contact.emailAddresses.count))
         {
-            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:RiotDesignValues.theme.tintColor];
+            image = [AvatarGenerator imageFromText:@"#" withBackgroundColor:ThemeService.theme.tintColor];
         }
         else
         {
-            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:RiotDesignValues.theme.tintColor];
+            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:ThemeService.theme.tintColor];
         }
     }
     

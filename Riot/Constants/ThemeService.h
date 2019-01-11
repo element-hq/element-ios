@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Posted when the user interface theme has been changed.
  */
-extern NSString *const kRiotDesignValuesDidChangeThemeNotification;
+extern NSString *const kThemeServiceDidChangeThemeNotification;
 
 /**
  Convert a RGB hexadecimal value into a UIColor.
@@ -48,9 +48,9 @@ extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;
 
 /**
- `RiotDesignValues` class manages the Riot design parameters
+ `ThemeService` class manages the Riot design parameters
  */
-@interface RiotDesignValues : NSObject
+@interface ThemeService : NSObject
 
 /**
  The current theme.

@@ -22,9 +22,9 @@
 @interface CountryPickerViewController ()
 {
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     /**
      The fake top view displayed in case of vertical bounce.
@@ -62,7 +62,7 @@
     [self.tableView addSubview:topview];
 
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -72,15 +72,15 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
-    [RiotDesignValues.theme applyStyleOnSearchBar:self.searchBar];
+    [ThemeService.theme applyStyleOnSearchBar:self.searchBar];
     
     // Use the primary bg color for the table view in plain style.
-    self.tableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    topview.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.tableView.backgroundColor = ThemeService.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.theme.backgroundColor;
     self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -91,7 +91,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,24 +109,24 @@
     [topview removeFromSuperview];
     topview = nil;
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.textLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    cell.detailTextLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.textLabel.textColor = ThemeService.theme.textPrimaryColor;
+    cell.detailTextLabel.textColor = ThemeService.theme.textSecondaryColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Update the selected background view
-    if (RiotDesignValues.theme.selectedBackgroundColor)
+    if (ThemeService.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
     }
     else
     {

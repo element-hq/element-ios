@@ -21,7 +21,7 @@
 #import <MatrixSDK/MXMediaManager.h>
 
 #import "CircleButton.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 static const CGFloat kAvatarSize = 100.0;
@@ -57,11 +57,11 @@ static const CGFloat kButtonSize = 80.0;
     self = [super initWithFrame:CGRectZero];
     if (self)
     {
-        self.backgroundColor = RiotDesignValues.theme.backgroundColor;
+        self.backgroundColor = ThemeService.theme.backgroundColor;
         self.opaque = YES;
         
         self.callerImageView = [[MXKImageView alloc] init];
-        self.callerImageView.backgroundColor = RiotDesignValues.theme.backgroundColor;
+        self.callerImageView.backgroundColor = ThemeService.theme.backgroundColor;
         self.callerImageView.clipsToBounds = YES;
         self.callerImageView.mediaFolder = kMXMediaManagerAvatarThumbnailFolder;
         self.callerImageView.enableInMemoryCache = YES;
@@ -74,28 +74,28 @@ static const CGFloat kButtonSize = 80.0;
                              mediaManager:mediaManager];
         
         self.callerNameLabel = [[UILabel alloc] init];
-        self.callerNameLabel.backgroundColor = RiotDesignValues.theme.backgroundColor;
-        self.callerNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+        self.callerNameLabel.backgroundColor = ThemeService.theme.backgroundColor;
+        self.callerNameLabel.textColor = ThemeService.theme.textPrimaryColor;
         self.callerNameLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightMedium];
         self.callerNameLabel.text = callerName;
         self.callerNameLabel.textAlignment = NSTextAlignmentCenter;
         
         self.callInfoLabel = [[UILabel alloc] init];
-        self.callInfoLabel.backgroundColor = RiotDesignValues.theme.backgroundColor;
-        self.callInfoLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
+        self.callInfoLabel.backgroundColor = ThemeService.theme.backgroundColor;
+        self.callInfoLabel.textColor = ThemeService.theme.textSecondaryColor;
         self.callInfoLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.callInfoLabel.text = callInfo;
         self.callInfoLabel.textAlignment = NSTextAlignmentCenter;
         
-        UIColor *answerButtonBorderColor = RiotDesignValues.theme.tintColor;
+        UIColor *answerButtonBorderColor = ThemeService.theme.tintColor;
         
         self.answerButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_icon"]
                                                     borderColor:answerButtonBorderColor];
-        self.answerButton.defaultBackgroundColor = RiotDesignValues.theme.backgroundColor;
+        self.answerButton.defaultBackgroundColor = ThemeService.theme.backgroundColor;
         [self.answerButton addTarget:self action:@selector(didTapAnswerButton) forControlEvents:UIControlEventTouchUpInside];
         
         self.answerTitleLabel = [[UILabel alloc] init];
-        self.answerTitleLabel.backgroundColor = RiotDesignValues.theme.backgroundColor;
+        self.answerTitleLabel.backgroundColor = ThemeService.theme.backgroundColor;
         self.answerTitleLabel.textColor = answerButtonBorderColor;
         self.answerTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.answerTitleLabel.text = NSLocalizedStringFromTable(@"accept", @"Vector", nil);
@@ -104,11 +104,11 @@ static const CGFloat kButtonSize = 80.0;
         
         self.rejectButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"call_hangup_icon"]
                                                     borderColor:rejectButtonBorderColor];
-        self.rejectButton.defaultBackgroundColor = RiotDesignValues.theme.backgroundColor;
+        self.rejectButton.defaultBackgroundColor = ThemeService.theme.backgroundColor;
         [self.rejectButton addTarget:self action:@selector(didTapRejectButton) forControlEvents:UIControlEventTouchUpInside];
         
         self.rejectTitleLabel = [[UILabel alloc] init];
-        self.rejectTitleLabel.backgroundColor = RiotDesignValues.theme.backgroundColor;
+        self.rejectTitleLabel.backgroundColor = ThemeService.theme.backgroundColor;
         self.rejectTitleLabel.textColor = rejectButtonBorderColor;
         self.rejectTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.rejectTitleLabel.text = NSLocalizedStringFromTable(@"decline", @"Vector", nil);

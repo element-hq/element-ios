@@ -52,17 +52,12 @@ final class DarkTheme: NSObject, Theme {
         UIColor(rgb: 0x76DDD7)]
 
     let statusBarStyle: UIStatusBarStyle = .lightContent
-
     let scrollBarStyle: UIScrollViewIndicatorStyle = .white
-
     let keyboardAppearance: UIKeyboardAppearance = .dark
 
     let placeholderTextColor: UIColor? = UIColor(white: 1.0, alpha: 0.3)
-
     let selectedBackgroundColor: UIColor? = UIColor.black
-
     let overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
-    
     let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {

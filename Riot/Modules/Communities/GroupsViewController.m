@@ -39,8 +39,8 @@
     // when the user selects it.
     UISearchBar *tableSearchBar;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -106,7 +106,7 @@
     //[self addPlusButton];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -116,17 +116,17 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
     // Use the primary bg color for the recents table view in plain style.
-    self.groupsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    topview.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.groupsTableView.backgroundColor = ThemeService.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.theme.backgroundColor;
 
-    [RiotDesignValues.theme applyStyleOnSearchBar:tableSearchBar];
-    [RiotDesignValues.theme applyStyleOnSearchBar:self.groupsSearchBar];
+    [ThemeService.theme applyStyleOnSearchBar:tableSearchBar];
+    [ThemeService.theme applyStyleOnSearchBar:self.groupsSearchBar];
     
     if (self.groupsTableView.dataSource)
     {
@@ -137,7 +137,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -162,10 +162,10 @@
         UIApplicationDidEnterBackgroundNotificationObserver = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -424,13 +424,13 @@
 {
     [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Update the selected background view
-    if (RiotDesignValues.theme.selectedBackgroundColor)
+    if (ThemeService.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
     }
     else
     {
@@ -452,8 +452,8 @@
     if (tableView.numberOfSections > 1)
     {
         sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
-        sectionHeader.mxkContentView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-        sectionHeader.mxkLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+        sectionHeader.mxkContentView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+        sectionHeader.mxkLabel.textColor = ThemeService.theme.textPrimaryColor;
         sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
         NSString* title = [self.dataSource tableView:tableView titleForHeaderInSection:section];
@@ -462,9 +462,9 @@
         {
             NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
             NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                                    attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.headerTextPrimaryColor}];
+                                                                                                    attributes:@{NSForegroundColorAttributeName: ThemeService.theme.headerTextPrimaryColor}];
             [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                               attributes:@{NSForegroundColorAttributeName: RiotDesignValues.theme.headerTextSecondaryColor}]];
+                                                                                               attributes:@{NSForegroundColorAttributeName: ThemeService.theme.headerTextSecondaryColor}]];
 
             sectionHeader.mxkLabel.attributedText = mutableSectionTitle;
         }
@@ -512,7 +512,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     

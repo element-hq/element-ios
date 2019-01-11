@@ -15,7 +15,7 @@
  */
 
 #import "FallbackViewController.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #ifdef IS_SHARE_EXTENSION
 #import "RiotShareExtension-Swift.h"
@@ -35,7 +35,7 @@
 {
     [super viewDidLoad];
     
-    self.titleLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
+    self.titleLabel.textColor = ThemeService.theme.textSecondaryColor;
     self.titleLabel.text = NSLocalizedStringFromTable(@"share_extension_auth_prompt", @"Vector", nil);
 }
 

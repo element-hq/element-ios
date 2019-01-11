@@ -17,7 +17,7 @@
 
 #import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation RoomOutgoingTextMsgWithoutSenderInfoBubbleCell
@@ -26,7 +26,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.messageTextView.tintColor = RiotDesignValues.theme.tintColor;
+    self.messageTextView.tintColor = ThemeService.theme.tintColor;
 }
 
 @end

@@ -203,8 +203,8 @@
     // The right bar button items back up.
     NSArray<UIBarButtonItem *> *rightBarButtonItems;
 
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     // Tell whether the input text field is in send reply mode. If true typed message will be sent to highlighted event.
     BOOL isInReplyMode;
@@ -408,7 +408,7 @@
     }
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -418,25 +418,25 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     self.navigationController.navigationBar.translucent = YES;
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: RiotDesignValues.theme.textPrimaryColor, NSForegroundColorAttributeName: RiotDesignValues.theme.textPrimaryColor}];
+    self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.theme.backgroundColor;
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: ThemeService.theme.textPrimaryColor, NSForegroundColorAttributeName: ThemeService.theme.textPrimaryColor}];
     
     
-    self.expandedHeaderContainer.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-    self.previewHeaderContainer.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
+    self.expandedHeaderContainer.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.previewHeaderContainer.backgroundColor = ThemeService.theme.headerBackgroundColor;
     
-    missedDiscussionsBadgeLabel.textColor = RiotDesignValues.theme.backgroundColor;
+    missedDiscussionsBadgeLabel.textColor = ThemeService.theme.backgroundColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? ThemeService.theme.backgroundColor : ThemeService.theme.headerBackgroundColor);
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -447,7 +447,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -1142,10 +1142,10 @@
     
     [self removeTypingNotificationsListener];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
@@ -1752,7 +1752,7 @@
             else
             {
                 previewHeader.roomAvatarPlaceholder = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                                 withColor:RiotDesignValues.theme.tintColor];
+                                                                 withColor:ThemeService.theme.tintColor];
             }
         }
         
@@ -3338,13 +3338,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Update the selected background view
-    if (RiotDesignValues.theme.selectedBackgroundColor)
+    if (ThemeService.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
     }
     else
     {
@@ -4230,11 +4230,11 @@
             // Set the right background color
             if (highlightCount)
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = RiotDesignValues.theme.notificationMentionColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.theme.notificationMentionColor;
             }
             else
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = RiotDesignValues.theme.notificationUnreadColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.theme.notificationUnreadColor;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)

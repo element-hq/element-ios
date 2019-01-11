@@ -77,9 +77,9 @@
     UIAlertController *currentAlert;
     
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     /**
      The current visibility of the status bar in this view controller.
@@ -221,7 +221,7 @@
     }];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -231,16 +231,16 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
-    self.headerView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-    self.contactNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.contactStatusLabel.textColor = RiotDesignValues.theme.tintColor;
+    self.headerView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.contactNameLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.contactStatusLabel.textColor = ThemeService.theme.tintColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.theme.backgroundColor : ThemeService.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -251,7 +251,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -322,10 +322,10 @@
 {
     [super destroy];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     if (roomCreationRequest)
@@ -735,8 +735,8 @@
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
             [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
             
-            [cellWithButton.mxkButton setTitleColor:RiotDesignValues.theme.textPrimaryColor forState:UIControlStateNormal];
-            [cellWithButton.mxkButton setTitleColor:RiotDesignValues.theme.textPrimaryColor forState:UIControlStateHighlighted];
+            [cellWithButton.mxkButton setTitleColor:ThemeService.theme.textPrimaryColor forState:UIControlStateNormal];
+            [cellWithButton.mxkButton setTitleColor:ThemeService.theme.textPrimaryColor forState:UIControlStateHighlighted];
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -779,13 +779,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Update the selected background view
-    if (RiotDesignValues.theme.selectedBackgroundColor)
+    if (ThemeService.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
     }
     else
     {

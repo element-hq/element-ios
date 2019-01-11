@@ -17,7 +17,7 @@
 
 #import "MediaAlbumTableCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation MediaAlbumTableCell
@@ -26,8 +26,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.albumDisplayNameLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
-    self.albumCountLabel.textColor = RiotDesignValues.theme.textSecondaryColor;
+    self.albumDisplayNameLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.albumCountLabel.textColor = ThemeService.theme.textSecondaryColor;
 }
 
 @end

@@ -24,7 +24,7 @@
 #import "RoomIncomingEncryptedAttachmentBubbleCell.h"
 #import "RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation RoomSelectedStickerBubbleCell
@@ -45,8 +45,8 @@
     arrowMaskLayer.path = path.CGPath;
     self.arrowView.layer.mask = arrowMaskLayer;
     
-    self.arrowView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-    self.descriptionView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
+    self.arrowView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.descriptionView.backgroundColor = ThemeService.theme.headerBackgroundColor;
     [self.descriptionView.layer setCornerRadius:10];
 }
 

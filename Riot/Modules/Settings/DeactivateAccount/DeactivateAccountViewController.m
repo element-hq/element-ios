@@ -16,7 +16,7 @@
 
 #import "DeactivateAccountViewController.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 #import "AppDelegate.h"
 
@@ -109,36 +109,36 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 #pragma mark - Private
 
 - (void)registerThemeNotification
 {
-    self.themeDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    self.themeDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         [self userInterfaceThemeDidChange];
     }];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
 }
 
 - (void)setupStringAttributes
 {
     self.normalStringAttributes = @{
                                     NSFontAttributeName: [UIFont systemFontOfSize:kTextFontSize],
-                                    NSForegroundColorAttributeName: RiotDesignValues.theme.textPrimaryColor
+                                    NSForegroundColorAttributeName: ThemeService.theme.textPrimaryColor
                                     };
     
     
     self.emphasizeStringAttributes = @{
                                        NSFontAttributeName: [UIFont systemFontOfSize:kTextFontSize weight:UIFontWeightBold],
-                                       NSForegroundColorAttributeName: RiotDesignValues.theme.textPrimaryColor
+                                       NSForegroundColorAttributeName: ThemeService.theme.textPrimaryColor
                                        };
 }
 
@@ -166,9 +166,9 @@ static CGFloat const kTextFontSize = 15.0;
     self.deactivateAcccountButton.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     
     self.deactivateAcccountButton.layer.masksToBounds = YES;
-    self.deactivateAcccountButton.backgroundColor = RiotDesignValues.theme.tintColor;
+    self.deactivateAcccountButton.backgroundColor = ThemeService.theme.tintColor;
     [self.deactivateAcccountButton setTitle:NSLocalizedStringFromTable(@"deactivate_account_validate_action", @"Vector", nil) forState:UIControlStateNormal];    
-    [self.deactivateAcccountButton setTitleColor:RiotDesignValues.theme.headerTextSecondaryColor forState:UIControlStateDisabled];
+    [self.deactivateAcccountButton setTitleColor:ThemeService.theme.headerTextSecondaryColor forState:UIControlStateDisabled];
 }
 
 - (void)setupDeactivateAccountInfosLabel

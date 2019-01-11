@@ -63,8 +63,8 @@
     // when the user selects it.
     UISearchBar *tableSearchBar;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -149,7 +149,7 @@
     self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -159,17 +159,17 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = RiotDesignValues.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
     
     // Use the primary bg color for the recents table view in plain style.
-    self.recentsTableView.backgroundColor = RiotDesignValues.theme.backgroundColor;
-    topview.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
-    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.recentsTableView.backgroundColor = ThemeService.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.theme.backgroundColor;
 
-    [RiotDesignValues.theme applyStyleOnSearchBar:tableSearchBar];
-    [RiotDesignValues.theme applyStyleOnSearchBar:self.recentsSearchBar];
+    [ThemeService.theme applyStyleOnSearchBar:tableSearchBar];
+    [ThemeService.theme applyStyleOnSearchBar:self.recentsSearchBar];
 
     if (self.recentsTableView.dataSource)
     {
@@ -180,7 +180,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -207,10 +207,10 @@
         UIApplicationDidEnterBackgroundNotificationObserver = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -868,7 +868,7 @@
         }];
         
         UIImage *actionIcon = isDirect ? [UIImage imageNamed:@"directChatOff"] : [UIImage imageNamed:@"directChatOn"];
-        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:directAction atIndex:0];
         
         
@@ -882,7 +882,7 @@
         }];
         
         actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
         
         // Favorites management
@@ -907,7 +907,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favouriteOff"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -919,7 +919,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favourite"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -932,7 +932,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityHigh"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -944,7 +944,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityLow"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -955,7 +955,7 @@
         }];
         
         actionIcon = [UIImage imageNamed:@"leave"];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         
         [actions insertObject:leaveAction atIndex:0];
     }
@@ -1185,13 +1185,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Update the selected background view
-    if (RiotDesignValues.theme.selectedBackgroundColor)
+    if (ThemeService.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
     }
     else
     {
@@ -1413,7 +1413,7 @@
             if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
             {
                 UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
-                cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+                cell.backgroundColor = ThemeService.theme.backgroundColor;
                 
                 // snapshot the cell
                 UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);

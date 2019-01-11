@@ -16,7 +16,7 @@
 
 #import "RoomMembershipExpandedBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 #import "RoomBubbleCellData.h"
@@ -38,9 +38,9 @@ NSString *const kRoomMembershipExpandedBubbleCellTapOnCollapseButton = @"kRoomMe
 {
     [super customizeTableViewCellRendering];
     
-    self.separatorView.backgroundColor = RiotDesignValues.theme.headerBackgroundColor;
+    self.separatorView.backgroundColor = ThemeService.theme.headerBackgroundColor;
     
-    [self.collapseButton setTintColor:RiotDesignValues.theme.tintColor];
+    [self.collapseButton setTintColor:ThemeService.theme.tintColor];
     self.collapseButton.titleLabel.font = [UIFont systemFontOfSize:14];
 }
 

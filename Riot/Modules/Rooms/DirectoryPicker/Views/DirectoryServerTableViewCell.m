@@ -18,7 +18,7 @@
 #import "DirectoryServerTableViewCell.h"
 
 #import "AvatarGenerator.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation DirectoryServerTableViewCell
@@ -29,7 +29,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.descLabel.textColor = RiotDesignValues.theme.textPrimaryColor;
+    self.descLabel.textColor = ThemeService.theme.textPrimaryColor;
 }
 
 - (void)layoutSubviews
@@ -64,7 +64,7 @@
                                withType:nil
                     andImageOrientation:UIImageOrientationUp
                            previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                   withColor:RiotDesignValues.theme.tintColor]
+                                                   withColor:ThemeService.theme.tintColor]
                            mediaManager:cellData.mediaManager];
     }
     else

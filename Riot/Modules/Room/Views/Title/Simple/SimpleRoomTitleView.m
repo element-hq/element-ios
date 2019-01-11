@@ -17,7 +17,7 @@
 
 #import "SimpleRoomTitleView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 @implementation SimpleRoomTitleView
 

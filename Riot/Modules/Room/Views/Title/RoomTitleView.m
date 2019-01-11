@@ -17,7 +17,7 @@
 
 #import "RoomTitleView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Riot-Swift.h"
 
 @implementation RoomTitleView
@@ -73,7 +73,7 @@
     [super layoutSubviews];
 
     self.roomDetailsIconImageView.image = [MXKTools paintImage:self.roomDetailsIconImageView.image
-                                                     withColor:RiotDesignValues.theme.tintColor];
+                                                     withColor:ThemeService.theme.tintColor];
     
     if (self.superview)
     {
@@ -138,8 +138,8 @@
     [super customizeViewRendering];
 
     // Use same color as navigation bar
-    self.backgroundColor = RiotDesignValues.theme.baseColor;
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? RiotDesignValues.theme.baseTextPrimaryColor : RiotDesignValues.theme.textSecondaryColor);
+    self.backgroundColor = ThemeService.theme.baseColor;
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.theme.baseTextPrimaryColor : ThemeService.theme.textSecondaryColor);
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -164,11 +164,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
-            self.displayNameTextField.textColor = RiotDesignValues.theme.textSecondaryColor;
+            self.displayNameTextField.textColor = ThemeService.theme.textSecondaryColor;
         }
         else
         {
-            self.displayNameTextField.textColor = RiotDesignValues.theme.baseTextPrimaryColor;
+            self.displayNameTextField.textColor = ThemeService.theme.baseTextPrimaryColor;
         }
     }
 }

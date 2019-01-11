@@ -82,9 +82,9 @@
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
 
-    [RiotDesignValues.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = RiotDesignValues.theme.tintColor;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.theme.tintColor;
     
     if (recentsDataSource)
     {
@@ -416,7 +416,7 @@
         }
     }
     
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     return cell;
 }

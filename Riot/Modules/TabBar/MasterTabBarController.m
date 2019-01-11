@@ -55,8 +55,8 @@
     // Keep reference on the pushed view controllers to release them correctly
     NSMutableArray *childViewControllers;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     // The groups data source
     GroupsDataSource *groupsDataSource;
@@ -104,7 +104,7 @@
     [self initializeDataSources];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -114,19 +114,19 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [RiotDesignValues.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.tabBar.tintColor = RiotDesignValues.theme.tintColor;
-    self.tabBar.barTintColor = RiotDesignValues.theme.headerBackgroundColor;
+    self.tabBar.tintColor = ThemeService.theme.tintColor;
+    self.tabBar.barTintColor = ThemeService.theme.headerBackgroundColor;
     
-    self.view.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    self.view.backgroundColor = ThemeService.theme.backgroundColor;
     
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -218,10 +218,10 @@
         authViewControllerObserver = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     childViewControllers = nil;
@@ -786,7 +786,7 @@
 {
     _hidden = hidden;
     
-    [self.view superview].backgroundColor = RiotDesignValues.theme.backgroundColor;
+    [self.view superview].backgroundColor = ThemeService.theme.backgroundColor;
     self.view.hidden = hidden;
     self.navigationController.navigationBar.hidden = hidden;
 }
@@ -798,15 +798,15 @@
     // Use a middle dot to signal missed notif in favourites
     [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
                       onTabBarItem:TABBAR_FAVOURITES_INDEX
-                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? RiotDesignValues.theme.notificationMentionColor : RiotDesignValues.theme.notificationUnreadColor)];
+                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.theme.notificationMentionColor : ThemeService.theme.notificationUnreadColor)];
     
     // Update the badge on People and Rooms tabs
     [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
                        onTabBarItem:TABBAR_PEOPLE_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? RiotDesignValues.theme.notificationMentionColor : RiotDesignValues.theme.notificationUnreadColor)];
+                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.theme.notificationMentionColor : ThemeService.theme.notificationUnreadColor)];
     [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
                        onTabBarItem:TABBAR_ROOMS_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? RiotDesignValues.theme.notificationMentionColor : RiotDesignValues.theme.notificationUnreadColor)];
+                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.theme.notificationMentionColor : ThemeService.theme.notificationUnreadColor)];
 }
 
 - (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor

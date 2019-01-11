@@ -15,7 +15,7 @@
  limitations under the License.
  */
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #ifdef IS_SHARE_EXTENSION
 #import "RiotShareExtension-Swift.h"
@@ -24,7 +24,7 @@
 #endif
 
 
-NSString *const kRiotDesignValuesDidChangeThemeNotification = @"kRiotDesignValuesDidChangeThemeNotification";
+NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
 
 // Riot Colors
 UIColor *kRiotColorPinkRed;
@@ -38,15 +38,15 @@ UIColor *kRiotColorOrange;
 NSInteger const kRiotRoomModeratorLevel = 50;
 NSInteger const kRiotRoomAdminLevel = 100;
 
-@implementation RiotDesignValues
+@implementation ThemeService
 
-+ (RiotDesignValues *)sharedInstance
++ (ThemeService *)sharedInstance
 {
-    static RiotDesignValues *sharedOnceInstance;
+    static ThemeService *sharedOnceInstance;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedOnceInstance = [[RiotDesignValues alloc] init];
+        sharedOnceInstance = [[ThemeService alloc] init];
     });
     
     return sharedOnceInstance;
@@ -67,11 +67,11 @@ NSInteger const kRiotRoomAdminLevel = 100;
     kRiotColorOrange = UIColorFromRGB(0xF8A15F);
 
     // Observe user interface theme change.
-    [[NSUserDefaults standardUserDefaults] addObserver:[RiotDesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
-    [[RiotDesignValues sharedInstance] userInterfaceThemeDidChange];
+    [[NSUserDefaults standardUserDefaults] addObserver:[ThemeService sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
+    [[ThemeService sharedInstance] userInterfaceThemeDidChange];
 
     // Observe "Invert Colours" settings changes (available since iOS 11)
-    [[NSNotificationCenter defaultCenter] addObserver:[RiotDesignValues sharedInstance] selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:[ThemeService sharedInstance] selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -94,9 +94,9 @@ NSInteger const kRiotRoomAdminLevel = 100;
 
 - (void)userInterfaceThemeDidChange
 {
-    [UIScrollView appearance].indicatorStyle = RiotDesignValues.theme.scrollBarStyle;
+    [UIScrollView appearance].indicatorStyle = ThemeService.theme.scrollBarStyle;
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kRiotDesignValuesDidChangeThemeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
 }
 
 + (id<Theme>)theme

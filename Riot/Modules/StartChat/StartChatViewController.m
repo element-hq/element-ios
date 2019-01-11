@@ -149,10 +149,10 @@
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = RiotDesignValues.theme.headerBorderColor;
+    _searchBarHeaderBorder.backgroundColor = ThemeService.theme.headerBorderColor;
     
     // Check the table view style to select its bg color.
-    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? RiotDesignValues.theme.backgroundColor : RiotDesignValues.theme.headerBackgroundColor);
+    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? ThemeService.theme.backgroundColor : ThemeService.theme.headerBackgroundColor);
     self.view.backgroundColor = self.contactsTableView.backgroundColor;
     
     if (self.contactsTableView.dataSource)
@@ -163,7 +163,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return RiotDesignValues.theme.statusBarStyle;
+    return ThemeService.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -381,13 +381,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = RiotDesignValues.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.theme.backgroundColor;
     
     // Update the selected background view
-    if (RiotDesignValues.theme.selectedBackgroundColor)
+    if (ThemeService.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = RiotDesignValues.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
     }
     else
     {
@@ -453,7 +453,7 @@
         
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:RiotDesignValues.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -621,19 +621,19 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = RiotDesignValues.theme.tintColor;
-    searchBar.tintColor = RiotDesignValues.theme.tintColor;
+    searchBar.barTintColor = searchBar.tintColor = ThemeService.theme.tintColor;
+    searchBar.tintColor = ThemeService.theme.tintColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
 
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = RiotDesignValues.theme.textSecondaryColor;
+    searchBarTextField.textColor = ThemeService.theme.textSecondaryColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = RiotDesignValues.theme.tintColor;
+    leftImageView.tintColor = ThemeService.theme.tintColor;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -646,8 +646,8 @@
     {
         searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                    attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                                NSUnderlineColorAttributeName: RiotDesignValues.theme.tintColor,
-                                                                                                NSForegroundColorAttributeName: RiotDesignValues.theme.tintColor}];
+                                                                                                NSUnderlineColorAttributeName: ThemeService.theme.tintColor,
+                                                                                                NSForegroundColorAttributeName: ThemeService.theme.tintColor}];
     }
 }
 
