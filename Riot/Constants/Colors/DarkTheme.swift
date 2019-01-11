@@ -44,7 +44,7 @@ final class DarkTheme: NSObject, Theme {
     let unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     
     let notificationUnreadColor: UIColor = UIColor(rgb: 0x7AC9A1)
-    let notificationMentionColor: UIColor = UIColor(rgb: 0x3F4147)
+    let notificationMentionColor: UIColor = UIColor(rgb: 0xF56679)
 
     let avatarColors: [UIColor] = [
         UIColor(rgb: 0x7AC9A1),
