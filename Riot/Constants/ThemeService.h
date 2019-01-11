@@ -27,14 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 extern NSString *const kThemeServiceDidChangeThemeNotification;
 
-/**
- Convert a RGB hexadecimal value into a UIColor.
- */
-#define UIColorFromRGB(rgbValue) \
-    [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
-                    green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 \
-                     blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
-                    alpha:1.0]
 
 #pragma mark - Riot Standard Room Member Power Level
 extern NSInteger const kRiotRoomModeratorLevel;

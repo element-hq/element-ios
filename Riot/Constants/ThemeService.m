@@ -84,12 +84,12 @@ NSInteger const kRiotRoomAdminLevel = 100;
     if (self)
     {
         // Riot Colors not yet themeable
-        _riotColorPinkRed = UIColorFromRGB(0xFF0064);
-        _riotColorRed = UIColorFromRGB(0xFF4444);
-        _riotColorBlue = UIColorFromRGB(0x81BDDB);
-        _riotColorCuriousBlue = UIColorFromRGB(0x2A9EDB);
-        _riotColorIndigo = UIColorFromRGB(0xBD79CC);
-        _riotColorOrange = UIColorFromRGB(0xF8A15F);
+        _riotColorPinkRed = [[UIColor alloc] initWithRgb:0xFF0064];
+        _riotColorRed = [[UIColor alloc] initWithRgb:0xFF4444];
+        _riotColorBlue = [[UIColor alloc] initWithRgb:0x81BDDB];
+        _riotColorCuriousBlue = [[UIColor alloc] initWithRgb:0x2A9EDB];
+        _riotColorIndigo = [[UIColor alloc] initWithRgb:0xBD79CC];
+        _riotColorOrange = [[UIColor alloc] initWithRgb:0xF8A15F];
 
         // Observe user interface theme change.
         [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"userInterfaceTheme" options:0 context:nil];
