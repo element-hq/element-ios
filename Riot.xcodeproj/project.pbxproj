@@ -10,14 +10,16 @@
 		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		3223D9C021B00615000321C1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9BE21B00615000321C1 /* Theme.swift */; };
-		3223D9C121B00615000321C1 /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9BF21B00615000321C1 /* DefaultTheme.swift */; };
-		3223D9C321B0065A000321C1 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9C221B0065A000321C1 /* DarkTheme.swift */; };
-		3223D9C421B0077D000321C1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9BE21B00615000321C1 /* Theme.swift */; };
-		3223D9C521B00781000321C1 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9C221B0065A000321C1 /* DarkTheme.swift */; };
-		3223D9C621B00788000321C1 /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223D9BF21B00615000321C1 /* DefaultTheme.swift */; };
 		32242F0921E8B05F00725742 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0821E8B05F00725742 /* UIColor.swift */; };
 		32242F0A21E8B21300725742 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0821E8B05F00725742 /* UIColor.swift */; };
+		32242F1221E8FBA900725742 /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0C21E8FBA900725742 /* ThemeService.m */; };
+		32242F1321E8FBA900725742 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0D21E8FBA900725742 /* Theme.swift */; };
+		32242F1421E8FBA900725742 /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0F21E8FBA900725742 /* DefaultTheme.swift */; };
+		32242F1521E8FBA900725742 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F1021E8FBA900725742 /* DarkTheme.swift */; };
+		32242F1621E8FBCC00725742 /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0C21E8FBA900725742 /* ThemeService.m */; };
+		32242F1721E8FBE500725742 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0D21E8FBA900725742 /* Theme.swift */; };
+		32242F1821E8FBF800725742 /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0F21E8FBA900725742 /* DefaultTheme.swift */; };
+		32242F1921E8FBFB00725742 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F1021E8FBA900725742 /* DarkTheme.swift */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
@@ -53,8 +55,6 @@
 		B169329B20F39E6300746532 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
 		B16932A320F3A21C00746532 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B169329F20F3A21B00746532 /* main.m */; };
 		B16932A520F3A21C00746532 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16932A220F3A21B00746532 /* empty.mm */; };
-		B16932AC20F3A7B100746532 /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* ThemeService.m */; };
-		B16932AD20F3A7B100746532 /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* ThemeService.m */; };
 		B16932B120F3AC9200746532 /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AF20F3AC9200746532 /* RoomSearchDataSource.m */; };
 		B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */; };
 		B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E920F3C39000746532 /* UnifiedSearchRecentsDataSource.m */; };
@@ -390,10 +390,12 @@
 		24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RiotShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2510A69B4A681C1FEC36E848 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		319CD7C67A47A3D35959E18F /* Pods-RiotPods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"; sourceTree = "<group>"; };
-		3223D9BE21B00615000321C1 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		3223D9BF21B00615000321C1 /* DefaultTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
-		3223D9C221B0065A000321C1 /* DarkTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		32242F0821E8B05F00725742 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		32242F0C21E8FBA900725742 /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
+		32242F0D21E8FBA900725742 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		32242F0F21E8FBA900725742 /* DefaultTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
+		32242F1021E8FBA900725742 /* DarkTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
+		32242F1121E8FBA900725742 /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -487,8 +489,6 @@
 		B16932A020F3A21B00746532 /* Riot.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Riot.entitlements; sourceTree = "<group>"; };
 		B16932A120F3A21B00746532 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B16932A220F3A21B00746532 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
-		B16932AA20F3A7B000746532 /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
-		B16932AB20F3A7B000746532 /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
 		B16932AF20F3AC9200746532 /* RoomSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchDataSource.m; sourceTree = "<group>"; };
 		B16932B020F3AC9200746532 /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
 		B16932E520F3C37100746532 /* HomeMessagesSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchDataSource.h; sourceTree = "<group>"; };
@@ -984,14 +984,24 @@
 			path = RiotShareExtension;
 			sourceTree = "<group>";
 		};
-		3223D9BD21B00615000321C1 /* Colors */ = {
+		32242F0B21E8FBA900725742 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				3223D9BE21B00615000321C1 /* Theme.swift */,
-				3223D9C221B0065A000321C1 /* DarkTheme.swift */,
-				3223D9BF21B00615000321C1 /* DefaultTheme.swift */,
+				32242F0C21E8FBA900725742 /* ThemeService.m */,
+				32242F0D21E8FBA900725742 /* Theme.swift */,
+				32242F1121E8FBA900725742 /* ThemeService.h */,
+				32242F0E21E8FBA900725742 /* Themes */,
 			);
-			path = Colors;
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		32242F0E21E8FBA900725742 /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				32242F0F21E8FBA900725742 /* DefaultTheme.swift */,
+				32242F1021E8FBA900725742 /* DarkTheme.swift */,
+			);
+			path = Themes;
 			sourceTree = "<group>";
 		};
 		3233F7291F31F3B4006ACA81 /* libs */ = {
@@ -1163,16 +1173,6 @@
 				B16932A220F3A21B00746532 /* empty.mm */,
 			);
 			path = SupportingFiles;
-			sourceTree = "<group>";
-		};
-		B16932A620F3A6FA00746532 /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-				3223D9BD21B00615000321C1 /* Colors */,
-				B16932AA20F3A7B000746532 /* ThemeService.h */,
-				B16932AB20F3A7B000746532 /* ThemeService.m */,
-			);
-			path = Constants;
 			sourceTree = "<group>";
 		};
 		B16932AE20F3AC9200746532 /* DataSources */ = {
@@ -2356,6 +2356,7 @@
 				B1B5598B20EFC5E400210D55 /* Analytics */,
 				B1B5598920EFC41100210D55 /* BugReport */,
 				B1B5598A20EFC42100210D55 /* Settings */,
+				32242F0B21E8FBA900725742 /* Theme */,
 				B1B5598020EFC3DF00210D55 /* Widgets */,
 			);
 			path = Managers;
@@ -2424,7 +2425,6 @@
 			children = (
 				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
 				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
-				B16932A620F3A6FA00746532 /* Constants */,
 				F083BBE41E7009EC00A9B29C /* Categories */,
 				F083BBF21E7009EC00A9B29C /* Model */,
 				B1B5597C20EFC3DF00210D55 /* Managers */,
@@ -2984,20 +2984,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3223D9C621B00788000321C1 /* DefaultTheme.swift in Sources */,
 				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
-				3223D9C521B00781000321C1 /* DarkTheme.swift in Sources */,
-				B16932AD20F3A7B100746532 /* ThemeService.m in Sources */,
+				32242F1821E8FBF800725742 /* DefaultTheme.swift in Sources */,
 				B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */,
 				B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */,
+				32242F1621E8FBCC00725742 /* ThemeService.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
 				B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
-				3223D9C421B0077D000321C1 /* Theme.swift in Sources */,
 				B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */,
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
+				32242F1721E8FBE500725742 /* Theme.swift in Sources */,
 				B169328320F38AE600746532 /* RiotSettings.swift in Sources */,
 				32242F0A21E8B21300725742 /* UIColor.swift in Sources */,
+				32242F1921E8FBFB00725742 /* DarkTheme.swift in Sources */,
 				B1664BC820F4E67600808783 /* ShareDataSource.m in Sources */,
 				B1664BCD20F4E67600808783 /* RecentRoomTableViewCell.m in Sources */,
 				B169331720F3CBE000746532 /* RecentCellData.m in Sources */,
@@ -3018,7 +3018,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1B557D120EF5E3500210D55 /* MediaAlbumTableCell.m in Sources */,
-				B16932AC20F3A7B100746532 /* ThemeService.m in Sources */,
 				B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */,
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
 				B1B5573A20EE6C4D00210D55 /* GroupRoomsViewController.m in Sources */,
@@ -3043,6 +3042,7 @@
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
 				B1B5577320EE702800210D55 /* JitsiViewController.m in Sources */,
 				B169331620F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m in Sources */,
+				32242F1221E8FBA900725742 /* ThemeService.m in Sources */,
 				B1B558E820EF768F00210D55 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F320EF768F00210D55 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B557BD20EF5B4500210D55 /* KeyboardGrowingTextView.m in Sources */,
@@ -3057,6 +3057,7 @@
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
 				B1B5599220EFC5E400210D55 /* Analytics.m in Sources */,
 				B1B558C320EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				32242F1521E8FBA900725742 /* DarkTheme.swift in Sources */,
 				B1B5577420EE702900210D55 /* WidgetViewController.m in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
 				B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */,
@@ -3086,6 +3087,8 @@
 				B1B558DD20EF768F00210D55 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1B5573C20EE6C4D00210D55 /* MasterTabBarController.m in Sources */,
 				B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */,
+				32242F1421E8FBA900725742 /* DefaultTheme.swift in Sources */,
+				32242F1321E8FBA900725742 /* Theme.swift in Sources */,
 				B1B5582520EF638A00210D55 /* RoomMemberTitleView.m in Sources */,
 				B1B5582C20EF666100210D55 /* DirectoryRecentTableViewCell.m in Sources */,
 				B1B558E420EF768F00210D55 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
@@ -3121,7 +3124,6 @@
 				B1B5572620EE6C4D00210D55 /* RoomFilesSearchViewController.m in Sources */,
 				B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
-				3223D9C321B0065A000321C1 /* DarkTheme.swift in Sources */,
 				B1B557B420EF5AEF00210D55 /* EventDetailsView.m in Sources */,
 				B1B5577E20EE84BF00210D55 /* IncomingCallView.m in Sources */,
 				B1B5578F20EF568D00210D55 /* GroupTableViewCell.m in Sources */,
@@ -3147,7 +3149,6 @@
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5575120EE6C4D00210D55 /* AuthenticationViewController.m in Sources */,
-				3223D9C121B00615000321C1 /* DefaultTheme.swift in Sources */,
 				B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */,
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
@@ -3182,7 +3183,6 @@
 				B1B558EE20EF768F00210D55 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
-				3223D9C021B00615000321C1 /* Theme.swift in Sources */,
 				B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */,
 				B1B558F520EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F820EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
