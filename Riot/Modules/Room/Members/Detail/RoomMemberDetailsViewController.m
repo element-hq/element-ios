@@ -224,7 +224,8 @@
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     self.memberHeaderView.backgroundColor = ThemeService.shared.theme.baseColor;
-    self.roomMemberNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomMemberNameLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
+
     self.roomMemberStatusLabel.textColor = ThemeService.shared.theme.tintColor;
     
     // Check the table view style to select its bg color.
