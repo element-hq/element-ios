@@ -422,7 +422,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [NSBundle mxk_setFallbackLanguage:@"en"];
 
     // Define the navigation bar text color
-    [[UINavigationBar appearance] setTintColor:ThemeService.theme.tintColor];
+    [[UINavigationBar appearance] setTintColor:ThemeService.shared.theme.tintColor];
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
@@ -444,8 +444,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     UINavigationController *secondNavController = self.secondaryNavigationController;
     if (secondNavController)
     {
-        secondNavController.navigationBar.barTintColor = ThemeService.theme.backgroundColor;
-        secondNavController.topViewController.view.backgroundColor = ThemeService.theme.backgroundColor;
+        secondNavController.navigationBar.barTintColor = ThemeService.shared.theme.backgroundColor;
+        secondNavController.topViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     }
     
     // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
@@ -835,7 +835,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-            emptyDetailsViewController.view.backgroundColor = ThemeService.theme.backgroundColor;
+            emptyDetailsViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
             
             splitViewController.viewControllers = @[mainViewController, emptyDetailsViewController];
         }
@@ -2825,7 +2825,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (!launchAnimationContainerView && window)
             {
                 launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = ThemeService.theme.backgroundColor;
+                launchAnimationContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
                 launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [window addSubview:launchAnimationContainerView];
                 
@@ -3531,7 +3531,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    _callStatusBarButton.titleLabel.textColor = ThemeService.theme.backgroundColor;
+    _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
     
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
     {
@@ -3542,7 +3542,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         _callStatusBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
     }
     
-    [_callStatusBarButton setBackgroundColor:ThemeService.theme.tintColor];
+    [_callStatusBarButton setBackgroundColor:ThemeService.shared.theme.tintColor];
     [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
@@ -3691,7 +3691,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-    emptyDetailsViewController.view.backgroundColor = ThemeService.theme.backgroundColor;
+    emptyDetailsViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     return emptyDetailsViewController;
 }
 

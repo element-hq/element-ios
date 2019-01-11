@@ -136,7 +136,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     
-    self.sectionHeaderTintColor = ThemeService.theme.tintColor;
+    self.sectionHeaderTintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)viewDidLoad
@@ -178,16 +178,16 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.view.backgroundColor = ThemeService.theme.backgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated

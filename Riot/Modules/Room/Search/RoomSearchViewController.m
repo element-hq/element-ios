@@ -80,7 +80,7 @@
     UIImageView *backgroundImageView = self.backgroundImageView;
     if (backgroundImageView)
     {
-        UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:ThemeService.theme.matrixSearchBackgroundImageTintColor];
+        UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
         backgroundImageView.image = image;
     }
 }

@@ -29,7 +29,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 }
 
 - (void)layoutSubviews
@@ -50,7 +50,7 @@
     else
     {
         self.avatarImageView.image = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                withColor:ThemeService.theme.tintColor];
+                                                withColor:ThemeService.shared.theme.tintColor];
     }
     
     self.titleLabel.text = roomIdOrAlias;

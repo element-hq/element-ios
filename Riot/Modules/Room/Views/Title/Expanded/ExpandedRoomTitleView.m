@@ -40,19 +40,19 @@
     [super layoutSubviews];
 
     self.membersListIcon.image = [MXKTools paintImage:self.membersListIcon.image
-                                            withColor:ThemeService.theme.tintColor];
+                                            withColor:ThemeService.shared.theme.tintColor];
 
     // TODO: paintImage does not work here because addParticipantIcon has 2 colors
 //    self.addParticipantIcon.image = [MXKTools paintImage:self.addParticipantIcon.image
-//                                            withColor:ThemeService.theme.accent];
+//                                            withColor:ThemeService.shared.theme.accent];
 }
 
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
     
-    self.roomTopic.textColor = ThemeService.theme.baseTextSecondaryColor;
-    self.roomMembers.textColor = ThemeService.theme.tintColor;
+    self.roomTopic.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
+    self.roomMembers.textColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)refreshDisplay
@@ -131,7 +131,7 @@
     self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
     self.roomAvatar.clipsToBounds = YES;
     
-    self.roomAvatar.defaultBackgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.roomAvatar.defaultBackgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
     [self layoutIfNeeded];

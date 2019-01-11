@@ -45,8 +45,8 @@
     arrowMaskLayer.path = path.CGPath;
     self.arrowView.layer.mask = arrowMaskLayer;
     
-    self.arrowView.backgroundColor = ThemeService.theme.headerBackgroundColor;
-    self.descriptionView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.arrowView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.descriptionView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     [self.descriptionView.layer setCornerRadius:10];
 }
 

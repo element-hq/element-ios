@@ -29,7 +29,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.descLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.descLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 }
 
 - (void)layoutSubviews
@@ -64,7 +64,7 @@
                                withType:nil
                     andImageOrientation:UIImageOrientationUp
                            previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                   withColor:ThemeService.theme.tintColor]
+                                                   withColor:ThemeService.shared.theme.tintColor]
                            mediaManager:cellData.mediaManager];
     }
     else

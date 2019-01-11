@@ -59,12 +59,12 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.view.backgroundColor = ThemeService.theme.backgroundColor;
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.backButton.tintColor = ThemeService.theme.tintColor;
+    self.backButton.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -26,8 +26,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.albumDisplayNameLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.albumCountLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.albumDisplayNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.albumCountLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 }
 
 @end

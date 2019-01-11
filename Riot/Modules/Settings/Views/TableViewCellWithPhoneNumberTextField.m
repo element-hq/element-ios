@@ -27,10 +27,10 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.mxkLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.mxkTextField.textColor = ThemeService.theme.textPrimaryColor;
+    self.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.mxkTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    _isoCountryCodeLabel.textColor = ThemeService.theme.textPrimaryColor;
+    _isoCountryCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 }
 
 - (void)setIsoCountryCode:(NSString *)isoCountryCode

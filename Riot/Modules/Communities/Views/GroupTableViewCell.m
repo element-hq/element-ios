@@ -41,13 +41,13 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.groupName.textColor = ThemeService.theme.textPrimaryColor;
-    self.groupDescription.textColor = ThemeService.theme.textSecondaryColor;
-    self.memberCount.textColor = ThemeService.theme.textSecondaryColor;
+    self.groupName.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.groupDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.memberCount.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     if (self.missedNotifAndUnreadBadgeLabel)
     {
-        self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.theme.backgroundColor;
+        self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.backgroundColor;
     }
     
     self.groupAvatar.defaultBackgroundColor = [UIColor clearColor];

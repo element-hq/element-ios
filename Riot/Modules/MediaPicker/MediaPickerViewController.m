@@ -182,20 +182,20 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.cameraVideoCaptureProgressView.progressColor = ThemeService.theme.backgroundColor;
+    self.cameraVideoCaptureProgressView.progressColor = ThemeService.shared.theme.backgroundColor;
     self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
     
-    self.userAlbumsTableView.backgroundColor = ThemeService.theme.backgroundColor;
-    self.view.backgroundColor = ThemeService.theme.backgroundColor;
+    self.userAlbumsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -343,12 +343,12 @@ static void *RecordingContext = &RecordingContext;
         if (self.cameraVideoCaptureProgressView.progressColor != [UIColor lightGrayColor])
         {
             self.cameraVideoCaptureProgressView.progressColor = [UIColor lightGrayColor];
-            self.cameraVideoCaptureProgressView.unprogressColor = ThemeService.theme.backgroundColor;
+            self.cameraVideoCaptureProgressView.unprogressColor = ThemeService.shared.theme.backgroundColor;
         }
     }
-    else if (self.cameraVideoCaptureProgressView.progressColor != ThemeService.theme.backgroundColor)
+    else if (self.cameraVideoCaptureProgressView.progressColor != ThemeService.shared.theme.backgroundColor)
     {
-        self.cameraVideoCaptureProgressView.progressColor = ThemeService.theme.backgroundColor;
+        self.cameraVideoCaptureProgressView.progressColor = ThemeService.shared.theme.backgroundColor;
         self.cameraVideoCaptureProgressView.unprogressColor = [UIColor lightGrayColor];
     }
     
@@ -1765,13 +1765,13 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = ThemeService.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (ThemeService.theme.selectedBackgroundColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {

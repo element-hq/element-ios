@@ -98,20 +98,20 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.barTitleColor = ThemeService.theme.textPrimaryColor;
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.barTitleColor = ThemeService.shared.theme.textPrimaryColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.callerNameLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.callStatusLabel.textColor = ThemeService.theme.baseTextSecondaryColor;
+    self.callerNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.callStatusLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     
-    self.localPreviewContainerView.layer.borderColor = ThemeService.theme.tintColor.CGColor;
+    self.localPreviewContainerView.layer.borderColor = ThemeService.shared.theme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
     
-    self.remotePreviewContainerView.backgroundColor = ThemeService.theme.backgroundColor;
+    self.remotePreviewContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     if (gradientMaskLayer)
     {
@@ -121,9 +121,9 @@
     // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
     gradientMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the ThemeService.theme.backgroundColor.
+    // Consider the grayscale components of the ThemeService.shared.theme.backgroundColor.
     CGFloat white = 1.0;
-    [ThemeService.theme.backgroundColor getWhite:&white alpha:nil];
+    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
@@ -283,8 +283,8 @@
                                                                UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
                                                                
                                                                // Set Riot navigation bar colors
-                                                               [ThemeService.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
-                                                               usersDevicesNavigationController.navigationBar.barTintColor = ThemeService.theme.backgroundColor;
+                                                               [ThemeService.shared.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
+                                                               usersDevicesNavigationController.navigationBar.barTintColor = ThemeService.shared.theme.backgroundColor;
 
                                                                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
                                                                
@@ -350,7 +350,7 @@
     }
     
     return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                      withColor:ThemeService.theme.tintColor];
+                      withColor:ThemeService.shared.theme.tintColor];
 }
 
 - (void)setMxCall:(MXCall *)call

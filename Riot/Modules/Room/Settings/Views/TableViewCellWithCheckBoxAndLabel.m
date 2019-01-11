@@ -26,7 +26,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    _label.textColor = ThemeService.theme.textPrimaryColor;
+    _label.textColor = ThemeService.shared.theme.textPrimaryColor;
 }
 
 - (void)setEnabled:(BOOL)enabled

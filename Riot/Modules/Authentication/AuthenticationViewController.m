@@ -131,52 +131,52 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.view.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
 
-    self.authenticationScrollView.backgroundColor = ThemeService.theme.backgroundColor;
-    self.authFallbackContentView.backgroundColor = ThemeService.theme.backgroundColor;
+    self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
-    if (ThemeService.theme.placeholderTextColor)
+    if (ThemeService.shared.theme.placeholderTextColor)
     {
         if (self.homeServerTextField.placeholder)
         {
             self.homeServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.homeServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         }
         if (self.identityServerTextField.placeholder)
         {
             self.identityServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.identityServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         }
     }
     
-    self.submitButton.backgroundColor = ThemeService.theme.tintColor;
-    self.skipButton.backgroundColor = ThemeService.theme.tintColor;
+    self.submitButton.backgroundColor = ThemeService.shared.theme.tintColor;
+    self.skipButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     self.noFlowLabel.textColor = kRiotColorRed;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
     [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, forgotPasswordTitle.length)];
-    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:ThemeService.theme.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
     [self updateForgotPwdButtonVisibility];
     
-    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : ThemeService.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
+    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
-    self.homeServerTextField.textColor = ThemeService.theme.textPrimaryColor;
-    self.homeServerLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.homeServerTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.homeServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     
-    self.identityServerTextField.textColor = ThemeService.theme.textPrimaryColor;
-    self.identityServerLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.identityServerTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.identityServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     [self.authInputsView customizeViewRendering];
     
@@ -185,7 +185,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated

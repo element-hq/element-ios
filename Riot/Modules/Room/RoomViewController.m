@@ -418,25 +418,25 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     self.navigationController.navigationBar.translucent = YES;
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.theme.backgroundColor;
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: ThemeService.theme.textPrimaryColor, NSForegroundColorAttributeName: ThemeService.theme.textPrimaryColor}];
+    self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: ThemeService.shared.theme.textPrimaryColor, NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
     
     
-    self.expandedHeaderContainer.backgroundColor = ThemeService.theme.headerBackgroundColor;
-    self.previewHeaderContainer.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.expandedHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
-    missedDiscussionsBadgeLabel.textColor = ThemeService.theme.backgroundColor;
+    missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.backgroundColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? ThemeService.theme.backgroundColor : ThemeService.theme.headerBackgroundColor);
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -447,7 +447,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -1752,7 +1752,7 @@
             else
             {
                 previewHeader.roomAvatarPlaceholder = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                                 withColor:ThemeService.theme.tintColor];
+                                                                 withColor:ThemeService.shared.theme.tintColor];
             }
         }
         
@@ -3338,13 +3338,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = ThemeService.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (ThemeService.theme.selectedBackgroundColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -4230,11 +4230,11 @@
             // Set the right background color
             if (highlightCount)
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.theme.notificationMentionColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationMentionColor;
             }
             else
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.theme.notificationUnreadColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationUnreadColor;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)

@@ -113,15 +113,15 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.assetsCollectionView.backgroundColor = ThemeService.theme.backgroundColor;
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.assetsCollectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden

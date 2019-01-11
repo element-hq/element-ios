@@ -94,20 +94,20 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.overlayView.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.overlayView.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     self.overlayView.alpha = 1.0;
     
-    self.titleLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.containerView.backgroundColor = ThemeService.theme.backgroundColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.containerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Check the table view style to select its bg color.
-    self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? ThemeService.theme.backgroundColor : ThemeService.theme.headerBackgroundColor);
+    self.receiptsTableView.backgroundColor = ((self.receiptsTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     
-    self.closeButton.tintColor = ThemeService.theme.tintColor;
+    self.closeButton.tintColor = ThemeService.shared.theme.tintColor;
     
     if (self.receiptsTableView.dataSource)
     {
@@ -118,7 +118,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -196,8 +196,8 @@
 {
     MXKReadReceiptTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[MXKReadReceiptTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.displayNameLabel.textColor = ThemeService.theme.textPrimaryColor;
-    cell.receiptDescriptionLabel.textColor = ThemeService.theme.textSecondaryColor;
+    cell.displayNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.receiptDescriptionLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     if (indexPath.row < self.roomMembers.count)
     {
@@ -224,9 +224,9 @@
         NSString *receiptReadText = NSLocalizedStringFromTable(@"receipt_status_read", @"Vector", nil);
         NSString *receiptTimeText = [(MXKEventFormatter*)self.session.roomSummaryUpdateDelegate dateStringFromTimestamp:self.receipts[indexPath.row].ts withTime:YES];
         
-        NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : ThemeService.theme.textSecondaryColor, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];
+        NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];
         
-        [receiptDescription appendAttributedString:[[NSAttributedString alloc] initWithString:receiptTimeText attributes:@{NSForegroundColorAttributeName : ThemeService.theme.textSecondaryColor, NSFontAttributeName : [UIFont  systemFontOfSize:15]}]];
+        [receiptDescription appendAttributedString:[[NSAttributedString alloc] initWithString:receiptTimeText attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName : [UIFont  systemFontOfSize:15]}]];
         
         cell.receiptDescriptionLabel.attributedText = receiptDescription;
     }
@@ -240,13 +240,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = ThemeService.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (ThemeService.theme.selectedBackgroundColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {

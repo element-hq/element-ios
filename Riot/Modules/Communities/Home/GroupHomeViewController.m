@@ -113,22 +113,22 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.view.backgroundColor = ThemeService.theme.backgroundColor;
-    self.mainHeaderContainer.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.mainHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
-    _groupName.textColor = ThemeService.theme.textPrimaryColor;
+    _groupName.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    _groupDescription.textColor = ThemeService.theme.baseTextSecondaryColor;
+    _groupDescription.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     _groupDescription.numberOfLines = 0;
     
-    self.inviteLabel.textColor = ThemeService.theme.baseTextSecondaryColor;
+    self.inviteLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     self.inviteLabel.numberOfLines = 0;
     
-    self.separatorView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
@@ -140,11 +140,11 @@
     
     if (_groupLongDescription)
     {
-        _groupLongDescription.textColor = ThemeService.theme.textSecondaryColor;
+        _groupLongDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
         _groupLongDescription.tintColor = kRiotColorBlue;
         
         // Update HTML loading options
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.theme.headerBackgroundColor];
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
         NSString *defaultCSS = [NSString stringWithFormat:@" \
                       pre,code { \
                       background-color: #%06lX; \
@@ -170,7 +170,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -481,7 +481,7 @@
     _groupAvatar.layer.cornerRadius = _groupAvatar.frame.size.width / 2;
     _groupAvatar.clipsToBounds = YES;
     
-    _groupAvatar.defaultBackgroundColor = ThemeService.theme.headerBackgroundColor;
+    _groupAvatar.defaultBackgroundColor = ThemeService.shared.theme.headerBackgroundColor;
 }
 
 - (void)refreshGroupLongDescription

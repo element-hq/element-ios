@@ -30,8 +30,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.descriptionLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.descriptionLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 }
 
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource

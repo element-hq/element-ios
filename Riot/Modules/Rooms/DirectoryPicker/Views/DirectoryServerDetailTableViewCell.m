@@ -25,7 +25,7 @@
 {
     [super customizeTableViewCellRendering];
 
-    self.detailDescLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.detailDescLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 }
 
 - (void)render:(id<MXKDirectoryServerCellDataStoring>)cellData

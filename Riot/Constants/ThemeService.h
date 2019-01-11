@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -48,14 +49,34 @@ extern NSInteger const kRiotRoomModeratorLevel;
 extern NSInteger const kRiotRoomAdminLevel;
 
 /**
- `ThemeService` class manages the Riot design parameters
+ `ThemeService` class manages the application design values.
  */
 @interface ThemeService : NSObject
 
 /**
+ Returns the shared instance.
+
+ @return the shared instance.
+ */
++ (instancetype)shared;
+
+/**
+ The id of the theme corresponding to the current app settings.
+ */
+@property (nonatomic, readonly) NSString *themeId;
+
+/**
  The current theme.
  */
-+ (id<Theme>)theme;
+@property (nonatomic, readonly) id<Theme> theme;
+
+/**
+ Get the theme with the given id.
+
+ @param themeId the theme id.
+ @return the theme.
+ */
+- (id<Theme>)themeWithThemeId:(NSString*)themeId;
 
 @end
 

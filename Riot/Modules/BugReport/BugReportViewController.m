@@ -138,36 +138,36 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.overlayView.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.overlayView.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     self.overlayView.alpha = 1.0;
     
-    self.containerView.backgroundColor = ThemeService.theme.backgroundColor;
-    self.sendingContainer.backgroundColor = ThemeService.theme.backgroundColor;
+    self.containerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.sendingContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
-    self.bugReportDescriptionTextView.keyboardAppearance = ThemeService.theme.keyboardAppearance;
+    self.bugReportDescriptionTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
     
-    self.titleLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.sendingLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.descriptionLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.bugReportDescriptionTextView.textColor = ThemeService.theme.textPrimaryColor;
-    self.bugReportDescriptionTextView.tintColor = ThemeService.theme.tintColor;
-    self.logsDescriptionLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.sendLogsLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.sendScreenshotLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.sendingLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.descriptionLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.bugReportDescriptionTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.bugReportDescriptionTextView.tintColor = ThemeService.shared.theme.tintColor;
+    self.logsDescriptionLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.sendLogsLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.sendScreenshotLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.sendButton.tintColor = ThemeService.theme.tintColor;
-    self.cancelButton.tintColor = ThemeService.theme.tintColor;
+    self.sendButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.cancelButton.tintColor = ThemeService.shared.theme.tintColor;
     
-    _bugReportDescriptionTextView.layer.borderColor = ThemeService.theme.headerBackgroundColor.CGColor;
+    _bugReportDescriptionTextView.layer.borderColor = ThemeService.shared.theme.headerBackgroundColor.CGColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy

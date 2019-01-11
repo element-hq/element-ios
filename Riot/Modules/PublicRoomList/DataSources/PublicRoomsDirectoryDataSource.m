@@ -339,7 +339,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = ThemeService.theme.textSecondaryColor;
+            tableViewCell.textLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }

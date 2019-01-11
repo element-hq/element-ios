@@ -64,28 +64,28 @@
     [super customizeViewRendering];
 
     // Use same color as navigation bar
-    self.mainHeaderBackground.backgroundColor = ThemeService.theme.baseColor;
+    self.mainHeaderBackground.backgroundColor = ThemeService.shared.theme.baseColor;
 
     
-    self.roomTopic.textColor = ThemeService.theme.baseTextSecondaryColor;
+    self.roomTopic.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     
-    self.roomMembers.textColor = ThemeService.theme.tintColor;
+    self.roomMembers.textColor = ThemeService.shared.theme.tintColor;
     
-    self.previewLabel.textColor = ThemeService.theme.baseTextSecondaryColor;
+    self.previewLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     self.previewLabel.numberOfLines = 0;
     
-    self.subNoticeLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.subNoticeLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.subNoticeLabel.numberOfLines = 0;
     
-    self.bottomBorderView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.bottomBorderView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = ThemeService.theme.tintColor;
+    self.leftButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = ThemeService.theme.tintColor;
+    self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)refreshDisplay
@@ -103,7 +103,7 @@
                            toFitViewSize:self.roomAvatar.frame.size
                               withMethod:MXThumbnailingMethodCrop
                             previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                                                    withColor:ThemeService.theme.tintColor]
+                                                    withColor:ThemeService.shared.theme.tintColor]
                             mediaManager:self.mxRoom.mxSession.mediaManager];
         }
         else
@@ -249,7 +249,7 @@
     self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
     self.roomAvatar.clipsToBounds = YES;
     
-    self.roomAvatar.defaultBackgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.roomAvatar.defaultBackgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
     [self layoutIfNeeded];

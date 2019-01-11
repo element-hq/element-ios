@@ -28,13 +28,13 @@
 {
     [super customizeViewRendering];
     
-    self.backgroundColor = ThemeService.theme.headerBackgroundColor;
-    self.textView.backgroundColor = ThemeService.theme.backgroundColor;
-    self.defaultTextColor = ThemeService.theme.textPrimaryColor;
-    self.cancelButton.tintColor = ThemeService.theme.tintColor;
-    self.verifyButton.tintColor = ThemeService.theme.tintColor;
-    self.blockButton.tintColor = ThemeService.theme.tintColor;
-    self.confirmVerifyButton.tintColor = ThemeService.theme.tintColor;
+    self.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.textView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;
+    self.cancelButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.verifyButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.blockButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.confirmVerifyButton.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 @end

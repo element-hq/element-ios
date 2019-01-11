@@ -62,7 +62,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         
         timeLabel.text = [bubbleData.eventFormatter timeStringFromDate:component.date];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = ThemeService.theme.textSecondaryColor;
+        timeLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
              timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
@@ -209,7 +209,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
                                                                 markPosY,
                                                                 VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH,
                                                                 markHeight)];
-        markerView.backgroundColor = ThemeService.theme.tintColor;
+        markerView.backgroundColor = ThemeService.shared.theme.tintColor;
 
         [markerView setTranslatesAutoresizingMaskIntoConstraints:NO];
         markerView.accessibilityIdentifier = @"markerView";
@@ -264,7 +264,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
-        timeLabel.textColor = ThemeService.theme.textSecondaryColor;
+        timeLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
             timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
@@ -321,7 +321,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     if (blurred)
     {
         self.bubbleOverlayContainer.hidden = NO;
-        self.bubbleOverlayContainer.backgroundColor = ThemeService.theme.backgroundColor;
+        self.bubbleOverlayContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
         self.bubbleOverlayContainer.alpha = 0.8;
         self.bubbleOverlayContainer.userInteractionEnabled = YES;
         

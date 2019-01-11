@@ -26,11 +26,11 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.userNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.paginationLabel.textColor = ThemeService.theme.tintColor;
-    self.paginationSeparatorView.backgroundColor = ThemeService.theme.tintColor;
-    self.messageTextView.tintColor = ThemeService.theme.tintColor;
+    self.paginationLabel.textColor = ThemeService.shared.theme.tintColor;
+    self.paginationSeparatorView.backgroundColor = ThemeService.shared.theme.tintColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

@@ -26,11 +26,11 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.userNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.roomNameLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.roomNameLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     
-    self.messageTextView.tintColor = ThemeService.theme.tintColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

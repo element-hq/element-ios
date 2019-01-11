@@ -266,12 +266,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.theme.backgroundColor : ThemeService.theme.headerBackgroundColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -282,7 +282,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -2053,7 +2053,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.theme.textPrimaryColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
     }
 }
@@ -2178,7 +2178,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomPhotoCell.mxkImageView.defaultBackgroundColor = [UIColor clearColor];
             
             roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
-            roomPhotoCell.mxkLabel.textColor = ThemeService.theme.textPrimaryColor;
+            roomPhotoCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             if (updatedItemsDict[kRoomSettingsAvatarKey])
             {
@@ -2213,16 +2213,16 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 topicTextView.text = mxRoomState.topic;
             }
             
-            topicTextView.tintColor = ThemeService.theme.tintColor;
+            topicTextView.tintColor = ThemeService.shared.theme.tintColor;
             topicTextView.font = [UIFont systemFontOfSize:15];
             topicTextView.bounces = NO;
             topicTextView.delegate = self;
             
             // disable the edition if the user cannot update it
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
-            topicTextView.textColor = ThemeService.theme.textSecondaryColor;
+            topicTextView.textColor = ThemeService.shared.theme.textSecondaryColor;
             
-            topicTextView.keyboardAppearance = ThemeService.theme.keyboardAppearance;
+            topicTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
             
             cell = roomTopicCell;
         }
@@ -2235,14 +2235,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
-            roomNameCell.mxkLabel.textColor = ThemeService.theme.textPrimaryColor;
+            roomNameCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             roomNameCell.accessoryType = UITableViewCellAccessoryNone;
             roomNameCell.accessoryView = nil;
             
             nameTextField = roomNameCell.mxkTextField;
             
-            nameTextField.tintColor = ThemeService.theme.tintColor;
+            nameTextField.tintColor = ThemeService.shared.theme.tintColor;
             nameTextField.font = [UIFont systemFontOfSize:17];
             nameTextField.borderStyle = UITextBorderStyleNone;
             nameTextField.textAlignment = NSTextAlignmentRight;
@@ -2259,7 +2259,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             // disable the edition if the user cannot update it
             nameTextField.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
-            nameTextField.textColor = ThemeService.theme.textSecondaryColor;
+            nameTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
             
             // Add a "textFieldDidChange" notification method to the text field control.
             [nameTextField addTarget:self action:@selector(onTextFieldUpdate:) forControlEvents:UIControlEventEditingChanged];
@@ -2280,10 +2280,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             NSArray *labels = roomTagCell.labels;
             UILabel *label;
             label = labels[0];
-            label.textColor = ThemeService.theme.textPrimaryColor;
+            label.textColor = ThemeService.shared.theme.textPrimaryColor;
             label.text = NSLocalizedStringFromTable(@"room_details_favourite_tag", @"Vector", nil);
             label = labels[1];
-            label.textColor = ThemeService.theme.textPrimaryColor;
+            label.textColor = ThemeService.shared.theme.textPrimaryColor;
             label.text = NSLocalizedStringFromTable(@"room_details_low_priority_tag", @"Vector", nil);
             
             if (updatedItemsDict[kRoomSettingsTagKey])
@@ -2320,7 +2320,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
             [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-            [leaveCell.mxkButton setTintColor:ThemeService.theme.tintColor];
+            [leaveCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             leaveCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [leaveCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2499,17 +2499,17 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             addAddressTextField = addAddressCell.mxkTextField;
             addAddressTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_address_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
-            if (ThemeService.theme.placeholderTextColor)
+            if (ThemeService.shared.theme.placeholderTextColor)
             {
                 addAddressTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:addAddressTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             }
             addAddressTextField.userInteractionEnabled = YES;
             addAddressTextField.text = currentValue;
-            addAddressTextField.textColor = ThemeService.theme.textSecondaryColor;
+            addAddressTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
             
-            addAddressTextField.tintColor = ThemeService.theme.tintColor;
+            addAddressTextField.tintColor = ThemeService.shared.theme.tintColor;
             addAddressTextField.font = [UIFont systemFontOfSize:17];
             addAddressTextField.borderStyle = UITextBorderStyleNone;
             addAddressTextField.textAlignment = NSTextAlignmentLeft;
@@ -2525,7 +2525,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
             
             addressCell.textLabel.font = [UIFont systemFontOfSize:16];
-            addressCell.textLabel.textColor = ThemeService.theme.textPrimaryColor;
+            addressCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             addressCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             addressCell.accessoryView = nil;
             addressCell.accessoryType = UITableViewCellAccessoryNone;
@@ -2590,17 +2590,17 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
             addGroupTextField = addCommunityCell.mxkTextField;
             addGroupTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_flair_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
-            if (ThemeService.theme.placeholderTextColor)
+            if (ThemeService.shared.theme.placeholderTextColor)
             {
                 addGroupTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:addGroupTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             }
             addGroupTextField.userInteractionEnabled = YES;
             addGroupTextField.text = currentValue;
-            addGroupTextField.textColor = ThemeService.theme.textSecondaryColor;
+            addGroupTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
 
-            addGroupTextField.tintColor = ThemeService.theme.tintColor;
+            addGroupTextField.tintColor = ThemeService.shared.theme.tintColor;
             addGroupTextField.font = [UIFont systemFontOfSize:17];
             addGroupTextField.borderStyle = UITextBorderStyleNone;
             addGroupTextField.textAlignment = NSTextAlignmentLeft;
@@ -2616,7 +2616,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             UITableViewCell *communityCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
 
             communityCell.textLabel.font = [UIFont systemFontOfSize:16];
-            communityCell.textLabel.textColor = ThemeService.theme.textPrimaryColor;
+            communityCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             communityCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             communityCell.accessoryView = nil;
             communityCell.accessoryType = UITableViewCellAccessoryNone;
@@ -2634,7 +2634,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
         
         addressCell.textLabel.font = [UIFont systemFontOfSize:16];
-        addressCell.textLabel.textColor = ThemeService.theme.textPrimaryColor;
+        addressCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         addressCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         addressCell.accessoryView = nil;
         addressCell.accessoryType = UITableViewCellAccessoryNone;
@@ -2656,11 +2656,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
-            cell.textLabel.textColor = ThemeService.theme.textPrimaryColor;
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
             cell.detailTextLabel.text = mxRoomState.roomId;
-            cell.detailTextLabel.textColor = ThemeService.theme.textSecondaryColor;
+            cell.detailTextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
             cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -2672,7 +2672,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 MXKTableViewCellWithLabelAndSwitch *roomBlacklistUnverifiedDevicesCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
                 [roomBlacklistUnverifiedDevicesCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevice:) forControlEvents:UIControlEventValueChanged];
-                roomBlacklistUnverifiedDevicesCell.mxkSwitch.onTintColor = ThemeService.theme.tintColor;
+                roomBlacklistUnverifiedDevicesCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
                 
                 roomBlacklistUnverifiedDevicesCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_blacklist_unverified_devices", @"Vector", nil);
                 
@@ -2719,7 +2719,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 cell.textLabel.font = [UIFont systemFontOfSize:17];
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled", @"Vector", nil);
-                cell.textLabel.textColor = ThemeService.theme.textPrimaryColor;
+                cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
                 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
@@ -2753,7 +2753,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 cell.textLabel.font = [UIFont systemFontOfSize:17];
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_disabled", @"Vector", nil);
-                cell.textLabel.textColor = ThemeService.theme.textPrimaryColor;
+                cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
                 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
@@ -2801,9 +2801,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = ThemeService.theme.textPrimaryColor;
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    cell.mxkSwitch.onTintColor = ThemeService.theme.tintColor;
+    cell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
     
     // Reset the stored `directoryVisibilitySwitch` if the corresponding cell is reused.
@@ -2822,13 +2822,13 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = ThemeService.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (ThemeService.theme.selectedBackgroundColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -3117,7 +3117,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
             }];
             
-            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
+            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
             [actions insertObject:removeAction atIndex:0];
         }
     }
@@ -3132,7 +3132,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
         }];
         
-        removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
+        removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:removeAction atIndex:0];
     }
     

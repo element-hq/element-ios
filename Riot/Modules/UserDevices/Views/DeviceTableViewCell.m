@@ -32,15 +32,15 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.deviceName.textColor = ThemeService.theme.textPrimaryColor;
+    self.deviceName.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     [self.verifyButton.layer setCornerRadius:5];
     self.verifyButton.clipsToBounds = YES;
-    self.verifyButton.backgroundColor = ThemeService.theme.tintColor;
+    self.verifyButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     [self.blockButton.layer setCornerRadius:5];
     self.blockButton.clipsToBounds = YES;
-    self.blockButton.backgroundColor = ThemeService.theme.tintColor;
+    self.blockButton.backgroundColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXDeviceInfo *)deviceInfo

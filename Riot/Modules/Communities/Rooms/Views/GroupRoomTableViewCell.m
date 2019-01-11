@@ -37,8 +37,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.roomDisplayName.textColor = ThemeService.theme.textPrimaryColor;
-    self.roomTopic.textColor = ThemeService.theme.textSecondaryColor;
+    self.roomDisplayName.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomTopic.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     _roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }

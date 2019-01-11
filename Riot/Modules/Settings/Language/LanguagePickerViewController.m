@@ -69,15 +69,15 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    [ThemeService.theme applyStyleOnSearchBar:self.searchBar];
+    [ThemeService.shared.theme applyStyleOnSearchBar:self.searchBar];
     
     // Use the primary bg color for the table view in plain style.
-    self.tableView.backgroundColor = ThemeService.theme.backgroundColor;
-    topview.backgroundColor = ThemeService.theme.backgroundColor;
+    self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     if (self.tableView.dataSource)
     {
@@ -87,7 +87,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -114,15 +114,15 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.textLabel.textColor = ThemeService.theme.textPrimaryColor;
-    cell.detailTextLabel.textColor = ThemeService.theme.textSecondaryColor;
-    cell.backgroundColor = ThemeService.theme.backgroundColor;
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.detailTextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (ThemeService.theme.selectedBackgroundColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {

@@ -26,8 +26,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.messageTextView.tintColor = ThemeService.theme.tintColor;
+    self.userNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 @end

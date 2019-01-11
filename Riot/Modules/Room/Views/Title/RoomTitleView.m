@@ -73,7 +73,7 @@
     [super layoutSubviews];
 
     self.roomDetailsIconImageView.image = [MXKTools paintImage:self.roomDetailsIconImageView.image
-                                                     withColor:ThemeService.theme.tintColor];
+                                                     withColor:ThemeService.shared.theme.tintColor];
     
     if (self.superview)
     {
@@ -138,8 +138,8 @@
     [super customizeViewRendering];
 
     // Use same color as navigation bar
-    self.backgroundColor = ThemeService.theme.baseColor;
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.theme.baseTextPrimaryColor : ThemeService.theme.textSecondaryColor);
+    self.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.baseTextPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -164,11 +164,11 @@
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
-            self.displayNameTextField.textColor = ThemeService.theme.textSecondaryColor;
+            self.displayNameTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
         }
         else
         {
-            self.displayNameTextField.textColor = ThemeService.theme.baseTextPrimaryColor;
+            self.displayNameTextField.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
         }
     }
 }

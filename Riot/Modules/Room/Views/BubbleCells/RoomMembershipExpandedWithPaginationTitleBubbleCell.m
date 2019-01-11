@@ -27,8 +27,8 @@
 {
     [super customizeTableViewCellRendering];
 
-    self.paginationLabel.textColor = ThemeService.theme.tintColor;
-    self.paginationSeparatorView.backgroundColor = ThemeService.theme.tintColor;
+    self.paginationLabel.textColor = ThemeService.shared.theme.tintColor;
+    self.paginationSeparatorView.backgroundColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

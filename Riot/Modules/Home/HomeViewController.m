@@ -82,9 +82,9 @@
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
 
-    [ThemeService.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.theme.tintColor;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if (recentsDataSource)
     {
@@ -416,7 +416,7 @@
         }
     }
     
-    cell.backgroundColor = ThemeService.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     return cell;
 }

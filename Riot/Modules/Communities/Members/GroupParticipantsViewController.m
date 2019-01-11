@@ -145,21 +145,21 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = ThemeService.theme.headerBorderColor;
+    _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.theme.backgroundColor : ThemeService.theme.headerBackgroundColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     // Update the gradient view above the screen
     CGFloat white = 1.0;
-    [ThemeService.theme.backgroundColor getWhite:&white alpha:nil];
+    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
@@ -172,7 +172,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 // This method is called when the viewcontroller is added or removed from a container view controller.
@@ -444,9 +444,9 @@
     // Add blur mask programmatically
     tableViewMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the ThemeService.theme.backgroundColor.
+    // Consider the grayscale components of the ThemeService.shared.theme.backgroundColor.
     CGFloat white = 1.0;
-    [ThemeService.theme.backgroundColor getWhite:&white alpha:nil];
+    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
@@ -877,13 +877,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = ThemeService.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (ThemeService.theme.selectedBackgroundColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -914,8 +914,8 @@
     if (section == invitedSection)
     {
         sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
-        sectionHeader.mxkContentView.backgroundColor = ThemeService.theme.headerBackgroundColor;
-        sectionHeader.mxkLabel.textColor = ThemeService.theme.textPrimaryColor;
+        sectionHeader.mxkContentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+        sectionHeader.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
         sectionHeader.mxkLabel.text = NSLocalizedStringFromTable(@"group_participants_invited_section", @"Vector", nil);
@@ -985,7 +985,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -1205,7 +1205,7 @@
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = ThemeService.theme.textSecondaryColor;
+    searchBarTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;

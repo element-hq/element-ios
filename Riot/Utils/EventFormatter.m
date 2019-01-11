@@ -206,7 +206,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         
         // Use the secondary bg color to set the background color in the default CSS.
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.theme.headerBackgroundColor];
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
         self.defaultCSS = [NSString stringWithFormat:@" \
                            pre,code { \
                            background-color: #%06lX; \
@@ -217,12 +217,12 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
                            font-size: small; \
                            }", (unsigned long)bgColor];
         
-        self.defaultTextColor = ThemeService.theme.textPrimaryColor;
-        self.subTitleTextColor = ThemeService.theme.textSecondaryColor;
-        self.prefixTextColor = ThemeService.theme.textSecondaryColor;
-        self.bingTextColor = ThemeService.theme.notificationMentionColor;
-        self.encryptingTextColor = ThemeService.theme.tintColor;
-        self.sendingTextColor = ThemeService.theme.textSecondaryColor;
+        self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.subTitleTextColor = ThemeService.shared.theme.textSecondaryColor;
+        self.prefixTextColor = ThemeService.shared.theme.textSecondaryColor;
+        self.bingTextColor = ThemeService.shared.theme.notificationMentionColor;
+        self.encryptingTextColor = ThemeService.shared.theme.tintColor;
+        self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.errorTextColor = kRiotColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];

@@ -48,11 +48,11 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = ThemeService.theme.headerTextSecondaryColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.headerTextSecondaryColor;
 
     self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
-    self.disabledReasonTextView.textColor = ThemeService.theme.textPrimaryColor;
-    self.disabledReasonTextView.tintColor = ThemeService.theme.tintColor;
+    self.disabledReasonTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.disabledReasonTextView.tintColor = ThemeService.shared.theme.tintColor;
     self.disabledReasonTextView.editable = NO;
     self.disabledReasonTextView.scrollEnabled = NO;
 }

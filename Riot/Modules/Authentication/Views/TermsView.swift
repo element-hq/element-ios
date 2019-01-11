@@ -80,7 +80,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
     }
 
     func customizeViewRendering() {
-        acceptButton.backgroundColor = ThemeService.theme().tintColor
+        acceptButton.backgroundColor = ThemeService.shared().theme.tintColor
     }
 
 

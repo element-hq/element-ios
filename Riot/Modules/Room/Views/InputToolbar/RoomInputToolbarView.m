@@ -72,8 +72,8 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    [self.rightInputToolbarButton setTitleColor:ThemeService.theme.tintColor forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitleColor:ThemeService.theme.tintColor forState:UIControlStateHighlighted];
+    [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateHighlighted];
     
     self.isEncryptionEnabled = _isEncryptionEnabled;
 }
@@ -87,7 +87,7 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = ThemeService.theme.headerTextSecondaryColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.headerTextSecondaryColor;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
@@ -95,10 +95,10 @@
     growingTextView.backgroundColor = [UIColor clearColor];
     
     growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = ThemeService.theme.textPrimaryColor;
-    growingTextView.tintColor = ThemeService.theme.tintColor;
+    growingTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    growingTextView.tintColor = ThemeService.shared.theme.tintColor;
     
-    growingTextView.internalTextView.keyboardAppearance = ThemeService.theme.keyboardAppearance;
+    growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
 }
 
 #pragma mark -

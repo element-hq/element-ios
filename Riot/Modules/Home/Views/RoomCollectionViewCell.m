@@ -66,13 +66,13 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super customizeCollectionViewCellRendering];
     
-    self.roomTitle.textColor = ThemeService.theme.textPrimaryColor;
-    self.roomTitle1.textColor = ThemeService.theme.textPrimaryColor;
-    self.roomTitle2.textColor = ThemeService.theme.textPrimaryColor;
-    self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.theme.backgroundColor;
+    self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomTitle1.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomTitle2.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.backgroundColor;
     
     // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
+    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.shared.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
     
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
@@ -81,7 +81,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     
     CFRelease(directRoomBorderColor);
     
-    self.editionArrowView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.editionArrowView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
@@ -126,7 +126,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             if (0 < roomCellData.notificationCount)
             {
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? ThemeService.theme.notificationMentionColor : ThemeService.theme.notificationUnreadColor;
+                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.notificationMentionColor : ThemeService.shared.theme.notificationUnreadColor;
                 
                 self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
@@ -147,7 +147,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         else if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite)
         {
             self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-            self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.theme.notificationMentionColor;
+            self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.notificationMentionColor;
             
             self.missedNotifAndUnreadBadgeLabel.text = @"!";
             [self.missedNotifAndUnreadBadgeLabel sizeToFit];

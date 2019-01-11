@@ -112,10 +112,10 @@
 {
     [super customizeViewRendering];
     
-    self.separatorView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     if (self.messageLabel.textColor != kRiotColorPinkRed)
     {
-        self.messageLabel.textColor = ThemeService.theme.textSecondaryColor;
+        self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     }
 }
 
@@ -260,12 +260,12 @@
 
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
-    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:ThemeService.theme.backgroundColor range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.backgroundColor range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kRiotColorPinkRed range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
 
     self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
-    self.messageTextView.tintColor = ThemeService.theme.backgroundColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.backgroundColor;
     self.messageTextView.hidden = NO;
 
     self.backgroundColor = kRiotColorPinkRed;
@@ -356,7 +356,7 @@
         [roomReplacementAttributedString appendAttributedString:roomLinkAttributedString];
         
         NSRange wholeStringRange = NSMakeRange(0, roomReplacementAttributedString.length);
-        [roomReplacementAttributedString addAttribute:NSForegroundColorAttributeName value:ThemeService.theme.textPrimaryColor range:wholeStringRange];
+        [roomReplacementAttributedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.textPrimaryColor range:wholeStringRange];
         
         self.messageTextView.attributedText = roomReplacementAttributedString;
     }
@@ -365,7 +365,7 @@
         self.messageTextView.text = NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil);
     }
     
-    self.messageTextView.tintColor = ThemeService.theme.textPrimaryColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.textPrimaryColor;
     self.messageTextView.hidden = NO;
     self.messageTextView.backgroundColor = [UIColor clearColor];
     
@@ -432,13 +432,13 @@
         message2 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_2", @"Vector", nil)
                                                    attributes:@{
                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:fontSize],
-                                                                NSForegroundColorAttributeName: ThemeService.theme.backgroundColor
+                                                                NSForegroundColorAttributeName: ThemeService.shared.theme.backgroundColor
                                                                 }];
     }
 
     NSDictionary *attributes = @{
                                  NSFontAttributeName: [UIFont systemFontOfSize:fontSize],
-                                 NSForegroundColorAttributeName: ThemeService.theme.backgroundColor
+                                 NSForegroundColorAttributeName: ThemeService.shared.theme.backgroundColor
                                  };
 
     NSDictionary *messageContact2LinkAttributes;
@@ -482,7 +482,7 @@
     [attributedText appendAttributedString:messageContact3];
 
     self.messageTextView.attributedText = attributedText;
-    self.messageTextView.tintColor = ThemeService.theme.backgroundColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.backgroundColor;
     self.messageTextView.hidden = NO;
 
     if (hardLimit)
@@ -535,7 +535,7 @@
     [self.messageTextView resignFirstResponder];
     self.messageTextView.hidden = YES;
     
-    self.messageLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 
     objc_removeAssociatedObjects(self.messageTextView);
 }

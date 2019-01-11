@@ -72,7 +72,7 @@
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
     
-    if (ThemeService.theme.placeholderTextColor)
+    if (ThemeService.shared.theme.placeholderTextColor)
     {
         // Apply placeholder color
         [self customizeViewRendering];
@@ -103,33 +103,33 @@
 {
     [super customizeViewRendering];
     
-    self.repeatPasswordTextField.textColor = ThemeService.theme.textPrimaryColor;
-    self.userLoginTextField.textColor = ThemeService.theme.textPrimaryColor;
-    self.passWordTextField.textColor = ThemeService.theme.textPrimaryColor;
+    self.repeatPasswordTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.userLoginTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.passWordTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.emailTextField.textColor = ThemeService.theme.textPrimaryColor;
-    self.phoneTextField.textColor = ThemeService.theme.textPrimaryColor;
+    self.emailTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.phoneTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.isoCountryCodeLabel.textColor = ThemeService.theme.textPrimaryColor;
-    self.callingCodeLabel.textColor = ThemeService.theme.textPrimaryColor;
+    self.isoCountryCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.callingCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.messageLabel.textColor = ThemeService.theme.textSecondaryColor;
+    self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.messageLabel.numberOfLines = 0;
     
-    if (ThemeService.theme.placeholderTextColor)
+    if (ThemeService.shared.theme.placeholderTextColor)
     {
         if (self.userLoginTextField.placeholder)
         {
             self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.userLoginTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         }
         
         if (self.repeatPasswordTextField.placeholder)
         {
             self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                   initWithString:self.repeatPasswordTextField.placeholder
-                                                                  attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                                  attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             
         }
         
@@ -137,21 +137,21 @@
         {
             self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                             initWithString:self.passWordTextField.placeholder
-                                                            attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                            attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         }
         
         if (self.phoneTextField.placeholder)
         {
             self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                          initWithString:self.phoneTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         }
         
         if (self.emailTextField.placeholder)
         {
             self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                          initWithString:self.emailTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         }
     }
 }
@@ -196,14 +196,14 @@
                 self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
                 
-                if (ThemeService.theme.placeholderTextColor)
+                if (ThemeService.shared.theme.placeholderTextColor)
                 {
                     self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                      initWithString:self.userLoginTextField.placeholder
-                                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
                     self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                  initWithString:self.phoneTextField.placeholder
-                                                                 attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                                 attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
                 }
                 
                 self.userLoginContainer.hidden = NO;
@@ -1025,11 +1025,11 @@
     {
         self.passWordTextField.returnKeyType = UIReturnKeyNext;
         
-        if (ThemeService.theme.placeholderTextColor)
+        if (ThemeService.shared.theme.placeholderTextColor)
         {
             self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil)
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         }
         else
         {
@@ -1057,11 +1057,11 @@
                 self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
             }
             
-            if (ThemeService.theme.placeholderTextColor)
+            if (ThemeService.shared.theme.placeholderTextColor)
             {
                 self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.emailTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             }
             
             self.emailContainer.hidden = NO;
@@ -1085,11 +1085,11 @@
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_phone_placeholder", @"Vector", nil);
             }
             
-            if (ThemeService.theme.placeholderTextColor)
+            if (ThemeService.shared.theme.placeholderTextColor)
             {
                 self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.phoneTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.theme.placeholderTextColor}];
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             }
             
             self.phoneContainer.hidden = NO;
@@ -1149,7 +1149,7 @@
         phoneNumberPickerNavigationController = [[RiotNavigationController alloc] init];
         
         // Set Riot navigation bar colors
-        [ThemeService.theme applyStyleOnNavigationBar:phoneNumberPickerNavigationController.navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:phoneNumberPickerNavigationController.navigationBar];
         
         [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
         

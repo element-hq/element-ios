@@ -32,7 +32,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.editionView.backgroundColor = ThemeService.theme.headerBackgroundColor;
+    self.editionView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
 }
 
 - (void)prepareForReuse

@@ -109,7 +109,7 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 #pragma mark - Private
@@ -123,22 +123,22 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
 }
 
 - (void)setupStringAttributes
 {
     self.normalStringAttributes = @{
                                     NSFontAttributeName: [UIFont systemFontOfSize:kTextFontSize],
-                                    NSForegroundColorAttributeName: ThemeService.theme.textPrimaryColor
+                                    NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor
                                     };
     
     
     self.emphasizeStringAttributes = @{
                                        NSFontAttributeName: [UIFont systemFontOfSize:kTextFontSize weight:UIFontWeightBold],
-                                       NSForegroundColorAttributeName: ThemeService.theme.textPrimaryColor
+                                       NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor
                                        };
 }
 
@@ -166,9 +166,9 @@ static CGFloat const kTextFontSize = 15.0;
     self.deactivateAcccountButton.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     
     self.deactivateAcccountButton.layer.masksToBounds = YES;
-    self.deactivateAcccountButton.backgroundColor = ThemeService.theme.tintColor;
+    self.deactivateAcccountButton.backgroundColor = ThemeService.shared.theme.tintColor;
     [self.deactivateAcccountButton setTitle:NSLocalizedStringFromTable(@"deactivate_account_validate_action", @"Vector", nil) forState:UIControlStateNormal];    
-    [self.deactivateAcccountButton setTitleColor:ThemeService.theme.headerTextSecondaryColor forState:UIControlStateDisabled];
+    [self.deactivateAcccountButton setTitleColor:ThemeService.shared.theme.headerTextSecondaryColor forState:UIControlStateDisabled];
 }
 
 - (void)setupDeactivateAccountInfosLabel

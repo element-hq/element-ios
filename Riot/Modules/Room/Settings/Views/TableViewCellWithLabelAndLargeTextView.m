@@ -37,8 +37,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    _label.textColor = ThemeService.theme.textPrimaryColor;
-    _textView.textColor = ThemeService.theme.textPrimaryColor;
+    _label.textColor = ThemeService.shared.theme.textPrimaryColor;
+    _textView.textColor = ThemeService.shared.theme.textPrimaryColor;
 }
 
 - (void)layoutSubviews

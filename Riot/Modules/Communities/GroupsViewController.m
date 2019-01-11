@@ -116,17 +116,17 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.activityIndicator.backgroundColor = ThemeService.theme.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Use the primary bg color for the recents table view in plain style.
-    self.groupsTableView.backgroundColor = ThemeService.theme.backgroundColor;
-    topview.backgroundColor = ThemeService.theme.headerBackgroundColor;
-    self.view.backgroundColor = ThemeService.theme.backgroundColor;
+    self.groupsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
-    [ThemeService.theme applyStyleOnSearchBar:tableSearchBar];
-    [ThemeService.theme applyStyleOnSearchBar:self.groupsSearchBar];
+    [ThemeService.shared.theme applyStyleOnSearchBar:tableSearchBar];
+    [ThemeService.shared.theme applyStyleOnSearchBar:self.groupsSearchBar];
     
     if (self.groupsTableView.dataSource)
     {
@@ -137,7 +137,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.theme.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -424,13 +424,13 @@
 {
     [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     
-    cell.backgroundColor = ThemeService.theme.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (ThemeService.theme.selectedBackgroundColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = ThemeService.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -452,8 +452,8 @@
     if (tableView.numberOfSections > 1)
     {
         sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
-        sectionHeader.mxkContentView.backgroundColor = ThemeService.theme.headerBackgroundColor;
-        sectionHeader.mxkLabel.textColor = ThemeService.theme.textPrimaryColor;
+        sectionHeader.mxkContentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+        sectionHeader.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
         NSString* title = [self.dataSource tableView:tableView titleForHeaderInSection:section];
@@ -462,9 +462,9 @@
         {
             NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
             NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                                    attributes:@{NSForegroundColorAttributeName: ThemeService.theme.headerTextPrimaryColor}];
+                                                                                                    attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextPrimaryColor}];
             [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                               attributes:@{NSForegroundColorAttributeName: ThemeService.theme.headerTextSecondaryColor}]];
+                                                                                               attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor}]];
 
             sectionHeader.mxkLabel.attributedText = mutableSectionTitle;
         }
@@ -512,7 +512,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:ThemeService.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
