@@ -28,10 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *const kThemeServiceDidChangeThemeNotification;
 
 
-#pragma mark - Riot Standard Room Member Power Level
-extern NSInteger const kRiotRoomModeratorLevel;
-extern NSInteger const kRiotRoomAdminLevel;
-
 /**
  `ThemeService` class manages the application design values.
  */

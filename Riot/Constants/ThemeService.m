@@ -24,11 +24,7 @@
 #import "Riot-Swift.h"
 #endif
 
-
 NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
-
-NSInteger const kRiotRoomModeratorLevel = 50;
-NSInteger const kRiotRoomAdminLevel = 100;
 
 @implementation ThemeService
 

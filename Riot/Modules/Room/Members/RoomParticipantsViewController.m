@@ -1127,12 +1127,12 @@
                 // Update member badge
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
-                if (powerLevel >= kRiotRoomAdminLevel)
+                if (powerLevel >= RoomPowerLevelAdmin)
                 {
                     participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon"];
                     participantCell.thumbnailBadgeView.hidden = NO;
                 }
-                else if (powerLevel >= kRiotRoomModeratorLevel)
+                else if (powerLevel >= RoomPowerLevelModerator)
                 {
                     participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon"];
                     participantCell.thumbnailBadgeView.hidden = NO;

@@ -376,12 +376,12 @@
 
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
-            if (powerLevel >= kRiotRoomAdminLevel)
+            if (powerLevel >= RoomPowerLevelAdmin)
             {
                 self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
                 self->memberTitleView.memberBadge.hidden = NO;
             }
-            else if (powerLevel >= kRiotRoomModeratorLevel)
+            else if (powerLevel >= RoomPowerLevelModerator)
             {
                 self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
                 self->memberTitleView.memberBadge.hidden = NO;
@@ -505,13 +505,13 @@
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
         {
             // Check whether the user is admin (in this case he may reduce his power level to become moderator or less, EXCEPT if he is the only admin).
-            if (oneSelfPowerLevel >= kRiotRoomAdminLevel)
+            if (oneSelfPowerLevel >= RoomPowerLevelAdmin)
             {
                 NSArray *levelValues = powerLevels.users.allValues;
                 NSUInteger adminCount = 0;
                 for (NSNumber *valueNumber in levelValues)
                 {
-                    if ([valueNumber unsignedIntegerValue] >= kRiotRoomAdminLevel)
+                    if ([valueNumber unsignedIntegerValue] >= RoomPowerLevelAdmin)
                     {
                         adminCount ++;
                     }
@@ -524,7 +524,7 @@
                 }
             }
             // Check whether the user is moderator (in this case he may reduce his power level to become normal user).
-            else if (oneSelfPowerLevel >= kRiotRoomModeratorLevel)
+            else if (oneSelfPowerLevel >= RoomPowerLevelModerator)
             {
                 [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
             }
@@ -542,18 +542,18 @@
                 if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels] && oneSelfPowerLevel > memberPowerLevel)
                 {
                     // Check whether user is admin
-                    if (oneSelfPowerLevel >= kRiotRoomAdminLevel)
+                    if (oneSelfPowerLevel >= RoomPowerLevelAdmin)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetAdmin)];
                     }
                     
                     // Check whether the member may become moderator
-                    if (oneSelfPowerLevel >= kRiotRoomModeratorLevel && memberPowerLevel < kRiotRoomModeratorLevel)
+                    if (oneSelfPowerLevel >= RoomPowerLevelModerator && memberPowerLevel < RoomPowerLevelModerator)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
                     }
                     
-                    if (memberPowerLevel >= kRiotRoomModeratorLevel)
+                    if (memberPowerLevel >= RoomPowerLevelModerator)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
                     }
@@ -948,12 +948,12 @@
             }
             case MXKRoomMemberDetailsActionSetModerator:
             {
-                [self setPowerLevel:kRiotRoomModeratorLevel promptUser:YES];
+                [self setPowerLevel:RoomPowerLevelModerator promptUser:YES];
                 break;
             }
             case MXKRoomMemberDetailsActionSetAdmin:
             {
-                [self setPowerLevel:kRiotRoomAdminLevel promptUser:YES];
+                [self setPowerLevel:RoomPowerLevelAdmin promptUser:YES];
                 break;
             }
             case MXKRoomMemberDetailsActionBan:
