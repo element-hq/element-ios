@@ -17,11 +17,9 @@
 import Foundation
 import UIKit
 
-/// Color constants for the dart theme
+/// Color constants for the dark theme
 @objcMembers
 final class DarkTheme: NSObject, Theme {
-
-    static let shared = DarkTheme()
 
     let backgroundColor: UIColor = UIColor(rgb: 0x212224)
 

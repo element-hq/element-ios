@@ -55,18 +55,21 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 
 - (id<Theme>)themeWithThemeId:(NSString*)themeId
 {
-    // Use light theme colors by default.
-    id<Theme> theme = DefaultTheme.shared;
+    id<Theme> theme;
 
     if ([themeId isEqualToString:@"dark"])
     {
-        // Set dark theme colors
-        theme = DarkTheme.shared;
+        theme = [DarkTheme new];
     }
     else if ([themeId isEqualToString:@"black"])
     {
-        // TODO: Use dark theme colors for the moment
-        theme = DarkTheme.shared;
+        // TODO: Use dark theme for the moment
+        theme = [DarkTheme new];
+    }
+    else
+    {
+        // Use light theme by default
+        theme = [DefaultTheme new];
     }
 
     return theme;

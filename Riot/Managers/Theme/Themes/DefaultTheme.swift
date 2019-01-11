@@ -21,8 +21,6 @@ import UIKit
 @objcMembers
 final class DefaultTheme: NSObject, Theme {
 
-    static let shared = DefaultTheme()
-
     let backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
     let baseColor: UIColor = UIColor(rgb: 0x2E3648)
@@ -55,8 +53,8 @@ final class DefaultTheme: NSObject, Theme {
     let scrollBarStyle: UIScrollViewIndicatorStyle = .default
     let keyboardAppearance: UIKeyboardAppearance = .light
 
-    var placeholderTextColor: UIColor?      // Use default 70% gray color
-    var selectedBackgroundColor: UIColor?   // Use the default selection color
+    let placeholderTextColor: UIColor? = nil     // Use default 70% gray color
+    let selectedBackgroundColor: UIColor? = nil  // Use the default selection color
     let overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
 
