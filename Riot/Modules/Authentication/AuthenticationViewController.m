@@ -131,7 +131,11 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    NSLog(@"### %@", self.navigationController);
+    NSLog(@"### %@", [AppDelegate theDelegate].masterTabBarController.navigationController);
+
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
+    //[ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
     self.view.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
 
