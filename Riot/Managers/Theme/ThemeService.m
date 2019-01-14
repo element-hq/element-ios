@@ -27,7 +27,7 @@
 NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
 
 @implementation ThemeService
-@synthesize themeId;
+@synthesize themeId = _themeId;
 
 + (ThemeService *)shared
 {
@@ -44,7 +44,7 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 - (void)setThemeId:(NSString *)theThemeId
 {
     // Update the current theme
-    themeId = theThemeId;
+    _themeId = theThemeId;
     self.theme = [self themeWithThemeId:self.themeId];
 }
 
