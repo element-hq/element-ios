@@ -16,7 +16,8 @@
 
 #import "DisabledRoomInputToolbarView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @implementation DisabledRoomInputToolbarView
 
@@ -47,11 +48,11 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = kRiotAuxiliaryColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.headerTextSecondaryColor;
 
     self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
-    self.disabledReasonTextView.textColor = kRiotPrimaryTextColor;
-    self.disabledReasonTextView.tintColor = kRiotColorGreen;
+    self.disabledReasonTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.disabledReasonTextView.tintColor = ThemeService.shared.theme.tintColor;
     self.disabledReasonTextView.editable = NO;
     self.disabledReasonTextView.scrollEnabled = NO;
 }

@@ -16,7 +16,8 @@
 
 #import "GroupTableViewCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 #import "MXGroup+Riot.h"
 
@@ -40,13 +41,13 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.groupName.textColor = kRiotPrimaryTextColor;
-    self.groupDescription.textColor = kRiotSecondaryTextColor;
-    self.memberCount.textColor = kRiotSecondaryTextColor;
+    self.groupName.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.groupDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.memberCount.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     if (self.missedNotifAndUnreadBadgeLabel)
     {
-        self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
+        self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.backgroundColor;
     }
     
     self.groupAvatar.defaultBackgroundColor = [UIColor clearColor];

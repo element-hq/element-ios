@@ -17,7 +17,13 @@
 
 #import "AvatarGenerator.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
 
 @implementation AvatarGenerator
 
@@ -33,10 +39,7 @@ static UILabel* backgroundLabel = nil;
 {
     if (!colorsList)
     {
-        colorsList = [[NSMutableArray alloc] init];
-        [colorsList addObject:kRiotColorGreen];
-        [colorsList addObject:kRiotColorLightGreen];
-        [colorsList addObject:kRiotColorLightOrange];
+        colorsList = ThemeService.shared.theme.avatarColors;
     }
 }
 
@@ -90,7 +93,7 @@ static UILabel* backgroundLabel = nil;
     if (!backgroundLabel)
     {
         backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        backgroundLabel.textColor = kRiotPrimaryBgColor;
+        backgroundLabel.textColor = ThemeService.shared.theme.backgroundColor;
         backgroundLabel.textAlignment = NSTextAlignmentCenter;
         backgroundLabel.font = [UIFont boldSystemFontOfSize:25];
     }
@@ -120,7 +123,7 @@ static UILabel* backgroundLabel = nil;
 + (UIImage *)imageFromText:(NSString*)text withBackgroundColor:(UIColor*)color size:(CGFloat)size andFontSize:(CGFloat)fontSize
 {
     UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size, size)];
-    bgLabel.textColor = kRiotPrimaryBgColor;
+    bgLabel.textColor = ThemeService.shared.theme.backgroundColor;
     bgLabel.textAlignment = NSTextAlignmentCenter;
     bgLabel.font = [UIFont boldSystemFontOfSize:fontSize];
     

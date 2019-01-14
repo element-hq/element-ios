@@ -19,6 +19,7 @@
 #import "RoomMemberDetailsViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "RoomMemberTitleView.h"
 
@@ -69,9 +70,9 @@
     id UIApplicationWillChangeStatusBarOrientationNotificationObserver;
     
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     /**
      The current visibility of the status bar in this view controller.
@@ -207,7 +208,7 @@
     }];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -217,16 +218,18 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    self.navigationController.navigationBar.translucent = YES;
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.memberHeaderView.backgroundColor = kRiotSecondaryBgColor;
-    self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;
-    self.roomMemberStatusLabel.textColor = kRiotColorGreen;
+    self.memberHeaderView.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.roomMemberNameLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
+
+    self.roomMemberStatusLabel.textColor = ThemeService.shared.theme.tintColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -237,7 +240,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -301,10 +304,10 @@
         UIApplicationWillChangeStatusBarOrientationNotificationObserver = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [memberTitleView removeFromSuperview];
@@ -357,7 +360,8 @@
         return [AvatarGenerator generateAvatarForMatrixItem:self.mxRoomMember.userId withDisplayName:self.mxRoomMember.displayname];
     }
     
-    return [UIImage imageNamed:@"placeholder"];
+    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                      withColor:ThemeService.shared.theme.tintColor];
 }
 
 - (void)updateMemberInfo
@@ -373,12 +377,12 @@
 
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
-            if (powerLevel >= kRiotRoomAdminLevel)
+            if (powerLevel >= RoomPowerLevelAdmin)
             {
                 self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
                 self->memberTitleView.memberBadge.hidden = NO;
             }
-            else if (powerLevel >= kRiotRoomModeratorLevel)
+            else if (powerLevel >= RoomPowerLevelModerator)
             {
                 self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
                 self->memberTitleView.memberBadge.hidden = NO;
@@ -471,6 +475,9 @@
         [mainNavigationController.navigationBar setShadowImage:nil];
         [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     }
+
+    // Main Navigation bar opacity must follow
+    mainNavigationController.navigationBar.translucent = isHidden;
 }
 
 #pragma mark - TableView data source
@@ -499,13 +506,13 @@
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
         {
             // Check whether the user is admin (in this case he may reduce his power level to become moderator or less, EXCEPT if he is the only admin).
-            if (oneSelfPowerLevel >= kRiotRoomAdminLevel)
+            if (oneSelfPowerLevel >= RoomPowerLevelAdmin)
             {
                 NSArray *levelValues = powerLevels.users.allValues;
                 NSUInteger adminCount = 0;
                 for (NSNumber *valueNumber in levelValues)
                 {
-                    if ([valueNumber unsignedIntegerValue] >= kRiotRoomAdminLevel)
+                    if ([valueNumber unsignedIntegerValue] >= RoomPowerLevelAdmin)
                     {
                         adminCount ++;
                     }
@@ -518,7 +525,7 @@
                 }
             }
             // Check whether the user is moderator (in this case he may reduce his power level to become normal user).
-            else if (oneSelfPowerLevel >= kRiotRoomModeratorLevel)
+            else if (oneSelfPowerLevel >= RoomPowerLevelModerator)
             {
                 [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
             }
@@ -536,18 +543,18 @@
                 if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels] && oneSelfPowerLevel > memberPowerLevel)
                 {
                     // Check whether user is admin
-                    if (oneSelfPowerLevel >= kRiotRoomAdminLevel)
+                    if (oneSelfPowerLevel >= RoomPowerLevelAdmin)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetAdmin)];
                     }
                     
                     // Check whether the member may become moderator
-                    if (oneSelfPowerLevel >= kRiotRoomModeratorLevel && memberPowerLevel < kRiotRoomModeratorLevel)
+                    if (oneSelfPowerLevel >= RoomPowerLevelModerator && memberPowerLevel < RoomPowerLevelModerator)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
                     }
                     
-                    if (memberPowerLevel >= kRiotRoomModeratorLevel)
+                    if (memberPowerLevel >= RoomPowerLevelModerator)
                     {
                         [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
                     }
@@ -770,13 +777,13 @@
             
             if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
             {
-                [cellWithButton.mxkButton setTitleColor:kRiotColorPinkRed forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kRiotColorPinkRed forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.riotColorPinkRed forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.riotColorPinkRed forState:UIControlStateHighlighted];
             }
             else
             {
-                [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.theme.textPrimaryColor forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.theme.textPrimaryColor forState:UIControlStateHighlighted];
             }
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -837,13 +844,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -942,12 +949,12 @@
             }
             case MXKRoomMemberDetailsActionSetModerator:
             {
-                [self setPowerLevel:kRiotRoomModeratorLevel promptUser:YES];
+                [self setPowerLevel:RoomPowerLevelModerator promptUser:YES];
                 break;
             }
             case MXKRoomMemberDetailsActionSetAdmin:
             {
-                [self setPowerLevel:kRiotRoomAdminLevel promptUser:YES];
+                [self setPowerLevel:RoomPowerLevelAdmin promptUser:YES];
                 break;
             }
             case MXKRoomMemberDetailsActionBan:

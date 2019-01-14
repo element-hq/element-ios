@@ -19,6 +19,7 @@
 #import "CallViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "AvatarGenerator.h"
 
@@ -36,8 +37,8 @@
     // Current alert (if any).
     UIAlertController *currentAlert;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -87,7 +88,7 @@
     [self updateLocalPreviewLayout];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -97,20 +98,20 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.barTitleColor = ThemeService.shared.theme.textPrimaryColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.callerNameLabel.textColor = kRiotPrimaryTextColor;
-    self.callStatusLabel.textColor = kRiotTopicTextColor;
+    self.callerNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.callStatusLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     
-    self.localPreviewContainerView.layer.borderColor = kRiotColorGreen.CGColor;
+    self.localPreviewContainerView.layer.borderColor = ThemeService.shared.theme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
     
-    self.remotePreviewContainerView.backgroundColor = kRiotPrimaryBgColor;
+    self.remotePreviewContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     if (gradientMaskLayer)
     {
@@ -120,9 +121,9 @@
     // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
     gradientMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the kRiotPrimaryBgColor.
+    // Consider the grayscale components of the ThemeService.shared.theme.backgroundColor.
     CGFloat white = 1.0;
-    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
@@ -188,10 +189,10 @@
 {
     [super destroy];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [gradientMaskLayer removeFromSuperlayer];
@@ -282,19 +283,9 @@
                                                                UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
                                                                
                                                                // Set Riot navigation bar colors
-                                                               usersDevicesNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
-                                                               NSDictionary<NSString *,id> *titleTextAttributes = usersDevicesNavigationController.navigationBar.titleTextAttributes;
-                                                               if (titleTextAttributes)
-                                                               {
-                                                                   NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-                                                                   textAttributes[NSForegroundColorAttributeName] = kRiotPrimaryTextColor;
-                                                                   usersDevicesNavigationController.navigationBar.titleTextAttributes = textAttributes;
-                                                               }
-                                                               else if (kRiotPrimaryTextColor)
-                                                               {
-                                                                   usersDevicesNavigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
-                                                               }
-                                                               
+                                                               [ThemeService.shared.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
+                                                               usersDevicesNavigationController.navigationBar.barTintColor = ThemeService.shared.theme.backgroundColor;
+
                                                                [usersDevicesNavigationController pushViewController:usersDevicesViewController animated:NO];
                                                                
                                                                [self presentViewController:usersDevicesNavigationController animated:YES completion:nil];
@@ -358,7 +349,8 @@
         return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.summary.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
     }
     
-    return [UIImage imageNamed:@"placeholder"];
+    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                      withColor:ThemeService.shared.theme.tintColor];
 }
 
 - (void)setMxCall:(MXCall *)call

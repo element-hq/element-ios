@@ -18,6 +18,7 @@
 #import "MediaPickerViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import <Photos/Photos.h>
 
@@ -83,9 +84,9 @@ static void *RecordingContext = &RecordingContext;
     NSDate *videoRecordStartDate;
     
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     /**
      The current visibility of the status bar in this view controller.
@@ -171,7 +172,7 @@ static void *RecordingContext = &RecordingContext;
     }];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -181,20 +182,20 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.cameraVideoCaptureProgressView.progressColor = kRiotPrimaryBgColor;
+    self.cameraVideoCaptureProgressView.progressColor = ThemeService.shared.theme.backgroundColor;
     self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
     
-    self.userAlbumsTableView.backgroundColor = kRiotPrimaryBgColor;
-    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.userAlbumsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -342,12 +343,12 @@ static void *RecordingContext = &RecordingContext;
         if (self.cameraVideoCaptureProgressView.progressColor != [UIColor lightGrayColor])
         {
             self.cameraVideoCaptureProgressView.progressColor = [UIColor lightGrayColor];
-            self.cameraVideoCaptureProgressView.unprogressColor = kRiotPrimaryBgColor;
+            self.cameraVideoCaptureProgressView.unprogressColor = ThemeService.shared.theme.backgroundColor;
         }
     }
-    else if (self.cameraVideoCaptureProgressView.progressColor != kRiotPrimaryBgColor)
+    else if (self.cameraVideoCaptureProgressView.progressColor != ThemeService.shared.theme.backgroundColor)
     {
-        self.cameraVideoCaptureProgressView.progressColor = kRiotPrimaryBgColor;
+        self.cameraVideoCaptureProgressView.progressColor = ThemeService.shared.theme.backgroundColor;
         self.cameraVideoCaptureProgressView.unprogressColor = [UIColor lightGrayColor];
     }
     
@@ -1004,10 +1005,10 @@ static void *RecordingContext = &RecordingContext;
 {
     [self stopAVCapture];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     if (UIApplicationWillEnterForegroundNotificationObserver)
@@ -1764,13 +1765,13 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {

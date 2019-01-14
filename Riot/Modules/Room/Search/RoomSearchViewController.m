@@ -23,6 +23,7 @@
 #import "FilesSearchCellData.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface RoomSearchViewController ()
 {
@@ -79,7 +80,7 @@
     UIImageView *backgroundImageView = self.backgroundImageView;
     if (backgroundImageView)
     {
-        UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:kRiotKeyboardColor];
+        UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
         backgroundImageView.image = image;
     }
 }

@@ -80,7 +80,9 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
     }
 
     func customizeViewRendering() {
-        acceptButton.backgroundColor = kRiotColorGreen
+        self.backgroundColor = UIColor.clear
+        self.tableView.backgroundColor = UIColor.clear
+        acceptButton.backgroundColor = ThemeService.shared().theme.tintColor
     }
 
 
@@ -137,6 +139,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         cell.label.text = policy.name
         cell.isEnabled = accepted
         cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = UIColor.clear
 
 
         let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))

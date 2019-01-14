@@ -20,6 +20,7 @@
 #import "GroupInviteTableViewCell.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface GroupsViewController ()
 {
@@ -38,8 +39,8 @@
     // when the user selects it.
     UISearchBar *tableSearchBar;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -105,7 +106,7 @@
     //[self addPlusButton];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -115,17 +116,17 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Use the primary bg color for the recents table view in plain style.
-    self.groupsTableView.backgroundColor = kRiotPrimaryBgColor;
-    topview.backgroundColor = kRiotSecondaryBgColor;
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    
-    tableSearchBar.barStyle = self.groupsSearchBar.barStyle = kRiotDesignSearchBarStyle;
-    tableSearchBar.tintColor = self.groupsSearchBar.tintColor = kRiotDesignSearchBarTintColor;
+    self.groupsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    [ThemeService.shared.theme applyStyleOnSearchBar:tableSearchBar];
+    [ThemeService.shared.theme applyStyleOnSearchBar:self.groupsSearchBar];
     
     if (self.groupsTableView.dataSource)
     {
@@ -136,7 +137,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -161,10 +162,10 @@
         UIApplicationDidEnterBackgroundNotificationObserver = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -203,8 +204,7 @@
     }];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorBlue;
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorBlue;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.riotColorBlue;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -218,13 +218,6 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
-    }
-    
-    if ([AppDelegate theDelegate].masterTabBarController.tabBar.tintColor == kRiotColorBlue && ![AppDelegate theDelegate].masterTabBarController.selectedGroup)
-    {
-        // Restore default tintColor
-        [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;
-        [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
     }
 }
 
@@ -431,13 +424,13 @@
 {
     [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -459,8 +452,8 @@
     if (tableView.numberOfSections > 1)
     {
         sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:MXKTableViewHeaderFooterWithLabel.defaultReuseIdentifier];
-        sectionHeader.mxkContentView.backgroundColor = kRiotSecondaryBgColor;
-        sectionHeader.mxkLabel.textColor = kRiotPrimaryTextColor;
+        sectionHeader.mxkContentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+        sectionHeader.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
         NSString* title = [self.dataSource tableView:tableView titleForHeaderInSection:section];
@@ -469,9 +462,9 @@
         {
             NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
             NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                                    attributes:@{NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
+                                                                                                    attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextPrimaryColor}];
             [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                               attributes:@{NSForegroundColorAttributeName: kRiotAuxiliaryColor}]];
+                                                                                               attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor}]];
 
             sectionHeader.mxkLabel.attributedText = mutableSectionTitle;
         }
@@ -519,7 +512,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
