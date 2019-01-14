@@ -3778,6 +3778,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
                 // The user wants to select this theme
                 RiotSettings.shared.userInterfaceTheme = newTheme;
+                ThemeService.shared.themeId = newTheme;
 
                 [self.tableView reloadData];
             }

@@ -41,12 +41,13 @@ extern NSString *const kThemeServiceDidChangeThemeNotification;
 + (instancetype)shared;
 
 /**
- The id of the theme corresponding to the current app settings.
+ The id of the theme being used.
  */
-@property (nonatomic, readonly) NSString *themeId;
+@property (nonatomic, nullable) NSString *themeId;
 
 /**
  The current theme.
+ Default value is the Default theme.
  */
 @property (nonatomic, readonly) id<Theme> theme;
 

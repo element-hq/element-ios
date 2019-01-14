@@ -27,6 +27,7 @@
 NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
 
 @implementation ThemeService
+@synthesize themeId;
 
 + (ThemeService *)shared
 {
@@ -40,22 +41,31 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     return sharedOnceInstance;
 }
 
-- (NSString*)themeId
+- (void)setThemeId:(NSString *)theThemeId
 {
-    // Retrieve the current selected theme ("light" if none. "auto" is used as default from iOS 11).
-    NSString *themeId = RiotSettings.shared.userInterfaceTheme;
+    // Update the current theme
+    themeId = theThemeId;
+    self.theme = [self themeWithThemeId:self.themeId];
+}
 
-    if (!themeId || [themeId isEqualToString:@"auto"])
-    {
-        themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
-    }
+- (void)setTheme:(id<Theme> _Nonnull)theme
+{
+    _theme = theme;
 
-    return themeId;
+    [UIScrollView appearance].indicatorStyle = self.theme.scrollBarStyle;
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
 }
 
 - (id<Theme>)themeWithThemeId:(NSString*)themeId
 {
     id<Theme> theme;
+
+    if ([themeId isEqualToString:@"auto"])
+    {
+        // Translate "auto" into a theme
+        themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+    }
 
     if ([themeId isEqualToString:@"dark"])
     {
@@ -90,42 +100,20 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
         _riotColorIndigo = [[UIColor alloc] initWithRgb:0xBD79CC];
         _riotColorOrange = [[UIColor alloc] initWithRgb:0xF8A15F];
 
-        // Observe user interface theme change.
-        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"userInterfaceTheme" options:0 context:nil];
-        [self userInterfaceThemeDidChange];
-
         // Observe "Invert Colours" settings changes (available since iOS 11)
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
     }
     return self;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([@"userInterfaceTheme" isEqualToString:keyPath])
-    {
-        [self userInterfaceThemeDidChange];
-    }
-}
-
 - (void)accessibilityInvertColorsStatusDidChange
 {
     // Refresh the theme only for "auto"
-    NSString *theme = RiotSettings.shared.userInterfaceTheme;
-    if (!theme || [theme isEqualToString:@"auto"])
+    if ([self.themeId isEqualToString:@"auto"])
     {
-        [self userInterfaceThemeDidChange];
+         self.theme = [self themeWithThemeId:self.themeId];
     }
 }
 
-- (void)userInterfaceThemeDidChange
-{
-    // Update the current theme
-    _theme = [self themeWithThemeId:self.themeId];
-    
-    [UIScrollView appearance].indicatorStyle = self.theme.scrollBarStyle;
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
-}
 
 @end

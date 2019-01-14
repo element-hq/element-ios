@@ -403,6 +403,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     [self setupUserDefaults];
 
+    // Set up theme
+    ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
+
     // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
     NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
     NSString *language = [sharedUserDefaults objectForKey:@"appLanguage"];
