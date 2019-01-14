@@ -4,6 +4,7 @@ Changes in 0.7.x (2019-xx-xx)
 Improvements:
  * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
  * Use modern literals and array/dictionary syntax where possible (PR #2160).
+ * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
  
 Bug fix:
  * Use white scroll bar on dark themes (#2158)

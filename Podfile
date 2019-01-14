@@ -76,7 +76,9 @@ abstract_target 'RiotPods' do
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true
     pod 'DTCoreText', :inhibit_warnings => true
-
+    
+    # Tools
+    pod 'SwiftGen', '~> 6.0'
 
     target "Riot" do
         import_MatrixKit
