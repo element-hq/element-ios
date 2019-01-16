@@ -632,7 +632,7 @@ internal enum VectorL10n {
   internal static let roomEventActionPermalink = VectorL10n.tr("Vector", "room_event_action_permalink")
   /// Quote
   internal static let roomEventActionQuote = VectorL10n.tr("Vector", "room_event_action_quote")
-  /// Redact
+  /// Remove
   internal static let roomEventActionRedact = VectorL10n.tr("Vector", "room_event_action_redact")
   /// Report content
   internal static let roomEventActionReport = VectorL10n.tr("Vector", "room_event_action_report")
