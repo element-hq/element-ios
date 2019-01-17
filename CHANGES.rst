@@ -8,7 +8,9 @@ Improvements:
  * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
  
 Bug fix:
- * Use white scroll bar on dark themes (#2158)
+ * Use white scroll bar on dark themes (#2158).
+ * Registration: fix tap gesture on checkboxes in the terms screen.
+ * Registration: improve validation UX on the terms screen (#2164).
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================

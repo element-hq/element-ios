@@ -141,16 +141,14 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = UIColor.clear
 
+        if let checkBox = cell.checkBox, checkBox.gestureRecognizers?.isEmpty ?? true {
+            let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
+            gesture.numberOfTapsRequired = 1
+            gesture.numberOfTouchesRequired = 1
 
-        let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
-        gesture.numberOfTapsRequired = 1
-        gesture.numberOfTouchesRequired = 1
-
-        cell.checkBox.tag = indexPath.row
-
-        cell.checkBox?.isUserInteractionEnabled = true
-        if (cell.checkBox?.gestureRecognizers?.count == 0) {
-            cell.checkBox?.addGestureRecognizer(gesture)
+            checkBox.isUserInteractionEnabled = true
+            checkBox.tag = indexPath.row
+            checkBox.addGestureRecognizer(gesture)
         }
 
         return cell
@@ -191,9 +189,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action:#selector(didTapCancelOnPolicyScreen))
         webViewViewController.navigationItem.leftBarButtonItem = leftBarButtonItem
 
-        let rightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: NSLocalizedString("accept", tableName: "Vector", comment: ""), style: .plain, target: self, action: #selector(didAcceptPolicy))
-        webViewViewController.navigationItem.rightBarButtonItem = rightBarButtonItem
-
         navigationController = RiotNavigationController()
         delegate?.authInputsView?(nil, present: navigationController, animated: false)
         navigationController?.pushViewController(webViewViewController, animated: false)
@@ -201,16 +196,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
 
     @objc private func didTapCancelOnPolicyScreen() {
         removePolicyScreen()
-    }
-
-    @objc private func didAcceptPolicy() {
-
-        if let displayedPolicyIndex = self.displayedPolicyIndex {
-            acceptedPolicies.insert(displayedPolicyIndex)
-        }
-
-        removePolicyScreen()
-        reload()
     }
 
     private func removePolicyScreen() {
