@@ -9,6 +9,7 @@ Improvements:
  
 Bug fix:
  * Use white scroll bar on dark themes (#2158)
+ * Registration: fix tap gesture on checkboxes in the terms screen
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================

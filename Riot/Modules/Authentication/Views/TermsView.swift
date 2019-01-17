@@ -141,16 +141,14 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = UIColor.clear
 
+        if let checkBox = cell.checkBox, checkBox.gestureRecognizers?.isEmpty ?? true {
+            let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
+            gesture.numberOfTapsRequired = 1
+            gesture.numberOfTouchesRequired = 1
 
-        let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
-        gesture.numberOfTapsRequired = 1
-        gesture.numberOfTouchesRequired = 1
-
-        cell.checkBox.tag = indexPath.row
-
-        cell.checkBox?.isUserInteractionEnabled = true
-        if (cell.checkBox?.gestureRecognizers?.count == 0) {
-            cell.checkBox?.addGestureRecognizer(gesture)
+            checkBox.isUserInteractionEnabled = true
+            checkBox.tag = indexPath.row
+            checkBox.addGestureRecognizer(gesture)
         }
 
         return cell
