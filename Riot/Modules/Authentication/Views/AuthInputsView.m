@@ -1320,6 +1320,9 @@
         reCaptchaWebView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.recaptchaContainer addSubview:reCaptchaWebView];
 
+        // Disable the webview scrollView to avoid 2 scrollviews on the same screen
+        reCaptchaWebView.scrollView.scrollEnabled = NO;
+
         [self.recaptchaContainer addConstraints:
          [NSLayoutConstraint constraintsWithVisualFormat:@"|-[view]-|"
                                                  options:0
