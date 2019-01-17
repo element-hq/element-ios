@@ -189,9 +189,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action:#selector(didTapCancelOnPolicyScreen))
         webViewViewController.navigationItem.leftBarButtonItem = leftBarButtonItem
 
-        let rightBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: NSLocalizedString("accept", tableName: "Vector", comment: ""), style: .plain, target: self, action: #selector(didAcceptPolicy))
-        webViewViewController.navigationItem.rightBarButtonItem = rightBarButtonItem
-
         navigationController = RiotNavigationController()
         delegate?.authInputsView?(nil, present: navigationController, animated: false)
         navigationController?.pushViewController(webViewViewController, animated: false)
@@ -199,16 +196,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
 
     @objc private func didTapCancelOnPolicyScreen() {
         removePolicyScreen()
-    }
-
-    @objc private func didAcceptPolicy() {
-
-        if let displayedPolicyIndex = self.displayedPolicyIndex {
-            acceptedPolicies.insert(displayedPolicyIndex)
-        }
-
-        removePolicyScreen()
-        reload()
     }
 
     private func removePolicyScreen() {
