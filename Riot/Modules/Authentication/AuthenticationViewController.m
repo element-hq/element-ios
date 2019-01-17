@@ -131,13 +131,15 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    NSLog(@"### %@", self.navigationController);
-    NSLog(@"### %@", [AppDelegate theDelegate].masterTabBarController.navigationController);
-
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
-    //[ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
-    self.view.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    // This view controller is not part of a navigation controller
+    // so that applyStyleOnNavigationBar does not fully work.
+    // In order to have the right status bar color, use the expected status bar color
+    // as the main view background color.
+    // Hopefully, subviews define their own background color with `theme.backgroundColor`,
+    // which makes all work together.
+    self.view.backgroundColor = ThemeService.shared.theme.baseColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
