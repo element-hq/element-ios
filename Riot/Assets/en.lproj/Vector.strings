@@ -553,6 +553,7 @@
 "do_not_ask_again" = "Do not ask again";
 "camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
 "large_badge_value_k_format" = "%.1fK";
+"room_does_not_exist" = "%@ does not exist";
 
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";

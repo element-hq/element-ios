@@ -90,6 +90,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 - (void)restoreEmptyDetailsViewController;
 
 - (UIAlertController*)showErrorAsAlert:(NSError*)error;
+- (UIAlertController*)showAlertWithTitle:(NSString*)title message:(NSString*)message;
 
 #pragma mark - Matrix Sessions handling
 
