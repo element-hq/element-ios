@@ -163,7 +163,7 @@
     self.submitButton.backgroundColor = ThemeService.shared.theme.tintColor;
     self.skipButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
-    self.noFlowLabel.textColor = ThemeService.shared.riotColorRed;
+    self.noFlowLabel.textColor = ThemeService.shared.theme.warningColor;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
     [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, forgotPasswordTitle.length)];

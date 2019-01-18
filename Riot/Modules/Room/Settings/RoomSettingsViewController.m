@@ -2362,7 +2362,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsWarningCellViewIdentifier forIndexPath:indexPath];
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
-            cell.textLabel.textColor = ThemeService.shared.riotColorPinkRed;
+            cell.textLabel.textColor = ThemeService.shared.theme.warningColor;
             cell.textLabel.numberOfLines = 0;
             cell.accessoryView = nil;
             cell.accessoryType = UITableViewCellAccessoryNone;

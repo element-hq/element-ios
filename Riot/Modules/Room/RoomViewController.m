@@ -1331,7 +1331,7 @@
                     // Show it in red only for room widgets, not user's widgets
                     // TODO: Design must be reviewed
                     UIImage *icon = self.navigationItem.rightBarButtonItems[1].image;
-                    icon = [MXKTools paintImage:icon withColor:ThemeService.shared.riotColorPinkRed];
+                    icon = [MXKTools paintImage:icon withColor:ThemeService.shared.theme.warningColor];
                     icon = [icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
                     self.navigationItem.rightBarButtonItems[1].image = icon;

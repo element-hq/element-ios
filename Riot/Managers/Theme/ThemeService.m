@@ -92,8 +92,6 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     if (self)
     {
         // Riot Colors not yet themeable
-        _riotColorPinkRed = [[UIColor alloc] initWithRgb:0xFF0064];
-        _riotColorRed = [[UIColor alloc] initWithRgb:0xFF4444];
         _riotColorBlue = [[UIColor alloc] initWithRgb:0x81BDDB];
         _riotColorCuriousBlue = [[UIColor alloc] initWithRgb:0x2A9EDB];
         _riotColorIndigo = [[UIColor alloc] initWithRgb:0xBD79CC];

@@ -100,7 +100,7 @@ static const CGFloat kButtonSize = 80.0;
         self.answerTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.answerTitleLabel.text = NSLocalizedStringFromTable(@"accept", @"Vector", nil);
         
-        UIColor *rejectButtonBorderColor = ThemeService.shared.riotColorPinkRed;
+        UIColor *rejectButtonBorderColor = ThemeService.shared.theme.warningColor;
         
         self.rejectButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"call_hangup_icon"]
                                                     borderColor:rejectButtonBorderColor];
