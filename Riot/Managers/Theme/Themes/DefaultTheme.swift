@@ -32,7 +32,7 @@ final class DefaultTheme: NSObject, Theme {
 
     let headerBackgroundColor: UIColor = UIColor(rgb: 0xF1F5F8)
     let headerBorderColor: UIColor  = UIColor(rgb: 0xEAEEF2)
-    let headerTextPrimaryColor: UIColor = UIColor(rgb: 0x96A1B7)
+    let headerTextPrimaryColor: UIColor = UIColor(rgb: 0x72708B)
     let headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
     let textPrimaryColor: UIColor = UIColor(rgb: 0x383838)
@@ -53,10 +53,11 @@ final class DefaultTheme: NSObject, Theme {
     let scrollBarStyle: UIScrollViewIndicatorStyle = .default
     let keyboardAppearance: UIKeyboardAppearance = .light
 
-    let placeholderTextColor: UIColor? = nil     // Use default 70% gray color
+    let placeholderTextColor: UIColor = UIColor(white: 0.7, alpha: 1.0) // Use default 70% gray color
     let selectedBackgroundColor: UIColor? = nil  // Use the default selection color
     let overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
+    let separatorColor: UIColor = UIColor(rgb: 0xEAEEF2)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;
@@ -75,5 +76,15 @@ final class DefaultTheme: NSObject, Theme {
         searchBar.barTintColor = self.headerBackgroundColor;
         searchBar.layer.borderWidth = 1;
         searchBar.layer.borderColor = self.headerBorderColor.cgColor;
+    }
+    
+    func applyStyle(onTextField texField: UITextField) {
+        texField.textColor = self.textPrimaryColor
+        texField.tintColor = self.tintColor
+    }
+    
+    func applyStyle(onButton button: UIButton) {
+        // NOTE: Tint color does nothing by default on button type `UIButtonType.custom`
+        button.tintColor = self.tintColor
     }
 }
