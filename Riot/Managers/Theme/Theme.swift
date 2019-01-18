@@ -64,7 +64,7 @@ import UIKit
 
 
     /// nil is used to keep the default color
-    var placeholderTextColor: UIColor? { get }
+    var placeholderTextColor: UIColor { get }
 
     /// nil is used to keep the default color
     var selectedBackgroundColor: UIColor? { get }
@@ -74,7 +74,9 @@ import UIKit
 
     /// Color to tint the search background image
     var matrixSearchBackgroundImageTintColor: UIColor { get }
-
+    
+    /// Color of separator (when table view is not used)
+    var separatorColor: UIColor { get }
 
     // MARK: - Customisation methods
 
@@ -88,4 +90,14 @@ import UIKit
     ///
     /// - Parameter searchBar: the search bar to customise.
     func applyStyle(onSearchBar: UISearchBar)
+    
+    ///  Apply the theme on a text field.
+    ///
+    /// - Parameter textField: the text field to customise.
+    func applyStyle(onTextField textField: UITextField)
+    
+    /// Apply the theme on a button.
+    ///
+    /// - Parameter button: The button to customise.
+    func applyStyle(onButton button: UIButton)
 }
