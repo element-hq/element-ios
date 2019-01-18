@@ -19,45 +19,45 @@ import UIKit
 
 /// Color constants for the default theme
 @objcMembers
-final class DefaultTheme: NSObject, Theme {
+class DefaultTheme: NSObject, Theme {
 
-    let backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    var backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    let baseColor: UIColor = UIColor(rgb: 0x2E3648)
-    let baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    let baseTextSecondaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    var baseColor: UIColor = UIColor(rgb: 0x2E3648)
+    var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    let searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    let searchTextColor: UIColor = UIColor(rgb: 0xACB3C2)
+    var searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    var searchTextColor: UIColor = UIColor(rgb: 0xACB3C2)
 
-    let headerBackgroundColor: UIColor = UIColor(rgb: 0xF1F5F8)
-    let headerBorderColor: UIColor  = UIColor(rgb: 0xEAEEF2)
-    let headerTextPrimaryColor: UIColor = UIColor(rgb: 0x72708B)
-    let headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0xF1F5F8)
+    var headerBorderColor: UIColor  = UIColor(rgb: 0xEAEEF2)
+    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x72708B)
+    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
-    let textPrimaryColor: UIColor = UIColor(rgb: 0x383838)
-    let textSecondaryColor: UIColor = UIColor(rgb: 0x9E9E9E)
+    var textPrimaryColor: UIColor = UIColor(rgb: 0x383838)
+    var textSecondaryColor: UIColor = UIColor(rgb: 0x9E9E9E)
 
-    let tintColor: UIColor = UIColor(rgb: 0x7AC9A1)
-    let unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
+    var tintColor: UIColor = UIColor(rgb: 0x7AC9A1)
+    var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     
-    let notificationSecondaryColor: UIColor = UIColor(rgb: 0x7AC9A1)
-    let notificationPrimaryColor: UIColor = UIColor(rgb: 0xF56679)
+    var notificationSecondaryColor: UIColor = UIColor(rgb: 0x7AC9A1)
+    var notificationPrimaryColor: UIColor = UIColor(rgb: 0xF56679)
 
-    let avatarColors: [UIColor] = [
+    var avatarColors: [UIColor] = [
         UIColor(rgb: 0x7AC9A1),
         UIColor(rgb: 0x1E7DDC),
         UIColor(rgb: 0x76DDD7)]
 
-    let statusBarStyle: UIStatusBarStyle = .lightContent
-    let scrollBarStyle: UIScrollViewIndicatorStyle = .default
-    let keyboardAppearance: UIKeyboardAppearance = .light
+    var statusBarStyle: UIStatusBarStyle = .lightContent
+    var scrollBarStyle: UIScrollViewIndicatorStyle = .default
+    var keyboardAppearance: UIKeyboardAppearance = .light
 
-    let placeholderTextColor: UIColor = UIColor(white: 0.7, alpha: 1.0) // Use default 70% gray color
-    let selectedBackgroundColor: UIColor? = nil  // Use the default selection color
-    let overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
-    let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
-    let separatorColor: UIColor = UIColor(rgb: 0xEAEEF2)
+    var placeholderTextColor: UIColor = UIColor(white: 0.7, alpha: 1.0) // Use default 70% gray color
+    var selectedBackgroundColor: UIColor? = nil  // Use the default selection color
+    var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
+    var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
+    var separatorColor: UIColor = UIColor(rgb: 0xEAEEF2)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;
