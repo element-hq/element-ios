@@ -53,10 +53,11 @@ final class DarkTheme: NSObject, Theme {
     let scrollBarStyle: UIScrollViewIndicatorStyle = .white
     let keyboardAppearance: UIKeyboardAppearance = .dark
 
-    let placeholderTextColor: UIColor? = UIColor(white: 1.0, alpha: 0.3)
+    let placeholderTextColor: UIColor = UIColor(white: 1.0, alpha: 0.3)
     let selectedBackgroundColor: UIColor? = UIColor.black
     let overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     let matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
+    let separatorColor: UIColor = UIColor(rgb: 0x2E2F31)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;
@@ -75,5 +76,15 @@ final class DarkTheme: NSObject, Theme {
         searchBar.barTintColor = self.headerBackgroundColor;
         searchBar.layer.borderWidth = 1;
         searchBar.layer.borderColor = self.headerBorderColor.cgColor;
+    }
+    
+    func applyStyle(onTextField texField: UITextField) {
+        texField.textColor = self.textPrimaryColor
+        texField.tintColor = self.tintColor
+    }
+    
+    func applyStyle(onButton button: UIButton) {
+        // NOTE: Tint color does nothing by default on button type `UIButtonType.custom`
+        button.tintColor = self.tintColor
     }
 }

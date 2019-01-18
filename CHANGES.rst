@@ -11,6 +11,7 @@ Bug fix:
  * Use white scroll bar on dark themes (#2158).
  * Registration: fix tap gesture on checkboxes in the terms screen.
  * Registration: improve validation UX on the terms screen (#2164).
+ * Registration: improve scrolling on the reCaptcha screen (#2165).
  * Infinite loading wheel when taping on a fake room alias (#679).
 
 Changes in 0.7.11 (2019-01-08)
