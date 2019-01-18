@@ -73,8 +73,7 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     }
     else if ([themeId isEqualToString:@"black"])
     {
-        // TODO: Use dark theme for the moment
-        theme = [DarkTheme new];
+        theme = [BlackTheme new];
     }
     else
     {

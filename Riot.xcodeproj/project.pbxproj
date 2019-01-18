@@ -10,6 +10,8 @@
 		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
+		3209451221F1C1430088CAA2 /* BlackTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3209451121F1C1430088CAA2 /* BlackTheme.swift */; };
+		3209451321F1C1D50088CAA2 /* BlackTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3209451121F1C1430088CAA2 /* BlackTheme.swift */; };
 		32242F0921E8B05F00725742 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0821E8B05F00725742 /* UIColor.swift */; };
 		32242F0A21E8B21300725742 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0821E8B05F00725742 /* UIColor.swift */; };
 		32242F1221E8FBA900725742 /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0C21E8FBA900725742 /* ThemeService.m */; };
@@ -394,6 +396,7 @@
 		24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RiotShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2510A69B4A681C1FEC36E848 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		319CD7C67A47A3D35959E18F /* Pods-RiotPods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"; sourceTree = "<group>"; };
+		3209451121F1C1430088CAA2 /* BlackTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackTheme.swift; sourceTree = "<group>"; };
 		32242F0821E8B05F00725742 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		32242F0C21E8FBA900725742 /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
 		32242F0D21E8FBA900725742 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1008,6 +1011,7 @@
 			children = (
 				32242F0F21E8FBA900725742 /* DefaultTheme.swift */,
 				32242F1021E8FBA900725742 /* DarkTheme.swift */,
+				3209451121F1C1430088CAA2 /* BlackTheme.swift */,
 			);
 			path = Themes;
 			sourceTree = "<group>";
@@ -3030,6 +3034,7 @@
 				32242F1621E8FBCC00725742 /* ThemeService.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
 				B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */,
+				3209451321F1C1D50088CAA2 /* BlackTheme.swift in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
 				B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */,
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
@@ -3115,6 +3120,7 @@
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
+				3209451221F1C1430088CAA2 /* BlackTheme.swift in Sources */,
 				B1B5572720EE6C4D00210D55 /* RoomSearchViewController.m in Sources */,
 				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
 				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
