@@ -614,6 +614,10 @@ internal enum VectorL10n {
   internal static let roomDirectoryNoPublicRoom = VectorL10n.tr("Vector", "room_directory_no_public_room")
   /// You do not have permission to post to this room
   internal static let roomDoNotHavePermissionToPost = VectorL10n.tr("Vector", "room_do_not_have_permission_to_post")
+  /// %@ does not exist
+  internal static func roomDoesNotExist(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_does_not_exist", p1)
+  }
   /// Reason for banning this user
   internal static let roomEventActionBanPromptReason = VectorL10n.tr("Vector", "room_event_action_ban_prompt_reason")
   /// Cancel Download

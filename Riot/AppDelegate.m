@@ -871,9 +871,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             return nil;
         }
     }
-    
-    [_errorNotification dismissViewControllerAnimated:NO completion:nil];
-    
+
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     if (!title)
@@ -889,13 +887,26 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
     }
     
-    _errorNotification = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    // Switch in offline mode in case of network reachability error
+    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
+    {
+        self.isOffline = YES;
+    }
+    
+    return [self showAlertWithTitle:title message:msg];
+}
+
+- (UIAlertController*)showAlertWithTitle:(NSString*)title message:(NSString*)message
+{
+    [_errorNotification dismissViewControllerAnimated:NO completion:nil];
+
+    _errorNotification = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * action) {
-                                                             
+
                                                              [AppDelegate theDelegate].errorNotification = nil;
-                                                             
+
                                                          }]];
     // Display the error notification
     if (!isErrorNotificationSuspended)
@@ -903,13 +914,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [_errorNotification mxk_setAccessibilityIdentifier:@"AppDelegateErrorAlert"];
         [self showNotificationAlert:_errorNotification];
     }
-    
-    // Switch in offline mode in case of network reachability error
-    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
-    {
-        self.isOffline = YES;
-    }
-    
+
     return self.errorNotification;
 }
 
@@ -1917,6 +1922,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                 
                             } failure:^(NSError *error) {
                                 NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+
+                                [homeViewController stopActivityIndicator];
+
+                                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_does_not_exist", @"Vector", nil), roomIdOrAlias];
+
+                                [self showAlertWithTitle:nil message:errorMessage];
                             }];
                         }
                         else if ([roomIdOrAlias hasPrefix:@"!"] && ((MXKAccount*)accountManager.activeAccounts.firstObject).mxSession.state != MXSessionStateRunning)
@@ -3452,22 +3463,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
             _jitsiViewController = nil;
 
-            NSError *theError = [NSError errorWithDomain:@""
-                                                    code:0
-                                                userInfo:@{
-                                                        NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)
-                                                        }];
-            [self showErrorAsAlert:theError];
+            [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
         }];
     }
     else
     {
-        NSError *error = [NSError errorWithDomain:@""
-                                    code:0
-                                userInfo:@{
-                                           NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)
-                                           }];
-        [self showErrorAsAlert:error];
+        [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)];
     }
 }
 
