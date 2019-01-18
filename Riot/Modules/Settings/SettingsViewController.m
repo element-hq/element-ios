@@ -2226,7 +2226,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         NSString *btnTitle = NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
         [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
         [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-        [deactivateAccountBtnCell.mxkButton setTintColor:ThemeService.shared.riotColorRed];
+        [deactivateAccountBtnCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor];
         deactivateAccountBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
         
         [deactivateAccountBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];

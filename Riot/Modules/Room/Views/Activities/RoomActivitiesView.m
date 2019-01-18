@@ -113,7 +113,7 @@
     [super customizeViewRendering];
     
     self.separatorView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    if (self.messageLabel.textColor != ThemeService.shared.riotColorPinkRed)
+    if (self.messageLabel.textColor != ThemeService.shared.theme.warningColor)
     {
         self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     }
@@ -145,18 +145,18 @@
         [tappableNotif addAttribute:NSLinkAttributeName value:@"onCancelLink" range:range];
         
         NSRange wholeString = NSMakeRange(0, tappableNotif.length);
-        [tappableNotif addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.riotColorPinkRed range:wholeString];
+        [tappableNotif addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.warningColor range:wholeString];
         [tappableNotif addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
         
         self.messageTextView.attributedText = tappableNotif;
-        self.messageTextView.tintColor = ThemeService.shared.riotColorPinkRed;
+        self.messageTextView.tintColor = ThemeService.shared.theme.warningColor;
         self.messageTextView.hidden = NO;
         self.messageTextView.backgroundColor = [UIColor clearColor];
     }
     else
     {
         self.messageLabel.text = notification;
-        self.messageLabel.textColor = ThemeService.shared.riotColorPinkRed;
+        self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
         self.messageLabel.hidden = NO;
     }
     
@@ -187,7 +187,7 @@
     {
         self.iconImageView.image = [UIImage imageNamed:@"error"];
         self.messageLabel.text = labelText;
-        self.messageLabel.textColor = ThemeService.shared.riotColorPinkRed;
+        self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
         
         self.iconImageView.hidden = NO;
         self.messageLabel.hidden = NO;
@@ -261,15 +261,15 @@
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
     [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.backgroundColor range:wholeString];
-    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:ThemeService.shared.riotColorPinkRed range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:ThemeService.shared.theme.warningColor range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
 
     self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
     self.messageTextView.tintColor = ThemeService.shared.theme.backgroundColor;
     self.messageTextView.hidden = NO;
 
-    self.backgroundColor = ThemeService.shared.riotColorPinkRed;
-    self.messageTextView.backgroundColor = ThemeService.shared.riotColorPinkRed;
+    self.backgroundColor = ThemeService.shared.theme.warningColor;
+    self.messageTextView.backgroundColor = ThemeService.shared.theme.warningColor;
 
     // Hide the separator to display correctly the red pink conf call banner
     self.separatorView.hidden = YES;
@@ -295,7 +295,7 @@
             notification = NSLocalizedStringFromTable(@"room_new_message_notification", @"Vector", nil);
         }
         self.messageLabel.text = [NSString stringWithFormat:notification, newMessagesCount];
-        self.messageLabel.textColor = ThemeService.shared.riotColorPinkRed;
+        self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
         self.messageLabel.hidden = NO;
     }
     else
@@ -487,8 +487,8 @@
 
     if (hardLimit)
     {
-        self.backgroundColor = ThemeService.shared.riotColorPinkRed;
-        self.messageTextView.backgroundColor = ThemeService.shared.riotColorPinkRed;
+        self.backgroundColor = ThemeService.shared.theme.warningColor;
+        self.messageTextView.backgroundColor = ThemeService.shared.theme.warningColor;
     }
     else
     {

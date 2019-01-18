@@ -61,8 +61,6 @@ extern NSString *const kThemeServiceDidChangeThemeNotification;
 
 #pragma mark - Riot Colors not yet themeable
 
-@property (nonatomic, readonly) UIColor *riotColorPinkRed;
-@property (nonatomic, readonly) UIColor *riotColorRed;
 @property (nonatomic, readonly) UIColor *riotColorBlue;
 @property (nonatomic, readonly) UIColor *riotColorCuriousBlue;
 @property (nonatomic, readonly) UIColor *riotColorIndigo;

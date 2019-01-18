@@ -46,6 +46,9 @@ import UIKit
     /// Color for notifications for mention messages
     var notificationPrimaryColor: UIColor { get }
 
+    /// Color for errors or warnings
+    var warningColor: UIColor { get }
+
     var avatarColors: [UIColor] { get }
 
 

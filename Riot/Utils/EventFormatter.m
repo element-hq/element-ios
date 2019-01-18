@@ -223,7 +223,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         self.bingTextColor = ThemeService.shared.theme.notificationPrimaryColor;
         self.encryptingTextColor = ThemeService.shared.theme.tintColor;
         self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
-        self.errorTextColor = ThemeService.shared.riotColorRed;
+        self.errorTextColor = ThemeService.shared.theme.warningColor;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
