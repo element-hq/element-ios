@@ -642,3 +642,39 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
 "rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this device.";
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Message Recovery";
+"key_backup_setup_skip_action" = "Skip";
+
+"key_backup_setup_skip_alert_title" = "Are you sure?";
+"key_backup_setup_skip_alert_message" = "You may lose secure messages if you log out of lose your device.";
+"key_backup_setup_skip_alert_skip_action" = "Skip";
+
+// Intro
+
+"key_backup_setup_intro_title" = "Never lose encrypted messages";
+"key_backup_setup_intro_info" = "Set up Secure Message Recovery in case you lose or log out of this device.";
+"key_backup_setup_intro_setup_action" = "Set up";
+
+
+// Passphrase
+
+"key_backup_setup_passphrase_info" = "Secure your encrypted message history with a Recovery Passphrase.\n\nYou’ll need it if you log out, or lose access to this device.";
+"key_backup_setup_passphrase_passphrase_title" = "Enter";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Enter passphrase";
+"key_backup_setup_passphrase_passphrase_valid" = "Great!";
+"key_backup_setup_passphrase_passphrase_invalid" = "Try adding a word";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "Confirm";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Confirm passphrase";
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
+"key_backup_setup_passphrase_set_passphrase_action" = "Set recovery passphrase";
+
+// Recovery key
+
+"key_backup_setup_recovery_key_info" = "Make a copy of this Recovery Key and keep it safe.\n\nAs a safety net, you can use it to restore your encrypted message history if you forget your Recovery Passphrase.";
+"key_backup_setup_recovery_key_recovery_key_title" = "Recovery Key";
+"key_backup_setup_recovery_key_make_copy_action" = "Make a Copy";
+"key_backup_setup_recovery_key_made_copy_action" = "I've made a copy";
