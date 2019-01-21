@@ -39,7 +39,7 @@
 "bug_report_description" = "Azaldu akatsa. Zer egin duzu? Zer uste zenuen gertatuko zela? Zer gertatu da benetan?";
 "bug_report_logs_description" = "Arazoak aztertzeari begira, bezero honen egunkariak arazte-txosten honekin batera bidaliko dira. Goiko testua besterik ez baduzu bidali nahi, desmarkatu:";
 "rage_shake_prompt" = "Telefonoa amorruz astintzen zabiltzala dirudi. Akats baten berri eman nahi duzu?";
-"bug_report_prompt" = "Azken aldian aplikazioa kraskatu da. Kraskatze txostena bidali nahi duzu?";
+"bug_report_prompt" = "Azken aldian aplikazioa kraskatu da. Kraskatze-txostena bidali nahi duzu?";
 "auth_register" = "Erregistratu";
 // Authentication
 "auth_login" = "Hasi saioa";
@@ -409,7 +409,7 @@
 "no_voip_title" = "Deia jasotzen";
 "no_voip" = "%@ zu deitzen ari da baina %@(e)k ez ditu deiak onartzen oraindik.\nJakinarazpen hau ezikusi dezakezu eta deia beste gailu batetik hartu, edo deia baztertu.";
 // Crash report
-"google_analytics_use_prompt" = "%@ hobetzen lagundu nahi duzu kraskatze era erabilera-txosten anonimoak automatikoki bidaliz?";
+"google_analytics_use_prompt" = "%@ hobetzen lagundu nahi duzu kraskatze-txosten era erabilera datu anonimoak automatikoki bidaliz?";
 "e2e_need_log_in_again" = "Berriro hasi behar duzu saioa muturretik muturrerako zifratzerako gailu honek gakoak sortzeko eta gako publikoa zure hasiera zerbitzarira bidali behar duzu.\nHau behin bakarrik egin behar duzu, barkatu eragozpenak.";
 "bug_crash_report_title" = "Kraskatze-txostena";
 "bug_crash_report_description" = "Azaldu zer zeunden egiten programa kraskatu aurretik:";
