@@ -59,6 +59,7 @@ internal enum Asset {
     internal static let priorityHigh = ImageAsset(name: "priorityHigh")
     internal static let priorityLow = ImageAsset(name: "priorityLow")
     internal static let createRoom = ImageAsset(name: "create_room")
+    internal static let revealPasswordButton = ImageAsset(name: "reveal_password_button")
     internal static let launchScreenRiot = ImageAsset(name: "LaunchScreenRiot")
     internal static let cameraCapture = ImageAsset(name: "camera_capture")
     internal static let cameraPlay = ImageAsset(name: "camera_play")
