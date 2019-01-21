@@ -892,7 +892,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         self.isOffline = YES;
     }
-    
+
     return [self showAlertWithTitle:title message:msg];
 }
 
@@ -1077,20 +1077,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (!isPushRegistered)
     {
         NSMutableSet* notificationCategories = [NSMutableSet set];
-        if ([[UIMutableUserNotificationAction class] instancesRespondToSelector:@selector(behavior)])
-        {
-            UIMutableUserNotificationAction* quickReply = [[UIMutableUserNotificationAction alloc] init];
-            quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
-            quickReply.identifier = @"inline-reply";
-            quickReply.activationMode = UIUserNotificationActivationModeBackground;
-            quickReply.authenticationRequired = true;
-            quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
 
-            UIMutableUserNotificationCategory* quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
-            quickReplyCategory.identifier = @"QUICK_REPLY";
-            [quickReplyCategory setActions:@[quickReply] forContext:UIUserNotificationActionContextDefault];
-            [notificationCategories addObject:quickReplyCategory];
-        }
+        UIMutableUserNotificationAction* quickReply = [[UIMutableUserNotificationAction alloc] init];
+        quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+        quickReply.identifier = @"inline-reply";
+        quickReply.activationMode = UIUserNotificationActivationModeBackground;
+        quickReply.authenticationRequired = true;
+        quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
+
+        UIMutableUserNotificationCategory* quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
+        quickReplyCategory.identifier = @"QUICK_REPLY";
+        [quickReplyCategory setActions:@[quickReply] forContext:UIUserNotificationActionContextDefault];
+        [notificationCategories addObject:quickReplyCategory];
 
         // Registration on iOS 8 and later
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:notificationCategories];
