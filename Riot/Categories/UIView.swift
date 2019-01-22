@@ -19,7 +19,7 @@ import Foundation
 extension UIView {
     
     /// Add a subview matching parent view using autolayout
-    func vc_addSubViewMathingParent(_ subView: UIView) {
+    func vc_addSubViewMatchingParent(_ subView: UIView) {
         self.addSubview(subView)
         subView.translatesAutoresizingMaskIntoConstraints = false
         let views = ["view": subView]
