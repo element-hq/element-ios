@@ -94,11 +94,11 @@ extension KeyBackupSetupCoordinator: KeyBackupSetupIntroViewControllerDelegate {
 
 // MARK: - KeyRecoveryPassphraseCoordinatorDelegate
 extension KeyBackupSetupCoordinator: KeyBackupSetupPassphraseCoordinatorDelegate {
-    func keyBackupSetupPassphraseCoordinator(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinator, didCompleteWithMegolmBackupCreationInfo megolmBackupCreationInfo: MXMegolmBackupCreationInfo) {
+    func keyBackupSetupPassphraseCoordinator(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinatorType, didCompleteWithMegolmBackupCreationInfo megolmBackupCreationInfo: MXMegolmBackupCreationInfo) {
         self.showRecoveryKey(with: megolmBackupCreationInfo, animated: true)
     }
     
-    func keyBackupSetupPassphraseCoordinatorDidCancel(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinator) {
+    func keyBackupSetupPassphraseCoordinatorDidCancel(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinatorType) {
         self.delegate?.keyBackupSetupCoordinatorDidCancel(self)
     }
 }

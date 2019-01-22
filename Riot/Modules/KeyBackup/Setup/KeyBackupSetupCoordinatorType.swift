@@ -16,9 +16,9 @@
 
 import Foundation
 
-@objc protocol KeyBackupSetupCoordinatorDelegate: class {
-    func keyBackupSetupCoordinatorDidCancel(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinator)
-    func keyBackupSetupCoordinatorDidSetupRecoveryKey(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinator)
+protocol KeyBackupSetupCoordinatorDelegate: class {
+    func keyBackupSetupCoordinatorDidCancel(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinatorType)
+    func keyBackupSetupCoordinatorDidSetupRecoveryKey(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinatorType)
 }
 
 /// `KeyBackupSetupCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
