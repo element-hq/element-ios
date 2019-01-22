@@ -52,7 +52,7 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter passphrase" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="WeI-qi-2Hw">
-                                                                                <rect key="frame" x="95.5" y="14.5" width="235.5" height="50"/>
+                                                                                <rect key="frame" x="95.5" y="14.5" width="225.5" height="50"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="50" id="85g-2l-RZB"/>
                                                                                 </constraints>
@@ -64,7 +64,7 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                                                 </connections>
                                                                             </textField>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iZ1-z0-bNp">
-                                                                                <rect key="frame" x="331" y="17.5" width="44" height="44"/>
+                                                                                <rect key="frame" x="321" y="17.5" width="44" height="44"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" constant="44" id="B2V-ki-5ds"/>
                                                                                     <constraint firstAttribute="height" constant="44" id="QVT-oC-sIM"/>
@@ -80,7 +80,7 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                                             <constraint firstItem="w95-PK-mJ8" firstAttribute="top" secondItem="4ga-7Y-87s" secondAttribute="top" constant="10" id="2u9-gy-fQe"/>
                                                                             <constraint firstItem="iZ1-z0-bNp" firstAttribute="leading" secondItem="WeI-qi-2Hw" secondAttribute="trailing" id="A5n-gL-KBQ"/>
                                                                             <constraint firstItem="iZ1-z0-bNp" firstAttribute="centerY" secondItem="WeI-qi-2Hw" secondAttribute="centerY" id="DDf-za-izU"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="iZ1-z0-bNp" secondAttribute="trailing" id="KAz-Dj-GGP"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="iZ1-z0-bNp" secondAttribute="trailing" constant="10" id="KAz-Dj-GGP"/>
                                                                             <constraint firstItem="WeI-qi-2Hw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="w95-PK-mJ8" secondAttribute="trailing" constant="20" id="KIP-Tr-rCO"/>
                                                                             <constraint firstItem="w95-PK-mJ8" firstAttribute="leading" secondItem="4ga-7Y-87s" secondAttribute="leading" constant="20" id="MR9-Za-ZxE"/>
                                                                             <constraint firstItem="WeI-qi-2Hw" firstAttribute="leading" secondItem="w95-PK-mJ8" secondAttribute="trailing" priority="750" constant="10" id="NuZ-iP-bCk"/>
@@ -300,7 +300,7 @@ You’ll need it if you log out, or lose access to this device.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2940" y="-565"/>
+            <point key="canvasLocation" x="-3198" y="-647"/>
         </scene>
     </scenes>
     <resources>
