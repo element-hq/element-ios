@@ -17,7 +17,7 @@
 import Foundation
 import zxcvbn_ios
 
-/// PasswordStrengthManager compute password strength for a given string.
+/// PasswordStrengthManager computes password strength for a given string.
 final class PasswordStrengthManager {
     
     // MARK: - Properties
