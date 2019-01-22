@@ -35,7 +35,7 @@ final class KeyboardAvoider {
     
     /// Designated initializer.
     ///
-    /// - Parameter scrollViewContainerView: The view that wrap the scroll view.
+    /// - Parameter scrollViewContainerView: The view that wraps the scroll view.
     /// - Parameter scrollView: The scroll view containing keyboard inputs and where content view overlap with keyboard should be avoided.
     init(scrollViewContainerView: UIView, scrollView: UIScrollView) {
         self.scrollViewContainerView = scrollViewContainerView
