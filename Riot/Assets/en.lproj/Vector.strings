@@ -649,7 +649,7 @@
 "key_backup_setup_skip_action" = "Skip";
 
 "key_backup_setup_skip_alert_title" = "Are you sure?";
-"key_backup_setup_skip_alert_message" = "You may lose secure messages if you log out of lose your device.";
+"key_backup_setup_skip_alert_message" = "You may lose secure messages if you log out or lose your device.";
 "key_backup_setup_skip_alert_skip_action" = "Skip";
 
 // Intro
