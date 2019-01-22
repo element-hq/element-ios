@@ -7,6 +7,7 @@ Improvements:
  * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
  * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
  * Clean up iOS version checking (#2190).
+ * Key backup: Implement setup screen (#2198).
  
 Bug fix:
  * Use white scroll bar on dark themes (#2158).
