@@ -24,8 +24,8 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
     
     private enum Constants {
         static let animationDuration: TimeInterval = 0.3
-        static let backgroundOverlayColor = UIColor.black
-        static let backgroundOverlayAlpha: CGFloat = 0.3
+        static let backgroundOverlayColor = UIColor.clear
+        static let backgroundOverlayAlpha: CGFloat = 1.0
     }
     
     // MARK: - Properties

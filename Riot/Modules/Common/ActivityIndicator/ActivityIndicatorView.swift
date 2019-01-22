@@ -19,11 +19,19 @@ import Reusable
 
 final class ActivityIndicatorView: UIView, NibOwnerLoadable {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let cornerRadius: CGFloat = 5.0
+        static let activityIndicatorMargin = CGSize(width: 30.0, height: 30.0)
+    }
+    
     // MARK: - Properties
     
     // MARK: Outlets
     
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicatorBackgroundView: UIView!
     
     // MARK: Public
     
@@ -39,6 +47,7 @@ final class ActivityIndicatorView: UIView, NibOwnerLoadable {
     // MARK: - Setup
     
     private func commonInit() {        
+        self.activityIndicatorBackgroundView.layer.masksToBounds = true
     }
     
     convenience init() {
@@ -60,7 +69,14 @@ final class ActivityIndicatorView: UIView, NibOwnerLoadable {
     // MARK: - Overrides
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: self.activityIndicatorView.intrinsicContentSize.width, height: self.activityIndicatorView.intrinsicContentSize.height)
+        return CGSize(width: self.activityIndicatorView.intrinsicContentSize.width + Constants.activityIndicatorMargin.width,
+                      height: self.activityIndicatorView.intrinsicContentSize.height + Constants.activityIndicatorMargin.height)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.activityIndicatorBackgroundView.layer.cornerRadius = Constants.cornerRadius
     }
     
     // MARK: - Public
