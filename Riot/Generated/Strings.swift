@@ -734,7 +734,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupSkipAction: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_skip_action") 
   }
-  /// You may lose secure messages if you log out of lose your device.
+  /// You may lose secure messages if you log out or lose your device.
   internal static var keyBackupSetupSkipAlertMessage: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_skip_alert_message") 
   }
