@@ -1,0 +1,120 @@
+/*
+ Copyright 2019 New Vector Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+import UIKit
+
+@objc protocol KeyBackupSetupCoordinatorDelegate: class {
+    func keyBackupSetupCoordinatorDidCancel(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinator)
+    func keyBackupSetupCoordinatorDidSetupRecoveryKey(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinator)
+}
+
+@objcMembers
+final class KeyBackupSetupCoordinator: NSObject, KeyBackupSetupCoordinatorType {
+    
+    // MARK: - Properties
+    
+    // MARK: Private
+    
+    private let navigationRouter: NavigationRouterType
+    private let session: MXSession
+    
+    // MARK: Public
+    
+    var childCoordinators: [Coordinator] = []
+    
+    weak var delegate: KeyBackupSetupCoordinatorDelegate?
+    
+    // MARK: - Setup
+    
+    init(session: MXSession) {
+        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.session = session
+    }    
+    
+    // MARK: - Public methods
+    
+    func start() {
+    
+        // Set key backup setup intro as root controller
+        
+        let keyBackupSetupIntroViewController = KeyBackupSetupIntroViewController.instantiate()
+        keyBackupSetupIntroViewController.delegate = self
+        self.navigationRouter.setRootModule(keyBackupSetupIntroViewController)
+    }
+    
+    func toPresentable() -> UIViewController {
+        return self.navigationRouter.toPresentable()
+    }
+    
+    // MARK: - Private methods
+    
+    private func showSetupPassphrase(animated: Bool) {
+        let keyBackupSetupPassphraseCoordinator = KeyBackupSetupPassphraseCoordinator(session: self.session)
+        keyBackupSetupPassphraseCoordinator.delegate = self
+        keyBackupSetupPassphraseCoordinator.start()
+        
+        self.add(childCoordinator: keyBackupSetupPassphraseCoordinator)
+        self.navigationRouter.push(keyBackupSetupPassphraseCoordinator, animated: animated) {
+            self.remove(childCoordinator: keyBackupSetupPassphraseCoordinator)
+        }
+    }
+    
+    private func showRecoveryKey(with megolmBackupCreationInfo: MXMegolmBackupCreationInfo, animated: Bool) {
+        
+        let keyBackupSetupRecoveryKeyCoordinator = KeyBackupSetupRecoveryKeyCoordinator(session: self.session, megolmBackupCreationInfo: megolmBackupCreationInfo)
+        keyBackupSetupRecoveryKeyCoordinator.delegate = self
+        keyBackupSetupRecoveryKeyCoordinator.start()
+        
+        self.add(childCoordinator: keyBackupSetupRecoveryKeyCoordinator)
+        self.navigationRouter.push(keyBackupSetupRecoveryKeyCoordinator, animated: animated) {
+            self.remove(childCoordinator: keyBackupSetupRecoveryKeyCoordinator)
+        }
+    }
+}
+
+// MARK: - KeyBackupSetupIntroViewControllerDelegate
+extension KeyBackupSetupCoordinator: KeyBackupSetupIntroViewControllerDelegate {
+    
+    func keyBackupSetupIntroViewControllerDidTapSetupAction(_ keyBackupSetupIntroViewController: KeyBackupSetupIntroViewController) {
+        self.showSetupPassphrase(animated: true)
+    }
+    
+    func keyBackupSetupIntroViewControllerDidCancel(_ keyBackupSetupIntroViewController: KeyBackupSetupIntroViewController) {
+        self.delegate?.keyBackupSetupCoordinatorDidCancel(self)
+    }
+}
+
+// MARK: - KeyRecoveryPassphraseCoordinatorDelegate
+extension KeyBackupSetupCoordinator: KeyBackupSetupPassphraseCoordinatorDelegate {
+    func keyBackupSetupPassphraseCoordinator(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinator, didCompleteWithMegolmBackupCreationInfo megolmBackupCreationInfo: MXMegolmBackupCreationInfo) {
+        self.showRecoveryKey(with: megolmBackupCreationInfo, animated: true)
+    }
+    
+    func keyBackupSetupPassphraseCoordinatorDidCancel(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinator) {
+        self.delegate?.keyBackupSetupCoordinatorDidCancel(self)
+    }
+}
+
+// MARK: - KeyBackupSetupRecoveryKeyCoordinatorDelegate
+extension KeyBackupSetupCoordinator: KeyBackupSetupRecoveryKeyCoordinatorDelegate {
+    func keyBackupSetupRecoveryKeyCoordinatorDidCreateBackup(_ keyBackupSetupRecoveryKeyCoordinator: KeyBackupSetupRecoveryKeyCoordinatorType) {
+        self.delegate?.keyBackupSetupCoordinatorDidSetupRecoveryKey(self)
+    }
+    
+    func keyBackupSetupRecoveryKeyCoordinatorDidCancel(_ keyBackupSetupRecoveryKeyCoordinator: KeyBackupSetupRecoveryKeyCoordinatorType) {
+        self.delegate?.keyBackupSetupCoordinatorDidCancel(self)
+    }
+}
