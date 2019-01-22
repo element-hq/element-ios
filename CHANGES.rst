@@ -14,6 +14,7 @@ Bug fix:
  * Registration: improve validation UX on the terms screen (#2164).
  * Registration: improve scrolling on the reCaptcha screen (#2165).
  * Infinite loading wheel when taping on a fake room alias (#679).
+ * Ban and kick reasons are silently discarded (#2162).
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================
