@@ -17,11 +17,6 @@
 import Foundation
 import UIKit
 
-protocol KeyBackupSetupPassphraseCoordinatorDelegate: class {
-    func keyBackupSetupPassphraseCoordinator(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinator, didCompleteWithMegolmBackupCreationInfo megolmBackupCreationInfo: MXMegolmBackupCreationInfo)
-    func keyBackupSetupPassphraseCoordinatorDidCancel(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinator)
-}
-
 final class KeyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinatorType {
     
     // MARK: - Properties

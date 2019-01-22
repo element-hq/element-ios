@@ -16,6 +16,12 @@
 
 import Foundation
 
+protocol KeyBackupSetupPassphraseCoordinatorDelegate: class {
+    func keyBackupSetupPassphraseCoordinator(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinator, didCompleteWithMegolmBackupCreationInfo megolmBackupCreationInfo: MXMegolmBackupCreationInfo)
+    func keyBackupSetupPassphraseCoordinatorDidCancel(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinator)
+}
+
 /// `KeyBackupSetupPassphraseCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
 protocol KeyBackupSetupPassphraseCoordinatorType: Coordinator, Presentable {
+    var delegate: KeyBackupSetupPassphraseCoordinatorDelegate? { get }
 }

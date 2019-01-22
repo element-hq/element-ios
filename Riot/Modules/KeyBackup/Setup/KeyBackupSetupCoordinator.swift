@@ -16,11 +16,6 @@
 
 import UIKit
 
-@objc protocol KeyBackupSetupCoordinatorDelegate: class {
-    func keyBackupSetupCoordinatorDidCancel(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinator)
-    func keyBackupSetupCoordinatorDidSetupRecoveryKey(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinator)
-}
-
 @objcMembers
 final class KeyBackupSetupCoordinator: NSObject, KeyBackupSetupCoordinatorType {
     

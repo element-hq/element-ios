@@ -17,11 +17,6 @@
 import Foundation
 import UIKit
 
-protocol KeyBackupSetupRecoveryKeyCoordinatorDelegate: class {
-    func keyBackupSetupRecoveryKeyCoordinatorDidCreateBackup(_ keyBackupSetupRecoveryKeyCoordinator: KeyBackupSetupRecoveryKeyCoordinatorType)
-    func keyBackupSetupRecoveryKeyCoordinatorDidCancel(_ keyBackupSetupRecoveryKeyCoordinator: KeyBackupSetupRecoveryKeyCoordinatorType)
-}
-
 final class KeyBackupSetupRecoveryKeyCoordinator: KeyBackupSetupRecoveryKeyCoordinatorType {
     
     // MARK: - Properties
