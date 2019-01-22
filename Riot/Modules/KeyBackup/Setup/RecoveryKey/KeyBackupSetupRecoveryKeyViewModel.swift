@@ -79,7 +79,12 @@ final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewMod
                 return
             }
             sself.viewDelegate?.keyBackupSetupRecoveryKeyViewModel(sself, didUpdateViewState: .loaded)
-            sself.coordinatorDelegate?.keyBackupSetupRecoveryKeyViewModelDidCreateBackup(sself)
+            
+            sself.coordinatorDelegateQueue.addOperation {
+                DispatchQueue.main.async {
+                    sself.coordinatorDelegate?.keyBackupSetupRecoveryKeyViewModelDidCreateBackup(sself)
+                }
+            }
         }, failure: { [weak self] error in
             guard let sself = self else {
                 return
