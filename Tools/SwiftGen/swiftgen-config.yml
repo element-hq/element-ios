@@ -2,14 +2,14 @@ input_dir: ../../Riot/
 output_dir: ../../Riot/Generated/
 ib:  
   - inputs: 
-    - Assets/Base.lproj/LaunchScreen.storyboard
+    - Modules/KeyBackup/
     outputs:
       - templateName: scenes-swift4
         output: Storyboards.swift
 strings:
   inputs: Assets/en.lproj/Vector.strings
   outputs:
-    - templateName: flat-swift4
+    - templatePath: Templates/Strings/flat-swift4-vector.stencil
       output: Strings.swift
       params:
         enumName: VectorL10n

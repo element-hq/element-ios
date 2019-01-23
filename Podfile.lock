@@ -95,6 +95,7 @@ PODS:
   - Reusable/View (4.0.5)
   - SwiftGen (6.0.2)
   - WebRTC (63.11.20455)
+  - zxcvbn-ios (1.0.4)
 
 DEPENDENCIES:
   - cmark
@@ -108,6 +109,7 @@ DEPENDENCIES:
   - PiwikTracker (from `https://github.com/manuroe/matomo-sdk-ios.git`, branch `feature/CustomVariables`)
   - Reusable (~> 4.0)
   - SwiftGen (~> 6.0)
+  - zxcvbn-ios
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -127,6 +129,7 @@ SPEC REPOS:
     - Reusable
     - SwiftGen
     - WebRTC
+    - zxcvbn-ios
 
 EXTERNAL SOURCES:
   PiwikTracker:
@@ -156,7 +159,8 @@ SPEC CHECKSUMS:
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   SwiftGen: e5b047067aa84082826a0c4f1c4c2ddc95bcf74c
   WebRTC: f2a6203584745fe53532633397557876b5d71640
+  zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: bbb50681758f3933fb8bfdfdcc03272cdcf7d167
+PODFILE CHECKSUM: 4a490fe13099d33a5152d8fb185df82a0b3b72bd
 
 COCOAPODS: 1.6.0.beta.2

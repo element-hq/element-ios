@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dBQ-CG-VDL">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Key Backup Setup Intro View Controller-->
+        <scene sceneID="EyC-m5-6uM">
+            <objects>
+                <viewController id="dBQ-CG-VDL" customClass="KeyBackupSetupIntroViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ht4-fu-3rS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="12d-Dc-Rlv">
+                                <rect key="frame" x="70" y="144" width="460" height="84"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Never lose encrypted messages" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Nw-CZ-lKr">
+                                        <rect key="frame" x="0.0" y="0.0" width="460" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set up Secure Message Recovery in case you lose or log out of this device. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5dj-7z-eH5">
+                                        <rect key="frame" x="0.0" y="48" width="460" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wbk-EX-kTs">
+                                <rect key="frame" x="50" y="378" width="500" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kgv-EZ-dF9">
+                                        <rect key="frame" x="0.0" y="0.0" width="500" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="WcJ-IL-5KV"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Set up ">
+                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <state key="disabled">
+                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="validateButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="kpR-g5-ogv"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="kgv-EZ-dF9" firstAttribute="top" secondItem="Wbk-EX-kTs" secondAttribute="top" id="1mu-8N-etF"/>
+                                    <constraint firstAttribute="bottom" secondItem="kgv-EZ-dF9" secondAttribute="bottom" id="2ce-b1-aV5"/>
+                                    <constraint firstAttribute="trailing" secondItem="kgv-EZ-dF9" secondAttribute="trailing" id="OHz-zo-Uvl"/>
+                                    <constraint firstAttribute="width" priority="750" constant="500" id="eud-Ba-XSx"/>
+                                    <constraint firstItem="kgv-EZ-dF9" firstAttribute="leading" secondItem="Wbk-EX-kTs" secondAttribute="leading" id="gPb-HX-NWn"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94509803921568625" green="0.96078431372549022" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Wbk-EX-kTs" firstAttribute="centerY" secondItem="6ex-OQ-2sZ" secondAttribute="centerY" multiplier="1.3" id="LrY-gY-EIF"/>
+                            <constraint firstItem="12d-Dc-Rlv" firstAttribute="trailing" secondItem="Wbk-EX-kTs" secondAttribute="trailing" constant="-20" id="Nei-XI-X08"/>
+                            <constraint firstItem="Wbk-EX-kTs" firstAttribute="centerX" secondItem="6ex-OQ-2sZ" secondAttribute="centerX" id="OyB-a4-Ndi"/>
+                            <constraint firstItem="12d-Dc-Rlv" firstAttribute="centerY" secondItem="6ex-OQ-2sZ" secondAttribute="centerY" multiplier="3:5" priority="750" id="Wz3-7r-ccw"/>
+                            <constraint firstItem="12d-Dc-Rlv" firstAttribute="leading" secondItem="Wbk-EX-kTs" secondAttribute="leading" constant="20" id="acO-EP-hFm"/>
+                            <constraint firstItem="6ex-OQ-2sZ" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Wbk-EX-kTs" secondAttribute="trailing" id="eSq-vX-9a3"/>
+                            <constraint firstItem="12d-Dc-Rlv" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6ex-OQ-2sZ" secondAttribute="top" id="eXP-Ah-T0y"/>
+                            <constraint firstItem="Wbk-EX-kTs" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6ex-OQ-2sZ" secondAttribute="leading" id="wve-Wa-8hD"/>
+                            <constraint firstItem="Wbk-EX-kTs" firstAttribute="top" relation="greaterThanOrEqual" secondItem="12d-Dc-Rlv" secondAttribute="bottom" id="yKk-6Q-w7w"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6ex-OQ-2sZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="informationLabel" destination="5dj-7z-eH5" id="y4w-i9-5hB"/>
+                        <outlet property="setUpButton" destination="kgv-EZ-dF9" id="do0-Ot-OKn"/>
+                        <outlet property="setUpButtonBackgroundView" destination="Wbk-EX-kTs" id="2gv-gg-ROL"/>
+                        <outlet property="titleLabel" destination="1Nw-CZ-lKr" id="zXP-Xt-Zl9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bLY-II-iJ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-632" y="193"/>
+        </scene>
+    </scenes>
+</document>
