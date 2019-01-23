@@ -71,12 +71,9 @@
     self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
-    
-    if (ThemeService.shared.theme.placeholderTextColor)
-    {
-        // Apply placeholder color
-        [self customizeViewRendering];
-    }
+
+    // Apply placeholder color
+    [self customizeViewRendering];
 }
 
 - (void)destroy
@@ -115,44 +112,41 @@
     
     self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.messageLabel.numberOfLines = 0;
-    
-    if (ThemeService.shared.theme.placeholderTextColor)
+
+    if (self.userLoginTextField.placeholder)
     {
-        if (self.userLoginTextField.placeholder)
-        {
-            self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.userLoginTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-        }
-        
-        if (self.repeatPasswordTextField.placeholder)
-        {
-            self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                  initWithString:self.repeatPasswordTextField.placeholder
-                                                                  attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-            
-        }
-        
-        if (self.passWordTextField.placeholder)
-        {
-            self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                            initWithString:self.passWordTextField.placeholder
-                                                            attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-        }
-        
-        if (self.phoneTextField.placeholder)
-        {
-            self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                         initWithString:self.phoneTextField.placeholder
+        self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:self.userLoginTextField.placeholder
                                                          attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-        }
-        
-        if (self.emailTextField.placeholder)
-        {
-            self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                         initWithString:self.emailTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-        }
+    }
+
+    if (self.repeatPasswordTextField.placeholder)
+    {
+        self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                              initWithString:self.repeatPasswordTextField.placeholder
+                                                              attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+
+    }
+
+    if (self.passWordTextField.placeholder)
+    {
+        self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                        initWithString:self.passWordTextField.placeholder
+                                                        attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+
+    if (self.phoneTextField.placeholder)
+    {
+        self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                     initWithString:self.phoneTextField.placeholder
+                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+
+    if (self.emailTextField.placeholder)
+    {
+        self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                     initWithString:self.emailTextField.placeholder
+                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
     }
 }
 
@@ -195,16 +189,13 @@
                 self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
                 self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
-                
-                if (ThemeService.shared.theme.placeholderTextColor)
-                {
-                    self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                     initWithString:self.userLoginTextField.placeholder
-                                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-                    self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                 initWithString:self.phoneTextField.placeholder
+
+                self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                 initWithString:self.userLoginTextField.placeholder
                                                                  attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-                }
+                self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                             initWithString:self.phoneTextField.placeholder
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
                 
                 self.userLoginContainer.hidden = NO;
                 self.messageLabel.hidden = NO;
@@ -1024,17 +1015,10 @@
     if (thirdPartyIdentifiersHidden)
     {
         self.passWordTextField.returnKeyType = UIReturnKeyNext;
-        
-        if (ThemeService.shared.theme.placeholderTextColor)
-        {
-            self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil)
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-        }
-        else
-        {
-            self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
-        }
+
+        self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil)
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         
         self.userLoginContainer.hidden = NO;
         self.passwordContainer.hidden = NO;
@@ -1057,12 +1041,9 @@
                 self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
             }
             
-            if (ThemeService.shared.theme.placeholderTextColor)
-            {
-                self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
+            self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.emailTextField.placeholder
                                                              attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-            }
             
             self.emailContainer.hidden = NO;
             
@@ -1085,12 +1066,9 @@
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_phone_placeholder", @"Vector", nil);
             }
             
-            if (ThemeService.shared.theme.placeholderTextColor)
-            {
-                self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.phoneTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-            }
+            self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:self.phoneTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             
             self.phoneContainer.hidden = NO;
             

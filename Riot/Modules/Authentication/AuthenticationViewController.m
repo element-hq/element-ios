@@ -143,21 +143,18 @@
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    
-    if (ThemeService.shared.theme.placeholderTextColor)
+
+    if (self.homeServerTextField.placeholder)
     {
-        if (self.homeServerTextField.placeholder)
-        {
-            self.homeServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.homeServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-        }
-        if (self.identityServerTextField.placeholder)
-        {
-            self.identityServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.identityServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-        }
+        self.homeServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                          initWithString:self.homeServerTextField.placeholder
+                                                          attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+    if (self.identityServerTextField.placeholder)
+    {
+        self.identityServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                              initWithString:self.identityServerTextField.placeholder
+                                                              attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
     }
     
     self.submitButton.backgroundColor = ThemeService.shared.theme.tintColor;
