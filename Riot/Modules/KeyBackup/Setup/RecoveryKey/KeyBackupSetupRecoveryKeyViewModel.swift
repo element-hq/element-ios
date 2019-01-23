@@ -40,11 +40,7 @@ final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewMod
         self.megolmBackupCreationInfo = megolmBackupCreationInfo
         self.recoveryKey = megolmBackupCreationInfo.recoveryKey
         self.keyBackup = keyBackup
-        
-        let coordinatorDelegateQueue = OperationQueue()
-        coordinatorDelegateQueue.name = "KeyBackupSetupRecoveryKeyViewModel.coordinatorDelegateQueue"
-        coordinatorDelegateQueue.maxConcurrentOperationCount = 1
-        self.coordinatorDelegateQueue = coordinatorDelegateQueue
+        self.coordinatorDelegateQueue = OperationQueue.vc_createSerialOperationQueue(name: "\(type(of: self)).coordinatorDelegateQueue")
     }
     
     deinit {
@@ -58,13 +54,12 @@ final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewMod
         case .madeCopy:
             self.createBackup()
         case .skip:
-            self.pauseCoordinatorOperations()
+            self.coordinatorDelegateQueue.vc_pause()
             self.viewDelegate?.keyBackupSetupPassphraseViewModelShowSkipAlert(self)
         case.skipAlertContinue:
-            self.resumeCoordinatorOperations()
+            self.coordinatorDelegateQueue.vc_resume()
         case.skipAlertSkip:
-            self.createKeyBackupOperation?.cancel()
-            self.cancelCoordinatorOperations()
+            self.coordinatorDelegateQueue.cancelAllOperations()
             self.coordinatorDelegate?.keyBackupSetupRecoveryKeyViewModelDidCancel(self)
         }
     }
@@ -91,17 +86,5 @@ final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewMod
             }
             sself.viewDelegate?.keyBackupSetupRecoveryKeyViewModel(sself, didUpdateViewState: .error(error))
         })    
-    }
-    
-    private func pauseCoordinatorOperations() {
-        self.coordinatorDelegateQueue.isSuspended = true
-    }
-    
-    private func resumeCoordinatorOperations() {
-        self.coordinatorDelegateQueue.isSuspended = false
-    }
-    
-    private func cancelCoordinatorOperations() {
-        self.coordinatorDelegateQueue.cancelAllOperations()
     }
 }
