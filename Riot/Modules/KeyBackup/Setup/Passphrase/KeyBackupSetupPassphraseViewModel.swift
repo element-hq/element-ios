@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModelType {
+final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModelType, CoordinatorDelegateQueuable {
     
     // MARK: - Properties
     
@@ -25,7 +25,7 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
     private(set) var passphraseStrength: PasswordStrength = .tooGuessable
     private let passwordStrengthManager: PasswordStrengthManager
     private let keyBackup: MXKeyBackup
-    private let coordinatorDelegateQueue: OperationQueue
+    let coordinatorDelegateQueue: OperationQueue
     
     // MARK: Public
     
@@ -60,11 +60,7 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
     init(keyBackup: MXKeyBackup) {
         self.passwordStrengthManager = PasswordStrengthManager()
         self.keyBackup = keyBackup
-        
-        let coordinatorDelegateQueue = OperationQueue()
-        coordinatorDelegateQueue.name = "KeyBackupSetupPassphraseViewModel.coordinatorDelegateQueue"
-        coordinatorDelegateQueue.maxConcurrentOperationCount = 1
-        self.coordinatorDelegateQueue = coordinatorDelegateQueue
+        self.coordinatorDelegateQueue = type(of: self).createCoordinatorDelegateQueue()
     }
     
     // MARK: - Public
@@ -86,7 +82,7 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
     
     // MARK: - Private
     
-    func setupPassphrase() {
+    private func setupPassphrase() {
         guard let passphrase = self.passphrase else {
             return
         }
@@ -122,17 +118,5 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
             return .tooGuessable
         }
         return self.passwordStrengthManager.passwordStrength(for: password)
-    }
-    
-    private func pauseCoordinatorOperations() {
-        self.coordinatorDelegateQueue.isSuspended = true
-    }
-    
-    private func resumeCoordinatorOperations() {
-        self.coordinatorDelegateQueue.isSuspended = false
-    }
-    
-    private func cancelCoordinatorOperations() {
-        self.coordinatorDelegateQueue.cancelAllOperations()
     }
 }
