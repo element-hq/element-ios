@@ -2582,12 +2582,12 @@
                                                                        if (weakSelf)
                                                                        {
                                                                            typeof(self) self = weakSelf;
-                                                                           UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                                           NSString *text = [self->currentAlert textFields].firstObject.text;
                                                                            self->currentAlert = nil;
                                                                            
                                                                            [self startActivityIndicator];
                                                                            
-                                                                           [self.roomDataSource.room reportEvent:selectedEvent.eventId score:-100 reason:textField.text success:^{
+                                                                           [self.roomDataSource.room reportEvent:selectedEvent.eventId score:-100 reason:text success:^{
                                                                                
                                                                                __strong __typeof(weakSelf)self = weakSelf;
                                                                                [self stopActivityIndicator];

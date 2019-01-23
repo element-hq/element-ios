@@ -773,8 +773,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                        {
                                                            typeof(self) self = weakSelf;
                                                            
-                                                           UITextField *textField = [self->currentAlert textFields].firstObject;
-                                                           NSString *smsCode = textField.text;
+                                                           NSString *smsCode = [self->currentAlert textFields].firstObject.text;
                                                            
                                                            self->currentAlert = nil;
                                                            

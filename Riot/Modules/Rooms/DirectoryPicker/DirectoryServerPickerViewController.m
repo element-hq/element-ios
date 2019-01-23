@@ -312,11 +312,11 @@
                                                        {
                                                            typeof(self) self = weakSelf;
                                                            
-                                                           UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                           NSString *text = [self->currentAlert textFields].firstObject.text;
                                                            
                                                            self->currentAlert = nil;
                                                            
-                                                           NSString *homeserver = textField.text;
+                                                           NSString *homeserver = text;
                                                            if (homeserver.length)
                                                            {
                                                                // Test if the homeserver exists
