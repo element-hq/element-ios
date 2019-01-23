@@ -121,7 +121,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             }
             else
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = ThemeService.shared.theme.headerTextSecondaryColor;
+                self.missedNotifAndUnreadIndicator.backgroundColor = ThemeService.shared.theme.unreadRoomIndentColor;
             }
             
             // Use bold font for the room title

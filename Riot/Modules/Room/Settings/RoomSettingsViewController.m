@@ -2499,12 +2499,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             addAddressTextField = addAddressCell.mxkTextField;
             addAddressTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_address_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
-            if (ThemeService.shared.theme.placeholderTextColor)
-            {
-                addAddressTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:addAddressTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-            }
+            addAddressTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:addAddressTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             addAddressTextField.userInteractionEnabled = YES;
             addAddressTextField.text = currentValue;
             addAddressTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
@@ -2590,12 +2587,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
             addGroupTextField = addCommunityCell.mxkTextField;
             addGroupTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_flair_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
-            if (ThemeService.shared.theme.placeholderTextColor)
-            {
-                addGroupTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:addGroupTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-            }
+            addGroupTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                       initWithString:addGroupTextField.placeholder
+                                                       attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             addGroupTextField.userInteractionEnabled = YES;
             addGroupTextField.text = currentValue;
             addGroupTextField.textColor = ThemeService.shared.theme.textSecondaryColor;

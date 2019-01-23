@@ -1526,12 +1526,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             {
                 newEmailCell.mxkLabel.text = nil;
                 newEmailCell.mxkTextField.placeholder = NSLocalizedStringFromTable(@"settings_email_address_placeholder", @"Vector", nil);
-                if (ThemeService.shared.theme.placeholderTextColor)
-                {
-                    newEmailCell.mxkTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                 initWithString:newEmailCell.mxkTextField.placeholder
-                                                                 attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-                }
+                newEmailCell.mxkTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                   initWithString:newEmailCell.mxkTextField.placeholder
+                                                                   attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
                 newEmailCell.mxkTextField.text = newEmailTextField.text;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
                 newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
