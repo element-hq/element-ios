@@ -991,14 +991,14 @@
                                                                      {
                                                                          typeof(self) self = weakSelf;
 
-                                                                         UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                                         NSString *text = [self->currentAlert textFields].firstObject.text;
 
                                                                          self->currentAlert = nil;
                                                                          
                                                                          [self startActivityIndicator];
                                                                          
                                                                          // kick user
-                                                                         [self.mxRoom banUser:self.mxRoomMember.userId reason:textField.text success:^{
+                                                                         [self.mxRoom banUser:self.mxRoomMember.userId reason:text success:^{
                                                                              
                                                                              __strong __typeof(weakSelf)self = weakSelf;
                                                                              [self stopActivityIndicator];
@@ -1055,14 +1055,14 @@
                                                                    {
                                                                        typeof(self) self = weakSelf;
 
-                                                                       UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                                       NSString *text = [self->currentAlert textFields].firstObject.text;
 
                                                                        self->currentAlert = nil;
                                                                        
                                                                        [self startActivityIndicator];
                                                                        
                                                                        // kick user
-                                                                       [self.mxRoom kickUser:self.mxRoomMember.userId reason:textField.text success:^{
+                                                                       [self.mxRoom kickUser:self.mxRoomMember.userId reason:text success:^{
                                                                            
                                                                            __strong __typeof(weakSelf)self = weakSelf;
                                                                            [self stopActivityIndicator];

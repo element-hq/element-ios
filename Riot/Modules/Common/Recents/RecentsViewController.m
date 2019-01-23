@@ -1809,14 +1809,13 @@
                                                        {
                                                            typeof(self) self = weakSelf;
                                                            
-                                                           UITextField *textField = [self->currentAlert textFields].firstObject;
-                                                           NSString *roomAliasOrId = textField.text;
+                                                           NSString *roomAliasOrId = [self->currentAlert textFields].firstObject.text;
                                                            
                                                            self->currentAlert = nil;
                                                            
                                                            [self.activityIndicator startAnimating];
                                                            
-                                                           self->currentRequest = [self.mainSession joinRoom:textField.text success:^(MXRoom *room) {
+                                                           self->currentRequest = [self.mainSession joinRoom:roomAliasOrId success:^(MXRoom *room) {
                                                                
                                                                self->currentRequest = nil;
                                                                [self.activityIndicator stopAnimating];
