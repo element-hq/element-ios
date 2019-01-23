@@ -322,7 +322,9 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         guard self.isPassphraseTextFieldEditedOnce else {
             return
         }
-        self.passphraseTextField.isSecureTextEntry.toggle()
+        self.passphraseTextField.isSecureTextEntry = !self.passphraseTextField.isSecureTextEntry
+        // TODO: Use this when project will be migrated to Swift 4.2
+        // self.passphraseTextField.isSecureTextEntry.toggle()
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
