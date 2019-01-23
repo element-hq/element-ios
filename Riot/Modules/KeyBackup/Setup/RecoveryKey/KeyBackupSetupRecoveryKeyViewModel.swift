@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewModelType, CoordinatorDelegateQueuable {
+final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewModelType {
     
     // MARK: - Properties
     
@@ -24,7 +24,7 @@ final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewMod
     
     private let megolmBackupCreationInfo: MXMegolmBackupCreationInfo
     private let keyBackup: MXKeyBackup
-    let coordinatorDelegateQueue: OperationQueue
+    private let coordinatorDelegateQueue: OperationQueue
     private var createKeyBackupOperation: MXHTTPOperation?
     
     // MARK: Public
@@ -40,7 +40,11 @@ final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewMod
         self.megolmBackupCreationInfo = megolmBackupCreationInfo
         self.recoveryKey = megolmBackupCreationInfo.recoveryKey
         self.keyBackup = keyBackup
-        self.coordinatorDelegateQueue = type(of: self).createCoordinatorDelegateQueue()
+        
+        let coordinatorDelegateQueue = OperationQueue()
+        coordinatorDelegateQueue.name = "KeyBackupSetupRecoveryKeyViewModel.coordinatorDelegateQueue"
+        coordinatorDelegateQueue.maxConcurrentOperationCount = 1
+        self.coordinatorDelegateQueue = coordinatorDelegateQueue
     }
     
     deinit {
@@ -67,7 +71,7 @@ final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewMod
     
     // MARK: - Private
     
-    private func createBackup() {
+    func createBackup() {
         self.viewDelegate?.keyBackupSetupRecoveryKeyViewModel(self, didUpdateViewState: .loading)
         
         self.keyBackup.createKeyBackupVersion(self.megolmBackupCreationInfo, success: { [weak self] (keyBackupVersion) in
@@ -87,5 +91,17 @@ final class KeyBackupSetupRecoveryKeyViewModel: KeyBackupSetupRecoveryKeyViewMod
             }
             sself.viewDelegate?.keyBackupSetupRecoveryKeyViewModel(sself, didUpdateViewState: .error(error))
         })    
+    }
+    
+    private func pauseCoordinatorOperations() {
+        self.coordinatorDelegateQueue.isSuspended = true
+    }
+    
+    private func resumeCoordinatorOperations() {
+        self.coordinatorDelegateQueue.isSuspended = false
+    }
+    
+    private func cancelCoordinatorOperations() {
+        self.coordinatorDelegateQueue.cancelAllOperations()
     }
 }
