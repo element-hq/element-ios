@@ -277,7 +277,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         buildBranch = MAKE_NS_STRING(GIT_BRANCH);
 #endif
 #ifdef BUILD_NUMBER
-        buildNumber = [NSString stringWithFormat:@"#%d", BUILD_NUMBER];
+        buildNumber = [NSString stringWithFormat:@"#%@", @(BUILD_NUMBER)];
 #endif
         if (buildBranch && buildNumber)
         {
