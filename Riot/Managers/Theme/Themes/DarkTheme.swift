@@ -48,8 +48,8 @@ class DarkTheme: NSObject, Theme {
 
     var avatarColors: [UIColor] = [
         UIColor(rgb: 0x7AC9A1),
-        UIColor(rgb: 0x1E7DDC),
-        UIColor(rgb: 0x76DDD7)]
+        UIColor(rgb: 0x76DDD7),
+        UIColor(rgb: 0x1E7DDC)]
 
     var statusBarStyle: UIStatusBarStyle = .lightContent
     var scrollBarStyle: UIScrollViewIndicatorStyle = .white
