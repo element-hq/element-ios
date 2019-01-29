@@ -187,7 +187,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         self.confirmPassphraseTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         self.confirmPassphraseAdditionalInfoView.isHidden = true
         
-        self.setPassphraseButton.titleLabel?.numberOfLines = 0
+        self.setPassphraseButton.vc_enableMultiLinesTitle()
         self.setPassphraseButton.setTitle(VectorL10n.keyBackupSetupPassphraseSetPassphraseAction, for: .normal)
         
         self.updateSetPassphraseButton()
@@ -327,7 +327,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         // self.passphraseTextField.isSecureTextEntry.toggle()
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
+    @objc private func textFieldDidChange(_ textField: UITextField) {
         
         if textField == self.passphraseTextField {
             self.viewModel.passphrase = textField.text
