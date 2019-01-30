@@ -71,6 +71,8 @@
 #endif
 #ifdef CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
+#import <UserNotifications/UserNotifications.h>
+
 #endif
 
 #define CALL_STATUS_BAR_HEIGHT 44
@@ -1076,23 +1078,55 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if (!isPushRegistered)
     {
-        NSMutableSet* notificationCategories = [NSMutableSet set];
+        if (@available(iOS 10, *)) {
+            UNTextInputNotificationAction *quickReply = [UNTextInputNotificationAction
+                    actionWithIdentifier:@"inline-reply"
+                                   title:NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil)
+                                 options:UNNotificationActionOptionAuthenticationRequired
+            ];
 
-        UIMutableUserNotificationAction* quickReply = [[UIMutableUserNotificationAction alloc] init];
-        quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
-        quickReply.identifier = @"inline-reply";
-        quickReply.activationMode = UIUserNotificationActivationModeBackground;
-        quickReply.authenticationRequired = true;
-        quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
+            UNNotificationCategory *quickReplyCategory = [UNNotificationCategory
+                    categoryWithIdentifier:@"QUICK_REPLY"
+                                   actions:@[quickReply]
+                         intentIdentifiers:NULL
+                                   options:UNNotificationCategoryOptionNone];
 
-        UIMutableUserNotificationCategory* quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
-        quickReplyCategory.identifier = @"QUICK_REPLY";
-        [quickReplyCategory setActions:@[quickReply] forContext:UIUserNotificationActionContextDefault];
-        [notificationCategories addObject:quickReplyCategory];
+            UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+            [center setNotificationCategories:[[NSSet alloc] initWithArray:@[quickReplyCategory]]];
+            [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge)
+                                  completionHandler:^(BOOL granted, NSError *error)
+                                  { // code here is equivalent to self:application:didRegisterUserNotificationSettings:
+                                      if (granted) {
+                                          [self registerForRemoteNotificationsWithCompletion:nil];
+                                      }
+                                      else
+                                      {
+                                          // Clear existing token
+                                          MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+                                          [accountManager setPushDeviceToken:nil withPushOptions:nil];
+                                      }
+                                  }];
+        }
+        else
+        {
+            NSMutableSet *notificationCategories = [NSMutableSet set];
 
-        // Registration on iOS 8 and later
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:notificationCategories];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+            UIMutableUserNotificationAction *quickReply = [[UIMutableUserNotificationAction alloc] init];
+            quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+            quickReply.identifier = @"inline-reply";
+            quickReply.activationMode = UIUserNotificationActivationModeBackground;
+            quickReply.authenticationRequired = true;
+            quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
+
+            UIMutableUserNotificationCategory *quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
+            quickReplyCategory.identifier = @"QUICK_REPLY";
+            [quickReplyCategory setActions:@[quickReply] forContext:UIUserNotificationActionContextDefault];
+            [notificationCategories addObject:quickReplyCategory];
+
+            // Registration on iOS 8 and later
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert) categories:notificationCategories];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        }
     }
 }
 
