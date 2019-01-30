@@ -200,6 +200,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
     private func importRecoveryKey(from url: URL) {
         if let recoveryKey = self.getDocumentContent(from: url) {
             self.recoveryKeyTextField.text = recoveryKey
+            self.recoveryKeyTextFieldDidChange(self.recoveryKeyTextField)
         } else {
             self.errorPresenter.presentGenericError(from: self, animated: true, handler: nil)
         }

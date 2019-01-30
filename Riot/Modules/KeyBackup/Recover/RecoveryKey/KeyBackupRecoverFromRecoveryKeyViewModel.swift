@@ -85,17 +85,13 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
             }
             sself.update(viewState: .loaded(totalKeys: totalKeys))
             if totalKeys > 0 {
-                DispatchQueue.main.async {
-                    sself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(sself)
-                }
+                sself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(sself)
             }
         }, failure: { [weak self] error in
             guard let sself = self else {
                 return
             }
-            DispatchQueue.main.async {
-                sself.update(viewState: .error(error))
-            }
+            sself.update(viewState: .error(error))
         })
     }
     
