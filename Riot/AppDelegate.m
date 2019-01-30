@@ -1500,7 +1500,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         MXEvent *event;
 
         // Ignore event already notified to the user
-        if ([self displayedLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId type:nil])
+        if (@available(iOS 10, *))
+        {
+            if ([self displayedNotificationRequestForEvent:eventId andUser:account.mxCredentials.userId type:nil])
+            {
+                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
+                continue;
+            }
+        }
+        else if ([self displayedLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId type:nil])
         {
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
             continue;
@@ -1569,41 +1577,88 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     // to include a percent symbol (%) in the message, use two percent symbols (%%).
                     notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
 
-                    UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                    eventNotification.alertBody = notificationBody;
-                    eventNotification.userInfo = @{
-                                                   @"type": @"full",
-                                                   @"room_id": event.roomId,
-                                                   @"event_id": event.eventId,
-                                                   @"user_id": account.mxCredentials.userId
-                                                   };
-
-                    BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
-
-                    if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
+                    if (@available(iOS 10, *))
                     {
-                        eventNotification.category = @"QUICK_REPLY";
-                    }
+                        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
 
-                    // Set sound name based on the value provided in action of MXPushRule
-                    for (MXPushRuleAction *action in rule.actions)
-                    {
-                        if (action.actionType == MXPushRuleActionTypeSetTweak)
+                        content.body = notificationBody;
+                        content.userInfo = @{
+                                @"type": @"full",
+                                @"room_id": event.roomId,
+                                @"event_id": event.eventId,
+                                @"user_id": account.mxCredentials.userId
+                        };
+
+                        BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
+
+                        UNNotificationRequest *request = [UNNotificationRequest
+                                requestWithIdentifier:event.eventId
+                                              content:content
+                                              trigger:nil];
+
+                        if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
                         {
-                            if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
-                            {
-                                NSString *soundName = action.parameters[@"value"];
-                                if ([soundName isEqualToString:@"default"])
-                                    soundName = @"message.mp3";
+                            content.categoryIdentifier = @"QUICK_REPLY";
+                        }
 
-                                eventNotification.soundName = soundName;
+                        // Set sound name based on the value provided in action of MXPushRule
+                        for (MXPushRuleAction *action in rule.actions)
+                        {
+                            if (action.actionType == MXPushRuleActionTypeSetTweak)
+                            {
+                                if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                                {
+                                    NSString *soundName = action.parameters[@"value"];
+                                    if ([soundName isEqualToString:@"default"])
+                                        soundName = @"message.mp3";
+
+                                    content.sound = [UNNotificationSound soundNamed:soundName];
+                                }
                             }
                         }
-                    }
 
-                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
-                    [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
-                    scheduledNotifications++;
+                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
+                        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+                        scheduledNotifications++;
+                    }
+                    else // DEPRECATED, for iOS 9
+                    {
+                        UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                        eventNotification.alertBody = notificationBody;
+                        eventNotification.userInfo = @{
+                                @"type": @"full",
+                                @"room_id": event.roomId,
+                                @"event_id": event.eventId,
+                                @"user_id": account.mxCredentials.userId
+                        };
+
+                        BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
+
+                        if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
+                        {
+                            eventNotification.category = @"QUICK_REPLY";
+                        }
+
+                        // Set sound name based on the value provided in action of MXPushRule
+                        for (MXPushRuleAction *action in rule.actions)
+                        {
+                            if (action.actionType == MXPushRuleActionTypeSetTweak)
+                            {
+                                if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                                {
+                                    NSString *soundName = action.parameters[@"value"];
+                                    if ([soundName isEqualToString:@"default"])
+                                        soundName = @"message.mp3";
+
+                                    eventNotification.soundName = soundName;
+                                }
+                            }
+                        }
+
+                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
+                        [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+                        scheduledNotifications++;
+                    }
                 }
                 else
                 {
@@ -1770,7 +1825,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     for (NSString *eventId in events)
     {
         // Ignore event already notified to the user
-        if ([self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
+        if (@available(iOS 10, *))
+        {
+            if ([self displayedNotificationRequestForEvent:eventId andUser:userId type:nil])
+            {
+                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
+                continue;
+            }
+        }
+        else if ([self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
         {
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
             continue;
@@ -1795,12 +1858,26 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: room_id is missing for event %@ in payload %@", eventId, payload);
         }
 
-        UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
-        localNotificationForFailedSync.userInfo = userInfo;
-        localNotificationForFailedSync.alertBody = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
+        if (@available(iOS 10, *))
+        {
+            UNMutableNotificationContent *localNotificationContentForFailedSync = [[UNMutableNotificationContent alloc] init];
+            localNotificationContentForFailedSync.userInfo = userInfo;
+            localNotificationContentForFailedSync.body = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
 
-        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
-        [[UIApplication sharedApplication] scheduleLocalNotification:localNotificationForFailedSync];
+            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId content:localNotificationContentForFailedSync trigger:nil];
+
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
+            [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+        }
+        else // DEPRECATED, for iOS 9
+        {
+            UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
+            localNotificationForFailedSync.userInfo = userInfo;
+            localNotificationForFailedSync.alertBody = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
+
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
+            [[UIApplication sharedApplication] scheduleLocalNotification:localNotificationForFailedSync];
+        }
     }
 }
 
@@ -1846,8 +1923,44 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
  @param eventId the id of the event attached to the notification to find.
  @param userId the id of the user attached to the notification to find.
  @param type the type of notification. @"full" or @"limited". nil for any type.
+ @return the local notification request if any.
+ */
+// iOS 10+ only!
+- (UNNotificationRequest *)displayedNotificationRequestForEvent:(NSString *)eventId andUser:(NSString *)userId type:(NSString*)type
+{
+    __block UNNotificationRequest *foundRequest;
+    [[UNUserNotificationCenter currentNotificationCenter] getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotificationRequest *> *requests)
+    {
+        NSLog(@"[AppDelegate] displayedNotificationRequestForEvent: %@ andUser: %@. Current delivered notifications: %@", eventId, userId, requests);
+
+        for (UNNotificationRequest *request in requests)
+        {
+            UNNotificationContent *content = request.content;
+            NSLog(@"    - %@", content.userInfo);
+
+            if ([content.userInfo[@"event_id"] isEqualToString:eventId]
+                    && [content.userInfo[@"user_id"] isEqualToString:userId]
+                    && (!type || [content.userInfo[@"type"] isEqualToString:type]))
+            {
+                foundRequest = request;
+                break;
+            }
+        }
+    }];
+
+    NSLog(@"[AppDelegate] displayedNotificationRequestForEvent: found: %@", foundRequest);
+    return foundRequest;
+}
+
+/**
+ Return the already displayed notification for an event.
+
+ @param eventId the id of the event attached to the notification to find.
+ @param userId the id of the user attached to the notification to find.
+ @param type the type of notification. @"full" or @"limited". nil for any type.
  @return the local notification if any.
  */
+// DEPRECATED, for iOS 9
 // TODO: This method does not work: [[UIApplication sharedApplication] scheduledLocalNotifications] is not reliable
 - (UILocalNotification*)displayedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId type:(NSString*)type
 {
