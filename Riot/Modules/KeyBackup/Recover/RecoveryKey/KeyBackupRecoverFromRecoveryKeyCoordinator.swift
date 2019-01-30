@@ -22,7 +22,7 @@ final class KeyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromReco
     
     // MARK: Private
     
-    private let session: MXSession
+    private let keyBackup: MXKeyBackup
     private let keyBackupRecoverFromRecoveryKeyViewController: KeyBackupRecoverFromRecoveryKeyViewController
     private let keyBackupVersion: MXKeyBackupVersion
     private let keyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecoveryKeyViewModel
@@ -35,11 +35,10 @@ final class KeyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromReco
     
     // MARK: - Setup
     
-    init(session: MXSession, keyBackupVersion: MXKeyBackupVersion) {
-        self.session = session
+    init(keyBackup: MXKeyBackup, keyBackupVersion: MXKeyBackupVersion) {
+        self.keyBackup = keyBackup
         self.keyBackupVersion = keyBackupVersion
         
-        let keyBackup = MXKeyBackup(matrixSession: session)
         let keyBackupRecoverFromRecoveryKeyViewModel = KeyBackupRecoverFromRecoveryKeyViewModel(keyBackup: keyBackup, keyBackupVersion: keyBackupVersion)
         let keyBackupRecoverFromRecoveryKeyViewController = KeyBackupRecoverFromRecoveryKeyViewController.instantiate(with: keyBackupRecoverFromRecoveryKeyViewModel)
         self.keyBackupRecoverFromRecoveryKeyViewController = keyBackupRecoverFromRecoveryKeyViewController

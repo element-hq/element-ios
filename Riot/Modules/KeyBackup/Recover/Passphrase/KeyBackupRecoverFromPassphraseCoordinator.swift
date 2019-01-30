@@ -22,7 +22,7 @@ final class KeyBackupRecoverFromPassphraseCoordinator: KeyBackupRecoverFromPassp
     
     // MARK: Private
     
-    private let session: MXSession
+    private let keyBackup: MXKeyBackup
     private let keyBackupRecoverFromPassphraseViewController: KeyBackupRecoverFromPassphraseViewController
     private let keyBackupVersion: MXKeyBackupVersion
     private var keyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphraseViewModelType
@@ -35,11 +35,10 @@ final class KeyBackupRecoverFromPassphraseCoordinator: KeyBackupRecoverFromPassp
     
     // MARK: - Setup
     
-    init(session: MXSession, keyBackupVersion: MXKeyBackupVersion) {
-        self.session = session
+    init(keyBackup: MXKeyBackup, keyBackupVersion: MXKeyBackupVersion) {
+        self.keyBackup = keyBackup
         self.keyBackupVersion = keyBackupVersion
         
-        let keyBackup = MXKeyBackup(matrixSession: session)
         let keyBackupRecoverFromPassphraseViewModel = KeyBackupRecoverFromPassphraseViewModel(keyBackup: keyBackup, keyBackupVersion: keyBackupVersion)
         let keyBackupRecoverFromPassphraseViewController = KeyBackupRecoverFromPassphraseViewController.instantiate(with: keyBackupRecoverFromPassphraseViewModel)
         self.keyBackupRecoverFromPassphraseViewController = keyBackupRecoverFromPassphraseViewController

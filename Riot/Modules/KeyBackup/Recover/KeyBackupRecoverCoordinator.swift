@@ -67,13 +67,13 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
     // MARK: - Private
     
     private func createRecoverFromPassphraseCoordinator() -> KeyBackupRecoverFromPassphraseCoordinator {
-        let coordinator = KeyBackupRecoverFromPassphraseCoordinator(session: self.session, keyBackupVersion: self.keyBackupVersion)
+        let coordinator = KeyBackupRecoverFromPassphraseCoordinator(keyBackup: self.session.crypto.backup, keyBackupVersion: self.keyBackupVersion)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createRecoverFromRecoveryKeyCoordinator() -> KeyBackupRecoverFromRecoveryKeyCoordinator {
-        let coordinator = KeyBackupRecoverFromRecoveryKeyCoordinator(session: self.session, keyBackupVersion: self.keyBackupVersion)
+        let coordinator = KeyBackupRecoverFromRecoveryKeyCoordinator(keyBackup: self.session.crypto.backup, keyBackupVersion: self.keyBackupVersion)
         coordinator.delegate = self
         return coordinator
     }
