@@ -17,6 +17,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
+#import <UserNotifications/UserNotifications.h>
 
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"
@@ -37,7 +38,7 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
  */
 extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, UNUserNotificationCenterDelegate>
 {
     BOOL isPushRegistered;
     
