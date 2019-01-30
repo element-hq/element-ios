@@ -662,6 +662,74 @@ internal enum VectorL10n {
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
   }
+  /// Done
+  internal static var keyBackupRecoverDoneAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
+  }
+  /// There is no key to restore
+  internal static var keyBackupRecoverEmptyBackupMessage: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_empty_backup_message") 
+  }
+  /// Empty backup
+  internal static var keyBackupRecoverEmptyBackupTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_empty_backup_title") 
+  }
+  /// Use your recovery passphrase to unlock your secure message history
+  internal static var keyBackupRecoverFromPassphraseInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_info") 
+  }
+  /// Don’t know your recovery passphrase? You can 
+  internal static var keyBackupRecoverFromPassphraseLostPassphraseActionPart1: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_lost_passphrase_action_part1") 
+  }
+  /// use your recovery key
+  internal static var keyBackupRecoverFromPassphraseLostPassphraseActionPart2: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_lost_passphrase_action_part2") 
+  }
+  /// .
+  internal static var keyBackupRecoverFromPassphraseLostPassphraseActionPart3: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_lost_passphrase_action_part3") 
+  }
+  /// Enter Passphrase
+  internal static var keyBackupRecoverFromPassphrasePassphrasePlaceholder: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_passphrase_placeholder") 
+  }
+  /// Enter
+  internal static var keyBackupRecoverFromPassphrasePassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_passphrase_title") 
+  }
+  /// Unlock History
+  internal static var keyBackupRecoverFromPassphraseRecoverAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_recover_action") 
+  }
+  /// Use your recovery key to unlock your secure message history
+  internal static var keyBackupRecoverFromRecoveryKeyInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_info") 
+  }
+  /// Lost your recovery key? You can set up a new one in settings.
+  internal static var keyBackupRecoverFromRecoveryKeyLostRecoveryKeyAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_lost_recovery_key_action") 
+  }
+  /// Unlock History
+  internal static var keyBackupRecoverFromRecoveryKeyRecoverAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recover_action") 
+  }
+  /// Enter Recovery Key
+  internal static var keyBackupRecoverFromRecoveryKeyRecoveryKeyPlaceholder: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recovery_key_placeholder") 
+  }
+  /// Enter
+  internal static var keyBackupRecoverFromRecoveryKeyRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recovery_key_title") 
+  }
+  /// Backup Restored!
+  internal static var keyBackupRecoverSuccessInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_success_info") 
+  }
+  /// Secure Messages
+  internal static var keyBackupRecoverTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_title") 
+  }
   /// Set up Secure Message Recovery in case you lose or log out of this device.
   internal static var keyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_info") 

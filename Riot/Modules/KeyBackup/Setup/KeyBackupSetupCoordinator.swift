@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-final class KeyBackupSetupCoordinator: NSObject, KeyBackupSetupCoordinatorType {
+final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
     
     // MARK: - Properties
     
@@ -62,8 +62,8 @@ final class KeyBackupSetupCoordinator: NSObject, KeyBackupSetupCoordinatorType {
         keyBackupSetupPassphraseCoordinator.start()
         
         self.add(childCoordinator: keyBackupSetupPassphraseCoordinator)
-        self.navigationRouter.push(keyBackupSetupPassphraseCoordinator, animated: animated) {
-            self.remove(childCoordinator: keyBackupSetupPassphraseCoordinator)
+        self.navigationRouter.push(keyBackupSetupPassphraseCoordinator, animated: animated) { [weak self] in
+            self?.remove(childCoordinator: keyBackupSetupPassphraseCoordinator)
         }
     }
     
@@ -74,8 +74,8 @@ final class KeyBackupSetupCoordinator: NSObject, KeyBackupSetupCoordinatorType {
         keyBackupSetupRecoveryKeyCoordinator.start()
         
         self.add(childCoordinator: keyBackupSetupRecoveryKeyCoordinator)
-        self.navigationRouter.push(keyBackupSetupRecoveryKeyCoordinator, animated: animated) {
-            self.remove(childCoordinator: keyBackupSetupRecoveryKeyCoordinator)
+        self.navigationRouter.push(keyBackupSetupRecoveryKeyCoordinator, animated: animated) { [weak self] in
+            self?.remove(childCoordinator: keyBackupSetupRecoveryKeyCoordinator)
         }
     }
 }

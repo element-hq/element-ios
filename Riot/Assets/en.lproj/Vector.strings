@@ -678,3 +678,34 @@
 "key_backup_setup_recovery_key_recovery_key_title" = "Recovery Key";
 "key_backup_setup_recovery_key_make_copy_action" = "Make a Copy";
 "key_backup_setup_recovery_key_made_copy_action" = "I've made a copy";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "Secure Messages";
+"key_backup_recover_empty_backup_title" = "Empty backup";
+"key_backup_recover_empty_backup_message" = "There is no key to restore";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "Use your recovery passphrase to unlock your secure message history";
+"key_backup_recover_from_passphrase_passphrase_title" = "Enter";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Enter Passphrase";
+"key_backup_recover_from_passphrase_recover_action" = "Unlock History";
+
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Don’t know your recovery passphrase? You can ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "use your recovery key";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "Use your recovery key to unlock your secure message history";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "Enter";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Enter Recovery Key";
+"key_backup_recover_from_recovery_key_recover_action" = "Unlock History";
+
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Lost your recovery key? You can set up a new one in settings.";
+
+// Success
+
+"key_backup_recover_success_info" = "Backup Restored!";
+"key_backup_recover_done_action" = "Done";

@@ -12,6 +12,21 @@ import UIKit
 
 // swiftlint:disable explicit_type_interface identifier_name line_length type_body_length type_name
 internal enum StoryboardScene {
+  internal enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupRecoverFromPassphraseViewController>(storyboard: KeyBackupRecoverFromPassphraseViewController.self)
+  }
+  internal enum KeyBackupRecoverFromRecoveryKeyViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupRecoverFromRecoveryKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupRecoverFromRecoveryKeyViewController>(storyboard: KeyBackupRecoverFromRecoveryKeyViewController.self)
+  }
+  internal enum KeyBackupRecoverSuccessViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupRecoverSuccessViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupRecoverSuccessViewController>(storyboard: KeyBackupRecoverSuccessViewController.self)
+  }
   internal enum KeyBackupSetupIntroViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupSetupIntroViewController"
 
