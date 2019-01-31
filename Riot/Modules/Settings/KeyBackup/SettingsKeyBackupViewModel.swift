@@ -135,11 +135,19 @@ class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
             return
         }
 
-        self.keyBackup.deleteVersion(keyBackupVersionVersion, success: {
+        self.viewDelegate?.settingsKeyBackupViewModel(self, didUpdateNetworkRequestViewState: .loading)
 
-        }) { (Error) in
+        self.keyBackup.deleteVersion(keyBackupVersionVersion, success: { [weak self] () in
+            guard let sself = self else {
+                return
+            }
+            sself.viewDelegate?.settingsKeyBackupViewModel(sself, didUpdateNetworkRequestViewState: .loaded)
 
-        }
-
+            }, failure: { [weak self] error in
+                guard let sself = self else {
+                    return
+                }
+                sself.viewDelegate?.settingsKeyBackupViewModel(sself, didUpdateNetworkRequestViewState: .error(error))
+        })
     }
 }

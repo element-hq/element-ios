@@ -27,6 +27,9 @@ import UIKit
     func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showVerifyDevice deviceId:String)
     func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupRecover keyBackupVersion:MXKeyBackupVersion)
     func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupDeleteConfirm keyBackupVersion:MXKeyBackupVersion)
+
+    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showActivityIndicator show:Bool)
+    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showError error:Error)
 }
 
 @objc class SettingsKeyBackupTableViewSection: NSObject {
@@ -302,6 +305,17 @@ import UIKit
 extension SettingsKeyBackupTableViewSection: SettingsKeyBackupViewModelViewDelegate {
     func settingsKeyBackupViewModel(_ viewModel: SettingsKeyBackupViewModelType, didUpdateViewState viewSate: SettingsKeyBackupViewState) {
         self.render(viewState: viewSate)
+    }
+    func settingsKeyBackupViewModel(_ viewModel: SettingsKeyBackupViewModelType, didUpdateNetworkRequestViewState networkRequestViewSate: SettingsKeyBackupNetworkRequestViewState) {
+        switch networkRequestViewSate {
+        case .loading:
+            self.delegate?.settingsKeyBackup(self, showActivityIndicator: true)
+        case .loaded:
+            self.delegate?.settingsKeyBackup(self, showActivityIndicator: false)
+        case .error(let error):
+            self.delegate?.settingsKeyBackup(self, showError: error)
+            break
+        }
     }
 
     func settingsKeyBackupViewModelShowKeyBackupSetup(_ viewModel: SettingsKeyBackupViewModelType) {

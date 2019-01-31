@@ -4334,6 +4334,23 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showActivityIndicator:(BOOL)show
+{
+    if (show)
+    {
+        [self startActivityIndicator];
+    }
+    else
+    {
+        [self stopActivityIndicator];
+    }
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showError:(NSError *)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
+}
+
 #pragma mark - MXKEncryptionInfoView
 
 - (void)showDeviceInfo:(MXDeviceInfo*)deviceInfo

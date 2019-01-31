@@ -31,3 +31,11 @@ enum SettingsKeyBackupViewState {
     case backupAndRunning(MXKeyBackupVersion, MXKeyBackupVersionTrust, Progress)
     case backupButNotTrusted(MXKeyBackupVersion, MXKeyBackupVersionTrust)
 }
+
+/// State representing a network request made by the module
+/// Only SettingsKeyBackupViewAction.delete generates such states
+enum SettingsKeyBackupNetworkRequestViewState {
+    case loading
+    case loaded
+    case error(Error)
+}
