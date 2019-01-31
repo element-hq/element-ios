@@ -1088,7 +1088,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             UNNotificationCategory *quickReplyCategory = [UNNotificationCategory
                     categoryWithIdentifier:@"QUICK_REPLY"
                                    actions:@[quickReply]
-                         intentIdentifiers:NULL
+                         intentIdentifiers:@[]
                                    options:UNNotificationCategoryOptionNone];
 
             UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
