@@ -69,8 +69,8 @@ import UIKit
             numberOfRows = self.numberOfBackupRows()
         case .backupAndRunning(_, _, _):
             numberOfRows = self.numberOfBackupAndRunningRows()
-        case .backupNotTrusted(_, let keyBackupVersionTrust):
-            numberOfRows = self.numberOfBackupNotTrustedRows(keyBackupVersionTrust: keyBackupVersionTrust)
+        case .backupNotTrusted(_, _):
+            numberOfRows = self.numberOfBackupNotTrustedRows()
         }
 
         return numberOfRows
@@ -267,12 +267,8 @@ import UIKit
     }
 
 
-    private func numberOfBackupNotTrustedRows(keyBackupVersionTrust: MXKeyBackupVersionTrust) -> Int {
-        var numberOfRows = 3
-        if self.lastNonVerifiedDevice(keyBackupVersionTrust) != nil {
-            numberOfRows += 1
-        }
-        return numberOfRows
+    private func numberOfBackupNotTrustedRows() -> Int {
+        return 6
     }
 
     private func renderBackupNotTrustedCell(atRow row: Int, keyBackupVersion: MXKeyBackupVersion, keyBackupVersionTrust: MXKeyBackupVersionTrust) -> UITableViewCell {
@@ -280,42 +276,66 @@ import UIKit
             return UITableViewCell.init()
         }
 
-        // Display a verify button for the last non verified device only
+        // Is the device that created the device verifiable?
+        // ie, is it known and already stored in crytpo store?
         let lastNonVerifiedDevice = self.lastNonVerifiedDevice(keyBackupVersionTrust)
+        let lastUnVerifiableDevice = self.lastUnVerifiableDevice(keyBackupVersionTrust)
 
         var cell: UITableViewCell
         switch row {
         case 0:
             let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
 
-            let version = VectorL10n.settingsKeyBackupInfoVersion(keyBackupVersion.version ?? "")
-            let algorithm = VectorL10n.settingsKeyBackupInfoAlgorithm(keyBackupVersion.algorithm)
-            let backupStatus = VectorL10n.settingsKeyBackupInfoValid
-            let uploadStatus = VectorL10n.settingsKeyBackupInfoProgressDone
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
+            let backupStatus = VectorL10n.settingsKeyBackupInfoNotValid
 
-            let strings = [version, algorithm, backupStatus, uploadStatus] + backupTrust
+            var fixAction: [String] = []
+            if let lastNonVerifiedDevice = lastNonVerifiedDevice {
+                let deviceName = lastNonVerifiedDevice.displayName ?? lastNonVerifiedDevice.deviceId ?? ""
+                fixAction = [VectorL10n.settingsKeyBackupInfoNotTrustedFromVerifiableDeviceFixAction(deviceName)]
+            }
+            else if lastUnVerifiableDevice != nil {
+                fixAction = [VectorL10n.settingsKeyBackupInfoNotTrustedFixAction]
+            }
+
+            let strings = [backupStatus] + fixAction
             infoCell.mxkTextView.text = strings.joined(separator: "\n")
 
             cell = infoCell
 
         case 1:
             if let lastNonVerifiedDevice = lastNonVerifiedDevice {
-                cell = self.buttonCellForVerifyingDevice(lastNonVerifiedDevice, atRow: row)
+                cell = self.buttonCellForVerifyingDevice(lastNonVerifiedDevice.deviceId, atRow: row)
+            }
+            else if lastUnVerifiableDevice != nil {
+                cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row, title: VectorL10n.settingsKeyBackupButtonVerify)
             }
             else {
-                cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row)
+                cell = UITableViewCell.init()
             }
 
         case 2:
-            if lastNonVerifiedDevice != nil {
-                cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row)
-            }
-            else {
-                cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
-            }
+            let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
+
+            let version = VectorL10n.settingsKeyBackupInfoVersion(keyBackupVersion.version ?? "")
+            let algorithm = VectorL10n.settingsKeyBackupInfoAlgorithm(keyBackupVersion.algorithm)
+
+            let strings = [version, algorithm]
+            infoCell.mxkTextView.text = strings.joined(separator: "\n")
+
+            cell = infoCell
 
         case 3:
+            let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
+
+            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
+            infoCell.mxkTextView.text = backupTrust.joined(separator: "\n")
+
+            cell = infoCell
+
+        case 4:
+            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row)
+
+        case 5:
             cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
 
         default:
@@ -357,9 +377,9 @@ import UIKit
         }
     }
 
-    private func lastNonVerifiedDevice(_ keyBackupVersionTrust:MXKeyBackupVersionTrust) -> String?
+    private func lastNonVerifiedDevice(_ keyBackupVersionTrust:MXKeyBackupVersionTrust) -> MXDeviceInfo?
     {
-        var lastNonVerifiedDeviceId: String?
+        var lastNonVerifiedDevice: MXDeviceInfo?
         for signature in keyBackupVersionTrust.signatures.reversed() {
 
             guard let device = signature.device else {
@@ -368,13 +388,25 @@ import UIKit
 
             if device.verified != MXDeviceVerified
             {
-                lastNonVerifiedDeviceId = device.deviceId
+                lastNonVerifiedDevice = device
                 break
             }
         }
-        return lastNonVerifiedDeviceId
+        return lastNonVerifiedDevice
     }
 
+    private func lastUnVerifiableDevice(_ keyBackupVersionTrust:MXKeyBackupVersionTrust) -> String?
+    {
+        var lastUnVerifiableDevice: String?
+        for signature in keyBackupVersionTrust.signatures.reversed() {
+
+            if signature.device == nil {
+                lastUnVerifiableDevice = signature.deviceId
+                break
+            }
+        }
+        return lastUnVerifiableDevice
+    }
 
     // MARK: - Button cells
 
@@ -416,15 +448,14 @@ import UIKit
         return cell
     }
 
-    private func buttonCellForRestore(keyBackupVersion: MXKeyBackupVersion, atRow row: Int) -> UITableViewCell {
+    private func buttonCellForRestore(keyBackupVersion: MXKeyBackupVersion, atRow row: Int, title: String = VectorL10n.settingsKeyBackupButtonRestore) -> UITableViewCell {
         guard let delegate = self.delegate else {
             return UITableViewCell.init()
         }
 
         let cell:MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
-        let btnTitle = VectorL10n.settingsKeyBackupButtonRestore
-        cell.mxkButton.setTitle(btnTitle, for: .normal)
-        cell.mxkButton.setTitle(btnTitle, for: .highlighted)
+        cell.mxkButton.setTitle(title, for: .normal)
+        cell.mxkButton.setTitle(title, for: .highlighted)
         cell.mxkButton.vc_addAction {
             self.viewModel.process(viewAction: .restore(keyBackupVersion))
         }

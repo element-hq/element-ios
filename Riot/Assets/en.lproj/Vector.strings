@@ -427,13 +427,17 @@
 "settings_key_backup_info_valid" = "Backup has a valid signature from this device.";
 "settings_key_backup_info_not_valid" = "Secure Message Recovery is not active on this device.";
 "settings_key_backup_info_progress" = "Backing up %@ keys...";
-"settings_key_backup_info_progress_done" = "All keys have been backed up"; // TO DEL
-"settings_key_backup_info_trust_signature_unknown" = "Backup has a signature from unknown device with ID %@.";
+"settings_key_backup_info_progress_done" = "All keys have been backed up";
+"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "To use Secure Message Recovery on this device, verify %@ now.";
+"settings_key_backup_info_not_trusted_fix_action" = "To use Secure Message Recovery on this device, provide your passphrase or recovery key now.";
+
+"settings_key_backup_info_trust_signature_unknown" = "Backup has a signature from device with ID: %@";
 "settings_key_backup_info_trust_signature_valid" = "Backup has a valid signature from this device";
-"settings_key_backup_info_trust_signature_valid_device_verified" = "Backup has a valid signature from verified device %@";
-"settings_key_backup_info_trust_signature_valid_device_unverified" = "Backup has a valid signature from unverified device %@";
-"settings_key_backup_info_trust_signature_invalid_device_verified" = "Backup has a invalid signature from verified device %@";
-"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Backup has a invalid signature from unverified device %@";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Backup has a valid signature from %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Backup has a signature from %@";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Backup has an invalid signature from %@";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Backup has an invalid signature from %@";
+
 "settings_key_backup_button_create" = "Set up Secure Message Recovery";
 "settings_key_backup_button_restore" = "Restore backup";
 "settings_key_backup_button_delete" = "Delete backup";
