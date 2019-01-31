@@ -32,7 +32,7 @@ import UIKit
     func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showError error:Error)
 }
 
-@objc class SettingsKeyBackupTableViewSection: NSObject {
+@objc final class SettingsKeyBackupTableViewSection: NSObject {
 
     // MARK: - Properties
 
@@ -68,11 +68,11 @@ import UIKit
             numberOfRows = self.numberOfCheckingBackupRows()
         case .noBackup:
             numberOfRows = self.numberOfNoBackupRows()
-        case .backup(_, _):
+        case .backup:
             numberOfRows = self.numberOfBackupRows()
-        case .backupAndRunning(_, _, _):
+        case .backupAndRunning:
             numberOfRows = self.numberOfBackupAndRunningRows()
-        case .backupNotTrusted(_, _):
+        case .backupNotTrusted:
             numberOfRows = self.numberOfBackupNotTrustedRows()
         }
 
@@ -507,7 +507,6 @@ extension SettingsKeyBackupTableViewSection: SettingsKeyBackupViewModelViewDeleg
             self.delegate?.settingsKeyBackup(self, showActivityIndicator: false)
         case .error(let error):
             self.delegate?.settingsKeyBackup(self, showError: error)
-            break
         }
     }
 

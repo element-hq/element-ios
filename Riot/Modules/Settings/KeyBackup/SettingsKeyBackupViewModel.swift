@@ -16,7 +16,7 @@
 
 import UIKit
 
-class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
+final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
 
     // MARK: - Properties
     weak var viewDelegate: SettingsKeyBackupViewModelViewDelegate?
@@ -44,7 +44,7 @@ class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
 
         switch viewAction {
         case .load:
-            self.viewDelegate?.settingsKeyBackupViewModel(self, didUpdateViewState: .checkingBackup)
+            viewDelegate?.settingsKeyBackupViewModel(self, didUpdateViewState: .checkingBackup)
             self.checkKeyBackupState()
         case .create:
             viewDelegate.settingsKeyBackupViewModelShowKeyBackupSetup(self)
@@ -66,7 +66,7 @@ class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
 
     // MARK: - Private
 
-    func checkKeyBackupState() {
+    private func checkKeyBackupState() {
 
         if let keyBackupVersion = self.keyBackup.keyBackupVersion {
 
