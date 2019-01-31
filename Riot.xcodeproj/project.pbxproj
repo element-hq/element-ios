@@ -25,8 +25,14 @@
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
+		3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3281BCF62201FA4200F4A383 /* UIControl.swift */; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
 		32B1FEDB21A46F2C00637127 /* TermsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B1FEDA21A46F2C00637127 /* TermsView.xib */; };
+		32BF994F21FA29A400698084 /* SettingsKeyBackupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF994E21FA29A400698084 /* SettingsKeyBackupViewModel.swift */; };
+		32BF995121FA29DC00698084 /* SettingsKeyBackupViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995021FA29DC00698084 /* SettingsKeyBackupViewModelType.swift */; };
+		32BF995321FA2A1300698084 /* SettingsKeyBackupViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995221FA2A1300698084 /* SettingsKeyBackupViewState.swift */; };
+		32BF995521FA2AB700698084 /* SettingsKeyBackupViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995421FA2AB700698084 /* SettingsKeyBackupViewAction.swift */; };
+		32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995621FB07A400698084 /* SettingsKeyBackupTableViewSection.swift */; };
 		358DB9429359F97520545D35 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5856BA7A55E53C0AEAFC084 /* Pods_RiotPods_RiotShareExtension.framework */; };
 		89C94E649229EA68AE787E9E /* Pods_RiotPods_Riot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2510A69B4A681C1FEC36E848 /* Pods_RiotPods_Riot.framework */; };
 		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
@@ -472,6 +478,7 @@
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
 		3267EFB620E379FD00FF1CAA /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
 		3275FD8B21A5A2C500B9C13D /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
+		3281BCF62201FA4200F4A383 /* UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
 		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = postMessageAPI.js; sourceTree = "<group>"; };
 		32B1FEDA21A46F2C00637127 /* TermsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TermsView.xib; sourceTree = "<group>"; };
 		32BDC9A1211C2C870064AF51 /* zh_Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_Hant; path = zh_Hant.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -480,6 +487,11 @@
 		32BDC9A4211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32BDC9A5211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
 		32BDC9A6211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Vector.strings; sourceTree = "<group>"; };
+		32BF994E21FA29A400698084 /* SettingsKeyBackupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewModel.swift; sourceTree = "<group>"; };
+		32BF995021FA29DC00698084 /* SettingsKeyBackupViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewModelType.swift; sourceTree = "<group>"; };
+		32BF995221FA2A1300698084 /* SettingsKeyBackupViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewState.swift; sourceTree = "<group>"; };
+		32BF995421FA2AB700698084 /* SettingsKeyBackupViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewAction.swift; sourceTree = "<group>"; };
+		32BF995621FB07A400698084 /* SettingsKeyBackupTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupTableViewSection.swift; sourceTree = "<group>"; };
 		32D7159E2146CC6F00DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Vector.strings; sourceTree = "<group>"; };
 		32D7159F2146CC7F00DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		32D715A02146CC8800DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1166,6 +1178,18 @@
 			path = js;
 			sourceTree = "<group>";
 		};
+		32BF994D21FA1C6300698084 /* KeyBackup */ = {
+			isa = PBXGroup;
+			children = (
+				32BF994E21FA29A400698084 /* SettingsKeyBackupViewModel.swift */,
+				32BF995021FA29DC00698084 /* SettingsKeyBackupViewModelType.swift */,
+				32BF995221FA2A1300698084 /* SettingsKeyBackupViewState.swift */,
+				32BF995421FA2AB700698084 /* SettingsKeyBackupViewAction.swift */,
+				32BF995621FB07A400698084 /* SettingsKeyBackupTableViewSection.swift */,
+			);
+			path = KeyBackup;
+			sourceTree = "<group>";
+		};
 		5FC42FA41F5186AFFB6A2404 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1624,6 +1648,7 @@
 				B1B5567F20EE6C4C00210D55 /* SettingsViewController.h */,
 				B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */,
 				B1B5578120EF564900210D55 /* Views */,
+				32BF994D21FA1C6300698084 /* KeyBackup */,
 				B1B5567B20EE6C4C00210D55 /* Language */,
 				B1B5567820EE6C4C00210D55 /* PhoneCountry */,
 				B1B5568020EE6C4C00210D55 /* DeactivateAccount */,
@@ -2826,6 +2851,7 @@
 				B1CA3A2821EF692B000D1D89 /* UIView.swift */,
 				B140B4A121F87F7100E3F5FE /* OperationQueue.swift */,
 				B1E5368821FB1E20001F3AFF /* UIButton.swift */,
+				3281BCF62201FA4200F4A383 /* UIControl.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3451,6 +3477,7 @@
 				B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */,
 				B1B558D420EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */,
+				32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */,
 				B1B558E120EF768F00210D55 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
@@ -3602,8 +3629,11 @@
 				B1B558D320EF768F00210D55 /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1B5576F20EE702800210D55 /* IntegrationManagerViewController.m in Sources */,
 				B1B557AC20EF5A6D00210D55 /* DeviceView.m in Sources */,
+				3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */,
 				B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */,
 				B1B558E520EF768F00210D55 /* RoomMembershipExpandedBubbleCell.m in Sources */,
+				32BF995121FA29DC00698084 /* SettingsKeyBackupViewModelType.swift in Sources */,
+				32BF995321FA2A1300698084 /* SettingsKeyBackupViewState.swift in Sources */,
 				B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */,
 				F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */,
 				B139C22D21FF32F000BB68EC /* KeyBackupRecoverFromRecoveryKeyViewState.swift in Sources */,
@@ -3611,6 +3641,7 @@
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
 				B1B5572C20EE6C4D00210D55 /* RoomParticipantsViewController.m in Sources */,
 				B1B558EE20EF768F00210D55 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
+				32BF994F21FA29A400698084 /* SettingsKeyBackupViewModel.swift in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
 				B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */,
@@ -3622,6 +3653,7 @@
 				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,
 				B1B558CE20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,
+				32BF995521FA2AB700698084 /* SettingsKeyBackupViewAction.swift in Sources */,
 				B1B558FF20EF768F00210D55 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				B1098C0021ECFE65000DDA48 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,

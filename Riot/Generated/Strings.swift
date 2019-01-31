@@ -1926,6 +1926,98 @@ internal enum VectorL10n {
   internal static var settingsIgnoredUsers: String { 
     return VectorL10n.tr("Vector", "settings_ignored_users") 
   }
+  /// SECURE MESSAGE RECOVERY
+  internal static var settingsKeyBackup: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup") 
+  }
+  /// Set up Secure Message Recovery
+  internal static var settingsKeyBackupButtonCreate: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_create") 
+  }
+  /// Delete backup
+  internal static var settingsKeyBackupButtonDelete: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_delete") 
+  }
+  /// Restore backup
+  internal static var settingsKeyBackupButtonRestore: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_restore") 
+  }
+  /// Verify
+  internal static var settingsKeyBackupButtonVerify: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_verify") 
+  }
+  /// Delete your backed up encryption keys from the server? You will no longer be able to use your recovery key to read encrypted message history
+  internal static var settingsKeyBackupDeleteConfirmationPromptMsg: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_delete_confirmation_prompt_msg") 
+  }
+  /// Delete Backup
+  internal static var settingsKeyBackupDeleteConfirmationPromptTitle: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_delete_confirmation_prompt_title") 
+  }
+  /// Algorithm: %@
+  internal static func settingsKeyBackupInfoAlgorithm(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_algorithm", p1)
+  }
+  /// Checking...
+  internal static var settingsKeyBackupInfoChecking: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_checking") 
+  }
+  /// Secure Message Recovery has not been set up.
+  internal static var settingsKeyBackupInfoNone: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_none") 
+  }
+  /// To use Secure Message Recovery on this device, provide your passphrase or recovery key now.
+  internal static var settingsKeyBackupInfoNotTrustedFixAction: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_not_trusted_fix_action") 
+  }
+  /// To use Secure Message Recovery on this device, verify %@ now.
+  internal static func settingsKeyBackupInfoNotTrustedFromVerifiableDeviceFixAction(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action", p1)
+  }
+  /// Secure Message Recovery is not active on this device.
+  internal static var settingsKeyBackupInfoNotValid: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_not_valid") 
+  }
+  /// Backing up %@ keys...
+  internal static func settingsKeyBackupInfoProgress(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_progress", p1)
+  }
+  /// All keys have been backed up
+  internal static var settingsKeyBackupInfoProgressDone: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_progress_done") 
+  }
+  /// Backup has an invalid signature from %@
+  internal static func settingsKeyBackupInfoTrustSignatureInvalidDeviceUnverified(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_invalid_device_unverified", p1)
+  }
+  /// Backup has an invalid signature from %@
+  internal static func settingsKeyBackupInfoTrustSignatureInvalidDeviceVerified(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_invalid_device_verified", p1)
+  }
+  /// Backup has a signature from device with ID: %@
+  internal static func settingsKeyBackupInfoTrustSignatureUnknown(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_unknown", p1)
+  }
+  /// Backup has a valid signature from this device
+  internal static var settingsKeyBackupInfoTrustSignatureValid: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid") 
+  }
+  /// Backup has a signature from %@
+  internal static func settingsKeyBackupInfoTrustSignatureValidDeviceUnverified(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid_device_unverified", p1)
+  }
+  /// Backup has a valid signature from %@
+  internal static func settingsKeyBackupInfoTrustSignatureValidDeviceVerified(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid_device_verified", p1)
+  }
+  /// Secure Message Recovery has been correctly set up for this device.
+  internal static var settingsKeyBackupInfoValid: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_valid") 
+  }
+  /// Key Backup Version: %@
+  internal static func settingsKeyBackupInfoVersion(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_version", p1)
+  }
   /// LABS
   internal static var settingsLabs: String { 
     return VectorL10n.tr("Vector", "settings_labs") 

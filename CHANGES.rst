@@ -9,6 +9,7 @@ Improvements:
  * Clean up iOS version checking (#2190).
  * Key backup: Implement setup screen (#2198).
  * Key backup: Implement recover screen (#2196).
+ * Key backup: Add a dedicated section to settings (#2193).
  * Key backup: Implement setup reminder (#2211).
  
 Bug fix:

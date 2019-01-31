@@ -38,8 +38,7 @@ final class KeyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordin
     init(session: MXSession) {
         self.session = session
         
-        let keyBackup = MXKeyBackup(matrixSession: session)
-        let keyBackupSetupPassphraseViewModel = KeyBackupSetupPassphraseViewModel(keyBackup: keyBackup)
+        let keyBackupSetupPassphraseViewModel = KeyBackupSetupPassphraseViewModel(keyBackup: self.session.crypto.backup)
         let keyBackupSetupPassphraseViewController = KeyBackupSetupPassphraseViewController.instantiate(with: keyBackupSetupPassphraseViewModel)
         self.keyBackupSetupPassphraseViewModel = keyBackupSetupPassphraseViewModel
         self.keyBackupSetupPassphraseViewController = keyBackupSetupPassphraseViewController
