@@ -29,7 +29,7 @@ enum SettingsKeyBackupViewState {
     case noBackup
     case backup(MXKeyBackupVersion, MXKeyBackupVersionTrust)
     case backupAndRunning(MXKeyBackupVersion, MXKeyBackupVersionTrust, Progress)
-    case backupButNotTrusted(MXKeyBackupVersion, MXKeyBackupVersionTrust)
+    case backupNotTrusted(MXKeyBackupVersion, MXKeyBackupVersionTrust)
 }
 
 /// State representing a network request made by the module

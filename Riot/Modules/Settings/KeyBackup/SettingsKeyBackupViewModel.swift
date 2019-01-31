@@ -100,7 +100,7 @@ class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
-            viewState = .backupButNotTrusted(keyBackupVersion, keyBackupVersionTrust)
+            viewState = .backupNotTrusted(keyBackupVersion, keyBackupVersionTrust)
 
         case MXKeyBackupStateReadyToBackUp:
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {

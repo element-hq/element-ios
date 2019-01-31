@@ -1304,7 +1304,7 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
         // Check whether this section is visible.
         if (self.mainSession.crypto)
         {
-            count = keyBackupSection.tableViewCells.count;
+            count = keyBackupSection.numberOfRows;
         }
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
@@ -2235,10 +2235,7 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
     {
-        if (row < keyBackupSection.tableViewCells.count)
-        {
-            cell = keyBackupSection.tableViewCells[row];
-        }
+        cell = [keyBackupSection cellForRowAtRow:row];
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
@@ -4281,9 +4278,6 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
 
     cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
     [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-
-    [cell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-    cell.mxkButton.accessibilityIdentifier = nil;
 
     return cell;
 }
