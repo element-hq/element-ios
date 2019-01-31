@@ -421,6 +421,7 @@
 
 "settings_deactivate_my_account" = "Deactivate my account";
 
+"settings_key_backup_info_checking" = "Checking...";
 "settings_key_backup_info_none" = "Secure Message Recovery has not been set up.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";

@@ -124,9 +124,15 @@ import UIKit
         return 1
     }
 
-    private func renderCheckingBackupCell(atRow: Int) -> UITableViewCell {
-        // TODO: loading wheel
-        return UITableViewCell.init()
+    private func renderCheckingBackupCell(atRow row: Int) -> UITableViewCell {
+        guard let delegate = self.delegate else {
+            return UITableViewCell.init()
+        }
+
+        let cell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
+        cell.mxkTextView.text = VectorL10n.settingsKeyBackupInfoChecking
+
+        return cell
     }
 
 

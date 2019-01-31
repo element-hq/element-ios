@@ -1950,6 +1950,10 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoAlgorithm(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_algorithm", p1)
   }
+  /// Checking...
+  internal static var settingsKeyBackupInfoChecking: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_checking") 
+  }
   /// Secure Message Recovery has not been set up.
   internal static var settingsKeyBackupInfoNone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_none") 
