@@ -72,6 +72,6 @@ extension KeyBackupSetupCoordinatorBridgePresenter: KeyBackupSetupCoordinatorDel
     }
     
     func keyBackupSetupCoordinatorDidSetupRecoveryKey(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinatorType) {
-        self.delegate?.keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel(self)
+        self.delegate?.keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey(self)
     }
 }

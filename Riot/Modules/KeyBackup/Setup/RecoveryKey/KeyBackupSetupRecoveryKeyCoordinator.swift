@@ -35,8 +35,7 @@ final class KeyBackupSetupRecoveryKeyCoordinator: KeyBackupSetupRecoveryKeyCoord
     // MARK: - Setup
     
     init(session: MXSession, megolmBackupCreationInfo: MXMegolmBackupCreationInfo) {
-        let keyBackup = MXKeyBackup(matrixSession: session)
-        let keyBackupSetupRecoveryKeyViewModel = KeyBackupSetupRecoveryKeyViewModel(keyBackup: keyBackup, megolmBackupCreationInfo: megolmBackupCreationInfo)
+        let keyBackupSetupRecoveryKeyViewModel = KeyBackupSetupRecoveryKeyViewModel(keyBackup: session.crypto.backup, megolmBackupCreationInfo: megolmBackupCreationInfo)
         let keyBackupSetupRecoveryKeyViewController = KeyBackupSetupRecoveryKeyViewController.instantiate(with: keyBackupSetupRecoveryKeyViewModel)
         self.keyBackupSetupRecoveryKeyViewModel = keyBackupSetupRecoveryKeyViewModel
         self.keyBackupSetupRecoveryKeyViewController = keyBackupSetupRecoveryKeyViewController
