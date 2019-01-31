@@ -424,7 +424,7 @@
 "settings_key_backup_info_none" = "Secure Message Recovery has not been set up.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
-"settings_key_backup_info_valid" = "Backup has a valid signature from this device.";
+"settings_key_backup_info_valid" = "Secure Message Recovery has been correctly set up for this device.";
 "settings_key_backup_info_not_valid" = "Secure Message Recovery is not active on this device.";
 "settings_key_backup_info_progress" = "Backing up %@ keys...";
 "settings_key_backup_info_progress_done" = "All keys have been backed up";

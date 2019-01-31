@@ -47,10 +47,13 @@ import UIKit
     // Need to know the state to make `cellForRow` deliver cells accordingly
     private var viewState: SettingsKeyBackupViewState = .checkingBackup
 
+    private var userDevice: MXDeviceInfo
+
     // MARK: - Public
 
-    @objc init(withKeyBackup keyBackup: MXKeyBackup) {
+    @objc init(withKeyBackup keyBackup: MXKeyBackup, userDevice: MXDeviceInfo) {
         self.viewModel = SettingsKeyBackupViewModel(keyBackup: keyBackup)
+        self.userDevice = userDevice
         super.init()
         self.viewModel.viewDelegate = self
 
@@ -357,7 +360,7 @@ import UIKit
 
             let displayName = device.displayName ?? device.deviceId ?? ""
 
-            if device.fingerprint == "" { // TODO
+            if device.fingerprint == self.userDevice.fingerprint {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValid
             }
             else if signature.valid && (device.verified == MXDeviceVerified) {

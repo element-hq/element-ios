@@ -328,8 +328,14 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
 
     if (self.mainSession.crypto.backup)
     {
-        keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup];
-        keyBackupSection.delegate = self;
+        MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
+                                                                           deviceId:self.mainSession.matrixRestClient.credentials.deviceId];
+
+        if (deviceInfo)
+        {
+            keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
+            keyBackupSection.delegate = self;
+        }
     }
 
     groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:self.mainSession];
