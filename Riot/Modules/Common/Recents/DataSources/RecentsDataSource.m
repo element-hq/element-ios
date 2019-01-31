@@ -40,7 +40,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource()
+@interface RecentsDataSource() <KeyBackupSetupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
@@ -60,10 +60,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Timer to not refresh publicRoomsDirectoryDataSource on every keystroke.
     NSTimer *publicRoomsTriggerTimer;
 }
+
+@property (nonatomic, assign, readwrite) KeyBackupBanner keyBackupBanner;
+
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, keyBackupBannerSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 @synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray, serverNoticeCellDataArray;
 
@@ -79,6 +82,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         serverNoticeCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
 
+        
+        _keyBackupBanner = KeyBackupBannerNone;
+        keyBackupBannerSection = -1;
         directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
@@ -111,6 +117,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     _recentsDataSourceMode = recentsDataSourceMode;
     
+    // Register to key backup state changes only on in home mode.
+    if (recentsDataSourceMode == RecentsDataSourceModeHome)
+    {
+        [self registerKeyBackupStateDidChangeNotification];
+    }
+    else
+    {
+        [self unregisterKeyBackupStateDidChangeNotification];
+    }
+    
     [self forceRefresh];
 }
 
@@ -130,6 +146,75 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
 
     return stickyHeader;
+}
+
+#pragma mark - Key backup setup banner
+
+- (void)registerKeyBackupStateDidChangeNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
+}
+
+- (void)unregisterKeyBackupStateDidChangeNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKeyBackupDidStateChangeNotification object:nil];
+}
+
+- (void)keyBackupStateDidChangeNotification:(NSNotification*)notification
+{
+    [self forceRefresh];
+}
+
+- (void)updateKeyBackupBanner
+{
+    KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
+    
+    if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
+    {
+        KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+        
+        switch (self.mxSession.crypto.backup.state) {
+            case MXKeyBackupStateDisabled:
+                // Show key backup setup banner only if user has not hidden it once.
+                if (keyBackupBannersPreferences.hideSetupBanner)
+                {
+                    keyBackupBanner = KeyBackupBannerNone;
+                }
+                else
+                {
+                    keyBackupBanner = KeyBackupBannerSetup;
+                }
+                break;
+            case MXKeyBackupStateNotTrusted:
+            case MXKeyBackupStateWrongBackUpVersion:
+                // TODO: Show key backup recover banner.
+                keyBackupBanner = KeyBackupBannerNone;
+                break;
+            default:
+                keyBackupBanner = KeyBackupBannerNone;
+                break;
+        }
+    }
+    
+    self.keyBackupBanner = keyBackupBanner;
+}
+
+- (void)hideKeyBackupBanner:(KeyBackupBanner)keyBackupBanner
+{
+    KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+    
+    switch (keyBackupBanner) {
+        case KeyBackupBannerSetup:
+            keyBackupBannersPreferences.hideSetupBanner = YES;
+            break;
+        case KeyBackupBannerRecover:
+            // TODO: Hide key backup recover banner.
+            break;
+        default:
+            break;
+    }
+    
+    [self forceRefresh];
 }
 
 #pragma mark -
@@ -246,7 +331,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
+        keyBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
+        
+        if (self.keyBackupBanner != KeyBackupBannerNone)
+        {
+            self.keyBackupBannerSection = sectionsCount++;
+        }
         
         if (invitesCellDataArray.count > 0)
         {
@@ -300,7 +390,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSUInteger count = 0;
 
-    if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
+    if (section == self.keyBackupBannerSection && self.keyBackupBanner != KeyBackupBannerNone)
+    {
+        count = 1;
+    }
+    else if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
     {
         count = favoriteCellDataArray.count;
     }
@@ -345,7 +439,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    if (section == self.keyBackupBannerSection)
+    {
+        return 0.0;
+    }
+    else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
     {
         return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
     }
@@ -515,6 +613,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
+    // No header view in key backup banner section
+    if (section == self.keyBackupBannerSection)
+    {
+        return nil;
+    }
+    
     UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
     sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     NSInteger sectionBitwise = 0;
@@ -807,7 +911,24 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return [[UITableViewCell alloc] init];
     }
     
-    if (indexPath.section == directorySection)
+    if (indexPath.section == self.keyBackupBannerSection)
+    {
+        UITableViewCell* cell;
+        
+        switch (self.keyBackupBanner) {
+            case KeyBackupBannerSetup: {
+                KeyBackupSetupBannerCell* keyBackupSetupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyBackupSetupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+                keyBackupSetupBannerCell.delegate = self;
+                cell = keyBackupSetupBannerCell;
+            }
+                break;
+            default:
+                break;
+        }
+        
+        return cell;
+    }
+    else if (indexPath.section == directorySection)
     {
         NSIndexPath *indexPathInPublicRooms = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
         return [_publicRoomsDirectoryDataSource tableView:tableView cellForRowAtIndexPath:indexPathInPublicRooms];
@@ -1109,7 +1230,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
     
-    directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
+    keyBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
+    
+    [self updateKeyBackupBanner];
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -1590,6 +1713,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         [self forceRefresh];
     }
+}
+
+#pragma mark - KeyBackupSetupBannerCellDelegate
+
+- (void)keyBackupSetupBannerCellDidTapCloseAction:(KeyBackupSetupBannerCell * _Nonnull)cell
+{
+    [self hideKeyBackupBanner:self.keyBackupBanner];
 }
 
 @end

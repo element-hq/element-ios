@@ -27,7 +27,7 @@
 
 #import "MXRoom+Riot.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () <KeyBackupSetupCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
     
@@ -40,6 +40,10 @@
     // We store this value to prevent the collection view from scrolling to the beginning (observed on iOS < 10).
     CGFloat selectedCollectionViewContentOffset;
 }
+
+@property (nonatomic, strong) KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) KeyBackupSetupBannerCell *keyBackupSetupBannerPrototypeCell;
+
 @end
 
 @implementation HomeViewController
@@ -71,6 +75,9 @@
     
     // Register table view cell used for rooms collection.
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
+
+    // Register key backup banner cells
+    [self.recentsTableView registerNib:KeyBackupSetupBannerCell.nib forCellReuseIdentifier:KeyBackupSetupBannerCell.defaultReuseIdentifier];
     
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -136,6 +143,26 @@
         }
     }
 }
+
+- (KeyBackupSetupBannerCell *)keyBackupSetupBannerPrototypeCell
+{
+    if (!_keyBackupSetupBannerPrototypeCell)
+    {
+        _keyBackupSetupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:KeyBackupSetupBannerCell.defaultReuseIdentifier];
+    }
+    return _keyBackupSetupBannerPrototypeCell;
+}
+
+- (void)presentKeyBackupSetup
+{
+    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+    
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
+    
+    self.keyBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
+}
+
 
 #pragma mark - Override RecentsViewController
 
@@ -262,7 +289,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count))
+        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count)
+        || (indexPath.section == recentsDataSource.keyBackupBannerSection))
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
@@ -338,6 +366,33 @@
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
+    else if (indexPath.section == recentsDataSource.keyBackupBannerSection)
+    {
+        CGFloat height = 0.0;
+        UITableViewCell *sizingCell;
+        
+        switch (recentsDataSource.keyBackupBanner) {
+            case KeyBackupBannerSetup:
+            {
+                sizingCell = self.keyBackupSetupBannerPrototypeCell;
+            }
+                break;
+            default:
+                break;
+        }
+        
+        if (sizingCell)
+        {
+            [sizingCell layoutIfNeeded];
+            
+            CGSize fittingSize = UILayoutFittingCompressedSize;
+            fittingSize.width = CGRectGetWidth(tableView.frame);
+            
+            height = [sizingCell systemLayoutSizeFittingSize:fittingSize withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
+        }
+        
+        return height;
+    }
     
     // Retrieve the fixed height of the collection view cell used to display a room.
     CGFloat height = [RoomCollectionViewCell defaultCellSize].height + 1;
@@ -350,6 +405,33 @@
     }
     
     return height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // No header in key banner section
+    if (section == recentsDataSource.keyBackupBannerSection)
+    {
+        return 0.0;
+    }
+    else
+    {
+        return [super tableView:tableView heightForHeaderInSection:section];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == recentsDataSource.keyBackupBannerSection)
+    {
+        switch (recentsDataSource.keyBackupBanner) {
+            case KeyBackupBannerSetup:
+                [self presentKeyBackupSetup];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -595,6 +677,20 @@
 - (IBAction)onLeaveButtonPressed:(id)sender
 {
     [self leaveEditedRoom];
+}
+
+#pragma mark - KeyBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
+{
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
+    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
+{
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
+    self.keyBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 @end

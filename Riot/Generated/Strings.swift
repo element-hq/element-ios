@@ -730,6 +730,14 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_title") 
   }
+  /// Set up Secure Message Recovery
+  internal static var keyBackupSetupBannerTitlePart1: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_banner_title_part1") 
+  }
+  ///  to never lose encrypted messages
+  internal static var keyBackupSetupBannerTitlePart2: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_banner_title_part2") 
+  }
   /// Set up Secure Message Recovery in case you lose or log out of this device.
   internal static var keyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_info") 
