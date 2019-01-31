@@ -48,6 +48,8 @@
 
 #import "Riot-Swift.h"
 
+#import "EncryptionInfoView.h"
+
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 enum
@@ -63,8 +65,9 @@ enum
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_LABS_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
-    SETTINGS_SECTION_FLAIR_INDEX,
+    SETTINGS_SECTION_KEYBACKUP_INDEX,
     SETTINGS_SECTION_DEVICES_INDEX,
+    SETTINGS_SECTION_FLAIR_INDEX,
     SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
     SETTINGS_SECTION_COUNT
 };
@@ -135,7 +138,11 @@ enum {
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
-@interface SettingsViewController () <DeactivateAccountViewControllerDelegate>
+@interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
+SettingsKeyBackupTableViewSectionDelegate,
+MXKEncryptionInfoViewDelegate,
+KeyBackupSetupCoordinatorBridgePresenterDelegate,
+KeyBackupRecoverCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -227,6 +234,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     
     // The current pushed view controller
     UIViewController *pushedViewController;
+
+    SettingsKeyBackupTableViewSection *keyBackupSection;
+    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+    KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
 }
 
 /**
@@ -314,7 +325,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         [self addMatrixSession:mxSession];
     }
-    
+
+    if (self.mainSession.crypto.backup)
+    {
+        keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup];
+        keyBackupSection.delegate = self;
+    }
+
     groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:self.mainSession];
     [groupsDataSource finalizeInitialization];
     groupsDataSource.delegate = self;
@@ -404,6 +421,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         [super destroy];
     }
+
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -1277,6 +1297,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         if (self.mainSession.crypto)
         {
             count = CRYPTOGRAPHY_COUNT;
+        }
+    }
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        // Check whether this section is visible.
+        if (self.mainSession.crypto)
+        {
+            count = keyBackupSection.tableViewCells.count;
         }
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
@@ -2205,6 +2233,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             cell = exportKeysBtnCell;
         }
     }
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        if (row < keyBackupSection.tableViewCells.count)
+        {
+            cell = keyBackupSection.tableViewCells[row];
+        }
+    }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         MXKTableViewCellWithButton *deactivateAccountBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -2308,12 +2343,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
         }
     }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
     {
         // Check whether this section is visible
         if (self.mainSession.crypto)
         {
-            return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
+            return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
         }
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
@@ -4206,7 +4241,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 - (void)deactivateAccountViewControllerDidDeactivateWithSuccess:(DeactivateAccountViewController *)deactivateAccountViewController
 {
     NSLog(@"[SettingsViewController] Deactivate account with success");
-
     
     [[AppDelegate theDelegate] logoutSendingRequestServer:NO completion:^(BOOL isLoggedOut) {
         NSLog(@"[SettingsViewController] Complete clear user data after account deactivation");
@@ -4216,6 +4250,162 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 - (void)deactivateAccountViewControllerDidCancel:(DeactivateAccountViewController *)deactivateAccountViewController
 {
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - SettingsKeyBackupTableViewSectionDelegate
+
+- (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+{
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SETTINGS_SECTION_KEYBACKUP_INDEX]
+                  withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
+{
+    return [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:textCellForRow inSection:SETTINGS_SECTION_KEYBACKUP_INDEX]];
+}
+
+- (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
+{
+    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+
+    if (!cell)
+    {
+        cell = [[MXKTableViewCellWithButton alloc] init];
+    }
+    else
+    {
+        // Fix https://github.com/vector-im/riot-ios/issues/1354
+        cell.mxkButton.titleLabel.text = nil;
+    }
+
+    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+
+    [cell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    cell.mxkButton.accessibilityIdentifier = nil;
+
+    return cell;
+}
+
+- (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+{
+    [self showKeyBackupSetup];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showVerifyDevice:(NSString *)deviceId
+{
+    MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.myUser.userId deviceId:deviceId];
+    [self showDeviceInfo:deviceInfo];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
+{
+    [self showKeyBackupRecover:keyBackupVersion];
+}
+
+#pragma mark - MXKEncryptionInfoView
+
+- (void)showDeviceInfo:(MXDeviceInfo*)deviceInfo
+{
+    // Show it modally on the root view controller
+    // TODO: Improve it
+    UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+    if (rootViewController)
+    {
+        EncryptionInfoView *encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceInfo andMatrixSession:self.mainSession];
+        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
+
+        encryptionInfoView.delegate = self;
+
+        // Add shadow on added view
+        encryptionInfoView.layer.cornerRadius = 5;
+        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
+        encryptionInfoView.layer.shadowOpacity = 0.5f;
+
+        // Add the view and define edge constraints
+        [rootViewController.view addSubview:encryptionInfoView];
+
+        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+                                                                            attribute:NSLayoutAttributeTop
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:rootViewController.topLayoutGuide
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                           multiplier:1.0f
+                                                                             constant:10.0f]];
+
+        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:rootViewController.bottomLayoutGuide
+                                                                            attribute:NSLayoutAttributeTop
+                                                                           multiplier:1.0f
+                                                                             constant:-10.0f]];
+
+        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:rootViewController.view
+                                                                            attribute:NSLayoutAttributeLeading
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:encryptionInfoView
+                                                                            attribute:NSLayoutAttributeLeading
+                                                                           multiplier:1.0f
+                                                                             constant:-10.0f]];
+
+        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:rootViewController.view
+                                                                            attribute:NSLayoutAttributeTrailing
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:encryptionInfoView
+                                                                            attribute:NSLayoutAttributeTrailing
+                                                                           multiplier:1.0f
+                                                                             constant:10.0f]];
+        [rootViewController.view setNeedsUpdateConstraints];
+    }
+}
+
+- (void)encryptionInfoView:(MXKEncryptionInfoView*)encryptionInfoView didDeviceInfoVerifiedChange:(MXDeviceInfo*)deviceInfo
+{
+    [keyBackupSection reload];
+}
+
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupSetup
+{
+    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:true];
+    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+
+    [keyBackupSection reload];
+}
+
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion
+{
+    keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
+
+    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:true];
+    keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
 
 @end

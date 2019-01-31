@@ -1918,6 +1918,66 @@ internal enum VectorL10n {
   internal static var settingsIgnoredUsers: String { 
     return VectorL10n.tr("Vector", "settings_ignored_users") 
   }
+  /// SECURE MESSAGE
+  internal static var settingsKeyBackup: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup") 
+  }
+  /// Start a new backup
+  internal static var settingsKeyBackupButtonCreate: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_create") 
+  }
+  /// Algorithm: %@
+  internal static func settingsKeyBackupInfoAlgorithm(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_algorithm", p1)
+  }
+  /// No backup is present
+  internal static var settingsKeyBackupInfoNone: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_none") 
+  }
+  /// This device is not using key backup
+  internal static var settingsKeyBackupInfoNotValid: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_not_valid") 
+  }
+  /// Backing up %@ keys...
+  internal static func settingsKeyBackupInfoProgress(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_progress", p1)
+  }
+  /// All keys backed up
+  internal static var settingsKeyBackupInfoProgressDone: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_progress_done") 
+  }
+  /// Backup has a invalid signature from unverified device %@
+  internal static func settingsKeyBackupInfoTrustSignatureInvalidDeviceUnverified(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_invalid_device_unverified", p1)
+  }
+  /// Backup has a invalid signature from verified device %@
+  internal static func settingsKeyBackupInfoTrustSignatureInvalidDeviceVerified(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_invalid_device_verified", p1)
+  }
+  /// Backup has a signature from unknown device with ID %@.
+  internal static func settingsKeyBackupInfoTrustSignatureUnknown(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_unknown", p1)
+  }
+  /// Backup has a valid signature from this device
+  internal static var settingsKeyBackupInfoTrustSignatureValid: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid") 
+  }
+  /// Backup has a valid signature from unverified device %@
+  internal static func settingsKeyBackupInfoTrustSignatureValidDeviceUnverified(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid_device_unverified", p1)
+  }
+  /// Backup has a valid signature from verified device %@
+  internal static func settingsKeyBackupInfoTrustSignatureValidDeviceVerified(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid_device_verified", p1)
+  }
+  /// This device is using key backup
+  internal static var settingsKeyBackupInfoValid: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_valid") 
+  }
+  /// Backup version: %@
+  internal static func settingsKeyBackupInfoVersion(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_key_backup_info_version", p1)
+  }
   /// LABS
   internal static var settingsLabs: String { 
     return VectorL10n.tr("Vector", "settings_labs") 
