@@ -1918,17 +1918,25 @@ internal enum VectorL10n {
   internal static var settingsIgnoredUsers: String { 
     return VectorL10n.tr("Vector", "settings_ignored_users") 
   }
-  /// SECURE MESSAGE
+  /// SECURE MESSAGE RECOVERY
   internal static var settingsKeyBackup: String { 
     return VectorL10n.tr("Vector", "settings_key_backup") 
   }
-  /// Start a new backup
+  /// Set up Secure Message Recovery
   internal static var settingsKeyBackupButtonCreate: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_create") 
   }
   /// Delete backup
   internal static var settingsKeyBackupButtonDelete: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_delete") 
+  }
+  /// Restore backup
+  internal static var settingsKeyBackupButtonRestore: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_restore") 
+  }
+  /// Verify
+  internal static var settingsKeyBackupButtonVerify: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_verify") 
   }
   /// Delete your backed up encryption keys from the server? You will no longer be able to use your recovery key to read encrypted message history
   internal static var settingsKeyBackupDeleteConfirmationPromptMsg: String { 
@@ -1942,11 +1950,11 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoAlgorithm(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_algorithm", p1)
   }
-  /// No backup is present
+  /// Secure Message Recovery has not been set up.
   internal static var settingsKeyBackupInfoNone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_none") 
   }
-  /// This device is not using key backup
+  /// Secure Message Recovery is not active on this device.
   internal static var settingsKeyBackupInfoNotValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_not_valid") 
   }
@@ -1954,7 +1962,7 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoProgress(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress", p1)
   }
-  /// All keys backed up
+  /// All keys have been backed up
   internal static var settingsKeyBackupInfoProgressDone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress_done") 
   }
@@ -1982,11 +1990,11 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoTrustSignatureValidDeviceVerified(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid_device_verified", p1)
   }
-  /// This device is using key backup
+  /// Backup has a valid signature from this device.
   internal static var settingsKeyBackupInfoValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_valid") 
   }
-  /// Backup version: %@
+  /// Key Backup Version: %@
   internal static func settingsKeyBackupInfoVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_version", p1)
   }

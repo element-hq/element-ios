@@ -128,23 +128,35 @@ import UIKit
 
 
     private func numberOfNoBackupRows() -> Int {
-        return 1
+        return 2
     }
 
-    private func renderNoBackupCell(atRow: Int) -> UITableViewCell {
+    private func renderNoBackupCell(atRow row: Int) -> UITableViewCell {
         guard let delegate = self.delegate else {
             return UITableViewCell.init()
         }
 
-        let cell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: 0)
-        cell.mxkTextView.text = VectorL10n.settingsKeyBackupInfoNone
+        var cell: UITableViewCell
+        switch row {
+        case 0:
+            let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
+            infoCell.mxkTextView.text = VectorL10n.settingsKeyBackupInfoNone
+
+            cell = infoCell
+
+        case 1:
+            cell = self.buttonCellForCreate(atRow: row)
+
+        default:
+            cell = UITableViewCell.init()
+        }
 
         return cell
     }
 
 
     private func numberOfBackupRows() -> Int {
-        return 3
+        return 5
     }
 
     private func renderBackupCell(atRow row: Int, keyBackupVersion: MXKeyBackupVersion, keyBackupVersionTrust: MXKeyBackupVersionTrust) -> UITableViewCell {
@@ -157,21 +169,37 @@ import UIKit
         case 0:
             let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
 
-            let version = VectorL10n.settingsKeyBackupInfoVersion(keyBackupVersion.version ?? "")
-            let algorithm = VectorL10n.settingsKeyBackupInfoAlgorithm(keyBackupVersion.algorithm)
             let backupStatus = VectorL10n.settingsKeyBackupInfoValid
             let uploadStatus = VectorL10n.settingsKeyBackupInfoProgressDone
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
 
-            let strings = [version, algorithm, backupStatus, uploadStatus] + backupTrust
+            let strings = [backupStatus, uploadStatus]
             infoCell.mxkTextView.text = strings.joined(separator: "\n")
 
             cell = infoCell
 
         case 1:
-            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row)
+            let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
+
+            let version = VectorL10n.settingsKeyBackupInfoVersion(keyBackupVersion.version ?? "")
+            let algorithm = VectorL10n.settingsKeyBackupInfoAlgorithm(keyBackupVersion.algorithm)
+
+            let strings = [version, algorithm]
+            infoCell.mxkTextView.text = strings.joined(separator: "\n")
+
+            cell = infoCell
 
         case 2:
+            let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
+
+            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
+            infoCell.mxkTextView.text = backupTrust.joined(separator: "\n")
+
+            cell = infoCell
+
+        case 3:
+            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row)
+
+        case 4:
             cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
 
         default:
@@ -183,7 +211,7 @@ import UIKit
 
 
     private func numberOfBackupAndRunningRows() -> Int {
-        return 3
+        return 5
     }
 
     private func renderBackupAndRunningCell(atRow row: Int, keyBackupVersion: MXKeyBackupVersion, keyBackupVersionTrust: MXKeyBackupVersionTrust, backupProgress: Progress) -> UITableViewCell {
@@ -198,21 +226,37 @@ import UIKit
 
             let remaining = backupProgress.totalUnitCount - backupProgress.completedUnitCount
 
-            let version = VectorL10n.settingsKeyBackupInfoVersion(keyBackupVersion.version ?? "")
-            let algorithm = VectorL10n.settingsKeyBackupInfoAlgorithm(keyBackupVersion.algorithm)
             let backupStatus = VectorL10n.settingsKeyBackupInfoValid
             let uploadStatus = VectorL10n.settingsKeyBackupInfoProgress(String(remaining))
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
 
-            let strings = [version, algorithm, backupStatus, uploadStatus] + backupTrust
+            let strings = [backupStatus, uploadStatus]
             infoCell.mxkTextView.text = strings.joined(separator: "\n")
 
             cell = infoCell
 
         case 1:
-            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row)
+            let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
+
+            let version = VectorL10n.settingsKeyBackupInfoVersion(keyBackupVersion.version ?? "")
+            let algorithm = VectorL10n.settingsKeyBackupInfoAlgorithm(keyBackupVersion.algorithm)
+
+            let strings = [version, algorithm]
+            infoCell.mxkTextView.text = strings.joined(separator: "\n")
+
+            cell = infoCell
 
         case 2:
+            let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
+
+            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
+            infoCell.mxkTextView.text = backupTrust.joined(separator: "\n")
+
+            cell = infoCell
+
+        case 3:
+            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row)
+
+        case 4:
             cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
 
         default:
@@ -342,7 +386,7 @@ import UIKit
 
         let cell:MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
 
-        let btnTitle = "Start a new backup"
+        let btnTitle = VectorL10n.settingsKeyBackupButtonCreate
         cell.mxkButton.setTitle(btnTitle, for: .normal)
         cell.mxkButton.setTitle(btnTitle, for: .highlighted)
 
@@ -361,7 +405,7 @@ import UIKit
 
         let cell:MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
 
-        let btnTitle = "Verify..."
+        let btnTitle = VectorL10n.settingsKeyBackupButtonVerify
         cell.mxkButton.setTitle(btnTitle, for: .normal)
         cell.mxkButton.setTitle(btnTitle, for: .highlighted)
 
@@ -378,7 +422,7 @@ import UIKit
         }
 
         let cell:MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
-        let btnTitle = "Restore backup"
+        let btnTitle = VectorL10n.settingsKeyBackupButtonRestore
         cell.mxkButton.setTitle(btnTitle, for: .normal)
         cell.mxkButton.setTitle(btnTitle, for: .highlighted)
         cell.mxkButton.vc_addAction {
