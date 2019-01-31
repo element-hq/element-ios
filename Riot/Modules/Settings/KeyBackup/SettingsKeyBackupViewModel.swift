@@ -55,6 +55,9 @@ class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
         case .restore(let keyBackupVersion):
             viewDelegate.settingsKeyBackup(self, showKeyBackupRecover: keyBackupVersion)
             break
+        case .confirmDelete(let keyBackupVersion):
+            viewDelegate.settingsKeyBackup(self, showKeyBackupDeleteConfirm: keyBackupVersion)
+            break
         case .delete(let keyBackupVersion):
             self.deleteKeyBackupVersion(keyBackupVersion)
             break

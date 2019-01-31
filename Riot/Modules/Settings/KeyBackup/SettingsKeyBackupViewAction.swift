@@ -21,5 +21,6 @@ enum SettingsKeyBackupViewAction {
     case create
     case verify(String)
     case restore(MXKeyBackupVersion)
+    case confirmDelete(MXKeyBackupVersion)
     case delete(MXKeyBackupVersion)
 }

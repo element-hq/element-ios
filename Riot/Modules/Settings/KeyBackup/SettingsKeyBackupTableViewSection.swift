@@ -26,6 +26,7 @@ import UIKit
     func settingsKeyBackupTableViewSectionShowKeyBackupSetup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection)
     func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showVerifyDevice deviceId:String)
     func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupRecover keyBackupVersion:MXKeyBackupVersion)
+    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupDeleteConfirm keyBackupVersion:MXKeyBackupVersion)
 }
 
 @objc class SettingsKeyBackupTableViewSection: NSObject {
@@ -54,6 +55,10 @@ import UIKit
 
     @objc func reload() {
         self.viewModel.process(viewAction: .load)
+    }
+
+    @objc func delete(keyBackupVersion: MXKeyBackupVersion) {
+        self.viewModel.process(viewAction: .delete(keyBackupVersion))
     }
 
     // MARK: - Private
@@ -281,13 +286,12 @@ import UIKit
         }
 
         let deleteCell:MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: fromCellIndex + 1)
-        let deleteTitle = "Delete backup"
+        let deleteTitle = VectorL10n.settingsKeyBackupButtonDelete
         deleteCell.mxkButton.setTitle(deleteTitle, for: .normal)
         deleteCell.mxkButton.setTitle(deleteTitle, for: .highlighted)
         deleteCell.mxkButton.tintColor = ThemeService.shared().theme.warningColor
         deleteCell.mxkButton.vc_addAction {
-            // TODO: Ask confirmation
-            self.viewModel.process(viewAction: .delete(keyBackupVersion))
+            self.viewModel.process(viewAction: .confirmDelete(keyBackupVersion))
         }
 
         return [restoreCell, deleteCell]
@@ -308,5 +312,8 @@ extension SettingsKeyBackupTableViewSection: SettingsKeyBackupViewModelViewDeleg
     }
     func settingsKeyBackup(_ viewModel: SettingsKeyBackupViewModelType, showKeyBackupRecover keyBackupVersion: MXKeyBackupVersion) {
         self.delegate?.settingsKeyBackup(self, showKeyBackupRecover: keyBackupVersion)
+    }
+    func settingsKeyBackup(_ viewModel: SettingsKeyBackupViewModelType, showKeyBackupDeleteConfirm keyBackupVersion: MXKeyBackupVersion) {
+        self.delegate?.settingsKeyBackup(self, showKeyBackupDeleteConfirm: keyBackupVersion)
     }
 }

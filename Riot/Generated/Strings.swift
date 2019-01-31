@@ -1926,6 +1926,18 @@ internal enum VectorL10n {
   internal static var settingsKeyBackupButtonCreate: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_create") 
   }
+  /// Delete backup
+  internal static var settingsKeyBackupButtonDelete: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_delete") 
+  }
+  /// Delete your backed up encryption keys from the server? You will no longer be able to use your recovery key to read encrypted message history
+  internal static var settingsKeyBackupDeleteConfirmationPromptMsg: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_delete_confirmation_prompt_msg") 
+  }
+  /// Delete Backup
+  internal static var settingsKeyBackupDeleteConfirmationPromptTitle: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_delete_confirmation_prompt_title") 
+  }
   /// Algorithm: %@
   internal static func settingsKeyBackupInfoAlgorithm(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_algorithm", p1)
