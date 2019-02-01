@@ -40,7 +40,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <KeyBackupSetupBannerCellDelegate>
+@interface RecentsDataSource() <KeyBackupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
@@ -173,6 +173,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
         
+        NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
+        
         switch (self.mxSession.crypto.backup.state) {
             case MXKeyBackupStateDisabled:
                 // Show key backup setup banner only if user has not hidden it once.
@@ -187,8 +189,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 break;
             case MXKeyBackupStateNotTrusted:
             case MXKeyBackupStateWrongBackUpVersion:
-                // TODO: Show key backup recover banner.
-                keyBackupBanner = KeyBackupBannerNone;
+                // Show key backup recover banner only if user has not hidden it for the given version.
+                if (keyBackupVersion && [keyBackupBannersPreferences isRecoverBannerHiddenFor:keyBackupVersion])
+                {
+                    keyBackupBanner = KeyBackupBannerNone;
+                }
+                else
+                {
+                    keyBackupBanner = KeyBackupBannerRecover;
+                }
                 break;
             default:
                 keyBackupBanner = KeyBackupBannerNone;
@@ -208,7 +217,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             keyBackupBannersPreferences.hideSetupBanner = YES;
             break;
         case KeyBackupBannerRecover:
-            // TODO: Hide key backup recover banner.
+        {
+            NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
+            if (keyBackupVersion)
+            {
+                [keyBackupBannersPreferences hideRecoverBannerFor:keyBackupVersion];
+            }
+        }
             break;
         default:
             break;
@@ -913,20 +928,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (indexPath.section == self.keyBackupBannerSection)
     {
-        UITableViewCell* cell;
-        
-        switch (self.keyBackupBanner) {
-            case KeyBackupBannerSetup: {
-                KeyBackupSetupBannerCell* keyBackupSetupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyBackupSetupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
-                keyBackupSetupBannerCell.delegate = self;
-                cell = keyBackupSetupBannerCell;
-            }
-                break;
-            default:
-                break;
-        }
-        
-        return cell;
+        KeyBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        [keyBackupBannerCell configureFor:self.keyBackupBanner];
+        keyBackupBannerCell.delegate = self;
+        return keyBackupBannerCell;
     }
     else if (indexPath.section == directorySection)
     {
@@ -1717,7 +1722,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 #pragma mark - KeyBackupSetupBannerCellDelegate
 
-- (void)keyBackupSetupBannerCellDidTapCloseAction:(KeyBackupSetupBannerCell * _Nonnull)cell
+- (void)keyBackupBannerCellDidTapCloseAction:(KeyBackupBannerCell * _Nonnull)cell
 {
     [self hideKeyBackupBanner:self.keyBackupBanner];
 }

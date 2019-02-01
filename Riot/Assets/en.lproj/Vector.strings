@@ -740,3 +740,8 @@
 
 "key_backup_setup_banner_title_part1" = "Set up Secure Message Recovery";
 "key_backup_setup_banner_title_part2" = " to never lose encrypted messages";
+
+// MARK: Key backup recover banner
+
+"key_backup_recover_banner_title_part1" = "Run Secure Message Recovery";
+"key_backup_recover_banner_title_part2" = " to read encrypted message history on this device";
