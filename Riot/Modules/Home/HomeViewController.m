@@ -432,8 +432,10 @@
             case KeyBackupBannerSetup:
                 [self presentKeyBackupSetup];
                 break;
-            default:
+            case KeyBackupBannerRecover:
                 [self presentKeyBackupRecover];
+                break;
+            default:
                 break;
         }
     }

@@ -189,7 +189,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 break;
             case MXKeyBackupStateNotTrusted:
             case MXKeyBackupStateWrongBackUpVersion:
-                // Show key backup recover banner only if user has not hidden it for the gieven versiopn.
+                // Show key backup recover banner only if user has not hidden it for the given version.
                 if (keyBackupVersion && [keyBackupBannersPreferences isRecoverBannerHiddenFor:keyBackupVersion])
                 {
                     keyBackupBanner = KeyBackupBannerNone;
@@ -915,36 +915,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
     return sectionHeader;
 }
-
-//- (void)configureKeyBackupBannerCell:(KeyBackupBannerCell*)keyBackupBannerCell forKeyBackupBanner:(KeyBackupBanner)keyBackupBanner {
-//
-//    NSAttributedString *attributedTitle;
-//
-//    id<Theme> theme = ThemeService.shared.theme;
-//
-//    switch (keyBackupBanner) {
-//        case KeyBackupBannerSetup:
-//        {
-//            NSMutableAttributedString *setupAttributedTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"key_backup_setup_banner_title_part1", @"Vector", nil) attributes:@{ NSForegroundColorAttributeName: theme.tintColor}];
-//            [setupAttributedTitle appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"key_backup_setup_banner_title_part2", @"Vector", nil) attributes:@{ NSForegroundColorAttributeName: theme.textPrimaryColor }]];
-//
-//            attributedTitle = setupAttributedTitle;
-//        }
-//            break;
-//        case KeyBackupBannerRecover:
-//        {
-//            NSMutableAttributedString *setupAttributedTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"key_backup_recover_banner_title_part1", @"Vector", nil) attributes:@{ NSForegroundColorAttributeName: theme.tintColor}];
-//            [setupAttributedTitle appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"key_backup_recover_banner_title_part2", @"Vector", nil) attributes:@{ NSForegroundColorAttributeName: theme.textPrimaryColor }]];
-//
-//            attributedTitle = setupAttributedTitle;
-//        }
-//            break;
-//        default:
-//            break;
-//    }
-//
-//    [keyBackupBannerCell fillWith:attributedTitle];
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
