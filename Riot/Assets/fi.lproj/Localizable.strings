@@ -1,0 +1,2 @@
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "Viesti käyttäjältä %@";
