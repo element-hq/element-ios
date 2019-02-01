@@ -18,7 +18,8 @@
 #import "RoomIdOrAliasTableViewCell.h"
 
 #import "AvatarGenerator.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @implementation RoomIdOrAliasTableViewCell
 
@@ -28,7 +29,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = kRiotPrimaryTextColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 }
 
 - (void)layoutSubviews
@@ -48,7 +49,8 @@
     }
     else
     {
-        self.avatarImageView.image = [UIImage imageNamed:@"placeholder"];
+        self.avatarImageView.image = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                                                withColor:ThemeService.shared.theme.tintColor];
     }
     
     self.titleLabel.text = roomIdOrAlias;

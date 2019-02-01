@@ -18,8 +18,9 @@
 #import "GroupHomeViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Tools.h"
 
 #import "MXGroup+Riot.h"
@@ -35,8 +36,8 @@
      */
     BOOL isStatusBarHidden;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     // The options used to load long description html content.
     NSDictionary *options;
@@ -102,7 +103,7 @@
     _groupAvatarMask.userInteractionEnabled = YES;
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -112,38 +113,38 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    self.mainHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.mainHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
-    _groupName.textColor = kRiotPrimaryTextColor;
+    _groupName.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    _groupDescription.textColor = kRiotTopicTextColor;
+    _groupDescription.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     _groupDescription.numberOfLines = 0;
     
-    self.inviteLabel.textColor = kRiotTopicTextColor;
+    self.inviteLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     self.inviteLabel.numberOfLines = 0;
     
-    self.separatorView.backgroundColor = kRiotSecondaryBgColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kRiotColorBlue;
+    self.leftButton.backgroundColor = ThemeService.shared.riotColorBlue;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kRiotColorBlue;
+    self.rightButton.backgroundColor = ThemeService.shared.riotColorBlue;
     
     if (_groupLongDescription)
     {
-        _groupLongDescription.textColor = kRiotSecondaryTextColor;
-        _groupLongDescription.tintColor = kRiotColorBlue;
+        _groupLongDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
+        _groupLongDescription.tintColor = ThemeService.shared.riotColorBlue;
         
         // Update HTML loading options
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
         NSString *defaultCSS = [NSString stringWithFormat:@" \
                       pre,code { \
                       background-color: #%06lX; \
@@ -169,7 +170,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -258,10 +259,10 @@
     [currentRequest cancel];
     currentRequest = nil;
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -480,7 +481,7 @@
     _groupAvatar.layer.cornerRadius = _groupAvatar.frame.size.width / 2;
     _groupAvatar.clipsToBounds = YES;
     
-    _groupAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
+    _groupAvatar.defaultBackgroundColor = ThemeService.shared.theme.headerBackgroundColor;
 }
 
 - (void)refreshGroupLongDescription

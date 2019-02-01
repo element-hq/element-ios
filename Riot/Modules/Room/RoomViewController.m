@@ -203,8 +203,8 @@
     // The right bar button items back up.
     NSArray<UIBarButtonItem *> *rightBarButtonItems;
 
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     // Tell whether the input text field is in send reply mode. If true typed message will be sent to highlighted event.
     BOOL isInReplyMode;
@@ -408,7 +408,7 @@
     }
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -418,24 +418,25 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    self.navigationController.navigationBar.translucent = YES;
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = kRiotPrimaryBgColor;
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotPrimaryTextColor, NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
+    self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: ThemeService.shared.theme.textPrimaryColor, NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
     
     
-    self.expandedHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
-    self.previewHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
+    self.expandedHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
-    missedDiscussionsBadgeLabel.textColor = kRiotPrimaryBgColor;
+    missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.backgroundColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -446,7 +447,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -1141,10 +1142,10 @@
     
     [self removeTypingNotificationsListener];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
@@ -1330,7 +1331,7 @@
                     // Show it in red only for room widgets, not user's widgets
                     // TODO: Design must be reviewed
                     UIImage *icon = self.navigationItem.rightBarButtonItems[1].image;
-                    icon = [MXKTools paintImage:icon withColor:kRiotColorPinkRed];
+                    icon = [MXKTools paintImage:icon withColor:ThemeService.shared.theme.warningColor];
                     icon = [icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
                     self.navigationItem.rightBarButtonItems[1].image = icon;
@@ -1543,6 +1544,7 @@
         // Report shadow image
         [mainNavigationController.navigationBar setShadowImage:shadowImage];
         [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
+        mainNavigationController.navigationBar.translucent = isVisible;
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
@@ -1626,6 +1628,14 @@
             }
             
             self.previewHeaderContainer.hidden = NO;
+
+            // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+            UINavigationController *mainNavigationController = self.navigationController;
+            if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+            {
+                mainNavigationController = self.splitViewController.viewControllers.firstObject;
+            }
+            mainNavigationController.navigationBar.translucent = isVisible;
             
             // Finalize preview header display according to the screen orientation
             [self refreshPreviewHeader:UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])];
@@ -1741,7 +1751,8 @@
             }
             else
             {
-                previewHeader.roomAvatarPlaceholder = [UIImage imageNamed:@"placeholder"];
+                previewHeader.roomAvatarPlaceholder = [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                                                                 withColor:ThemeService.shared.theme.tintColor];
             }
         }
         
@@ -2233,7 +2244,7 @@
                                                                    
                                                                    [self cancelEventSelection];
                                                                    
-                                                                   NSArray *activityItems = [NSArray arrayWithObjects:selectedComponent.textMessage, nil];
+                                                                   NSArray *activityItems = @[selectedComponent.textMessage];
                                                                    
                                                                    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
                                                                    
@@ -2571,12 +2582,12 @@
                                                                        if (weakSelf)
                                                                        {
                                                                            typeof(self) self = weakSelf;
-                                                                           UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                                           NSString *text = [self->currentAlert textFields].firstObject.text;
                                                                            self->currentAlert = nil;
                                                                            
                                                                            [self startActivityIndicator];
                                                                            
-                                                                           [self.roomDataSource.room reportEvent:selectedEvent.eventId score:-100 reason:textField.text success:^{
+                                                                           [self.roomDataSource.room reportEvent:selectedEvent.eventId score:-100 reason:text success:^{
                                                                                
                                                                                __strong __typeof(weakSelf)self = weakSelf;
                                                                                [self stopActivityIndicator];
@@ -2974,7 +2985,7 @@
             {
                 // Create the contact related to this member
                 MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
-                [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:mxMember.userId];
+                contactsDataSource.ignoredContactsByMatrixId[mxMember.userId] = contact;
             }
         }
 
@@ -3080,7 +3091,7 @@
 {
     __weak __typeof(self) weakSelf = self;
 
-    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
     // Check app permissions first
     [MXKTools checkAccessForCall:video
@@ -3327,13 +3338,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -3400,7 +3411,7 @@
         [super scrollViewWillBeginDragging:scrollView];
     }
     
-    if (self.expandedHeaderContainer.isHidden == NO)
+    if (!self.expandedHeaderContainer.isHidden)
     {
         // Store here the position of the first touch down event
         UIPanGestureRecognizer *panGestureRecognizer = scrollView.panGestureRecognizer;
@@ -3728,7 +3739,7 @@
         // keeps the only the first two users
         for(int i = 0; i < MIN(count, 2); i++)
         {
-            NSString* name = [currentTypingUsers objectAtIndex:i];
+            NSString* name = currentTypingUsers[i];
             
             MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:name];
             
@@ -3750,15 +3761,15 @@
         }
         else if (1 == names.count)
         {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), names[0]];
         }
         else if (2 == names.count)
         {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), names[0], names[1]];
         }
         else
         {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), names[0], names[1]];
         }
         
         [((RoomActivitiesView*) self.activitiesView) displayTypingNotification:text];
@@ -3985,7 +3996,7 @@
                     NSLog(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
 
                     __weak __typeof(self) weakSelf = self;
-                    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+                    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
                     // Check app permissions first
                     [MXKTools checkAccessForCall:video
@@ -4219,11 +4230,11 @@
             // Set the right background color
             if (highlightCount)
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = kRiotColorPinkRed;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationPrimaryColor;
             }
             else
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = kRiotColorGreen;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationSecondaryColor;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)

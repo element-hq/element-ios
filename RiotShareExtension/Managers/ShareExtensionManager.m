@@ -19,6 +19,7 @@
 #import <MatrixKit/MatrixKit.h>
 @import MobileCoreServices;
 #import "objc/runtime.h"
+#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 
 NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
@@ -73,6 +74,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         sdkOptions.disableIdenticonUseForUserAvatar = YES;
         // Enable e2e encryption for newly created MXSession
         sdkOptions.enableCryptoWhenStartingMXSession = YES;
+        // Use UIKit BackgroundTask for handling background tasks in the SDK
+        sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
         
         // Customize the localized string table
         [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
@@ -215,13 +218,31 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
             {
                 itemProvider.isLoaded = NO;
-                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(NSData *imageData, NSError * _Null_unspecified error)
+                
+                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(id<NSSecureCoding> _Nullable itemProviderItem, NSError * _Null_unspecified error)
                  {
                      if (weakSelf)
                      {
                          typeof(self) self = weakSelf;
                          itemProvider.isLoaded = YES;
-
+                         
+                         NSData *imageData;
+                         
+                         if ([(NSObject *)itemProviderItem isKindOfClass:[NSData class]])
+                         {
+                             imageData = (NSData*)itemProviderItem;
+                         }
+                         else if ([(NSObject *)itemProviderItem isKindOfClass:[NSURL class]])
+                         {
+                             NSURL *imageURL = (NSURL*)itemProviderItem;
+                             imageData = [NSData dataWithContentsOfURL:imageURL];
+                         }
+                         else if ([(NSObject *)itemProviderItem isKindOfClass:[UIImage class]])
+                         {
+                             UIImage *image = (UIImage*)itemProviderItem;
+                             imageData = UIImageJPEGRepresentation(image, 1.0);
+                         }
+                         
                          if (imageData)
                          {
                              [self.pendingImages addObject:imageData];
@@ -233,10 +254,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          
                          if ([self areAttachmentsFullyLoaded])
                          {
-                             UIAlertController *compressionPrompt = [self compressionPromptForImage:self.pendingImages.firstObject shareBlock:^{
+                             UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
                                  [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
                              }];
-
+                             
                              if (compressionPrompt)
                              {
                                  [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
@@ -311,6 +332,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     [self.primaryViewController destroy];
     self.primaryViewController = nil;
+    
+    // FIXME: Share extension memory usage increase when launched several times and then crash due to some memory leaks.
+    // For now, we force the share extension to exit and free memory.
+    [NSException raise:@"Kill the app extension" format:@"Free memory used by share extension"];
 }
 
 #pragma mark - Private
@@ -327,15 +352,51 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     [self.primaryViewController destroy];
     self.primaryViewController = nil;
+    
+    // FIXME: Share extension memory usage increase when launched several times and then crash due to some memory leaks.
+    // For now, we force the share extension to exit and free memory.
+    [NSException raise:@"Kill the app extension" format:@"Free memory used by share extension"];
 }
 
-- (UIAlertController *)compressionPromptForImage:(NSData *)imageData shareBlock:(void(^)())shareBlock
+- (BOOL)isAPendingImageNotOrientedUp
 {
+    BOOL isAPendingImageNotOrientedUp = NO;
+    
+    for (NSData *imageData in self.pendingImages)
+    {
+        @autoreleasepool
+        {
+            UIImage *image = [UIImage imageWithData:imageData];
+            
+            if (image && image.imageOrientation != UIImageOrientationUp)
+            {
+                isAPendingImageNotOrientedUp = YES;
+                break;
+            }
+        }
+    }
+    
+    return isAPendingImageNotOrientedUp;
+}
+
+// TODO: When select multiple images:
+// - Enhance prompt to display sum of all file sizes for each compression.
+// - Find a way to choose compression sizes for all images.
+- (UIAlertController *)compressionPromptForPendingImagesWithShareBlock:(void(^)(void))shareBlock
+{
+    if (!self.pendingImages.count)
+    {
+        return nil;
+    }
+    
     UIAlertController *compressionPrompt;
-    UIImage *image = [UIImage imageWithData:imageData];
+    BOOL isAPendingImageNotOrientedUp = [self isAPendingImageNotOrientedUp];
+    
+    NSData *firstImageData = self.pendingImages.firstObject;
+    UIImage *firstImage = [UIImage imageWithData:firstImageData];
     
     // Get available sizes for this image
-    MXKImageCompressionSizes compressionSizes = [MXKTools availableCompressionSizesForImage:image originalFileSize:imageData.length];
+    MXKImageCompressionSizes compressionSizes = [MXKTools availableCompressionSizesForImage:firstImage originalFileSize:firstImageData.length];
     
     // Apply the compression mode
     if (compressionSizes.small.fileSize || compressionSizes.medium.fileSize || compressionSizes.large.fileSize)
@@ -364,8 +425,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         {
                                                                             shareBlock();
                                                                         }
-                                                                        
-                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
                                                                     }
                                                                     
                                                                 }]];
@@ -391,8 +450,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         {
                                                                             shareBlock();
                                                                         }
-                                                                        
-                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
                                                                     }
                                                                     
                                                                 }]];
@@ -419,15 +476,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         {
                                                                             shareBlock();
                                                                         }
-                                                                        
-                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
                                                                     }
                                                                     
                                                                 }]];
         }
         
         // To limit memory consumption, we suggest the original resolution only if the image orientation is up, or if the image size is moderate
-        if (image.imageOrientation == UIImageOrientationUp || !compressionSizes.large.fileSize)
+        if (!isAPendingImageNotOrientedUp || !compressionSizes.large.fileSize)
         {
             NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.original.fileSize round:NO], (int)compressionSizes.original.imageSize.width, (int)compressionSizes.original.imageSize.height];
             
@@ -446,8 +501,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         {
                                                                             shareBlock();
                                                                         }
-                                                                        
-                                                                        [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
                                                                     }
                                                                     
                                                                 }]];
@@ -455,20 +508,21 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                               style:UIAlertActionStyleCancel
-                                                            handler:^(UIAlertAction * action) {
-                                                                
-                                                                if (weakSelf)
-                                                                {
-                                                                    [compressionPrompt dismissViewControllerAnimated:YES completion:nil];
-                                                                }
-                                                                
-                                                            }]];
+                                                            handler:nil]];
         
         
     }
     else
     {
-        self.imageCompressionMode = ImageCompressionModeNone;
+        if (isAPendingImageNotOrientedUp && self.pendingImages.count > 1)
+        {
+            self.imageCompressionMode = ImageCompressionModeSmall;
+        }
+        else
+        {
+            self.imageCompressionMode = ImageCompressionModeNone;
+        }
+        
         if (shareBlock)
         {
             shareBlock();
@@ -599,113 +653,139 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
 {
+    if (imageDatas.count == 0)
+    {
+        NSLog(@"[ShareExtensionManager] sendImages: no images to send.");
+        
+        if (failureBlock)
+        {
+            failureBlock(nil);
+        }
+        return;
+    }
+    
     [self didStartSendingToRoom:room];
     
     __block NSUInteger count = imageDatas.count;
     
     for (NSInteger index = 0; index < imageDatas.count; index++)
     {
-        NSItemProvider *itemProvider = itemProviders[index];
-        NSData *imageData = imageDatas[index];
-        UIImage *image = [UIImage imageWithData:imageData];
-        
-        if (!image)
+        @autoreleasepool
         {
-            NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
-            if (failureBlock)
-            {
-                failureBlock(nil);
-                failureBlock = nil;
-            }
-            return;
-        }
-        
-        // Prepare the image
-        UIImage *convertedImage = image;
-        
-        if (self.imageCompressionMode == ImageCompressionModeSmall)
-        {
-            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE)];
-        }
-        else if (self.imageCompressionMode == ImageCompressionModeMedium)
-        {
-            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE)];
-        }
-        else if (self.imageCompressionMode == ImageCompressionModeLarge)
-        {
-            convertedImage = [MXKTools reduceImage:image toFitInSize:CGSizeMake(self.actualLargeSize, self.actualLargeSize)];
-        }
-        
-        // Make sure the uploaded image orientation is up
-        convertedImage = [MXKTools forceImageOrientationUp:convertedImage];
-        
-        NSString *mimeType;
-        if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
-        {
-            mimeType = @"image/png";
-            if (convertedImage != image)
-            {
-                imageData = UIImagePNGRepresentation(convertedImage);
-            }
-        }
-        else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
-        {
-            mimeType = @"image/jpeg";
-            if (convertedImage != image)
-            {
-                imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
-            }
-        }
-        else
-        {
-            // Other image types like GIF 
-            NSString *imageFileName = itemProvider.registeredTypeIdentifiers[0];
-            mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)imageFileName, kUTTagClassMIMEType);
-        }
-
-        // Sanity check
-        if (!mimeType)
-        {
-            NSLog(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
-            if (failureBlock)
-            {
-                failureBlock(nil);
-            }
-            return;
-        }
-        
-        UIImage *thumbnail = nil;
-        // Thumbnail is useful only in case of encrypted room
-        if (room.summary.isEncrypted)
-        {
-            thumbnail = [MXKTools reduceImage:convertedImage toFitInSize:CGSizeMake(800, 600)];
-            if (thumbnail == convertedImage)
-            {
-                thumbnail = nil;
-            }
-        }
-        
-        __weak typeof(self) weakSelf = self;
-        
-        [room sendImage:imageData withImageSize:convertedImage.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+            NSItemProvider *itemProvider = itemProviders[index];
+            NSData *imageData = imageDatas[index];
+            UIImage *image = [UIImage imageWithData:imageData];
             
-            if (!--count && weakSelf)
+            if (!image)
             {
-                typeof(self) self = weakSelf;
+                NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+                if (failureBlock)
+                {
+                    failureBlock(nil);
+                }
+                return;
+            }
+            
+            // Prepare the image
+            UIImage *convertedImage;
+            CGSize newImageSize;
+            
+            switch (self.imageCompressionMode) {
+                case ImageCompressionModeSmall:
+                    newImageSize = CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE);
+                    break;
+                case ImageCompressionModeMedium:
+                    newImageSize = CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE);
+                    break;
+                case ImageCompressionModeLarge:
+                    newImageSize = CGSizeMake(self.actualLargeSize, self.actualLargeSize);
+                    break;
+                default:
+                    newImageSize = CGSizeZero;
+                    break;
+            }
+            
+            if (CGSizeEqualToSize(newImageSize, CGSizeZero))
+            {
+                // No resize to make
+                // Make sure the uploaded image orientation is up
+                convertedImage = [MXKTools forceImageOrientationUp:image];
+            }
+            else
+            {
+                // Resize the image and set image in right orientation too
+                convertedImage = [MXKTools resizeImageWithData:imageData toFitInSize:newImageSize];
+            }
+            
+            NSString *mimeType;
+            if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
+            {
+                mimeType = @"image/png";
+                if (convertedImage != image)
+                {
+                    imageData = UIImagePNGRepresentation(convertedImage);
+                }
+            }
+            else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
+            {
+                mimeType = @"image/jpeg";
+                if (convertedImage != image)
+                {
+                    imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
+                }
+            }
+            else
+            {
+                // Other image types like GIF
+                NSString *imageFileName = itemProvider.registeredTypeIdentifiers[0];
+                mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)imageFileName, kUTTagClassMIMEType);
+            }
+            
+            // Sanity check
+            if (!mimeType)
+            {
+                NSLog(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
+                if (failureBlock)
+                {
+                    failureBlock(nil);
+                }
+                return;
+            }
+            
+            UIImage *thumbnail = nil;
+            // Thumbnail is useful only in case of encrypted room
+            if (room.summary.isEncrypted)
+            {
+                thumbnail = [MXKTools reduceImage:convertedImage toFitInSize:CGSizeMake(800, 600)];
+                if (thumbnail == convertedImage)
+                {
+                    thumbnail = nil;
+                }
+            }
+            
+            __weak typeof(self) weakSelf = self;
+            
+            [room sendImage:imageData withImageSize:convertedImage.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
                 
-                [self resetPendingData];
-                [self.shareExtensionContext completeRequestReturningItems:@[extensionItem] completionHandler:nil];
-            }
+                if (!--count && weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self resetPendingData];
+                    [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+                }
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[ShareExtensionManager] sendImage failed.");
+                if (failureBlock)
+                {
+                    failureBlock(error);
+                }
+                
+            }];
             
-        } failure:^(NSError *error) {
-            
-            NSLog(@"[ShareExtensionManager] sendImage failed.");
-            if (failureBlock)
-            {
-                failureBlock(error);
-            }
-            
-        }];
+        }
     }
 }
 
@@ -757,7 +837,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)setIsLoaded:(BOOL)isLoaded
 {
-    NSNumber *number = [NSNumber numberWithBool:isLoaded];
+    NSNumber *number = @(isLoaded);
     objc_setAssociatedObject(self, @selector(isLoaded), number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

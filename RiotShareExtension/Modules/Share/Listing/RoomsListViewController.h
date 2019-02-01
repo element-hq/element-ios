@@ -20,6 +20,6 @@
 
 @interface RoomsListViewController : MXKRecentListViewController
 
-@property (copy) void (^failureBlock)();
+@property (copy) void (^failureBlock)(void);
 
 @end

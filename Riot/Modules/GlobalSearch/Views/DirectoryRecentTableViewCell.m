@@ -19,7 +19,8 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @implementation DirectoryRecentTableViewCell
 
@@ -29,8 +30,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = kRiotPrimaryTextColor;
-    self.descriptionLabel.textColor = kRiotSecondaryTextColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.descriptionLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 }
 
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource

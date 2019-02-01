@@ -1,11 +1,47 @@
-Changes in 0.7.9 (2018-12-)
+Changes in 0.7.12 (2019-xx-xx)
 ===============================================
 
 Improvements:
-* Upgrade MatrixKit version (v0.9.2).
+ * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
+ * Use modern literals and array/dictionary syntax where possible (PR #2160).
+ * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
+ * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
+ * Clean up iOS version checking (#2190).
+ * Key backup: Implement setup screen (#2198).
+ * Key backup: Implement recover screen (#2196).
+ * Key backup: Add a dedicated section to settings (#2193).
+ * Key backup: Implement setup reminder (#2211).
+ * Key backup: Implement recover reminder (#2206).
+ 
+Bug fix:
+ * Use white scroll bar on dark themes (#2158).
+ * Registration: fix tap gesture on checkboxes in the terms screen.
+ * Registration: improve validation UX on the terms screen (#2164).
+ * Registration: improve scrolling on the reCaptcha screen (#2165).
+ * Infinite loading wheel when taping on a fake room alias (#679).
+ * Ban and kick reasons are silently discarded (#2162).
+
+Changes in 0.7.11 (2019-01-08)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.3).
+ * Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+
+Changes in 0.7.10 (2019-01-04)
+===============================================
 
 Bug fix:
-* Registration: email or phone number is no more skippable (#2140).
+ * Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.
+
+Changes in 0.7.9 (2019-01-04)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.2).
+
+Bug fix:
+ * Registration: email or phone number is no more skippable (#2140).
 
 Changes in 0.7.8 (2018-12-12)
 ===============================================

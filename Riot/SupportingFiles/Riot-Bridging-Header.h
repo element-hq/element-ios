@@ -7,5 +7,6 @@
 
 #import "WebViewViewController.h"
 #import "RiotNavigationController.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "TableViewCellWithCheckBoxAndLabel.h"
+#import "RecentsDataSource.h"

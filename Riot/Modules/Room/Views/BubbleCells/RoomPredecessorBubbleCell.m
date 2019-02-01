@@ -17,7 +17,8 @@
 
 #import "RoomPredecessorBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 #pragma mark - Defines & Constants
 
@@ -57,8 +58,8 @@ static CGFloat const kCustomBackgroundCornerRadius = 5.0;
 {
     [super customizeTableViewCellRendering];
     
-    self.messageTextView.tintColor = kRiotPrimaryTextColor;
-    self.customBackgroundView.backgroundColor = kRiotSecondaryBgColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.textPrimaryColor;
+    self.customBackgroundView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
 }
 
 @end

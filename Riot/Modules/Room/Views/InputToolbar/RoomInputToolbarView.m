@@ -17,7 +17,8 @@
 
 #import "RoomInputToolbarView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -71,8 +72,8 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateHighlighted];
+    [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateHighlighted];
     
     self.isEncryptionEnabled = _isEncryptionEnabled;
 }
@@ -86,7 +87,7 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = kRiotAuxiliaryColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.headerTextSecondaryColor;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
@@ -94,10 +95,10 @@
     growingTextView.backgroundColor = [UIColor clearColor];
     
     growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = kRiotPrimaryTextColor;
-    growingTextView.tintColor = kRiotColorGreen;
+    growingTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    growingTextView.tintColor = ThemeService.shared.theme.tintColor;
     
-    growingTextView.internalTextView.keyboardAppearance = kRiotKeyboard;
+    growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
 }
 
 #pragma mark -

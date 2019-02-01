@@ -57,7 +57,7 @@
  @param failure A block object called when the operation fails.
  */
 - (void)openWidget:(Widget*)widget withVideo:(BOOL)video
-           success:(void (^)())success
+           success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure;
 
 /**
@@ -95,7 +95,7 @@
  @param jitsiViewController the jitsi view controller.
  @param completion the block to execute at the end of the operation.
  */
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)())completion;
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)(void))completion;
 
 /**
  Tells the delegate to put the jitsi view controller in background.
@@ -103,6 +103,6 @@
  @param jitsiViewController the jitsi view controller.
  @param completion the block to execute at the end of the operation.
  */
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)())completion;
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)(void))completion;
 
 @end
