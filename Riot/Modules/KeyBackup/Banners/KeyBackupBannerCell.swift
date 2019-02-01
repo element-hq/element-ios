@@ -16,12 +16,12 @@
 
 import UIKit
 
-@objc protocol KeyBackupSetupBannerCellDelegate: class {
-    func keyBackupSetupBannerCellDidTapCloseAction(_ cell: KeyBackupSetupBannerCell)
+@objc protocol KeyBackupBannerCellDelegate: class {
+    func keyBackupBannerCellDidTapCloseAction(_ cell: KeyBackupBannerCell)
 }
 
 @objcMembers
-final class KeyBackupSetupBannerCell: MXKTableViewCell {
+final class KeyBackupBannerCell: MXKTableViewCell {
     
     // MARK: - Properties
 
@@ -33,7 +33,7 @@ final class KeyBackupSetupBannerCell: MXKTableViewCell {
     
     // MARK: Public
     
-    weak var delegate: KeyBackupSetupBannerCellDelegate?
+    weak var delegate: KeyBackupBannerCellDelegate?
     
     // MARK: - Overrides
     
@@ -70,9 +70,31 @@ final class KeyBackupSetupBannerCell: MXKTableViewCell {
         self.closeButton.setImage(closeImage, for: .normal)
     }
     
+    // MARK: - Public
+    
+    func configure(for banner: KeyBackupBanner) {
+        let attributedTitle: NSAttributedString?
+        let theme = ThemeService.shared().theme
+        
+        switch banner {
+        case .setup:
+            let setupAttributedTitle = NSMutableAttributedString(string: VectorL10n.keyBackupSetupBannerTitlePart1, attributes: [.foregroundColor: theme.tintColor])
+            setupAttributedTitle.append(NSAttributedString(string: VectorL10n.keyBackupSetupBannerTitlePart2, attributes: [.foregroundColor: theme.textPrimaryColor]))
+            attributedTitle = setupAttributedTitle
+        case .recover:
+            let recoverAttributedTitle = NSMutableAttributedString(string: VectorL10n.keyBackupRecoverBannerTitlePart1, attributes: [.foregroundColor: theme.tintColor])
+            recoverAttributedTitle.append(NSAttributedString(string: VectorL10n.keyBackupRecoverBannerTitlePart2, attributes: [.foregroundColor: theme.textPrimaryColor]))
+            attributedTitle = recoverAttributedTitle
+        case .none:
+            attributedTitle = nil
+        }
+        
+        self.informationLabel.attributedText = attributedTitle
+    }
+    
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.delegate?.keyBackupSetupBannerCellDidTapCloseAction(self)
+        self.delegate?.keyBackupBannerCellDidTapCloseAction(self)
     }
 }

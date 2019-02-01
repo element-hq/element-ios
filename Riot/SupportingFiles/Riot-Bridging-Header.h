@@ -9,3 +9,4 @@
 #import "RiotNavigationController.h"
 #import "ThemeService.h"
 #import "TableViewCellWithCheckBoxAndLabel.h"
+#import "RecentsDataSource.h"
