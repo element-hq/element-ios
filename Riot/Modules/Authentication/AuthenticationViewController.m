@@ -18,6 +18,7 @@
 #import "AuthenticationViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "AuthInputsView.h"
 #import "ForgotPasswordInputsView.h"
@@ -36,9 +37,9 @@
     NSString *defaultCountryCode;
     
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -120,7 +121,7 @@
     self.authInputsView = authInputsView;
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -130,53 +131,55 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotSecondaryBgColor;
-    
-    self.navigationBar.barTintColor = kRiotSecondaryBgColor;
-    self.authenticationScrollView.backgroundColor = kRiotPrimaryBgColor;
-    self.authFallbackContentView.backgroundColor = kRiotPrimaryBgColor;
-    
-    if (kRiotPlaceholderTextColor)
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
+
+    // This view controller is not part of a navigation controller
+    // so that applyStyleOnNavigationBar does not fully work.
+    // In order to have the right status bar color, use the expected status bar color
+    // as the main view background color.
+    // Hopefully, subviews define their own background color with `theme.backgroundColor`,
+    // which makes all work together.
+    self.view.backgroundColor = ThemeService.shared.theme.baseColor;
+
+    self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    if (self.homeServerTextField.placeholder)
     {
-        if (self.homeServerTextField.placeholder)
-        {
-            self.homeServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.homeServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
-        if (self.identityServerTextField.placeholder)
-        {
-            self.identityServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.identityServerTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
+        self.homeServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                          initWithString:self.homeServerTextField.placeholder
+                                                          attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+    if (self.identityServerTextField.placeholder)
+    {
+        self.identityServerTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                              initWithString:self.identityServerTextField.placeholder
+                                                              attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
     }
     
-    self.submitButton.backgroundColor = kRiotColorGreen;
-    self.skipButton.backgroundColor = kRiotColorGreen;
+    self.submitButton.backgroundColor = ThemeService.shared.theme.tintColor;
+    self.skipButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
-    self.noFlowLabel.textColor = kRiotColorRed;
+    self.noFlowLabel.textColor = ThemeService.shared.theme.warningColor;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
-    [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, forgotPasswordTitle.length)];
-    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kRiotColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
     [self updateForgotPwdButtonVisibility];
     
-    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : kRiotSecondaryTextColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
+    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
-    self.homeServerTextField.textColor = kRiotPrimaryTextColor;
-    self.homeServerLabel.textColor = kRiotSecondaryTextColor;
+    self.homeServerTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.homeServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     
-    self.identityServerTextField.textColor = kRiotPrimaryTextColor;
-    self.identityServerLabel.textColor = kRiotSecondaryTextColor;
-    
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.identityServerTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.identityServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     [self.authInputsView customizeViewRendering];
     
@@ -185,7 +188,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -218,10 +221,10 @@
 {
     [super destroy];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -290,7 +293,7 @@
         if (!countryCode)
         {
             // If none, consider the preferred locale
-            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
+            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[NSBundle mainBundle] preferredLocalizations][0]];
             if ([local respondsToSelector:@selector(countryCode)])
             {
                 countryCode = local.countryCode;

@@ -89,7 +89,7 @@ extern NSString *const kShareExtensionManagerDidUpdateAccountDataNotification;
 /**
  A delegate used to notify about needed UI changes when sharing
  */
-@property (nonatomic) id<ShareExtensionManagerDelegate> delegate;
+@property (nonatomic, weak) id<ShareExtensionManagerDelegate> delegate;
 
 /**
  The singleton instance

@@ -102,7 +102,7 @@
     else
     {
         NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
-        NSString *bundleDisplayName = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+        NSString *bundleDisplayName = infoDictionary[@"CFBundleDisplayName"];
         self.tittleLabel.text = bundleDisplayName;
         [self configureFallbackViewController];
     }
@@ -114,7 +114,7 @@
     
     NSArray *titles = @[NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil) , NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
     
-    void (^failureBlock)() = ^void() {
+    void (^failureBlock)(void) = ^void() {
         [self dismissViewControllerAnimated:YES completion:^{
             [[ShareExtensionManager sharedManager] terminateExtensionCanceled:NO];
         }];

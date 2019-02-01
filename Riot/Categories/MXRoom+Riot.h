@@ -49,7 +49,7 @@
  @param completion the block to execute at the end of the operation (independently if it succeeded or not).
  You may specify nil for this parameter.
  */
-- (void)setRoomTag:(NSString*)tag completion:(void (^)())completion;
+- (void)setRoomTag:(NSString*)tag completion:(void (^)(void))completion;
 
 /**
  Disable all the room notifications.
@@ -57,7 +57,7 @@
  @param completion the block to execute at the end of the operation (independently if it succeeded or not).
  You may specify nil for this parameter.
  */
-- (void)mute:(void (^)())completion;
+- (void)mute:(void (^)(void))completion;
 
 /**
  Set the room notifications in mention only mode.
@@ -65,7 +65,7 @@
  @param completion the block to execute at the end of the operation (independently if it succeeded or not).
  You may specify nil for this parameter.
  */
-- (void)mentionsOnly:(void (^)())completion;
+- (void)mentionsOnly:(void (^)(void))completion;
 
 /**
  Enable the room notifications.
@@ -73,6 +73,6 @@
  @param completion the block to execute at the end of the operation (independently if it succeeded or not).
  You may specify nil for this parameter.
  */
-- (void)allMessages:(void (^)())completion;
+- (void)allMessages:(void (^)(void))completion;
 
 @end

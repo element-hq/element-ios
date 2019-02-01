@@ -21,6 +21,7 @@
 #import "GroupRoomsViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface GroupDetailsViewController ()
 {
@@ -71,7 +72,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.sectionHeaderTintColor = kRiotColorBlue;
+    self.sectionHeaderTintColor = ThemeService.shared.riotColorBlue;
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
@@ -121,7 +122,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -141,42 +142,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    // Customize the navigation bar tint color
-    self.navigationController.navigationBar.tintColor = kRiotColorBlue;
-    
-    // Consider the case where the view controller is embedded inside a collapsed split view controller.
-    if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-    {
-        UINavigationController *mainNavigationController = self.splitViewController.viewControllers.firstObject;
-        mainNavigationController.navigationBar.tintColor = kRiotColorBlue;
-    }
-}
-
-- (void)destroy
-{
-    // Restore the default tintColor of the main navigation controller.
-    if (self.navigationController.navigationBar.tintColor == kRiotColorBlue)
-    {
-        self.navigationController.navigationBar.tintColor = kRiotColorGreen;
-    }
-    
-    // Check whether the current view controller is embedded inside a collapsed split view controller.
-    if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-    {
-        UINavigationController *mainNavigationController = self.splitViewController.viewControllers.firstObject;
-        if (mainNavigationController.navigationBar.tintColor == kRiotColorBlue)
-        {
-            mainNavigationController.navigationBar.tintColor = kRiotColorGreen;
-        }
-    }
-    
-    [super destroy];
 }
 
 - (void)setGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession

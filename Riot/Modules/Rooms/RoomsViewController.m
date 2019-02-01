@@ -22,6 +22,8 @@
 
 #import "DirectoryServerPickerViewController.h"
 
+#import "Riot-Swift.h"
+
 @interface RoomsViewController ()
 {
     RecentsDataSource *recentsDataSource;
@@ -62,6 +64,7 @@
     [super viewWillAppear:animated];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {

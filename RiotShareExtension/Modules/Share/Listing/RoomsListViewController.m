@@ -19,8 +19,14 @@
 #import "NSBundle+MatrixKit.h"
 #import "ShareExtensionManager.h"
 #import "RecentCellData.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import <MatrixKit/MatrixKit.h>
+
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
 
 @interface RoomsListViewController () <ShareExtensionManagerDelegate>
 
@@ -90,7 +96,7 @@
     
     self.recentsSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
-    self.recentsSearchBar.tintColor = kRiotColorGreen;
+    self.recentsSearchBar.tintColor = ThemeService.shared.theme.tintColor;
     
     _tableSearchBar.tintColor = self.recentsSearchBar.tintColor;
 }

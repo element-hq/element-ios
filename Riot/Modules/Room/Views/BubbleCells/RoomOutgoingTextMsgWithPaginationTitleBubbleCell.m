@@ -17,7 +17,8 @@
 
 #import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @implementation RoomOutgoingTextMsgWithPaginationTitleBubbleCell
 
@@ -25,8 +26,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.paginationLabel.textColor = kRiotColorGreen;
-    self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
+    self.paginationLabel.textColor = ThemeService.shared.theme.tintColor;
+    self.paginationSeparatorView.backgroundColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

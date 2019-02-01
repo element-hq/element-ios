@@ -17,7 +17,7 @@
 
 #import "RoomAvatarTitleView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #import "MXRoomSummary+Riot.h"
 

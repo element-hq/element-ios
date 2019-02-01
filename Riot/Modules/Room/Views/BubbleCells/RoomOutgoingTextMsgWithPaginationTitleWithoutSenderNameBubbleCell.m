@@ -17,7 +17,7 @@
 
 #import "RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 @implementation RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell
 

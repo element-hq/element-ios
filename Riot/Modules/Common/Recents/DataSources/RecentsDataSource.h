@@ -32,6 +32,15 @@ typedef enum : NSUInteger
     
 } RecentsDataSourceMode;
 
+/**
+ List the different key backup banners that could be displayed.
+ */
+typedef NS_ENUM(NSInteger, KeyBackupBanner)
+{
+    KeyBackupBannerNone,
+    KeyBackupBannerSetup,
+    KeyBackupBannerRecover
+};
 
 /**
  Action identifier used when the user tapped on the directory change button.
@@ -46,6 +55,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
+@property (nonatomic) NSInteger keyBackupBannerSection;
 @property (nonatomic) NSInteger directorySection;
 @property (nonatomic) NSInteger invitesSection;
 @property (nonatomic) NSInteger favoritesSection;
@@ -60,6 +70,8 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic, readonly) NSArray* conversationCellDataArray;
 @property (nonatomic, readonly) NSArray* lowPriorityCellDataArray;
 @property (nonatomic, readonly) NSArray* serverNoticeCellDataArray;
+
+@property (nonatomic, readonly) KeyBackupBanner keyBackupBanner;
 
 /**
  Set the delegate by specifying the selected display mode.
@@ -135,7 +147,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  Move a cell from a path to another one.
  It is based on room Tag.
  */
-- (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure;
+- (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)(void))moveSuccess failure:(void (^)(NSError *error))moveFailure;
 
 /**
  The current number of the favourite rooms with missed notifications.

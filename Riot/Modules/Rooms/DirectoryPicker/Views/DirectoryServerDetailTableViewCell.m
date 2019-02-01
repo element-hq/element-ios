@@ -16,7 +16,8 @@
 
 #import "DirectoryServerDetailTableViewCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @implementation DirectoryServerDetailTableViewCell
 
@@ -24,7 +25,7 @@
 {
     [super customizeTableViewCellRendering];
 
-    self.detailDescLabel.textColor = kRiotSecondaryTextColor;
+    self.detailDescLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 }
 
 - (void)render:(id<MXKDirectoryServerCellDataStoring>)cellData
