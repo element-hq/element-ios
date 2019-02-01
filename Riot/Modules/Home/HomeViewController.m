@@ -27,7 +27,7 @@
 
 #import "MXRoom+Riot.h"
 
-@interface HomeViewController () <KeyBackupSetupCoordinatorBridgePresenterDelegate>
+@interface HomeViewController () <KeyBackupSetupCoordinatorBridgePresenterDelegate, KeyBackupRecoverCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
     
@@ -42,7 +42,8 @@
 }
 
 @property (nonatomic, strong) KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
-@property (nonatomic, strong) KeyBackupSetupBannerCell *keyBackupSetupBannerPrototypeCell;
+@property (nonatomic, strong) KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+@property (nonatomic, strong) KeyBackupBannerCell *keyBackupBannerPrototypeCell;
 
 @end
 
@@ -77,7 +78,7 @@
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
 
     // Register key backup banner cells
-    [self.recentsTableView registerNib:KeyBackupSetupBannerCell.nib forCellReuseIdentifier:KeyBackupSetupBannerCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:KeyBackupBannerCell.nib forCellReuseIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
     
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -144,13 +145,13 @@
     }
 }
 
-- (KeyBackupSetupBannerCell *)keyBackupSetupBannerPrototypeCell
+- (KeyBackupBannerCell *)keyBackupBannerPrototypeCell
 {
-    if (!_keyBackupSetupBannerPrototypeCell)
+    if (!_keyBackupBannerPrototypeCell)
     {
-        _keyBackupSetupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:KeyBackupSetupBannerCell.defaultReuseIdentifier];
+        _keyBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
     }
-    return _keyBackupSetupBannerPrototypeCell;
+    return _keyBackupBannerPrototypeCell;
 }
 
 - (void)presentKeyBackupSetup
@@ -163,6 +164,19 @@
     self.keyBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
 }
 
+- (void)presentKeyBackupRecover
+{
+    MXKeyBackupVersion *keyBackupVersion = self.mainSession.crypto.backup.keyBackupVersion;
+    if (keyBackupVersion)
+    {
+        KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
+        keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+        
+        [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:YES];
+        
+        self.keyBackupRecoverCoordinatorBridgePresenter = keyBackupRecoverCoordinatorBridgePresenter;
+    }
+}
 
 #pragma mark - Override RecentsViewController
 
@@ -369,27 +383,17 @@
     else if (indexPath.section == recentsDataSource.keyBackupBannerSection)
     {
         CGFloat height = 0.0;
-        UITableViewCell *sizingCell;
+        KeyBackupBannerCell *sizingCell = self.keyBackupBannerPrototypeCell;
         
-        switch (recentsDataSource.keyBackupBanner) {
-            case KeyBackupBannerSetup:
-            {
-                sizingCell = self.keyBackupSetupBannerPrototypeCell;
-            }
-                break;
-            default:
-                break;
-        }
+        [sizingCell configureFor:recentsDataSource.keyBackupBanner];
         
-        if (sizingCell)
-        {
-            [sizingCell layoutIfNeeded];
-            
-            CGSize fittingSize = UILayoutFittingCompressedSize;
-            fittingSize.width = CGRectGetWidth(tableView.frame);
-            
-            height = [sizingCell systemLayoutSizeFittingSize:fittingSize withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
-        }
+        [sizingCell layoutIfNeeded];
+        
+        CGSize fittingSize = UILayoutFittingCompressedSize;
+        fittingSize.width = CGRectGetWidth(tableView.frame);
+        
+        height = [sizingCell systemLayoutSizeFittingSize:fittingSize withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
+        
         
         return height;
     }
@@ -429,6 +433,7 @@
                 [self presentKeyBackupSetup];
                 break;
             default:
+                [self presentKeyBackupRecover];
                 break;
         }
     }
@@ -691,6 +696,16 @@
 {
     [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
     self.keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
+    self.keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
+    self.keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
 
 @end
