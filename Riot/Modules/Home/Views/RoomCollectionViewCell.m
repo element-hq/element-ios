@@ -18,7 +18,8 @@
 
 #import "AvatarGenerator.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
 
@@ -65,13 +66,13 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super customizeCollectionViewCellRendering];
     
-    self.roomTitle.textColor = kRiotPrimaryTextColor;
-    self.roomTitle1.textColor = kRiotPrimaryTextColor;
-    self.roomTitle2.textColor = kRiotPrimaryTextColor;
-    self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
+    self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomTitle1.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomTitle2.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.backgroundColor;
     
     // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, kDirectRoomBorderColorAlpha);
+    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.shared.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
     
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
@@ -80,7 +81,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     
     CFRelease(directRoomBorderColor);
     
-    self.editionArrowView.backgroundColor = kRiotSecondaryBgColor;
+    self.editionArrowView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
@@ -125,7 +126,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             if (0 < roomCellData.notificationCount)
             {
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? kRiotColorPinkRed : kRiotColorGreen;
+                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.notificationPrimaryColor : ThemeService.shared.theme.notificationSecondaryColor;
                 
                 self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
@@ -146,7 +147,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         else if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite)
         {
             self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-            self.missedNotifAndUnreadBadgeBgView.backgroundColor = kRiotColorPinkRed;
+            self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.notificationPrimaryColor;
             
             self.missedNotifAndUnreadBadgeLabel.text = @"!";
             [self.missedNotifAndUnreadBadgeLabel sizeToFit];

@@ -1,5 +1,9 @@
-Riot-ios
+Riot-iOS
 ==========
+
+.. image:: https://img.shields.io/matrix/riot-ios:matrix.org.svg?label=%23riot-ios:matrix.org
+    :alt: #riot-ios:matrix.org
+    :target: https://matrix.to/#/#riot-ios:matrix.org
 
 Riot/iOS is an iOS Matrix client. 
 

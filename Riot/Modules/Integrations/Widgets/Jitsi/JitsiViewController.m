@@ -45,7 +45,7 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
 }
 
 - (void)openWidget:(Widget*)widget withVideo:(BOOL)aVideo
-           success:(void (^)())success
+           success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure
 {
     video = aVideo;

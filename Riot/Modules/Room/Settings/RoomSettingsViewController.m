@@ -29,6 +29,7 @@
 #import "MXRoomSummary+Riot.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "RoomMemberDetailsViewController.h"
 
@@ -167,8 +168,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // A copy of the banned members
     NSArray<MXRoomMember*> *bannedMembers;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 @end
 
@@ -255,7 +256,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [self setNavBarButtons];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -265,12 +266,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -281,7 +282,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -379,10 +380,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         actualDirectoryVisibilityRequest = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     if (appDelegateDidTapStatusBarNotificationObserver)
@@ -713,9 +714,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             NSString *currentCanonicalAlias = mxRoomState.canonicalAlias;
             NSString *canonicalAlias;
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey])
+            if (updatedItemsDict[kRoomSettingsCanonicalAliasKey])
             {
-                canonicalAlias = [updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey];
+                canonicalAlias = updatedItemsDict[kRoomSettingsCanonicalAliasKey];
             }
             else
             {
@@ -849,7 +850,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             if (directoryVisibilitySwitch)
             {
                 // Check a potential user's change before the end of the request
-                MXRoomDirectoryVisibility modifiedDirectoryVisibility = [updatedItemsDict objectForKey:kRoomSettingsDirectoryKey];
+                MXRoomDirectoryVisibility modifiedDirectoryVisibility = updatedItemsDict[kRoomSettingsDirectoryKey];
                 if (modifiedDirectoryVisibility)
                 {
                     if ([modifiedDirectoryVisibility isEqualToString:directoryVisibility])
@@ -882,7 +883,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // Refresh here the related communities list.
     [relatedGroups removeAllObjects];
     [relatedGroups addObjectsFromArray:mxRoomState.relatedGroups];
-    NSArray *removedCommunities = [updatedItemsDict objectForKey:kRoomSettingsRemovedRelatedGroupKey];
+    NSArray *removedCommunities = updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey];
     if (removedCommunities.count)
     {
         for (NSUInteger index = 0; index < relatedGroups.count;)
@@ -900,7 +901,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
         }
     }
-    NSArray *communities = [updatedItemsDict objectForKey:kRoomSettingsNewRelatedGroupKey];
+    NSArray *communities = updatedItemsDict[kRoomSettingsNewRelatedGroupKey];
     if (communities)
     {
         [relatedGroups addObjectsFromArray:communities];
@@ -947,7 +948,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Check whether the topic has been actually changed
         if ((topic || currentTopic) && ([topic isEqualToString:currentTopic] == NO))
         {
-            [updatedItemsDict setObject:(topic ? topic : @"") forKey:kRoomSettingsTopicKey];
+            updatedItemsDict[kRoomSettingsTopicKey] = topic ? topic : @"";
         }
         else
         {
@@ -1098,7 +1099,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Check whether the name has been actually changed
         if ((displayName || currentName) && ([displayName isEqualToString:currentName] == NO))
         {
-            [updatedItemsDict setObject:(displayName ? displayName : @"") forKey:kRoomSettingsNameKey];
+            updatedItemsDict[kRoomSettingsNameKey] = displayName ? displayName : @"";
         }
         else
         {
@@ -1187,10 +1188,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // check if there is some updates related to room state
         if (mxRoomState)
         {
-            if ([updatedItemsDict objectForKey:kRoomSettingsAvatarKey])
+            if (updatedItemsDict[kRoomSettingsAvatarKey])
             {
                 // Retrieve the current picture and make sure its orientation is up
-                UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[updatedItemsDict objectForKey:kRoomSettingsAvatarKey]];
+                UIImage *updatedPicture = [MXKTools forceImageOrientationUp:updatedItemsDict[kRoomSettingsAvatarKey]];
                 
                 // Upload picture
                 uploader = [MXMediaManager prepareUploaderWithMatrixSession:mxRoom.mxSession initialRange:0 andRange:1.0];
@@ -1204,7 +1205,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         self->uploader = nil;
                         
                         [self->updatedItemsDict removeObjectForKey:kRoomSettingsAvatarKey];
-                        [self->updatedItemsDict setObject:url forKey:kRoomSettingsAvatarURLKey];
+                        self->updatedItemsDict[kRoomSettingsAvatarURLKey] = url;
                         
                         [self onSave:nil];
                     }
@@ -1236,7 +1237,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 return;
             }
             
-            NSString* photoUrl = [updatedItemsDict objectForKey:kRoomSettingsAvatarURLKey];
+            NSString* photoUrl = updatedItemsDict[kRoomSettingsAvatarURLKey];
             if (photoUrl)
             {
                 pendingOperation = [mxRoom setAvatar:photoUrl success:^{
@@ -1278,7 +1279,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // has a new room name
-            NSString* roomName = [updatedItemsDict objectForKey:kRoomSettingsNameKey];
+            NSString* roomName = updatedItemsDict[kRoomSettingsNameKey];
             if (roomName)
             {
                 pendingOperation = [mxRoom setName:roomName success:^{
@@ -1320,7 +1321,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // has a new room topic
-            NSString* roomTopic = [updatedItemsDict objectForKey:kRoomSettingsTopicKey];
+            NSString* roomTopic = updatedItemsDict[kRoomSettingsTopicKey];
             if (roomTopic)
             {
                 pendingOperation = [mxRoom setTopic:roomTopic success:^{
@@ -1362,7 +1363,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // Room guest access
-            MXRoomGuestAccess guestAccess = [updatedItemsDict objectForKey:kRoomSettingsGuestAccessKey];
+            MXRoomGuestAccess guestAccess = updatedItemsDict[kRoomSettingsGuestAccessKey];
             if (guestAccess)
             {
                 pendingOperation = [mxRoom setGuestAccess:guestAccess success:^{
@@ -1404,7 +1405,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // Room join rule
-            MXRoomJoinRule joinRule = [updatedItemsDict objectForKey:kRoomSettingsJoinRuleKey];
+            MXRoomJoinRule joinRule = updatedItemsDict[kRoomSettingsJoinRuleKey];
             if (joinRule)
             {
                 pendingOperation = [mxRoom setJoinRule:joinRule success:^{
@@ -1446,7 +1447,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // History visibility
-            MXRoomHistoryVisibility visibility = [updatedItemsDict objectForKey:kRoomSettingsHistoryVisibilityKey];
+            MXRoomHistoryVisibility visibility = updatedItemsDict[kRoomSettingsHistoryVisibilityKey];
             if (visibility)
             {
                 pendingOperation = [mxRoom setHistoryVisibility:visibility success:^{
@@ -1488,7 +1489,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // Room addresses
-            NSMutableArray<NSString *> *aliases = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
+            NSMutableArray<NSString *> *aliases = updatedItemsDict[kRoomSettingsNewAliasesKey];
             if (aliases.count)
             {
                 NSString *roomAlias = aliases.firstObject;
@@ -1504,7 +1505,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         if (aliases.count > 1)
                         {
                             [aliases removeObjectAtIndex:0];
-                            [self->updatedItemsDict setObject:aliases forKey:kRoomSettingsNewAliasesKey];
+                            self->updatedItemsDict[kRoomSettingsNewAliasesKey] = aliases;
                         }
                         else
                         {
@@ -1541,7 +1542,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 return;
             }
             
-            aliases = [updatedItemsDict objectForKey:kRoomSettingsRemovedAliasesKey];
+            aliases = updatedItemsDict[kRoomSettingsRemovedAliasesKey];
             if (aliases.count)
             {
                 NSString *roomAlias = aliases.firstObject;
@@ -1557,7 +1558,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         if (aliases.count > 1)
                         {
                             [aliases removeObjectAtIndex:0];
-                            [self->updatedItemsDict setObject:aliases forKey:kRoomSettingsRemovedAliasesKey];
+                            self->updatedItemsDict[kRoomSettingsRemovedAliasesKey] = aliases;
                         }
                         else
                         {
@@ -1594,7 +1595,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 return;
             }
             
-            NSString* canonicalAlias = [updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey];
+            NSString* canonicalAlias = updatedItemsDict[kRoomSettingsCanonicalAliasKey];
             if (canonicalAlias)
             {
                 pendingOperation = [mxRoom setCanonicalAlias:canonicalAlias success:^{
@@ -1636,7 +1637,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             // Related groups
-            if ([updatedItemsDict objectForKey:kRoomSettingsNewRelatedGroupKey] || [updatedItemsDict objectForKey:kRoomSettingsRemovedRelatedGroupKey])
+            if (updatedItemsDict[kRoomSettingsNewRelatedGroupKey] || updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey])
             {
                 [self refreshRelatedGroups];
                 
@@ -1683,7 +1684,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         // Update here other room settings
-        NSString *roomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
+        NSString *roomTag = updatedItemsDict[kRoomSettingsTagKey];
         if (roomTag)
         {
             if (!roomTag.length)
@@ -1706,9 +1707,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             return;
         }
         
-        if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
+        if (updatedItemsDict[kRoomSettingsMuteNotifKey])
         {
-            if (((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey]).boolValue)
+            if (((NSNumber*) updatedItemsDict[kRoomSettingsMuteNotifKey]).boolValue)
             {
                 [mxRoom mentionsOnly:^{
                     
@@ -1739,9 +1740,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             return;
         }
         
-        if ([updatedItemsDict objectForKey:kRoomSettingsDirectChatKey])
+        if (updatedItemsDict[kRoomSettingsDirectChatKey])
         {
-            pendingOperation = [mxRoom setIsDirect:((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectChatKey]).boolValue withUserId:nil success:^{
+            pendingOperation = [mxRoom setIsDirect:((NSNumber*) updatedItemsDict[kRoomSettingsDirectChatKey]).boolValue withUserId:nil success:^{
                 
                 if (weakSelf)
                 {
@@ -1752,7 +1753,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     [self onSave:nil];
                 }
                 
-            } failure:^(NSError *error) {
+            }                              failure:^(NSError *error) {
                 
                 NSLog(@"[RoomSettingsViewController] Altering DMness failed");
                 
@@ -1779,7 +1780,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         // Room directory visibility
-        MXRoomDirectoryVisibility directoryVisibility = [updatedItemsDict objectForKey:kRoomSettingsDirectoryKey];
+        MXRoomDirectoryVisibility directoryVisibility = updatedItemsDict[kRoomSettingsDirectoryKey];
         if (directoryVisibility)
         {
             [mxRoom setDirectoryVisibility:directoryVisibility success:^{
@@ -1820,7 +1821,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         // Room encryption
-        if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey])
+        if (updatedItemsDict[kRoomSettingsEncryptionKey])
         {
             pendingOperation = [mxRoom enableEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm success:^{
                 
@@ -1862,7 +1863,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         // Room settings on blacklist unverified devices
-        if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
+        if (updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
         {
             BOOL blacklistUnverifiedDevices = [((NSNumber*)updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey]) boolValue];
             [mxRoom.mxSession.crypto setBlacklistUnverifiedDevicesInRoom:mxRoom.roomId blacklist:blacklistUnverifiedDevices];
@@ -1884,7 +1885,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [roomAddresses removeAllObjects];
     localAddressesCount = 0;
     
-    NSArray *removedAliases = [updatedItemsDict objectForKey:kRoomSettingsRemovedAliasesKey];
+    NSArray *removedAliases = updatedItemsDict[kRoomSettingsRemovedAliasesKey];
     
     NSArray *aliases = mxRoomState.aliases;
     if (aliases)
@@ -1908,7 +1909,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
     }
     
-    aliases = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
+    aliases = updatedItemsDict[kRoomSettingsNewAliasesKey];
     for (NSString *alias in aliases)
     {
         // Add this new alias to local addresses
@@ -1938,7 +1939,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         count = ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_SUB_COUNT;
         
         // Check whether a room address is required for the current join rule
-        NSString *joinRule = [updatedItemsDict objectForKey:kRoomSettingsJoinRuleKey];
+        NSString *joinRule = updatedItemsDict[kRoomSettingsJoinRuleKey];
         if (!joinRule)
         {
             // Use the actual values if no change is pending.
@@ -2052,7 +2053,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = kRiotPrimaryTextColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
     }
 }
@@ -2126,9 +2127,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
+            if (updatedItemsDict[kRoomSettingsMuteNotifKey])
             {
-                roomNotifCell.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey]).boolValue;
+                roomNotifCell.mxkSwitch.on = ((NSNumber*) updatedItemsDict[kRoomSettingsMuteNotifKey]).boolValue;
             }
             else
             {
@@ -2145,9 +2146,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             roomDirectChat.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_direct_chat", @"Vector", nil);
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsDirectChatKey])
+            if (updatedItemsDict[kRoomSettingsDirectChatKey])
             {
-                roomDirectChat.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectChatKey]).boolValue;
+                roomDirectChat.mxkSwitch.on = ((NSNumber*) updatedItemsDict[kRoomSettingsDirectChatKey]).boolValue;
             }
             else
             {
@@ -2177,11 +2178,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomPhotoCell.mxkImageView.defaultBackgroundColor = [UIColor clearColor];
             
             roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
-            roomPhotoCell.mxkLabel.textColor = kRiotPrimaryTextColor;
+            roomPhotoCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsAvatarKey])
+            if (updatedItemsDict[kRoomSettingsAvatarKey])
             {
-                roomPhotoCell.mxkImageView.image = (UIImage*)[updatedItemsDict objectForKey:kRoomSettingsAvatarKey];
+                roomPhotoCell.mxkImageView.image = (UIImage*) updatedItemsDict[kRoomSettingsAvatarKey];
             }
             else
             {
@@ -2203,25 +2204,25 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             topicTextView = roomTopicCell.textView;
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsTopicKey])
+            if (updatedItemsDict[kRoomSettingsTopicKey])
             {
-                topicTextView.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsTopicKey];
+                topicTextView.text = (NSString*) updatedItemsDict[kRoomSettingsTopicKey];
             }
             else
             {
                 topicTextView.text = mxRoomState.topic;
             }
             
-            topicTextView.tintColor = kRiotColorGreen;
+            topicTextView.tintColor = ThemeService.shared.theme.tintColor;
             topicTextView.font = [UIFont systemFontOfSize:15];
             topicTextView.bounces = NO;
             topicTextView.delegate = self;
             
             // disable the edition if the user cannot update it
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
-            topicTextView.textColor = kRiotSecondaryTextColor;
+            topicTextView.textColor = ThemeService.shared.theme.textSecondaryColor;
             
-            topicTextView.keyboardAppearance = kRiotKeyboard;
+            topicTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
             
             cell = roomTopicCell;
         }
@@ -2234,22 +2235,22 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
-            roomNameCell.mxkLabel.textColor = kRiotPrimaryTextColor;
+            roomNameCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             roomNameCell.accessoryType = UITableViewCellAccessoryNone;
             roomNameCell.accessoryView = nil;
             
             nameTextField = roomNameCell.mxkTextField;
             
-            nameTextField.tintColor = kRiotColorGreen;
+            nameTextField.tintColor = ThemeService.shared.theme.tintColor;
             nameTextField.font = [UIFont systemFontOfSize:17];
             nameTextField.borderStyle = UITextBorderStyleNone;
             nameTextField.textAlignment = NSTextAlignmentRight;
             nameTextField.delegate = self;
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsNameKey])
+            if (updatedItemsDict[kRoomSettingsNameKey])
             {
-                nameTextField.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsNameKey];
+                nameTextField.text = (NSString*) updatedItemsDict[kRoomSettingsNameKey];
             }
             else
             {
@@ -2258,7 +2259,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             // disable the edition if the user cannot update it
             nameTextField.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
-            nameTextField.textColor = kRiotSecondaryTextColor;
+            nameTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
             
             // Add a "textFieldDidChange" notification method to the text field control.
             [nameTextField addTarget:self action:@selector(onTextFieldUpdate:) forControlEvents:UIControlEventEditingChanged];
@@ -2279,15 +2280,15 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             NSArray *labels = roomTagCell.labels;
             UILabel *label;
             label = labels[0];
-            label.textColor = kRiotPrimaryTextColor;
+            label.textColor = ThemeService.shared.theme.textPrimaryColor;
             label.text = NSLocalizedStringFromTable(@"room_details_favourite_tag", @"Vector", nil);
             label = labels[1];
-            label.textColor = kRiotPrimaryTextColor;
+            label.textColor = ThemeService.shared.theme.textPrimaryColor;
             label.text = NSLocalizedStringFromTable(@"room_details_low_priority_tag", @"Vector", nil);
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsTagKey])
+            if (updatedItemsDict[kRoomSettingsTagKey])
             {
-                NSString *roomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
+                NSString *roomTag = updatedItemsDict[kRoomSettingsTagKey];
                 if ([roomTag isEqualToString:kMXRoomTagFavourite])
                 {
                     [roomTagCell setCheckBoxValue:YES atIndex:0];
@@ -2319,7 +2320,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
             [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-            [leaveCell.mxkButton setTintColor:kRiotColorGreen];
+            [leaveCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             leaveCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [leaveCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2338,9 +2339,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [directoryToggleCell.mxkSwitch addTarget:self action:@selector(toggleDirectoryVisibility:) forControlEvents:UIControlEventValueChanged];
             
-            if ([updatedItemsDict objectForKey:kRoomSettingsDirectoryKey])
+            if (updatedItemsDict[kRoomSettingsDirectoryKey])
             {
-                directoryToggleCell.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectoryKey]).boolValue;
+                directoryToggleCell.mxkSwitch.on = ((NSNumber*) updatedItemsDict[kRoomSettingsDirectoryKey]).boolValue;
             }
             else
             {
@@ -2361,7 +2362,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsWarningCellViewIdentifier forIndexPath:indexPath];
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
-            cell.textLabel.textColor = kRiotColorPinkRed;
+            cell.textLabel.textColor = ThemeService.shared.theme.warningColor;
             cell.textLabel.numberOfLines = 0;
             cell.accessoryView = nil;
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -2375,8 +2376,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomAccessCell.checkBoxLeadingConstraint.constant = roomAccessCell.separatorInset.left;
             
             // Retrieve the potential updated values for joinRule and guestAccess
-            NSString *joinRule = [updatedItemsDict objectForKey:kRoomSettingsJoinRuleKey];
-            NSString *guestAccess = [updatedItemsDict objectForKey:kRoomSettingsGuestAccessKey];
+            NSString *joinRule = updatedItemsDict[kRoomSettingsJoinRuleKey];
+            NSString *guestAccess = updatedItemsDict[kRoomSettingsGuestAccessKey];
             
             // Use the actual values if no change is pending
             if (!joinRule)
@@ -2427,7 +2428,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         historyVisibilityCell.checkBoxLeadingConstraint.constant = historyVisibilityCell.separatorInset.left;
         
         // Retrieve first the potential updated value for history visibility
-        NSString *visibility = [updatedItemsDict objectForKey:kRoomSettingsHistoryVisibilityKey];
+        NSString *visibility = updatedItemsDict[kRoomSettingsHistoryVisibilityKey];
         
         // Use the actual value if no change is pending
         if (!visibility)
@@ -2442,7 +2443,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityWorldReadable]);
             
-            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityWorldReadable];
+            historyVisibilityTickCells[kMXRoomHistoryVisibilityWorldReadable] = historyVisibilityCell;
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY)
         {
@@ -2451,7 +2452,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityShared]);
             
-            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityShared];
+            historyVisibilityTickCells[kMXRoomHistoryVisibilityShared] = historyVisibilityCell;
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_INVITED)
         {
@@ -2460,7 +2461,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityInvited]);
             
-            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityInvited];
+            historyVisibilityTickCells[kMXRoomHistoryVisibilityInvited] = historyVisibilityCell;
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_JOINED)
         {
@@ -2469,7 +2470,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityJoined]);
             
-            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityJoined];
+            historyVisibilityTickCells[kMXRoomHistoryVisibilityJoined] = historyVisibilityCell;
         }
         
         // Check whether the user can change this option
@@ -2498,17 +2499,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             addAddressTextField = addAddressCell.mxkTextField;
             addAddressTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_address_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
-            if (kRiotPlaceholderTextColor)
-            {
-                addAddressTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:addAddressTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-            }
+            addAddressTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:addAddressTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             addAddressTextField.userInteractionEnabled = YES;
             addAddressTextField.text = currentValue;
-            addAddressTextField.textColor = kRiotSecondaryTextColor;
+            addAddressTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
             
-            addAddressTextField.tintColor = kRiotColorGreen;
+            addAddressTextField.tintColor = ThemeService.shared.theme.tintColor;
             addAddressTextField.font = [UIFont systemFontOfSize:17];
             addAddressTextField.borderStyle = UITextBorderStyleNone;
             addAddressTextField.textAlignment = NSTextAlignmentLeft;
@@ -2524,7 +2522,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
             
             addressCell.textLabel.font = [UIFont systemFontOfSize:16];
-            addressCell.textLabel.textColor = kRiotPrimaryTextColor;
+            addressCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             addressCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             addressCell.accessoryView = nil;
             addressCell.accessoryType = UITableViewCellAccessoryNone;
@@ -2544,9 +2542,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     NSString *alias = roomAddresses[row];
                     NSString *canonicalAlias;
                     
-                    if ([updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey])
+                    if (updatedItemsDict[kRoomSettingsCanonicalAliasKey])
                     {
-                        canonicalAlias = [updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey];
+                        canonicalAlias = updatedItemsDict[kRoomSettingsCanonicalAliasKey];
                     }
                     else
                     {
@@ -2589,17 +2587,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
             addGroupTextField = addCommunityCell.mxkTextField;
             addGroupTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_flair_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
-            if (kRiotPlaceholderTextColor)
-            {
-                addGroupTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:addGroupTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-            }
+            addGroupTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                       initWithString:addGroupTextField.placeholder
+                                                       attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             addGroupTextField.userInteractionEnabled = YES;
             addGroupTextField.text = currentValue;
-            addGroupTextField.textColor = kRiotSecondaryTextColor;
+            addGroupTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
 
-            addGroupTextField.tintColor = kRiotColorGreen;
+            addGroupTextField.tintColor = ThemeService.shared.theme.tintColor;
             addGroupTextField.font = [UIFont systemFontOfSize:17];
             addGroupTextField.borderStyle = UITextBorderStyleNone;
             addGroupTextField.textAlignment = NSTextAlignmentLeft;
@@ -2615,7 +2610,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             UITableViewCell *communityCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
 
             communityCell.textLabel.font = [UIFont systemFontOfSize:16];
-            communityCell.textLabel.textColor = kRiotPrimaryTextColor;
+            communityCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             communityCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             communityCell.accessoryView = nil;
             communityCell.accessoryType = UITableViewCellAccessoryNone;
@@ -2633,7 +2628,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
         
         addressCell.textLabel.font = [UIFont systemFontOfSize:16];
-        addressCell.textLabel.textColor = kRiotPrimaryTextColor;
+        addressCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         addressCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         addressCell.accessoryView = nil;
         addressCell.accessoryType = UITableViewCellAccessoryNone;
@@ -2655,11 +2650,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
-            cell.textLabel.textColor = kRiotPrimaryTextColor;
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
             cell.detailTextLabel.text = mxRoomState.roomId;
-            cell.detailTextLabel.textColor = kRiotSecondaryTextColor;
+            cell.detailTextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
             cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -2671,7 +2666,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 MXKTableViewCellWithLabelAndSwitch *roomBlacklistUnverifiedDevicesCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
                 [roomBlacklistUnverifiedDevicesCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevice:) forControlEvents:UIControlEventValueChanged];
-                roomBlacklistUnverifiedDevicesCell.mxkSwitch.onTintColor = kRiotColorGreen;
+                roomBlacklistUnverifiedDevicesCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
                 
                 roomBlacklistUnverifiedDevicesCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_blacklist_unverified_devices", @"Vector", nil);
                 
@@ -2690,7 +2685,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 {
                     roomBlacklistUnverifiedDevicesCell.mxkSwitch.enabled = YES;
                     
-                    if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
+                    if (updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey])
                     {
                         blacklistUnverifiedDevices = [((NSNumber*)updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey]) boolValue];
                     }
@@ -2718,7 +2713,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 cell.textLabel.font = [UIFont systemFontOfSize:17];
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled", @"Vector", nil);
-                cell.textLabel.textColor = kRiotPrimaryTextColor;
+                cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
                 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
@@ -2737,7 +2732,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
                 roomEncryptionCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_enable_e2e_encryption", @"Vector", nil);
                 
-                roomEncryptionCell.mxkSwitch.on = ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey] != nil);
+                roomEncryptionCell.mxkSwitch.on = (updatedItemsDict[kRoomSettingsEncryptionKey] != nil);
                 
                 cell = roomEncryptionCell;
             }
@@ -2752,7 +2747,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 cell.textLabel.font = [UIFont systemFontOfSize:17];
                 cell.textLabel.numberOfLines = 0;
                 cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_disabled", @"Vector", nil);
-                cell.textLabel.textColor = kRiotPrimaryTextColor;
+                cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
                 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
@@ -2800,9 +2795,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    cell.mxkSwitch.onTintColor = kRiotColorGreen;
+    cell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
     
     // Reset the stored `directoryVisibilitySwitch` if the corresponding cell is reused.
@@ -2821,13 +2816,13 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -2886,7 +2881,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     }
                     else
                     {
-                        [updatedItemsDict setObject:kMXRoomJoinRuleInvite forKey:kRoomSettingsJoinRuleKey];
+                        updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRuleInvite;
                         
                         // Update guest access to allow guest on invitation.
                         // Note: if guest_access is "forbidden" here, guests cannot join this room even if explicitly invited.
@@ -2896,7 +2891,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomGuestAccessCanJoin forKey:kRoomSettingsGuestAccessKey];
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessCanJoin;
                         }
                     }
                     
@@ -2929,7 +2924,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomJoinRulePublic forKey:kRoomSettingsJoinRuleKey];
+                            updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRulePublic;
                         }
                         
                         if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessForbidden])
@@ -2938,7 +2933,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomGuestAccessForbidden forKey:kRoomSettingsGuestAccessKey];
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessForbidden;
                         }
                     }
                     
@@ -2971,7 +2966,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomJoinRulePublic forKey:kRoomSettingsJoinRuleKey];
+                            updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRulePublic;
                         }
                         
                         if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessCanJoin])
@@ -2980,7 +2975,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomGuestAccessCanJoin forKey:kRoomSettingsGuestAccessKey];
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessCanJoin;
                         }
                     }
                     
@@ -3116,7 +3111,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
             }];
             
-            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
+            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
             [actions insertObject:removeAction atIndex:0];
         }
     }
@@ -3131,7 +3126,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
         }];
         
-        removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
+        removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:removeAction atIndex:0];
     }
     
@@ -3201,7 +3196,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         else
         {
-            [updatedItemsDict setObject:historyVisibility forKey:kRoomSettingsHistoryVisibilityKey];
+            updatedItemsDict[kRoomSettingsHistoryVisibilityKey] = historyVisibility;
         }
         
         [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
@@ -3226,7 +3221,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     return canSetCanonicalAlias;
 }
 
-- (void)shouldRemoveCanonicalAlias:(void (^)())didRemoveCanonicalAlias
+- (void)shouldRemoveCanonicalAlias:(void (^)(void))didRemoveCanonicalAlias
 {
     // Prompt the user before removing the current main address
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -3259,7 +3254,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            // Remove the canonical address
                                                            if (self->mxRoomState.canonicalAlias.length)
                                                            {
-                                                               [self->updatedItemsDict setObject:@"" forKey:kRoomSettingsCanonicalAliasKey];
+                                                               self->updatedItemsDict[kRoomSettingsCanonicalAliasKey] = @"";
                                                            }
                                                            else
                                                            {
@@ -3305,7 +3300,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             [self getNavigationItem].rightBarButtonItem.enabled = YES;
             
-            [updatedItemsDict setObject:image forKey:kRoomSettingsAvatarKey];
+            updatedItemsDict[kRoomSettingsAvatarKey] = image;
             
             [self refreshRoomSettings];
         }
@@ -3401,7 +3396,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        [updatedItemsDict setObject:[NSNumber numberWithBool:theSwitch.on] forKey:kRoomSettingsMuteNotifKey];
+        updatedItemsDict[kRoomSettingsMuteNotifKey] = @(theSwitch.on);
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
@@ -3415,7 +3410,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        [updatedItemsDict setObject:[NSNumber numberWithBool:theSwitch.on] forKey:kRoomSettingsDirectChatKey];
+        updatedItemsDict[kRoomSettingsDirectChatKey] = @(theSwitch.on);
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
@@ -3458,7 +3453,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                typeof(self) self = weakSelf;
                                                                self->currentAlert = nil;
                                                                
-                                                               [self->updatedItemsDict setObject:@(YES) forKey:kRoomSettingsEncryptionKey];
+                                                               self->updatedItemsDict[kRoomSettingsEncryptionKey] = @(YES);
                                                                
                                                                [self getNavigationItem].rightBarButtonItem.enabled = self->updatedItemsDict.count;
                                                            }
@@ -3504,12 +3499,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         else
         {
-            [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
+            updatedItemsDict[kRoomSettingsDirectoryKey] = visibility;
         }
     }
     else
     {
-        [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
+        updatedItemsDict[kRoomSettingsDirectoryKey] = visibility;
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
@@ -3526,7 +3521,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        [updatedItemsDict setObject:alias forKey:kRoomSettingsCanonicalAliasKey];
+        updatedItemsDict[kRoomSettingsCanonicalAliasKey] = alias;
     }
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX];
@@ -3559,9 +3554,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 {
     NSString *canonicalAlias;
     
-    if ([updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey])
+    if (updatedItemsDict[kRoomSettingsCanonicalAliasKey])
     {
-        canonicalAlias = [updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey];
+        canonicalAlias = updatedItemsDict[kRoomSettingsCanonicalAliasKey];
     }
     else
     {
@@ -3582,7 +3577,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     else
     {
         // Check whether the alias has just been added
-        NSMutableArray<NSString *> *addedAlias = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
+        NSMutableArray<NSString *> *addedAlias = updatedItemsDict[kRoomSettingsNewAliasesKey];
         if (addedAlias && [addedAlias indexOfObject:roomAlias] != NSNotFound)
         {
             [addedAlias removeObject:roomAlias];
@@ -3594,11 +3589,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         else
         {
-            NSMutableArray<NSString *> *removedAlias = [updatedItemsDict objectForKey:kRoomSettingsRemovedAliasesKey];
+            NSMutableArray<NSString *> *removedAlias = updatedItemsDict[kRoomSettingsRemovedAliasesKey];
             if (!removedAlias)
             {
                 removedAlias = [NSMutableArray array];
-                [updatedItemsDict setObject:removedAlias forKey:kRoomSettingsRemovedAliasesKey];
+                updatedItemsDict[kRoomSettingsRemovedAliasesKey] = removedAlias;
             }
             
             [removedAlias addObject:roomAlias];
@@ -3622,7 +3617,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 - (void)removeCommunity:(NSString*)groupId
 {
     // Check whether the alias has just been added
-    NSMutableArray<NSString *> *addedGroup = [updatedItemsDict objectForKey:kRoomSettingsNewRelatedGroupKey];
+    NSMutableArray<NSString *> *addedGroup = updatedItemsDict[kRoomSettingsNewRelatedGroupKey];
     if (addedGroup && [addedGroup indexOfObject:groupId] != NSNotFound)
     {
         [addedGroup removeObject:groupId];
@@ -3634,11 +3629,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        NSMutableArray<NSString *> *removedGroup = [updatedItemsDict objectForKey:kRoomSettingsRemovedRelatedGroupKey];
+        NSMutableArray<NSString *> *removedGroup = updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey];
         if (!removedGroup)
         {
             removedGroup = [NSMutableArray array];
-            [updatedItemsDict setObject:removedGroup forKey:kRoomSettingsRemovedRelatedGroupKey];
+            updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey] = removedGroup;
         }
         
         [removedGroup addObject:groupId];
@@ -3656,7 +3651,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     if ([MXTools isMatrixRoomAlias:roomAlias])
     {
         // Check whether this alias has just been deleted
-        NSMutableArray<NSString *> *removedAlias = [updatedItemsDict objectForKey:kRoomSettingsRemovedAliasesKey];
+        NSMutableArray<NSString *> *removedAlias = updatedItemsDict[kRoomSettingsRemovedAliasesKey];
         if (removedAlias && [removedAlias indexOfObject:roomAlias] != NSNotFound)
         {
             [removedAlias removeObject:roomAlias];
@@ -3669,11 +3664,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Check whether this alias is not already defined for this room
         else if ([roomAddresses indexOfObject:roomAlias] == NSNotFound)
         {
-            NSMutableArray<NSString *> *addedAlias = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
+            NSMutableArray<NSString *> *addedAlias = updatedItemsDict[kRoomSettingsNewAliasesKey];
             if (!addedAlias)
             {
                 addedAlias = [NSMutableArray array];
-                [updatedItemsDict setObject:addedAlias forKey:kRoomSettingsNewAliasesKey];
+                updatedItemsDict[kRoomSettingsNewAliasesKey] = addedAlias;
             }
             
             [addedAlias addObject:roomAlias];
@@ -3693,7 +3688,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else
             {
-                [updatedItemsDict setObject:roomAlias forKey:kRoomSettingsCanonicalAliasKey];
+                updatedItemsDict[kRoomSettingsCanonicalAliasKey] = roomAlias;
             }
             
             if (missingAddressWarningIndex != -1)
@@ -3746,7 +3741,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     if ([MXTools isMatrixGroupIdentifier:groupId])
     {
         // Check whether this group has just been deleted
-        NSMutableArray<NSString *> *removedGroups = [updatedItemsDict objectForKey:kRoomSettingsRemovedRelatedGroupKey];
+        NSMutableArray<NSString *> *removedGroups = updatedItemsDict[kRoomSettingsRemovedRelatedGroupKey];
         if (removedGroups && [removedGroups indexOfObject:groupId] != NSNotFound)
         {
             [removedGroups removeObject:groupId];
@@ -3759,11 +3754,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         // Check whether this alias is not already defined for this room
         else if ([relatedGroups indexOfObject:groupId] == NSNotFound)
         {
-            NSMutableArray<NSString *> *addedGroup = [updatedItemsDict objectForKey:kRoomSettingsNewRelatedGroupKey];
+            NSMutableArray<NSString *> *addedGroup = updatedItemsDict[kRoomSettingsNewRelatedGroupKey];
             if (!addedGroup)
             {
                 addedGroup = [NSMutableArray array];
-                [updatedItemsDict setObject:addedGroup forKey:kRoomSettingsNewRelatedGroupKey];
+                updatedItemsDict[kRoomSettingsNewRelatedGroupKey] = addedGroup;
             }
             
             [addedGroup addObject:groupId];
@@ -3819,7 +3814,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             // The user wants to unselect this tag
             // Retrieve the current change on room tag (if any)
-            NSString *updatedRoomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
+            NSString *updatedRoomTag = updatedItemsDict[kRoomSettingsTagKey];
             
             // Check the actual tag on mxRoom
             if (mxRoom.accountData.tags[tappedRoomTag])
@@ -3827,7 +3822,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 // The actual tag must be updated, check whether another tag is already set
                 if (!updatedRoomTag)
                 {
-                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
+                    updatedItemsDict[kRoomSettingsTagKey] = @"";
                 }
             }
             else if (updatedRoomTag && [updatedRoomTag isEqualToString:tappedRoomTag])
@@ -3835,7 +3830,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 // Cancel the updated tag, but take into account the cancellation of another tag when 'tappedRoomTag' was selected.
                 if (mxRoom.accountData.tags.count)
                 {
-                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
+                    updatedItemsDict[kRoomSettingsTagKey] = @"";
                 }
                 else
                 {
@@ -3856,7 +3851,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else
             {
-                [updatedItemsDict setObject:tappedRoomTag forKey:kRoomSettingsTagKey];
+                updatedItemsDict[kRoomSettingsTagKey] = tappedRoomTag;
             }
             
             // Select the tapped tag

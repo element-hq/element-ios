@@ -26,13 +26,13 @@
 
 #pragma mark - Room tags
 
-- (void)setRoomTag:(NSString*)tag completion:(void (^)())completion
+- (void)setRoomTag:(NSString*)tag completion:(void (^)(void))completion
 {
     NSString* oldTag = nil;
     
     if (self.accountData.tags && self.accountData.tags.count)
     {
-        oldTag = [self.accountData.tags.allKeys objectAtIndex:0];
+        oldTag = self.accountData.tags.allKeys[0];
     }
     
     // support only kMXRoomTagFavourite or kMXRoomTagLowPriority tags by now
@@ -126,7 +126,7 @@
     return NO;
 }
 
-- (void)mute:(void (^)())completion
+- (void)mute:(void (^)(void))completion
 {
     // Check the current notification mode
     if (self.isMute)
@@ -204,7 +204,7 @@
     }
 }
 
-- (void)mentionsOnly:(void (^)())completion
+- (void)mentionsOnly:(void (^)(void))completion
 {
     // Check the current notification mode
     if (self.isMentionsOnly)
@@ -282,7 +282,7 @@
     }
 }
 
-- (void)allMessages:(void (^)())completion
+- (void)allMessages:(void (^)(void))completion
 {
     // Check the current notification mode
     if (!self.isMentionsOnly && !self.isMute)
@@ -368,7 +368,7 @@
     return nil;
 }
 
-- (void)addPushRuleToMentionsOnly:(void (^)())completion
+- (void)addPushRuleToMentionsOnly:(void (^)(void))completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     
@@ -427,7 +427,7 @@
                           highlight:NO];
 }
 
-- (void)addPushRuleToMute:(void (^)())completion
+- (void)addPushRuleToMute:(void (^)(void))completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     
@@ -487,7 +487,7 @@
                                     highlight:NO];
 }
 
-- (void)removePushRule:(MXPushRule *)rule completion:(void (^)())completion
+- (void)removePushRule:(MXPushRule *)rule completion:(void (^)(void))completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     
@@ -543,7 +543,7 @@
     [notificationCenter removeRule:rule];
 }
 
-- (void)enablePushRule:(MXPushRule *)rule completion:(void (^)())completion
+- (void)enablePushRule:(MXPushRule *)rule completion:(void (^)(void))completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     

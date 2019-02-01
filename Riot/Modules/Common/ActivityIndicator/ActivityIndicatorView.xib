@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ActivityIndicatorView" customModule="Riot" customModuleProvider="target">
+            <connections>
+                <outlet property="activityIndicatorBackgroundView" destination="2qY-Ui-WjQ" id="obw-ml-Ppb"/>
+                <outlet property="activityIndicatorView" destination="32q-cl-Ru4" id="38r-gn-BJg"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="DuQ-Nt-i8B">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="204"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2qY-Ui-WjQ">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="204"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="32q-cl-Ru4">
+                            <rect key="frame" x="15" y="15" width="345" height="174"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="0.89787029109589045" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="32q-cl-Ru4" firstAttribute="top" secondItem="2qY-Ui-WjQ" secondAttribute="top" constant="15" id="hLL-Ao-h6a"/>
+                        <constraint firstItem="32q-cl-Ru4" firstAttribute="centerX" secondItem="2qY-Ui-WjQ" secondAttribute="centerX" id="n1z-Rb-ce3"/>
+                        <constraint firstItem="32q-cl-Ru4" firstAttribute="leading" secondItem="2qY-Ui-WjQ" secondAttribute="leading" constant="15" id="tTB-ZQ-Xrm"/>
+                        <constraint firstItem="32q-cl-Ru4" firstAttribute="centerY" secondItem="2qY-Ui-WjQ" secondAttribute="centerY" id="ty6-5W-zen"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Zud-2y-G9d" firstAttribute="bottom" secondItem="2qY-Ui-WjQ" secondAttribute="bottom" id="F2N-Wt-CCH"/>
+                <constraint firstItem="2qY-Ui-WjQ" firstAttribute="top" secondItem="Zud-2y-G9d" secondAttribute="top" id="V7A-HL-11f"/>
+                <constraint firstItem="2qY-Ui-WjQ" firstAttribute="leading" secondItem="Zud-2y-G9d" secondAttribute="leading" id="jbB-4Q-tNb"/>
+                <constraint firstItem="Zud-2y-G9d" firstAttribute="trailing" secondItem="2qY-Ui-WjQ" secondAttribute="trailing" id="psU-2p-PBH"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="Zud-2y-G9d"/>
+            <point key="canvasLocation" x="55" y="-605"/>
+        </view>
+    </objects>
+</document>

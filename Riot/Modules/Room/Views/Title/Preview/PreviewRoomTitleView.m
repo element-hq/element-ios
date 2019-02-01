@@ -18,7 +18,8 @@
 
 #import "PreviewRoomTitleView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
 
@@ -61,31 +62,30 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
+
+    // Use same color as navigation bar
+    self.mainHeaderBackground.backgroundColor = ThemeService.shared.theme.baseColor;
+
     
-    self.backgroundColor = kRiotPrimaryBgColor;
-    self.mainHeaderBackground.backgroundColor = kRiotSecondaryBgColor;
+    self.roomTopic.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? kRiotPrimaryTextColor : kRiotSecondaryTextColor);
+    self.roomMembers.textColor = ThemeService.shared.theme.tintColor;
     
-    self.roomTopic.textColor = kRiotTopicTextColor;
-    
-    self.roomMembers.textColor = kRiotColorGreen;
-    
-    self.previewLabel.textColor = kRiotTopicTextColor;
+    self.previewLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     self.previewLabel.numberOfLines = 0;
     
-    self.subNoticeLabel.textColor = kRiotSecondaryTextColor;
+    self.subNoticeLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.subNoticeLabel.numberOfLines = 0;
     
-    self.bottomBorderView.backgroundColor = kRiotSecondaryBgColor;
+    self.bottomBorderView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kRiotColorGreen;
+    self.leftButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kRiotColorGreen;
+    self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)refreshDisplay
@@ -102,7 +102,8 @@
                      andImageOrientation:UIImageOrientationUp
                            toFitViewSize:self.roomAvatar.frame.size
                               withMethod:MXThumbnailingMethodCrop
-                            previewImage:[UIImage imageNamed:@"placeholder"]
+                            previewImage:[MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                                                    withColor:ThemeService.shared.theme.tintColor]
                             mediaManager:self.mxRoom.mxSession.mediaManager];
         }
         else
@@ -172,18 +173,6 @@
     else if (self.mxRoom)
     {
         [self.mxRoom.summary setRoomAvatarImageIn:self.roomAvatar];
-        
-        // The user is here invited to join a room (This invitation has been received from server sync)
-        self.displayNameTextField.text = self.mxRoom.summary.displayname;
-        if (!self.displayNameTextField.text.length)
-        {
-            self.displayNameTextField.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
-            self.displayNameTextField.textColor = kRiotSecondaryTextColor;
-        }
-        else
-        {
-            self.displayNameTextField.textColor = kRiotPrimaryTextColor;
-        }
         
         // Display room topic
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.summary.topic];
@@ -260,7 +249,7 @@
     self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
     self.roomAvatar.clipsToBounds = YES;
     
-    self.roomAvatar.defaultBackgroundColor = kRiotSecondaryBgColor;
+    self.roomAvatar.defaultBackgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
     [self layoutIfNeeded];

@@ -17,7 +17,7 @@
 
 #import "AuthInputsView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Tools.h"
 
 #import "CountryPickerViewController.h"
@@ -71,12 +71,9 @@
     self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
-    
-    if (kRiotPlaceholderTextColor)
-    {
-        // Apply placeholder color
-        [self customizeViewRendering];
-    }
+
+    // Apply placeholder color
+    [self customizeViewRendering];
 }
 
 - (void)destroy
@@ -103,56 +100,53 @@
 {
     [super customizeViewRendering];
     
-    self.repeatPasswordTextField.textColor = kRiotPrimaryTextColor;
-    self.userLoginTextField.textColor = kRiotPrimaryTextColor;
-    self.passWordTextField.textColor = kRiotPrimaryTextColor;
+    self.repeatPasswordTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.userLoginTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.passWordTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.emailTextField.textColor = kRiotPrimaryTextColor;
-    self.phoneTextField.textColor = kRiotPrimaryTextColor;
+    self.emailTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.phoneTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.isoCountryCodeLabel.textColor = kRiotPrimaryTextColor;
-    self.callingCodeLabel.textColor = kRiotPrimaryTextColor;
+    self.isoCountryCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.callingCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.messageLabel.textColor = kRiotSecondaryTextColor;
+    self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.messageLabel.numberOfLines = 0;
-    
-    if (kRiotPlaceholderTextColor)
+
+    if (self.userLoginTextField.placeholder)
     {
-        if (self.userLoginTextField.placeholder)
-        {
-            self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.userLoginTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
-        
-        if (self.repeatPasswordTextField.placeholder)
-        {
-            self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                  initWithString:self.repeatPasswordTextField.placeholder
-                                                                  attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-            
-        }
-        
-        if (self.passWordTextField.placeholder)
-        {
-            self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                            initWithString:self.passWordTextField.placeholder
-                                                            attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
-        
-        if (self.phoneTextField.placeholder)
-        {
-            self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                         initWithString:self.phoneTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
-        
-        if (self.emailTextField.placeholder)
-        {
-            self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                         initWithString:self.emailTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
+        self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:self.userLoginTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+
+    if (self.repeatPasswordTextField.placeholder)
+    {
+        self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                              initWithString:self.repeatPasswordTextField.placeholder
+                                                              attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+
+    }
+
+    if (self.passWordTextField.placeholder)
+    {
+        self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                        initWithString:self.passWordTextField.placeholder
+                                                        attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+
+    if (self.phoneTextField.placeholder)
+    {
+        self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                     initWithString:self.phoneTextField.placeholder
+                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+
+    if (self.emailTextField.placeholder)
+    {
+        self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                     initWithString:self.emailTextField.placeholder
+                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
     }
 }
 
@@ -195,16 +189,13 @@
                 self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
                 self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
-                
-                if (kRiotPlaceholderTextColor)
-                {
-                    self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                     initWithString:self.userLoginTextField.placeholder
-                                                                     attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-                    self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                 initWithString:self.phoneTextField.placeholder
-                                                                 attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-                }
+
+                self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                 initWithString:self.userLoginTextField.placeholder
+                                                                 attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+                self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                             initWithString:self.phoneTextField.placeholder
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
                 
                 self.userLoginContainer.hidden = NO;
                 self.messageLabel.hidden = NO;
@@ -1024,17 +1015,10 @@
     if (thirdPartyIdentifiersHidden)
     {
         self.passWordTextField.returnKeyType = UIReturnKeyNext;
-        
-        if (kRiotPlaceholderTextColor)
-        {
-            self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil)
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
-        else
-        {
-            self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
-        }
+
+        self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil)
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         
         self.userLoginContainer.hidden = NO;
         self.passwordContainer.hidden = NO;
@@ -1057,12 +1041,9 @@
                 self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
             }
             
-            if (kRiotPlaceholderTextColor)
-            {
-                self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
+            self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                              initWithString:self.emailTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-            }
+                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             
             self.emailContainer.hidden = NO;
             
@@ -1085,12 +1066,9 @@
                 self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_phone_placeholder", @"Vector", nil);
             }
             
-            if (kRiotPlaceholderTextColor)
-            {
-                self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.phoneTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-            }
+            self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                         initWithString:self.phoneTextField.placeholder
+                                                         attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
             
             self.phoneContainer.hidden = NO;
             
@@ -1149,18 +1127,7 @@
         phoneNumberPickerNavigationController = [[RiotNavigationController alloc] init];
         
         // Set Riot navigation bar colors
-        phoneNumberPickerNavigationController.navigationBar.barTintColor = kRiotPrimaryBgColor;
-        NSDictionary<NSString *,id> *titleTextAttributes = phoneNumberPickerNavigationController.navigationBar.titleTextAttributes;
-        if (titleTextAttributes)
-        {
-            NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-            textAttributes[NSForegroundColorAttributeName] = kRiotPrimaryTextColor;
-            phoneNumberPickerNavigationController.navigationBar.titleTextAttributes = textAttributes;
-        }
-        else if (kRiotPrimaryTextColor)
-        {
-            phoneNumberPickerNavigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
-        }
+        [ThemeService.shared.theme applyStyleOnNavigationBar:phoneNumberPickerNavigationController.navigationBar];
         
         [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
         
@@ -1292,11 +1259,11 @@
     // Retrieve the site key
     NSString *siteKey;
     
-    id recaptchaParams = [currentSession.params objectForKey:kMXLoginFlowTypeRecaptcha];
+    id recaptchaParams = currentSession.params[kMXLoginFlowTypeRecaptcha];
     if (recaptchaParams && [recaptchaParams isKindOfClass:NSDictionary.class])
     {
         NSDictionary *recaptchaParamsDict = (NSDictionary*)recaptchaParams;
-        siteKey = [recaptchaParamsDict objectForKey:@"public_key"];
+        siteKey = recaptchaParamsDict[@"public_key"];
     }
     
     // Retrieve the REST client from delegate
@@ -1330,6 +1297,9 @@
         MXKAuthenticationRecaptchaWebView *reCaptchaWebView = [MXKAuthenticationRecaptchaWebView new];
         reCaptchaWebView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.recaptchaContainer addSubview:reCaptchaWebView];
+
+        // Disable the webview scrollView to avoid 2 scrollviews on the same screen
+        reCaptchaWebView.scrollView.scrollEnabled = NO;
 
         [self.recaptchaContainer addConstraints:
          [NSLayoutConstraint constraintsWithVisualFormat:@"|-[view]-|"

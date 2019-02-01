@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -38,7 +37,7 @@
                     </constraints>
                 </view>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Name" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6uH-I3-RQg">
-                    <rect key="frame" x="249" y="103" width="103" height="23"/>
+                    <rect key="frame" x="247.5" y="103" width="105" height="23"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="DisplayNameTextField"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
@@ -62,7 +61,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="members_list_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S3Y-wJ-HOe">
-                    <rect key="frame" x="260" y="163.5" width="15" height="15"/>
+                    <rect key="frame" x="260" y="163" width="15" height="15"/>
                     <accessibility key="accessibilityConfiguration" identifier="RoomMembersDetailsIcon"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="15" id="XTx-6p-2wB"/>
@@ -143,9 +142,11 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="addParticipantIcon" destination="i40-fd-AlH" id="eAW-cS-7Qf"/>
                 <outlet property="addParticipantMask" destination="tsg-nl-P3k" id="ADj-t1-9wf"/>
                 <outlet property="bottomBorderView" destination="Ckb-7c-sTg" id="2Ky-GN-bO0"/>
                 <outlet property="displayNameTextField" destination="6uH-I3-RQg" id="MfX-LQ-C2K"/>
+                <outlet property="membersListIcon" destination="S3Y-wJ-HOe" id="hkf-a4-Ffw"/>
                 <outlet property="roomAvatar" destination="eEk-n9-4dA" id="5jd-Dx-tXE"/>
                 <outlet property="roomAvatarHeaderBackground" destination="uSp-YH-L18" id="sfW-ED-5bD"/>
                 <outlet property="roomAvatarHeaderBackgroundHeightConstraint" destination="DzD-aR-3eV" id="SuC-mO-epX"/>
@@ -157,7 +158,7 @@
         </view>
     </objects>
     <resources>
-        <image name="add_participant" width="58" height="58"/>
+        <image name="add_participant" width="92.800003051757812" height="92.800003051757812"/>
         <image name="members_list_icon" width="15" height="15"/>
     </resources>
 </document>

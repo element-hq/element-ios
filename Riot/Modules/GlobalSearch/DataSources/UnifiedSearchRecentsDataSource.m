@@ -16,7 +16,7 @@
 
 #import "UnifiedSearchRecentsDataSource.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #import "RoomIdOrAliasTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"

@@ -19,7 +19,8 @@
 
 #import <objc/runtime.h>
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 /**
  `UIViewControllerRiotSearchInternals` is the internal single point storage for the search feature.
@@ -94,8 +95,7 @@
         self.searchBar.text = @"";
         
         // Customize search bar
-        self.searchBar.barStyle = kRiotDesignSearchBarStyle;
-        self.searchBar.tintColor = kRiotDesignSearchBarTintColor;
+        [ThemeService.shared.theme applyStyleOnSearchBar:self.searchBar];
         
         // Remove navigation buttons
         self.navigationItem.hidesBackButton = YES;
@@ -134,7 +134,7 @@
 
 - (void)addBackgroundImageViewToView:(UIView*)view
 {
-    UIImage *searchBgImage = [MXKTools paintImage:[UIImage imageNamed:@"search_bg"] withColor:kRiotKeyboardColor];
+    UIImage *searchBgImage = [MXKTools paintImage:[UIImage imageNamed:@"search_bg"] withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:searchBgImage];
     backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
