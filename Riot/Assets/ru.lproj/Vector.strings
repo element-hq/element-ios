@@ -580,7 +580,7 @@
 "settings_key_backup_button_delete" = "Удалить резервную копию";
 "settings_key_backup_button_verify" = "Проверить";
 "settings_key_backup_delete_confirmation_prompt_title" = "Удалить резервную копию";
-"settings_key_backup_delete_confirmation_prompt_msg" = "Удалить резервную копию ключей шифрования с сервера? Вы больше не сможете использовать ключ восстановления для чтения истории зашифрованных сообщений.";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Удалить резервную копию ключей шифрования с сервера? Вы больше не сможете использовать ключ восстановления для чтения истории зашифрованных сообщений";
 "room_does_not_exist" = "%@ не существует";
 "key_backup_setup_title" = "Восстановление Сообщений";
 "key_backup_setup_skip_action" = "Пропустить";
@@ -606,14 +606,14 @@
 "key_backup_recover_title" = "Безопасные Сообщения";
 "key_backup_recover_empty_backup_title" = "Пустая резервная копия";
 "key_backup_recover_empty_backup_message" = "Нет ключа для восстановления";
-"key_backup_recover_from_passphrase_info" = "Используйте парольную фразу восстановления для разблокировки истории безопасных сообщений.";
+"key_backup_recover_from_passphrase_info" = "Используйте парольную фразу восстановления для разблокировки истории безопасных сообщений";
 "key_backup_recover_from_passphrase_passphrase_title" = "Ввод";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Введите парольную фразу";
 "key_backup_recover_from_passphrase_recover_action" = "Разблокировать историю";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Не знаете вашу парольную фразу для восстановления? Вы можете ";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "используйте ключ восстановления";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Используйте ключ восстановления для разблокировки истории безопасных сообщений.";
+"key_backup_recover_from_recovery_key_info" = "Используйте ключ восстановления для разблокировки истории безопасных сообщений";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Ввод";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Введите ключ восстановления";
 "key_backup_recover_from_recovery_key_recover_action" = "Разблокировать историю";
@@ -624,4 +624,4 @@
 "key_backup_recover_banner_title_part1" = "Запуск Безопасного Восстановления Сообщений";
 "key_backup_recover_banner_title_part2" = " для чтения истории зашифрованных сообщений на этом устройстве";
 "key_backup_setup_banner_title_part2" = " чтобы никогда не потерять зашифрованные сообщения";
-"key_backup_setup_recovery_key_info" = "Сделайте копию ключа восстановления и сохраните его в надёжном месте.\n\nКак сеть безопасности, вы можете использовать ее для восстановления истории зашифрованных сообщений, если вы забыли свою фразу-пароль восстановления.";
+"key_backup_setup_recovery_key_info" = "Сделайте копию ключа восстановления и надёжно сохраните его.\n\nЕго можно будет использовать для восстановления истории зашифрованных сообщений, на случай если вы забудете парольную фразу восстановления.";
