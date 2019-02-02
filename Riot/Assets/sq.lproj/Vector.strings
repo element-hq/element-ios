@@ -575,7 +575,7 @@
 "settings_key_backup_button_delete" = "Fshije kopjeruajtjen";
 "settings_key_backup_button_verify" = "Verifikoje";
 "settings_key_backup_delete_confirmation_prompt_title" = "Fshije Kopjeruajtjen";
-"settings_key_backup_delete_confirmation_prompt_msg" = "Të fshihen nga shërbyesi kyçet e kopjeruajtur të fshehtëzimit? S’do të jeni më në gjendje të përdorni kyçin tuaj të rimarrjeve për lexim historiku mesazhesh të fshehtëzuar";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Të fshihen nga shërbyesi kyçet e kopjeruajtur të fshehtëzimit? S’do të jeni më në gjendje të përdorni kyçin tuaj të rikthimeve për lexim historiku mesazhesh të fshehtëzuar";
 "room_does_not_exist" = "%@ nuk ekziston";
 "key_backup_setup_title" = "Rikthim Mesazhesh";
 "key_backup_setup_skip_action" = "Anashkaloje";
@@ -594,7 +594,7 @@
 "key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Ripohoni frazëkalimin";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Bukur!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Frazëkalimet nuk përputhen";
-"key_backup_setup_passphrase_set_passphrase_action" = "Caktoni frazëkalim rikthimi";
+"key_backup_setup_passphrase_set_passphrase_action" = "Caktoni frazëkalim rikthimesh";
 "key_backup_setup_recovery_key_info" = "Bëni një kopje të këtij Kyçi Rikthimesh dhe ruajeni diku.\n\nSi rrjet sigurie, mund ta përdorni për të rikthyer historikun e mesazheve tuaj të fshehtëzuar, nëse harroni Frazëkalimin e Rikthimeve.";
 "key_backup_setup_recovery_key_recovery_key_title" = "Kyç Rikthimesh";
 "key_backup_setup_recovery_key_make_copy_action" = "Bëni një Kopje";
@@ -613,7 +613,7 @@
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Jepeni";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Jepni Kyç Rikthimi";
 "key_backup_recover_from_recovery_key_recover_action" = "Shkyçe Historikun";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Humbët kyçin tuaj të rikthimit? Te rregullimet mund të caktoni një të ri.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Humbët kyçin tuaj të rikthimeve? Te rregullimet mund të caktoni një të ri.";
 "key_backup_recover_success_info" = "Kopjeruajtja u Rikthye!";
 "key_backup_recover_done_action" = "U bë";
 "key_backup_setup_banner_title_part1" = "Rregulloni Rikthim Mesazhesh të Sigurt";
