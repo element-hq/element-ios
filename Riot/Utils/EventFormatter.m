@@ -349,16 +349,13 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 - (NSAttributedString*)roomCreatePredecessorAttributedStringWithPredecessorRoomId:(NSString*)predecessorRoomId
 {
-    NSString *predecessorRoomPermalink = [MXTools permalinkToRoom:predecessorRoomId];
-    
     NSDictionary *roomPredecessorReasonAttributes = @{
                                                       NSFontAttributeName : self.defaultTextFont
                                                       };
     
     NSDictionary *roomLinkAttributes = @{
                                          NSFontAttributeName : self.defaultTextFont,
-                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
-                                         NSLinkAttributeName : predecessorRoomPermalink,
+                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)
                                          };
     
     NSMutableAttributedString *roomPredecessorAttributedString = [NSMutableAttributedString new];

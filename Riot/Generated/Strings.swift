@@ -1570,7 +1570,7 @@ internal enum VectorL10n {
   internal static var roomPredecessorInformation: String { 
     return VectorL10n.tr("Vector", "room_predecessor_information") 
   }
-  /// Click here to see older messages.
+  /// Tap here to see older messages.
   internal static var roomPredecessorLink: String { 
     return VectorL10n.tr("Vector", "room_predecessor_link") 
   }

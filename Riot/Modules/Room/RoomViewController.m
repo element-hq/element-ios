@@ -2005,8 +2005,23 @@
             }
             else if (tappedEvent)
             {
-                // Highlight this event in displayed message
-                [self selectEventWithId:tappedEvent.eventId];
+                if (tappedEvent.eventType == MXEventTypeRoomCreate)
+                {
+                    // Handle tap on RoomPredecessorBubbleCell
+                    MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:tappedEvent.content];
+                    NSString *predecessorRoomId = createContent.roomPredecessorInfo.roomId;
+                    
+                    if (predecessorRoomId)
+                    {
+                        // Show predecessor room
+                        [[AppDelegate theDelegate] showRoom:predecessorRoomId andEventId:nil withMatrixSession:self.mainSession];
+                    }
+                }
+                else
+                {
+                    // Highlight this event in displayed message
+                    [self selectEventWithId:tappedEvent.eventId];
+                }
             }
             
             // Force table refresh
