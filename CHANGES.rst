@@ -20,6 +20,7 @@ Bug fix:
  * Registration: improve scrolling on the reCaptcha screen (#2165).
  * Infinite loading wheel when taping on a fake room alias (#679).
  * Ban and kick reasons are silently discarded (#2162).
+ * Room Version Upgrade: Clicking the link in the room continuation event to go back to the old version of the room doesn't work (#2179).
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================
