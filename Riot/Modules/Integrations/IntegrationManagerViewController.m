@@ -104,20 +104,20 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     {
         url = [NSMutableString stringWithFormat:@"%@?scalar_token=%@&room_id=%@",
                [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsUiUrl"],
-               [scalarToken stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-               [roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+               [scalarToken stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]],
+               [roomId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]
                ];
 
         if (screen)
         {
             [url appendString:@"&screen="];
-            [url appendString:[screen stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [url appendString:[screen stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
         }
 
         if (widgetId)
         {
             [url appendString:@"&integ_id="];
-            [url appendString:[widgetId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [url appendString:[widgetId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
         }
     }
     
