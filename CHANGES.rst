@@ -12,6 +12,7 @@ Improvements:
  * Key backup: Add a dedicated section to settings (#2193).
  * Key backup: Implement setup reminder (#2211).
  * Key backup: Implement recover reminder (#2206).
+ * Update deprecated contact availability checks (#2222).
  
 Bug fix:
  * Use white scroll bar on dark themes (#2158).
