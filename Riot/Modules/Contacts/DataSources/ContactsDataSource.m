@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+#import <Contacts/Contacts.h>
 #import "ContactsDataSource.h"
 #import "ContactTableViewCell.h"
 
@@ -87,7 +88,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
         
         // Refresh the matrix identifiers for all the local contacts.
-        if (ABAddressBookGetAuthorizationStatus() != kABAuthorizationStatusNotDetermined)
+        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusAuthorized)
         {
             // Refresh the matrix identifiers for all the local contacts.
             [[MXKContactManager sharedManager] updateMatrixIDsForAllLocalContacts];
@@ -618,14 +619,14 @@
             tableViewCell.textLabel.numberOfLines = 0;
 
             // Indicate to the user why there is no contacts
-            switch (ABAddressBookGetAuthorizationStatus())
+            switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts])
             {
-                case kABAuthorizationStatusAuthorized:
+                case CNAuthorizationStatusAuthorized:
                     // Because there is no contacts on the device
                     tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
                     break;
 
-                case kABAuthorizationStatusNotDetermined:
+                case CNAuthorizationStatusNotDetermined:
                     // Because the user have not granted the permission yet
                     // (The permission request popup is displayed at the same time)
                     tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_required", @"Vector", nil);

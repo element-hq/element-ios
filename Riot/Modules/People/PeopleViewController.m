@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+#import <Contacts/Contacts.h>
 #import "PeopleViewController.h"
 
 #import "UIViewController+RiotSearch.h"
@@ -99,7 +100,7 @@
     [super viewWillAppear:animated];
 
     // Check whether the access to the local contacts has not been already asked.
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusNotDetermined)
     {
         // Allow by default the local contacts sync in order to discover matrix users.
         // This setting change will trigger the loading of the local contacts, which will automatically
