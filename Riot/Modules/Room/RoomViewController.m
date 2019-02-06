@@ -419,7 +419,6 @@
 - (void)userInterfaceThemeDidChange
 {
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
-    self.navigationController.navigationBar.translucent = YES;
 
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
@@ -1484,6 +1483,12 @@
 
 - (void)showExpandedHeader:(BOOL)isVisible
 {
+    // Use a transparent navigation bar when displaying the expanded header
+    // Retrieve the main navigation controller if the current view controller
+    // is embedded inside a split view controlle
+    self.navigationController.navigationBar.translucent = isVisible;
+    self.mxk_mainNavigationController.navigationBar.translucent = isVisible;
+
     if (self.expandedHeaderContainer.isHidden == isVisible)
     {
         // Check conditions before making the expanded room header visible.
@@ -1544,7 +1549,6 @@
         // Report shadow image
         [mainNavigationController.navigationBar setShadowImage:shadowImage];
         [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
-        mainNavigationController.navigationBar.translucent = isVisible;
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
@@ -1636,7 +1640,7 @@
                 mainNavigationController = self.splitViewController.viewControllers.firstObject;
             }
             mainNavigationController.navigationBar.translucent = isVisible;
-            
+
             // Finalize preview header display according to the screen orientation
             [self refreshPreviewHeader:UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])];
         }
@@ -2010,7 +2014,7 @@
                     // Handle tap on RoomPredecessorBubbleCell
                     MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:tappedEvent.content];
                     NSString *predecessorRoomId = createContent.roomPredecessorInfo.roomId;
-                    
+
                     if (predecessorRoomId)
                     {
                         // Show predecessor room
