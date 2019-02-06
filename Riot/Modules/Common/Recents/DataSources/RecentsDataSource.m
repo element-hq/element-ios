@@ -152,6 +152,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)registerKeyBackupStateDidChangeNotification
 {
+    // Check homeserver update in background
+    [self.mxSession.crypto.backup forceRefresh:nil failure:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
 }
 
