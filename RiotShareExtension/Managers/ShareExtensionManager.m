@@ -239,8 +239,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          }
                          else if ([(NSObject *)itemProviderItem isKindOfClass:[UIImage class]])
                          {
+                             // An application can share directly an UIImage.
+                             // The most common case is screenshot sharing without saving to file.
+                             // As screenshot using PNG format when they are saved to file we also use PNG format when saving UIImage to NSData.
                              UIImage *image = (UIImage*)itemProviderItem;
-                             imageData = UIImageJPEGRepresentation(image, 1.0);
+                             imageData = UIImagePNGRepresentation(image);
                          }
                          
                          if (imageData)
@@ -364,15 +367,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     for (NSData *imageData in self.pendingImages)
     {
-        @autoreleasepool
+        if ([self isImageOrientationNotUpOrUndeterminedForImageData:imageData])
         {
-            UIImage *image = [UIImage imageWithData:imageData];
-            
-            if (image && image.imageOrientation != UIImageOrientationUp)
-            {
-                isAPendingImageNotOrientedUp = YES;
-                break;
-            }
+            isAPendingImageNotOrientedUp = YES;
+            break;
         }
     }
     
@@ -555,6 +553,145 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return YES;
 }
 
+- (NSString*)utiFromImageTypeItemProvider:(NSItemProvider*)itemProvider
+{
+    NSString *uti;
+    
+    NSString *utiPNG = (__bridge NSString *)kUTTypePNG;
+    NSString *utiJPEG = (__bridge NSString *)kUTTypeJPEG;
+    
+    if ([itemProvider hasItemConformingToTypeIdentifier:utiPNG])
+    {
+        uti = utiPNG;
+    }
+    else if ([itemProvider hasItemConformingToTypeIdentifier:utiJPEG])
+    {
+        uti = utiJPEG;
+    }
+    else
+    {
+        uti = itemProvider.registeredTypeIdentifiers.firstObject;
+    }
+    
+    return uti;
+}
+
+- (NSString*)utiFromImageData:(NSData*)imageData
+{
+    CGImageSourceRef imageSource = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
+    NSString *uti = (NSString*)CGImageSourceGetType(imageSource);
+    CFRelease(imageSource);
+    return uti;
+}
+
+- (NSString*)mimeTypeFromUTI:(NSString*)uti
+{
+    return (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)uti, kUTTagClassMIMEType);
+}
+
+- (BOOL)isResizingSupportedForImageData:(NSData*)imageData
+{
+    NSString *imageUTI = [self utiFromImageData:imageData];
+    return [self isResizingSupportedForUTI:imageUTI];
+}
+
+- (BOOL)isResizingSupportedForUTI:(NSString*)imageUTI
+{
+    if ([imageUTI isEqualToString:(__bridge NSString *)kUTTypePNG] || [imageUTI isEqualToString:(__bridge NSString *)kUTTypeJPEG])
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (CGSize)imageSizeFromImageData:(NSData*)imageData
+{
+    CGFloat width = 0.0f;
+    CGFloat height = 0.0f;
+    
+    CGImageSourceRef imageSource = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
+    
+    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, NULL);
+    
+    CFRelease(imageSource);
+    
+    if (imageProperties != NULL)
+    {
+        CFNumberRef widthNumber  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
+        CFNumberRef heightNumber = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
+        CFNumberRef orientationNumber = CFDictionaryGetValue(imageProperties, kCGImagePropertyOrientation);
+        
+        if (widthNumber != NULL)
+        {
+            CFNumberGetValue(widthNumber, kCFNumberCGFloatType, &width);
+        }
+        
+        if (heightNumber != NULL)
+        {
+            CFNumberGetValue(heightNumber, kCFNumberCGFloatType, &height);
+        }
+        
+        // Check orientation and flip size if required
+        if (orientationNumber != NULL)
+        {
+            int orientation;
+            CFNumberGetValue(orientationNumber, kCFNumberIntType, &orientation);
+            
+            // For orientation from kCGImagePropertyOrientationLeftMirrored to kCGImagePropertyOrientationLeft flip size
+            if (orientation >= 5)
+            {
+                CGFloat tempWidth = width;
+                width = height;
+                height = tempWidth;
+            }
+        }
+        
+        CFRelease(imageProperties);
+    }
+    
+    return CGSizeMake(width, height);
+}
+
+- (NSNumber*)cgImageimageOrientationNumberFromImageData:(NSData*)imageData
+{
+    NSNumber *orientationNumber;
+    
+    CGImageSourceRef imageSource = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
+    
+    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, NULL);
+    
+    CFRelease(imageSource);
+    
+    if (imageProperties != NULL)
+    {
+        CFNumberRef orientationNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyOrientation);
+        
+        // Check orientation and flip size if required
+        if (orientationNum != NULL)
+        {
+            orientationNumber = (__bridge NSNumber *)orientationNum;
+        }
+        
+        CFRelease(imageProperties);
+    }
+    
+    return orientationNumber;
+}
+
+- (BOOL)isImageOrientationNotUpOrUndeterminedForImageData:(NSData*)imageData
+{
+    BOOL isImageNotOrientedUp = YES;
+    
+    NSNumber *cgImageOrientationNumber = [self cgImageimageOrientationNumberFromImageData:imageData];
+    
+    if (cgImageOrientationNumber && cgImageOrientationNumber.unsignedIntegerValue == (NSUInteger)kCGImagePropertyOrientationUp)
+    {
+        isImageNotOrientedUp = NO;
+    }
+    
+    return isImageNotOrientedUp;
+}
+
 #pragma mark - Notifications
 
 - (void)onMediaLoaderStateDidChange:(NSNotification *)notification
@@ -630,7 +767,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     NSString *mimeType;
     CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[fileUrl pathExtension] , NULL);
-    mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType);
+    mimeType = [self mimeTypeFromUTI:(__bridge NSString *)uti];
     CFRelease(uti);
     
     __weak typeof(self) weakSelf = self;
@@ -674,71 +811,28 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             NSItemProvider *itemProvider = itemProviders[index];
             NSData *imageData = imageDatas[index];
-            UIImage *image = [UIImage imageWithData:imageData];
             
-            if (!image)
-            {
-                NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
-                if (failureBlock)
-                {
-                    failureBlock(nil);
-                }
-                return;
-            }
-            
-            // Prepare the image
-            UIImage *convertedImage;
-            CGSize newImageSize;
-            
-            switch (self.imageCompressionMode) {
-                case ImageCompressionModeSmall:
-                    newImageSize = CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE);
-                    break;
-                case ImageCompressionModeMedium:
-                    newImageSize = CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE);
-                    break;
-                case ImageCompressionModeLarge:
-                    newImageSize = CGSizeMake(self.actualLargeSize, self.actualLargeSize);
-                    break;
-                default:
-                    newImageSize = CGSizeZero;
-                    break;
-            }
-            
-            if (CGSizeEqualToSize(newImageSize, CGSizeZero))
-            {
-                // No resize to make
-                // Make sure the uploaded image orientation is up
-                convertedImage = [MXKTools forceImageOrientationUp:image];
-            }
-            else
-            {
-                // Resize the image and set image in right orientation too
-                convertedImage = [MXKTools resizeImageWithData:imageData toFitInSize:newImageSize];
-            }
-            
+            NSString *imageUTI;
             NSString *mimeType;
-            if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypePNG])
+            
+            // Try to get UTI plus mime type from NSItemProvider
+            imageUTI = [self utiFromImageTypeItemProvider:itemProvider];
+            
+            if (imageUTI)
             {
-                mimeType = @"image/png";
-                if (convertedImage != image)
-                {
-                    imageData = UIImagePNGRepresentation(convertedImage);
-                }
+                mimeType = [self mimeTypeFromUTI:imageUTI];
             }
-            else if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeJPEG])
+            
+            if (!mimeType)
             {
-                mimeType = @"image/jpeg";
-                if (convertedImage != image)
+                // Try to get UTI plus mime type from image data
+                
+                imageUTI = [self utiFromImageData:imageData];
+                
+                if (imageUTI)
                 {
-                    imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
+                    mimeType = [self mimeTypeFromUTI:imageUTI];
                 }
-            }
-            else
-            {
-                // Other image types like GIF
-                NSString *imageFileName = itemProvider.registeredTypeIdentifiers[0];
-                mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)imageFileName, kUTTagClassMIMEType);
             }
             
             // Sanity check
@@ -752,20 +846,78 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 return;
             }
             
+            CGSize imageSize;
+            
+            // Only resize JPEG or PNG files
+            if ([self isResizingSupportedForUTI:imageUTI])
+            {
+                UIImage *convertedImage;
+                CGSize newImageSize;
+                
+                switch (self.imageCompressionMode) {
+                    case ImageCompressionModeSmall:
+                        newImageSize = CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE);
+                        break;
+                    case ImageCompressionModeMedium:
+                        newImageSize = CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE);
+                        break;
+                    case ImageCompressionModeLarge:
+                        newImageSize = CGSizeMake(self.actualLargeSize, self.actualLargeSize);
+                        break;
+                    default:
+                        newImageSize = CGSizeZero;
+                        break;
+                }
+                
+                if (CGSizeEqualToSize(newImageSize, CGSizeZero))
+                {
+                    // No resize to make
+                    // Make sure the uploaded image orientation is up
+                    if ([self isImageOrientationNotUpOrUndeterminedForImageData:imageData])
+                    {
+                        UIImage *image = [UIImage imageWithData:imageData];
+                        convertedImage = [MXKTools forceImageOrientationUp:image];
+                    }
+                }
+                else
+                {
+                    // Resize the image and set image in right orientation too
+                    convertedImage = [MXKTools resizeImageWithData:imageData toFitInSize:newImageSize];
+                }
+                
+                if (convertedImage)
+                {
+                    if ([imageUTI isEqualToString:(__bridge NSString *)kUTTypePNG])
+                    {
+                        imageData = UIImagePNGRepresentation(convertedImage);
+                    }
+                    else if ([imageUTI isEqualToString:(__bridge NSString *)kUTTypeJPEG])
+                    {
+                        imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
+                    }
+                    
+                    imageSize = convertedImage.size;
+                }
+                else
+                {
+                    imageSize = [self imageSizeFromImageData:imageData];
+                }
+            }
+            else
+            {
+                imageSize = [self imageSizeFromImageData:imageData];
+            }
+            
             UIImage *thumbnail = nil;
             // Thumbnail is useful only in case of encrypted room
             if (room.summary.isEncrypted)
             {
-                thumbnail = [MXKTools reduceImage:convertedImage toFitInSize:CGSizeMake(800, 600)];
-                if (thumbnail == convertedImage)
-                {
-                    thumbnail = nil;
-                }
+                thumbnail = [MXKTools resizeImageWithData:imageData toFitInSize:CGSizeMake(800, 600)];
             }
             
             __weak typeof(self) weakSelf = self;
             
-            [room sendImage:imageData withImageSize:convertedImage.size mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+            [room sendImage:imageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
                 
                 if (!--count && weakSelf)
                 {
