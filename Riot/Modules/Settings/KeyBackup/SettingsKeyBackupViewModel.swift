@@ -68,6 +68,9 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
 
     private func checkKeyBackupState() {
 
+        // Check homeserver update in background
+        self.keyBackup.forceRefresh(nil, failure: nil)
+
         if let keyBackupVersion = self.keyBackup.keyBackupVersion {
 
             self.keyBackup.trust(for: keyBackupVersion, onComplete: { [weak self] (keyBackupVersionTrust) in
