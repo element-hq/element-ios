@@ -24,6 +24,7 @@ Bug fix:
  * Share extension: Fail to send screenshot (#2168).
  * Share extension: Handle rich item sharing (image + text + URL) (#2224).
  * Share extension: Sharing pages from Firefox only shares their title (#2163).
+ * Share extension: Fix unloaded theme (PR #2235).
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================
