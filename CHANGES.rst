@@ -22,6 +22,7 @@ Bug fix:
  * Ban and kick reasons are silently discarded (#2162).
  * Room Version Upgrade: Clicking the link in the room continuation event to go back to the old version of the room doesn't work (#2179).
  * Share extension: Fail to send screenshot (#2168).
+ * Share extension: Fix unloaded theme (PR #2235).
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================
