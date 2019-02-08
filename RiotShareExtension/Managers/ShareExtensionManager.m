@@ -156,9 +156,33 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     NSString *UTTypeFileUrl = (__bridge NSString *)kUTTypeFileURL;
     NSString *UTTypeMovie = (__bridge NSString *)kUTTypeMovie;
     
+    BOOL areAllAttachmentsImages = [self areAllAttachmentsImages];
+    
     __weak typeof(self) weakSelf = self;
     
     [self resetPendingData];
+
+    __block NSError *firstRequestError = nil;
+    __block NSMutableArray *returningExtensionItems = [NSMutableArray new];
+    dispatch_group_t requestsGroup = dispatch_group_create();
+    
+    void (^requestSuccess)(NSExtensionItem*) = ^(NSExtensionItem *extensionItem) {
+        if (extensionItem && ![returningExtensionItems containsObject:extensionItem])
+        {
+            [returningExtensionItems addObject:extensionItem];
+        }
+        
+        dispatch_group_leave(requestsGroup);
+    };
+    
+    void (^requestFailure)(NSError*) = ^(NSError *requestError) {
+        if (requestError && !firstRequestError)
+        {
+            firstRequestError = requestError;
+        }
+        
+        dispatch_group_leave(requestsGroup);
+    };
     
     for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
     {
@@ -166,6 +190,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeFileUrl])
             {
+                dispatch_group_enter(requestsGroup);
+                
                 [itemProvider loadItemForTypeIdentifier:UTTypeFileUrl options:nil completionHandler:^(NSURL *fileUrl, NSError * _Null_unspecified error) {
                     
                     // Switch back on the main thread to handle correctly the UI change
@@ -174,7 +200,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            [self sendFileWithUrl:fileUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                            [self sendFileWithUrl:fileUrl
+                                           toRoom:room
+                                     successBlock:^{
+                                         requestSuccess(item);
+                                     } failureBlock:requestFailure];
                         }
                         
                     });
@@ -183,6 +213,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeText])
             {
+                dispatch_group_enter(requestsGroup);
+                
                 [itemProvider loadItemForTypeIdentifier:UTTypeText options:nil completionHandler:^(NSString *text, NSError * _Null_unspecified error) {
                     
                     // Switch back on the main thread to handle correctly the UI change
@@ -191,7 +223,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            [self sendText:text toRoom:room extensionItem:item failureBlock:failureBlock];
+                            [self sendText:text
+                                    toRoom:room
+                              successBlock:^{
+                                  requestSuccess(item);
+                              } failureBlock:requestFailure];
                         }
                         
                     });
@@ -200,6 +236,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeURL])
             {
+                dispatch_group_enter(requestsGroup);
+                
                 [itemProvider loadItemForTypeIdentifier:UTTypeURL options:nil completionHandler:^(NSURL *url, NSError * _Null_unspecified error) {
                     
                     // Switch back on the main thread to handle correctly the UI change
@@ -208,7 +246,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                         if (weakSelf)
                         {
                             typeof(self) self = weakSelf;
-                            [self sendText:url.absoluteString toRoom:room extensionItem:item failureBlock:failureBlock];
+                            [self sendText:url.absoluteString
+                                    toRoom:room
+                              successBlock:^{
+                                        requestSuccess(item);
+                            } failureBlock:requestFailure];
                         }
                         
                     });
@@ -217,6 +259,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
             {
+                dispatch_group_enter(requestsGroup);
+                
                 itemProvider.isLoaded = NO;
                 
                 [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(id<NSSecureCoding> _Nullable itemProviderItem, NSError * _Null_unspecified error)
@@ -249,16 +293,37 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          if (imageData)
                          {
                              [self.pendingImages addObject:imageData];
+                             
+                             if (!areAllAttachmentsImages)
+                             {
+                                 CGSize imageSize = [self imageSizeFromImageData:imageData];
+                                 self.imageCompressionMode = ImageCompressionModeNone;
+                                 self.actualLargeSize = MAX(imageSize.width, imageSize.height);
+                                 
+                                 [self sendImages:self.pendingImages
+                                    withProviders:item.attachments
+                                           toRoom:room
+                                     successBlock:^{
+                                         requestSuccess(item);
+                                     } failureBlock:requestFailure];
+                             }
                          }
                          else
                          {
                              NSLog(@"[ShareExtensionManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
+                             dispatch_group_leave(requestsGroup);
                          }
                          
-                         if ([self areAttachmentsFullyLoaded])
+                         // Only prompt for image resize only if all items are images
+                         if (areAllAttachmentsImages && [self areAttachmentsFullyLoaded])
                          {
                              UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
-                                 [self sendImages:self.pendingImages withProviders:item.attachments toRoom:room extensionItem:item failureBlock:failureBlock];
+                                 [self sendImages:self.pendingImages
+                                    withProviders:item.attachments
+                                           toRoom:room
+                                     successBlock:^{
+                                         requestSuccess(item);
+                                     } failureBlock:requestFailure];
                              }];
                              
                              if (compressionPrompt)
@@ -271,6 +336,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeVideo])
             {
+                dispatch_group_enter(requestsGroup);
+                
                 [itemProvider loadItemForTypeIdentifier:UTTypeVideo options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error) {
                      
                      // Switch back on the main thread to handle correctly the UI change
@@ -279,7 +346,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          if (weakSelf)
                          {
                              typeof(self) self = weakSelf;
-                             [self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                             [self sendVideo:videoLocalUrl
+                                      toRoom:room
+                                successBlock:^{
+                                 requestSuccess(item);
+                             } failureBlock:requestFailure];
                          }
                          
                      });
@@ -288,6 +359,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeMovie])
             {
+                dispatch_group_enter(requestsGroup);
+                
                 [itemProvider loadItemForTypeIdentifier:UTTypeMovie options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error) {
                      
                      // Switch back on the main thread to handle correctly the UI change
@@ -296,7 +369,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          if (weakSelf)
                          {
                              typeof(self) self = weakSelf;
-                             [self sendVideo:videoLocalUrl toRoom:room extensionItem:item failureBlock:failureBlock];
+                             [self sendVideo:videoLocalUrl
+                                      toRoom:room
+                                successBlock:^{
+                                    requestSuccess(item);
+                                } failureBlock:requestFailure];
                          }
                          
                      });
@@ -305,6 +382,22 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             }
         }
     }
+    
+    dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
+        [self resetPendingData];
+        
+        if (firstRequestError)
+        {
+            if (failureBlock)
+            {
+                failureBlock(firstRequestError);
+            }
+        }
+        else
+        {
+            [self completeRequestReturningItems:returningExtensionItems completionHandler:nil];
+        }
+    });
 }
 
 - (BOOL)hasImageTypeContent
@@ -553,6 +646,21 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return YES;
 }
 
+- (BOOL)areAllAttachmentsImages
+{
+    for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
+    {
+        for (NSItemProvider *itemProvider in item.attachments)
+        {
+            if (![itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeImage])
+            {
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
 - (NSString*)utiFromImageTypeItemProvider:(NSItemProvider*)itemProvider
 {
     NSString *uti;
@@ -723,7 +831,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 #pragma mark - Sharing
 
-- (void)sendText:(NSString *)text toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
+- (void)sendText:(NSString *)text toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!text)
@@ -736,12 +844,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         return;
     }
     
-    __weak typeof(self) weakSelf = self;
     [room sendTextMessage:text success:^(NSString *eventId) {
-        if (weakSelf)
+        if (successBlock)
         {
-            typeof(self) self = weakSelf;
-            [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+            successBlock();
         }
     } failure:^(NSError *error) {
         NSLog(@"[ShareExtensionManager] sendTextMessage failed.");
@@ -752,7 +858,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }];
 }
 
-- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
+- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!fileUrl)
@@ -770,13 +876,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     mimeType = [self mimeTypeFromUTI:(__bridge NSString *)uti];
     CFRelease(uti);
     
-    __weak typeof(self) weakSelf = self;
-    
     [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
-        if (weakSelf)
+        if (successBlock)
         {
-            typeof(self) self = weakSelf;
-            [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+            successBlock();
         }
     } failure:^(NSError *error) {
         NSLog(@"[ShareExtensionManager] sendFile failed.");
@@ -788,7 +891,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 }
 
 
-- (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
+- (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
     if (imageDatas.count == 0)
     {
@@ -803,7 +906,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     [self didStartSendingToRoom:room];
     
-    __block NSUInteger count = imageDatas.count;
+//    __block NSUInteger count = imageDatas.count;
     
     for (NSInteger index = 0; index < imageDatas.count; index++)
     {
@@ -915,18 +1018,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 thumbnail = [MXKTools resizeImageWithData:imageData toFitInSize:CGSizeMake(800, 600)];
             }
             
-            __weak typeof(self) weakSelf = self;
-            
             [room sendImage:imageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
-                
-                if (!--count && weakSelf)
+                if (successBlock)
                 {
-                    typeof(self) self = weakSelf;
-                    
-                    [self resetPendingData];
-                    [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+                    successBlock();
                 }
-                
             } failure:^(NSError *error) {
                 
                 NSLog(@"[ShareExtensionManager] sendImage failed.");
@@ -941,7 +1037,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
 }
 
-- (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room extensionItem:(NSExtensionItem *)extensionItem failureBlock:(void(^)(NSError *error))failureBlock
+- (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self didStartSendingToRoom:room];
     if (!videoLocalUrl)
@@ -964,13 +1060,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
     CFRelease(imageRef);
     
-    __weak typeof(self) weakSelf = self;
-    
     [room sendVideo:videoLocalUrl withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
-        if (weakSelf)
+        if (successBlock)
         {
-            typeof(self) self = weakSelf;
-            [self completeRequestReturningItems:@[extensionItem] completionHandler:nil];
+            successBlock();
         }
     } failure:^(NSError *error) {
         NSLog(@"[ShareExtensionManager] sendVideo failed.");
