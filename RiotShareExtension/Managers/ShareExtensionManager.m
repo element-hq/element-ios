@@ -149,6 +149,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock
 {
+    [self resetPendingData];
+    
     NSString *UTTypeText = (__bridge NSString *)kUTTypeText;
     NSString *UTTypeURL = (__bridge NSString *)kUTTypeURL;
     NSString *UTTypeImage = (__bridge NSString *)kUTTypeImage;
@@ -157,10 +159,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     NSString *UTTypeMovie = (__bridge NSString *)kUTTypeMovie;
     
     BOOL areAllAttachmentsImages = [self areAllAttachmentsImages];
-    
-    __weak typeof(self) weakSelf = self;
-    
-    [self resetPendingData];
+    NSMutableArray <NSItemProvider *> *pendingImagesItemProviders = [NSMutableArray new]; // Used to keep NSItemProvider associated to pending images (used only when all items are images).
 
     __block NSError *firstRequestError = nil;
     __block NSMutableArray *returningExtensionItems = [NSMutableArray new];
@@ -183,6 +182,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         dispatch_group_leave(requestsGroup);
     };
+    
+    __weak typeof(self) weakSelf = self;
     
     for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
     {
@@ -292,20 +293,23 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          
                          if (imageData)
                          {
-                             [self.pendingImages addObject:imageData];
-                             
-                             if (!areAllAttachmentsImages)
+                             if (areAllAttachmentsImages)
+                             {
+                                 [self.pendingImages addObject:imageData];
+                                 [pendingImagesItemProviders addObject:itemProvider];
+                             }
+                             else
                              {
                                  CGSize imageSize = [self imageSizeFromImageData:imageData];
                                  self.imageCompressionMode = ImageCompressionModeNone;
                                  self.actualLargeSize = MAX(imageSize.width, imageSize.height);
                                  
-                                 [self sendImages:self.pendingImages
-                                    withProviders:item.attachments
-                                           toRoom:room
-                                     successBlock:^{
-                                         requestSuccess(item);
-                                     } failureBlock:requestFailure];
+                                 [self sendImageData:imageData
+                                        withProvider:itemProvider
+                                              toRoom:room
+                                        successBlock:^{
+                                            requestSuccess(item);
+                                        } failureBlock:requestFailure];
                              }
                          }
                          else
@@ -315,20 +319,27 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          }
                          
                          // Only prompt for image resize only if all items are images
-                         if (areAllAttachmentsImages && [self areAttachmentsFullyLoaded])
+                         if (areAllAttachmentsImages)
                          {
-                             UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
-                                 [self sendImages:self.pendingImages
-                                    withProviders:item.attachments
-                                           toRoom:room
-                                     successBlock:^{
-                                         requestSuccess(item);
-                                     } failureBlock:requestFailure];
-                             }];
-                             
-                             if (compressionPrompt)
+                             if ([self areAttachmentsFullyLoaded])
                              {
-                                 [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
+                                 UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
+                                     [self sendImageDatas:self.pendingImages
+                                            withProviders:pendingImagesItemProviders
+                                                   toRoom:room
+                                             successBlock:^{
+                                                 requestSuccess(item);
+                                             } failureBlock:requestFailure];
+                                 }];
+                                 
+                                 if (compressionPrompt)
+                                 {
+                                     [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
+                                 }
+                             }
+                             else
+                             {
+                                 dispatch_group_leave(requestsGroup);
                              }
                          }
                      }
@@ -890,10 +901,135 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     } keepActualFilename:YES];
 }
 
-
-- (void)sendImages:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
+- (void)sendImageData:(NSData *)imageData withProvider:(NSItemProvider*)itemProvider toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
-    if (imageDatas.count == 0)
+    [self didStartSendingToRoom:room];
+    
+    NSString *imageUTI;
+    NSString *mimeType;
+    
+    // Try to get UTI plus mime type from NSItemProvider
+    imageUTI = [self utiFromImageTypeItemProvider:itemProvider];
+    
+    if (imageUTI)
+    {
+        mimeType = [self mimeTypeFromUTI:imageUTI];
+    }
+    
+    if (!mimeType)
+    {
+        // Try to get UTI plus mime type from image data
+        
+        imageUTI = [self utiFromImageData:imageData];
+        
+        if (imageUTI)
+        {
+            mimeType = [self mimeTypeFromUTI:imageUTI];
+        }
+    }
+    
+    // Sanity check
+    if (!mimeType)
+    {
+        NSLog(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
+        if (failureBlock)
+        {
+            failureBlock(nil);
+        }
+        return;
+    }
+    
+    CGSize imageSize;
+    NSData *finalImageData;
+    
+    // Only resize JPEG or PNG files
+    if ([self isResizingSupportedForUTI:imageUTI])
+    {
+        UIImage *convertedImage;
+        CGSize newImageSize;
+        
+        switch (self.imageCompressionMode) {
+            case ImageCompressionModeSmall:
+                newImageSize = CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE);
+                break;
+            case ImageCompressionModeMedium:
+                newImageSize = CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE);
+                break;
+            case ImageCompressionModeLarge:
+                newImageSize = CGSizeMake(self.actualLargeSize, self.actualLargeSize);
+                break;
+            default:
+                newImageSize = CGSizeZero;
+                break;
+        }
+        
+        if (CGSizeEqualToSize(newImageSize, CGSizeZero))
+        {
+            // No resize to make
+            // Make sure the uploaded image orientation is up
+            if ([self isImageOrientationNotUpOrUndeterminedForImageData:imageData])
+            {
+                UIImage *image = [UIImage imageWithData:imageData];
+                convertedImage = [MXKTools forceImageOrientationUp:image];
+            }
+        }
+        else
+        {
+            // Resize the image and set image in right orientation too
+            convertedImage = [MXKTools resizeImageWithData:imageData toFitInSize:newImageSize];
+        }
+        
+        if (convertedImage)
+        {
+            if ([imageUTI isEqualToString:(__bridge NSString *)kUTTypePNG])
+            {
+                finalImageData = UIImagePNGRepresentation(convertedImage);
+            }
+            else if ([imageUTI isEqualToString:(__bridge NSString *)kUTTypeJPEG])
+            {
+                finalImageData = UIImageJPEGRepresentation(convertedImage, 0.9);
+            }
+            
+            imageSize = convertedImage.size;
+        }
+        else
+        {
+            finalImageData = imageData;
+            imageSize = [self imageSizeFromImageData:imageData];
+        }
+    }
+    else
+    {
+        finalImageData = imageData;
+        imageSize = [self imageSizeFromImageData:imageData];
+    }
+    
+    UIImage *thumbnail = nil;
+    // Thumbnail is useful only in case of encrypted room
+    if (room.summary.isEncrypted)
+    {
+        thumbnail = [MXKTools resizeImageWithData:imageData toFitInSize:CGSizeMake(800, 600)];
+    }
+    
+    [room sendImage:finalImageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+        if (successBlock)
+        {
+            successBlock();
+        }
+    } failure:^(NSError *error) {
+        
+        NSLog(@"[ShareExtensionManager] sendImage failed.");
+        if (failureBlock)
+        {
+            failureBlock(error);
+        }
+        
+    }];
+}
+
+- (void)sendImageDatas:(NSMutableArray *)imageDatas withProviders:(NSArray*)itemProviders toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
+{
+    if (imageDatas.count == 0 || imageDatas.count != itemProviders.count)
     {
         NSLog(@"[ShareExtensionManager] sendImages: no images to send.");
         
@@ -906,135 +1042,52 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     [self didStartSendingToRoom:room];
     
-//    __block NSUInteger count = imageDatas.count;
+    dispatch_group_t requestsGroup = dispatch_group_create();
+    __block NSError *firstRequestError;
     
-    for (NSInteger index = 0; index < imageDatas.count; index++)
+    NSUInteger index = 0;
+    
+    for (NSData *imageData in imageDatas)
     {
         @autoreleasepool
         {
+            dispatch_group_enter(requestsGroup);
+            
             NSItemProvider *itemProvider = itemProviders[index];
-            NSData *imageData = imageDatas[index];
             
-            NSString *imageUTI;
-            NSString *mimeType;
-            
-            // Try to get UTI plus mime type from NSItemProvider
-            imageUTI = [self utiFromImageTypeItemProvider:itemProvider];
-            
-            if (imageUTI)
-            {
-                mimeType = [self mimeTypeFromUTI:imageUTI];
-            }
-            
-            if (!mimeType)
-            {
-                // Try to get UTI plus mime type from image data
+            [self sendImageData:imageData withProvider:itemProvider toRoom:room successBlock:^{
+                dispatch_group_leave(requestsGroup);
+            } failureBlock:^(NSError *error) {
                 
-                imageUTI = [self utiFromImageData:imageData];
-                
-                if (imageUTI)
+                if (error && !firstRequestError)
                 {
-                    mimeType = [self mimeTypeFromUTI:imageUTI];
-                }
-            }
-            
-            // Sanity check
-            if (!mimeType)
-            {
-                NSLog(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
-                if (failureBlock)
-                {
-                    failureBlock(nil);
-                }
-                return;
-            }
-            
-            CGSize imageSize;
-            
-            // Only resize JPEG or PNG files
-            if ([self isResizingSupportedForUTI:imageUTI])
-            {
-                UIImage *convertedImage;
-                CGSize newImageSize;
-                
-                switch (self.imageCompressionMode) {
-                    case ImageCompressionModeSmall:
-                        newImageSize = CGSizeMake(MXKTOOLS_SMALL_IMAGE_SIZE, MXKTOOLS_SMALL_IMAGE_SIZE);
-                        break;
-                    case ImageCompressionModeMedium:
-                        newImageSize = CGSizeMake(MXKTOOLS_MEDIUM_IMAGE_SIZE, MXKTOOLS_MEDIUM_IMAGE_SIZE);
-                        break;
-                    case ImageCompressionModeLarge:
-                        newImageSize = CGSizeMake(self.actualLargeSize, self.actualLargeSize);
-                        break;
-                    default:
-                        newImageSize = CGSizeZero;
-                        break;
+                    firstRequestError = error;
                 }
                 
-                if (CGSizeEqualToSize(newImageSize, CGSizeZero))
-                {
-                    // No resize to make
-                    // Make sure the uploaded image orientation is up
-                    if ([self isImageOrientationNotUpOrUndeterminedForImageData:imageData])
-                    {
-                        UIImage *image = [UIImage imageWithData:imageData];
-                        convertedImage = [MXKTools forceImageOrientationUp:image];
-                    }
-                }
-                else
-                {
-                    // Resize the image and set image in right orientation too
-                    convertedImage = [MXKTools resizeImageWithData:imageData toFitInSize:newImageSize];
-                }
-                
-                if (convertedImage)
-                {
-                    if ([imageUTI isEqualToString:(__bridge NSString *)kUTTypePNG])
-                    {
-                        imageData = UIImagePNGRepresentation(convertedImage);
-                    }
-                    else if ([imageUTI isEqualToString:(__bridge NSString *)kUTTypeJPEG])
-                    {
-                        imageData = UIImageJPEGRepresentation(convertedImage, 0.9);
-                    }
-                    
-                    imageSize = convertedImage.size;
-                }
-                else
-                {
-                    imageSize = [self imageSizeFromImageData:imageData];
-                }
-            }
-            else
-            {
-                imageSize = [self imageSizeFromImageData:imageData];
-            }
-            
-            UIImage *thumbnail = nil;
-            // Thumbnail is useful only in case of encrypted room
-            if (room.summary.isEncrypted)
-            {
-                thumbnail = [MXKTools resizeImageWithData:imageData toFitInSize:CGSizeMake(800, 600)];
-            }
-            
-            [room sendImage:imageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
-                if (successBlock)
-                {
-                    successBlock();
-                }
-            } failure:^(NSError *error) {
-                
-                NSLog(@"[ShareExtensionManager] sendImage failed.");
-                if (failureBlock)
-                {
-                    failureBlock(error);
-                }
-                
+               dispatch_group_leave(requestsGroup);
             }];
-            
         }
+        
+        index++;
     }
+    
+    dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
+        
+        if (firstRequestError)
+        {
+            if (failureBlock)
+            {
+                failureBlock(firstRequestError);
+            }
+        }
+        else
+        {
+            if (successBlock)
+            {
+                successBlock();
+            }
+        }
+    });
 }
 
 - (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
