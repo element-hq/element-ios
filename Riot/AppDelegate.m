@@ -1569,20 +1569,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Prepare the local notification
             MXPushRule *rule = eventDict[@"push_rule"];
 
-            [self notificationBodyForEvent:event pushRule:rule inAccount:account onComplete:^(NSString * _Nullable notificationBody) {
-
-                if (notificationBody)
+            if (@available(iOS 10, *)) {
+                [self notificationContentForEvent:event pushRule:rule inAccount:account onComplete:^(UNMutableNotificationContent * _Nullable notificationContent)
                 {
-                    // Printf style escape characters are stripped from the string prior to display;
-                    // to include a percent symbol (%) in the message, use two percent symbols (%%).
-                    notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
-
-                    if (@available(iOS 10, *))
+                    if (notificationContent)
                     {
-                        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+                        // Printf style escape characters are stripped from the string prior to display;
+                        // to include a percent symbol (%) in the message, use two percent symbols (%%).
+                        // TODO: https://developer.apple.com/documentation/foundation/nsstring/1649585-localizedusernotificationstringf?language=objc
+                        //  use this - maybe not necessary to replace %s
+                        notificationContent.body = [notificationContent.body stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
 
-                        content.body = notificationBody;
-                        content.userInfo = @{
+                        notificationContent.userInfo = @{
                                 @"type": @"full",
                                 @"room_id": event.roomId,
                                 @"event_id": event.eventId,
@@ -1593,12 +1591,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
                         UNNotificationRequest *request = [UNNotificationRequest
                                 requestWithIdentifier:event.eventId
-                                              content:content
+                                              content:notificationContent
                                               trigger:nil];
 
                         if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
                         {
-                            content.categoryIdentifier = @"QUICK_REPLY";
+                            notificationContent.categoryIdentifier = @"QUICK_REPLY";
                         }
 
                         // Set sound name based on the value provided in action of MXPushRule
@@ -1612,7 +1610,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                     if ([soundName isEqualToString:@"default"])
                                         soundName = @"message.mp3";
 
-                                    content.sound = [UNNotificationSound soundNamed:soundName];
+                                    notificationContent.sound = [UNNotificationSound soundNamed:soundName];
                                 }
                             }
                         }
@@ -1621,8 +1619,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                         [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
                         scheduledNotifications++;
                     }
-                    else // DEPRECATED, for iOS 9
+                    else
                     {
+                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationContent. Event id: %@", event.eventId);
+                    }
+                }];
+            }
+            else
+            {
+                [self notificationBodyForEvent:event pushRule:rule inAccount:account onComplete:^(NSString *_Nullable notificationBody)
+                {
+                    if (notificationBody)
+                    {
+                        // Printf style escape characters are stripped from the string prior to display;
+                        // to include a percent symbol (%) in the message, use two percent symbols (%%).
+                        notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
+
                         UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
                         eventNotification.alertBody = notificationBody;
                         eventNotification.userInfo = @{
@@ -1658,13 +1670,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                         NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
                         [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
                         scheduledNotifications++;
+                    } else
+                    {
+                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
                     }
-                }
-                else
-                {
-                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
-                }
-            }];
+                }];
+            }
         }
     }
 
@@ -1796,6 +1807,136 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
 
         onComplete(notificationBody);
+    }];
+}
+
+// iOS 10+, does the same thing as notificationBodyForEvent:pushRule:inAccount:onComplete: for now
+- (void)notificationContentForEvent:(MXEvent *)event pushRule:(MXPushRule *)rule inAccount:(MXKAccount *)account onComplete:(void (^)(UNMutableNotificationContent * _Nullable notificationContent))onComplete;
+{
+    if (!event.content || !event.content.count)
+    {
+        NSLog(@"[AppDelegate][Push] notificationContentForEvent: empty event content");
+        onComplete (nil);
+        return;
+    }
+
+    MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
+    if (!room)
+    {
+        NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Unknown room");
+        onComplete (nil);
+        return;
+    }
+
+    [room state:^(MXRoomState *roomState) {
+
+        NSString *notificationBody;
+        NSString *eventSenderName = [roomState.members memberName:event.sender];
+
+        if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
+        {
+            if (room.isMentionsOnly)
+            {
+                // A local notification will be displayed only for highlighted notification.
+                BOOL isHighlighted = NO;
+
+                // Check whether is there an highlight tweak on it
+                for (MXPushRuleAction *ruleAction in rule.actions)
+                {
+                    if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
+                    {
+                        if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"highlight"])
+                        {
+                            // Check the highlight tweak "value"
+                            // If not present, highlight. Else check its value before highlighting
+                            if (nil == ruleAction.parameters[@"value"] || YES == [ruleAction.parameters[@"value"] boolValue])
+                            {
+                                isHighlighted = YES;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!isHighlighted)
+                {
+                    // Ignore this notif.
+                    NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
+                    onComplete(nil);
+                    return;
+                }
+            }
+
+            NSString *msgType = event.content[@"msgtype"];
+            NSString *content = event.content[@"body"];
+
+            if (event.isEncrypted && !RiotSettings.shared.showDecryptedContentInNotifications)
+            {
+                // Hide the content
+                msgType = nil;
+            }
+
+            NSString *roomDisplayName = room.summary.displayname;
+
+            // Display the room name only if it is different than the sender name
+            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
+            {
+                if ([msgType isEqualToString:@"m.text"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_WITH_CONTENT", nil), eventSenderName,roomDisplayName, content];
+                else if ([msgType isEqualToString:@"m.emote"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, content];
+                else if ([msgType isEqualToString:@"m.image"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER_IN_ROOM", nil), eventSenderName, content, roomDisplayName];
+                else
+                    // Encrypted messages falls here
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
+            }
+            else
+            {
+                if ([msgType isEqualToString:@"m.text"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_WITH_CONTENT", nil), eventSenderName, content];
+                else if ([msgType isEqualToString:@"m.emote"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, content];
+                else if ([msgType isEqualToString:@"m.image"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER", nil), eventSenderName, content];
+                else
+                    // Encrypted messages falls here
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
+            }
+        }
+        else if (event.eventType == MXEventTypeCallInvite)
+        {
+            NSString *sdp = event.content[@"offer"][@"sdp"];
+            BOOL isVideoCall = [sdp rangeOfString:@"m=video"].location != NSNotFound;
+
+            if (!isVideoCall)
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VOICE_CALL_FROM_USER", nil), eventSenderName];
+            else
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VIDEO_CALL_FROM_USER", nil), eventSenderName];
+        }
+        else if (event.eventType == MXEventTypeRoomMember)
+        {
+            NSString *roomDisplayName = room.summary.displayname;
+
+            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_NAMED_ROOM", nil), eventSenderName, roomDisplayName];
+            else
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_CHAT", nil), eventSenderName];
+        }
+        else if (event.eventType == MXEventTypeSticker)
+        {
+            NSString *roomDisplayName = room.summary.displayname;
+
+            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
+            else
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
+        }
+
+        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+        [content setBody:notificationBody];
+
+        onComplete(content);
     }];
 }
 
