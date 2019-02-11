@@ -7,7 +7,7 @@
 "bug_report_send" = "Bidali";
 "room_event_action_copy" = "Kopiatu";
 "room_event_action_resend" = "Birbidali";
-"room_event_action_redact" = "Ezabatu";
+"room_event_action_redact" = "Kendu";
 "room_event_action_quote" = "Aipua";
 "room_event_action_share" = "Partekatu";
 "later" = "Geroago";
@@ -421,7 +421,7 @@
 "room_ongoing_conference_call_with_close" = "Konferentzia deia abian. elkartu %@ edo %@ gisa. %@.";
 "room_ongoing_conference_call_close" = "Itxi";
 "room_conference_call_no_power" = "Baimena behar duzu konferentzia deia kudeatzeko gela honetan";
-"settings_labs_create_conference_with_jitsi" = "Sortu konferentzia deia jitsi erabiliz";
+"settings_labs_create_conference_with_jitsi" = "Sortu konferentzia deia Jitsi erabiliz";
 "call_already_displayed" = "Badago de bat abian.";
 "call_jitsi_error" = "Hutsegitea konferentzia deia elkartzean.";
 // Widget
@@ -559,3 +559,16 @@
 "room_resource_usage_limit_reached_message_2" = "erabiltzaile batzuk ezin izango dute saioa hasi.";
 "room_resource_usage_limit_reached_message_contact_3" = " muga hau areagotzeko.";
 "auth_accept_policies" = "Irakurri eta onartu hasiera-zerbitzariaren baldintzak:";
+"settings_key_backup" = "MEZU SEGURUEN BERRESKURATZEA";
+"settings_key_backup_info_checking" = "Egiaztatzen...";
+"settings_key_backup_info_none" = "Ez da ezarri mezu seguruen berreskuratzea.";
+"settings_key_backup_info_version" = "Gakoen babes-kopiaren bertsioa: %@";
+"settings_key_backup_info_algorithm" = "Algoritmoa: %@";
+"settings_key_backup_button_restore" = "Berrezarri babes-kopia";
+"settings_key_backup_button_delete" = "Ezabatu babes-kopia";
+"settings_key_backup_button_verify" = "Egiaztatu";
+"settings_key_backup_delete_confirmation_prompt_title" = "Ezabatu babes-kopia";
+"settings_key_backup_info_progress" = "%@ gakoen babes-kopia egiten...";
+"settings_key_backup_info_progress_done" = "Gako guztien babes-kopia egin da";
+"settings_key_backup_info_valid" = "Mezu seguruen berreskuratzea ongi ezarri da gailu honetan.";
+"settings_key_backup_info_not_valid" = "Mezu seguruen berreskuratzea ez dago aktibo gailu honetan.";
