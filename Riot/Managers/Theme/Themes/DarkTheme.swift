@@ -21,35 +21,35 @@ import UIKit
 @objcMembers
 class DarkTheme: NSObject, Theme {
 
-    var backgroundColor: UIColor = UIColor(rgb: 0x212224)
+    var backgroundColor: UIColor = UIColor(rgb: 0x181B21)
 
-    var baseColor: UIColor = UIColor(rgb: 0x292E37)
-    var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    var baseColor: UIColor = UIColor(rgb: 0x15171B)
+    var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
+    var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
 
-    var searchBackgroundColor: UIColor = UIColor(rgb: 0x3E434B)
-    var searchTextColor: UIColor = UIColor(rgb: 0xACB3C2)
+    var searchBackgroundColor: UIColor = UIColor(rgb: 0x181B21)
+    var searchTextColor: UIColor = UIColor(rgb: 0x61708B)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0x303540)
-    var headerBorderColor: UIColor  = UIColor(rgb: 0x2E2F31)
-    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x96A1B7)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0x181B21)
+    var headerBorderColor: UIColor  = UIColor(rgb: 0x22262E)
+    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xA1B2D1)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
-    var textPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var textSecondaryColor: UIColor = UIColor(rgb: 0xD8D8D8)
+    var textPrimaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
+    var textSecondaryColor: UIColor = UIColor(rgb: 0xA1B2D1)
 
-    var tintColor: UIColor = UIColor(rgb: 0x7AC9A1)
+    var tintColor: UIColor = UIColor(rgb: 0x03B381)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     
-    var notificationSecondaryColor: UIColor = UIColor(rgb: 0x7AC9A1)
-    var notificationPrimaryColor: UIColor = UIColor(rgb: 0xF56679)
+    var notificationSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
+    var notificationPrimaryColor: UIColor = UIColor(rgb: 0xFF4B55)
 
-    var warningColor: UIColor = UIColor(rgb: 0xF56679)
+    var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
 
     var avatarColors: [UIColor] = [
-        UIColor(rgb: 0x7AC9A1),
-        UIColor(rgb: 0x76DDD7),
-        UIColor(rgb: 0x1E7DDC)]
+        UIColor(rgb: 0x03B381),
+        UIColor(rgb: 0x368BD6),
+        UIColor(rgb: 0xAC3BA8)]
 
     var statusBarStyle: UIStatusBarStyle = .lightContent
     var scrollBarStyle: UIScrollViewIndicatorStyle = .white

@@ -17,7 +17,7 @@
 import UIKit
 
 /// Provide color constant values defined by the designer
-/// https://app.zeplin.io/project/5b857c64b1747a2c472290da/screen/5bf2cc89a4a6973f47883c6e
+/// https://app.zeplin.io/project/5c122fa790c5b4241ffa6be7/screen/5c619592daff2f1241d82e75
 @objc protocol Theme {
 
     var backgroundColor: UIColor { get }
