@@ -27,7 +27,7 @@ import UIKit
     var baseTextSecondaryColor: UIColor { get }
 
     var searchBackgroundColor: UIColor { get }
-    var searchTextColor: UIColor { get }
+    var searchPlaceholderColor: UIColor { get }
 
     var headerBackgroundColor: UIColor { get }
     var headerBorderColor: UIColor { get }
@@ -41,10 +41,10 @@ import UIKit
 
     var unreadRoomIndentColor: UIColor { get }
 
-    /// Color for notifications for unread messages
-    var notificationSecondaryColor: UIColor { get }
-    /// Color for notifications for mention messages
-    var notificationPrimaryColor: UIColor { get }
+    var lineBreakColor: UIColor { get }
+
+    var noticeColor: UIColor { get }
+    var noticeSecondaryColor: UIColor { get }
 
     /// Color for errors or warnings
     var warningColor: UIColor { get }

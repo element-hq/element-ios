@@ -28,7 +28,7 @@ class DefaultTheme: NSObject, Theme {
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
     var searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var searchTextColor: UIColor = UIColor(rgb: 0x61708B)   // Name in the associated palette is Search Placeholder
+    var searchPlaceholderColor: UIColor = UIColor(rgb: 0x61708B)
 
     var headerBackgroundColor: UIColor = UIColor(rgb: 0xF2F5F8)
     var headerBorderColor: UIColor  = UIColor(rgb: 0xE9EDF1)
@@ -40,9 +40,10 @@ class DefaultTheme: NSObject, Theme {
 
     var tintColor: UIColor = UIColor(rgb: 0x03B381)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
+    var lineBreakColor: UIColor = UIColor(rgb: 0xEEEFEF)
     
-    var notificationSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
-    var notificationPrimaryColor: UIColor = UIColor(rgb: 0xFF4B55)
+    var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
+    var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
 
     var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
 
@@ -74,7 +75,7 @@ class DefaultTheme: NSObject, Theme {
 
     func applyStyle(onSearchBar searchBar: UISearchBar) {
         searchBar.barStyle = .default
-        searchBar.tintColor = self.searchTextColor;
+        searchBar.tintColor = self.searchPlaceholderColor;
         searchBar.barTintColor = self.headerBackgroundColor;
         searchBar.layer.borderWidth = 1;
         searchBar.layer.borderColor = self.headerBorderColor.cgColor;

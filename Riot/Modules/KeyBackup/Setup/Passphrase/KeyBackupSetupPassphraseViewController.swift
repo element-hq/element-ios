@@ -237,7 +237,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
             textColor = self.theme.tintColor
         } else {
             text = VectorL10n.keyBackupSetupPassphrasePassphraseInvalid
-            textColor = self.theme.notificationPrimaryColor
+            textColor = self.theme.noticeColor
         }
         
         self.passphraseAdditionalLabel.text = text
@@ -254,7 +254,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
             textColor = self.theme.tintColor
         } else {
             text = VectorL10n.keyBackupSetupPassphraseConfirmPassphraseInvalid
-            textColor = self.theme.notificationPrimaryColor
+            textColor = self.theme.noticeColor
         }
         
         self.confirmPassphraseAdditionalLabel.text = text
