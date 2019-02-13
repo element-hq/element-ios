@@ -28,7 +28,8 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     // MARK: Outlets
 
     @IBOutlet private weak var shieldImageView: UIImageView!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var closeButton: UIButton!
     
     // MARK: Public
@@ -53,9 +54,8 @@ final class KeyBackupBannerCell: MXKTableViewCell {
         self.shieldImageView.tintColor = theme.textPrimaryColor
         self.closeButton.tintColor = theme.textPrimaryColor
         
-        let attributedTitle = NSMutableAttributedString(string: VectorL10n.keyBackupSetupBannerTitlePart1, attributes: [.foregroundColor: theme.tintColor])
-        attributedTitle.append(NSAttributedString(string: VectorL10n.keyBackupSetupBannerTitlePart2, attributes: [.foregroundColor: theme.textPrimaryColor]))
-        self.informationLabel.attributedText = attributedTitle
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.subtitleLabel.textColor = theme.tintColor
     }
     
     // MARK: - Life cycle
@@ -63,7 +63,7 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let shieldImage = Asset.Images.shield.image.withRenderingMode(.alwaysTemplate)
+        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
         let closeImage = Asset.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
@@ -73,23 +73,24 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     // MARK: - Public
     
     func configure(for banner: KeyBackupBanner) {
-        let attributedTitle: NSAttributedString?
-        let theme = ThemeService.shared().theme
+        
+        let title: String?
+        let subtitle: String?
         
         switch banner {
         case .setup:
-            let setupAttributedTitle = NSMutableAttributedString(string: VectorL10n.keyBackupSetupBannerTitlePart1, attributes: [.foregroundColor: theme.tintColor])
-            setupAttributedTitle.append(NSAttributedString(string: VectorL10n.keyBackupSetupBannerTitlePart2, attributes: [.foregroundColor: theme.textPrimaryColor]))
-            attributedTitle = setupAttributedTitle
+            title = VectorL10n.keyBackupSetupBannerTitle
+            subtitle = VectorL10n.keyBackupSetupBannerSubtitle
         case .recover:
-            let recoverAttributedTitle = NSMutableAttributedString(string: VectorL10n.keyBackupRecoverBannerTitlePart1, attributes: [.foregroundColor: theme.tintColor])
-            recoverAttributedTitle.append(NSAttributedString(string: VectorL10n.keyBackupRecoverBannerTitlePart2, attributes: [.foregroundColor: theme.textPrimaryColor]))
-            attributedTitle = recoverAttributedTitle
+            title = VectorL10n.keyBackupRecoverBannerTitle
+            subtitle = VectorL10n.keyBackupRecoverBannerSubtitle
         case .none:
-            attributedTitle = nil
+            title = nil
+            subtitle = nil
         }
         
-        self.informationLabel.attributedText = attributedTitle
+        self.titleLabel.text = title
+        self.subtitleLabel.text = subtitle
     }
     
     // MARK: - Actions

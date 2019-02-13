@@ -390,10 +390,19 @@
         [sizingCell layoutIfNeeded];
         
         CGSize fittingSize = UILayoutFittingCompressedSize;
-        fittingSize.width = CGRectGetWidth(tableView.frame);
+        CGFloat tableViewWidth = CGRectGetWidth(tableView.frame);
+        CGFloat safeAreaWidth;
+        
+        if (@available(iOS 11.0, *)) {
+            // Take safe area into account
+            safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);
+        } else {
+            safeAreaWidth = 0;
+        }
+        
+        fittingSize.width = tableViewWidth - safeAreaWidth;
         
         height = [sizingCell systemLayoutSizeFittingSize:fittingSize withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
-        
         
         return height;
     }
