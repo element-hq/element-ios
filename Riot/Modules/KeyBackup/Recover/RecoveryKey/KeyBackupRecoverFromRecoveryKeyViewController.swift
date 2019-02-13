@@ -96,7 +96,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         
         self.scrollView.keyboardDismissMode = .interactive
         
-        let shieldImage = Asset.Images.shield.image.withRenderingMode(.alwaysTemplate)
+        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
         self.informationLabel.text = VectorL10n.keyBackupRecoverFromRecoveryKeyInfo

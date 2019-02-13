@@ -94,7 +94,7 @@ final class KeyBackupRecoverFromPassphraseViewController: UIViewController {
         
         self.scrollView.keyboardDismissMode = .interactive
         
-        let shieldImage = Asset.Images.shield.image.withRenderingMode(.alwaysTemplate)
+        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
         let visibilityImage = Asset.Images.revealPasswordButton.image.withRenderingMode(.alwaysTemplate)

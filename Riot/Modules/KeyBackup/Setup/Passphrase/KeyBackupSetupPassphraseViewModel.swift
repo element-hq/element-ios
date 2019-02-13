@@ -26,6 +26,7 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
     private let passwordStrengthManager: PasswordStrengthManager
     private let keyBackup: MXKeyBackup
     private let coordinatorDelegateQueue: OperationQueue
+    private var createKeyBackupOperation: MXHTTPOperation?
     
     // MARK: Public
     
@@ -63,12 +64,18 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
         self.coordinatorDelegateQueue = OperationQueue.vc_createSerialOperationQueue(name: "\(type(of: self)).coordinatorDelegateQueue")
     }
     
+    deinit {
+        self.createKeyBackupOperation?.cancel()
+    }
+    
     // MARK: - Public
     
     func process(viewAction: KeyBackupSetupPassphraseViewAction) {
         switch viewAction {
         case .setupPassphrase:
             self.setupPassphrase()
+        case .setupRecoveryKey:
+            self.setupRecoveryKey()
         case .skip:
             self.coordinatorDelegateQueue.vc_pause()
             self.viewDelegate?.keyBackupSetupPassphraseViewModelShowSkipAlert(self)
@@ -82,30 +89,58 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
     
     // MARK: - Private
     
-    func setupPassphrase() {
+    private func setupPassphrase() {
         guard let passphrase = self.passphrase else {
             return
         }
         
-        self.viewDelegate?.keyBackupSetupPassphraseViewModel(self, didUpdateViewState: .loading)
+        self.update(viewState: .loading)
         
         self.keyBackup.prepareKeyBackupVersion(withPassword: passphrase, success: { [weak self] (megolmBackupCreationInfo) in
             guard let sself = self else {
                 return
             }
             
-            sself.viewDelegate?.keyBackupSetupPassphraseViewModel(sself, didUpdateViewState: .loaded)
-            
-            sself.coordinatorDelegateQueue.addOperation {
-                DispatchQueue.main.async {
-                    sself.coordinatorDelegate?.keyBackupSetupPassphraseViewModel(sself, didCompleteWithMegolmBackupCreationInfo: megolmBackupCreationInfo)
+            sself.createKeyBackupOperation = sself.keyBackup.createKeyBackupVersion(megolmBackupCreationInfo, success: { (_) in
+
+                sself.update(viewState: .loaded)
+                
+                sself.coordinatorDelegateQueue.addOperation {
+                    DispatchQueue.main.async {
+                        sself.coordinatorDelegate?.keyBackupSetupPassphraseViewModel(sself, didCreateBackupFromPassphraseWithResultingRecoveryKey: megolmBackupCreationInfo.recoveryKey)
+                    }
                 }
-            }
+
+            }, failure: { (error) in
+                self?.update(viewState: .error(error))
+            })
         }, failure: { [weak self] error in
+            self?.update(viewState: .error(error))
+        })
+    }
+    
+    private func setupRecoveryKey() {
+        self.update(viewState: .loading)
+        
+        self.keyBackup.prepareKeyBackupVersion(withPassword: nil, success: { [weak self] (megolmBackupCreationInfo) in
             guard let sself = self else {
                 return
-            }            
-            sself.viewDelegate?.keyBackupSetupPassphraseViewModel(sself, didUpdateViewState: .error(error))
+            }
+            
+            sself.createKeyBackupOperation = sself.keyBackup.createKeyBackupVersion(megolmBackupCreationInfo, success: { (_) in
+
+                sself.update(viewState: .loaded)
+                
+                sself.coordinatorDelegateQueue.addOperation {
+                    DispatchQueue.main.async {
+                        sself.coordinatorDelegate?.keyBackupSetupPassphraseViewModel(sself, didCreateBackupFromRecoveryKey: megolmBackupCreationInfo.recoveryKey)
+                    }
+                }
+            }, failure: { (error) in
+                self?.update(viewState: .error(error))
+            })
+        }, failure: { [weak self] error in
+            self?.update(viewState: .error(error))
         })
     }
     
@@ -118,5 +153,9 @@ final class KeyBackupSetupPassphraseViewModel: KeyBackupSetupPassphraseViewModel
             return .tooGuessable
         }
         return self.passwordStrengthManager.passwordStrength(for: password)
+    }
+    
+    private func update(viewState: KeyBackupSetupPassphraseViewState) {
+        self.viewDelegate?.keyBackupSetupPassphraseViewModel(self, didUpdateViewState: viewState)
     }
 }
