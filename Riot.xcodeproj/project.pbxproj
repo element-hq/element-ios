@@ -40,6 +40,10 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		B104C2942203773C00D9F496 /* KeyBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104C2932203773B00D9F496 /* KeyBackupBannerPreferences.swift */; };
+		B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */; };
+		B105778B221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */; };
+		B105778D2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */; };
+		B105778F2213052A00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B105778E2213052A00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.storyboard */; };
 		B1098BDF21ECE09F000DDA48 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098BDA21ECE09E000DDA48 /* Strings.swift */; };
 		B1098BE121ECE09F000DDA48 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098BDC21ECE09E000DDA48 /* Images.swift */; };
 		B1098BE321ECE09F000DDA48 /* RiotDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098BDE21ECE09E000DDA48 /* RiotDefaults.swift */; };
@@ -512,6 +516,10 @@
 		92726A4F1F587393004AD26F /* SiriIntents.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SiriIntents.entitlements; sourceTree = "<group>"; };
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		B104C2932203773B00D9F496 /* KeyBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupBannerPreferences.swift; sourceTree = "<group>"; };
+		B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromPassphraseViewController.swift; sourceTree = "<group>"; };
+		B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupSetupSuccessFromPassphraseViewController.storyboard; sourceTree = "<group>"; };
+		B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromRecoveryKeyViewController.swift; sourceTree = "<group>"; };
+		B105778E2213052A00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupSetupSuccessFromRecoveryKeyViewController.storyboard; sourceTree = "<group>"; };
 		B1098BDA21ECE09E000DDA48 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		B1098BDC21ECE09E000DDA48 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		B1098BDE21ECE09E000DDA48 /* RiotDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotDefaults.swift; sourceTree = "<group>"; };
@@ -1225,6 +1233,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		B1057787221304A200334B1E /* Success */ = {
+			isa = PBXGroup;
+			children = (
+				B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */,
+				B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */,
+				B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */,
+				B105778E2213052A00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.storyboard */,
+			);
+			path = Success;
+			sourceTree = "<group>";
+		};
 		B1098BD921ECE09E000DDA48 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
@@ -1263,6 +1282,7 @@
 				B1098C0521ECFF5B000DDA48 /* Intro */,
 				B1098C0321ECFECC000DDA48 /* Passphrase */,
 				B1098C0621ED00A9000DDA48 /* RecoveryKey */,
+				B1057787221304A200334B1E /* Success */,
 			);
 			path = Setup;
 			sourceTree = "<group>";
@@ -3121,6 +3141,7 @@
 				B1B558BC20EF768F00210D55 /* RoomMembershipBubbleCell.xib in Resources */,
 				B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */,
 				B1B558E220EF768F00210D55 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
+				B105778B221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard in Resources */,
 				B1664DA220F4F95800808783 /* Localizable.strings in Resources */,
 				B169328720F3954A00746532 /* SharedImages.xcassets in Resources */,
 				B1664DA120F4F94F00808783 /* InfoPlist.strings in Resources */,
@@ -3209,6 +3230,7 @@
 				B1B557D220EF5E3500210D55 /* MediaAlbumTableCell.xib in Resources */,
 				B1B558C520EF768F00210D55 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1B5582B20EF666100210D55 /* DirectoryRecentTableViewCell.xib in Resources */,
+				B105778F2213052A00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.storyboard in Resources */,
 				B1B5590F20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
 				B1B5578520EF564900210D55 /* GroupTableViewCellWithSwitch.xib in Resources */,
 				B1B557B320EF5AEF00210D55 /* EventDetailsView.xib in Resources */,
@@ -3425,6 +3447,7 @@
 				B169330820F3CA0E00746532 /* ContactsDataSource.m in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
+				B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
 				B16932B120F3AC9200746532 /* RoomSearchDataSource.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
 				B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */,
@@ -3578,6 +3601,7 @@
 				B1B558E620EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1098BFB21ECFE65000DDA48 /* KeyBackupSetupCoordinatorType.swift in Sources */,
 				B1098BF721ECFE65000DDA48 /* PasswordStrength.swift in Sources */,
+				B105778D2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
 				B1B557D820EF5EA900210D55 /* RoomActivitiesView.m in Sources */,
 				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,

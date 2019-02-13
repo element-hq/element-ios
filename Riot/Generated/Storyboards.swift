@@ -42,6 +42,16 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupRecoveryKeyViewController>(storyboard: KeyBackupSetupRecoveryKeyViewController.self)
   }
+  internal enum KeyBackupSetupSuccessFromPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromPassphraseViewController>(storyboard: KeyBackupSetupSuccessFromPassphraseViewController.self)
+  }
+  internal enum KeyBackupSetupSuccessFromRecoveryKeyViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromRecoveryKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
+  }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length type_body_length type_name
 
