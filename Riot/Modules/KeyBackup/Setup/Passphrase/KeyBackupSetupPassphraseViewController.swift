@@ -147,7 +147,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
                                                                             attributes: [.foregroundColor : theme.placeholderTextColor])
         self.updatePassphraseAdditionalLabel()
         
-        self.formSeparatorView.backgroundColor = theme.separatorColor
+        self.formSeparatorView.backgroundColor = theme.lineBreakColor
         
         self.confirmPassphraseTitleLabel.textColor = theme.textPrimaryColor
         theme.applyStyle(onTextField: self.confirmPassphraseTextField)

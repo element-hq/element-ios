@@ -77,9 +77,6 @@ import UIKit
 
     /// Color to tint the search background image
     var matrixSearchBackgroundImageTintColor: UIColor { get }
-    
-    /// Color of separator (when table view is not used)
-    var separatorColor: UIColor { get }
 
     // MARK: - Customisation methods
 

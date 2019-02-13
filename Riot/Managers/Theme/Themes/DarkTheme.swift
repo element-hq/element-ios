@@ -60,7 +60,6 @@ class DarkTheme: NSObject, Theme {
     var selectedBackgroundColor: UIColor? = UIColor.black
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
-    var separatorColor: UIColor = UIColor(rgb: 0x2E2F31)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;
