@@ -22,22 +22,28 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7g-um-WO4">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="767"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="voD-3Q-ryt">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="767"/>
                                                 <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure your backup with a Passphrase" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6PP-oV-wYT">
+                                                        <rect key="frame" x="20" y="35" width="335" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
-                                                        <rect key="frame" x="20" y="40" width="335" height="90"/>
-                                                        <string key="text">Secure your encrypted message history with a Recovery Passphrase.
+                                                        <rect key="frame" x="20" y="85.5" width="335" height="107.5"/>
+                                                        <string key="text">We'll store an encrypted copy of your keys on our server. Protect your backup with a passphrase to keep it secure.
 
-You’ll need it if you log out, or lose access to this device.</string>
+For maximum security, this should be different from your account password.</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NqM-Go-gVF">
-                                                        <rect key="frame" x="0.0" y="170" width="375" height="293"/>
+                                                        <rect key="frame" x="0.0" y="233" width="375" height="293"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="4zf-cV-r09">
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="293"/>
@@ -46,13 +52,13 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="78.5"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="enter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w95-PK-mJ8">
-                                                                                <rect key="frame" x="20" y="10" width="55.5" height="58.5"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                                                <rect key="frame" x="20" y="10" width="57.5" height="58.5"/>
+                                                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter passphrase" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="WeI-qi-2Hw">
-                                                                                <rect key="frame" x="95.5" y="14.5" width="225.5" height="50"/>
+                                                                                <rect key="frame" x="97.5" y="14.5" width="223.5" height="50"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="50" id="85g-2l-RZB"/>
                                                                                 </constraints>
@@ -103,7 +109,7 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Try adding a word" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GW1-yJ-6Io">
                                                                                 <rect key="frame" x="20" y="25" width="335" height="27.5"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                                 <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
@@ -140,13 +146,13 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                                         <rect key="frame" x="0.0" y="147" width="375" height="78.5"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="confirm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIh-bf-CD3">
-                                                                                <rect key="frame" x="20" y="10" width="55.5" height="58.5"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                                                <rect key="frame" x="20" y="10" width="57.5" height="58.5"/>
+                                                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm passphrase" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tN0-Fi-84k">
-                                                                                <rect key="frame" x="95.5" y="14.5" width="259.5" height="50"/>
+                                                                                <rect key="frame" x="97.5" y="14.5" width="257.5" height="50"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="50" id="8qv-7N-hum"/>
                                                                                 </constraints>
@@ -176,7 +182,7 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Passphrase doesn’t match" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLJ-x6-fEO">
                                                                                 <rect key="frame" x="20" y="0.0" width="335" height="52.5"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                                 <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
@@ -208,15 +214,15 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oxZ-I4-CTh">
-                                                        <rect key="frame" x="0.0" y="493" width="375" height="50"/>
+                                                        <rect key="frame" x="0.0" y="556" width="375" height="50"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xXL-d6-V7f">
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="50" id="6k5-t4-uPs"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                <state key="normal" title="Set Recovery Passphrase ">
+                                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                <state key="normal" title="Set Passphrase ">
                                                                     <color key="titleColor" red="0.47843137254901957" green="0.78823529411764703" blue="0.63137254901960782" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
                                                                 <state key="disabled">
@@ -235,20 +241,51 @@ You’ll need it if you log out, or lose access to this device.</string>
                                                             <constraint firstItem="xXL-d6-V7f" firstAttribute="leading" secondItem="oxZ-I4-CTh" secondAttribute="leading" id="gjp-yd-bno"/>
                                                         </constraints>
                                                     </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or, secure your backup with a Recovery Key, saving it somewhere safe." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RPW-VQ-iHw">
+                                                        <rect key="frame" x="20" y="651" width="335" height="36"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBD-dv-RTe">
+                                                        <rect key="frame" x="0.0" y="697" width="375" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="88Y-vG-lXl"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                        <state key="normal" title="(Advanced) Set up with Recovery Key">
+                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </state>
+                                                        <state key="disabled">
+                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="setUpRecoveryKeyButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="hOI-Mh-fmJ"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="bxI-mu-qng" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" id="3fO-gc-E1G"/>
-                                                    <constraint firstItem="NqM-Go-gVF" firstAttribute="top" secondItem="bxI-mu-qng" secondAttribute="bottom" constant="40" id="BaV-Yg-8AU"/>
+                                                    <constraint firstItem="bxI-mu-qng" firstAttribute="leading" secondItem="6PP-oV-wYT" secondAttribute="leading" id="0E7-ep-uJk"/>
                                                     <constraint firstItem="NqM-Go-gVF" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" id="JRa-bh-kd2"/>
-                                                    <constraint firstAttribute="trailing" secondItem="bxI-mu-qng" secondAttribute="trailing" constant="20" id="Q2g-xU-EQR"/>
+                                                    <constraint firstAttribute="trailing" secondItem="RPW-VQ-iHw" secondAttribute="trailing" constant="20" id="KaG-mr-iY7"/>
+                                                    <constraint firstAttribute="trailing" secondItem="6PP-oV-wYT" secondAttribute="trailing" constant="20" id="N6N-Sg-9sA"/>
+                                                    <constraint firstItem="6PP-oV-wYT" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" id="OXh-Vu-86Y"/>
+                                                    <constraint firstItem="RPW-VQ-iHw" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" id="SPQ-pm-PbG"/>
+                                                    <constraint firstItem="bxI-mu-qng" firstAttribute="top" secondItem="6PP-oV-wYT" secondAttribute="bottom" constant="30" id="ZmH-Mw-Qhd"/>
                                                     <constraint firstAttribute="trailing" secondItem="NqM-Go-gVF" secondAttribute="trailing" id="bxm-bA-yg6"/>
+                                                    <constraint firstItem="NqM-Go-gVF" firstAttribute="top" secondItem="bxI-mu-qng" secondAttribute="bottom" constant="40" id="dOo-KV-Auw"/>
                                                     <constraint firstItem="oxZ-I4-CTh" firstAttribute="top" secondItem="NqM-Go-gVF" secondAttribute="bottom" constant="30" id="fop-Qu-P8P"/>
                                                     <constraint firstAttribute="width" priority="750" constant="500" id="glD-Sz-73O"/>
-                                                    <constraint firstAttribute="bottom" secondItem="oxZ-I4-CTh" secondAttribute="bottom" constant="20" id="nmb-rx-bht"/>
-                                                    <constraint firstItem="bxI-mu-qng" firstAttribute="top" secondItem="voD-3Q-ryt" secondAttribute="top" constant="40" id="qgy-FA-ETV"/>
+                                                    <constraint firstItem="bxI-mu-qng" firstAttribute="trailing" secondItem="6PP-oV-wYT" secondAttribute="trailing" id="hjH-Uq-DVb"/>
+                                                    <constraint firstAttribute="trailing" secondItem="tBD-dv-RTe" secondAttribute="trailing" id="i2a-JN-n6v"/>
+                                                    <constraint firstAttribute="bottom" secondItem="tBD-dv-RTe" secondAttribute="bottom" constant="20" id="jMH-bs-aTm"/>
+                                                    <constraint firstItem="tBD-dv-RTe" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" id="nGD-dO-qck"/>
+                                                    <constraint firstItem="RPW-VQ-iHw" firstAttribute="top" secondItem="oxZ-I4-CTh" secondAttribute="bottom" constant="45" id="nvn-IQ-KeM"/>
+                                                    <constraint firstItem="tBD-dv-RTe" firstAttribute="top" secondItem="RPW-VQ-iHw" secondAttribute="bottom" constant="10" id="sgO-62-7xP"/>
                                                     <constraint firstAttribute="trailing" secondItem="oxZ-I4-CTh" secondAttribute="trailing" id="tQa-RS-aVB"/>
                                                     <constraint firstItem="oxZ-I4-CTh" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" id="weK-ZJ-30E"/>
+                                                    <constraint firstItem="6PP-oV-wYT" firstAttribute="top" secondItem="voD-3Q-ryt" secondAttribute="top" constant="35" id="woi-hT-03k"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -296,6 +333,9 @@ You’ll need it if you log out, or lose access to this device.</string>
                         <outlet property="scrollView" destination="9U2-KL-ZVA" id="ojG-2y-X7b"/>
                         <outlet property="setPassphraseButton" destination="xXL-d6-V7f" id="k8E-Ul-m9g"/>
                         <outlet property="setPassphraseButtonBackgroundView" destination="oxZ-I4-CTh" id="8If-if-aMp"/>
+                        <outlet property="setUpRecoveryKeyButton" destination="tBD-dv-RTe" id="uDY-Ea-NP2"/>
+                        <outlet property="setUpRecoveryKeyInfoLabel" destination="RPW-VQ-iHw" id="mll-pV-8Gx"/>
+                        <outlet property="titleLabel" destination="6PP-oV-wYT" id="g6C-7m-C2R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
