@@ -23,33 +23,34 @@ class DefaultTheme: NSObject, Theme {
 
     var backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    var baseColor: UIColor = UIColor(rgb: 0x2E3648)
+    var baseColor: UIColor = UIColor(rgb: 0x27303A)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
     var searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var searchTextColor: UIColor = UIColor(rgb: 0xACB3C2)
+    var searchPlaceholderColor: UIColor = UIColor(rgb: 0x61708B)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0xF1F5F8)
-    var headerBorderColor: UIColor  = UIColor(rgb: 0xEAEEF2)
-    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x72708B)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0xF2F5F8)
+    var headerBorderColor: UIColor  = UIColor(rgb: 0xE9EDF1)
+    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x61708B)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
-    var textPrimaryColor: UIColor = UIColor(rgb: 0x383838)
+    var textPrimaryColor: UIColor = UIColor(rgb: 0x2E2F32)
     var textSecondaryColor: UIColor = UIColor(rgb: 0x9E9E9E)
 
-    var tintColor: UIColor = UIColor(rgb: 0x7AC9A1)
+    var tintColor: UIColor = UIColor(rgb: 0x03B381)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
+    var lineBreakColor: UIColor = UIColor(rgb: 0xEEEFEF)
     
-    var notificationSecondaryColor: UIColor = UIColor(rgb: 0x7AC9A1)
-    var notificationPrimaryColor: UIColor = UIColor(rgb: 0xF56679)
+    var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
+    var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
 
-    var warningColor: UIColor = UIColor(rgb: 0xF56679)
+    var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
 
     var avatarColors: [UIColor] = [
-        UIColor(rgb: 0x7AC9A1),
-        UIColor(rgb: 0x76DDD7),
-        UIColor(rgb: 0x1E7DDC)]
+        UIColor(rgb: 0x03B381),
+        UIColor(rgb: 0x368BD6),
+        UIColor(rgb: 0xAC3BA8)]
 
     var statusBarStyle: UIStatusBarStyle = .lightContent
     var scrollBarStyle: UIScrollViewIndicatorStyle = .default
@@ -59,7 +60,6 @@ class DefaultTheme: NSObject, Theme {
     var selectedBackgroundColor: UIColor? = nil  // Use the default selection color
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
-    var separatorColor: UIColor = UIColor(rgb: 0xEAEEF2)
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;
@@ -74,7 +74,7 @@ class DefaultTheme: NSObject, Theme {
 
     func applyStyle(onSearchBar searchBar: UISearchBar) {
         searchBar.barStyle = .default
-        searchBar.tintColor = self.searchTextColor;
+        searchBar.tintColor = self.searchPlaceholderColor;
         searchBar.barTintColor = self.headerBackgroundColor;
         searchBar.layer.borderWidth = 1;
         searchBar.layer.borderColor = self.headerBorderColor.cgColor;
