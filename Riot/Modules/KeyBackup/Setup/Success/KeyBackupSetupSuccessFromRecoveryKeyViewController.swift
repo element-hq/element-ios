@@ -124,7 +124,7 @@ final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController
         self.recoveryKeyTitleLabel.textColor = theme.textPrimaryColor
         self.recoveryKeyLabel.textColor = theme.textPrimaryColor
         
-        self.separatorView.backgroundColor = theme.separatorColor
+        self.separatorView.backgroundColor = theme.lineBreakColor
         
         theme.applyStyle(onButton: self.makeACopyButton)
         
