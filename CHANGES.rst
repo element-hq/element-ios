@@ -13,6 +13,7 @@ Improvements:
  * Key backup: Add a dedicated section to settings (#2193).
  * Key backup: Implement setup reminder (#2211).
  * Key backup: Implement recover reminder (#2206).
+ * Key backup: Update key backup setup UI and UX (PR #2243).
  
 Bug fix:
  * Use white scroll bar on dark themes (#2158).
