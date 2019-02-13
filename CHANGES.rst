@@ -5,6 +5,7 @@ Improvements:
  * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
  * Use modern literals and array/dictionary syntax where possible (PR #2160).
  * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
+ * RoomVC: Remove the beta warning modal when opening an e2e room (#2239).
  * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
  * Clean up iOS version checking (#2190).
  * Key backup: Implement setup screen (#2198).
