@@ -4293,12 +4293,6 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
     [self showKeyBackupSetup];
 }
 
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showVerifyDevice:(NSString *)deviceId
-{
-    MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.myUser.userId deviceId:deviceId];
-    [self showDeviceInfo:deviceInfo];
-}
-
 - (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
 {
     [self showKeyBackupRecover:keyBackupVersion];
@@ -4321,7 +4315,7 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
                                                        self->currentAlert = nil;
                                                    }]];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        MXStrongifyAndReturnIfNil(self);
