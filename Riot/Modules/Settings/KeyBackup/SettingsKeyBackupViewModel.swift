@@ -49,9 +49,6 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
         case .create:
             viewDelegate.settingsKeyBackupViewModelShowKeyBackupSetup(self)
             break
-        case .verify(let deviceId):
-            viewDelegate.settingsKeyBackup(self, showVerifyDevice: deviceId)
-            break
         case .restore(let keyBackupVersion):
             viewDelegate.settingsKeyBackup(self, showKeyBackupRecover: keyBackupVersion)
             break
