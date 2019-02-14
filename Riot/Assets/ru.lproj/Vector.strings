@@ -559,12 +559,12 @@
 "homeserver_connection_lost" = "Невозможно соединиться с этим сервером.";
 "auth_accept_policies" = "Пожалуйста ознакомьтесь и подтвердите согласие с политикой этого сервера:";
 "settings_key_backup_info_checking" = "Проверка ...";
-"settings_key_backup_info_none" = "Ваши ключи не копируются с этого устройства.";
+"settings_key_backup_info_none" = "Ваши ключи не сохраняются с этого устройства.";
 "settings_key_backup" = "РЕЗЕРВНАЯ КОПИЯ КЛЮЧЕЙ";
 "settings_key_backup_info_version" = "Версия ключа резервного копирования: %@";
 "settings_key_backup_info_algorithm" = "Алгоритм: %@";
-"settings_key_backup_info_valid" = "Это устройство делает резервное копирование ваших ключей.";
-"settings_key_backup_info_not_valid" = "Это устройство не делает резервного копирования ваших ключей.";
+"settings_key_backup_info_valid" = "Это устройство делает резервное копирование ключей.";
+"settings_key_backup_info_not_valid" = "Это устройство не делает резервного копирования ключей.";
 "settings_key_backup_info_progress" = "Резервное копирование ключей %@...";
 "settings_key_backup_info_progress_done" = "Все ключи сохранены";
 "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Для Безопасного Восстановления Сообщений на этом устройстве, проверьте %@.";
