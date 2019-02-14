@@ -2266,7 +2266,7 @@ internal enum VectorL10n {
   internal static var signOutNonExistingKeyBackupAlertSetupKeyBackupAction: String { 
     return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_key_backup_action") 
   }
-  /// You’ll lose access to your secure messages if you sign out now
+  /// You’ll lose access to your encrypted messages if you sign out now
   internal static var signOutNonExistingKeyBackupAlertTitle: String { 
     return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_title") 
   }
