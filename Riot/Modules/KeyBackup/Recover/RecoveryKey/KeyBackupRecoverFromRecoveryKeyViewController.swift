@@ -188,8 +188,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
                                              message: VectorL10n.keyBackupRecoverInvalidRecoveryKey,
                                              animated: true,
                                              handler: nil)
-        }
-        else {
+        } else {
             self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
         }
     }

@@ -190,8 +190,7 @@ final class KeyBackupRecoverFromPassphraseViewController: UIViewController {
                                              message: VectorL10n.keyBackupRecoverInvalidPassphrase,
                                              animated: true,
                                              handler: nil)
-        }
-        else {
+        } else {
             self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
         }
     }
