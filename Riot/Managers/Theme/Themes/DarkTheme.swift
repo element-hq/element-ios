@@ -23,15 +23,15 @@ class DarkTheme: NSObject, Theme {
 
     var backgroundColor: UIColor = UIColor(rgb: 0x181B21)
 
-    var baseColor: UIColor = UIColor(rgb: 0x15171B)
+    var baseColor: UIColor = UIColor(rgb: 0x1B1F25)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
 
     var searchBackgroundColor: UIColor = UIColor(rgb: 0x181B21)
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0x61708B)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0x181B21)
-    var headerBorderColor: UIColor  = UIColor(rgb: 0x22262E)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0x22262E)
+    var headerBorderColor: UIColor  = UIColor(rgb: 0x181B21)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xA1B2D1)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
