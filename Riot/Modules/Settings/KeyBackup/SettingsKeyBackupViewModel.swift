@@ -49,9 +49,6 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
         case .create:
             viewDelegate.settingsKeyBackupViewModelShowKeyBackupSetup(self)
             break
-        case .verify(let deviceId):
-            viewDelegate.settingsKeyBackup(self, showVerifyDevice: deviceId)
-            break
         case .restore(let keyBackupVersion):
             viewDelegate.settingsKeyBackup(self, showKeyBackupRecover: keyBackupVersion)
             break
@@ -67,6 +64,9 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
     // MARK: - Private
 
     private func checkKeyBackupState() {
+
+        // Check homeserver update in background
+        self.keyBackup.forceRefresh(nil, failure: nil)
 
         if let keyBackupVersion = self.keyBackup.keyBackupVersion {
 

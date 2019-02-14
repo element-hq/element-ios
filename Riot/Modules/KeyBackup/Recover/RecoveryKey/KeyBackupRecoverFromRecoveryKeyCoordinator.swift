@@ -66,4 +66,3 @@ extension KeyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromRecove
         self.delegate?.keyBackupRecoverFromPassphraseCoordinatorDidCancel(self)
     }
 }
-

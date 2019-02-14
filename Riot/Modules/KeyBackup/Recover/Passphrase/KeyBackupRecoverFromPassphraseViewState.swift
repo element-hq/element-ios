@@ -19,6 +19,6 @@ import Foundation
 /// KeyBackupRecoverFromPassphraseViewController view state
 enum KeyBackupRecoverFromPassphraseViewState {
     case loading
-    case loaded(totalKeys: UInt)
+    case loaded
     case error(Error)
 }

@@ -57,11 +57,16 @@ final class KeyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordin
 
 // MARK: - KeyBackupSetupPassphraseViewModelCoordinatorDelegate
 extension KeyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseViewModelCoordinatorDelegate {
-    func keyBackupSetupPassphraseViewModelDidCancel(_ viewModel: KeyBackupSetupPassphraseViewModelType) {
-        self.delegate?.keyBackupSetupPassphraseCoordinatorDidCancel(self)
+    
+    func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didCreateBackupFromPassphraseWithResultingRecoveryKey recoveryKey: String) {
+        self.delegate?.keyBackupSetupPassphraseCoordinator(self, didCreateBackupFromPassphraseWithResultingRecoveryKey: recoveryKey)
     }
     
-    func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didCompleteWithMegolmBackupCreationInfo megolmBackupCreationInfo: MXMegolmBackupCreationInfo) {
-        self.delegate?.keyBackupSetupPassphraseCoordinator(self, didCompleteWithMegolmBackupCreationInfo: megolmBackupCreationInfo)
+    func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didCreateBackupFromRecoveryKey recoveryKey: String) {
+        self.delegate?.keyBackupSetupPassphraseCoordinator(self, didCreateBackupFromRecoveryKey: recoveryKey)
+    }
+    
+    func keyBackupSetupPassphraseViewModelDidCancel(_ viewModel: KeyBackupSetupPassphraseViewModelType) {
+        self.delegate?.keyBackupSetupPassphraseCoordinatorDidCancel(self)
     }
 }

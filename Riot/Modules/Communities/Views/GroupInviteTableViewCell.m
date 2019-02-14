@@ -58,7 +58,7 @@ NSString *const kGroupInviteTableViewCellRoomKey = @"kGroupInviteTableViewCellRo
     self.leftButton.backgroundColor = ThemeService.shared.riotColorBlue;
     self.rightButton.backgroundColor = ThemeService.shared.riotColorBlue;
     
-    self.noticeBadgeView.backgroundColor = ThemeService.shared.theme.notificationPrimaryColor;
+    self.noticeBadgeView.backgroundColor = ThemeService.shared.theme.noticeColor;
 }
 
 - (void)onDeclinePressed:(id)sender

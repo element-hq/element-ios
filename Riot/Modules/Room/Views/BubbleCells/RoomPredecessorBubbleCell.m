@@ -42,6 +42,8 @@ static CGFloat const kCustomBackgroundCornerRadius = 5.0;
 {
     [super awakeFromNib];
     
+    // Disable text selection and link interaction
+    self.messageTextView.selectable = NO;
     self.customBackgroundView.layer.masksToBounds = YES;
 }
 

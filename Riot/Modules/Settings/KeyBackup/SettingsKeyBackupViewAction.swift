@@ -19,7 +19,6 @@ import UIKit
 enum SettingsKeyBackupViewAction {
     case load
     case create
-    case verify(String)
     case restore(MXKeyBackupVersion)
     case confirmDelete(MXKeyBackupVersion)
     case delete(MXKeyBackupVersion)

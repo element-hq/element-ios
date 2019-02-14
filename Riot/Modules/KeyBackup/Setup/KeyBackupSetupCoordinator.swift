@@ -44,8 +44,9 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
     func start() {
     
         // Set key backup setup intro as root controller
+        let isABackupAlreadyExists = !(self.session.crypto.backup?.state == MXKeyBackupStateDisabled)
         
-        let keyBackupSetupIntroViewController = KeyBackupSetupIntroViewController.instantiate()
+        let keyBackupSetupIntroViewController = KeyBackupSetupIntroViewController.instantiate(isABackupAlreadyExists: isABackupAlreadyExists)
         keyBackupSetupIntroViewController.delegate = self
         self.navigationRouter.setRootModule(keyBackupSetupIntroViewController)
     }
@@ -67,16 +68,18 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
         }
     }
     
-    private func showRecoveryKey(with megolmBackupCreationInfo: MXMegolmBackupCreationInfo, animated: Bool) {
+    private func showSetupRecoveryKeySuccess(with recoveryKey: String, animated: Bool) {
+
+        let viewController = KeyBackupSetupSuccessFromRecoveryKeyViewController.instantiate(with: recoveryKey)
+        viewController.delegate = self
+        self.navigationRouter.push(viewController, animated: animated, popCompletion: nil)
+    }
+    
+    private func showSetupPassphraseSuccess(with recoveryKey: String, animated: Bool) {
         
-        let keyBackupSetupRecoveryKeyCoordinator = KeyBackupSetupRecoveryKeyCoordinator(session: self.session, megolmBackupCreationInfo: megolmBackupCreationInfo)
-        keyBackupSetupRecoveryKeyCoordinator.delegate = self
-        keyBackupSetupRecoveryKeyCoordinator.start()
-        
-        self.add(childCoordinator: keyBackupSetupRecoveryKeyCoordinator)
-        self.navigationRouter.push(keyBackupSetupRecoveryKeyCoordinator, animated: animated) { [weak self] in
-            self?.remove(childCoordinator: keyBackupSetupRecoveryKeyCoordinator)
-        }
+        let viewController = KeyBackupSetupSuccessFromPassphraseViewController.instantiate(with: recoveryKey)
+        viewController.delegate = self
+        self.navigationRouter.push(viewController, animated: animated, popCompletion: nil)
     }
 }
 
@@ -94,8 +97,12 @@ extension KeyBackupSetupCoordinator: KeyBackupSetupIntroViewControllerDelegate {
 
 // MARK: - KeyRecoveryPassphraseCoordinatorDelegate
 extension KeyBackupSetupCoordinator: KeyBackupSetupPassphraseCoordinatorDelegate {
-    func keyBackupSetupPassphraseCoordinator(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinatorType, didCompleteWithMegolmBackupCreationInfo megolmBackupCreationInfo: MXMegolmBackupCreationInfo) {
-        self.showRecoveryKey(with: megolmBackupCreationInfo, animated: true)
+    func keyBackupSetupPassphraseCoordinator(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinatorType, didCreateBackupFromPassphraseWithResultingRecoveryKey recoveryKey: String) {
+        self.showSetupPassphraseSuccess(with: recoveryKey, animated: true)
+    }
+    
+    func keyBackupSetupPassphraseCoordinator(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinatorType, didCreateBackupFromRecoveryKey recoveryKey: String) {
+        self.showSetupRecoveryKeySuccess(with: recoveryKey, animated: true)
     }
     
     func keyBackupSetupPassphraseCoordinatorDidCancel(_ keyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinatorType) {
@@ -103,13 +110,16 @@ extension KeyBackupSetupCoordinator: KeyBackupSetupPassphraseCoordinatorDelegate
     }
 }
 
-// MARK: - KeyBackupSetupRecoveryKeyCoordinatorDelegate
-extension KeyBackupSetupCoordinator: KeyBackupSetupRecoveryKeyCoordinatorDelegate {
-    func keyBackupSetupRecoveryKeyCoordinatorDidCreateBackup(_ keyBackupSetupRecoveryKeyCoordinator: KeyBackupSetupRecoveryKeyCoordinatorType) {
+// MARK: - KeyBackupSetupSuccessFromPassphraseViewControllerDelegate
+extension KeyBackupSetupCoordinator: KeyBackupSetupSuccessFromPassphraseViewControllerDelegate {
+    func keyBackupSetupSuccessFromPassphraseViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromPassphraseViewController) {
         self.delegate?.keyBackupSetupCoordinatorDidSetupRecoveryKey(self)
     }
-    
-    func keyBackupSetupRecoveryKeyCoordinatorDidCancel(_ keyBackupSetupRecoveryKeyCoordinator: KeyBackupSetupRecoveryKeyCoordinatorType) {
-        self.delegate?.keyBackupSetupCoordinatorDidCancel(self)
+}
+
+// MARK: - KeyBackupSetupSuccessFromRecoveryKeyViewControllerDelegate
+extension KeyBackupSetupCoordinator: KeyBackupSetupSuccessFromRecoveryKeyViewControllerDelegate {
+    func keyBackupSetupSuccessFromRecoveryKeyViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromRecoveryKeyViewController) {
+        self.delegate?.keyBackupSetupCoordinatorDidSetupRecoveryKey(self)
     }
 }

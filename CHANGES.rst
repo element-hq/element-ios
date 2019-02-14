@@ -5,6 +5,7 @@ Improvements:
  * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
  * Use modern literals and array/dictionary syntax where possible (PR #2160).
  * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
+ * RoomVC: Remove the beta warning modal when opening an e2e room (#2239).
  * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
  * Clean up iOS version checking (#2190).
  * Key backup: Implement setup screen (#2198).
@@ -12,6 +13,8 @@ Improvements:
  * Key backup: Add a dedicated section to settings (#2193).
  * Key backup: Implement setup reminder (#2211).
  * Key backup: Implement recover reminder (#2206).
+ * Key backup: Update key backup setup UI and UX (PR #2243).
+ * Key backup: Logout warning (#2245).
  
 Bug fix:
  * Use white scroll bar on dark themes (#2158).
@@ -20,6 +23,11 @@ Bug fix:
  * Registration: improve scrolling on the reCaptcha screen (#2165).
  * Infinite loading wheel when taping on a fake room alias (#679).
  * Ban and kick reasons are silently discarded (#2162).
+ * Room Version Upgrade: Clicking the link in the room continuation event to go back to the old version of the room doesn't work (#2179).
+ * Share extension: Fail to send screenshot (#2168).
+ * Share extension: Handle rich item sharing (image + text + URL) (#2224).
+ * Share extension: Sharing pages from Firefox only shares their title (#2163).
+ * Share extension: Fix unloaded theme (PR #2235).
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================

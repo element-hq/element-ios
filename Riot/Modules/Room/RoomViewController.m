@@ -567,35 +567,6 @@
         }
     }];
     [self refreshMissedDiscussionsCount:YES];
-    
-    // Warn about the beta state of e2e encryption when entering the first time in an encrypted room
-    MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:self.roomDataSource.mxSession.myUser.userId];
-    if (account && !account.isWarnedAboutEncryption && self.roomDataSource.room.summary.isEncrypted)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        __weak __typeof(self) weakSelf = self;
-        currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
-                                                           message:NSLocalizedStringFromTable(@"room_warning_about_encryption", @"Vector", nil)
-                                                    preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                               
-                                                               account.warnedAboutEncryption = YES;
-                                                           }
-                                                           
-                                                       }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCEncryptionAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -2005,8 +1976,23 @@
             }
             else if (tappedEvent)
             {
-                // Highlight this event in displayed message
-                [self selectEventWithId:tappedEvent.eventId];
+                if (tappedEvent.eventType == MXEventTypeRoomCreate)
+                {
+                    // Handle tap on RoomPredecessorBubbleCell
+                    MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:tappedEvent.content];
+                    NSString *predecessorRoomId = createContent.roomPredecessorInfo.roomId;
+                    
+                    if (predecessorRoomId)
+                    {
+                        // Show predecessor room
+                        [[AppDelegate theDelegate] showRoom:predecessorRoomId andEventId:nil withMatrixSession:self.mainSession];
+                    }
+                }
+                else
+                {
+                    // Highlight this event in displayed message
+                    [self selectEventWithId:tappedEvent.eventId];
+                }
             }
             
             // Force table refresh
@@ -4230,11 +4216,11 @@
             // Set the right background color
             if (highlightCount)
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationPrimaryColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.noticeColor;
             }
             else
             {
-                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.notificationSecondaryColor;
+                missedDiscussionsBadgeLabelBgView.backgroundColor = ThemeService.shared.theme.noticeSecondaryColor;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)

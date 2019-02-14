@@ -19,6 +19,16 @@ import Reusable
 
 final class PasswordStrengthView: UIView, NibOwnerLoadable {
     
+    // MARK: - Constants
+    
+    private enum StrengthColors {
+        static let gray = UIColor(rgb: 0x9E9E9E)
+        static let red = UIColor(rgb: 0xF56679)
+        static let orange = UIColor(rgb: 0xFFC666)
+        static let yellow = UIColor(rgb: 0xF8E71C)
+        static let green = UIColor(rgb: 0x7AC9A1)
+    }
+    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -31,15 +41,6 @@ final class PasswordStrengthView: UIView, NibOwnerLoadable {
     // MARK: Private
     
     private var strengthViews: [UIView] = []
-    
-    private let strengthViewDefaultColor = UIColor(rgb: 0x9E9E9E)
-    
-    private var strengthViewColors: [Int: UIColor] = [
-        0: UIColor(rgb: 0xF56679),
-        1: UIColor(rgb: 0xFFC666),
-        2: UIColor(rgb: 0xF8E71C),
-        3: UIColor(rgb: 0x7AC9A1)
-    ]
     
     // MARK: Public
     
@@ -88,44 +89,42 @@ final class PasswordStrengthView: UIView, NibOwnerLoadable {
     
     private func updateStrengthColors() {
         let strengthViewIndex: Int
+        let color: UIColor
         
         switch self.strength {
         case .tooGuessable, .veryGuessable:
             strengthViewIndex = 0
+            color = StrengthColors.red
         case .somewhatGuessable:
             strengthViewIndex = 1
+            color = StrengthColors.orange
         case .safelyUnguessable:
             strengthViewIndex = 2
+            color = StrengthColors.yellow
         case .veryUnguessable:
             strengthViewIndex = 3
+            color = StrengthColors.green
         }
         
-        self.color(until: strengthViewIndex)
+        self.color(until: strengthViewIndex, with: color)
     }
     
-    private func color(until strengthViewIndex: Int) {
+    private func color(until strengthViewIndex: Int, with color: UIColor) {
         var index: Int = 0
         
         for strenghView in self.strengthViews {
             
-            let color: UIColor
+            let strenghViewBackgroundColor: UIColor
             
             if index <= strengthViewIndex {
-                color = self.color(for: index)
+                strenghViewBackgroundColor = color
             } else {
-                color = self.strengthViewDefaultColor
+                strenghViewBackgroundColor = StrengthColors.gray
             }
             
-            strenghView.backgroundColor = color
+            strenghView.backgroundColor = strenghViewBackgroundColor
             
             index+=1
         }
-    }
-    
-    private func color(for index: Int) -> UIColor {
-        guard let color = self.strengthViewColors[index] else {
-            return self.strengthViewDefaultColor
-        }
-        return color
     }
 }
