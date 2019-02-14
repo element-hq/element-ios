@@ -2250,6 +2250,42 @@ internal enum VectorL10n {
   internal static var shareExtensionFailedToEncrypt: String { 
     return VectorL10n.tr("Vector", "share_extension_failed_to_encrypt") 
   }
+  /// Sign out
+  internal static var signOutExistingKeyBackupAlertSignOutAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_sign_out_action") 
+  }
+  /// Are you sure you want to sign out?
+  internal static var signOutExistingKeyBackupAlertTitle: String { 
+    return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_title") 
+  }
+  /// I don't want my encrypted messages
+  internal static var signOutNonExistingKeyBackupAlertDiscardKeyBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_discard_key_backup_action") 
+  }
+  /// Start using Key Backup
+  internal static var signOutNonExistingKeyBackupAlertSetupKeyBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_key_backup_action") 
+  }
+  /// You’ll lose access to your secure messages if you sign out now
+  internal static var signOutNonExistingKeyBackupAlertTitle: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_title") 
+  }
+  /// Backup
+  internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action") 
+  }
+  /// You'll lose access to your encrypted messages unless you back up your keys before signing out.
+  internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertMessage: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message") 
+  }
+  /// Sign out
+  internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertSignOutAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action") 
+  }
+  /// You'll lose your encrypted messages
+  internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertTitle: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title") 
+  }
   /// Start
   internal static var start: String { 
     return VectorL10n.tr("Vector", "start") 
