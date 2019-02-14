@@ -372,6 +372,7 @@
 		B1B9194C2118984300FE25B5 /* RoomPredecessorBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B9194A2118984300FE25B5 /* RoomPredecessorBubbleCell.xib */; };
 		B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3A2621EF6913000D1D89 /* UIViewController.swift */; };
 		B1CA3A2921EF692B000D1D89 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3A2821EF692B000D1D89 /* UIView.swift */; };
+		B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CE9EFC22148703000FAE6A /* SignOutAlertPresenter.swift */; };
 		B1D250D82118AA0A000F4E93 /* RoomPredecessorBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */; };
 		B1D4752721EE4E630067973F /* KeyboardAvoider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4752521EE4E620067973F /* KeyboardAvoider.swift */; };
 		B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4752621EE4E620067973F /* KeyboardNotification.swift */; };
@@ -1024,6 +1025,7 @@
 		B1B9194A2118984300FE25B5 /* RoomPredecessorBubbleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomPredecessorBubbleCell.xib; sourceTree = "<group>"; };
 		B1CA3A2621EF6913000D1D89 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B1CA3A2821EF692B000D1D89 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		B1CE9EFC22148703000FAE6A /* SignOutAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutAlertPresenter.swift; sourceTree = "<group>"; };
 		B1D250D62118AA0A000F4E93 /* RoomPredecessorBubbleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomPredecessorBubbleCell.h; sourceTree = "<group>"; };
 		B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomPredecessorBubbleCell.m; sourceTree = "<group>"; };
 		B1D4752521EE4E620067973F /* KeyboardAvoider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAvoider.swift; sourceTree = "<group>"; };
@@ -1647,6 +1649,7 @@
 				B1B5567B20EE6C4C00210D55 /* Language */,
 				B1B5567820EE6C4C00210D55 /* PhoneCountry */,
 				B1B5568020EE6C4C00210D55 /* DeactivateAccount */,
+				B1CE9EFB22148681000FAE6A /* SignOut */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2696,6 +2699,14 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
+		B1CE9EFB22148681000FAE6A /* SignOut */ = {
+			isa = PBXGroup;
+			children = (
+				B1CE9EFC22148703000FAE6A /* SignOutAlertPresenter.swift */,
+			);
+			path = SignOut;
+			sourceTree = "<group>";
+		};
 		B1D4752421EE4E620067973F /* KeyboardAvoiding */ = {
 			isa = PBXGroup;
 			children = (
@@ -3461,6 +3472,7 @@
 				B14F142F22144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewModelType.swift in Sources */,
 				B1B558E120EF768F00210D55 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
+				B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B1B558C120EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
