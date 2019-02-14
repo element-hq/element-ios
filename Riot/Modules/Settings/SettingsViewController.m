@@ -252,7 +252,7 @@ SignOutAlertPresenterDelegate>
 @property (nonatomic) BOOL newPhoneEditingEnabled;
 
 @property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
-@property (nonatomic, strong) SignOutAlertPresenter *signOutPresenter;
+@property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
 
 @end
@@ -357,8 +357,8 @@ SignOutAlertPresenterDelegate>
     }];
     [self userInterfaceThemeDidChange];
     
-    self.signOutPresenter = [SignOutAlertPresenter new];
-    self.signOutPresenter.delegate = self;
+    self.signOutAlertPresenter = [SignOutAlertPresenter new];
+    self.signOutAlertPresenter.delegate = self;
 }
 
 - (void)userInterfaceThemeDidChange
@@ -2709,8 +2709,9 @@ SignOutAlertPresenterDelegate>
 - (void)onSignout:(id)sender
 {
     self.signOutButton = (UIButton*)sender;
-    self.signOutPresenter.isABackupExist = !(self.mainSession.crypto.backup.state == MXKeyBackupStateDisabled);
-    [self.signOutPresenter presentFrom:self animated:YES];
+    
+    MXKeyBackupState backupState = self.mainSession.crypto.backup.state;
+    [self.signOutAlertPresenter presentFor:backupState from:self animated:YES];
 }
 
 - (void)onRemove3PID:(NSIndexPath*)path

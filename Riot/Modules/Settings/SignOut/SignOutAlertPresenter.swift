@@ -32,18 +32,20 @@ final class SignOutAlertPresenter: NSObject {
     
     // MARK: Public
     
-    var isABackupExist: Bool = false
     weak var delegate: SignOutAlertPresenterDelegate?
     
     // MARK: - Public
     
-    func present(from viewController: UIViewController, animated: Bool) {
+    func present(for keyBackupState: MXKeyBackupState, from viewController: UIViewController, animated: Bool) {
         self.presentingViewController = viewController
-        
-        if self.isABackupExist {
-            self.presentExistingBackupAlert(animated: animated)
-        } else {
+                
+        switch keyBackupState {
+        case MXKeyBackupStateUnknown, MXKeyBackupStateDisabled, MXKeyBackupStateCheckingBackUpOnHomeserver:
             self.presentNonExistingBackupAlert(animated: animated)
+        case MXKeyBackupStateWillBackUp, MXKeyBackupStateBackingUp:
+            self.presentBackupInProgressAlert(animated: animated)
+        default:
+            self.presentExistingBackupAlert(animated: animated)
         }
     }
     
@@ -103,6 +105,23 @@ final class SignOutAlertPresenter: NSObject {
         
         alertContoller.addAction(signOutAction)
         alertContoller.addAction(setUpKeyBackupAction)
+        
+        self.presentingViewController?.present(alertContoller, animated: true, completion: nil)
+    }
+    
+    private func presentBackupInProgressAlert(animated: Bool) {
+        let alertContoller = UIAlertController(title: VectorL10n.signOutKeyBackupInProgressAlertTitle,
+                                               message: nil,
+                                               preferredStyle: .actionSheet)
+        
+        let discardKeyBackupAction = UIAlertAction(title: VectorL10n.signOutKeyBackupInProgressAlertDiscardKeyBackupAction, style: .destructive) { (_) in
+            self.delegate?.signOutAlertPresenterDidTapSignOutAction(self)
+        }
+        
+        let cancelAction = UIAlertAction(title: VectorL10n.signOutKeyBackupInProgressAlertCancelAction, style: .cancel, handler: nil)
+        
+        alertContoller.addAction(discardKeyBackupAction)
+        alertContoller.addAction(cancelAction)
         
         self.presentingViewController?.present(alertContoller, animated: true, completion: nil)
     }
