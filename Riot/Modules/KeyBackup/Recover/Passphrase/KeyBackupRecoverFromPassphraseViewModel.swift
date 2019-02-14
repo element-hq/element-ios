@@ -77,10 +77,8 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
             guard let sself = self else {
                 return
             }
-            sself.update(viewState: .loaded(totalKeys: totalKeys))
-            if totalKeys > 0 {
-                sself.coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDidRecover(sself)
-            }
+            sself.update(viewState: .loaded)
+            sself.coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDidRecover(sself)
         }, failure: { [weak self] error in
             guard let sself = self else {
                 return

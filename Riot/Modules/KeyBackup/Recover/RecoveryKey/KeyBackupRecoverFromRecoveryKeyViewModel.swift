@@ -77,10 +77,9 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
             guard let sself = self else {
                 return
             }
-            sself.update(viewState: .loaded(totalKeys: totalKeys))
-            if totalKeys > 0 {
-                sself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(sself)
-            }
+            sself.update(viewState: .loaded)
+            sself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(sself)
+
         }, failure: { [weak self] error in
             guard let sself = self else {
                 return

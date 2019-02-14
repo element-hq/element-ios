@@ -718,8 +718,6 @@
 // MARK: Key backup recover
 
 "key_backup_recover_title" = "Secure Messages";
-"key_backup_recover_empty_backup_title" = "Empty backup";
-"key_backup_recover_empty_backup_message" = "There is no key to restore";
 
 // Recover from passphrase
 

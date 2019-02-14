@@ -674,14 +674,6 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
   }
-  /// There is no key to restore
-  internal static var keyBackupRecoverEmptyBackupMessage: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_empty_backup_message") 
-  }
-  /// Empty backup
-  internal static var keyBackupRecoverEmptyBackupTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_empty_backup_title") 
-  }
   /// Use your recovery passphrase to unlock your secure message history
   internal static var keyBackupRecoverFromPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_info") 

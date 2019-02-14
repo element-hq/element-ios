@@ -161,8 +161,8 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(totalKeys: let totalKeys):
-            self.renderLoaded(with: totalKeys)
+        case .loaded:
+            self.renderLoaded()
         case .error(let error):
             self.render(error: error)
         }
@@ -173,16 +173,8 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded(with totalKeys: UInt) {
+    private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        
-        if totalKeys == 0 {
-            self.errorPresenter.presentError(from: self,
-                                             title: VectorL10n.keyBackupRecoverEmptyBackupTitle,
-                                             message: VectorL10n.keyBackupRecoverEmptyBackupMessage,
-                                             animated: true,
-                                             handler: nil)
-        }
     }
     
     private func render(error: Error) {
