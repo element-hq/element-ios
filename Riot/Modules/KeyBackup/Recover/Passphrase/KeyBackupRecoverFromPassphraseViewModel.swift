@@ -17,7 +17,6 @@
 import Foundation
 
 enum KeyBackupRecoverFromPassphraseViewModelError: Error {
-    case missingKeyBackupVersion
 }
 
 final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphraseViewModelType {
@@ -72,14 +71,9 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
             return
         }
         
-        guard let keyBackupVersion = self.keyBackupVersion.version else {
-            self.update(viewState: .error(KeyBackupRecoverFromPassphraseViewModelError.missingKeyBackupVersion))
-            return
-        }
-        
         self.update(viewState: .loading)
         
-        self.currentHTTPOperation = self.keyBackup.restore(keyBackupVersion, withPassword: passphrase, room: nil, session: nil, success: { [weak self] (totalKeys, _) in
+        self.currentHTTPOperation = self.keyBackup.restore(self.keyBackupVersion, withPassword: passphrase, room: nil, session: nil, success: { [weak self] (totalKeys, _) in
             guard let sself = self else {
                 return
             }
@@ -91,7 +85,7 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
             guard let sself = self else {
                 return
             }
-            sself.update(viewState: .error(error))            
+            sself.update(viewState: .error(error))
         })
     }
     

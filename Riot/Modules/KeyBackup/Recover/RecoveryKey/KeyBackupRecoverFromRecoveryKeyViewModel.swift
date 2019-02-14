@@ -17,7 +17,6 @@
 import Foundation
 
 enum KeyBackupRecoverFromRecoveryKeyViewModelError: Error {
-    case missingKeyBackupVersion
 }
 
 final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecoveryKeyViewModelType {
@@ -72,14 +71,9 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
             return
         }
         
-        guard let keyBackupVersion = self.keyBackupVersion.version else {
-            self.update(viewState: .error(KeyBackupRecoverFromRecoveryKeyViewModelError.missingKeyBackupVersion))
-            return
-        }
-        
         self.update(viewState: .loading)
         
-        self.currentHTTPOperation = self.keyBackup.restore(keyBackupVersion, withRecoveryKey: recoveryKey, room: nil, session: nil, success: { [weak self] (totalKeys, _) in
+        self.currentHTTPOperation = self.keyBackup.restore(self.keyBackupVersion, withRecoveryKey: recoveryKey, room: nil, session: nil, success: { [weak self] (totalKeys, _) in
             guard let sself = self else {
                 return
             }
