@@ -722,6 +722,22 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverFromRecoveryKeyRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recovery_key_title") 
   }
+  /// Backup could not be decrypted with this passphrase: please verify that you entered the correct recovery passphrase.
+  internal static var keyBackupRecoverInvalidPassphrase: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_passphrase") 
+  }
+  /// Incorrect Recovery Passphrase
+  internal static var keyBackupRecoverInvalidPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_passphrase_title") 
+  }
+  /// Backup could not be decrypted with this key: please verify that you entered the correct recovery key.
+  internal static var keyBackupRecoverInvalidRecoveryKey: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_recovery_key") 
+  }
+  /// Recovery Key Mismatch
+  internal static var keyBackupRecoverInvalidRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_recovery_key_title") 
+  }
   /// Backup Restored!
   internal static var keyBackupRecoverSuccessInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_success_info") 

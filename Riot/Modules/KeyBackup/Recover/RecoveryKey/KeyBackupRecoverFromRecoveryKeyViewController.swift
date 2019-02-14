@@ -179,7 +179,19 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
     
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+
+        if (error as NSError).domain == MXKeyBackupErrorDomain
+            && (error as NSError).code == Int(MXKeyBackupErrorInvalidRecoveryKeyCode.rawValue) {
+
+            self.errorPresenter.presentError(from: self,
+                                             title: VectorL10n.keyBackupRecoverInvalidRecoveryKeyTitle,
+                                             message: VectorL10n.keyBackupRecoverInvalidRecoveryKey,
+                                             animated: true,
+                                             handler: nil)
+        }
+        else {
+            self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        }
     }
     
     private func showFileSelection() {

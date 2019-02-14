@@ -719,6 +719,11 @@
 
 "key_backup_recover_title" = "Secure Messages";
 
+"key_backup_recover_invalid_passphrase_title" = "Incorrect Recovery Passphrase";
+"key_backup_recover_invalid_passphrase" = "Backup could not be decrypted with this passphrase: please verify that you entered the correct recovery passphrase.";
+"key_backup_recover_invalid_recovery_key_title" = "Recovery Key Mismatch";
+"key_backup_recover_invalid_recovery_key" = "Backup could not be decrypted with this key: please verify that you entered the correct recovery key.";
+
 // Recover from passphrase
 
 "key_backup_recover_from_passphrase_info" = "Use your recovery passphrase to unlock your secure message history";
