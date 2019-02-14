@@ -73,12 +73,26 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
         
         self.update(viewState: .loading)
         
-        self.currentHTTPOperation = self.keyBackup.restore(self.keyBackupVersion, withRecoveryKey: recoveryKey, room: nil, session: nil, success: { [weak self] (totalKeys, _) in
+        self.currentHTTPOperation = self.keyBackup.restore(self.keyBackupVersion, withRecoveryKey: recoveryKey, room: nil, session: nil, success: { [weak self] (_, _) in
             guard let sself = self else {
                 return
             }
-            sself.update(viewState: .loaded)
-            sself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(sself)
+
+            // Trust on decrypt
+            sself.currentHTTPOperation = sself.keyBackup.trust(sself.keyBackupVersion, trust: true, success: { [weak sself] () in
+                guard let ssself = sself else {
+                    return
+                }
+
+                ssself.update(viewState: .loaded)
+                ssself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(ssself)
+
+                }, failure: { [weak sself] error in
+                    guard let ssself = sself else {
+                        return
+                    }
+                    ssself.update(viewState: .error(error))
+            })
 
         }, failure: { [weak self] error in
             guard let sself = self else {
