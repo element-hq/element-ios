@@ -758,7 +758,7 @@
 "key_backup_recover_banner_title" = "Never lose encrypted messages";
 "key_backup_recover_banner_subtitle" = "Use Key Backup";
 
-// MARK: Sign out
+// MARK: Sign out warning
 
 "sign_out_existing_key_backup_alert_title" = "Are you sure you want to sign out?";
 "sign_out_existing_key_backup_alert_sign_out_action" = "Sign out";
@@ -771,3 +771,7 @@
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "You'll lose access to your encrypted messages unless you back up your keys before signing out.";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Sign out";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Backup";
+
+"sign_out_key_backup_in_progress_alert_title" = "Key backup in progress. If you sign out now you’ll lose access to your encrypted messages.";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "I don't want my encrypted messages";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";

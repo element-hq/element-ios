@@ -2258,6 +2258,18 @@ internal enum VectorL10n {
   internal static var signOutExistingKeyBackupAlertTitle: String { 
     return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_title") 
   }
+  /// I'll wait
+  internal static var signOutKeyBackupInProgressAlertCancelAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_key_backup_in_progress_alert_cancel_action") 
+  }
+  /// I don't want my encrypted messages
+  internal static var signOutKeyBackupInProgressAlertDiscardKeyBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_key_backup_in_progress_alert_discard_key_backup_action") 
+  }
+  /// Key backup in progress. If you sign out now you’ll lose access to your encrypted messages.
+  internal static var signOutKeyBackupInProgressAlertTitle: String { 
+    return VectorL10n.tr("Vector", "sign_out_key_backup_in_progress_alert_title") 
+  }
   /// I don't want my encrypted messages
   internal static var signOutNonExistingKeyBackupAlertDiscardKeyBackupAction: String { 
     return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_discard_key_backup_action") 
