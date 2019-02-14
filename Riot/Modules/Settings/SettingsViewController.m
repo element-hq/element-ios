@@ -142,7 +142,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 SettingsKeyBackupTableViewSectionDelegate,
 MXKEncryptionInfoViewDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
-KeyBackupRecoverCoordinatorBridgePresenterDelegate>
+KeyBackupRecoverCoordinatorBridgePresenterDelegate,
+SignOutAlertPresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -250,7 +251,9 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
  */
 @property (nonatomic) BOOL newPhoneEditingEnabled;
 
-@property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
+@property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
+@property (nonatomic, strong) SignOutAlertPresenter *signOutPresenter;
+@property (nonatomic, weak) UIButton *signOutButton;
 
 @end
 
@@ -353,6 +356,9 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    self.signOutPresenter = [SignOutAlertPresenter new];
+    self.signOutPresenter.delegate = self;
 }
 
 - (void)userInterfaceThemeDidChange
@@ -2702,24 +2708,9 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
 
 - (void)onSignout:(id)sender
 {
-    // Feedback: disable button and run activity indicator
-    UIButton *button = (UIButton*)sender;
-    button.enabled = NO;
-    [self startActivityIndicator];
-    
-     __weak typeof(self) weakSelf = self;
-    
-    [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
-        
-        if (!isLoggedOut && weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            // Enable the button and stop activity indicator
-            button.enabled = YES;
-            [self stopActivityIndicator];
-        }
-    }];
+    self.signOutButton = (UIButton*)sender;
+    self.signOutPresenter.isABackupExist = !(self.mainSession.crypto.backup.state == MXKeyBackupStateDisabled);
+    [self.signOutPresenter presentFrom:self animated:YES];
 }
 
 - (void)onRemove3PID:(NSIndexPath*)path
@@ -4453,6 +4444,34 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate>
 - (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
     [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - SignOutAlertPresenterDelegate
+
+- (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
+{
+    [self showKeyBackupSetup];
+}
+
+- (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
+{
+    // Prevent user to perform user interaction in settings when sign out
+    // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
+    self.view.userInteractionEnabled = NO;
+    self.signOutButton.enabled = NO;
+    
+    [self startActivityIndicator];
+    
+    MXWeakify(self);
+    
+    [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        
+        self.view.userInteractionEnabled = YES;
+        self.signOutButton.enabled = YES;
+    }];
 }
 
 @end
