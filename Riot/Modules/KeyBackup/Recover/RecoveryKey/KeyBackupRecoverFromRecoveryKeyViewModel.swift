@@ -16,10 +16,6 @@
 
 import Foundation
 
-enum KeyBackupRecoverFromRecoveryKeyViewModelError: Error {
-    case missingKeyBackupVersion
-}
-
 final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecoveryKeyViewModelType {
     
     // MARK: - Properties
@@ -72,26 +68,28 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
             return
         }
         
-        guard let keyBackupVersion = self.keyBackupVersion.version else {
-            self.update(viewState: .error(KeyBackupRecoverFromRecoveryKeyViewModelError.missingKeyBackupVersion))
-            return
-        }
-        
         self.update(viewState: .loading)
         
-        self.currentHTTPOperation = self.keyBackup.restore(keyBackupVersion, withRecoveryKey: recoveryKey, room: nil, session: nil, success: { [weak self] (totalKeys, _) in
+        self.currentHTTPOperation = self.keyBackup.restore(self.keyBackupVersion, withRecoveryKey: recoveryKey, room: nil, session: nil, success: { [weak self] (_, _) in
             guard let sself = self else {
                 return
             }
-            sself.update(viewState: .loaded(totalKeys: totalKeys))
-            if totalKeys > 0 {
-                sself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(sself)
-            }
-        }, failure: { [weak self] error in
-            guard let sself = self else {
-                return
-            }
-            sself.update(viewState: .error(error))
+
+            // Trust on decrypt
+            sself.currentHTTPOperation = sself.keyBackup.trust(sself.keyBackupVersion, trust: true, success: { [weak sself] () in
+                guard let ssself = sself else {
+                    return
+                }
+
+                ssself.update(viewState: .loaded)
+                ssself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(ssself)
+
+                }, failure: {[weak sself]  error in
+                    sself?.update(viewState: .error(error))
+            })
+
+        }, failure: {[weak self]  error in
+            self?.update(viewState: .error(error))
         })
     }
     

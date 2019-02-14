@@ -674,14 +674,6 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
   }
-  /// There is no key to restore
-  internal static var keyBackupRecoverEmptyBackupMessage: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_empty_backup_message") 
-  }
-  /// Empty backup
-  internal static var keyBackupRecoverEmptyBackupTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_empty_backup_title") 
-  }
   /// Use your recovery passphrase to unlock your secure message history
   internal static var keyBackupRecoverFromPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_info") 
@@ -729,6 +721,22 @@ internal enum VectorL10n {
   /// Enter
   internal static var keyBackupRecoverFromRecoveryKeyRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recovery_key_title") 
+  }
+  /// Backup could not be decrypted with this passphrase: please verify that you entered the correct recovery passphrase.
+  internal static var keyBackupRecoverInvalidPassphrase: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_passphrase") 
+  }
+  /// Incorrect Recovery Passphrase
+  internal static var keyBackupRecoverInvalidPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_passphrase_title") 
+  }
+  /// Backup could not be decrypted with this key: please verify that you entered the correct recovery key.
+  internal static var keyBackupRecoverInvalidRecoveryKey: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_recovery_key") 
+  }
+  /// Recovery Key Mismatch
+  internal static var keyBackupRecoverInvalidRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_recovery_key_title") 
   }
   /// Backup Restored!
   internal static var keyBackupRecoverSuccessInfo: String { 

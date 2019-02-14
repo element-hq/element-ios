@@ -163,8 +163,8 @@ final class KeyBackupRecoverFromPassphraseViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(totalKeys: let totalKeys):
-            self.renderLoaded(with: totalKeys)
+        case .loaded:
+            self.renderLoaded()
         case .error(let error):
             self.render(error: error)
         }
@@ -175,21 +175,24 @@ final class KeyBackupRecoverFromPassphraseViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded(with totalKeys: UInt) {
+    private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        
-        if totalKeys == 0 {
-            self.errorPresenter.presentError(from: self,
-                                             title: VectorL10n.keyBackupRecoverEmptyBackupTitle,
-                                             message: VectorL10n.keyBackupRecoverEmptyBackupMessage,
-                                             animated: true,
-                                             handler: nil)
-        }
     }
     
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+
+        if (error as NSError).domain == MXKeyBackupErrorDomain
+            && (error as NSError).code == Int(MXKeyBackupErrorInvalidRecoveryKeyCode.rawValue) {
+
+            self.errorPresenter.presentError(from: self,
+                                             title: VectorL10n.keyBackupRecoverInvalidPassphraseTitle,
+                                             message: VectorL10n.keyBackupRecoverInvalidPassphrase,
+                                             animated: true,
+                                             handler: nil)
+        } else {
+            self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        }
     }
     
     // MARK: - Actions
