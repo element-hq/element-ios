@@ -16,9 +16,6 @@
 
 import Foundation
 
-enum KeyBackupRecoverFromPassphraseViewModelError: Error {
-}
-
 final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphraseViewModelType {
     
     // MARK: - Properties
@@ -88,17 +85,11 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
                 ssself.coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDidRecover(ssself)
 
                 }, failure: { [weak sself] error in
-                    guard let ssself = sself else {
-                        return
-                    }
-                    ssself.update(viewState: .error(error))
+                    sself?.update(viewState: .error(error))
             })
 
         }, failure: { [weak self] error in
-            guard let sself = self else {
-                return
-            }
-            sself.update(viewState: .error(error))
+            self?.update(viewState: .error(error))
         })
     }
     

@@ -16,9 +16,6 @@
 
 import Foundation
 
-enum KeyBackupRecoverFromRecoveryKeyViewModelError: Error {
-}
-
 final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecoveryKeyViewModelType {
     
     // MARK: - Properties
@@ -87,18 +84,12 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
                 ssself.update(viewState: .loaded)
                 ssself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(ssself)
 
-                }, failure: { [weak sself] error in
-                    guard let ssself = sself else {
-                        return
-                    }
-                    ssself.update(viewState: .error(error))
+                }, failure: {[weak sself]  error in
+                    sself?.update(viewState: .error(error))
             })
 
-        }, failure: { [weak self] error in
-            guard let sself = self else {
-                return
-            }
-            sself.update(viewState: .error(error))
+        }, failure: {[weak self]  error in
+            self?.update(viewState: .error(error))
         })
     }
     
