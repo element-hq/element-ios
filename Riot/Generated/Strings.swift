@@ -758,6 +758,14 @@ internal enum VectorL10n {
   internal static var keyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_info") 
   }
+  /// Manually export keys
+  internal static var keyBackupSetupIntroManualExportAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_manual_export_action") 
+  }
+  /// (Advanced)
+  internal static var keyBackupSetupIntroManualExportInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_manual_export_info") 
+  }
   /// Use Key Backup
   internal static var keyBackupSetupIntroSetupActionWithExistingBackup: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_setup_action_with_existing_backup") 
