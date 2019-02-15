@@ -25,6 +25,7 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
+    private let isStartedFromSignOut: Bool
     
     // MARK: Public
     
@@ -34,19 +35,18 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, isStartedFromSignOut: Bool) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
+        self.isStartedFromSignOut = isStartedFromSignOut
     }    
     
     // MARK: - Public methods
     
     func start() {
-    
-        // Set key backup setup intro as root controller
-        let isABackupAlreadyExists = !(self.session.crypto.backup?.state == MXKeyBackupStateDisabled)
         
-        let keyBackupSetupIntroViewController = KeyBackupSetupIntroViewController.instantiate(isABackupAlreadyExists: isABackupAlreadyExists)
+        // Set key backup setup intro as root controller
+        let keyBackupSetupIntroViewController = self.createSetupIntroViewController()
         keyBackupSetupIntroViewController.delegate = self
         self.navigationRouter.setRootModule(keyBackupSetupIntroViewController)
     }
@@ -56,6 +56,29 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
     }
     
     // MARK: - Private methods
+    
+    private func createSetupIntroViewController() -> KeyBackupSetupIntroViewController {
+        
+        let backupState = self.session.crypto.backup?.state ?? MXKeyBackupStateUnknown
+        let isABackupAlreadyExists: Bool
+        
+        switch backupState {
+        case MXKeyBackupStateUnknown, MXKeyBackupStateDisabled, MXKeyBackupStateCheckingBackUpOnHomeserver:
+            isABackupAlreadyExists = false
+        default:
+            isABackupAlreadyExists = true
+        }
+        
+        let encryptionKeysExportPresenter: EncryptionKeysExportPresenter?
+        
+        if self.isStartedFromSignOut {
+            encryptionKeysExportPresenter = EncryptionKeysExportPresenter(session: self.session)
+        } else {
+            encryptionKeysExportPresenter = nil
+        }
+        
+        return KeyBackupSetupIntroViewController.instantiate(isABackupAlreadyExists: isABackupAlreadyExists, encryptionKeysExportPresenter: encryptionKeysExportPresenter)
+    }
     
     private func showSetupPassphrase(animated: Bool) {
         let keyBackupSetupPassphraseCoordinator = KeyBackupSetupPassphraseCoordinator(session: self.session)
