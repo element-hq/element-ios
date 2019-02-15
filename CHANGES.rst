@@ -28,6 +28,8 @@ Bug fix:
  * Share extension: Handle rich item sharing (image + text + URL) (#2224).
  * Share extension: Sharing pages from Firefox only shares their title (#2163).
  * Share extension: Fix unloaded theme (PR #2235).
+ * Reskin: Jump to first unread message doesn't show up in 0.7.12 TF (#2218).
+ * Reskin: Sometimes the roomVC navigation bar is tranparent (#2252).
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================
