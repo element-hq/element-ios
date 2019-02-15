@@ -558,7 +558,7 @@
 "room_resource_usage_limit_reached_message_contact_3" = " um dieses Limit erhöhen zu lassen.";
 "auth_accept_policies" = "Bitte Regeln dieses Heimservers ansehen und akzeptieren:";
 "settings_key_backup" = "SCHLÜSSEL SICHERHEITSKOPIE";
-"settings_key_backup_info" = "Verschlüsselte Nachrichten sind durch Ende-zu-Ende-Verschlüsselung gesichert. Ausschließlich sie und der/die Empfänger besitzen die Schlüssel, um diese Nachrichten zu lesen.";
+"settings_key_backup_info" = "Verschlüsselte Nachrichten sind durch Ende-zu-Ende-Verschlüsselung gesichert. Ausschließlich du und der/die Empfänger besitzen die Schlüssel, um diese Nachrichten zu lesen.";
 "settings_key_backup_info_checking" = "Überprüfe...";
 "settings_key_backup_info_none" = "Deine Schlüssel werden von diesem Gerät nicht gesichert.";
 "settings_key_backup_info_signout_warning" = "Sichere deine Schlüssel bevor du dich abmeldest, damit du sie nicht verlierst.";
