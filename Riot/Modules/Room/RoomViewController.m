@@ -656,11 +656,13 @@
                 [expandedHeader layoutIfNeeded];
             }
         }
+
+        self.edgesForExtendedLayout = UIRectEdgeAll;
         
         // Adjust the top constraint of the bubbles table
         CGRect frame = expandedHeader.bottomBorderView.frame;
         self.expandedHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
-        
+
         self.bubblesTableViewTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
         self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant;
     }
@@ -683,17 +685,23 @@
                 [previewHeader layoutIfNeeded];
             }
         }
-        
+
+        self.edgesForExtendedLayout = UIRectEdgeAll;
+
         // Adjust the top constraint of the bubbles table
         CGRect frame = previewHeader.bottomBorderView.frame;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
-        
+
         self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
         self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
     }
     else
     {
-        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top;
+        // In non expanded header mode, the navigation bar is opaque
+        // The table view must not display behind it
+        self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
+
+        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top; // no expanded
     }
     
     [self refreshMissedDiscussionsCount:YES];
