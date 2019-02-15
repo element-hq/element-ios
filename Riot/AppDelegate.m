@@ -200,7 +200,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      Prompt to ask the user to log in again.
      */
     UIAlertController *cryptoDataCorruptedAlert;
-    
+
+    /**
+     Prompt to warn the user about a new backup on the homeserver.
+     */
+    UIAlertController *wrongBackupVersionAlert;
+
     /**
      The launch animation container view
      */
@@ -518,6 +523,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [cryptoDataCorruptedAlert dismissViewControllerAnimated:NO completion:nil];
         cryptoDataCorruptedAlert = nil;
     }
+
+    if (wrongBackupVersionAlert)
+    {
+        [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
+        wrongBackupVersionAlert = nil;
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -650,7 +661,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Observe crypto data storage corruption
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSessionCryptoDidCorruptData:) name:kMXSessionCryptoDidCorruptDataNotification object:nil];
-    
+
+    // Observe wrong backup version
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
+
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
@@ -788,6 +802,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible log in again");
                     [self showNotificationAlert:cryptoDataCorruptedAlert];
+                }
+                else if (wrongBackupVersionAlert)
+                {
+                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible wrongBackupVersionAlert");
+                    [self showNotificationAlert:wrongBackupVersionAlert];
+
                 }
                 // Check whether an error notification is pending
                 else if (_errorNotification)
@@ -979,6 +999,47 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                    }]];
         
         [self showNotificationAlert:cryptoDataCorruptedAlert];
+    }
+}
+
+- (void)keyBackupStateDidChangeNotification:(NSNotification *)notification
+{
+    MXKeyBackup *keyBackup = notification.object;
+
+    if (keyBackup.state == MXKeyBackupStateWrongBackUpVersion)
+    {
+        if (wrongBackupVersionAlert)
+        {
+            [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
+        }
+
+        wrongBackupVersionAlert = [UIAlertController
+                                   alertControllerWithTitle:NSLocalizedStringFromTable(@"e2e_key_backup_wrong_version_title", @"Vector", nil)
+
+                                   message:NSLocalizedStringFromTable(@"e2e_key_backup_wrong_version", @"Vector", nil)
+
+                                   preferredStyle:UIAlertControllerStyleAlert];
+
+        MXWeakify(self);
+        [wrongBackupVersionAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"e2e_key_backup_wrong_version_button_settings"]
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action)
+                                             {
+                                                 MXStrongifyAndReturnIfNil(self);
+                                                 self->wrongBackupVersionAlert = nil;
+
+                                                 // TODO: Open settings
+                                             }]];
+
+        [wrongBackupVersionAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"e2e_key_backup_wrong_version_button_wasme"]
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action)
+                                             {
+                                                 MXStrongifyAndReturnIfNil(self);
+                                                 self->wrongBackupVersionAlert = nil;
+                                             }]];
+
+        [self showNotificationAlert:wrongBackupVersionAlert];
     }
 }
 
