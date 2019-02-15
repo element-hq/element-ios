@@ -17,7 +17,8 @@
 
 #import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @implementation RoomOutgoingAttachmentWithPaginationTitleBubbleCell
 
@@ -25,11 +26,11 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kRiotPrimaryTextColor;
+    self.userNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.paginationLabel.textColor = kRiotColorGreen;
-    self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
-    self.messageTextView.tintColor = kRiotColorGreen;
+    self.paginationLabel.textColor = ThemeService.shared.theme.tintColor;
+    self.paginationSeparatorView.backgroundColor = ThemeService.shared.theme.tintColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

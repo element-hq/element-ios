@@ -17,6 +17,7 @@
 #import "BugReportViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -27,8 +28,8 @@
     // The temporary file used to store the screenshot
     NSURL *screenShotFile;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @property (nonatomic) BOOL sendLogs;
@@ -127,7 +128,7 @@
     _bugReportDescriptionTextView.inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
 
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -137,44 +138,44 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.overlayView.backgroundColor = kRiotOverlayColor;
+    self.overlayView.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     self.overlayView.alpha = 1.0;
     
-    self.containerView.backgroundColor = kRiotPrimaryBgColor;
-    self.sendingContainer.backgroundColor = kRiotPrimaryBgColor;
+    self.containerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.sendingContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
-    self.bugReportDescriptionTextView.keyboardAppearance = kRiotKeyboard;
+    self.bugReportDescriptionTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
     
-    self.titleLabel.textColor = kRiotPrimaryTextColor;
-    self.sendingLabel.textColor = kRiotPrimaryTextColor;
-    self.descriptionLabel.textColor = kRiotPrimaryTextColor;
-    self.bugReportDescriptionTextView.textColor = kRiotPrimaryTextColor;
-    self.bugReportDescriptionTextView.tintColor = kRiotColorGreen;
-    self.logsDescriptionLabel.textColor = kRiotPrimaryTextColor;
-    self.sendLogsLabel.textColor = kRiotPrimaryTextColor;
-    self.sendScreenshotLabel.textColor = kRiotPrimaryTextColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.sendingLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.descriptionLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.bugReportDescriptionTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.bugReportDescriptionTextView.tintColor = ThemeService.shared.theme.tintColor;
+    self.logsDescriptionLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.sendLogsLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.sendScreenshotLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.sendButton.tintColor = kRiotColorGreen;
-    self.cancelButton.tintColor = kRiotColorGreen;
+    self.sendButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.cancelButton.tintColor = ThemeService.shared.theme.tintColor;
     
-    _bugReportDescriptionTextView.layer.borderColor = kRiotSecondaryBgColor.CGColor;
+    _bugReportDescriptionTextView.layer.borderColor = ThemeService.shared.theme.headerBackgroundColor.CGColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy
 {
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [super destroy];

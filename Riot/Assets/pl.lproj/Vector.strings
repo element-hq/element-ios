@@ -487,3 +487,4 @@
 // Media picker
 "media_picker_library" = "Biblioteka";
 "large_badge_value_k_format" = "%.1fK";
+"bug_crash_report_title" = "Raport o awarii";

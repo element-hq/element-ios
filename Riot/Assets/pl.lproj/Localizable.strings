@@ -22,3 +22,17 @@
 "MSGS_FROM_TWO_PLUS_USERS" = "%@ nowych wiadomości od %@, %@ i innych";
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ nowych wiadomości w %@, %@ i innych";
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ wysłał(a) Tobie zdjęcie %@";
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ wysłał(a) Tobie zdjęcie %@ w %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ nowych wiadomości w %@";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ nowych wiadomości w %@ i %@";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ zaprosił(a) Ciebie do %@";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ zaprosił(a) Ciebie do rozmowy grupowej";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ zaprosił(a) Ciebie do rozmowy";

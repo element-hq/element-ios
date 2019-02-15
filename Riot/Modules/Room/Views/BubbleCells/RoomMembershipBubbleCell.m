@@ -16,7 +16,8 @@
 
 #import "RoomMembershipBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 #import "RoomBubbleCellData.h"
 
@@ -40,7 +41,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.messageTextView.tintColor = kRiotColorGreen;
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)prepareForReuse

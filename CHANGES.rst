@@ -1,9 +1,44 @@
+Changes in 0.8.0 (2019-02-15)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.5 - https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.5).
+ * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
+ * Use modern literals and array/dictionary syntax where possible (PR #2160).
+ * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
+ * RoomVC: Remove the beta warning modal when opening an e2e room (#2239).
+ * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
+ * Clean up iOS version checking (#2190).
+ * Key backup: Implement setup screen (#2198).
+ * Key backup: Implement recover screen (#2196).
+ * Key backup: Add a dedicated section to settings (#2193).
+ * Key backup: Implement setup reminder (#2211).
+ * Key backup: Implement recover reminder (#2206).
+ * Key backup: Update key backup setup UI and UX (PR #2243).
+ * Key backup: Logout warning (#2245).
+ * Key backup: new recover method detected (#2230).
+ 
+Bug fix:
+ * Use white scroll bar on dark themes (#2158).
+ * Registration: fix tap gesture on checkboxes in the terms screen.
+ * Registration: improve validation UX on the terms screen (#2164).
+ * Registration: improve scrolling on the reCaptcha screen (#2165).
+ * Infinite loading wheel when taping on a fake room alias (#679).
+ * Ban and kick reasons are silently discarded (#2162).
+ * Room Version Upgrade: Clicking the link in the room continuation event to go back to the old version of the room doesn't work (#2179).
+ * Share extension: Fail to send screenshot (#2168).
+ * Share extension: Handle rich item sharing (image + text + URL) (#2224).
+ * Share extension: Sharing pages from Firefox only shares their title (#2163).
+ * Share extension: Fix unloaded theme (PR #2235).
+ * Reskin: Jump to first unread message doesn't show up in 0.7.12 TF (#2218).
+ * Reskin: Sometimes the roomVC navigation bar is tranparent (#2252).
+
 Changes in 0.7.11 (2019-01-08)
 ===============================================
 
 Improvements:
-* Upgrade MatrixKit version (v0.9.3).
-* Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+ * Upgrade MatrixKit version (v0.9.3).
+ * Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
 
 Changes in 0.7.10 (2019-01-04)
 ===============================================
@@ -15,10 +50,10 @@ Changes in 0.7.9 (2019-01-04)
 ===============================================
 
 Improvements:
-* Upgrade MatrixKit version (v0.9.2).
+ * Upgrade MatrixKit version (v0.9.2).
 
 Bug fix:
-* Registration: email or phone number is no more skippable (#2140).
+ * Registration: email or phone number is no more skippable (#2140).
 
 Changes in 0.7.8 (2018-12-12)
 ===============================================

@@ -17,7 +17,8 @@
 #import "ContactsDataSource.h"
 #import "ContactTableViewCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 #define CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE 0x01
 #define CONTACTSDATASOURCE_USERDIRECTORY_BITWISE 0x02
@@ -375,7 +376,7 @@
         NSArray *identifiers = contact.matrixIdentifiers;
         if (identifiers.count)
         {
-            if ([_ignoredContactsByMatrixId objectForKey:identifiers.firstObject])
+            if (_ignoredContactsByMatrixId[identifiers.firstObject])
             {
                 [unfilteredLocalContacts removeObjectAtIndex:index];
                 continue;
@@ -396,7 +397,7 @@
                 MXKEmail *email = emails.firstObject;
                 
                 // Trick: ignore @facebook.com email addresses from the results - facebook have discontinued that service...
-                if ([_ignoredContactsByEmail objectForKey:email.emailAddress] || [email.emailAddress hasSuffix:@"@facebook.com"])
+                if (_ignoredContactsByEmail[email.emailAddress] || [email.emailAddress hasSuffix:@"@facebook.com"])
                 {
                     [unfilteredLocalContacts removeObjectAtIndex:index];
                     continue;
@@ -434,7 +435,7 @@
         {
             for (NSString *userId in identifiers)
             {
-                if ([_ignoredContactsByMatrixId objectForKey:userId] == nil)
+                if (_ignoredContactsByMatrixId[userId] == nil)
                 {
                     MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                     [unfilteredMatrixContacts addObject:splitContact];
@@ -444,7 +445,7 @@
         else if (identifiers.count)
         {
             NSString *userId = identifiers.firstObject;
-            if ([_ignoredContactsByMatrixId objectForKey:userId] == nil)
+            if (_ignoredContactsByMatrixId[userId] == nil)
             {
                 [unfilteredMatrixContacts addObject:contact];
             }
@@ -594,7 +595,7 @@
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotSecondaryTextColor;
+            tableViewCell.textLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
@@ -741,10 +742,10 @@
         NSString *roomCount = [NSString stringWithFormat:roomCountFormat, count];
         
         NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                                                         attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
                                                                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
         [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                    attributes:@{NSForegroundColorAttributeName : kRiotAuxiliaryColor,
+                                                                                    attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextSecondaryColor,
                                                                                                  NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
         
         sectionTitle = mutableSectionTitle;
@@ -752,7 +753,7 @@
     else if (title)
     {
         sectionTitle = [[NSAttributedString alloc] initWithString:title
-                                               attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
                                                             NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
     }
     
@@ -766,7 +767,7 @@
     NSInteger sectionBitwise = 0;
     
     sectionHeader = [[UIView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = kRiotSecondaryBgColor;
+    sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     frame.origin.x = 20;
     frame.origin.y = 5;
@@ -969,7 +970,7 @@
         }
         
         // Apply UI theme
-        checkboxLabel.textColor = kRiotPrimaryTextColor;
+        checkboxLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         
         // Set the right value of the tick box
         localContactsCheckbox.image = hideNonMatrixEnabledContacts ? [UIImage imageNamed:@"selection_tick"] : [UIImage imageNamed:@"selection_untick"];

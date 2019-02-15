@@ -44,38 +44,38 @@ PODS:
   - HPGrowingTextView (1.1)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.13)
-  - MatrixKit (0.9.3):
+  - MatrixKit (0.9.5):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.9.3)
-    - MatrixSDK (= 0.12.1)
-  - MatrixKit/AppExtension (0.9.3):
+    - MatrixKit/Core (= 0.9.5)
+    - MatrixSDK (= 0.12.2)
+  - MatrixKit/AppExtension (0.9.5):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.12.1)
-  - MatrixKit/Core (0.9.3):
+    - MatrixSDK (= 0.12.2)
+  - MatrixKit/Core (0.9.5):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.12.1)
-  - MatrixSDK (0.12.1):
-    - MatrixSDK/Core (= 0.12.1)
-  - MatrixSDK/Core (0.12.1):
+    - MatrixSDK (= 0.12.2)
+  - MatrixSDK (0.12.2):
+    - MatrixSDK/Core (= 0.12.2)
+  - MatrixSDK/Core (0.12.2):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.0.0)
     - Realm (~> 3.11.1)
-  - MatrixSDK/JingleCallStack (0.12.1):
+  - MatrixSDK/JingleCallStack (0.12.2):
     - MatrixSDK/Core
     - WebRTC (= 63.11.20455)
-  - MatrixSDK/SwiftSupport (0.12.1):
+  - MatrixSDK/SwiftSupport (0.12.2):
     - MatrixSDK/Core
   - OLMKit (3.0.0):
     - OLMKit/olmc (= 3.0.0)
@@ -93,19 +93,23 @@ PODS:
     - Reusable/View (= 4.0.5)
   - Reusable/Storyboard (4.0.5)
   - Reusable/View (4.0.5)
+  - SwiftGen (6.0.2)
   - WebRTC (63.11.20455)
+  - zxcvbn-ios (1.0.4)
 
 DEPENDENCIES:
   - cmark
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
-  - MatrixKit (= 0.9.3)
-  - MatrixKit/AppExtension (= 0.9.3)
+  - MatrixKit (= 0.9.5)
+  - MatrixKit/AppExtension (= 0.9.5)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
   - PiwikTracker (from `https://github.com/manuroe/matomo-sdk-ios.git`, branch `feature/CustomVariables`)
   - Reusable (~> 4.0)
+  - SwiftGen (~> 6.0)
+  - zxcvbn-ios
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -123,7 +127,9 @@ SPEC REPOS:
     - OLMKit
     - Realm
     - Reusable
+    - SwiftGen
     - WebRTC
+    - zxcvbn-ios
 
 EXTERNAL SOURCES:
   PiwikTracker:
@@ -145,14 +151,16 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatrixKit: af9f94f36644bc21b63b114413f7bb510506b7d1
-  MatrixSDK: f1f510d467d127a5f7afafaafa1554ac5d602132
+  MatrixKit: 97bfda595111fe052ea8dbe74f5f65e2eca104a6
+  MatrixSDK: 60a9472eacdf51e5110b8bc7beba844debf992ef
   OLMKit: 88eda69110489f817d59bcb4353b7c247570aa4f
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
   Realm: 864477d028db77f7c5a0cba64a4892ad53db128a
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
+  SwiftGen: e5b047067aa84082826a0c4f1c4c2ddc95bcf74c
   WebRTC: f2a6203584745fe53532633397557876b5d71640
+  zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: fc0574145026734bcc9f3266b7b92f815ebf97e4
+PODFILE CHECKSUM: e4a36bd00d4da77d377d00e5df6044e3ccce3b4c
 
 COCOAPODS: 1.6.0.beta.2

@@ -9,7 +9,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.9.3'
+$matrixKitVersion = '0.9.5'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -76,7 +76,10 @@ abstract_target 'RiotPods' do
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true
     pod 'DTCoreText', :inhibit_warnings => true
-
+    pod 'zxcvbn-ios'
+    
+    # Tools
+    pod 'SwiftGen', '~> 6.0'
 
     target "Riot" do
         import_MatrixKit

@@ -18,6 +18,7 @@
 #import "HomeViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "RecentsDataSource.h"
 
@@ -26,7 +27,7 @@
 
 #import "MXRoom+Riot.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () <KeyBackupSetupCoordinatorBridgePresenterDelegate, KeyBackupRecoverCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
     
@@ -39,6 +40,11 @@
     // We store this value to prevent the collection view from scrolling to the beginning (observed on iOS < 10).
     CGFloat selectedCollectionViewContentOffset;
 }
+
+@property (nonatomic, strong) KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+@property (nonatomic, strong) KeyBackupBannerCell *keyBackupBannerPrototypeCell;
+
 @end
 
 @implementation HomeViewController
@@ -70,6 +76,9 @@
     
     // Register table view cell used for rooms collection.
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
+
+    // Register key backup banner cells
+    [self.recentsTableView registerNib:KeyBackupBannerCell.nib forCellReuseIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
     
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -80,8 +89,10 @@
     [super viewWillAppear:animated];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar.tintColor = kRiotColorGreen;
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = kRiotColorGreen;
+
+    [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
+
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if (recentsDataSource)
     {
@@ -131,6 +142,39 @@
                 [tableViewCell.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
             }
         }
+    }
+}
+
+- (KeyBackupBannerCell *)keyBackupBannerPrototypeCell
+{
+    if (!_keyBackupBannerPrototypeCell)
+    {
+        _keyBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
+    }
+    return _keyBackupBannerPrototypeCell;
+}
+
+- (void)presentKeyBackupSetup
+{
+    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+    
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
+    
+    self.keyBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
+}
+
+- (void)presentKeyBackupRecover
+{
+    MXKeyBackupVersion *keyBackupVersion = self.mainSession.crypto.backup.keyBackupVersion;
+    if (keyBackupVersion)
+    {
+        KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
+        keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+        
+        [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:YES];
+        
+        self.keyBackupRecoverCoordinatorBridgePresenter = keyBackupRecoverCoordinatorBridgePresenter;
     }
 }
 
@@ -259,7 +303,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count))
+        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count)
+        || (indexPath.section == recentsDataSource.keyBackupBannerSection))
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
@@ -301,7 +346,7 @@
                 NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
                 if (tags.count)
                 {
-                    currentTag = [tags objectAtIndex:0];
+                    currentTag = tags[0];
                 }
             }
             
@@ -335,6 +380,32 @@
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
+    else if (indexPath.section == recentsDataSource.keyBackupBannerSection)
+    {
+        CGFloat height = 0.0;
+        KeyBackupBannerCell *sizingCell = self.keyBackupBannerPrototypeCell;
+        
+        [sizingCell configureFor:recentsDataSource.keyBackupBanner];
+        
+        [sizingCell layoutIfNeeded];
+        
+        CGSize fittingSize = UILayoutFittingCompressedSize;
+        CGFloat tableViewWidth = CGRectGetWidth(tableView.frame);
+        CGFloat safeAreaWidth;
+        
+        if (@available(iOS 11.0, *)) {
+            // Take safe area into account
+            safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);
+        } else {
+            safeAreaWidth = 0;
+        }
+        
+        fittingSize.width = tableViewWidth - safeAreaWidth;
+        
+        height = [sizingCell systemLayoutSizeFittingSize:fittingSize withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
+        
+        return height;
+    }
     
     // Retrieve the fixed height of the collection view cell used to display a room.
     CGFloat height = [RoomCollectionViewCell defaultCellSize].height + 1;
@@ -347,6 +418,36 @@
     }
     
     return height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // No header in key banner section
+    if (section == recentsDataSource.keyBackupBannerSection)
+    {
+        return 0.0;
+    }
+    else
+    {
+        return [super tableView:tableView heightForHeaderInSection:section];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == recentsDataSource.keyBackupBannerSection)
+    {
+        switch (recentsDataSource.keyBackupBanner) {
+            case KeyBackupBannerSetup:
+                [self presentKeyBackupSetup];
+                break;
+            case KeyBackupBannerRecover:
+                [self presentKeyBackupRecover];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -413,7 +514,7 @@
         }
     }
     
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     return cell;
 }
@@ -592,6 +693,30 @@
 - (IBAction)onLeaveButtonPressed:(id)sender
 {
     [self leaveEditedRoom];
+}
+
+#pragma mark - KeyBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
+{
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
+    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
+{
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
+    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
+    self.keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
+    self.keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
 
 @end

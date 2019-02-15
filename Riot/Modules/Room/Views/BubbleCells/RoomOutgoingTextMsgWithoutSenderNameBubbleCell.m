@@ -17,7 +17,7 @@
 
 #import "RoomOutgoingTextMsgWithoutSenderNameBubbleCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 @implementation RoomOutgoingTextMsgWithoutSenderNameBubbleCell
 

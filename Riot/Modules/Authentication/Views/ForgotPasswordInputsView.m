@@ -18,7 +18,8 @@
 #import "ForgotPasswordInputsView.h"
 
 #import "MXHTTPOperation.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @interface ForgotPasswordInputsView ()
 
@@ -59,11 +60,8 @@
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_new_password_placeholder", @"Vector", nil);
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_new_password_placeholder", @"Vector", nil);
     
-    if (kRiotPlaceholderTextColor)
-    {
-        // Apply placeholder color
-        [self customizeViewRendering];
-    }    
+    // Apply placeholder color
+    [self customizeViewRendering];
 }
 
 - (void)destroy
@@ -104,38 +102,35 @@
 {
     [super customizeViewRendering];
     
-    self.messageLabel.textColor = kRiotPrimaryTextColor;
+    self.messageLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.emailTextField.textColor = kRiotPrimaryTextColor;
-    self.passWordTextField.textColor = kRiotPrimaryTextColor;
-    self.repeatPasswordTextField.textColor = kRiotPrimaryTextColor;
+    self.emailTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.passWordTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.repeatPasswordTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     self.messageLabel.numberOfLines = 0;
     
     [self.nextStepButton.layer setCornerRadius:5];
     self.nextStepButton.clipsToBounds = YES;
-    self.nextStepButton.backgroundColor = kRiotColorGreen;
-    
-    if (kRiotPlaceholderTextColor)
+    self.nextStepButton.backgroundColor = ThemeService.shared.theme.tintColor;
+
+    if (self.emailTextField.placeholder)
     {
-        if (self.emailTextField.placeholder)
-        {
-            self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                         initWithString:self.emailTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
-        if (self.passWordTextField.placeholder)
-        {
-            self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                         initWithString:self.passWordTextField.placeholder
-                                                         attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
-        if (self.repeatPasswordTextField.placeholder)
-        {
-            self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                            initWithString:self.repeatPasswordTextField.placeholder
-                                                            attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-        }
+        self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                     initWithString:self.emailTextField.placeholder
+                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+    if (self.passWordTextField.placeholder)
+    {
+        self.passWordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                        initWithString:self.passWordTextField.placeholder
+                                                        attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+    }
+    if (self.repeatPasswordTextField.placeholder)
+    {
+        self.repeatPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                              initWithString:self.repeatPasswordTextField.placeholder
+                                                              attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
     }
 }
 

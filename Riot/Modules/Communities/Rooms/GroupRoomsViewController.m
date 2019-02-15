@@ -17,6 +17,7 @@
 #import "GroupRoomsViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 #import "GroupRoomTableViewCell.h"
 
@@ -31,8 +32,8 @@
     // The current pushed view controller
     UIViewController *pushedViewController;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -115,7 +116,7 @@
     [self.tableView registerClass:GroupRoomTableViewCell.class forCellReuseIdentifier:@"RoomTableViewCellId"];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
@@ -125,16 +126,16 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
+    _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -145,7 +146,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 // This method is called when the viewcontroller is added or removed from a container view controller.
@@ -159,10 +160,10 @@
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     _group = nil;
@@ -486,13 +487,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -587,7 +588,7 @@
 //
 //    }];
 //
-//    leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+//    leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
 //    [actions insertObject:leaveAction atIndex:0];
 //
 //    return actions;
@@ -598,19 +599,19 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = kRiotColorBlue;
-    searchBar.tintColor = kRiotColorBlue;
+    searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.riotColorBlue;
+    searchBar.tintColor = ThemeService.shared.riotColorBlue;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = kRiotSecondaryTextColor;
+    searchBarTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = kRiotColorBlue;
+    leftImageView.tintColor = ThemeService.shared.riotColorBlue;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -621,8 +622,8 @@
     // place holder
     searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: kRiotColorBlue,
-                                                                                            NSForegroundColorAttributeName: kRiotColorBlue}];
+                                                                                            NSUnderlineColorAttributeName: ThemeService.shared.riotColorBlue,
+                                                                                            NSForegroundColorAttributeName: ThemeService.shared.riotColorBlue}];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

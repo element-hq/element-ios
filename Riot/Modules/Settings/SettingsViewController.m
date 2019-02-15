@@ -38,7 +38,7 @@
 
 #import "NBPhoneNumberUtil.h"
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
 
 #import "GroupsDataSource.h"
@@ -47,6 +47,8 @@
 #import "GBDeviceInfo_iOS.h"
 
 #import "Riot-Swift.h"
+
+#import "EncryptionInfoView.h"
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
@@ -63,8 +65,9 @@ enum
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_LABS_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
-    SETTINGS_SECTION_FLAIR_INDEX,
+    SETTINGS_SECTION_KEYBACKUP_INDEX,
     SETTINGS_SECTION_DEVICES_INDEX,
+    SETTINGS_SECTION_FLAIR_INDEX,
     SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
     SETTINGS_SECTION_COUNT
 };
@@ -135,7 +138,12 @@ enum {
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
-@interface SettingsViewController () <DeactivateAccountViewControllerDelegate>
+@interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
+SettingsKeyBackupTableViewSectionDelegate,
+MXKEncryptionInfoViewDelegate,
+KeyBackupSetupCoordinatorBridgePresenterDelegate,
+KeyBackupRecoverCoordinatorBridgePresenterDelegate,
+SignOutAlertPresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -202,8 +210,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     // Postpone destroy operation when saving, pwd reset or email binding is in progress
     BOOL isSavingInProgress;
@@ -227,6 +235,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     
     // The current pushed view controller
     UIViewController *pushedViewController;
+
+    SettingsKeyBackupTableViewSection *keyBackupSection;
+    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+    KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
 }
 
 /**
@@ -239,7 +251,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
  */
 @property (nonatomic) BOOL newPhoneEditingEnabled;
 
-@property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
+@property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
+@property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
+@property (nonatomic, weak) UIButton *signOutButton;
 
 @end
 
@@ -314,7 +328,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         [self addMatrixSession:mxSession];
     }
-    
+
+    if (self.mainSession.crypto.backup)
+    {
+        MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
+                                                                           deviceId:self.mainSession.matrixRestClient.credentials.deviceId];
+
+        if (deviceInfo)
+        {
+            keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
+            keyBackupSection.delegate = self;
+        }
+    }
+
     groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:self.mainSession];
     [groupsDataSource finalizeInitialization];
     groupsDataSource.delegate = self;
@@ -324,22 +350,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self userInterfaceThemeDidChange];
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    self.signOutAlertPresenter = [SignOutAlertPresenter new];
+    self.signOutAlertPresenter.delegate = self;
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -350,7 +379,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -378,10 +407,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         documentInteractionController = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
     if (isSavingInProgress || isResetPwdInProgress || is3PIDBindingInProgress)
@@ -404,6 +433,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         [super destroy];
     }
+
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -773,8 +805,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                        {
                                                            typeof(self) self = weakSelf;
                                                            
-                                                           UITextField *textField = [self->currentAlert textFields].firstObject;
-                                                           NSString *smsCode = textField.text;
+                                                           NSString *smsCode = [self->currentAlert textFields].firstObject.text;
                                                            
                                                            self->currentAlert = nil;
                                                            
@@ -955,30 +986,30 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Crypto information
     NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
                                                           initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
-                                                          attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                        NSFontAttributeName: [UIFont systemFontOfSize:17]}];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:account.device.displayName ? account.device.displayName : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:account.device.deviceId ? account.device.deviceId : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:fingerprint ? fingerprint : @""
-                                                     attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
     
     return cryptoInformationString;
@@ -1224,7 +1255,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             count = session.ignoredUsers.count;
         }
         else
@@ -1280,6 +1311,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             count = CRYPTOGRAPHY_COUNT;
         }
     }
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        // Check whether this section is visible.
+        if (self.mainSession.crypto)
+        {
+            count = keyBackupSection.numberOfRows;
+        }
+    }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         count = 1;
@@ -1295,12 +1334,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     cell.mxkTextField.userInteractionEnabled = YES;
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
     cell.mxkTextField.textAlignment = NSTextAlignmentRight;
-    cell.mxkTextField.textColor = kRiotSecondaryTextColor;
+    cell.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
     cell.mxkTextField.font = [UIFont systemFontOfSize:16];
     cell.mxkTextField.placeholder = nil;
     
@@ -1322,7 +1361,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = kRiotPrimaryTextColor;
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
     
@@ -1348,7 +1387,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     }
     cell.textLabel.accessibilityIdentifier = nil;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
-    cell.textLabel.textColor = kRiotPrimaryTextColor;
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     return cell;
 }
@@ -1357,7 +1396,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
     
-    textViewCell.mxkTextView.textColor = kRiotPrimaryTextColor;
+    textViewCell.mxkTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
     textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
     textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
@@ -1383,7 +1422,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         return cell;
     }
     
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXSession* session = [AppDelegate theDelegate].mxSessions[0];
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
     if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
@@ -1404,7 +1443,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         [signOutCell.mxkButton setTitle:title forState:UIControlStateNormal];
         [signOutCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-        [signOutCell.mxkButton setTintColor:kRiotColorGreen];
+        [signOutCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
         signOutCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
         
         [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1436,7 +1475,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
             profileCell.accessibilityIdentifier=@"SettingsVCProfilPictureStaticText";
-            profileCell.mxkLabel.textColor = kRiotPrimaryTextColor;
+            profileCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             // if the user defines a new avatar
             if (newAvatarImage)
@@ -1527,12 +1566,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             {
                 newEmailCell.mxkLabel.text = nil;
                 newEmailCell.mxkTextField.placeholder = NSLocalizedStringFromTable(@"settings_email_address_placeholder", @"Vector", nil);
-                if (kRiotPlaceholderTextColor)
-                {
-                    newEmailCell.mxkTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                 initWithString:newEmailCell.mxkTextField.placeholder
-                                                                 attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-                }
+                newEmailCell.mxkTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                   initWithString:newEmailCell.mxkTextField.placeholder
+                                                                   attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
                 newEmailCell.mxkTextField.text = newEmailTextField.text;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
                 newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
@@ -1559,7 +1595,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                     newEmailTextField = newEmailCell.mxkTextField;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:kRiotColorGreen];
+                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:ThemeService.shared.theme.tintColor];
                 newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
             }
             
@@ -1626,7 +1662,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                     if (!countryCode)
                     {
                         // If none, consider the preferred locale
-                        NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
+                        NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[NSBundle mainBundle] preferredLocalizations][0]];
                         if ([local respondsToSelector:@selector(countryCode)])
                         {
                             countryCode = local.countryCode;
@@ -1652,7 +1688,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                     newPhoneNumberCell = newPhoneCell;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:kRiotColorGreen];
+                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:ThemeService.shared.theme.tintColor];
                 newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
                 
                 cell = newPhoneCell;
@@ -1672,7 +1708,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         else if (row == userSettingsNightModeSepIndex)
         {
             UITableViewCell *sepCell = [[UITableViewCell alloc] init];
-            sepCell.backgroundColor = kRiotSecondaryBgColor;
+            sepCell.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
             
             cell = sepCell;
         }
@@ -1695,6 +1731,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1706,8 +1743,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
+            
             
             cell = labelAndSwitchCell;
         }
@@ -1715,7 +1754,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
 
-            NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+            NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
             globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil), appDisplayName];
             globalInfoCell.textLabel.numberOfLines = 0;
@@ -1730,6 +1769,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1740,7 +1780,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;                        
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1754,6 +1795,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1790,7 +1832,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:language];
             languageDescription = [languageDescription capitalizedStringWithLocale:locale];
 
-            cell.textLabel.textColor = kRiotPrimaryTextColor;
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
             cell.detailTextLabel.text = languageDescription;
@@ -1827,7 +1869,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                               @"Vector",
                                                              nil);
 
-            cell.textLabel.textColor = kRiotPrimaryTextColor;
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
             cell.detailTextLabel.text = i18nTheme;
@@ -1858,6 +1900,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             labelAndSwitchCell.mxkLabel.numberOfLines = 0;
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -1872,10 +1915,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             }
             
             NSString* countryCode = [[MXKAppSettings standardAppSettings] phonebookCountryCode];
-            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
+            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[NSBundle mainBundle] preferredLocalizations][0]];
             NSString *countryName = [local displayNameForKey:NSLocaleCountryCode value:countryCode];
             
-            cell.textLabel.textColor = kRiotPrimaryTextColor;
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
@@ -1966,6 +2009,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
             sendCrashReportCell.mxkSwitch.on = RiotSettings.shared.enableCrashReport;
+            sendCrashReportCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             sendCrashReportCell.mxkSwitch.enabled = YES;
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1977,6 +2021,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
             enableRageShakeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_rageshake", @"Vector", nil);
             enableRageShakeCell.mxkSwitch.on = RiotSettings.shared.enableRageShake;
+            enableRageShakeCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             enableRageShakeCell.mxkSwitch.enabled = YES;
             [enableRageShakeCell.mxkSwitch addTarget:self action:@selector(toggleEnableRageShake:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -1998,7 +2043,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_mark_all_as_read", @"Vector", nil);
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [markAllBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            [markAllBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             markAllBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [markAllBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2023,7 +2068,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil);
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [clearCacheBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            [clearCacheBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             clearCacheBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [clearCacheBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2048,7 +2093,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [reportBugBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            [reportBugBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             reportBugBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
             [reportBugBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2068,6 +2113,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
             MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
             labelAndSwitchCell.mxkSwitch.on = account.mxSession.syncWithLazyLoadOfRoomMembers;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2079,6 +2125,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.createConferenceCallsWithJitsi;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2086,12 +2133,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         }
         else if (row == LABS_CRYPTO_INDEX)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = (nil != session.crypto);
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2165,6 +2213,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = account.mxSession.crypto.globalBlacklistUnverifiedDevices;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -2186,7 +2235,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
             [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [exportKeysBtnCell.mxkButton setTintColor:kRiotColorGreen];
+            [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
             [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2195,6 +2244,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
             cell = exportKeysBtnCell;
         }
+    }
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        cell = [keyBackupSection cellForRowAtRow:row];
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
@@ -2213,7 +2266,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         NSString *btnTitle = NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
         [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
         [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-        [deactivateAccountBtnCell.mxkButton setTintColor:kRiotColorRed];
+        [deactivateAccountBtnCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor];
         deactivateAccountBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
         
         [deactivateAccountBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -2252,7 +2305,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         // Check whether this section is visible
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             if (session.ignoredUsers.count)
             {
                 return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
@@ -2299,12 +2352,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
         }
     }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
     {
         // Check whether this section is visible
         if (self.mainSession.crypto)
         {
-            return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
+            return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
         }
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
@@ -2321,7 +2374,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = kRiotPrimaryTextColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
     }
 }
@@ -2349,15 +2402,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     if (cell.selectionStyle != UITableViewCellSelectionStyleNone)
     {        
         // Update the selected background view
-        if (kRiotSelectedBgColor)
+        if (ThemeService.shared.theme.selectedBackgroundColor)
         {
             cell.selectedBackgroundView = [[UIView alloc] init];
-            cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+            cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
         }
         else
         {
@@ -2379,7 +2432,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             if (session.ignoredUsers.count == 0)
             {
                 // Hide this section
@@ -2411,7 +2464,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             if (session.ignoredUsers.count == 0)
             {
                 // Hide this section
@@ -2460,7 +2513,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                 
             }];
             
-            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(24, 24)];
+            leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_pink" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(50, cellHeight) resourceSize:CGSizeMake(24, 24)];
             [actions insertObject:leaveAction atIndex:0];
         }
     }
@@ -2492,7 +2545,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         }
         else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
             NSString *ignoredUserId;
             if (indexPath.row < session.ignoredUsers.count)
@@ -2517,7 +2570,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                                        typeof(self) self = weakSelf;
                                                                        self->currentAlert = nil;
                                                                        
-                                                                       MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+                                                                       MXSession* session = [AppDelegate theDelegate].mxSessions[0];
                                                                        
                                                                        // Remove the member from the ignored user list
                                                                        [self startActivityIndicator];
@@ -2655,24 +2708,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)onSignout:(id)sender
 {
-    // Feedback: disable button and run activity indicator
-    UIButton *button = (UIButton*)sender;
-    button.enabled = NO;
-    [self startActivityIndicator];
+    self.signOutButton = (UIButton*)sender;
     
-     __weak typeof(self) weakSelf = self;
-    
-    [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
-        
-        if (!isLoggedOut && weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            // Enable the button and stop activity indicator
-            button.enabled = YES;
-            [self stopActivityIndicator];
-        }
-    }];
+    MXKeyBackupState backupState = self.mainSession.crypto.backup.state;
+    [self.signOutAlertPresenter
+     presentFor:backupState
+     from:self
+     sourceView:self.signOutButton
+     animated:YES];
 }
 
 - (void)onRemove3PID:(NSIndexPath*)path
@@ -2794,7 +2837,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         __weak typeof(self) weakSelf = self;
 
-        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+        NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
         
         currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
         
@@ -3048,7 +3091,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             [self startActivityIndicator];
             
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
             [session enableCrypto:switchButton.isOn success:^{
 
                 // When disabling crypto, reset the current device id as it cannot be reused.
@@ -3478,7 +3521,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Dismiss the keyboard
     [newEmailTextField resignFirstResponder];
 
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
     MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmailTextField.text];
     [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
@@ -3569,7 +3612,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Dismiss the keyboard
     [newPhoneNumberCell.mxkTextField resignFirstResponder];
     
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXSession* session = [AppDelegate theDelegate].mxSessions[0];
     
     NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
     NSString *msisdn;
@@ -3635,7 +3678,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     if ([AppDelegate theDelegate].mxSessions.count > 0)
     {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        MXSession* session = [AppDelegate theDelegate].mxSessions[0];
         MXMyUser* myUser = session.myUser;
         
         BOOL saveButtonEnabled = (nil != newAvatarImage);
@@ -3765,6 +3808,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
                 // The user wants to select this theme
                 RiotSettings.shared.userInterfaceTheme = newTheme;
+                ThemeService.shared.themeId = newTheme;
 
                 [self.tableView reloadData];
             }
@@ -4196,7 +4240,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 - (void)deactivateAccountViewControllerDidDeactivateWithSuccess:(DeactivateAccountViewController *)deactivateAccountViewController
 {
     NSLog(@"[SettingsViewController] Deactivate account with success");
-
     
     [[AppDelegate theDelegate] logoutSendingRequestServer:NO completion:^(BOOL isLoggedOut) {
         NSLog(@"[SettingsViewController] Complete clear user data after account deactivation");
@@ -4206,6 +4249,231 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 - (void)deactivateAccountViewControllerDidCancel:(DeactivateAccountViewController *)deactivateAccountViewController
 {
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - SettingsKeyBackupTableViewSectionDelegate
+
+- (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+{
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SETTINGS_SECTION_KEYBACKUP_INDEX]
+                  withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
+{
+    return [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:textCellForRow inSection:SETTINGS_SECTION_KEYBACKUP_INDEX]];
+}
+
+- (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
+{
+    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+
+    if (!cell)
+    {
+        cell = [[MXKTableViewCellWithButton alloc] init];
+    }
+    else
+    {
+        // Fix https://github.com/vector-im/riot-ios/issues/1354
+        cell.mxkButton.titleLabel.text = nil;
+    }
+
+    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+
+    return cell;
+}
+
+- (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+{
+    [self showKeyBackupSetupFromSignOutFlow:NO];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
+{
+    [self showKeyBackupRecover:keyBackupVersion];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupDeleteConfirm:(MXKeyBackupVersion *)keyBackupVersion
+{
+    MXWeakify(self);
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+    currentAlert =
+    [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_title", @"Vector", nil)
+                                        message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
+                                 preferredStyle:UIAlertControllerStyleAlert];
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction * action) {
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                   }]];
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+
+                                                       [self->keyBackupSection deleteWithKeyBackupVersion:keyBackupVersion];
+                                                   }]];
+
+    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCDeleteKeyBackup"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showActivityIndicator:(BOOL)show
+{
+    if (show)
+    {
+        [self startActivityIndicator];
+    }
+    else
+    {
+        [self stopActivityIndicator];
+    }
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showError:(NSError *)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
+}
+
+#pragma mark - MXKEncryptionInfoView
+
+- (void)showDeviceInfo:(MXDeviceInfo*)deviceInfo
+{
+    // Show it modally on the root view controller
+    // TODO: Improve it
+    UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+    if (rootViewController)
+    {
+        EncryptionInfoView *encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceInfo andMatrixSession:self.mainSession];
+        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
+
+        encryptionInfoView.delegate = self;
+
+        // Add shadow on added view
+        encryptionInfoView.layer.cornerRadius = 5;
+        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
+        encryptionInfoView.layer.shadowOpacity = 0.5f;
+
+        // Add the view and define edge constraints
+        [rootViewController.view addSubview:encryptionInfoView];
+
+        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+                                                                            attribute:NSLayoutAttributeTop
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:rootViewController.topLayoutGuide
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                           multiplier:1.0f
+                                                                             constant:10.0f]];
+
+        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:rootViewController.bottomLayoutGuide
+                                                                            attribute:NSLayoutAttributeTop
+                                                                           multiplier:1.0f
+                                                                             constant:-10.0f]];
+
+        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:rootViewController.view
+                                                                            attribute:NSLayoutAttributeLeading
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:encryptionInfoView
+                                                                            attribute:NSLayoutAttributeLeading
+                                                                           multiplier:1.0f
+                                                                             constant:-10.0f]];
+
+        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:rootViewController.view
+                                                                            attribute:NSLayoutAttributeTrailing
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:encryptionInfoView
+                                                                            attribute:NSLayoutAttributeTrailing
+                                                                           multiplier:1.0f
+                                                                             constant:10.0f]];
+        [rootViewController.view setNeedsUpdateConstraints];
+    }
+}
+
+- (void)encryptionInfoView:(MXKEncryptionInfoView*)encryptionInfoView didDeviceInfoVerifiedChange:(MXDeviceInfo*)deviceInfo
+{
+    [keyBackupSection reload];
+}
+
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
+{
+    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
+                                     isStartedFromSignOut:showFromSignOutFlow
+                                                 animated:true];
+    
+    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+
+    [keyBackupSection reload];
+}
+
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion
+{
+    keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
+
+    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:true];
+    keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - SignOutAlertPresenterDelegate
+
+- (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
+{
+    [self showKeyBackupSetupFromSignOutFlow:YES];
+}
+
+- (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
+{
+    // Prevent user to perform user interaction in settings when sign out
+    // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
+    self.view.userInteractionEnabled = NO;
+    self.signOutButton.enabled = NO;
+    
+    [self startActivityIndicator];
+    
+    MXWeakify(self);
+    
+    [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        
+        self.view.userInteractionEnabled = YES;
+        self.signOutButton.enabled = YES;
+    }];
 }
 
 @end

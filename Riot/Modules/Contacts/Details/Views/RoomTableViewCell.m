@@ -17,7 +17,9 @@
 
 #import "RoomTableViewCell.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
+
 #import "MXRoomSummary+Riot.h"
 
 #pragma mark - Defines & Constants
@@ -33,10 +35,10 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super customizeTableViewCellRendering];
     
-    self.titleLabel.textColor = kRiotPrimaryTextColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, kDirectRoomBorderColorAlpha);
+    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.shared.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
     
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;

@@ -15,7 +15,8 @@
  */
 
 #import "TableViewCellWithCollectionView.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @implementation TableViewCellWithCollectionView
 
@@ -31,7 +32,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.editionView.backgroundColor = kRiotSecondaryBgColor;
+    self.editionView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
 }
 
 - (void)prepareForReuse

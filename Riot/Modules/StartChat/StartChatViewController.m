@@ -18,6 +18,7 @@
 #import "StartChatViewController.h"
 
 #import "AppDelegate.h"
+#import "Riot-Swift.h"
 
 @interface StartChatViewController ()
 {
@@ -148,10 +149,10 @@
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
+    _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
     // Check the table view style to select its bg color.
-    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.contactsTableView.backgroundColor;
     
     if (self.contactsTableView.dataSource)
@@ -162,7 +163,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -257,7 +258,7 @@
         if (identifiers.count)
         {
             // Here the contact can only have one identifier
-            [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:identifiers.firstObject];
+            contactsDataSource.ignoredContactsByMatrixId[identifiers.firstObject] = contact;
         }
         else
         {
@@ -266,7 +267,7 @@
             {
                 // Here the contact can only have one email
                 MXKEmail *email = emails.firstObject;
-                [contactsDataSource.ignoredContactsByEmail setObject:contact forKey:email.emailAddress];
+                contactsDataSource.ignoredContactsByEmail[email.emailAddress] = contact;
             }
         }
         isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
@@ -274,7 +275,7 @@
     
     if (userContact)
     {
-        [contactsDataSource.ignoredContactsByMatrixId setObject:userContact forKey:self.mainSession.myUser.userId];
+        contactsDataSource.ignoredContactsByMatrixId[self.mainSession.myUser.userId] = userContact;
     }
 }
 
@@ -380,13 +381,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -452,7 +453,7 @@
         
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -620,19 +621,19 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = kRiotColorGreen;
-    searchBar.tintColor = kRiotColorGreen;
+    searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.theme.tintColor;
+    searchBar.tintColor = ThemeService.shared.theme.tintColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
 
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = kRiotSecondaryTextColor;
+    searchBarTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = kRiotColorGreen;
+    leftImageView.tintColor = ThemeService.shared.theme.tintColor;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -645,8 +646,8 @@
     {
         searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                    attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                                NSUnderlineColorAttributeName: kRiotColorGreen,
-                                                                                                NSForegroundColorAttributeName: kRiotColorGreen}];
+                                                                                                NSUnderlineColorAttributeName: ThemeService.shared.theme.tintColor,
+                                                                                                NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}];
     }
 }
 

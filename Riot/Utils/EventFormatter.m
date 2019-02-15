@@ -17,7 +17,8 @@
 
 #import "EventFormatter.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 #import "WidgetManager.h"
 
@@ -205,7 +206,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         
         // Use the secondary bg color to set the background color in the default CSS.
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
         self.defaultCSS = [NSString stringWithFormat:@" \
                            pre,code { \
                            background-color: #%06lX; \
@@ -216,13 +217,13 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
                            font-size: small; \
                            }", (unsigned long)bgColor];
         
-        self.defaultTextColor = kRiotPrimaryTextColor;
-        self.subTitleTextColor = kRiotSecondaryTextColor;
-        self.prefixTextColor = kRiotSecondaryTextColor;
-        self.bingTextColor = kRiotColorPinkRed;
-        self.encryptingTextColor = kRiotColorGreen;
-        self.sendingTextColor = kRiotSecondaryTextColor;
-        self.errorTextColor = kRiotColorRed;
+        self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.subTitleTextColor = ThemeService.shared.theme.textSecondaryColor;
+        self.prefixTextColor = ThemeService.shared.theme.textSecondaryColor;
+        self.bingTextColor = ThemeService.shared.theme.noticeColor;
+        self.encryptingTextColor = ThemeService.shared.theme.tintColor;
+        self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
+        self.errorTextColor = ThemeService.shared.theme.warningColor;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
@@ -348,16 +349,13 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 - (NSAttributedString*)roomCreatePredecessorAttributedStringWithPredecessorRoomId:(NSString*)predecessorRoomId
 {
-    NSString *predecessorRoomPermalink = [MXTools permalinkToRoom:predecessorRoomId];
-    
     NSDictionary *roomPredecessorReasonAttributes = @{
                                                       NSFontAttributeName : self.defaultTextFont
                                                       };
     
     NSDictionary *roomLinkAttributes = @{
                                          NSFontAttributeName : self.defaultTextFont,
-                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
-                                         NSLinkAttributeName : predecessorRoomPermalink,
+                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)
                                          };
     
     NSMutableAttributedString *roomPredecessorAttributedString = [NSMutableAttributedString new];
