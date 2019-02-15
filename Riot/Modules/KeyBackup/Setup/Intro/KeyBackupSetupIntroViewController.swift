@@ -34,10 +34,19 @@ final class KeyBackupSetupIntroViewController: UIViewController {
     @IBOutlet private weak var setUpButtonBackgroundView: UIView!
     @IBOutlet private weak var setUpButton: UIButton!
     
+    @IBOutlet private weak var manualExportContainerView: UIView!
+    @IBOutlet private weak var manualExportInfoLabel: UILabel!
+    @IBOutlet private weak var manualExportButton: UIButton!
+    
     // MARK: Private
     
     private var theme: Theme!
     private var isABackupAlreadyExists: Bool = false
+    private var encryptionKeysExportPresenter: EncryptionKeysExportPresenter?
+    
+    private var showManualExport: Bool {
+        return self.encryptionKeysExportPresenter != nil
+    }
     
     // MARK: Public
     
@@ -45,10 +54,11 @@ final class KeyBackupSetupIntroViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(isABackupAlreadyExists: Bool) -> KeyBackupSetupIntroViewController {
+    class func instantiate(isABackupAlreadyExists: Bool, encryptionKeysExportPresenter: EncryptionKeysExportPresenter?) -> KeyBackupSetupIntroViewController {
         let viewController = StoryboardScene.KeyBackupSetupIntroViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
         viewController.isABackupAlreadyExists = isABackupAlreadyExists
+        viewController.encryptionKeysExportPresenter = encryptionKeysExportPresenter
         return viewController
     }
     
@@ -88,6 +98,11 @@ final class KeyBackupSetupIntroViewController: UIViewController {
         let setupTitle = self.isABackupAlreadyExists ? VectorL10n.keyBackupSetupIntroSetupActionWithExistingBackup : VectorL10n.keyBackupSetupIntroSetupActionWithoutExistingBackup
         
         self.setUpButton.setTitle(setupTitle, for: .normal)
+        
+        self.manualExportInfoLabel.text = VectorL10n.keyBackupSetupIntroManualExportInfo
+        
+        self.manualExportContainerView.isHidden = !self.showManualExport
+        self.manualExportButton.setTitle(VectorL10n.keyBackupSetupIntroManualExportAction, for: .normal)
     }
     
     private func update(theme: Theme) {
@@ -106,6 +121,9 @@ final class KeyBackupSetupIntroViewController: UIViewController {
         
         self.setUpButtonBackgroundView.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.setUpButton)
+        
+        self.manualExportInfoLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onButton: self.manualExportButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -135,5 +153,9 @@ final class KeyBackupSetupIntroViewController: UIViewController {
     
     @IBAction private func validateButtonAction(_ sender: Any) {
         self.delegate?.keyBackupSetupIntroViewControllerDidTapSetupAction(self)
+    }
+    
+    @IBAction private func manualExportButtonAction(_ sender: Any) {
+        self.encryptionKeysExportPresenter?.present(from: self, sourceView: self.manualExportButton)
     }
 }

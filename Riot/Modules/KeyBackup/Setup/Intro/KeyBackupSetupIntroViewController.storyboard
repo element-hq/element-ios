@@ -22,10 +22,10 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4q-B8-hPy">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="399"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="577"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fNE-v3-2lx">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="399"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="577"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="key_backup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="G57-ET-hEP">
                                                         <rect key="frame" x="163.5" y="40" width="48" height="46"/>
@@ -35,16 +35,16 @@
                                                         </constraints>
                                                     </imageView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="12d-Dc-Rlv">
-                                                        <rect key="frame" x="20" y="121" width="335" height="158"/>
+                                                        <rect key="frame" x="21" y="121" width="333.5" height="158"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Never lose encrypted messages" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Nw-CZ-lKr">
-                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="333.5" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5dj-7z-eH5">
-                                                                <rect key="frame" x="0.0" y="50.5" width="335" height="107.5"/>
+                                                                <rect key="frame" x="0.0" y="50.5" width="333.5" height="107.5"/>
                                                                 <string key="text">Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.
 
 Securely back up your keys to avoid losing them.</string>
@@ -54,45 +54,90 @@ Securely back up your keys to avoid losing them.</string>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wbk-EX-kTs">
-                                                        <rect key="frame" x="0.0" y="329" width="375" height="50"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="4Ll-vk-JLe">
+                                                        <rect key="frame" x="0.0" y="329" width="375" height="228"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kgv-EZ-dF9">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wbk-EX-kTs">
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kgv-EZ-dF9">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="50" id="WcJ-IL-5KV"/>
+                                                                        </constraints>
+                                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                        <state key="normal" title="Set Up Key Backup">
+                                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                                        </state>
+                                                                        <state key="disabled">
+                                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                                        </state>
+                                                                        <connections>
+                                                                            <action selector="validateButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="kpR-g5-ogv"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="50" id="WcJ-IL-5KV"/>
+                                                                    <constraint firstItem="kgv-EZ-dF9" firstAttribute="top" secondItem="Wbk-EX-kTs" secondAttribute="top" id="1mu-8N-etF"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="kgv-EZ-dF9" secondAttribute="bottom" id="2ce-b1-aV5"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="kgv-EZ-dF9" secondAttribute="trailing" id="OHz-zo-Uvl"/>
+                                                                    <constraint firstAttribute="width" priority="750" constant="500" id="eud-Ba-XSx"/>
+                                                                    <constraint firstItem="kgv-EZ-dF9" firstAttribute="leading" secondItem="Wbk-EX-kTs" secondAttribute="leading" id="gPb-HX-NWn"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                                                <state key="normal" title="Set Up Key Backup">
-                                                                    <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                                </state>
-                                                                <state key="disabled">
-                                                                    <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="0.5" colorSpace="calibratedRGB"/>
-                                                                </state>
-                                                                <connections>
-                                                                    <action selector="validateButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="kpR-g5-ogv"/>
-                                                                </connections>
-                                                            </button>
+                                                            </view>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7jD-au-oUs">
+                                                                <rect key="frame" x="0.0" y="100" width="375" height="128"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Advanced)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ITZ-Tf-mKB">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <nil key="textColor"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oev-TC-e5d">
+                                                                        <rect key="frame" x="0.0" y="78" width="375" height="50"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="50" id="MxG-hH-elK"/>
+                                                                        </constraints>
+                                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                        <state key="normal" title="Manually export keys">
+                                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                                        </state>
+                                                                        <state key="disabled">
+                                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                                        </state>
+                                                                        <connections>
+                                                                            <action selector="manualExportButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="cf1-LV-3oL"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="oev-TC-e5d" firstAttribute="leading" secondItem="7jD-au-oUs" secondAttribute="leading" id="6rF-LF-8ET"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="oev-TC-e5d" secondAttribute="bottom" id="BUS-Eu-n9u"/>
+                                                                    <constraint firstItem="ITZ-Tf-mKB" firstAttribute="leading" secondItem="7jD-au-oUs" secondAttribute="leading" id="PfT-Wo-g3X"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="oev-TC-e5d" secondAttribute="trailing" id="Pse-S4-3TI"/>
+                                                                    <constraint firstItem="ITZ-Tf-mKB" firstAttribute="top" secondItem="7jD-au-oUs" secondAttribute="top" id="cp6-vv-vjV"/>
+                                                                    <constraint firstItem="oev-TC-e5d" firstAttribute="top" secondItem="ITZ-Tf-mKB" secondAttribute="bottom" id="goE-EH-DqY"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="ITZ-Tf-mKB" secondAttribute="trailing" id="nYq-Om-uM8"/>
+                                                                </constraints>
+                                                            </view>
                                                         </subviews>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstItem="kgv-EZ-dF9" firstAttribute="top" secondItem="Wbk-EX-kTs" secondAttribute="top" id="1mu-8N-etF"/>
-                                                            <constraint firstAttribute="bottom" secondItem="kgv-EZ-dF9" secondAttribute="bottom" id="2ce-b1-aV5"/>
-                                                            <constraint firstAttribute="trailing" secondItem="kgv-EZ-dF9" secondAttribute="trailing" id="OHz-zo-Uvl"/>
-                                                            <constraint firstAttribute="width" priority="750" constant="500" id="eud-Ba-XSx"/>
-                                                            <constraint firstItem="kgv-EZ-dF9" firstAttribute="leading" secondItem="Wbk-EX-kTs" secondAttribute="leading" id="gPb-HX-NWn"/>
+                                                            <constraint firstItem="7jD-au-oUs" firstAttribute="width" secondItem="4Ll-vk-JLe" secondAttribute="width" id="9eX-ds-KcD"/>
                                                         </constraints>
-                                                    </view>
+                                                    </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" priority="750" constant="500" id="9am-iX-rzi"/>
                                                     <constraint firstItem="G57-ET-hEP" firstAttribute="centerX" secondItem="fNE-v3-2lx" secondAttribute="centerX" id="9nR-qN-2Um"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Wbk-EX-kTs" secondAttribute="bottom" constant="20" id="Bgk-8k-oLd"/>
-                                                    <constraint firstItem="12d-Dc-Rlv" firstAttribute="leading" secondItem="Wbk-EX-kTs" secondAttribute="leading" constant="20" id="CpN-2h-cTg"/>
-                                                    <constraint firstItem="12d-Dc-Rlv" firstAttribute="trailing" secondItem="Wbk-EX-kTs" secondAttribute="trailing" constant="-20" id="RRh-Po-lXQ"/>
+                                                    <constraint firstAttribute="trailing" secondItem="4Ll-vk-JLe" secondAttribute="trailing" id="CU4-Sr-hLT"/>
+                                                    <constraint firstItem="4Ll-vk-JLe" firstAttribute="leading" secondItem="fNE-v3-2lx" secondAttribute="leading" id="FGu-8C-v1U"/>
+                                                    <constraint firstItem="4Ll-vk-JLe" firstAttribute="top" secondItem="12d-Dc-Rlv" secondAttribute="bottom" constant="50" id="Hue-GK-ORf"/>
+                                                    <constraint firstAttribute="bottom" secondItem="4Ll-vk-JLe" secondAttribute="bottom" constant="20" id="Vn1-zQ-G8t"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="12d-Dc-Rlv" secondAttribute="trailing" constant="20" id="aIO-gg-9cw"/>
-                                                    <constraint firstItem="Wbk-EX-kTs" firstAttribute="top" secondItem="12d-Dc-Rlv" secondAttribute="bottom" constant="50" id="dSD-wV-6Gr"/>
                                                     <constraint firstItem="12d-Dc-Rlv" firstAttribute="top" secondItem="G57-ET-hEP" secondAttribute="bottom" constant="35" id="edf-PJ-o5x"/>
                                                     <constraint firstItem="12d-Dc-Rlv" firstAttribute="centerX" secondItem="fNE-v3-2lx" secondAttribute="centerX" id="ksz-nC-DeX"/>
                                                     <constraint firstItem="G57-ET-hEP" firstAttribute="top" secondItem="fNE-v3-2lx" secondAttribute="top" constant="40" id="pk2-Kp-dhS"/>
@@ -133,6 +178,9 @@ Securely back up your keys to avoid losing them.</string>
                     <connections>
                         <outlet property="informationLabel" destination="5dj-7z-eH5" id="y4w-i9-5hB"/>
                         <outlet property="keyBackupLogoImageView" destination="G57-ET-hEP" id="d3W-8B-JwX"/>
+                        <outlet property="manualExportButton" destination="oev-TC-e5d" id="yLD-pZ-9BK"/>
+                        <outlet property="manualExportContainerView" destination="7jD-au-oUs" id="4r7-s6-qWh"/>
+                        <outlet property="manualExportInfoLabel" destination="ITZ-Tf-mKB" id="G6W-JJ-xmG"/>
                         <outlet property="setUpButton" destination="kgv-EZ-dF9" id="do0-Ot-OKn"/>
                         <outlet property="setUpButtonBackgroundView" destination="Wbk-EX-kTs" id="2gv-gg-ROL"/>
                         <outlet property="titleLabel" destination="1Nw-CZ-lKr" id="zXP-Xt-Zl9"/>
