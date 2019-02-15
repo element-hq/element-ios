@@ -1,7 +1,8 @@
-Changes in 0.7.12 (2019-xx-xx)
+Changes in 0.8.0 (2019-02-15)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version (v0.9.5 - https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.5).
  * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
  * Use modern literals and array/dictionary syntax where possible (PR #2160).
  * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
