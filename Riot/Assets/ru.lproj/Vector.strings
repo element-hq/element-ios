@@ -663,3 +663,10 @@
 "sign_out_non_existing_key_backup_alert_title" = "Вы потеряете доступ к зашифрованным сообщениям если выйдете сейчас";
 "key_backup_recover_invalid_passphrase" = "Невозможно расшифровать резервную копию с помощью этой парольной фразы: убедитесь, что вы ввели верную парольную фразу для восстановления.";
 "key_backup_recover_invalid_recovery_key" = "Невозможно расшифровать резервную копию с помощью этого ключа: убедитесь, что вы ввели верный ключ восстановления.";
+"e2e_key_backup_wrong_version_button_settings" = "Настойки";
+"key_backup_setup_intro_manual_export_info" = "(Расширенный)";
+"e2e_key_backup_wrong_version_button_wasme" = "Это был я";
+"key_backup_setup_intro_manual_export_action" = "Ручной экспорт ключей";
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Новая резервная копия ключей";
+"e2e_key_backup_wrong_version" = "Обнаружена новая резервная копия ключа безопасного сообщения.\n\nЕсли вы этого не делали, установите новую парольную фразу в настройках.";

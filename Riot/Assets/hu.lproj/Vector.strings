@@ -667,3 +667,10 @@
 "sign_out_key_backup_in_progress_alert_title" = "Kulcsok mentése folyamatban van. Ha most kijelentkezel akkor elveszted a titkosított üzeneteidet.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Nincs szükségem a titkosított üzeneteimre";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Inkább várok";
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Új Kulcs Mentés";
+"e2e_key_backup_wrong_version" = "Új biztonságos üzenet kulcs mentést észleltünk.\n\nHa ez nem te voltál akkor állíts be egy új jelmondatot a Beállításokban.";
+"e2e_key_backup_wrong_version_button_settings" = "Beállítások";
+"e2e_key_backup_wrong_version_button_wasme" = "Én voltam";
+"key_backup_setup_intro_manual_export_info" = "(Haladó)";
+"key_backup_setup_intro_manual_export_action" = "Kulcsok kimentése kézzel";
