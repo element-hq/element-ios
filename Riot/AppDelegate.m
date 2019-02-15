@@ -447,7 +447,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     UINavigationController *secondNavController = self.secondaryNavigationController;
     if (secondNavController)
     {
-        secondNavController.navigationBar.barTintColor = ThemeService.shared.theme.backgroundColor;
+        [ThemeService.shared.theme applyStyleOnNavigationBar:secondNavController.navigationBar];
         secondNavController.topViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     }
     
