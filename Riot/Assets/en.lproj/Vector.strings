@@ -689,6 +689,8 @@
 "key_backup_setup_intro_info" = "Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Start using Key Backup";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Use Key Backup";
+"key_backup_setup_intro_manual_export_info" = "(Advanced)";
+"key_backup_setup_intro_manual_export_action" = "Manually export keys";
 
 // Passphrase
 

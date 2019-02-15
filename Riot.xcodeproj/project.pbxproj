@@ -373,6 +373,7 @@
 		B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3A2621EF6913000D1D89 /* UIViewController.swift */; };
 		B1CA3A2921EF692B000D1D89 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3A2821EF692B000D1D89 /* UIView.swift */; };
 		B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CE9EFC22148703000FAE6A /* SignOutAlertPresenter.swift */; };
+		B1CE9F062216FB09000FAE6A /* EncryptionKeysExportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CE9F052216FB09000FAE6A /* EncryptionKeysExportPresenter.swift */; };
 		B1D250D82118AA0A000F4E93 /* RoomPredecessorBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */; };
 		B1D4752721EE4E630067973F /* KeyboardAvoider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4752521EE4E620067973F /* KeyboardAvoider.swift */; };
 		B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4752621EE4E620067973F /* KeyboardNotification.swift */; };
@@ -1026,6 +1027,7 @@
 		B1CA3A2621EF6913000D1D89 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B1CA3A2821EF692B000D1D89 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B1CE9EFC22148703000FAE6A /* SignOutAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutAlertPresenter.swift; sourceTree = "<group>"; };
+		B1CE9F052216FB09000FAE6A /* EncryptionKeysExportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionKeysExportPresenter.swift; sourceTree = "<group>"; };
 		B1D250D62118AA0A000F4E93 /* RoomPredecessorBubbleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomPredecessorBubbleCell.h; sourceTree = "<group>"; };
 		B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomPredecessorBubbleCell.m; sourceTree = "<group>"; };
 		B1D4752521EE4E620067973F /* KeyboardAvoider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAvoider.swift; sourceTree = "<group>"; };
@@ -1255,6 +1257,7 @@
 				B1098C0221ECFEAF000DDA48 /* Setup */,
 				B1FDF56421F726AD00BA3834 /* Recover */,
 				B1107ECB2201BE800038014B /* Banners */,
+				B1CE9F042216FB09000FAE6A /* ManualExport */,
 			);
 			path = KeyBackup;
 			sourceTree = "<group>";
@@ -2707,6 +2710,14 @@
 			path = SignOut;
 			sourceTree = "<group>";
 		};
+		B1CE9F042216FB09000FAE6A /* ManualExport */ = {
+			isa = PBXGroup;
+			children = (
+				B1CE9F052216FB09000FAE6A /* EncryptionKeysExportPresenter.swift */,
+			);
+			path = ManualExport;
+			sourceTree = "<group>";
+		};
 		B1D4752421EE4E620067973F /* KeyboardAvoiding */ = {
 			isa = PBXGroup;
 			children = (
@@ -3434,6 +3445,7 @@
 				B1B5574820EE6C4D00210D55 /* PeopleViewController.m in Sources */,
 				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
 				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
+				B1CE9F062216FB09000FAE6A /* EncryptionKeysExportPresenter.swift in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
 				B1B5577320EE702800210D55 /* JitsiViewController.m in Sources */,
