@@ -2711,7 +2711,11 @@ SignOutAlertPresenterDelegate>
     self.signOutButton = (UIButton*)sender;
     
     MXKeyBackupState backupState = self.mainSession.crypto.backup.state;
-    [self.signOutAlertPresenter presentFor:backupState from:self animated:YES];
+    [self.signOutAlertPresenter
+     presentFor:backupState
+     from:self
+     sourceView:self.signOutButton
+     animated:YES];
 }
 
 - (void)onRemove3PID:(NSIndexPath*)path

@@ -29,6 +29,7 @@ final class SignOutAlertPresenter: NSObject {
     // MARK: Private
     
     private weak var presentingViewController: UIViewController?
+    private weak var sourceView: UIView?
     
     // MARK: Public
     
@@ -36,7 +37,8 @@ final class SignOutAlertPresenter: NSObject {
     
     // MARK: - Public
     
-    func present(for keyBackupState: MXKeyBackupState, from viewController: UIViewController, animated: Bool) {
+    func present(for keyBackupState: MXKeyBackupState, from viewController: UIViewController, sourceView: UIView?, animated: Bool) {
+        self.sourceView = sourceView
         self.presentingViewController = viewController
                 
         switch keyBackupState {
@@ -65,7 +67,7 @@ final class SignOutAlertPresenter: NSObject {
         alertContoller.addAction(signoutAction)
         alertContoller.addAction(cancelAction)
         
-        self.presentingViewController?.present(alertContoller, animated: true, completion: nil)
+        self.present(alertController: alertContoller, animated: animated)
     }
     
     private func presentNonExistingBackupAlert(animated: Bool) {
@@ -87,7 +89,7 @@ final class SignOutAlertPresenter: NSObject {
         alertContoller.addAction(setUpKeyBackupAction)
         alertContoller.addAction(cancelAction)
         
-        self.presentingViewController?.present(alertContoller, animated: true, completion: nil)
+        self.present(alertController: alertContoller, animated: animated)
     }
     
     private func presentNonExistingBackupSignOutConfirmationAlert(animated: Bool) {
@@ -106,7 +108,7 @@ final class SignOutAlertPresenter: NSObject {
         alertContoller.addAction(signOutAction)
         alertContoller.addAction(setUpKeyBackupAction)
         
-        self.presentingViewController?.present(alertContoller, animated: true, completion: nil)
+        self.present(alertController: alertContoller, animated: animated)
     }
     
     private func presentBackupInProgressAlert(animated: Bool) {
@@ -123,6 +125,18 @@ final class SignOutAlertPresenter: NSObject {
         alertContoller.addAction(discardKeyBackupAction)
         alertContoller.addAction(cancelAction)
         
-        self.presentingViewController?.present(alertContoller, animated: true, completion: nil)
+        self.present(alertController: alertContoller, animated: animated)
+    }
+    
+    private func present(alertController: UIAlertController, animated: Bool) {
+        
+        // Configure source view when alert controller is presented with a popover
+        if let sourceView = self.sourceView, let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = sourceView
+            popoverPresentationController.sourceRect = sourceView.bounds
+            popoverPresentationController.permittedArrowDirections = [.down, .up]
+        }
+        
+        self.presentingViewController?.present(alertController, animated: animated, completion: nil)
     }
 }
