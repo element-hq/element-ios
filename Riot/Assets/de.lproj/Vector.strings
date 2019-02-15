@@ -601,3 +601,4 @@
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrasen müssen übereinstimmen";
 "key_backup_setup_passphrase_set_passphrase_action" = "Setze Passphrase";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "Oder sichere deine Sicherung mit einem Wiederherstellungsschlüssel, und sichere sie an einem sicheren Ort.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Erweitert) Mit Wiederherstellungsschlüssel einrichten";
