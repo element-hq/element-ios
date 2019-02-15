@@ -15,6 +15,7 @@ Improvements:
  * Key backup: Implement recover reminder (#2206).
  * Key backup: Update key backup setup UI and UX (PR #2243).
  * Key backup: Logout warning (#2245).
+ * Key backup: new recover method detected (#2230).
  
 Bug fix:
  * Use white scroll bar on dark themes (#2158).
@@ -28,6 +29,8 @@ Bug fix:
  * Share extension: Handle rich item sharing (image + text + URL) (#2224).
  * Share extension: Sharing pages from Firefox only shares their title (#2163).
  * Share extension: Fix unloaded theme (PR #2235).
+ * Reskin: Jump to first unread message doesn't show up in 0.7.12 TF (#2218).
+ * Reskin: Sometimes the roomVC navigation bar is tranparent (#2252).
 
 Changes in 0.7.11 (2019-01-08)
 ===============================================

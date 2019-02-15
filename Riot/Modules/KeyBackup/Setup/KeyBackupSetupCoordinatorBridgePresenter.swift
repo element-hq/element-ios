@@ -46,8 +46,13 @@ final class KeyBackupSetupCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Public
     
+    // NOTE: Default value feature is not compatible with Objective-C.
     func present(from viewController: UIViewController, animated: Bool) {
-        let keyBackupSetupCoordinator = KeyBackupSetupCoordinator(session: self.session)
+        self.present(from: viewController, isStartedFromSignOut: false, animated: animated)
+    }
+    
+    func present(from viewController: UIViewController, isStartedFromSignOut: Bool, animated: Bool) {
+        let keyBackupSetupCoordinator = KeyBackupSetupCoordinator(session: self.session, isStartedFromSignOut: isStartedFromSignOut)
         keyBackupSetupCoordinator.delegate = self
         viewController.present(keyBackupSetupCoordinator.toPresentable(), animated: animated, completion: nil)
         keyBackupSetupCoordinator.start()

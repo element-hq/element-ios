@@ -478,6 +478,22 @@ internal enum VectorL10n {
   internal static var e2eEnablingOnAppUpdate: String { 
     return VectorL10n.tr("Vector", "e2e_enabling_on_app_update") 
   }
+  /// A new secure message key backup has been detected.\n\nIf this wasn’t you, set a new passphrase in Settings.
+  internal static var e2eKeyBackupWrongVersion: String { 
+    return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version") 
+  }
+  /// Settings
+  internal static var e2eKeyBackupWrongVersionButtonSettings: String { 
+    return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version_button_settings") 
+  }
+  /// It was me
+  internal static var e2eKeyBackupWrongVersionButtonWasme: String { 
+    return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version_button_wasme") 
+  }
+  /// New Key Backup
+  internal static var e2eKeyBackupWrongVersionTitle: String { 
+    return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version_title") 
+  }
   /// You need to log back in to generate end-to-end encryption keys for this device and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.
   internal static var e2eNeedLogInAgain: String { 
     return VectorL10n.tr("Vector", "e2e_need_log_in_again") 
@@ -757,6 +773,14 @@ internal enum VectorL10n {
   /// Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.
   internal static var keyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_info") 
+  }
+  /// Manually export keys
+  internal static var keyBackupSetupIntroManualExportAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_manual_export_action") 
+  }
+  /// (Advanced)
+  internal static var keyBackupSetupIntroManualExportInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_manual_export_info") 
   }
   /// Use Key Backup
   internal static var keyBackupSetupIntroSetupActionWithExistingBackup: String { 

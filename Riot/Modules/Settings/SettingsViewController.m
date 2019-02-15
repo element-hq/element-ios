@@ -4286,7 +4286,7 @@ SignOutAlertPresenterDelegate>
 
 - (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
 {
-    [self showKeyBackupSetup];
+    [self showKeyBackupSetupFromSignOutFlow:NO];
 }
 
 - (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
@@ -4405,11 +4405,14 @@ SignOutAlertPresenterDelegate>
 
 #pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
 
-- (void)showKeyBackupSetup
+- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
 {
     keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-
-    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:true];
+    
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
+                                     isStartedFromSignOut:showFromSignOutFlow
+                                                 animated:true];
+    
     keyBackupSetupCoordinatorBridgePresenter.delegate = self;
 }
 
@@ -4449,7 +4452,7 @@ SignOutAlertPresenterDelegate>
 
 - (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
 {
-    [self showKeyBackupSetup];
+    [self showKeyBackupSetupFromSignOutFlow:YES];
 }
 
 - (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter

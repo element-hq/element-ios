@@ -600,6 +600,12 @@
 "e2e_enabling_on_app_update" = "Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
 "e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this device and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
 
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "New Key Backup";
+"e2e_key_backup_wrong_version" = "A new secure message key backup has been detected.\n\nIf this wasn’t you, set a new passphrase in Settings.";
+"e2e_key_backup_wrong_version_button_settings" = "Settings";
+"e2e_key_backup_wrong_version_button_wasme" = "It was me";
+
 // Bug report
 "bug_report_title" = "Bug Report";
 "bug_report_description" = "Please describe the bug. What did you do? What did you expect to happen? What actually happened?";
@@ -683,6 +689,8 @@
 "key_backup_setup_intro_info" = "Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Start using Key Backup";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Use Key Backup";
+"key_backup_setup_intro_manual_export_info" = "(Advanced)";
+"key_backup_setup_intro_manual_export_action" = "Manually export keys";
 
 // Passphrase
 
