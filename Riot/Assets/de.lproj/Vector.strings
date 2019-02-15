@@ -544,7 +544,7 @@
 "room_replacement_link" = "Die Konversation wird hier fortgesetzt.";
 "room_predecessor_information" = "Dieser Raum ist die Fortsetzung einer anderen Konversation.";
 "room_predecessor_link" = "Tippe hier um ältere Nachrichten zu sehen.";
-"settings_labs_room_members_lazy_loading" = "Raummitglieder verzögert laden";
+"settings_labs_room_members_lazy_loading" = "Raummitglieder nachladen";
 "settings_labs_room_members_lazy_loading_error_message" = "Dein Heimserver unterstützt das verzögerte Laden von Raummitgliedern noch nicht. Versuche es später erneut.";
 "room_event_action_view_decrypted_source" = "Zeige entschlüsselten Quellcode";
 "room_recents_server_notice_section" = "SYSTEMBENACHRICHTIGUNGEN";
