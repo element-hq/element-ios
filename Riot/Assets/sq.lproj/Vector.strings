@@ -658,3 +658,10 @@
 "sign_out_key_backup_in_progress_alert_title" = "Kopjeruajtja e kyçeve po kryhet. Nëse dilni tani nga llogaria, do të humbni hyrjen te mesazhet tuaj të fshehtëzuar.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Nuk i dua mesazhet e mia të fshehtëzuar";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Do të pres";
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Kopjeruajtje e Re Kyçesh";
+"e2e_key_backup_wrong_version" = "U pikas një kopjeruajtje e re kyçesh mesazhesh të sigurt.\n\nNëse s’qe prej jush, caktoni një frazëkalim të ri te Rregullimet.";
+"e2e_key_backup_wrong_version_button_settings" = "Rregullime";
+"e2e_key_backup_wrong_version_button_wasme" = "Prej meje qe";
+"key_backup_setup_intro_manual_export_info" = "(Të mëtejshme)";
+"key_backup_setup_intro_manual_export_action" = "Eksportoni kyçe dorazi";
