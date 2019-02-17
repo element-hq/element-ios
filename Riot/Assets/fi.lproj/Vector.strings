@@ -27,3 +27,5 @@
 "camera" = "Kamera";
 "voice" = "Ääni";
 "video" = "Video";
+// Room Details
+"room_details_title" = "Huoneen tiedot";
