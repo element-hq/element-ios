@@ -112,7 +112,7 @@
 {
     [super customizeViewRendering];
     
-    self.separatorView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     if (self.messageLabel.textColor != ThemeService.shared.theme.warningColor)
     {
         self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
