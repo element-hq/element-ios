@@ -132,6 +132,7 @@
 - (void)userInterfaceThemeDidChange
 {
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
+    self.navigationBarSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
 
     // This view controller is not part of a navigation controller
     // so that applyStyleOnNavigationBar does not fully work.
@@ -173,9 +174,11 @@
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
+    self.homeServerSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     self.homeServerTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.homeServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     
+    self.identityServerSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     self.identityServerTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.identityServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 

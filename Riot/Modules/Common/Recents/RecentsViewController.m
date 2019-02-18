@@ -165,6 +165,7 @@
     
     // Use the primary bg color for the recents table view in plain style.
     self.recentsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.recentsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     topview.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 

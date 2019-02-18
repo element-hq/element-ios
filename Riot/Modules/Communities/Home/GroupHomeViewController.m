@@ -128,7 +128,7 @@
     self.inviteLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     self.inviteLabel.numberOfLines = 0;
     
-    self.separatorView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;

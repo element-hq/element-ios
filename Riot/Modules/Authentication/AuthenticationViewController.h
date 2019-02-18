@@ -20,6 +20,7 @@
 @interface AuthenticationViewController : MXKAuthenticationViewController <MXKAuthenticationViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (weak, nonatomic) IBOutlet UIView *navigationBarSeparatorView;
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;

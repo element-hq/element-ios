@@ -111,6 +111,7 @@
     // Check the table view style to select its bg color.
     self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.contactsTableView.backgroundColor;
+    self.contactsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     if (self.contactsTableView.dataSource)
     {
