@@ -1910,10 +1910,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                 {
                                     // Retry opening the link but with the returned room id
                                     NSString *newUniversalLinkFragment =
-                                            [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias
-                                                            stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet]
-                                                                                withString:[roomId
-                                                            stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet]
+                                            [fragment stringByReplacingOccurrencesOfString:[MXTools encodeURIComponent:roomIdOrAlias]
+                                                                                withString:[MXTools encodeURIComponent:roomId]
                                             ];
                                     
                                     universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};

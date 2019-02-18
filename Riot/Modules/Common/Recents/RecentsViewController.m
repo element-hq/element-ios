@@ -1251,8 +1251,7 @@
         if (roomIdOrAlias.length)
         {
             // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@",
-                    [roomIdOrAlias stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLPathAllowedCharacterSet]];
+            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:NO];

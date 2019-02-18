@@ -2805,8 +2805,7 @@
             NSString *roomIdOrAlias = absoluteURLString;
             
             // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@",
-                    [roomIdOrAlias stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]]];
+            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
         // Preview the clicked group
@@ -2815,8 +2814,7 @@
             shouldDoAction = NO;
             
             // Open the group or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/group/%@",
-                    [absoluteURLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]]];
+            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [MXTools encodeURIComponent:absoluteURLString]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
         else if ([absoluteURLString hasPrefix:kEventFormatterOnReRequestKeysLinkAction])
@@ -3963,8 +3961,7 @@
         else if (customizedRoomDataSource.roomState.isObsolete)
         {
             NSString *replacementRoomId = customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
-            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@",
-                    [replacementRoomId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]]];
+            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:replacementRoomId]];
             
             [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
                 [[AppDelegate theDelegate] handleUniversalLinkFragment:roomLinkFragment];

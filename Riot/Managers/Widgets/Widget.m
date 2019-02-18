@@ -62,9 +62,9 @@
 
             // Escape everything to build a valid URL string
             // We can't know where the values escaped here will be inserted in the URL, so the alphanumeric charset is used
-            userId = [userId stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.alphanumericCharacterSet];
-            displayName = [displayName stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.alphanumericCharacterSet];
-            avatarUrl = [avatarUrl stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.alphanumericCharacterSet];
+            userId = [MXTools encodeURIComponent:userId];
+            displayName = [MXTools encodeURIComponent:displayName];
+            avatarUrl = [MXTools encodeURIComponent:avatarUrl];
 
             NSString *widgetUrl = _url;
             widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:userId];
@@ -88,7 +88,7 @@
                 if (dataString)
                 {
                     // same question as above
-                    NSString *value = [dataString stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.alphanumericCharacterSet];
+                    NSString *value = [MXTools encodeURIComponent:dataString];
 
                     widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:paramKey
                                                                      withString:value];
