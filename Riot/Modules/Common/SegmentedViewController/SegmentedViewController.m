@@ -127,6 +127,24 @@
     return viewControllers;
 }
 
+- (void)setSectionHeaderTintColor:(UIColor *)sectionHeaderTintColor
+{
+    if (_sectionHeaderTintColor != sectionHeaderTintColor)
+    {
+        _sectionHeaderTintColor = sectionHeaderTintColor;
+        
+        if (selectedMarkerView)
+        {
+            selectedMarkerView.backgroundColor = sectionHeaderTintColor;
+        }
+        
+        for (UILabel *label in sectionLabels)
+        {
+            label.textColor = sectionHeaderTintColor;
+        }
+    }
+}
+
 #pragma mark -
 
 - (void)finalizeInit
