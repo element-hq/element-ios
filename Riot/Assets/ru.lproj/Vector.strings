@@ -103,7 +103,7 @@
 "room_recents_people_section" = "ЛЮДИ";
 "room_recents_conversations_section" = "КОМНАТЫ";
 "room_recents_no_conversation" = "Нет комнат";
-"room_recents_low_priority_section" = "НИЗКИЙ ПРИОРИТЕТ";
+"room_recents_low_priority_section" = "МАЛОВАЖНЫЕ";
 "room_recents_invites_section" = "ПРИГЛАШЕНИЯ";
 "room_recents_start_chat_with" = "Начать чат";
 "room_recents_create_empty_room" = "Создать комнату";
@@ -294,7 +294,7 @@
 "room_details_room_name" = "Название комнаты";
 "room_details_topic" = "Тема";
 "room_details_favourite_tag" = "Избранное";
-"room_details_low_priority_tag" = "Низкий приоритет";
+"room_details_low_priority_tag" = "Маловажные";
 "room_details_mute_notifs" = "Отключить оповещения";
 "room_details_access_section" = "Кто может получить доступ к этой комнате?";
 "room_details_access_section_invited_only" = "Только приглашенные люди";
