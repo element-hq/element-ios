@@ -1,7 +1,19 @@
-Changes in 0.7.12 (2019-xx-xx)
+Changes in 0.8.1 (2019-02-)
 ===============================================
 
 Improvements:
+ * Key backup: avoid to refresh the home room list on every backup state change (#2265).
+
+Bug fix:
+ * Fix text color in room preview (PR #2261)
+ * Fix navigation bar background after accepting an invite (PR #2261)
+ * Tabs at the top of Room Details are hard to see in dark theme (#2260).
+
+Changes in 0.8.0 (2019-02-15)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.5 - https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.5).
  * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
  * Use modern literals and array/dictionary syntax where possible (PR #2160).
  * Add SwiftGen pod in order to generate Swift constants for assets (#2177).

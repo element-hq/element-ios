@@ -80,6 +80,11 @@ import UIKit
 
     // MARK: - Customisation methods
 
+    
+    /// Apply the theme on a button.
+    ///
+    /// - Parameter tabBar: The tabBar to customise.
+    func applyStyle(onTabBar tabBar: UITabBar)
 
     /// Apply the theme on a navigation bar
     ///

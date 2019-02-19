@@ -370,6 +370,7 @@ SignOutAlertPresenterDelegate>
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
+    self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     if (self.tableView.dataSource)
     {

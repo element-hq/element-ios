@@ -108,6 +108,10 @@
     self.passWordTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.repeatPasswordTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     
+    self.emailSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+    self.passwordSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+    self.repeatPasswordSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+    
     self.messageLabel.numberOfLines = 0;
     
     [self.nextStepButton.layer setCornerRadius:5];

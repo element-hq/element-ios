@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -35,6 +35,7 @@
                 <outlet property="identityServerTextField" destination="PZC-Hd-Q6a" id="vKg-sd-dzJ"/>
                 <outlet property="mainNavigationItem" destination="rj9-wP-8QS" id="yNN-Dg-4Yw"/>
                 <outlet property="navigationBar" destination="k7D-Gy-yBR" id="6Uc-3Q-3dO"/>
+                <outlet property="navigationBarSeparatorView" destination="izX-ya-hXh" id="gY5-Oj-nSl"/>
                 <outlet property="noFlowLabel" destination="54b-4O-ip9" id="f18-H1-cQm"/>
                 <outlet property="optionsContainer" destination="Gg0-TE-OGb" id="RWa-Pl-eaL"/>
                 <outlet property="retryButton" destination="wIH-Kd-r7q" id="42j-Ad-zVS"/>

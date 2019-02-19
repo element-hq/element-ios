@@ -85,6 +85,7 @@
     // Check the table view style to select its bg color.
     self.searchTableView.backgroundColor = ((self.searchTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.searchTableView.backgroundColor;
+    self.searchTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     self.noResultsLabel.textColor = ThemeService.shared.theme.backgroundColor;
     
