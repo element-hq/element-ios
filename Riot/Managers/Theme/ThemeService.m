@@ -51,8 +51,8 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 - (void)setTheme:(id<Theme> _Nonnull)theme
 {
     _theme = theme;
-
-    [UIScrollView appearance].indicatorStyle = self.theme.scrollBarStyle;
+    
+    [self updateAppearance];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
 }
@@ -112,5 +112,15 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     }
 }
 
+- (void)updateAppearance
+{
+    [UIScrollView appearance].indicatorStyle = self.theme.scrollBarStyle;
+    
+    // Define the navigation bar text color
+    [[UINavigationBar appearance] setTintColor:self.theme.tintColor];
+    
+    // Define the UISearchBar cancel button color
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName : self.theme.searchPlaceholderColor }                                                                                                        forState: UIControlStateNormal];
+}
 
 @end

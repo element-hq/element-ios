@@ -23,15 +23,15 @@ class DarkTheme: NSObject, Theme {
 
     var backgroundColor: UIColor = UIColor(rgb: 0x181B21)
 
-    var baseColor: UIColor = UIColor(rgb: 0x1B1F25)
+    var baseColor: UIColor = UIColor(rgb: 0x15171B)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
 
     var searchBackgroundColor: UIColor = UIColor(rgb: 0x181B21)
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0x61708B)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0x22262E)
-    var headerBorderColor: UIColor  = UIColor(rgb: 0x181B21)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0x15171B)
+    var headerBorderColor: UIColor  = UIColor(rgb: 0x22262E)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xA1B2D1)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
@@ -60,6 +60,12 @@ class DarkTheme: NSObject, Theme {
     var selectedBackgroundColor: UIColor? = UIColor.black
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
+    
+    func applyStyle(onTabBar tabBar: UITabBar) {
+        tabBar.tintColor = self.tintColor;
+        tabBar.barTintColor = self.headerBackgroundColor;
+        tabBar.isTranslucent = false;
+    }
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;
@@ -75,9 +81,7 @@ class DarkTheme: NSObject, Theme {
     func applyStyle(onSearchBar searchBar: UISearchBar) {
         searchBar.barStyle = .black
         searchBar.tintColor = self.searchPlaceholderColor;
-        searchBar.barTintColor = self.headerBackgroundColor;
-        searchBar.layer.borderWidth = 1;
-        searchBar.layer.borderColor = self.headerBorderColor.cgColor;
+        searchBar.barTintColor = self.headerBackgroundColor;        
     }
     
     func applyStyle(onTextField texField: UITextField) {
