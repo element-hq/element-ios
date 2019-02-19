@@ -1,11 +1,11 @@
-Changes in 0.8.1 (2019-02-)
+Changes in 0.8.1 (2019-02-19)
 ===============================================
 
 Improvements:
  * Key backup: avoid to refresh the home room list on every backup state change (#2265).
 
 Bug fix:
- * Fix text color in room preview (PR #2261)
+ * Fix text color in room preview (PR #2261).
  * Fix navigation bar background after accepting an invite (PR #2261)
  * Tabs at the top of Room Details are hard to see in dark theme (#2260).
 
