@@ -82,8 +82,6 @@ class DefaultTheme: NSObject, Theme {
         searchBar.barStyle = .default
         searchBar.tintColor = self.searchPlaceholderColor;
         searchBar.barTintColor = self.headerBackgroundColor;
-        searchBar.layer.borderWidth = 1;
-        searchBar.layer.borderColor = self.headerBorderColor.cgColor;
     }
     
     func applyStyle(onTextField texField: UITextField) {

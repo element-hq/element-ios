@@ -81,9 +81,7 @@ class DarkTheme: NSObject, Theme {
     func applyStyle(onSearchBar searchBar: UISearchBar) {
         searchBar.barStyle = .black
         searchBar.tintColor = self.searchPlaceholderColor;
-        searchBar.barTintColor = self.headerBackgroundColor;
-        searchBar.layer.borderWidth = 1;
-        searchBar.layer.borderColor = self.headerBorderColor.cgColor;
+        searchBar.barTintColor = self.headerBackgroundColor;        
     }
     
     func applyStyle(onTextField texField: UITextField) {
