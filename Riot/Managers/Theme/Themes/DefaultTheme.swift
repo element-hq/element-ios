@@ -60,6 +60,12 @@ class DefaultTheme: NSObject, Theme {
     var selectedBackgroundColor: UIColor? = nil  // Use the default selection color
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
+    
+    func applyStyle(onTabBar tabBar: UITabBar) {
+        tabBar.tintColor = self.tintColor;
+        tabBar.barTintColor = self.headerBackgroundColor;
+        tabBar.isTranslucent = false;
+    }
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;

@@ -116,8 +116,7 @@
 {
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.tabBar.tintColor = ThemeService.shared.theme.tintColor;
-    self.tabBar.barTintColor = ThemeService.shared.theme.headerBackgroundColor;
+    [ThemeService.shared.theme applyStyleOnTabBar:self.tabBar];
     
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
