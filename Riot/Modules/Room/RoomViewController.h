@@ -43,6 +43,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *jumpToLastUnreadButton;
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
+@property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerSeparatorView;
 
 /**
  Force the display of the expanded header.
