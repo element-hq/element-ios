@@ -71,7 +71,7 @@
     
     self.roomMembers.textColor = ThemeService.shared.theme.tintColor;
     
-    self.previewLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
+    self.previewLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.previewLabel.numberOfLines = 0;
     
     self.subNoticeLabel.textColor = ThemeService.shared.theme.textSecondaryColor;

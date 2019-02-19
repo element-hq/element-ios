@@ -117,6 +117,7 @@
     // Check the table view style to select its bg color.
     self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
+    self.bubblesTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     if (self.bubblesTableView.dataSource)
     {

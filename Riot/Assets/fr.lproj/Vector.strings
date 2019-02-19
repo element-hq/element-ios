@@ -662,3 +662,10 @@
 "sign_out_key_backup_in_progress_alert_title" = "Sauvegarde de clés en cours. Si vous vous déconnectez maintenant vous n'aurez plus accès à vos messages chiffrés.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Je ne veux plus de mes messages chiffrés";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Je vais patienter";
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Nouvelle sauvegarde de clés";
+"e2e_key_backup_wrong_version" = "Une nouvelle sauvegarde de clés de messages sécurisés a été détectée.\n\nSi cela ne vient pas de vous, définissez une nouvelle phrase de passe dans les paramètres.";
+"e2e_key_backup_wrong_version_button_settings" = "Paramètres";
+"e2e_key_backup_wrong_version_button_wasme" = "Ça vient de moi";
+"key_backup_setup_intro_manual_export_info" = "(Avancé)";
+"key_backup_setup_intro_manual_export_action" = "Exporter les clés manuellement";

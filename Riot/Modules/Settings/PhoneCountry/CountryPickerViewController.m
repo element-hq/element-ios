@@ -80,6 +80,7 @@
     
     // Use the primary bg color for the table view in plain style.
     self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     topview.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
     

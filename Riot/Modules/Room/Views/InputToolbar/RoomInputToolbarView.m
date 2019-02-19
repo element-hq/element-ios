@@ -87,7 +87,7 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = ThemeService.shared.theme.headerTextSecondaryColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;

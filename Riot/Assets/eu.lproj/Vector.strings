@@ -401,7 +401,7 @@
 "settings_sign_out_e2e_warn" = "Zure muturretik muturrerako zifratze gakoak galduko dituzu. Horrek esan nahi du ezin izango dituzula mezu zaharrak gehiago irakurri zifratutako geletan gailu honetatik.";
 "settings_global_settings_info" = "Jakinarazpen orokorren ezarpenak eskuragarri daude zure %@ web bezeroan";
 "settings_on_denied_notification" = "Jakinarazpenak ukatu dira %@(e)n, baimendu zure gailuaren ezarpenetan";
-"room_details_history_section_prompt_msg" = "Historiala nork irakurri dezakeen aldatzea gelak honetara aurrerantzean bidalitako mezuei besterik ez zaie aplikatuako. Badagoen historialaren ikusgaitasuna ez da aldatuko.";
+"room_details_history_section_prompt_msg" = "Historiala nork irakurri dezakeen aldatzea gelak honetara aurrerantzean bidalitako mezuei besterik ez zaie aplikatuko. Badagoen historialaren ikusgaitasuna ez da aldatuko.";
 // Call
 "call_incoming_voice_prompt" = "%@ erabiltzailearen deia jasotzen";
 "call_incoming_video_prompt" = "%@ erabiltzailearen bideo-deia jasotzen";
@@ -639,3 +639,21 @@
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Gailuak %@ gailuaren baliozko sinadura bat du";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Babes kopiak %@ gailuaren sinadura du";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Babes-kopiak %@ gailuaren baliogabeko sinadura bat du";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Babes-kopiak %@ gailuaren sinadura baliogabe bat du";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Ziur al zaude? Zifratutako mezuak galduko dituzu zure gakoak ez badira behar bezala gordetzen.";
+"room_does_not_exist" = "Ez da %@ existitzen";
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Gakoen babes-kopia berria";
+"e2e_key_backup_wrong_version" = "Mezu seguruen gakoen babes-kopia berri bat antzeman da.\n\nZu izan ez bazara, ezarri pasaesaldi berria ezarpenetan.";
+"e2e_key_backup_wrong_version_button_settings" = "Ezarpenak";
+"e2e_key_backup_wrong_version_button_wasme" = "Ni izan naiz";
+"key_backup_setup_title" = "Gakoen babes-kopia";
+"key_backup_setup_skip_alert_title" = "Ziur al zaude?";
+"key_backup_setup_skip_alert_message" = "Mezu seguruak galdu zenitzake saioa amaitzen baduzu edo gailua galtzen baduzu.";
+"key_backup_setup_skip_alert_skip_action" = "Jauzi";
+"key_backup_setup_intro_title" = "Ez galdu inoiz zifratutako mezuak";
+"key_backup_setup_intro_info" = "Zifratutako geletako mezuak muturretik muturrerako zifratzearekin babestuta daude. Hartzaileak edo hartzaileek eta zuk dituzue mezu hauek irakurtzeko gakoek, beste inork ez.\n\nEgin gakoen babes-kopia segurua hauek ez galtzeko.";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Hasi gakoen babes-kopia erabiltzen";
+"key_backup_setup_intro_setup_action_with_existing_backup" = "Erabili gakoen-babes-kopia";
+"key_backup_setup_intro_manual_export_info" = "(Aurreratua)";
+"key_backup_setup_intro_manual_export_action" = "Esportatu gakoak eskuz";
