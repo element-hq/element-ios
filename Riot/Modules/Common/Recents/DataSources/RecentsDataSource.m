@@ -126,7 +126,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         [self unregisterKeyBackupStateDidChangeNotification];
     }
-    
+
+    [self updateKeyBackupBanner];
     [self forceRefresh];
 }
 
