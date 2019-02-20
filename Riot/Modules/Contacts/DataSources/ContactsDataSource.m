@@ -88,7 +88,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
         
         // Refresh the matrix identifiers for all the local contacts.
-        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusAuthorized)
+        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusNotDetermined)
         {
             // Refresh the matrix identifiers for all the local contacts.
             [[MXKContactManager sharedManager] updateMatrixIDsForAllLocalContacts];

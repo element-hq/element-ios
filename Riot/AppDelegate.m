@@ -3343,7 +3343,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)refreshLocalContacts
 {
     // Check whether the application is allowed to access the local contacts.
-    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusAuthorized)
+    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
     {
         // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
         if (![MXKAppSettings standardAppSettings].syncLocalContacts)
