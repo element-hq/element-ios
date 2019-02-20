@@ -29,21 +29,21 @@ public struct KeyboardNotification {
     }
     
     public var keyboardFrameBegin: CGRect? {
-        guard let value = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
+        guard let value = userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue else {
             return nil
         }
         return value.cgRectValue
     }
     
     public var keyboardFrameEnd: CGRect? {
-        guard let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue else {
+        guard let value = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             return nil
         }
         return value.cgRectValue
     }
     
     public var animationDuration: TimeInterval? {
-        guard let number = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber else {
+        guard let number = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
             return nil
         }
         return number.doubleValue
@@ -51,15 +51,15 @@ public struct KeyboardNotification {
     
     /// Keyboard UIViewAnimationCurve enum raw value
     public var animationCurveRawValue: Int? {
-        guard let number = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber else {
+        guard let number = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber else {
             return nil
         }
         return number.intValue
     }
     
     /// Convert UIViewAnimationCurve raw value to UIViewAnimationOptions
-    public func animationOptions(fallbackAnimationCurveValue: Int = UIViewAnimationCurve.easeInOut.rawValue) -> UIViewAnimationOptions {
+    public func animationOptions(fallbackAnimationCurveValue: Int = UIView.AnimationCurve.easeInOut.rawValue) -> UIView.AnimationOptions {
         let animationCurveRawValue = self.animationCurveRawValue ?? fallbackAnimationCurveValue
-        return UIViewAnimationOptions(rawValue: UInt(animationCurveRawValue << 16))
+        return UIView.AnimationOptions(rawValue: UInt(animationCurveRawValue << 16))
     }
 }

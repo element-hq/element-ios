@@ -53,7 +53,7 @@ class DarkTheme: NSObject, Theme {
         UIColor(rgb: 0xAC3BA8)]
 
     var statusBarStyle: UIStatusBarStyle = .lightContent
-    var scrollBarStyle: UIScrollViewIndicatorStyle = .white
+    var scrollBarStyle: UIScrollView.IndicatorStyle = .white
     var keyboardAppearance: UIKeyboardAppearance = .dark
 
     var placeholderTextColor: UIColor = UIColor(white: 1.0, alpha: 0.3)
@@ -70,7 +70,7 @@ class DarkTheme: NSObject, Theme {
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.baseTextPrimaryColor;
         navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: self.baseTextPrimaryColor
+            NSAttributedString.Key.foregroundColor: self.baseTextPrimaryColor
         ]
         navigationBar.barTintColor = self.baseColor;
 

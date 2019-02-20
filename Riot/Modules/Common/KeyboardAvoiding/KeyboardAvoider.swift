@@ -23,7 +23,7 @@ final class KeyboardAvoider {
     
     private enum KeyboardAnimation {
         static let defaultDuration: TimeInterval = 0.25
-        static let defaultAnimationCurveRawValue: Int = UIViewAnimationCurve.easeInOut.rawValue
+        static let defaultAnimationCurveRawValue: Int = UIView.AnimationCurve.easeInOut.rawValue
     }
     
     // MARK: - Properties
@@ -61,18 +61,18 @@ final class KeyboardAvoider {
         notificationCenter.addObserver(
             self,
             selector: #selector(keyboardWillShow(notification:)),
-            name: .UIKeyboardWillShow,
+            name: UIResponder.keyboardWillShowNotification,
             object: nil)
         notificationCenter.addObserver(
             self,
             selector: #selector(keyboardWillHide(notification:)),
-            name: .UIKeyboardWillHide,
+            name: UIResponder.keyboardWillHideNotification,
             object: nil)
     }
     
     private func unregisterKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc private func keyboardWillShow(notification: Notification) {

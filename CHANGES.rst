@@ -1,8 +1,12 @@
 Changes in 0.8.2 (2019-xx-xx)
 ===============================================
 
+Improvements:
+ * Upgrade MatrixKit version ([v0.9.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.6).
+ * Maintenance: Update cocopoads and pods. Automatic update to Swift4.2
+
 Bug fix:
-* Reskin: status bar text is no more readable on iPad (#2276).
+ * Reskin: status bar text is no more readable on iPad (#2276).
 
 Changes in 0.8.1 (2019-02-19)
 ===============================================

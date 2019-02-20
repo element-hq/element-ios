@@ -79,7 +79,7 @@ abstract_target 'RiotPods' do
     pod 'zxcvbn-ios'
     
     # Tools
-    pod 'SwiftGen', '~> 6.0'
+    pod 'SwiftGen', '~> 6.1'
 
     target "Riot" do
         import_MatrixKit
