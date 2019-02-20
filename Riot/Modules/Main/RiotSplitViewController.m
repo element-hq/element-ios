@@ -15,6 +15,8 @@
  */
 
 #import "RiotSplitViewController.h"
+#import "ThemeService.h"
+#import "Riot-Swift.h"
 
 @implementation RiotSplitViewController
 
@@ -36,8 +38,8 @@
         }
     }
     
-    // Keep the default UISplitViewController style.
-    return [super preferredStatusBarStyle];
+    // Use theme status bar style
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
