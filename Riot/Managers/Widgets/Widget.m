@@ -61,9 +61,10 @@
             NSString *avatarUrl = self.mxSession.myUser.avatarUrl ? self.mxSession.myUser.avatarUrl : @"";
 
             // Escape everything to build a valid URL string
-            userId = [userId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            displayName = [displayName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            avatarUrl = [avatarUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            // We can't know where the values escaped here will be inserted in the URL, so the alphanumeric charset is used
+            userId = [MXTools encodeURIComponent:userId];
+            displayName = [MXTools encodeURIComponent:displayName];
+            avatarUrl = [MXTools encodeURIComponent:avatarUrl];
 
             NSString *widgetUrl = _url;
             widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:userId];
@@ -86,7 +87,8 @@
 
                 if (dataString)
                 {
-                    NSString *value = [dataString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    // same question as above
+                    NSString *value = [MXTools encodeURIComponent:dataString];
 
                     widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:paramKey
                                                                      withString:value];

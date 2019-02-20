@@ -1969,8 +1969,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                 {
                                     // Retry opening the link but with the returned room id
                                     NSString *newUniversalLinkFragment =
-                                    [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                                                        withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                                            [fragment stringByReplacingOccurrencesOfString:[MXTools encodeURIComponent:roomIdOrAlias]
+                                                                                withString:[MXTools encodeURIComponent:roomId]
+                                            ];
                                     
                                     universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                     
@@ -2202,7 +2203,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
     for (NSInteger i = 0; i < pathParams.count; i++)
     {
-        pathParams2[i] = [pathParams2[i] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        pathParams2[i] = [pathParams2[i] stringByRemovingPercentEncoding];
     }
     pathParams = pathParams2;
     
@@ -2222,7 +2223,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (value.length)
             {
                 value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-                value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                value = [value stringByRemovingPercentEncoding];
                 
                 queryParams[key] = value;
             }

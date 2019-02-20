@@ -2756,7 +2756,7 @@
         
         // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
         // to be able to convert it into a legal URL string.
-        NSString *absoluteURLString = [url.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *absoluteURLString = [url.absoluteString stringByRemovingPercentEncoding];
         
         // If the link can be open it by the app, let it do
         if ([Tools isUniversalLink:url])
@@ -2805,7 +2805,7 @@
             NSString *roomIdOrAlias = absoluteURLString;
             
             // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
         // Preview the clicked group
@@ -2814,7 +2814,7 @@
             shouldDoAction = NO;
             
             // Open the group or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [MXTools encodeURIComponent:absoluteURLString]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
         else if ([absoluteURLString hasPrefix:kEventFormatterOnReRequestKeysLinkAction])
@@ -3961,7 +3961,7 @@
         else if (customizedRoomDataSource.roomState.isObsolete)
         {
             NSString *replacementRoomId = customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
-            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@", [replacementRoomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:replacementRoomId]];
             
             [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
                 [[AppDelegate theDelegate] handleUniversalLinkFragment:roomLinkFragment];
