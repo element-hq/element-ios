@@ -1,3 +1,9 @@
+Changes in 0.8.2 (2019-xx-xx)
+===============================================
+
+Bug fix:
+* Reskin: status bar text is no more readable on iPad (#2276).
+
 Changes in 0.8.1 (2019-02-19)
 ===============================================
 
