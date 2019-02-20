@@ -1,4 +1,5 @@
-// Generated using SwiftGen, by O.Halligon — https://github.com/SwiftGen/SwiftGen
+// swiftlint:disable all
+// Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
 
 import Foundation
 
@@ -30,8 +31,6 @@ internal enum RiotDefaults {
   internal static let presenceColorForUnavailableUser: Int = _document["presenceColorForUnavailableUser"]
   internal static let pushGatewayURL: String = _document["pushGatewayURL"]
   internal static let pushKitAppIdProd: String = _document["pushKitAppIdProd"]
-  internal static let pusherAppIdDev: String = _document["pusherAppIdDev"]
-  internal static let pusherAppIdProd: String = _document["pusherAppIdProd"]
   internal static let roomDirectoryServers: [String: Any] = _document["roomDirectoryServers"]
   internal static let showAllEventsInRoomHistory: Bool = _document["showAllEventsInRoomHistory"]
   internal static let showLeftMembersInRoomMemberList: Bool = _document["showLeftMembersInRoomMemberList"]
