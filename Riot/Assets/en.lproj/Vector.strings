@@ -278,7 +278,7 @@
 "room_replacement_information" = "This room has been replaced and is no longer active.";
 "room_replacement_link" = "The conversation continues here.";
 "room_predecessor_information" = "This room is a continuation of another conversation.";
-"room_predecessor_link" = "Click here to see older messages.";
+"room_predecessor_link" = "Tap here to see older messages.";
 "room_resource_limit_exceeded_message_contact_1" = " Please ";
 "room_resource_limit_exceeded_message_contact_2_link" = "contact your service administrator";
 "room_resource_limit_exceeded_message_contact_3" = " to continue using this service.";
@@ -335,7 +335,7 @@
 "settings_flair" = "Show flair where allowed";
 "settings_devices" = "DEVICES";
 "settings_cryptography" = "CRYPTOGRAPHY";
-"settings_key_backup" = "SECURE MESSAGE RECOVERY";
+"settings_key_backup" = "KEY BACKUP";
 "settings_deactivate_account" = "DEACTIVATE ACCOUNT";
 
 "settings_sign_out" = "Sign Out";
@@ -421,16 +421,16 @@
 
 "settings_deactivate_my_account" = "Deactivate my account";
 
+"settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
 "settings_key_backup_info_checking" = "Checking...";
-"settings_key_backup_info_none" = "Secure Message Recovery has not been set up.";
+"settings_key_backup_info_none" = "Your keys are not being backed up from this device.";
+"settings_key_backup_info_signout_warning" = "Back up your keys before signing out to avoid losing them.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
-"settings_key_backup_info_valid" = "Secure Message Recovery has been correctly set up for this device.";
-"settings_key_backup_info_not_valid" = "Secure Message Recovery is not active on this device.";
+"settings_key_backup_info_valid" = "This device is backing up your keys.";
+"settings_key_backup_info_not_valid" = "This device is not backing up your keys.";
 "settings_key_backup_info_progress" = "Backing up %@ keys...";
-"settings_key_backup_info_progress_done" = "All keys have been backed up";
-"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "To use Secure Message Recovery on this device, verify %@ now.";
-"settings_key_backup_info_not_trusted_fix_action" = "To use Secure Message Recovery on this device, provide your passphrase or recovery key now.";
+"settings_key_backup_info_progress_done" = "All keys backed up";
 
 "settings_key_backup_info_trust_signature_unknown" = "Backup has a signature from device with ID: %@";
 "settings_key_backup_info_trust_signature_valid" = "Backup has a valid signature from this device";
@@ -439,12 +439,12 @@
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Backup has an invalid signature from %@";
 "settings_key_backup_info_trust_signature_invalid_device_unverified" = "Backup has an invalid signature from %@";
 
-"settings_key_backup_button_create" = "Set up Secure Message Recovery";
-"settings_key_backup_button_restore" = "Restore backup";
-"settings_key_backup_button_delete" = "Delete backup";
-"settings_key_backup_button_verify" = "Verify";
+"settings_key_backup_button_create" = "Start using Key Backup";
+"settings_key_backup_button_restore" = "Restore from Backup";
+"settings_key_backup_button_delete" = "Delete Backup";
+"settings_key_backup_button_use" = "Use key backup";
 "settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
-"settings_key_backup_delete_confirmation_prompt_msg" = "Delete your backed up encryption keys from the server? You will no longer be able to use your recovery key to read encrypted message history";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
 
 // Room Details
 "room_details_title" = "Room Details";
@@ -600,6 +600,12 @@
 "e2e_enabling_on_app_update" = "Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
 "e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this device and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
 
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "New Key Backup";
+"e2e_key_backup_wrong_version" = "A new secure message key backup has been detected.\n\nIf this wasn’t you, set a new passphrase in Settings.";
+"e2e_key_backup_wrong_version_button_settings" = "Settings";
+"e2e_key_backup_wrong_version_button_wasme" = "It was me";
+
 // Bug report
 "bug_report_title" = "Bug Report";
 "bug_report_description" = "Please describe the bug. What did you do? What did you expect to happen? What actually happened?";
@@ -671,8 +677,7 @@
 
 // MARK: Key backup setup
 
-"key_backup_setup_title" = "Message Recovery";
-"key_backup_setup_skip_action" = "Skip";
+"key_backup_setup_title" = "Key Backup";
 
 "key_backup_setup_skip_alert_title" = "Are you sure?";
 "key_backup_setup_skip_alert_message" = "You may lose secure messages if you log out or lose your device.";
@@ -681,13 +686,16 @@
 // Intro
 
 "key_backup_setup_intro_title" = "Never lose encrypted messages";
-"key_backup_setup_intro_info" = "Set up Secure Message Recovery in case you lose or log out of this device.";
-"key_backup_setup_intro_setup_action" = "Set up";
-
+"key_backup_setup_intro_info" = "Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Start using Key Backup";
+"key_backup_setup_intro_setup_action_with_existing_backup" = "Use Key Backup";
+"key_backup_setup_intro_manual_export_info" = "(Advanced)";
+"key_backup_setup_intro_manual_export_action" = "Manually export keys";
 
 // Passphrase
 
-"key_backup_setup_passphrase_info" = "Secure your encrypted message history with a Recovery Passphrase.\n\nYou’ll need it if you log out, or lose access to this device.";
+"key_backup_setup_passphrase_title" = "Secure your backup with a Passphrase";
+"key_backup_setup_passphrase_info" = "We'll store an encrypted copy of your keys on our server. Protect your backup with a passphrase to keep it secure.\n\nFor maximum security, this should be different from your account password.";
 "key_backup_setup_passphrase_passphrase_title" = "Enter";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Enter passphrase";
 "key_backup_setup_passphrase_passphrase_valid" = "Great!";
@@ -696,20 +704,33 @@
 "key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Confirm passphrase";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
-"key_backup_setup_passphrase_set_passphrase_action" = "Set recovery passphrase";
+"key_backup_setup_passphrase_set_passphrase_action" = "Set Passphrase";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Or, secure your backup with a Recovery Key, saving it somewhere safe.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Advanced) Set up with Recovery Key";
 
-// Recovery key
+// Success
 
-"key_backup_setup_recovery_key_info" = "Make a copy of this Recovery Key and keep it safe.\n\nAs a safety net, you can use it to restore your encrypted message history if you forget your Recovery Passphrase.";
-"key_backup_setup_recovery_key_recovery_key_title" = "Recovery Key";
-"key_backup_setup_recovery_key_make_copy_action" = "Make a Copy";
-"key_backup_setup_recovery_key_made_copy_action" = "I've made a copy";
+"key_backup_setup_success_title" = "Success!";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Your keys are being backed up.\n\nYour recovery key is a safety net - you can use it to restore access to your encrypted messages if you forget your passphrase.\n\nKeep your recovery key somewhere very secure, like a password manager (or a safe).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Save Recovery Key";
+"key_backup_setup_success_from_passphrase_done_action" = "Done";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "Your keys are being backed up.\n\nMake a copy of this recovery key and keep it safe.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Recovery Key";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "Make a Copy";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "I've made a copy";
 
 // MARK: Key backup recover
 
 "key_backup_recover_title" = "Secure Messages";
-"key_backup_recover_empty_backup_title" = "Empty backup";
-"key_backup_recover_empty_backup_message" = "There is no key to restore";
+
+"key_backup_recover_invalid_passphrase_title" = "Incorrect Recovery Passphrase";
+"key_backup_recover_invalid_passphrase" = "Backup could not be decrypted with this passphrase: please verify that you entered the correct recovery passphrase.";
+"key_backup_recover_invalid_recovery_key_title" = "Recovery Key Mismatch";
+"key_backup_recover_invalid_recovery_key" = "Backup could not be decrypted with this key: please verify that you entered the correct recovery key.";
 
 // Recover from passphrase
 
@@ -736,12 +757,32 @@
 "key_backup_recover_success_info" = "Backup Restored!";
 "key_backup_recover_done_action" = "Done";
 
-// MARK: Key backup setup banner
+// MARK: Key backup banners
 
-"key_backup_setup_banner_title_part1" = "Set up Secure Message Recovery";
-"key_backup_setup_banner_title_part2" = " to never lose encrypted messages";
+// Setup
 
-// MARK: Key backup recover banner
+"key_backup_setup_banner_title" = "Never lose encrypted messages";
+"key_backup_setup_banner_subtitle" = "Start using Key Backup";
 
-"key_backup_recover_banner_title_part1" = "Run Secure Message Recovery";
-"key_backup_recover_banner_title_part2" = " to read encrypted message history on this device";
+// Recover
+
+"key_backup_recover_banner_title" = "Never lose encrypted messages";
+"key_backup_recover_banner_subtitle" = "Use Key Backup";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "Are you sure you want to sign out?";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Sign out";
+
+"sign_out_non_existing_key_backup_alert_title" = "You’ll lose access to your encrypted messages if you sign out now";
+"sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Start using Key Backup";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "I don't want my encrypted messages";
+
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "You'll lose your encrypted messages";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "You'll lose access to your encrypted messages unless you back up your keys before signing out.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Sign out";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Backup";
+
+"sign_out_key_backup_in_progress_alert_title" = "Key backup in progress. If you sign out now you’ll lose access to your encrypted messages.";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "I don't want my encrypted messages";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";

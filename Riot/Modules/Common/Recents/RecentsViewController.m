@@ -165,6 +165,7 @@
     
     // Use the primary bg color for the recents table view in plain style.
     self.recentsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.recentsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     topview.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
@@ -1251,7 +1252,7 @@
         if (roomIdOrAlias.length)
         {
             // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:NO];

@@ -63,7 +63,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     self.leftButton.backgroundColor = ThemeService.shared.theme.tintColor;
     self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
-    self.noticeBadgeView.backgroundColor = ThemeService.shared.theme.notificationPrimaryColor;
+    self.noticeBadgeView.backgroundColor = ThemeService.shared.theme.noticeColor;
 }
 
 - (void)onDeclinePressed:(id)sender

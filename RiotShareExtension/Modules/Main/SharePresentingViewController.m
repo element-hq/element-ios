@@ -17,6 +17,13 @@
 #import "SharePresentingViewController.h"
 #import "ShareViewController.h"
 #import "ShareExtensionManager.h"
+#import "ThemeService.h"
+
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
 
 @interface SharePresentingViewController ()
 
@@ -34,6 +41,9 @@
     
     sharedManager.primaryViewController = self;
     sharedManager.shareExtensionContext = self.extensionContext;
+    
+    // Set up current theme
+    ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
     
     [self presentShareViewController];
 }

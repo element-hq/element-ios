@@ -16,10 +16,6 @@
 
 import Foundation
 
-enum KeyBackupRecoverFromPassphraseViewModelError: Error {
-    case missingKeyBackupVersion
-}
-
 final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphraseViewModelType {
     
     // MARK: - Properties
@@ -72,26 +68,28 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
             return
         }
         
-        guard let keyBackupVersion = self.keyBackupVersion.version else {
-            self.update(viewState: .error(KeyBackupRecoverFromPassphraseViewModelError.missingKeyBackupVersion))
-            return
-        }
-        
         self.update(viewState: .loading)
         
-        self.currentHTTPOperation = self.keyBackup.restore(keyBackupVersion, withPassword: passphrase, room: nil, session: nil, success: { [weak self] (totalKeys, _) in
+        self.currentHTTPOperation = self.keyBackup.restore(self.keyBackupVersion, withPassword: passphrase, room: nil, session: nil, success: { [weak self] (_, _) in
             guard let sself = self else {
                 return
             }
-            sself.update(viewState: .loaded(totalKeys: totalKeys))
-            if totalKeys > 0 {
-                sself.coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDidRecover(sself)
-            }
+
+            // Trust on decrypt
+            sself.currentHTTPOperation = sself.keyBackup.trust(sself.keyBackupVersion, trust: true, success: { [weak sself] () in
+                guard let ssself = sself else {
+                    return
+                }
+
+                ssself.update(viewState: .loaded)
+                ssself.coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDidRecover(ssself)
+
+                }, failure: { [weak sself] error in
+                    sself?.update(viewState: .error(error))
+            })
+
         }, failure: { [weak self] error in
-            guard let sself = self else {
-                return
-            }
-            sself.update(viewState: .error(error))            
+            self?.update(viewState: .error(error))
         })
     }
     

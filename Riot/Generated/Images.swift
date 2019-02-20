@@ -1,5 +1,5 @@
 // swiftlint:disable all
-// Generated using SwiftGen, by O.Halligon — https://github.com/SwiftGen/SwiftGen
+// Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
 
 #if os(OSX)
   import AppKit.NSImage
@@ -61,8 +61,8 @@ internal enum Asset {
     internal static let createRoom = ImageAsset(name: "create_room")
     internal static let closeBanner = ImageAsset(name: "close_banner")
     internal static let importFilesButton = ImageAsset(name: "import_files_button")
+    internal static let keyBackupLogo = ImageAsset(name: "key_backup_logo")
     internal static let revealPasswordButton = ImageAsset(name: "reveal_password_button")
-    internal static let shield = ImageAsset(name: "shield")
     internal static let launchScreenRiot = ImageAsset(name: "LaunchScreenRiot")
     internal static let cameraCapture = ImageAsset(name: "camera_capture")
     internal static let cameraPlay = ImageAsset(name: "camera_play")

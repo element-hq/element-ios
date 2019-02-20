@@ -478,6 +478,22 @@ internal enum VectorL10n {
   internal static var e2eEnablingOnAppUpdate: String { 
     return VectorL10n.tr("Vector", "e2e_enabling_on_app_update") 
   }
+  /// A new secure message key backup has been detected.\n\nIf this wasn’t you, set a new passphrase in Settings.
+  internal static var e2eKeyBackupWrongVersion: String { 
+    return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version") 
+  }
+  /// Settings
+  internal static var e2eKeyBackupWrongVersionButtonSettings: String { 
+    return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version_button_settings") 
+  }
+  /// It was me
+  internal static var e2eKeyBackupWrongVersionButtonWasme: String { 
+    return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version_button_wasme") 
+  }
+  /// New Key Backup
+  internal static var e2eKeyBackupWrongVersionTitle: String { 
+    return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version_title") 
+  }
   /// You need to log back in to generate end-to-end encryption keys for this device and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.
   internal static var e2eNeedLogInAgain: String { 
     return VectorL10n.tr("Vector", "e2e_need_log_in_again") 
@@ -662,25 +678,17 @@ internal enum VectorL10n {
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
   }
-  /// Run Secure Message Recovery
-  internal static var keyBackupRecoverBannerTitlePart1: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_banner_title_part1") 
+  /// Use Key Backup
+  internal static var keyBackupRecoverBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_banner_subtitle") 
   }
-  ///  to read encrypted message history on this device
-  internal static var keyBackupRecoverBannerTitlePart2: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_banner_title_part2") 
+  /// Never lose encrypted messages
+  internal static var keyBackupRecoverBannerTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_banner_title") 
   }
   /// Done
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
-  }
-  /// There is no key to restore
-  internal static var keyBackupRecoverEmptyBackupMessage: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_empty_backup_message") 
-  }
-  /// Empty backup
-  internal static var keyBackupRecoverEmptyBackupTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_empty_backup_title") 
   }
   /// Use your recovery passphrase to unlock your secure message history
   internal static var keyBackupRecoverFromPassphraseInfo: String { 
@@ -730,6 +738,22 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverFromRecoveryKeyRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recovery_key_title") 
   }
+  /// Backup could not be decrypted with this passphrase: please verify that you entered the correct recovery passphrase.
+  internal static var keyBackupRecoverInvalidPassphrase: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_passphrase") 
+  }
+  /// Incorrect Recovery Passphrase
+  internal static var keyBackupRecoverInvalidPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_passphrase_title") 
+  }
+  /// Backup could not be decrypted with this key: please verify that you entered the correct recovery key.
+  internal static var keyBackupRecoverInvalidRecoveryKey: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_recovery_key") 
+  }
+  /// Recovery Key Mismatch
+  internal static var keyBackupRecoverInvalidRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_invalid_recovery_key_title") 
+  }
   /// Backup Restored!
   internal static var keyBackupRecoverSuccessInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_success_info") 
@@ -738,21 +762,33 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_title") 
   }
-  /// Set up Secure Message Recovery
-  internal static var keyBackupSetupBannerTitlePart1: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_banner_title_part1") 
+  /// Start using Key Backup
+  internal static var keyBackupSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_banner_subtitle") 
   }
-  ///  to never lose encrypted messages
-  internal static var keyBackupSetupBannerTitlePart2: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_banner_title_part2") 
+  /// Never lose encrypted messages
+  internal static var keyBackupSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_banner_title") 
   }
-  /// Set up Secure Message Recovery in case you lose or log out of this device.
+  /// Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.
   internal static var keyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_info") 
   }
-  /// Set up
-  internal static var keyBackupSetupIntroSetupAction: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_intro_setup_action") 
+  /// Manually export keys
+  internal static var keyBackupSetupIntroManualExportAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_manual_export_action") 
+  }
+  /// (Advanced)
+  internal static var keyBackupSetupIntroManualExportInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_manual_export_info") 
+  }
+  /// Use Key Backup
+  internal static var keyBackupSetupIntroSetupActionWithExistingBackup: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_setup_action_with_existing_backup") 
+  }
+  /// Start using Key Backup
+  internal static var keyBackupSetupIntroSetupActionWithoutExistingBackup: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_setup_action_without_existing_backup") 
   }
   /// Never lose encrypted messages
   internal static var keyBackupSetupIntroTitle: String { 
@@ -774,7 +810,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupPassphraseConfirmPassphraseValid: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_confirm_passphrase_valid") 
   }
-  /// Secure your encrypted message history with a Recovery Passphrase.\n\nYou’ll need it if you log out, or lose access to this device.
+  /// We'll store an encrypted copy of your keys on our server. Protect your backup with a passphrase to keep it secure.\n\nFor maximum security, this should be different from your account password.
   internal static var keyBackupSetupPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_info") 
   }
@@ -794,29 +830,21 @@ internal enum VectorL10n {
   internal static var keyBackupSetupPassphrasePassphraseValid: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_passphrase_valid") 
   }
-  /// Set recovery passphrase
+  /// Set Passphrase
   internal static var keyBackupSetupPassphraseSetPassphraseAction: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_set_passphrase_action") 
   }
-  /// Make a copy of this Recovery Key and keep it safe.\n\nAs a safety net, you can use it to restore your encrypted message history if you forget your Recovery Passphrase.
-  internal static var keyBackupSetupRecoveryKeyInfo: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_recovery_key_info") 
+  /// (Advanced) Set up with Recovery Key
+  internal static var keyBackupSetupPassphraseSetupRecoveryKeyAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_passphrase_setup_recovery_key_action") 
   }
-  /// I've made a copy
-  internal static var keyBackupSetupRecoveryKeyMadeCopyAction: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_recovery_key_made_copy_action") 
+  /// Or, secure your backup with a Recovery Key, saving it somewhere safe.
+  internal static var keyBackupSetupPassphraseSetupRecoveryKeyInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_passphrase_setup_recovery_key_info") 
   }
-  /// Make a Copy
-  internal static var keyBackupSetupRecoveryKeyMakeCopyAction: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_recovery_key_make_copy_action") 
-  }
-  /// Recovery Key
-  internal static var keyBackupSetupRecoveryKeyRecoveryKeyTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_recovery_key_recovery_key_title") 
-  }
-  /// Skip
-  internal static var keyBackupSetupSkipAction: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_skip_action") 
+  /// Secure your backup with a Passphrase
+  internal static var keyBackupSetupPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_passphrase_title") 
   }
   /// You may lose secure messages if you log out or lose your device.
   internal static var keyBackupSetupSkipAlertMessage: String { 
@@ -830,7 +858,39 @@ internal enum VectorL10n {
   internal static var keyBackupSetupSkipAlertTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_skip_alert_title") 
   }
-  /// Message Recovery
+  /// Done
+  internal static var keyBackupSetupSuccessFromPassphraseDoneAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_passphrase_done_action") 
+  }
+  /// Your keys are being backed up.\n\nYour recovery key is a safety net - you can use it to restore access to your encrypted messages if you forget your passphrase.\n\nKeep your recovery key somewhere very secure, like a password manager (or a safe).
+  internal static var keyBackupSetupSuccessFromPassphraseInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_passphrase_info") 
+  }
+  /// Save Recovery Key
+  internal static var keyBackupSetupSuccessFromPassphraseSaveRecoveryKeyAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_passphrase_save_recovery_key_action") 
+  }
+  /// Your keys are being backed up.\n\nMake a copy of this recovery key and keep it safe.
+  internal static var keyBackupSetupSuccessFromRecoveryKeyInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_recovery_key_info") 
+  }
+  /// I've made a copy
+  internal static var keyBackupSetupSuccessFromRecoveryKeyMadeCopyAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_recovery_key_made_copy_action") 
+  }
+  /// Make a Copy
+  internal static var keyBackupSetupSuccessFromRecoveryKeyMakeCopyAction: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_recovery_key_make_copy_action") 
+  }
+  /// Recovery Key
+  internal static var keyBackupSetupSuccessFromRecoveryKeyRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_recovery_key_recovery_key_title") 
+  }
+  /// Success!
+  internal static var keyBackupSetupSuccessTitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_title") 
+  }
+  /// Key Backup
   internal static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
@@ -1570,7 +1630,7 @@ internal enum VectorL10n {
   internal static var roomPredecessorInformation: String { 
     return VectorL10n.tr("Vector", "room_predecessor_information") 
   }
-  /// Click here to see older messages.
+  /// Tap here to see older messages.
   internal static var roomPredecessorLink: String { 
     return VectorL10n.tr("Vector", "room_predecessor_link") 
   }
@@ -1934,33 +1994,37 @@ internal enum VectorL10n {
   internal static var settingsIgnoredUsers: String { 
     return VectorL10n.tr("Vector", "settings_ignored_users") 
   }
-  /// SECURE MESSAGE RECOVERY
+  /// KEY BACKUP
   internal static var settingsKeyBackup: String { 
     return VectorL10n.tr("Vector", "settings_key_backup") 
   }
-  /// Set up Secure Message Recovery
+  /// Start using Key Backup
   internal static var settingsKeyBackupButtonCreate: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_create") 
   }
-  /// Delete backup
+  /// Delete Backup
   internal static var settingsKeyBackupButtonDelete: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_delete") 
   }
-  /// Restore backup
+  /// Restore from Backup
   internal static var settingsKeyBackupButtonRestore: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_restore") 
   }
-  /// Verify
-  internal static var settingsKeyBackupButtonVerify: String { 
-    return VectorL10n.tr("Vector", "settings_key_backup_button_verify") 
+  /// Use key backup
+  internal static var settingsKeyBackupButtonUse: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_use") 
   }
-  /// Delete your backed up encryption keys from the server? You will no longer be able to use your recovery key to read encrypted message history
+  /// Are you sure? You will lose your encrypted messages if your keys are not backed up properly.
   internal static var settingsKeyBackupDeleteConfirmationPromptMsg: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_delete_confirmation_prompt_msg") 
   }
   /// Delete Backup
   internal static var settingsKeyBackupDeleteConfirmationPromptTitle: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_delete_confirmation_prompt_title") 
+  }
+  /// Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.
+  internal static var settingsKeyBackupInfo: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info") 
   }
   /// Algorithm: %@
   internal static func settingsKeyBackupInfoAlgorithm(_ p1: String) -> String {
@@ -1970,19 +2034,11 @@ internal enum VectorL10n {
   internal static var settingsKeyBackupInfoChecking: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_checking") 
   }
-  /// Secure Message Recovery has not been set up.
+  /// Your keys are not being backed up from this device.
   internal static var settingsKeyBackupInfoNone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_none") 
   }
-  /// To use Secure Message Recovery on this device, provide your passphrase or recovery key now.
-  internal static var settingsKeyBackupInfoNotTrustedFixAction: String { 
-    return VectorL10n.tr("Vector", "settings_key_backup_info_not_trusted_fix_action") 
-  }
-  /// To use Secure Message Recovery on this device, verify %@ now.
-  internal static func settingsKeyBackupInfoNotTrustedFromVerifiableDeviceFixAction(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action", p1)
-  }
-  /// Secure Message Recovery is not active on this device.
+  /// This device is not backing up your keys.
   internal static var settingsKeyBackupInfoNotValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_not_valid") 
   }
@@ -1990,9 +2046,13 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoProgress(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress", p1)
   }
-  /// All keys have been backed up
+  /// All keys backed up
   internal static var settingsKeyBackupInfoProgressDone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress_done") 
+  }
+  /// Back up your keys before signing out to avoid losing them.
+  internal static var settingsKeyBackupInfoSignoutWarning: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_info_signout_warning") 
   }
   /// Backup has an invalid signature from %@
   internal static func settingsKeyBackupInfoTrustSignatureInvalidDeviceUnverified(_ p1: String) -> String {
@@ -2018,7 +2078,7 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoTrustSignatureValidDeviceVerified(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid_device_verified", p1)
   }
-  /// Secure Message Recovery has been correctly set up for this device.
+  /// This device is backing up your keys.
   internal static var settingsKeyBackupInfoValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_valid") 
   }
@@ -2221,6 +2281,54 @@ internal enum VectorL10n {
   /// Failed to send. Check in the main app the encryption settings for this room
   internal static var shareExtensionFailedToEncrypt: String { 
     return VectorL10n.tr("Vector", "share_extension_failed_to_encrypt") 
+  }
+  /// Sign out
+  internal static var signOutExistingKeyBackupAlertSignOutAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_sign_out_action") 
+  }
+  /// Are you sure you want to sign out?
+  internal static var signOutExistingKeyBackupAlertTitle: String { 
+    return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_title") 
+  }
+  /// I'll wait
+  internal static var signOutKeyBackupInProgressAlertCancelAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_key_backup_in_progress_alert_cancel_action") 
+  }
+  /// I don't want my encrypted messages
+  internal static var signOutKeyBackupInProgressAlertDiscardKeyBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_key_backup_in_progress_alert_discard_key_backup_action") 
+  }
+  /// Key backup in progress. If you sign out now you’ll lose access to your encrypted messages.
+  internal static var signOutKeyBackupInProgressAlertTitle: String { 
+    return VectorL10n.tr("Vector", "sign_out_key_backup_in_progress_alert_title") 
+  }
+  /// I don't want my encrypted messages
+  internal static var signOutNonExistingKeyBackupAlertDiscardKeyBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_discard_key_backup_action") 
+  }
+  /// Start using Key Backup
+  internal static var signOutNonExistingKeyBackupAlertSetupKeyBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_key_backup_action") 
+  }
+  /// You’ll lose access to your encrypted messages if you sign out now
+  internal static var signOutNonExistingKeyBackupAlertTitle: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_title") 
+  }
+  /// Backup
+  internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action") 
+  }
+  /// You'll lose access to your encrypted messages unless you back up your keys before signing out.
+  internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertMessage: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message") 
+  }
+  /// Sign out
+  internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertSignOutAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action") 
+  }
+  /// You'll lose your encrypted messages
+  internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertTitle: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title") 
   }
   /// Start
   internal static var start: String { 

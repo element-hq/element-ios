@@ -109,7 +109,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             
             if (0 < roomCellData.notificationCount)
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.notificationPrimaryColor : ThemeService.shared.theme.notificationSecondaryColor;
+                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
                 
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;

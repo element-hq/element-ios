@@ -116,8 +116,7 @@
 {
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.tabBar.tintColor = ThemeService.shared.theme.tintColor;
-    self.tabBar.barTintColor = ThemeService.shared.theme.headerBackgroundColor;
+    [ThemeService.shared.theme applyStyleOnTabBar:self.tabBar];
     
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
@@ -798,15 +797,15 @@
     // Use a middle dot to signal missed notif in favourites
     [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
                       onTabBarItem:TABBAR_FAVOURITES_INDEX
-                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.notificationPrimaryColor : ThemeService.shared.theme.notificationSecondaryColor)];
+                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
     
     // Update the badge on People and Rooms tabs
     [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
                        onTabBarItem:TABBAR_PEOPLE_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.notificationPrimaryColor : ThemeService.shared.theme.notificationSecondaryColor)];
+                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
     [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
                        onTabBarItem:TABBAR_ROOMS_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.notificationPrimaryColor : ThemeService.shared.theme.notificationSecondaryColor)];
+                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
 }
 
 - (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor

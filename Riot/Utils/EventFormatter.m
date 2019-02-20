@@ -220,7 +220,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.subTitleTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.prefixTextColor = ThemeService.shared.theme.textSecondaryColor;
-        self.bingTextColor = ThemeService.shared.theme.notificationPrimaryColor;
+        self.bingTextColor = ThemeService.shared.theme.noticeColor;
         self.encryptingTextColor = ThemeService.shared.theme.tintColor;
         self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.errorTextColor = ThemeService.shared.theme.warningColor;
@@ -349,16 +349,13 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 - (NSAttributedString*)roomCreatePredecessorAttributedStringWithPredecessorRoomId:(NSString*)predecessorRoomId
 {
-    NSString *predecessorRoomPermalink = [MXTools permalinkToRoom:predecessorRoomId];
-    
     NSDictionary *roomPredecessorReasonAttributes = @{
                                                       NSFontAttributeName : self.defaultTextFont
                                                       };
     
     NSDictionary *roomLinkAttributes = @{
                                          NSFontAttributeName : self.defaultTextFont,
-                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
-                                         NSLinkAttributeName : predecessorRoomPermalink,
+                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)
                                          };
     
     NSMutableAttributedString *roomPredecessorAttributedString = [NSMutableAttributedString new];

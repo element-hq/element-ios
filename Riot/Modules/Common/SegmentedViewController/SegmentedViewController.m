@@ -127,6 +127,24 @@
     return viewControllers;
 }
 
+- (void)setSectionHeaderTintColor:(UIColor *)sectionHeaderTintColor
+{
+    if (_sectionHeaderTintColor != sectionHeaderTintColor)
+    {
+        _sectionHeaderTintColor = sectionHeaderTintColor;
+        
+        if (selectedMarkerView)
+        {
+            selectedMarkerView.backgroundColor = sectionHeaderTintColor;
+        }
+        
+        for (UILabel *label in sectionLabels)
+        {
+            label.textColor = sectionHeaderTintColor;
+        }
+    }
+}
+
 #pragma mark -
 
 - (void)finalizeInit
@@ -135,8 +153,6 @@
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
-    
-    self.sectionHeaderTintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)viewDidLoad
@@ -183,6 +199,8 @@
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    
+    self.sectionHeaderTintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -17,7 +17,7 @@
 import UIKit
 
 /// Provide color constant values defined by the designer
-/// https://app.zeplin.io/project/5b857c64b1747a2c472290da/screen/5bf2cc89a4a6973f47883c6e
+/// https://app.zeplin.io/project/5c122fa790c5b4241ffa6be7/screen/5c619592daff2f1241d82e75
 @objc protocol Theme {
 
     var backgroundColor: UIColor { get }
@@ -27,7 +27,7 @@ import UIKit
     var baseTextSecondaryColor: UIColor { get }
 
     var searchBackgroundColor: UIColor { get }
-    var searchTextColor: UIColor { get }
+    var searchPlaceholderColor: UIColor { get }
 
     var headerBackgroundColor: UIColor { get }
     var headerBorderColor: UIColor { get }
@@ -41,10 +41,10 @@ import UIKit
 
     var unreadRoomIndentColor: UIColor { get }
 
-    /// Color for notifications for unread messages
-    var notificationSecondaryColor: UIColor { get }
-    /// Color for notifications for mention messages
-    var notificationPrimaryColor: UIColor { get }
+    var lineBreakColor: UIColor { get }
+
+    var noticeColor: UIColor { get }
+    var noticeSecondaryColor: UIColor { get }
 
     /// Color for errors or warnings
     var warningColor: UIColor { get }
@@ -58,7 +58,7 @@ import UIKit
     /// Status bar style to use
     var statusBarStyle: UIStatusBarStyle { get }
 
-    var scrollBarStyle: UIScrollViewIndicatorStyle { get }
+    var scrollBarStyle: UIScrollView.IndicatorStyle { get }
 
     var keyboardAppearance : UIKeyboardAppearance { get }
 
@@ -77,12 +77,14 @@ import UIKit
 
     /// Color to tint the search background image
     var matrixSearchBackgroundImageTintColor: UIColor { get }
-    
-    /// Color of separator (when table view is not used)
-    var separatorColor: UIColor { get }
 
     // MARK: - Customisation methods
 
+    
+    /// Apply the theme on a button.
+    ///
+    /// - Parameter tabBar: The tabBar to customise.
+    func applyStyle(onTabBar tabBar: UITabBar)
 
     /// Apply the theme on a navigation bar
     ///

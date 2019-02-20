@@ -112,6 +112,12 @@
     
     self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.messageLabel.numberOfLines = 0;
+    
+    self.userLoginSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+    self.emailSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+    self.phoneSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+    self.passwordSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+    self.repeatPasswordSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
 
     if (self.userLoginTextField.placeholder)
     {

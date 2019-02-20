@@ -1,5 +1,5 @@
 // swiftlint:disable all
-// Generated using SwiftGen, by O.Halligon — https://github.com/SwiftGen/SwiftGen
+// Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
 
 // swiftlint:disable sorted_imports
 import Foundation
@@ -37,10 +37,15 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupPassphraseViewController>(storyboard: KeyBackupSetupPassphraseViewController.self)
   }
-  internal enum KeyBackupSetupRecoveryKeyViewController: StoryboardType {
-    internal static let storyboardName = "KeyBackupSetupRecoveryKeyViewController"
+  internal enum KeyBackupSetupSuccessFromPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromPassphraseViewController"
 
-    internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupRecoveryKeyViewController>(storyboard: KeyBackupSetupRecoveryKeyViewController.self)
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromPassphraseViewController>(storyboard: KeyBackupSetupSuccessFromPassphraseViewController.self)
+  }
+  internal enum KeyBackupSetupSuccessFromRecoveryKeyViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromRecoveryKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
   }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length type_body_length type_name

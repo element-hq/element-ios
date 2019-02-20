@@ -126,7 +126,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         [self unregisterKeyBackupStateDidChangeNotification];
     }
-    
+
+    [self updateKeyBackupBanner];
     [self forceRefresh];
 }
 
@@ -152,6 +153,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)registerKeyBackupStateDidChangeNotification
 {
+    // Check homeserver update in background
+    [self.mxSession.crypto.backup forceRefresh:nil failure:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
 }
 
@@ -162,10 +166,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)keyBackupStateDidChangeNotification:(NSNotification*)notification
 {
-    [self forceRefresh];
+    if ([self updateKeyBackupBanner])
+    {
+        [self forceRefresh];
+    }
 }
 
-- (void)updateKeyBackupBanner
+- (BOOL)updateKeyBackupBanner
 {
     KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
     
@@ -204,8 +211,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 break;
         }
     }
-    
+
+    BOOL updated = (self.keyBackupBanner != keyBackupBanner);
+
     self.keyBackupBanner = keyBackupBanner;
+
+    return updated;
 }
 
 - (void)hideKeyBackupBanner:(KeyBackupBanner)keyBackupBanner
@@ -1224,6 +1235,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)refreshRoomsSections
 {
+    NSDate *startDate = [NSDate date];
+
     [invitesCellDataArray removeAllObjects];
     [favoriteCellDataArray removeAllObjects];
     [peopleCellDataArray removeAllObjects];
@@ -1236,8 +1249,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
     
     keyBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
-    
-    [self updateKeyBackupBanner];
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -1482,6 +1493,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             }];
         }
     }
+
+    NSLog(@"[RecentsDataSource] refreshRoomsSections: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 }
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes

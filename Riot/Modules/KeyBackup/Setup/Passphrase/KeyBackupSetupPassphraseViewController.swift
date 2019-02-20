@@ -29,6 +29,8 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var scrollView: UIScrollView!
+    
+    @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var informationLabel: UILabel!
     
     @IBOutlet private weak var formBackgroundView: UIView!
@@ -50,6 +52,9 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     
     @IBOutlet private weak var setPassphraseButtonBackgroundView: UIView!
     @IBOutlet private weak var setPassphraseButton: UIButton!
+    
+    @IBOutlet private weak var setUpRecoveryKeyInfoLabel: UILabel!
+    @IBOutlet private weak var setUpRecoveryKeyButton: UIButton!
     
     // MARK: Private
     
@@ -138,6 +143,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
+        self.titleLabel.textColor = theme.textPrimaryColor
         self.informationLabel.textColor = theme.textPrimaryColor
         
         self.formBackgroundView.backgroundColor = theme.backgroundColor
@@ -147,7 +153,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
                                                                             attributes: [.foregroundColor : theme.placeholderTextColor])
         self.updatePassphraseAdditionalLabel()
         
-        self.formSeparatorView.backgroundColor = theme.separatorColor
+        self.formSeparatorView.backgroundColor = theme.lineBreakColor
         
         self.confirmPassphraseTitleLabel.textColor = theme.textPrimaryColor
         theme.applyStyle(onTextField: self.confirmPassphraseTextField)
@@ -157,6 +163,9 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         
         self.setPassphraseButton.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.setPassphraseButton)
+        
+        self.setUpRecoveryKeyInfoLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onButton: self.setUpRecoveryKeyButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -168,14 +177,15 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     }
     
     private func setupViews() {
-        let skipBarButtonItem = MXKBarButtonItem(title: VectorL10n.keyBackupSetupSkipAction, style: .plain) { [weak self] in
-            self?.skipButtonAction()
+        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+            self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = skipBarButtonItem
+        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         self.scrollView.keyboardDismissMode = .interactive
         
+        self.titleLabel.text = VectorL10n.keyBackupSetupPassphraseTitle
         self.informationLabel.text = VectorL10n.keyBackupSetupPassphraseInfo
         
         self.passphraseTitleLabel.text = VectorL10n.keyBackupSetupPassphrasePassphraseTitle
@@ -237,7 +247,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
             textColor = self.theme.tintColor
         } else {
             text = VectorL10n.keyBackupSetupPassphrasePassphraseInvalid
-            textColor = self.theme.notificationPrimaryColor
+            textColor = self.theme.noticeColor
         }
         
         self.passphraseAdditionalLabel.text = text
@@ -254,7 +264,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
             textColor = self.theme.tintColor
         } else {
             text = VectorL10n.keyBackupSetupPassphraseConfirmPassphraseInvalid
-            textColor = self.theme.notificationPrimaryColor
+            textColor = self.theme.noticeColor
         }
         
         self.confirmPassphraseAdditionalLabel.text = text
@@ -360,7 +370,11 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         self.viewModel.process(viewAction: .setupPassphrase)
     }
     
-    private func skipButtonAction() {
+    @IBAction private func setUpRecoveryKeyButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .setupRecoveryKey)
+    }
+    
+    private func cancelButtonAction() {
         self.viewModel.process(viewAction: .skip)
     }
 }

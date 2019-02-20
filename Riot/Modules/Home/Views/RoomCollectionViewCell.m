@@ -126,7 +126,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             if (0 < roomCellData.notificationCount)
             {
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.notificationPrimaryColor : ThemeService.shared.theme.notificationSecondaryColor;
+                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
                 
                 self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
@@ -147,7 +147,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         else if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite)
         {
             self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-            self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.notificationPrimaryColor;
+            self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.noticeColor;
             
             self.missedNotifAndUnreadBadgeLabel.text = @"!";
             [self.missedNotifAndUnreadBadgeLabel sizeToFit];

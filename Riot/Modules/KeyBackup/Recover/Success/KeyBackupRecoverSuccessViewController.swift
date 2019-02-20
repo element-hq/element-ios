@@ -78,7 +78,7 @@ final class KeyBackupRecoverSuccessViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        let shieldImage = Asset.Images.shield.image.withRenderingMode(.alwaysTemplate)
+        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
         self.informationLabel.text = VectorL10n.keyBackupRecoverSuccessInfo

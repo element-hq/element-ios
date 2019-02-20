@@ -19,6 +19,6 @@ import Foundation
 /// KeyBackupRecoverFromRecoveryKeyViewController view state
 enum KeyBackupRecoverFromRecoveryKeyViewState {
     case loading
-    case loaded(totalKeys: UInt)
+    case loaded
     case error(Error)
 }

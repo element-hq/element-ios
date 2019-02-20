@@ -39,11 +39,11 @@ extension UIViewController {
     ///   - viewController: The child view controller to add.
     ///   - view: The view on which to add the child view controller view.
     func vc_addChildViewController(viewController: UIViewController, onView view: UIView) {
-        self.addChildViewController(viewController)
+        self.addChild(viewController)
         
         viewController.view.frame = view.bounds
         view.vc_addSubViewMatchingParent(viewController.view)
-        viewController.didMove(toParentViewController: self)
+        viewController.didMove(toParent: self)
     }
     
     
@@ -51,9 +51,9 @@ extension UIViewController {
     ///
     /// - Parameter viewController: The child view controller to remove.
     func vc_removeChildViewController(viewController: UIViewController) {
-        viewController.willMove(toParentViewController: nil)
+        viewController.willMove(toParent: nil)
         viewController.view.removeFromSuperview()
-        viewController.removeFromParentViewController()
+        viewController.removeFromParent()
     }
     
     

@@ -137,8 +137,7 @@
 {
     [super customizeViewRendering];
 
-    // Use same color as navigation bar
-    self.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.backgroundColor = UIColor.clearColor;
     self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.baseTextPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
 }
 
