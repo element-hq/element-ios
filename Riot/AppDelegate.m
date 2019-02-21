@@ -20,6 +20,7 @@
 
 #import <Intents/Intents.h>
 #import <PushKit/PushKit.h>
+#import <Contacts/Contacts.h>
 
 #import "RecentsDataSource.h"
 #import "RoomDataSource.h"
@@ -3402,7 +3403,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)refreshLocalContacts
 {
     // Check whether the application is allowed to access the local contacts.
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
     {
         // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
         if (![MXKAppSettings standardAppSettings].syncLocalContacts)

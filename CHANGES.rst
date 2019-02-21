@@ -5,6 +5,7 @@ Improvements:
  * Upgrade MatrixKit version ([v0.9.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.6).
  * Maintenance: Update cocopoads and pods. Automatic update to Swift4.2.
  * Add app store description as app string resource to make them available for translation on weblate (#2201).
+ * Update deprecated contact availability checks (#2222).
 
 Bug fix:
  * Reskin: status bar text is no more readable on iPad (#2276).
