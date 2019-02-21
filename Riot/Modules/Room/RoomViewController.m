@@ -449,7 +449,7 @@
     self.expandedHeaderContainer.backgroundColor = ThemeService.shared.theme.baseColor;
     self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
-    missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.backgroundColor;
+    missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     

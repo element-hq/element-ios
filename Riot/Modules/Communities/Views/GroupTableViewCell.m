@@ -47,7 +47,7 @@
     
     if (self.missedNotifAndUnreadBadgeLabel)
     {
-        self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.backgroundColor;
+        self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
     }
     
     self.groupAvatar.defaultBackgroundColor = [UIColor clearColor];
