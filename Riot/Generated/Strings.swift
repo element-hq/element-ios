@@ -1126,10 +1126,6 @@ internal enum VectorL10n {
   internal static var roomDetailsAdvancedE2eEncryptionEnabled: String { 
     return VectorL10n.tr("Vector", "room_details_advanced_e2e_encryption_enabled") 
   }
-  /// End-to-end encryption is experimental and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nOnce encryption is enabled for a room it cannot be turned off again (for now).\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.
-  internal static var roomDetailsAdvancedE2eEncryptionPromptMessage: String { 
-    return VectorL10n.tr("Vector", "room_details_advanced_e2e_encryption_prompt_message") 
-  }
   /// Enable encryption (warning: cannot be disabled again!)
   internal static var roomDetailsAdvancedEnableE2eEncryption: String { 
     return VectorL10n.tr("Vector", "room_details_advanced_enable_e2e_encryption") 

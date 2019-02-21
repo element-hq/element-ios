@@ -3421,48 +3421,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 {
     if (theSwitch.on)
     {
-        // Prompt here user before turning on the data encryption
-        __weak typeof(self) weakSelf = self;
-        
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
-                                                           message:NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_prompt_message", @"Vector", nil)
-                                                    preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                           }
-                                                           
-                                                           // Reset switch change
-                                                           theSwitch.on = NO;
-                                                           
-                                                       }]];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                               
-                                                               self->updatedItemsDict[kRoomSettingsEncryptionKey] = @(YES);
-                                                               
-                                                               [self getNavigationItem].rightBarButtonItem.enabled = self->updatedItemsDict.count;
-                                                           }
-                                                           
-                                                       }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCEnableEncryptionAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+        updatedItemsDict[kRoomSettingsEncryptionKey] = @(YES);
+
+        [self getNavigationItem].rightBarButtonItem.enabled = self->updatedItemsDict.count;
     }
     else
     {
