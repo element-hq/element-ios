@@ -31,7 +31,7 @@ class ClosureSleeve {
 }
 
 extension UIControl {
-    func vc_addAction(for controlEvents: UIControlEvents = .primaryActionTriggered, action: @escaping () -> ()) {
+    func vc_addAction(for controlEvents: UIControl.Event = .primaryActionTriggered, action: @escaping () -> ()) {
         let sleeve = ClosureSleeve(attachTo: self, closure: action)
         addTarget(sleeve, action: #selector(ClosureSleeve.invoke), for: controlEvents)
     }

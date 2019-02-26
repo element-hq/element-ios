@@ -779,7 +779,7 @@
     
     // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
     // to be able to convert it into a legal URL string.
-    NSString *absoluteURLString = [URL.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *absoluteURLString = [URL.absoluteString stringByRemovingPercentEncoding];
     
     // If the link can be open it by the app, let it do
     if ([Tools isUniversalLink:URL])
@@ -869,7 +869,8 @@
         shouldInteractWithURL = NO;
         
         // Open the group or preview it
-        NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSString *fragment = [NSString stringWithFormat:@"/group/%@",
+                        [MXTools encodeURIComponent:absoluteURLString]];
         [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
     }
     

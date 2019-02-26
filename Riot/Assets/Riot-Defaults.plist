@@ -8,10 +8,6 @@
 	<true/>
 	<key>pushGatewayURL</key>
 	<string>https://matrix.org/_matrix/push/v1/notify</string>
-	<key>pusherAppIdDev</key>
-	<string>im.vector.app.ios.dev</string>
-	<key>pusherAppIdProd</key>
-	<string>im.vector.app.ios.prod</string>
 	<key>pushKitAppIdProd</key>
 	<string>im.vector.app.ios.voip.prod</string>
 	<key>identityserverurl</key>

@@ -1126,10 +1126,6 @@ internal enum VectorL10n {
   internal static var roomDetailsAdvancedE2eEncryptionEnabled: String { 
     return VectorL10n.tr("Vector", "room_details_advanced_e2e_encryption_enabled") 
   }
-  /// End-to-end encryption is experimental and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nOnce encryption is enabled for a room it cannot be turned off again (for now).\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.
-  internal static var roomDetailsAdvancedE2eEncryptionPromptMessage: String { 
-    return VectorL10n.tr("Vector", "room_details_advanced_e2e_encryption_prompt_message") 
-  }
   /// Enable encryption (warning: cannot be disabled again!)
   internal static var roomDetailsAdvancedEnableE2eEncryption: String { 
     return VectorL10n.tr("Vector", "room_details_advanced_enable_e2e_encryption") 
@@ -2333,6 +2329,14 @@ internal enum VectorL10n {
   /// Start
   internal static var start: String { 
     return VectorL10n.tr("Vector", "start") 
+  }
+  /// Communicate, your way.\n\nA chat app, under your control and entirely flexible. Riot lets you communicate the way you want. Made for [matrix] - the standard for open, decentralised communication.\n\nGet a free matrix.org account, get your own server at https://modular.im, or use another Matrix server.\n\nWhy choose Riot.im?\n\nCOMPLETE COMMUNICATION: Build rooms around your teams, your friends, your community - however you like! Chat, share files, add widgets and make voice and video calls - all free of charge.\n\nPOWERFUL INTEGRATIONS: Use Riot.im with the tools you know and love. With Riot.im you can even chat with users and groups on other chat apps.\n\nPRIVATE AND SECURE: Keep your conversations secret. State of the art end-to-end encryption ensures that private communication stays private.\n\nOPEN, NOT CLOSED: Open source, and built on Matrix. Own your own data by hosting your own server, or selecting one you trust.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and online at https://riot.im.
+  internal static var storeFullDescription: String { 
+    return VectorL10n.tr("Vector", "store_full_description") 
+  }
+  /// Secure decentralised chat/VoIP
+  internal static var storeShortDescription: String { 
+    return VectorL10n.tr("Vector", "store_short_description") 
   }
   /// Favourites
   internal static var titleFavourites: String { 
