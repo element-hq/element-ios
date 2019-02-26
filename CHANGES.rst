@@ -7,6 +7,7 @@ Improvements:
  * Add app store description as app string resource to make them available for translation on weblate (#2201).
  * Update deprecated contact availability checks (#2222).
  * RoomVC: Remove the beta warning modal when enabling e2e in a room (#2239).
+ * Fastlane: Update to Xcode 10.1 (#2202).
 
 Bug fix:
  * Reskin: status bar text is no more readable on iPad (#2276).
