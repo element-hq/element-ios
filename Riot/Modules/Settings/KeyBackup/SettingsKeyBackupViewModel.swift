@@ -48,16 +48,12 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
             self.checkKeyBackupState()
         case .create:
             viewDelegate.settingsKeyBackupViewModelShowKeyBackupSetup(self)
-            break
         case .restore(let keyBackupVersion):
             viewDelegate.settingsKeyBackup(self, showKeyBackupRecover: keyBackupVersion)
-            break
         case .confirmDelete(let keyBackupVersion):
             viewDelegate.settingsKeyBackup(self, showKeyBackupDeleteConfirm: keyBackupVersion)
-            break
         case .delete(let keyBackupVersion):
             self.deleteKeyBackupVersion(keyBackupVersion)
-            break
         }
     }
 
@@ -76,15 +72,14 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
                     return
                 }
 
-                sself.computeState(withBackupVersionTrust:keyBackupVersionTrust)
+                sself.computeState(withBackupVersionTrust: keyBackupVersionTrust)
             })
-        }
-        else {
+        } else {
             computeState()
         }
     }
 
-    private func computeState(withBackupVersionTrust keyBackupVersionTrust:MXKeyBackupVersionTrust? = nil) {
+    private func computeState(withBackupVersionTrust keyBackupVersionTrust: MXKeyBackupVersionTrust? = nil) {
 
         var viewState: SettingsKeyBackupViewState?
         switch self.keyBackup.state {

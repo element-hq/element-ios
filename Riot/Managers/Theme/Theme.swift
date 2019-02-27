@@ -60,7 +60,7 @@ import UIKit
 
     var scrollBarStyle: UIScrollView.IndicatorStyle { get }
 
-    var keyboardAppearance : UIKeyboardAppearance { get }
+    var keyboardAppearance: UIKeyboardAppearance { get }
 
 
     // MARK: - Colors not defined in the design palette

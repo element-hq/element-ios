@@ -135,7 +135,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         self.recoveryKeyTitleLabel.textColor = theme.textPrimaryColor
         theme.applyStyle(onTextField: self.recoveryKeyTextField)
         self.recoveryKeyTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupRecoverFromRecoveryKeyRecoveryKeyPlaceholder,
-                                                                            attributes: [.foregroundColor : theme.placeholderTextColor])
+                                                                            attributes: [.foregroundColor: theme.placeholderTextColor])
         
         theme.applyStyle(onButton: self.importFileButton)        
         

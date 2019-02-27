@@ -193,7 +193,7 @@ final class KeyBackupSetupRecoveryKeyViewController: UIViewController {
         
         let alertController = UIAlertController(title: VectorL10n.keyBackupSetupSkipAlertTitle,
                                                 message: VectorL10n.keyBackupSetupSkipAlertMessage,
-                                                preferredStyle:.alert)
+                                                preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { action in
             self.viewModel.process(viewAction: .skipAlertContinue)
