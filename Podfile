@@ -4,8 +4,6 @@ platform :ios, "9.0"
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
 
-source 'https://github.com/CocoaPods/Specs.git'
-
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
