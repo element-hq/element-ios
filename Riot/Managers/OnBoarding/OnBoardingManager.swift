@@ -53,16 +53,16 @@ final public class OnBoardingManager: NSObject {
         self.session.matrixRestClient.avatarUrl(forUser: Constants.riotBotMatrixId) { (response) in
 
             switch response {
-            case .success(_):
+            case .success:
 
                 // Create DM room with Riot-bot
                 let httpOperation = self.session.createRoom(name: nil, visibility: .private, alias: nil, topic: nil, invite: [Constants.riotBotMatrixId], invite3PID: nil, isDirect: true, preset: .trustedPrivateChat) { (response) in
 
                     switch response {
-                    case .success(_):
+                    case .success:
                         success?()
                     case .failure(let error):
-                        NSLog("[OnBoardingManager] Create chat with riot-bot failed");
+                        NSLog("[OnBoardingManager] Create chat with riot-bot failed")
                         failure?(error)
                     }
                 }
@@ -71,7 +71,7 @@ final public class OnBoardingManager: NSObject {
                 httpOperation.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
 
             case .failure(let error):
-                NSLog("[OnBoardingManager] riot-bot is unknown or the user hs is non federated. Do not try to create a room with riot-bot");
+                NSLog("[OnBoardingManager] riot-bot is unknown or the user hs is non federated. Do not try to create a room with riot-bot")
                 failure?(error)
             }
         }

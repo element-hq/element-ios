@@ -8,6 +8,7 @@ Improvements:
  * Update deprecated contact availability checks (#2222).
  * RoomVC: Remove the beta warning modal when enabling e2e in a room (#2239).
  * Fastlane: Update to Xcode 10.1 (#2202).
+ * Use SwiftLint to enforce Swift style and conventions (PR #2300).
 
 Bug fix:
  * Reskin: status bar text is no more readable on iPad (#2276).

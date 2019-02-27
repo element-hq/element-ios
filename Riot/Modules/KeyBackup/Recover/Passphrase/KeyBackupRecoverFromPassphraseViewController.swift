@@ -130,16 +130,16 @@ final class KeyBackupRecoverFromPassphraseViewController: UIViewController {
         self.passphraseTitleLabel.textColor = theme.textPrimaryColor
         theme.applyStyle(onTextField: self.passphraseTextField)
         self.passphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupRecoverFromPassphrasePassphrasePlaceholder,
-                                                                            attributes: [.foregroundColor : theme.placeholderTextColor])
+                                                                            attributes: [.foregroundColor: theme.placeholderTextColor])
         
         self.theme.applyStyle(onButton: self.passphraseVisibilityButton)
         
         self.recoverButtonBackgroundView.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.recoverButton)
         
-        let unknownRecoveryKeyAttributedString = NSMutableAttributedString(string: VectorL10n.keyBackupRecoverFromPassphraseLostPassphraseActionPart1, attributes: [.foregroundColor : self.theme.textPrimaryColor])
-        let unknownRecoveryKeyAttributedStringPart2 = NSAttributedString(string: VectorL10n.keyBackupRecoverFromPassphraseLostPassphraseActionPart2, attributes: [.foregroundColor : self.theme.tintColor])
-        let unknownRecoveryKeyAttributedStringPart3 = NSAttributedString(string: VectorL10n.keyBackupRecoverFromPassphraseLostPassphraseActionPart3, attributes: [.foregroundColor : self.theme.textPrimaryColor])
+        let unknownRecoveryKeyAttributedString = NSMutableAttributedString(string: VectorL10n.keyBackupRecoverFromPassphraseLostPassphraseActionPart1, attributes: [.foregroundColor: self.theme.textPrimaryColor])
+        let unknownRecoveryKeyAttributedStringPart2 = NSAttributedString(string: VectorL10n.keyBackupRecoverFromPassphraseLostPassphraseActionPart2, attributes: [.foregroundColor: self.theme.tintColor])
+        let unknownRecoveryKeyAttributedStringPart3 = NSAttributedString(string: VectorL10n.keyBackupRecoverFromPassphraseLostPassphraseActionPart3, attributes: [.foregroundColor: self.theme.textPrimaryColor])
         
         unknownRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart2)
         unknownRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart3)

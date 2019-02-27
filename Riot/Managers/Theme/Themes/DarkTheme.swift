@@ -62,26 +62,26 @@ class DarkTheme: NSObject, Theme {
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
     
     func applyStyle(onTabBar tabBar: UITabBar) {
-        tabBar.tintColor = self.tintColor;
-        tabBar.barTintColor = self.headerBackgroundColor;
-        tabBar.isTranslucent = false;
+        tabBar.tintColor = self.tintColor
+        tabBar.barTintColor = self.headerBackgroundColor
+        tabBar.isTranslucent = false
     }
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.tintColor = self.baseTextPrimaryColor;
+        navigationBar.tintColor = self.baseTextPrimaryColor
         navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: self.baseTextPrimaryColor
         ]
-        navigationBar.barTintColor = self.baseColor;
+        navigationBar.barTintColor = self.baseColor
 
         // The navigation bar needs to be opaque so that its background color is the expected one
-        navigationBar.isTranslucent = false;
+        navigationBar.isTranslucent = false
     }
 
     func applyStyle(onSearchBar searchBar: UISearchBar) {
         searchBar.barStyle = .black
-        searchBar.tintColor = self.searchPlaceholderColor;
-        searchBar.barTintColor = self.headerBackgroundColor;        
+        searchBar.tintColor = self.searchPlaceholderColor
+        searchBar.barTintColor = self.headerBackgroundColor        
     }
     
     func applyStyle(onTextField texField: UITextField) {
