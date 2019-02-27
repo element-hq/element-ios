@@ -2964,6 +2964,7 @@
 			buildConfigurationList = F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Riot" */;
 			buildPhases = (
 				E34E30CD2CEE4A42FF8081D6 /* [CP] Check Pods Manifest.lock */,
+				B1D1AC122225A43600D64A6C /* ⚠️ SwiftLint */,
 				B1098BD821ECD3ED000DDA48 /* 🛠 SwiftGen */,
 				F094A99E1B78D8F000B1FBBF /* Sources */,
 				F094A99F1B78D8F000B1FBBF /* Frameworks */,
@@ -3362,6 +3363,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config Tools/SwiftGen/swiftgen-config.yml\n";
+		};
+		B1D1AC122225A43600D64A6C /* ⚠️ SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "⚠️ SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
 		E34E30CD2CEE4A42FF8081D6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
