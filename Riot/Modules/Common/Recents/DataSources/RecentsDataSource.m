@@ -584,10 +584,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         sectionArray = serverNoticeCellDataArray;
     }
-    
+
+    BOOL highlight = NO;
     for (id<MXKRecentCellDataStoring> cellData in sectionArray)
     {
         count += cellData.notificationCount;
+        highlight |= (cellData.highlightCount > 0);
     }
     
     if (count)
@@ -611,7 +613,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         missedNotifAndUnreadBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bgViewWidth, 20)];
         [missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
-        missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.headerTextSecondaryColor;
+        missedNotifAndUnreadBadgeBgView.backgroundColor = highlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
         
         [missedNotifAndUnreadBadgeBgView addSubview:missedNotifAndUnreadBadgeLabel];
         missedNotifAndUnreadBadgeLabel.center = missedNotifAndUnreadBadgeBgView.center;
