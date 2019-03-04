@@ -119,7 +119,10 @@
     MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
     [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
     self.authInputsView = authInputsView;
-    
+
+    // Listen to action within the child view
+    [authInputsView.ssoButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -365,6 +368,21 @@
     }
 }
 
+- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
+{
+    [super handleAuthenticationSession:authSession];
+
+    // Hide "Forgot password" and "Log in" buttons in case of SSO
+    [self updateForgotPwdButtonVisibility];
+
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+    }
+    self.submitButton.hidden = authInputsview.isSingleSignOnRequired;
+}
+
 - (IBAction)onButtonPressed:(id)sender
 {
     if (sender == self.customServersTickButton)
@@ -476,6 +494,11 @@
         }
         
         [super onButtonPressed:self.submitButton];
+    }
+    else if (sender == ((AuthInputsView*)self.authInputsView).ssoButton)
+    {
+        // Do SSO using the fallback URL
+        [self showAuthenticationFallBackView];
     }
     else
     {
@@ -592,7 +615,13 @@
 
 - (void)updateForgotPwdButtonVisibility
 {
-    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin);
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+    }
+
+    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin) || authInputsview.isSingleSignOnRequired;
     
     // Adjust minimum leading constraint of the submit button
     if (self.forgotPasswordButton.isHidden)

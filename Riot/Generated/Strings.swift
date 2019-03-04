@@ -102,6 +102,10 @@ internal enum VectorL10n {
   internal static var authLogin: String { 
     return VectorL10n.tr("Vector", "auth_login") 
   }
+  /// Sign in with single sign-on
+  internal static var authLoginSingleSignOn: String { 
+    return VectorL10n.tr("Vector", "auth_login_single_sign_on") 
+  }
   /// Missing email address
   internal static var authMissingEmail: String { 
     return VectorL10n.tr("Vector", "auth_missing_email") 
