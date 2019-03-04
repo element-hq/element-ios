@@ -119,7 +119,10 @@
     MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
     [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
     self.authInputsView = authInputsView;
-    
+
+    // Listen to action within the child view
+    [authInputsView.ssoButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -143,7 +146,10 @@
     self.view.backgroundColor = ThemeService.shared.theme.baseColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    // Style the authentication fallback webview screen so that its header matches to navigation bar style
+    self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.cancelAuthFallbackButton.tintColor = ThemeService.shared.theme.baseTextPrimaryColor;
 
     if (self.homeServerTextField.placeholder)
     {
@@ -321,6 +327,9 @@
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
 {
     super.userInteractionEnabled = userInteractionEnabled;
+
+    // Reset
+    self.rightBarButtonItem.enabled = YES;
     
     // Show/Hide server options
     if (_optionsContainer.hidden == userInteractionEnabled)
@@ -341,19 +350,33 @@
     }
     else
     {
+        AuthInputsView *authInputsview;
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        {
+            authInputsview = (AuthInputsView*)self.authInputsView;
+        }
+
         // The right bar button is used to switch the authentication type.
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+            if (!authInputsview.isSingleSignOnRequired)
+            {
+                self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+            }
+            else
+            {
+                // Disable register on SSO
+                self.rightBarButtonItem.enabled = NO;
+                self.rightBarButtonItem.title = nil;
+            }
         }
         else if (self.authType == MXKAuthenticationTypeRegister)
         {
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
             
             // Restore the back button
-            if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+            if (authInputsview)
             {
-                AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
                 [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:authInputsview.thirdPartyIdentifiersHidden];
             }
         }
@@ -363,6 +386,21 @@
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
         }
     }
+}
+
+- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
+{
+    [super handleAuthenticationSession:authSession];
+
+    // Hide "Forgot password" and "Log in" buttons in case of SSO
+    [self updateForgotPwdButtonVisibility];
+
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+    }
+    self.submitButton.hidden = authInputsview.isSingleSignOnRequired;
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -476,6 +514,13 @@
         }
         
         [super onButtonPressed:self.submitButton];
+    }
+    else if (sender == ((AuthInputsView*)self.authInputsView).ssoButton)
+    {
+        // Do SSO using the fallback URL
+        [self showAuthenticationFallBackView];
+
+        [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     }
     else
     {
@@ -592,7 +637,13 @@
 
 - (void)updateForgotPwdButtonVisibility
 {
-    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin);
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+    }
+
+    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin) || authInputsview.isSingleSignOnRequired;
     
     // Adjust minimum leading constraint of the submit button
     if (self.forgotPasswordButton.isHidden)
