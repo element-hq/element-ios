@@ -2753,6 +2753,8 @@
     {
         // Try to catch universal link supported by the app
         NSURL *url = userInfo[kMXKRoomBubbleCellUrl];
+        // Retrieve the type of interaction expected with the URL (See UITextItemInteraction)
+        NSNumber *urlItemInteractionValue = userInfo[kMXKRoomBubbleCellUrlItemInteraction];
         
         // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
         // to be able to convert it into a legal URL string.
@@ -2831,6 +2833,37 @@
                 }
             }
         }
+        else if (url && urlItemInteractionValue)
+        {
+            // Fallback case for external links
+            
+            // TODO: Use UITextItemInteraction enum when minimum deployement target will be iOS 10
+            switch (urlItemInteractionValue.integerValue) {
+                case 0: //UITextItemInteractionInvokeDefaultAction
+                {                    
+                    [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
+                        if (!success)
+                        {
+                            [self showUnableToOpenLinkErrorAlert];
+                        }
+                    }];
+                    shouldDoAction = NO;
+                }
+                    break;
+                case 1: //UITextItemInteractionPresentActions
+                    // Long press on link, let MXKRoomBubbleTableViewCell UITextView present the default contextual menu.
+                    break;
+                case 2: //UITextItemInteractionPreview
+                    // Force touch on link, let MXKRoomBubbleTableViewCell UITextView use default peek and pop behavior.
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            [self showUnableToOpenLinkErrorAlert];
+        }
     }
     
     return shouldDoAction;
@@ -2859,6 +2892,12 @@
     
     // Force table refresh
     [self dataSource:self.roomDataSource didCellChange:nil];
+}
+
+- (void)showUnableToOpenLinkErrorAlert
+{
+    [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
+                                          message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
 }
 
 #pragma mark - Segues
