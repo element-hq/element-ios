@@ -324,6 +324,9 @@
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
 {
     super.userInteractionEnabled = userInteractionEnabled;
+
+    // Reset
+    self.rightBarButtonItem.enabled = YES;
     
     // Show/Hide server options
     if (_optionsContainer.hidden == userInteractionEnabled)
@@ -344,19 +347,33 @@
     }
     else
     {
+        AuthInputsView *authInputsview;
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        {
+            authInputsview = (AuthInputsView*)self.authInputsView;
+        }
+
         // The right bar button is used to switch the authentication type.
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+            if (!authInputsview.isSingleSignOnRequired)
+            {
+                self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+            }
+            else
+            {
+                // Disable register on SSO
+                self.rightBarButtonItem.enabled = NO;
+                self.rightBarButtonItem.title = nil;
+            }
         }
         else if (self.authType == MXKAuthenticationTypeRegister)
         {
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
             
             // Restore the back button
-            if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+            if (authInputsview)
             {
-                AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
                 [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:authInputsview.thirdPartyIdentifiersHidden];
             }
         }
