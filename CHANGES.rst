@@ -15,6 +15,7 @@ Bug fix:
  * Reskin: status bar text is no more readable on iPad (#2276).
  * Reskin: Text in badges should be white in dark theme (#2283).
  * Crash in Settings in 0.8.1 (#2295).
+ * Quickly tapping on a URL in a message highlights the message rather than opening the URL (#728).
 
 Changes in 0.8.1 (2019-02-19)
 ===============================================
