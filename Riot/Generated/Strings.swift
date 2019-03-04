@@ -1434,6 +1434,10 @@ internal enum VectorL10n {
   internal static var roomMessageShortPlaceholder: String { 
     return VectorL10n.tr("Vector", "room_message_short_placeholder") 
   }
+  /// Unable to open the link.
+  internal static var roomMessageUnableOpenLinkErrorMessage: String { 
+    return VectorL10n.tr("Vector", "room_message_unable_open_link_error_message") 
+  }
   /// %d new message
   internal static func roomNewMessageNotification(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "room_new_message_notification", p1)
