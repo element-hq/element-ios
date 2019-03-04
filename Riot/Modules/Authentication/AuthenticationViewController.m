@@ -146,7 +146,10 @@
     self.view.backgroundColor = ThemeService.shared.theme.baseColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    // Style the authentication fallback webview screen so that its header matches to navigation bar style
+    self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.cancelAuthFallbackButton.tintColor = ThemeService.shared.theme.baseTextPrimaryColor;
 
     if (self.homeServerTextField.placeholder)
     {
@@ -516,6 +519,8 @@
     {
         // Do SSO using the fallback URL
         [self showAuthenticationFallBackView];
+
+        [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     }
     else
     {
