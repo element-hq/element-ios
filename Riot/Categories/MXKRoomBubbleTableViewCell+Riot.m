@@ -444,6 +444,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     [editButton addTarget:self action:@selector(onEditButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     [editButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [editButton setAccessibilityLabel:NSLocalizedStringFromTable(@"room_event_action_edit_button", @"Vector", nil)];]
     editButton.accessibilityIdentifier = @"editButton";
     [self.bubbleInfoContainer addSubview:editButton];
     self.bubbleInfoContainer.userInteractionEnabled = YES;
