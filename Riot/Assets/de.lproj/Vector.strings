@@ -513,6 +513,7 @@
 "room_event_action_ban_prompt_reason" = "Grund für die Verbannung des Benutzers";
 "room_action_send_photo_or_video" = "Sende Foto oder Video";
 "room_action_send_sticker" = "Sende Sticker";
+"room_event_action_edit_button" = "Menü für Post."
 "settings_deactivate_account" = "DEAKTIVIERE ACCOUNT";
 "settings_deactivate_my_account" = "Deaktivere meinen Account";
 "widget_sticker_picker_no_stickerpacks_alert" = "Du hast aktuell keine Sticker-Packete aktiviert.";
