@@ -37,9 +37,19 @@ final class SignOutAlertPresenter: NSObject {
     
     // MARK: - Public
     
-    func present(for keyBackupState: MXKeyBackupState, from viewController: UIViewController, sourceView: UIView?, animated: Bool) {
+    func present(for keyBackupState: MXKeyBackupState,
+                 areThereKeysToBackup: Bool,
+                 from viewController: UIViewController,
+                 sourceView: UIView?,
+                 animated: Bool) {
         self.sourceView = sourceView
         self.presentingViewController = viewController
+        
+        guard areThereKeysToBackup else {
+            // If there is no keys to backup do not mention key backup and present same alert as if we had an existing backup.
+            self.presentExistingBackupAlert(animated: animated)
+            return
+        }
                 
         switch keyBackupState {
         case MXKeyBackupStateUnknown, MXKeyBackupStateDisabled, MXKeyBackupStateCheckingBackUpOnHomeserver:

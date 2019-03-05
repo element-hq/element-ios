@@ -175,8 +175,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (BOOL)updateKeyBackupBanner
 {
     KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
-    
-    if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
+        
+    if (self.recentsDataSourceMode == RecentsDataSourceModeHome && self.mxSession.crypto.backup.hasKeysToBackup)
     {
         KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
         

@@ -19,6 +19,7 @@ Bug fix:
  * Crash in Settings in 0.8.1 (#2295).
  * Quickly tapping on a URL in a message highlights the message rather than opening the URL (#728).
  * 3D touching a link can lock the app (#1818).
+ * Do not display key backup UI if the user has no e2e rooms (#2304).
 
 Changes in 0.8.1 (2019-02-19)
 ===============================================
