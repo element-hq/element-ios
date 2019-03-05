@@ -26,13 +26,13 @@
 
 #pragma mark - Room tags
 
-- (void)setRoomTag:(NSString*)tag completion:(void (^)())completion
+- (void)setRoomTag:(NSString*)tag completion:(void (^)(void))completion
 {
     NSString* oldTag = nil;
     
     if (self.accountData.tags && self.accountData.tags.count)
     {
-        oldTag = [self.accountData.tags.allKeys objectAtIndex:0];
+        oldTag = self.accountData.tags.allKeys[0];
     }
     
     // support only kMXRoomTagFavourite or kMXRoomTagLowPriority tags by now
@@ -43,7 +43,7 @@
     
     NSString* tagOrder = [self.mxSession tagOrderToBeAtIndex:0 from:NSNotFound withTag:tag];
     
-    NSLog(@"[MXRoom+Riot] Update the room %@ tag from %@ to %@ with tag order %@", self.state.roomId, oldTag, tag, tagOrder);
+    NSLog(@"[MXRoom+Riot] Update the room %@ tag from %@ to %@ with tag order %@", self.roomId, oldTag, tag, tagOrder);
     
     [self replaceTag:oldTag
                byTag:tag
@@ -57,7 +57,7 @@
                  
              } failure:^(NSError *error) {
                  
-                 NSLog(@"[MXRoom+Riot] Failed to update the tag %@ of room (%@)", tag, self.state.roomId);
+                 NSLog(@"[MXRoom+Riot] Failed to update the tag %@ of room (%@)", tag, self.roomId);
                  NSString *userId = self.mxSession.myUser.userId;
                  
                  // Notify user
@@ -95,7 +95,7 @@
                         MXJSONModelSetString(key, ruleCondition.parameters[@"key"]);
                         MXJSONModelSetString(pattern, ruleCondition.parameters[@"pattern"]);
                         
-                        if (key && pattern && [key isEqualToString:@"room_id"] && [pattern isEqualToString:self.state.roomId])
+                        if (key && pattern && [key isEqualToString:@"room_id"] && [pattern isEqualToString:self.roomId])
                         {
                             return rule.enabled;
                         }
@@ -126,7 +126,7 @@
     return NO;
 }
 
-- (void)mute:(void (^)())completion
+- (void)mute:(void (^)(void))completion
 {
     // Check the current notification mode
     if (self.isMute)
@@ -204,7 +204,7 @@
     }
 }
 
-- (void)mentionsOnly:(void (^)())completion
+- (void)mentionsOnly:(void (^)(void))completion
 {
     // Check the current notification mode
     if (self.isMentionsOnly)
@@ -282,7 +282,7 @@
     }
 }
 
-- (void)allMessages:(void (^)())completion
+- (void)allMessages:(void (^)(void))completion
 {
     // Check the current notification mode
     if (!self.isMentionsOnly && !self.isMute)
@@ -337,7 +337,7 @@
         {
             // the rule id is the room Id
             // it is the server trick to avoid duplicated rule on the same room.
-            if ([rule.ruleId isEqualToString:self.state.roomId])
+            if ([rule.ruleId isEqualToString:self.roomId])
             {
                 return rule;
             }
@@ -358,7 +358,7 @@
         {
             // the rule id is the room Id
             // it is the server trick to avoid duplicated rule on the same room.
-            if ([rule.ruleId isEqualToString:self.state.roomId])
+            if ([rule.ruleId isEqualToString:self.roomId])
             {
                 return rule;
             }
@@ -368,7 +368,7 @@
     return nil;
 }
 
-- (void)addPushRuleToMentionsOnly:(void (^)())completion
+- (void)addPushRuleToMentionsOnly:(void (^)(void))completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     
@@ -421,13 +421,13 @@
         }];
     }
     
-    [notificationCenter addRoomRule:self.state.roomId
+    [notificationCenter addRoomRule:self.roomId
                              notify:NO
                               sound:NO
                           highlight:NO];
 }
 
-- (void)addPushRuleToMute:(void (^)())completion
+- (void)addPushRuleToMute:(void (^)(void))completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     
@@ -480,14 +480,14 @@
         }];
     }
     
-    [notificationCenter addOverrideRuleWithId:self.state.roomId
-                                   conditions:@[@{@"kind":@"event_match", @"key":@"room_id", @"pattern":self.state.roomId}]
+    [notificationCenter addOverrideRuleWithId:self.roomId
+                                   conditions:@[@{@"kind":@"event_match", @"key":@"room_id", @"pattern":self.roomId}]
                                        notify:NO
                                         sound:NO
                                     highlight:NO];
 }
 
-- (void)removePushRule:(MXPushRule *)rule completion:(void (^)())completion
+- (void)removePushRule:(MXPushRule *)rule completion:(void (^)(void))completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     
@@ -543,7 +543,7 @@
     [notificationCenter removeRule:rule];
 }
 
-- (void)enablePushRule:(MXPushRule *)rule completion:(void (^)())completion
+- (void)enablePushRule:(MXPushRule *)rule completion:(void (^)(void))completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     

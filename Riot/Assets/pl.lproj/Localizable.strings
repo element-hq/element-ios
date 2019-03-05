@@ -1,0 +1,38 @@
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "Wiadomość od %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ w %@: %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Otrzymałeś(-aś) wiadomość w %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Otrzymałeś(-aś) wiadomość";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ nowych wiadomości w %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ nowych wiadomości od %@ i %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ nowych wiadomości od %@, %@ i %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ nowych wiadomości od %@, %@ i innych";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ nowych wiadomości w %@, %@ i innych";
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ wysłał(a) Tobie zdjęcie %@";
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ wysłał(a) Tobie zdjęcie %@ w %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ nowych wiadomości w %@";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ nowych wiadomości w %@ i %@";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ zaprosił(a) Ciebie do %@";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ zaprosił(a) Ciebie do rozmowy grupowej";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ zaprosił(a) Ciebie do rozmowy";

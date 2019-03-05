@@ -22,8 +22,9 @@
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
+#import "Analytics.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #pragma mark - Notifications
 /**
@@ -81,7 +82,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 #pragma mark - Application layout handling
 
-- (void)restoreInitialDisplay:(void (^)())completion;
+- (void)restoreInitialDisplay:(void (^)(void))completion;
 
 /**
  Replace the secondary view controller of the split view controller (if any) with the default empty details view controller.
@@ -89,6 +90,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 - (void)restoreEmptyDetailsViewController;
 
 - (UIAlertController*)showErrorAsAlert:(NSError*)error;
+- (UIAlertController*)showAlertWithTitle:(NSString*)title message:(NSString*)message;
 
 #pragma mark - Matrix Sessions handling
 
@@ -127,12 +129,6 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 #pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
-
-#pragma mark - Analytics
-
-- (void)startAnalytics;
-- (void)stopAnalytics;
-- (void)trackScreen:(NSString*)screenName;
 
 #pragma mark - Push notifications
 

@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -30,7 +31,13 @@
     {
         mxkImageView.enableInMemoryCache = YES;
         
-        [mxkImageView setImageURL:[self.mxSession.matrixRestClient urlOfContentThumbnail:self.avatar toFitViewSize:mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+        [mxkImageView setImageURI:self.avatar
+                         withType:nil
+              andImageOrientation:UIImageOrientationUp
+                    toFitViewSize:mxkImageView.frame.size
+                       withMethod:MXThumbnailingMethodCrop
+                     previewImage:avatarImage
+                     mediaManager:self.mxSession.mediaManager];
     }
     else
     {

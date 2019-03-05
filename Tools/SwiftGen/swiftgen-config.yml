@@ -1,0 +1,29 @@
+input_dir: ../../Riot/
+output_dir: ../../Riot/Generated/
+ib:  
+  - inputs: 
+    - Modules/KeyBackup/
+    outputs:
+      - templateName: scenes-swift4
+        output: Storyboards.swift
+strings:
+  inputs: Assets/en.lproj/Vector.strings
+  outputs:
+    - templatePath: Templates/Strings/flat-swift4-vector.stencil
+      output: Strings.swift
+      params:
+        enumName: VectorL10n
+xcassets:  
+  - inputs:
+      - Assets/Images.xcassets
+      - Assets/SharedImages.xcassets
+    outputs:
+      - templateName: swift4
+        output: Images.swift
+plist:
+  inputs: Assets/Riot-Defaults.plist
+  outputs:
+    templateName: runtime-swift4
+    output: RiotDefaults.swift
+    params:
+        enumName: RiotDefaults

@@ -1,5 +1,9 @@
-Riot-ios
+Riot-iOS
 ==========
+
+.. image:: https://img.shields.io/matrix/riot-ios:matrix.org.svg?label=%23riot-ios:matrix.org
+    :alt: #riot-ios:matrix.org
+    :target: https://matrix.to/#/#riot-ios:matrix.org
 
 Riot/iOS is an iOS Matrix client. 
 
@@ -39,7 +43,7 @@ Copyright & License
 
 Copyright (c) 2014-2017 OpenMarket Ltd
 Copyright (c) 2017 Vector Creations Ltd
-Copyright (c) 2017-2018 New Vector Ltd
+Copyright (c) 2017-2019 New Vector Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
 

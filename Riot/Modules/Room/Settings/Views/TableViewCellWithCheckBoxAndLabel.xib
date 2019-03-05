@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="aCf-VI-ocb" customClass="TableViewCellWithCheckBoxAndLabel">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aCf-VI-ocb" id="Eg5-vl-rni">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="selection_untick" translatesAutoresizingMaskIntoConstraints="NO" id="2Q4-aT-dLb">
+                        <rect key="frame" x="14" y="11" width="22" height="22"/>
+                        <accessibility key="accessibilityConfiguration" identifier="CheckBox"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="22" id="5Cp-Fp-6bx"/>
+                            <constraint firstAttribute="height" constant="22" id="XT4-aX-2aO"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xx4-AP-OQs">
+                        <rect key="frame" x="46" y="14" width="42" height="15.5"/>
+                        <accessibility key="accessibilityConfiguration" identifier="Label"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="2Q4-aT-dLb" firstAttribute="leading" secondItem="Eg5-vl-rni" secondAttribute="leading" constant="14" id="3Th-py-oa7"/>
+                    <constraint firstItem="Xx4-AP-OQs" firstAttribute="leading" secondItem="2Q4-aT-dLb" secondAttribute="trailing" constant="10" id="6v0-PW-TqF"/>
+                    <constraint firstItem="2Q4-aT-dLb" firstAttribute="centerY" secondItem="Eg5-vl-rni" secondAttribute="centerY" id="7WY-jC-jXB"/>
+                    <constraint firstItem="Xx4-AP-OQs" firstAttribute="centerY" secondItem="Eg5-vl-rni" secondAttribute="centerY" id="Kf8-5v-riS"/>
+                    <constraint firstItem="Xx4-AP-OQs" firstAttribute="top" secondItem="Eg5-vl-rni" secondAttribute="topMargin" constant="3" id="VAD-zR-M7e"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Xx4-AP-OQs" secondAttribute="bottom" constant="3.5" id="f0y-Ra-PDl"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Xx4-AP-OQs" secondAttribute="trailing" constant="15" id="nft-Mc-NNN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <accessibility key="accessibilityConfiguration" identifier="TableViewCell"/>
+            <connections>
+                <outlet property="checkBox" destination="2Q4-aT-dLb" id="Rh8-NI-beY"/>
+                <outlet property="checkBoxLeadingConstraint" destination="3Th-py-oa7" id="CpM-em-CVk"/>
+                <outlet property="label" destination="Xx4-AP-OQs" id="9lG-Ne-bbb"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="selection_untick" width="22" height="22"/>
+    </resources>
+</document>

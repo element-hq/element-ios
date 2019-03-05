@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JitsiViewController">
+            <connections>
+                <outlet property="backToAppButton" destination="8tr-Cb-ue8" id="aUj-co-7JA"/>
+                <outlet property="jitsiMeetView" destination="7hL-Cs-mak" id="7kR-Te-Klw"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7hL-Cs-mak" customClass="JitsiMeetView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8tr-Cb-ue8">
+                    <rect key="frame" x="10" y="5" width="44" height="44"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="CallVCBackToAppButton"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="3id-6Q-PUF"/>
+                        <constraint firstAttribute="width" constant="44" id="JGj-Jz-SbU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
+                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <inset key="titleEdgeInsets" minX="-69" minY="61" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" image="back_icon">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onBackToAppButtonPressed:" destination="-1" eventType="touchUpInside" id="2wo-nB-Rwd"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="7hL-Cs-mak" secondAttribute="trailing" id="8eH-2r-pjD"/>
+                <constraint firstAttribute="bottom" secondItem="7hL-Cs-mak" secondAttribute="bottom" id="BAo-6X-ovC"/>
+                <constraint firstItem="8tr-Cb-ue8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="5" id="FPS-wy-gK6"/>
+                <constraint firstItem="8tr-Cb-ue8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Xca-R4-1cu"/>
+                <constraint firstItem="7hL-Cs-mak" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="s46-Fx-tT8"/>
+                <constraint firstItem="7hL-Cs-mak" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="x3v-Xl-cKi"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_icon" width="13" height="23"/>
+    </resources>
+</document>

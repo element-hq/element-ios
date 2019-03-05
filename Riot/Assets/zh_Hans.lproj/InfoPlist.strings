@@ -1,5 +1,5 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "Riot 需要使用摄像头权限以拍摄照片、录制视频或进行视频聊天。";
-"NSPhotoLibraryUsageDescription" = "Riot 需要使用图库权限以发送图片与视频。";
-"NSMicrophoneUsageDescription" = "Riot 需要使用麦克风权限以便录制视频或进行通话。";
-"NSContactsUsageDescription" = "Riot 需要使用通讯录权限以 Riot 内部通过邮箱地址或手机号码搜索用户。";
+"NSCameraUsageDescription" = "摄像头权限用于拍摄照片、录制视频或进行视频聊天。";
+"NSPhotoLibraryUsageDescription" = "照片库访问权限用于发送图片与视频。";
+"NSMicrophoneUsageDescription" = "麦克风权限用于录制视频或进行通话。";
+"NSContactsUsageDescription" = "为了向您显示哪些联系人已在使用 Riot 或 Matrix，我们可将您通讯录中的邮件地址和电话号码发送到 Matrix 身份认证服务器。 新版的 Vector.im 不会存储此数据或将其用于任何其他目的。有关详细信息，请参阅应用程序设置中的隐私策略页面。";

@@ -54,4 +54,15 @@
  */
 + (NSURL*)fixURLWithSeveralHashKeys:(NSURL*)url;
 
+#pragma mark - String utilities
+
+/**
+ Change the alpha value of all text colors of an attibuted string.
+
+ @param alpha the alpha value to apply.
+ @param attributedString the attributed string to update.
+ @return a new attributed string.
+ */
++ (NSAttributedString *)setTextColorAlpha:(CGFloat)alpha inAttributedString:(NSAttributedString*)attributedString;
+
 @end

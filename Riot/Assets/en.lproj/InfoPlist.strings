@@ -18,5 +18,5 @@
 "NSCameraUsageDescription" = "The camera is used to take photos and videos, make video calls.";
 "NSPhotoLibraryUsageDescription" = "The photo library is used to send photos and videos.";
 "NSMicrophoneUsageDescription" = "The microphone is used to take videos, make calls.";
-"NSContactsUsageDescription" = "The contact book is used to search for users by email or phone number on Riot.";
+"NSContactsUsageDescription" = "In order to show you which of your contacts are already using Riot or Matrix, we can send the email addresses and phone numbers in your address book to your Matrix Identity Server. New Vector does not store this data or use it for any other purpose. For more information please see the privacy policy page in application settings.";
 

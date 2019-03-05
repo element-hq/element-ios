@@ -117,4 +117,29 @@
     return fixedURL;
 }
 
+#pragma mark - String utilities
+
++ (NSAttributedString *)setTextColorAlpha:(CGFloat)alpha inAttributedString:(NSAttributedString*)attributedString
+{
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
+
+    // Check all attributes one by one
+    [string enumerateAttributesInRange:NSMakeRange(0, attributedString.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop)
+     {
+         // Replace only colored texts
+         if (attrs[NSForegroundColorAttributeName])
+         {
+             UIColor *color = attrs[NSForegroundColorAttributeName];
+             color = [color colorWithAlphaComponent:0.2];
+
+             NSMutableDictionary *newAttrs = [NSMutableDictionary dictionaryWithDictionary:attrs];
+             newAttrs[NSForegroundColorAttributeName] = color;
+
+             [string setAttributes:newAttrs range:range];
+         }
+     }];
+
+    return string;
+}
+
 @end

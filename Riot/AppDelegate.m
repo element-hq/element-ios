@@ -48,13 +48,13 @@
 
 #import "WebViewViewController.h"
 
-@import PiwikTracker;
-
 // Calls
 #import "CallViewController.h"
 
 #import "MXSession+Riot.h"
 #import "MXRoom+Riot.h"
+
+#import "Riot-Swift.h"
 
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
@@ -81,7 +81,7 @@
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
-@interface AppDelegate () <PKPushRegistryDelegate>
+@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate>
 {
     /**
      Reachability observer
@@ -162,7 +162,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      Completion block called when [self popToHomeViewControllerAnimated:] has been
      completed.
      */
-    void (^popToHomeViewControllerCompletion)();
+    void (^popToHomeViewControllerCompletion)(void);
     
     /**
      The listeners to call events.
@@ -200,7 +200,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      Prompt to ask the user to log in again.
      */
     UIAlertController *cryptoDataCorruptedAlert;
-    
+
+    /**
+     Prompt to warn the user about a new backup on the homeserver.
+     */
+    UIAlertController *wrongBackupVersionAlert;
+
     /**
      The launch animation container view
      */
@@ -213,7 +218,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 @property (strong, nonatomic) UIAlertController *logoutConfirmation;
 
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
-@property (weak, nonatomic) UIViewController *gdprConsentViewController;
+@property (weak, nonatomic) UIViewController *gdprConsentController;
+
+/**
+ Used to manage on boarding steps, like create DM with riot bot
+ */
+@property (strong, nonatomic) OnBoardingManager *onBoardingManager;
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
@@ -234,10 +244,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Set the App Group identifier.
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-
-    // Track SDK performance on Google analytics
-    // TODO: needs the same tool
-    //sdkOptions.analyticsDelegate = [[MXGoogleAnalytics alloc] init];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -276,7 +282,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         buildBranch = MAKE_NS_STRING(GIT_BRANCH);
 #endif
 #ifdef BUILD_NUMBER
-        buildNumber = [NSString stringWithFormat:@"#%d", BUILD_NUMBER];
+        buildNumber = [NSString stringWithFormat:@"#%@", @(BUILD_NUMBER)];
 #endif
         if (buildBranch && buildNumber)
         {
@@ -388,7 +394,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     // Log app information
-    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     NSString* appVersion = [AppDelegate theDelegate].appVersion;
     NSString* build = [AppDelegate theDelegate].build;
     
@@ -399,6 +405,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
+    
+    [self setupUserDefaults];
+
+    // Set up theme
+    ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
 
     // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
     NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
@@ -411,17 +422,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             // Move this setting into the shared userDefaults object to apply it to the extensions.
             [sharedUserDefaults setObject:language forKey:@"appLanguage"];
-            [sharedUserDefaults synchronize];
-            
+
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"appLanguage"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
 
-    // Define the navigation bar text color
-    [[UINavigationBar appearance] setTintColor:kRiotColorGreen];
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
@@ -436,15 +443,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
     splitViewController.delegate = self;
     
-    _masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
+    _masterNavigationController = splitViewController.viewControllers[0];
     _masterTabBarController = _masterNavigationController.viewControllers.firstObject;
     
     // Force the background color of the fake view controller displayed when there is no details.
     UINavigationController *secondNavController = self.secondaryNavigationController;
     if (secondNavController)
     {
-        secondNavController.navigationBar.barTintColor = kRiotPrimaryBgColor;
-        secondNavController.topViewController.view.backgroundColor = kRiotPrimaryBgColor;
+        [ThemeService.shared.theme applyStyleOnNavigationBar:secondNavController.navigationBar];
+        secondNavController.topViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     }
     
     // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
@@ -461,15 +468,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     _isAppForeground = NO;
     
-    // Retrieve custom configuration
-    NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
-    NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
-    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    // Configure Google Analytics here if the option is enabled
-    [self startAnalytics];
+    // Configure our analytics. It will indeed start if the option is enabled
+    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
+    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
+    [[Analytics sharedInstance] start];
     
     // Prepare Pushkit handling
     _incomingPushEventIds = [NSMutableDictionary dictionary];
@@ -519,6 +521,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [cryptoDataCorruptedAlert dismissViewControllerAnimated:NO completion:nil];
         cryptoDataCorruptedAlert = nil;
     }
+
+    if (wrongBackupVersionAlert)
+    {
+        [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
+        wrongBackupVersionAlert = nil;
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -563,7 +571,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     _isAppForeground = NO;
     
     // Analytics: Force to send the pending actions
-    [[PiwikTracker shared] dispatch];
+    [[DecryptionFailureTracker sharedInstance] dispatch];
+    [[Analytics sharedInstance] dispatch];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -594,12 +603,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
     
     // Check if there is crash log to send
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
+    if (RiotSettings.shared.enableCrashReport)
     {
         [self checkExceptionToReport];
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    // Check if an initial sync failure occured while the app was in background
+    MXSession *mainSession = self.mxSessions.firstObject;
+    if (mainSession.state == MXSessionStateInitialSyncFailed)
+    {
+        // Inform the end user why the app appears blank
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:NSURLErrorCannotConnectToHost
+                                         userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"homeserver_connection_lost", @"Vector", nil)}];
+
+        [self showErrorAsAlert:error];
+    }
     
     // Register to GDPR consent not given notification
     [self registerUserConsentNotGivenNotification];
@@ -638,7 +659,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Observe crypto data storage corruption
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSessionCryptoDidCorruptData:) name:kMXSessionCryptoDidCorruptDataNotification object:nil];
-    
+
+    // Observe wrong backup version
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
+
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
@@ -746,7 +770,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark - Application layout handling
 
-- (void)restoreInitialDisplay:(void (^)())completion
+- (void)restoreInitialDisplay:(void (^)(void))completion
 {
     // Suspend error notifications during navigation stack change.
     isErrorNotificationSuspended = YES;
@@ -776,6 +800,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible log in again");
                     [self showNotificationAlert:cryptoDataCorruptedAlert];
+                }
+                else if (wrongBackupVersionAlert)
+                {
+                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible wrongBackupVersionAlert");
+                    [self showNotificationAlert:wrongBackupVersionAlert];
+
                 }
                 // Check whether an error notification is pending
                 else if (_errorNotification)
@@ -826,7 +856,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-            emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+            emptyDetailsViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
             
             splitViewController.viewControllers = @[mainViewController, emptyDetailsViewController];
         }
@@ -859,9 +889,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             return nil;
         }
     }
-    
-    [_errorNotification dismissViewControllerAnimated:NO completion:nil];
-    
+
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     if (!title)
@@ -877,13 +905,26 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
     }
     
-    _errorNotification = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    // Switch in offline mode in case of network reachability error
+    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
+    {
+        self.isOffline = YES;
+    }
+
+    return [self showAlertWithTitle:title message:msg];
+}
+
+- (UIAlertController*)showAlertWithTitle:(NSString*)title message:(NSString*)message
+{
+    [_errorNotification dismissViewControllerAnimated:NO completion:nil];
+
+    _errorNotification = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * action) {
-                                                             
+
                                                              [AppDelegate theDelegate].errorNotification = nil;
-                                                             
+
                                                          }]];
     // Display the error notification
     if (!isErrorNotificationSuspended)
@@ -891,13 +932,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [_errorNotification mxk_setAccessibilityIdentifier:@"AppDelegateErrorAlert"];
         [self showNotificationAlert:_errorNotification];
     }
-    
-    // Switch in offline mode in case of network reachability error
-    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
-    {
-        self.isOffline = YES;
-    }
-    
+
     return self.errorNotification;
 }
 
@@ -965,9 +1000,50 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+- (void)keyBackupStateDidChangeNotification:(NSNotification *)notification
+{
+    MXKeyBackup *keyBackup = notification.object;
+
+    if (keyBackup.state == MXKeyBackupStateWrongBackUpVersion)
+    {
+        if (wrongBackupVersionAlert)
+        {
+            [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
+        }
+
+        wrongBackupVersionAlert = [UIAlertController
+                                   alertControllerWithTitle:NSLocalizedStringFromTable(@"e2e_key_backup_wrong_version_title", @"Vector", nil)
+
+                                   message:NSLocalizedStringFromTable(@"e2e_key_backup_wrong_version", @"Vector", nil)
+
+                                   preferredStyle:UIAlertControllerStyleAlert];
+
+        MXWeakify(self);
+        [wrongBackupVersionAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"e2e_key_backup_wrong_version_button_settings"]
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action)
+                                             {
+                                                 MXStrongifyAndReturnIfNil(self);
+                                                 self->wrongBackupVersionAlert = nil;
+
+                                                 // TODO: Open settings
+                                             }]];
+
+        [wrongBackupVersionAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"e2e_key_backup_wrong_version_button_wasme"]
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action)
+                                             {
+                                                 MXStrongifyAndReturnIfNil(self);
+                                                 self->wrongBackupVersionAlert = nil;
+                                             }]];
+
+        [self showNotificationAlert:wrongBackupVersionAlert];
+    }
+}
+
 #pragma mark
 
-- (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
+- (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
     UINavigationController *secondNavController = self.secondaryNavigationController;
     if (secondNavController)
@@ -1015,7 +1091,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         if (popToHomeViewControllerCompletion)
         {
-            void (^popToHomeViewControllerCompletion2)() = popToHomeViewControllerCompletion;
+            void (^popToHomeViewControllerCompletion2)(void) = popToHomeViewControllerCompletion;
             popToHomeViewControllerCompletion = nil;
             
             // Dispatch the completion in order to let navigation stack refresh itself.
@@ -1026,70 +1102,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-#pragma mark - Analytics
-
-- (void)startAnalytics
-{
-    NSDictionary *piwikConfig = [[NSUserDefaults standardUserDefaults] objectForKey:@"piwik"];
-    [PiwikTracker configureSharedInstanceWithSiteID:piwikConfig[@"siteId"]
-                                            baseURL:[NSURL URLWithString:piwikConfig[@"url"]]
-                                          userAgent:@"iOSPiwikTracker"];
-
-    // Check whether the user has enabled the sending of crash reports.
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
-    {
-        [PiwikTracker shared].isOptedOut = NO;
-
-        [[PiwikTracker shared] setCustomVariableWithIndex:1 name:@"App Platform" value:@"iOS Platform"];
-        [[PiwikTracker shared] setCustomVariableWithIndex:2 name:@"App Version" value:[self appVersion]];
-
-        // The language is either the one selected by the user within the app
-        // or, else, the one configured by the OS
-        NSString *language = [NSBundle mxk_language] ? [NSBundle mxk_language] : [[NSBundle mainBundle] preferredLocalizations][0];
-        [[PiwikTracker shared] setCustomVariableWithIndex:4 name:@"Chosen Language" value:language];
-
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        if (account)
-        {
-            [[PiwikTracker shared] setCustomVariableWithIndex:7 name:@"Homeserver URL" value:account.mxCredentials.homeServer];
-            [[PiwikTracker shared] setCustomVariableWithIndex:8 name:@"Identity Server URL" value:account.identityServerURL];
-        }
-
-        // TODO: We should also track device and os version
-        // But that needs to be decided for all platforms
-
-        // Catch and log crashes
-        [MXLogger logCrashes:YES];
-        [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
-
-#ifdef DEBUG
-        // Disable analytics in debug as it pollutes stats
-        [PiwikTracker shared].isOptedOut = YES;
-#endif
-    }
-    else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
-    {
-        NSLog(@"[AppDelegate] The user decided to not ");
-        [PiwikTracker shared].isOptedOut = YES;
-        [MXLogger logCrashes:NO];
-    }
-}
-
-- (void)stopAnalytics
-{
-    [PiwikTracker shared].isOptedOut = YES;
-    [MXLogger logCrashes:NO];
-}
-
-- (void)trackScreen:(NSString *)screenName
-{
-    // Use the same pattern as Android
-    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-    NSString *appVersion = [self appVersion];
-
-    [[PiwikTracker shared] trackWithView:@[@"ios", appName, appVersion, screenName]
-                                     url:nil];
-}
+#pragma mark - Crash handling
 
 // Check if there is a crash log to send to server
 - (void)checkExceptionToReport
@@ -1123,20 +1136,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (!isPushRegistered)
     {
         NSMutableSet* notificationCategories = [NSMutableSet set];
-        if ([[UIMutableUserNotificationAction class] instancesRespondToSelector:@selector(behavior)])
-        {
-            UIMutableUserNotificationAction* quickReply = [[UIMutableUserNotificationAction alloc] init];
-            quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
-            quickReply.identifier = @"inline-reply";
-            quickReply.activationMode = UIUserNotificationActivationModeBackground;
-            quickReply.authenticationRequired = true;
-            quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
 
-            UIMutableUserNotificationCategory* quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
-            quickReplyCategory.identifier = @"QUICK_REPLY";
-            [quickReplyCategory setActions:[NSArray arrayWithObjects:quickReply, nil] forContext:UIUserNotificationActionContextDefault];
-            [notificationCategories addObject:quickReplyCategory];
-        }
+        UIMutableUserNotificationAction* quickReply = [[UIMutableUserNotificationAction alloc] init];
+        quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+        quickReply.identifier = @"inline-reply";
+        quickReply.activationMode = UIUserNotificationActivationModeBackground;
+        quickReply.authenticationRequired = true;
+        quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
+
+        UIMutableUserNotificationCategory* quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
+        quickReplyCategory.identifier = @"QUICK_REPLY";
+        [quickReplyCategory setActions:@[quickReply] forContext:UIUserNotificationActionContextDefault];
+        [notificationCategories addObject:quickReplyCategory];
 
         // Registration on iOS 8 and later
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:notificationCategories];
@@ -1168,6 +1179,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
+// "This block is not a prototype" - don't fix this, or it won't match Apple's definition
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
 {
     if ([identifier isEqualToString: @"inline-reply"])
@@ -1177,37 +1189,42 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
             MXKRoomDataSource* roomDataSource = nil;
+            MXKRoomDataSourceManager* manager;
             for (MXKAccount* account in mxAccounts)
             {
                 MXRoom* room = [account.mxSession roomWithRoomId:roomId];
                 if (room)
                 {
-                    MXKRoomDataSourceManager* manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+                    manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
                     if (manager)
                     {
-                        roomDataSource = [manager roomDataSourceForRoom:roomId create:YES];
+                        break;
                     }
-                    break;
                 }
             }
-            if (roomDataSource == nil)
+            if (manager == nil)
             {
                 NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room with id %@ not found", roomId);
             }
             else
             {
-                NSString* responseText = [responseInfo objectForKey:UIUserNotificationActionResponseTypedTextKey];
-                if (responseText != nil && responseText.length != 0)
-                {
-                    NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
-                    [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
-                        UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
-                        failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
-                        failureNotification.userInfo = notification.userInfo;
-                        [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
-                        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
-                    }];
-                }
+                [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+                    NSString* responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
+                    if (responseText != nil && responseText.length != 0)
+                    {
+                        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
+                        [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
+                            UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
+                            failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+                            failureNotification.userInfo = notification.userInfo;
+                            [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
+                            NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
+                        }];
+                    }
+
+                    completionHandler();
+                }];
+                return;
             }
         }
     }
@@ -1377,7 +1394,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: eventsToNotify: %@", eventsToNotify[@(account.mxSession.hash)]);
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: incomingPushEventIds: %@", self.incomingPushEventIds[@(account.mxSession.hash)]);
 
-    NSUInteger scheduledNotifications = 0;
+    __block NSUInteger scheduledNotifications = 0;
 
     // The call invite are handled here only when the callkit is not active.
     BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
@@ -1454,53 +1471,56 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Prepare the local notification
             MXPushRule *rule = eventDict[@"push_rule"];
-            
-            NSString *notificationBody = [self notificationBodyForEvent:event pushRule:rule inAccount:account];
-            if (notificationBody)
-            {
-                // Printf style escape characters are stripped from the string prior to display;
-                // to include a percent symbol (%) in the message, use two percent symbols (%%).
-                notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
-                
-                UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                eventNotification.alertBody = notificationBody;
-                eventNotification.userInfo = @{
-                                               @"type": @"full",
-                                               @"room_id": event.roomId,
-                                               @"event_id": event.eventId,
-                                               @"user_id": account.mxCredentials.userId
-                                               };
-                
-                BOOL isNotificationContentShown = !event.isEncrypted || account.showDecryptedContentInNotifications;
-                if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
-                {
-                    eventNotification.category = @"QUICK_REPLY";
-                }
 
-                // Set sound name based on the value provided in action of MXPushRule
-                for (MXPushRuleAction *action in rule.actions)
+            [self notificationBodyForEvent:event pushRule:rule inAccount:account onComplete:^(NSString * _Nullable notificationBody) {
+
+                if (notificationBody)
                 {
-                    if (action.actionType == MXPushRuleActionTypeSetTweak)
+                    // Printf style escape characters are stripped from the string prior to display;
+                    // to include a percent symbol (%) in the message, use two percent symbols (%%).
+                    notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
+
+                    UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                    eventNotification.alertBody = notificationBody;
+                    eventNotification.userInfo = @{
+                                                   @"type": @"full",
+                                                   @"room_id": event.roomId,
+                                                   @"event_id": event.eventId,
+                                                   @"user_id": account.mxCredentials.userId
+                                                   };
+
+                    BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
+
+                    if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
                     {
-                        if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                        eventNotification.category = @"QUICK_REPLY";
+                    }
+
+                    // Set sound name based on the value provided in action of MXPushRule
+                    for (MXPushRuleAction *action in rule.actions)
+                    {
+                        if (action.actionType == MXPushRuleActionTypeSetTweak)
                         {
-                            NSString *soundName = action.parameters[@"value"];
-                            if ([soundName isEqualToString:@"default"])
-                                soundName = @"message.mp3";
-                            
-                            eventNotification.soundName = soundName;
+                            if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                            {
+                                NSString *soundName = action.parameters[@"value"];
+                                if ([soundName isEqualToString:@"default"])
+                                    soundName = @"message.mp3";
+
+                                eventNotification.soundName = soundName;
+                            }
                         }
                     }
-                }
 
-                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
-                [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
-                scheduledNotifications++;
-            }
-            else
-            {
-                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
-            }
+                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
+                    [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+                    scheduledNotifications++;
+                }
+                else
+                {
+                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
+                }
+            }];
         }
     }
 
@@ -1509,120 +1529,130 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [eventsArray removeAllObjects];
 }
 
-- (nullable NSString *)notificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account
+- (void)notificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account onComplete:(void (^)(NSString * _Nullable notificationBody))onComplete;
 {
     if (!event.content || !event.content.count)
     {
         NSLog(@"[AppDelegate][Push] notificationBodyForEvent: empty event content");
-        return nil;
+        onComplete (nil);
+        return;
     }
     
     MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
-    MXRoomState *roomState = room.state;
-    
-    NSString *notificationBody;
-    NSString *eventSenderName = [roomState memberName:event.sender];
-    
-    if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
+    if (!room)
     {
-        if (room.isMentionsOnly)
+        NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Unknown room");
+        onComplete (nil);
+        return;
+    }
+
+    [room state:^(MXRoomState *roomState) {
+
+        NSString *notificationBody;
+        NSString *eventSenderName = [roomState.members memberName:event.sender];
+
+        if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
         {
-            // A local notification will be displayed only for highlighted notification.
-            BOOL isHighlighted = NO;
-            
-            // Check whether is there an highlight tweak on it
-            for (MXPushRuleAction *ruleAction in rule.actions)
+            if (room.isMentionsOnly)
             {
-                if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
+                // A local notification will be displayed only for highlighted notification.
+                BOOL isHighlighted = NO;
+
+                // Check whether is there an highlight tweak on it
+                for (MXPushRuleAction *ruleAction in rule.actions)
                 {
-                    if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"highlight"])
+                    if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
                     {
-                        // Check the highlight tweak "value"
-                        // If not present, highlight. Else check its value before highlighting
-                        if (nil == ruleAction.parameters[@"value"] || YES == [ruleAction.parameters[@"value"] boolValue])
+                        if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"highlight"])
                         {
-                            isHighlighted = YES;
-                            break;
+                            // Check the highlight tweak "value"
+                            // If not present, highlight. Else check its value before highlighting
+                            if (nil == ruleAction.parameters[@"value"] || YES == [ruleAction.parameters[@"value"] boolValue])
+                            {
+                                isHighlighted = YES;
+                                break;
+                            }
                         }
                     }
                 }
+
+                if (!isHighlighted)
+                {
+                    // Ignore this notif.
+                    NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
+                    onComplete(nil);
+                    return;
+                }
             }
-            
-            if (!isHighlighted)
+
+            NSString *msgType = event.content[@"msgtype"];
+            NSString *content = event.content[@"body"];
+
+            if (event.isEncrypted && !RiotSettings.shared.showDecryptedContentInNotifications)
             {
-                // Ignore this notif.
-                NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
-                return nil;
+                // Hide the content
+                msgType = nil;
+            }
+
+            NSString *roomDisplayName = room.summary.displayname;
+
+            // Display the room name only if it is different than the sender name
+            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
+            {
+                if ([msgType isEqualToString:@"m.text"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_WITH_CONTENT", nil), eventSenderName,roomDisplayName, content];
+                else if ([msgType isEqualToString:@"m.emote"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, content];
+                else if ([msgType isEqualToString:@"m.image"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER_IN_ROOM", nil), eventSenderName, content, roomDisplayName];
+                else
+                    // Encrypted messages falls here
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
+            }
+            else
+            {
+                if ([msgType isEqualToString:@"m.text"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_WITH_CONTENT", nil), eventSenderName, content];
+                else if ([msgType isEqualToString:@"m.emote"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, content];
+                else if ([msgType isEqualToString:@"m.image"])
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER", nil), eventSenderName, content];
+                else
+                    // Encrypted messages falls here
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
             }
         }
-        
-        NSString *msgType = event.content[@"msgtype"];
-        NSString *content = event.content[@"body"];
-        
-        if (event.isEncrypted && !account.showDecryptedContentInNotifications)
+        else if (event.eventType == MXEventTypeCallInvite)
         {
-            // Hide the content
-            msgType = nil;
-        }
-        
-        NSString *roomDisplayName = room.summary.displayname;
-        
-        // Display the room name only if it is different than the sender name
-        if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-        {
-            if ([msgType isEqualToString:@"m.text"])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_WITH_CONTENT", nil), eventSenderName,roomDisplayName, content];
-            else if ([msgType isEqualToString:@"m.emote"])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, content];
-            else if ([msgType isEqualToString:@"m.image"])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER_IN_ROOM", nil), eventSenderName, content, roomDisplayName];
+            NSString *sdp = event.content[@"offer"][@"sdp"];
+            BOOL isVideoCall = [sdp rangeOfString:@"m=video"].location != NSNotFound;
+
+            if (!isVideoCall)
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VOICE_CALL_FROM_USER", nil), eventSenderName];
             else
-                // Encrypted messages falls here
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VIDEO_CALL_FROM_USER", nil), eventSenderName];
+        }
+        else if (event.eventType == MXEventTypeRoomMember)
+        {
+            NSString *roomDisplayName = room.summary.displayname;
+
+            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_NAMED_ROOM", nil), eventSenderName, roomDisplayName];
+            else
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_CHAT", nil), eventSenderName];
+        }
+        else if (event.eventType == MXEventTypeSticker)
+        {
+            NSString *roomDisplayName = room.summary.displayname;
+
+            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
-        }
-        else
-        {
-            if ([msgType isEqualToString:@"m.text"])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_WITH_CONTENT", nil), eventSenderName, content];
-            else if ([msgType isEqualToString:@"m.emote"])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, content];
-            else if ([msgType isEqualToString:@"m.image"])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER", nil), eventSenderName, content];
             else
-                // Encrypted messages falls here
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
         }
-    }
-    else if (event.eventType == MXEventTypeCallInvite)
-    {
-        NSString *sdp = event.content[@"offer"][@"sdp"];
-        BOOL isVideoCall = [sdp rangeOfString:@"m=video"].location != NSNotFound;
-        
-        if (!isVideoCall)
-            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VOICE_CALL_FROM_USER", nil), eventSenderName];
-        else
-            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VIDEO_CALL_FROM_USER", nil), eventSenderName];
-    }
-    else if (event.eventType == MXEventTypeRoomMember)
-    {
-        NSString *roomDisplayName = room.summary.displayname;
-        
-        if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_NAMED_ROOM", nil), eventSenderName, roomDisplayName];
-        else
-            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_CHAT", nil), eventSenderName];
-    }
-    else if (event.eventType == MXEventTypeSticker)
-    {
-        NSString *roomDisplayName = room.summary.displayname;
-        
-        if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
-        else
-            notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
-    }
-    
-    return notificationBody;
+
+        onComplete(notificationBody);
+    }];
 }
 
 /**
@@ -1949,6 +1979,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                 
                             } failure:^(NSError *error) {
                                 NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+
+                                [homeViewController stopActivityIndicator];
+
+                                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_does_not_exist", @"Vector", nil), roomIdOrAlias];
+
+                                [self showAlertWithTitle:nil message:errorMessage];
                             }];
                         }
                         else if ([roomIdOrAlias hasPrefix:@"!"] && ((MXKAccount*)accountManager.activeAccounts.firstObject).mxSession.state != MXSessionStateRunning)
@@ -2179,10 +2215,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         for (NSString *keyValue in [fragments[1] componentsSeparatedByString:@"&"])
         {
             // Get the parameter name
-            NSString *key = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:0];
+            NSString *key = [keyValue componentsSeparatedByString:@"="][0];
             
             // Get the parameter value
-            NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
+            NSString *value = [keyValue componentsSeparatedByString:@"="][1];
             if (value.length)
             {
                 value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
@@ -2612,7 +2648,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         MXSession *session = self.mxSessions.firstObject;
         for (MXRoom *room in session.rooms)
         {
-            if (room.state.isEncrypted)
+            if (room.summary.isEncrypted)
             {
                 message = [message stringByAppendingString:[NSString stringWithFormat:@"\n\n%@", NSLocalizedStringFromTable(@"settings_sign_out_e2e_warn", @"Vector", nil)]];
                 break;
@@ -2694,6 +2730,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Clear cache
     [MXMediaManager clearCache];
     
+    // Reset key backup banner preferences
+    [KeyBackupBannerPreferences.shared reset];
+    
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
     for (MXKAccount *account in MXKAccountManager.sharedManager.accounts)
@@ -2717,6 +2756,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [_masterTabBarController showAuthenticationScreen];
         
         // Note: Keep App settings
+        // But enforce usage of member lazy loading
+        [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
         
         // Reset the contact manager
         [[MXKContactManager sharedManager] reset];
@@ -2858,7 +2899,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (!launchAnimationContainerView && window)
             {
                 launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = kRiotPrimaryBgColor;
+                launchAnimationContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
                 launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [window addSubview:launchAnimationContainerView];
                 
@@ -2914,8 +2955,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     if (launchAnimationContainerView)
     {
-        NSTimeInterval durationMs = [[NSDate date] timeIntervalSinceDate:launchAnimationStart] * 1000;
-        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", durationMs);
+        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
+        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", duration * 1000);
+
+        // Track it on our analytics
+        [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
 
         // TODO: Send durationMs to Piwik
         // Such information should be the same on all platforms
@@ -2953,14 +2997,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)enableLocalNotificationsFromMatrixSession:(MXSession*)mxSession
 {
     // Prepare listener block.
+    MXWeakify(self);
     MXOnNotification notificationListenerBlock = ^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
+        MXStrongifyAndReturnIfNil(self);
         
         // Ignore this event if the app is not running in background.
         if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
         {
             return;
         }
-        
+
+        // If the app is doing an initial sync, ignore all events from which we
+        // did not receive a notification from APNS/PushKit
+        if (!mxSession.isEventStreamInitialised && !self->incomingPushPayloads[event.eventId])
+        {
+            NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: Initial sync in progress. Ignore event %@", event.eventId);
+            return;
+        }
+
         // Sanity check
         if (event.eventId && event.roomId && rule)
         {
@@ -2975,7 +3029,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
             
             // Add it to the list of the events to notify.
-            [eventsToNotify[@(mxSession.hash)] addObject:@{@"event_id": event.eventId, @"room_id": event.roomId, @"push_rule": rule}];
+            [self->eventsToNotify[@(mxSession.hash)] addObject:@{
+                                                           @"event_id": event.eventId,
+                                                           @"room_id": event.roomId,
+                                                           @"push_rule": rule
+                                                           }];
         }
         else
         {
@@ -3009,7 +3067,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     if (!isErrorNotificationSuspended && ![[NSUserDefaults standardUserDefaults] boolForKey:@"deviceIdAtStartupChecked"])
     {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deviceIdAtStartupChecked"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
         
         // Check if there is a device id
         if (!mxSession.matrixRestClient.credentials.deviceId)
@@ -3266,7 +3323,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                           success:^(MXRoom *room) {
                               
                               // Open created room
-                              [self showRoom:room.state.roomId andEventId:nil withMatrixSession:mxSession];
+                              [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
                               
                               if (completion)
                               {
@@ -3391,7 +3448,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark - MXKCallViewControllerDelegate
 
-- (void)dismissCallViewController:(MXKCallViewController *)callViewController completion:(void (^)())completion
+- (void)dismissCallViewController:(MXKCallViewController *)callViewController completion:(void (^)(void))completion
 {
     if (currentCallViewController && callViewController == currentCallViewController)
     {
@@ -3466,26 +3523,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
             _jitsiViewController = nil;
 
-            NSError *theError = [NSError errorWithDomain:@""
-                                                    code:0
-                                                userInfo:@{
-                                                        NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)
-                                                        }];
-            [self showErrorAsAlert:theError];
+            [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
         }];
     }
     else
     {
-        NSError *error = [NSError errorWithDomain:@""
-                                    code:0
-                                userInfo:@{
-                                           NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)
-                                           }];
-        [self showErrorAsAlert:error];
+        [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)];
     }
 }
 
-- (void)presentJitsiViewController:(void (^)())completion
+- (void)presentJitsiViewController:(void (^)(void))completion
 {
     [self removeCallStatusBar];
 
@@ -3502,7 +3549,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)())completion
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)(void))completion
 {
     if (jitsiViewController == _jitsiViewController)
     {
@@ -3513,7 +3560,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)())completion
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)(void))completion
 {
     if (jitsiViewController == _jitsiViewController)
     {
@@ -3548,7 +3595,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    _callStatusBarButton.titleLabel.textColor = kRiotPrimaryBgColor;
+    _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
     
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
     {
@@ -3559,7 +3606,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         _callStatusBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
     }
     
-    [_callStatusBarButton setBackgroundColor:kRiotColorGreen];
+    [_callStatusBarButton setBackgroundColor:ThemeService.shared.theme.tintColor];
     [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
@@ -3625,7 +3672,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)presentCallViewController:(BOOL)animated completion:(void (^)())completion
+- (void)presentCallViewController:(BOOL)animated completion:(void (^)(void))completion
 {
     [self removeCallStatusBar];
     
@@ -3708,7 +3755,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-    emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+    emptyDetailsViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     return emptyDetailsViewController;
 }
 
@@ -3794,7 +3841,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                  callerDisplayname = event.sender;
                                              }
                                              
-                                             NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+                                             NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
                                              
                                              NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"no_voip", @"Vector", nil), callerDisplayname, appDisplayName];
                                              
@@ -3954,7 +4001,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 {
                     BOOL wasNewDevice = (deviceInfo.verified == MXDeviceUnknown);
 
-                    void (^openDialog)() = ^void()
+                    void (^openDialog)(void) = ^void()
                     {
                         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
 
@@ -4021,10 +4068,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSString *consentURI = notification.userInfo[kMXHTTPClientUserConsentNotGivenErrorNotificationConsentURIKey];
         if (consentURI
             && self.gdprConsentNotGivenAlertController.presentingViewController == nil
-            && self.gdprConsentViewController.presentingViewController == nil)
+            && self.gdprConsentController.presentingViewController == nil)
         {
             self.gdprConsentNotGivenAlertController = nil;
-            self.gdprConsentViewController = nil;
+            self.gdprConsentController = nil;
             
             UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
             
@@ -4064,26 +4111,73 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)presentGDPRConsentFromViewController:(UIViewController*)viewController consentURI:(NSString*)consentURI
 {
-    WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:consentURI];    
-    webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
+    GDPRConsentViewController *gdprConsentViewController = [[GDPRConsentViewController alloc] initWithURL:consentURI];    
     
     UIBarButtonItem *closeBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"close"]
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self
                                                                           action:@selector(dismissGDPRConsent)];
     
-    webViewViewController.navigationItem.leftBarButtonItem = closeBarButtonItem;
+    gdprConsentViewController.navigationItem.leftBarButtonItem = closeBarButtonItem;
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:gdprConsentViewController];
     
     [viewController presentViewController:navigationController animated:YES completion:nil];
     
-    self.gdprConsentViewController = navigationController;
+    self.gdprConsentController = navigationController;
+    
+    gdprConsentViewController.delegate = self;
 }
 
 - (void)dismissGDPRConsent
 {    
-    [self.gdprConsentViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.gdprConsentController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - GDPRConsentViewControllerDelegate
+
+- (void)gdprConsentViewControllerDidConsentToGDPRWithSuccess:(GDPRConsentViewController *)gdprConsentViewController
+{
+    MXSession *session = mxSessionArray.firstObject;
+
+    // Leave the GDPR consent right now
+    [self dismissGDPRConsent];
+
+    // And create the room with riot bot in //
+    self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
+    
+    MXWeakify(self);
+    void (^createRiotBotDMcompletion)(void) = ^() {
+        MXStrongifyAndReturnIfNil(self);
+
+        self.onBoardingManager = nil;
+    };
+    
+    [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
+        createRiotBotDMcompletion();
+    } failure:^(NSError * _Nonnull error) {
+        createRiotBotDMcompletion();
+    }];
+}
+
+#pragma mark - Settings
+
+- (void)setupUserDefaults
+{
+    // Register "Riot-Defaults.plist" default values
+    NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
+    NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
+    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+    
+    // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
+    // Migrate this information from main MXKAccount to RiotSettings, if value is not in UserDefaults
+    
+    if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
+    {
+        MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
+    }
 }
 
 @end

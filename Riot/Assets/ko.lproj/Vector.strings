@@ -1,0 +1,24 @@
+// Titles
+"title_home" = "홈";
+"title_favourites" = "즐겨찾기";
+"title_people" = "사람";
+"title_rooms" = "방";
+"title_groups" = "커뮤니티";
+"warning" = "경고";
+// Actions
+"view" = "보기";
+"next" = "다음";
+"back" = "돌아가기";
+"continue" = "계속";
+"create" = "만들기";
+"start" = "시작";
+"leave" = "떠나기";
+"remove" = "지우기";
+"invite" = "초대";
+"retry" = "다시해보기";
+"on" = "켜기";
+"off" = "끄기";
+"cancel" = "취소";
+"save" = "저장";
+"preview" = "미리보기";
+"camera" = "카메라";

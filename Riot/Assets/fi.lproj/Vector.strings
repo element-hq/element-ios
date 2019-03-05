@@ -1,0 +1,31 @@
+// Titles
+"title_home" = "Koti";
+"title_favourites" = "Suosikit";
+"title_people" = "Ihmiset";
+"title_rooms" = "Huoneet";
+"title_groups" = "Yhteisöt";
+"warning" = "Varoitus";
+// Actions
+"view" = "Näytä";
+"next" = "Seuraava";
+"back" = "Takaisin";
+"continue" = "Jatka";
+"create" = "Luo";
+"start" = "Aloita";
+"leave" = "Poistu";
+"remove" = "Poista";
+"invite" = "Kutsu";
+"retry" = "Yritä uudelleen";
+"on" = "On";
+"off" = "Off";
+"cancel" = "Peruuta";
+"save" = "Tallenna";
+"join" = "Liity";
+"decline" = "Kiellä";
+"accept" = "Hyväksy";
+"preview" = "Esikatselu";
+"camera" = "Kamera";
+"voice" = "Ääni";
+"video" = "Video";
+// Room Details
+"room_details_title" = "Huoneen tiedot";

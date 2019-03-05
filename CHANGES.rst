@@ -1,3 +1,206 @@
+Changes in 0.8.1 (2019-02-19)
+===============================================
+
+Improvements:
+ * Key backup: avoid to refresh the home room list on every backup state change (#2265).
+
+Bug fix:
+ * Fix text color in room preview (PR #2261).
+ * Fix navigation bar background after accepting an invite (PR #2261)
+ * Tabs at the top of Room Details are hard to see in dark theme (#2260).
+
+Changes in 0.8.0 (2019-02-15)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.5 - https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.5).
+ * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
+ * Use modern literals and array/dictionary syntax where possible (PR #2160).
+ * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
+ * RoomVC: Remove the beta warning modal when opening an e2e room (#2239).
+ * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
+ * Clean up iOS version checking (#2190).
+ * Key backup: Implement setup screen (#2198).
+ * Key backup: Implement recover screen (#2196).
+ * Key backup: Add a dedicated section to settings (#2193).
+ * Key backup: Implement setup reminder (#2211).
+ * Key backup: Implement recover reminder (#2206).
+ * Key backup: Update key backup setup UI and UX (PR #2243).
+ * Key backup: Logout warning (#2245).
+ * Key backup: new recover method detected (#2230).
+ 
+Bug fix:
+ * Use white scroll bar on dark themes (#2158).
+ * Registration: fix tap gesture on checkboxes in the terms screen.
+ * Registration: improve validation UX on the terms screen (#2164).
+ * Registration: improve scrolling on the reCaptcha screen (#2165).
+ * Infinite loading wheel when taping on a fake room alias (#679).
+ * Ban and kick reasons are silently discarded (#2162).
+ * Room Version Upgrade: Clicking the link in the room continuation event to go back to the old version of the room doesn't work (#2179).
+ * Share extension: Fail to send screenshot (#2168).
+ * Share extension: Handle rich item sharing (image + text + URL) (#2224).
+ * Share extension: Sharing pages from Firefox only shares their title (#2163).
+ * Share extension: Fix unloaded theme (PR #2235).
+ * Reskin: Jump to first unread message doesn't show up in 0.7.12 TF (#2218).
+ * Reskin: Sometimes the roomVC navigation bar is tranparent (#2252).
+
+Changes in 0.7.11 (2019-01-08)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.3).
+ * Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+
+Changes in 0.7.10 (2019-01-04)
+===============================================
+
+Bug fix:
+ * Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.
+
+Changes in 0.7.9 (2019-01-04)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.2).
+
+Bug fix:
+ * Registration: email or phone number is no more skippable (#2140).
+
+Changes in 0.7.8 (2018-12-12)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.1).
+ * Replace the deprecated MXMediaManager and MXMediaLoader interfaces use (see matrix-org/matrix-ios-sdk/pull/593).
+ * Replace the deprecated MXKAttachment and MXKImageView interfaces use (see matrix-org/matrix-ios-kit/pull/487).
+ * i18n: Enable Japanese (ja)
+ * i18n: Enable Hungarian (hu)
+ 
+Bug fix:
+ * Registration: reCAPTCHA does not work anymore on iOS 10 (#2119).
+
+Changes in 0.7.7 (2018-10-31)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.6).
+
+Bug fix:
+ * Notifications: old notifications can reappear (#1985).
+
+Changes in 0.7.6 (2018-10-05)
+===============================================
+
+Bug fix:
+ * Wrong version number.
+
+Changes in 0.7.5 (2018-10-05)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.5).
+ * Server Quota Notices: Implement the blue banner (#1937).
+
+Changes in 0.7.4 (2018-09-26)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.4).
+ * Lazy loading: Enable it by default (if the homeserver supports it).
+ * i18n: Add Spanish (sp).
+ * Settings: Make advanced info copyable (#2023).
+ * Settings: Made cryptography info copyable, thanks to @daverPL (PR #1999).
+ * Room settings: Anyone can now set a room alias (#2033).
+
+Bug fix:
+ * Fix missing read receipts when lazy-loading room members.
+ * Weird text color when selecting a message (#2046).
+
+Changes in 0.7.3 (2018-08-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.3).
+
+Bug fix:
+ * Fix input toolbar reset in RoomViewController on MXSession state change (#2006 and #2008).
+ * Fix user interaction disabled in master view of UISplitViewContoller when selecting a room (#2005).
+
+Changes in 0.7.2 (2018-08-24)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.2).
+ * Server Quota Notices in Riot (#1937).
+ 
+Bug fix:
+ * User defaults: the preset application language (if any) is ignored.
+ * Recents: Avoid to open a room twice (it crashed on room creation on quick HSes).
+ * Riot-bot: Do not try to create a room with it if the user homeserver is not federated.
+
+Changes in 0.7.1 (2018-08-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.1).
+ 
+Bug fix:
+ * Empty app if initial /sync fails (#1975).
+ * Direct rooms can be lost on an initial /sync (vector-im/riot-ios/issues/1983).
+ * Fix possible race conditions in direct rooms management.
+
+Changes in 0.7.0 (2018-08-10)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.0).
+ * RoomVC: Add "view decrypted source" option on the selected event (#1642).
+ * RoomVC: Implement replies sending (#1911).
+ * Support room versioning (#1938).
+ * Add support of lazy-loading of room members (#1931) (disabled for now).
+ * i18n: Add Traditional Chinese (zh_Hant).
+ * i18n: Add Albanian (sq).
+ * Update project structure. Organize UI related files by feature (PR#1932).
+ * Move image files to xcassets (PR#1932).
+ * Replies: Implement sending (#1911).
+ * Support room versioning (#1938).
+ * Add support of lazy-loading of room members (#1931).
+ * Chat screen: Add "view decrypted source" option on the selected event (#1642).
+ * Improve GDPR consent webview management (#1952).
+
+Bug fix:
+ * Multiple rooms can be opened (#1967).
+
+Changes in 0.6.20 (2018-07-13)
+===============================================
+
+Improvements:
+ * Update contact permission text in order to be clearer about the reasons for access to the address book.
+
+Changes in 0.6.19 (2018-07-05)
+===============================================
+
+Improvements:
+
+Bug fix:
+* RoomVC: Fix duplicated read receipts (regression due to read receipts performance improvement).
+
+Changes in 0.6.18 (2018-07-03)
+===============================================
+
+Improvements:
+ * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
+ * Analytics: Move code from AppDelegate to a dedicated class: Analytics.
+ * Analytics: Track Matrix SDK stats (time to startup the app).
+ * Crypto: Add telemetry for events unable to decrypt (UTDs).
+ * Added the i18n localisation strings to the accessibility labels (#1842), thanks to @einMarco (PR#1906).
+ * Added titles to sound files ID3 tags.
+
+Bug fix:
+ * RoomVC: Read receipts processing dramatically slows down UI (#1899).
+ * Lag in typing (#1820).
+ * E2E messages not decrypted in notifs after logging back in (#1914).
+
 Changes in 0.6.17 (2018-06-01)
 ===============================================
 
