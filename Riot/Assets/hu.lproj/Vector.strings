@@ -87,7 +87,7 @@
 "auth_reset_password_email_validation_message" = "Az e-mailt elküldtük a %@ címre. Ha rákattintottál a linkre ami benne van utána kattints ide.";
 "auth_reset_password_next_step_button" = "Ellenőriztem az e-mail címet";
 "auth_reset_password_error_unauthorized" = "E-mail cím ellenőrzése nem sikerült: bizonyosodj meg róla, hogy az e-mailben lévő linkre rákattintottál";
-"auth_reset_password_error_not_found" = "Úgy tűnik az e-mail címed nincs összekötve a matrix azonosítóddal a Matrix szerveren.";
+"auth_reset_password_error_not_found" = "Úgy tűnik az e-mail címed nincs összekötve a Matrix azonosítóddal a Matrix szerveren.";
 "auth_reset_password_success_message" = "Visszaállítottuk a jelszavad.\n\nKijelentkeztettünk minden eszközödből és nem kapsz értesítéseket sem. Az értesítések újra engedélyezéséhez jelentkezz be újra az eszközökön.";
 // Chat creation
 "room_creation_title" = "Új csevegés";
@@ -674,3 +674,5 @@
 "e2e_key_backup_wrong_version_button_wasme" = "Én voltam";
 "key_backup_setup_intro_manual_export_info" = "(Haladó)";
 "key_backup_setup_intro_manual_export_action" = "Kulcsok kimentése kézzel";
+// String for App Store
+"store_short_description" = "Biztonságos elosztott csevegés/VoIP";
