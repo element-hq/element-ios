@@ -64,6 +64,7 @@
 		B1098C0D21ED07E4000DDA48 /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098C0821ED07E4000DDA48 /* NavigationRouter.swift */; };
 		B1098C1021ED07E4000DDA48 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098C0B21ED07E4000DDA48 /* Presentable.swift */; };
 		B1098C1121ED07E4000DDA48 /* NavigationRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098C0C21ED07E4000DDA48 /* NavigationRouterType.swift */; };
+		B109D6F1222D8C400061B6D9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109D6F0222D8C400061B6D9 /* UIApplication.swift */; };
 		B10B3B5B2201DD740072C76B /* KeyBackupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10B3B592201DD740072C76B /* KeyBackupBannerCell.swift */; };
 		B10B3B5C2201DD740072C76B /* KeyBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10B3B5A2201DD740072C76B /* KeyBackupBannerCell.xib */; };
 		B1107EC82200B0720038014B /* KeyBackupRecoverSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */; };
@@ -534,6 +535,7 @@
 		B1098C0821ED07E4000DDA48 /* NavigationRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
 		B1098C0B21ED07E4000DDA48 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		B1098C0C21ED07E4000DDA48 /* NavigationRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouterType.swift; sourceTree = "<group>"; };
+		B109D6F0222D8C400061B6D9 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		B10B3B592201DD740072C76B /* KeyBackupBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupBannerCell.swift; sourceTree = "<group>"; };
 		B10B3B5A2201DD740072C76B /* KeyBackupBannerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyBackupBannerCell.xib; sourceTree = "<group>"; };
 		B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverSuccessViewController.swift; sourceTree = "<group>"; };
@@ -2854,6 +2856,7 @@
 				B140B4A121F87F7100E3F5FE /* OperationQueue.swift */,
 				B1E5368821FB1E20001F3AFF /* UIButton.swift */,
 				3281BCF62201FA4200F4A383 /* UIControl.swift */,
+				B109D6F0222D8C400061B6D9 /* UIApplication.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2964,6 +2967,7 @@
 			buildConfigurationList = F094A9C81B78D8F000B1FBBF /* Build configuration list for PBXNativeTarget "Riot" */;
 			buildPhases = (
 				E34E30CD2CEE4A42FF8081D6 /* [CP] Check Pods Manifest.lock */,
+				B1D1AC122225A43600D64A6C /* ⚠️ SwiftLint */,
 				B1098BD821ECD3ED000DDA48 /* 🛠 SwiftGen */,
 				F094A99E1B78D8F000B1FBBF /* Sources */,
 				F094A99F1B78D8F000B1FBBF /* Frameworks */,
@@ -3363,6 +3367,24 @@
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config Tools/SwiftGen/swiftgen-config.yml\n";
 		};
+		B1D1AC122225A43600D64A6C /* ⚠️ SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "⚠️ SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
 		E34E30CD2CEE4A42FF8081D6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3654,6 +3676,7 @@
 				B1B558CE20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,
 				32BF995521FA2AB700698084 /* SettingsKeyBackupViewAction.swift in Sources */,
+				B109D6F1222D8C400061B6D9 /* UIApplication.swift in Sources */,
 				B1B558FF20EF768F00210D55 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				B1098C0021ECFE65000DDA48 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,

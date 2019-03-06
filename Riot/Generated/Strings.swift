@@ -102,6 +102,10 @@ internal enum VectorL10n {
   internal static var authLogin: String { 
     return VectorL10n.tr("Vector", "auth_login") 
   }
+  /// Sign in with single sign-on
+  internal static var authLoginSingleSignOn: String { 
+    return VectorL10n.tr("Vector", "auth_login_single_sign_on") 
+  }
   /// Missing email address
   internal static var authMissingEmail: String { 
     return VectorL10n.tr("Vector", "auth_missing_email") 
@@ -1433,6 +1437,10 @@ internal enum VectorL10n {
   /// Send a message…
   internal static var roomMessageShortPlaceholder: String { 
     return VectorL10n.tr("Vector", "room_message_short_placeholder") 
+  }
+  /// Unable to open the link.
+  internal static var roomMessageUnableOpenLinkErrorMessage: String { 
+    return VectorL10n.tr("Vector", "room_message_unable_open_link_error_message") 
   }
   /// %d new message
   internal static func roomNewMessageNotification(_ p1: Int) -> String {

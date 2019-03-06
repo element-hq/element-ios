@@ -19,7 +19,7 @@ platform :ios do
 
     before_all do
         # Ensure used Xcode version
-        xcversion(version: "~> 9.4.1")
+        xcversion(version: "~> 10.1.0")
     end
 
     #### Public ####
@@ -70,7 +70,8 @@ platform :ios do
 
         # Generate xcodebuild additional arguments
         xcargs_hash = {
-            'GCC_PREPROCESSOR_DEFINITIONS' => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}"
+            'GCC_PREPROCESSOR_DEFINITIONS' => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}",
+            '-UseNewBuildSystem' => 'NO'
         }
 
         xcargs = xcargs_hash.map { |k,v| "#{k}=#{v.shellescape}" }.join(' ')
@@ -85,6 +86,11 @@ platform :ios do
 
         # Update build number
         update_build_number(build_number: build_number)
+
+        # On Xcode 10 with 'Parallelize Build' option on, archive randomly fails with error title "** ARCHIVE FAILED **" for various reasons.
+        # Errors only occur on CocoaPods frameworks and the observed command that failed are CodeSign, CpHeader, CpResource, SetOwnerAndGroup.
+        # To make archive reliable disable 'Parallelize Build' option of scheme ENV["SCHEME"] for the moment.
+        disable_parallelize_builds
 
         # Perform a pod install
         cocoapods(repo_update: true)
@@ -112,7 +118,9 @@ platform :ios do
             archive_path: ENV["ARCHIVE_PATH"],
             output_directory: ENV["BUILD_OUTPUT_DIRECTORY"],
             output_name: "#{ENV['IPA_NAME']}.ipa",
-            codesigning_identity: ENV["APPSTORE_CODESIGNING_IDENTITY"],
+            buildlog_path: ENV["BUILD_LOG_DIRECTORY"],
+            codesigning_identity: ENV["APPSTORE_CODESIGNING_IDENTITY"],            
+            skip_profile_detection: true,
             export_options: {
                 method: export_method,
                 signingStyle: "manual",
@@ -231,6 +239,17 @@ platform :ios do
         end
 
         preprocessor_definitions
+    end
+
+    desc "Disable 'Parallelize Build' option of build action of main scheme"
+    private_lane :disable_parallelize_builds do
+        project_path = "../#{ENV["PROJECT_PATH"]}"        
+        scheme_name = ENV['SCHEME']
+
+        scheme_path = Xcodeproj::XCScheme.shared_data_dir(project_path) + "#{scheme_name}.xcscheme"        
+        scheme = Xcodeproj::XCScheme.new(scheme_path)
+        scheme.build_action.xml_element.attributes['parallelizeBuildables'] = 'NO' 
+        scheme.save_as(project_path, scheme_name)
     end
 
 end

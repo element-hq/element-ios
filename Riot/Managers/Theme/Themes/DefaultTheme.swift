@@ -57,31 +57,31 @@ class DefaultTheme: NSObject, Theme {
     var keyboardAppearance: UIKeyboardAppearance = .light
 
     var placeholderTextColor: UIColor = UIColor(white: 0.7, alpha: 1.0) // Use default 70% gray color
-    var selectedBackgroundColor: UIColor? = nil  // Use the default selection color
+    var selectedBackgroundColor: UIColor?  // Use the default selection color
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
     
     func applyStyle(onTabBar tabBar: UITabBar) {
-        tabBar.tintColor = self.tintColor;
-        tabBar.barTintColor = self.headerBackgroundColor;
-        tabBar.isTranslucent = false;
+        tabBar.tintColor = self.tintColor
+        tabBar.barTintColor = self.headerBackgroundColor
+        tabBar.isTranslucent = false
     }
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.tintColor = self.baseTextPrimaryColor;
+        navigationBar.tintColor = self.baseTextPrimaryColor
         navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: self.baseTextPrimaryColor
         ]
-        navigationBar.barTintColor = self.baseColor;
+        navigationBar.barTintColor = self.baseColor
 
         // The navigation bar needs to be opaque so that its background color is the expected one
-        navigationBar.isTranslucent = false;
+        navigationBar.isTranslucent = false
     }
 
     func applyStyle(onSearchBar searchBar: UISearchBar) {
         searchBar.barStyle = .default
-        searchBar.tintColor = self.searchPlaceholderColor;
-        searchBar.barTintColor = self.headerBackgroundColor;
+        searchBar.tintColor = self.searchPlaceholderColor
+        searchBar.barTintColor = self.headerBackgroundColor
     }
     
     func applyStyle(onTextField texField: UITextField) {

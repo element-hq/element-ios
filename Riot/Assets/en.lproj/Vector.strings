@@ -62,6 +62,7 @@
 "auth_register" = "Register";
 "auth_submit" = "Submit";
 "auth_skip" = "Skip";
+"auth_login_single_sign_on" = "Sign in with single sign-on";
 "auth_send_reset_email" = "Send Reset Email";
 "auth_return_to_login" = "Return to login screen";
 "auth_user_id_placeholder" = "Email or user name";
@@ -240,6 +241,7 @@
 "room_many_users_are_typing" = "%@, %@ & others are typing…";
 "room_message_placeholder" = "Send a message (unencrypted)…";
 "room_message_reply_to_placeholder" = "Send a reply (unencrypted)…";
+"room_message_unable_open_link_error_message" = "Unable to open the link.";
 "room_do_not_have_permission_to_post" = "You do not have permission to post to this room";
 "encrypted_room_message_placeholder" = "Send an encrypted message…";
 "encrypted_room_message_reply_to_placeholder" = "Send an encrypted reply…";

@@ -129,4 +129,3 @@ extension KeyBackupRecoverCoordinator: KeyBackupRecoverSuccessViewControllerDele
         self.delegate?.keyBackupRecoverCoordinatorDidRecover(self)
     }
 }
-

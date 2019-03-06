@@ -24,7 +24,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
 
     @objc weak var delegate: MXKAuthInputsViewDelegate?
 
-    private var acceptedCallback: (()->Void)?
+    private var acceptedCallback: (() -> Void)?
 
 
     /// NavigationVC to display a policy content
@@ -116,7 +116,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         acceptButton.alpha = acceptButton.isEnabled ? 1 : 0.5
     }
 
-    @IBAction func didAcceptButtonTapped(_ sender: Any) {
+    @IBAction private func didAcceptButtonTapped(_ sender: Any) {
         if policies.count == acceptedPolicies.count {
             acceptedCallback?()
         }
@@ -131,7 +131,9 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier(), for: indexPath) as! TableViewCellWithCheckBoxAndLabel
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier(), for: indexPath) as? TableViewCellWithCheckBoxAndLabel else {
+            fatalError("\(String(describing: TableViewCellWithCheckBoxAndLabel.self)) should be registered")
+        }
 
         let policy = policies[indexPath.row]
         let accepted = acceptedPolicies .contains(indexPath.row)
@@ -186,7 +188,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         let webViewViewController: WebViewViewController = WebViewViewController(url: policy.url)
         webViewViewController.title = policy.name
 
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action:#selector(didTapCancelOnPolicyScreen))
+        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action: #selector(didTapCancelOnPolicyScreen))
         webViewViewController.navigationItem.leftBarButtonItem = leftBarButtonItem
 
         navigationController = RiotNavigationController()

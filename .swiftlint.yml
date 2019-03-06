@@ -1,0 +1,64 @@
+# rule identifiers to exclude from running
+disabled_rules:
+  - trailing_whitespace
+  - todo
+  - conditional_binding_cascade
+  - mark
+  - vertical_whitespace
+  - syntactic_sugar
+  - unused_closure_parameter
+  - closure_parameter_position
+  - redundant_string_enum_value
+  - large_tuple
+  - shorthand_operator
+  - vertical_parameter_alignment
+  - identifier_name  
+
+# some rules are only opt-in
+opt_in_rules:  
+  - force_unwrapping
+  - private_action
+  - explicit_init
+
+# paths to include during linting. `--path` is ignored if present.
+included:
+  - Riot
+
+# paths to ignore during linting. Takes precedence over `included`.
+excluded:
+  - Carthage
+  - Pods
+  - Riot/Generated/  
+
+line_length:
+  warning: 250
+  error: 1000
+
+file_length:
+  warning: 700
+  error: 1000
+
+type_body_length:
+  warning: 700
+  error: 1000
+
+function_parameter_count:
+  warning: 7
+  error: 10
+
+cyclomatic_complexity:
+  ignores_case_statements: true
+  warning: 20
+  error: 25
+
+function_body_length:
+  warning: 100
+  error: 150
+
+# naming rules can set warnings/errors for min_length and max_length
+# additionally they can set excluded names
+type_name:
+  min_length: 3 # only warning
+  max_length: # warning and error
+    warning: 150
+    error: 1000

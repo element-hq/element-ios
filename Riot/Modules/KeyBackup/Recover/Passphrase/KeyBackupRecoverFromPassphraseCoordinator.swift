@@ -70,4 +70,3 @@ extension KeyBackupRecoverFromPassphraseCoordinator: KeyBackupRecoverFromPassphr
         self.delegate?.keyBackupRecoverFromPassphraseCoordinatorDidCancel(self)
     }        
 }
-

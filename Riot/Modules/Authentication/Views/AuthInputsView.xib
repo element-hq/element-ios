@@ -14,6 +14,27 @@
         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x74-04-ezp" customClass="AuthInputsView">
             <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
             <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ckH-mV-Yds">
+                    <rect key="frame" x="0.0" y="8.5" width="600" height="183"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fSJ-23-bFN">
+                            <rect key="frame" x="180" y="75.5" width="240" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="240" id="VLC-VR-Z4I"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                            <state key="normal" title="Sign in with single sign-on">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="183" id="Mmr-Ui-YvN"/>
+                        <constraint firstItem="fSJ-23-bFN" firstAttribute="centerY" secondItem="ckH-mV-Yds" secondAttribute="centerY" id="hgL-5s-h8t"/>
+                        <constraint firstItem="fSJ-23-bFN" firstAttribute="centerX" secondItem="ckH-mV-Yds" secondAttribute="centerX" id="x4u-zT-BGT"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xOW-lo-QGC">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                     <subviews>
@@ -259,17 +280,20 @@
             <accessibility key="accessibilityConfiguration" identifier="AuthInputsView"/>
             <constraints>
                 <constraint firstItem="UfH-jv-6w4" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" constant="50" id="1LY-GW-rgL"/>
+                <constraint firstItem="ckH-mV-Yds" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="1SM-3z-RE3"/>
                 <constraint firstItem="rb1-L5-udI" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" constant="100" id="75U-tx-PsQ"/>
                 <constraint firstItem="UfH-jv-6w4" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="7Bk-GF-MZ0"/>
                 <constraint firstItem="IB7-1E-eeL" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="7Lr-fy-W8L"/>
                 <constraint firstAttribute="trailing" secondItem="68j-f9-JG4" secondAttribute="trailing" constant="10" id="8Aa-YT-MP5"/>
                 <constraint firstAttribute="trailing" secondItem="UfH-jv-6w4" secondAttribute="trailing" id="8dz-wY-Kxx"/>
                 <constraint firstItem="whs-Ob-uzD" firstAttribute="centerX" secondItem="x74-04-ezp" secondAttribute="centerX" id="8lX-k1-85c"/>
+                <constraint firstAttribute="trailing" secondItem="ckH-mV-Yds" secondAttribute="trailing" id="9tx-Vo-6Wg"/>
                 <constraint firstItem="Sz8-Gm-Piu" firstAttribute="centerX" secondItem="x74-04-ezp" secondAttribute="centerX" id="B9b-wC-tsj"/>
                 <constraint firstItem="68j-f9-JG4" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" constant="8" id="BK1-XE-vz5"/>
                 <constraint firstItem="bXz-VI-5FS" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="Frq-sH-HZT"/>
                 <constraint firstItem="xOW-lo-QGC" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="NOu-LR-RvE"/>
                 <constraint firstAttribute="trailing" secondItem="bXz-VI-5FS" secondAttribute="trailing" id="NiV-pJ-PfV"/>
+                <constraint firstItem="ckH-mV-Yds" firstAttribute="centerY" secondItem="x74-04-ezp" secondAttribute="centerY" id="PNx-SK-FZY"/>
                 <constraint firstAttribute="trailing" secondItem="xOW-lo-QGC" secondAttribute="trailing" id="SNm-WQ-Piu"/>
                 <constraint firstItem="xOW-lo-QGC" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" id="WmX-gO-hPJ"/>
                 <constraint firstItem="rb1-L5-udI" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="XAJ-ST-sWV"/>
@@ -310,6 +334,8 @@
                 <outlet property="repeatPasswordContainer" destination="rb1-L5-udI" id="NjO-O7-WYX"/>
                 <outlet property="repeatPasswordSeparator" destination="ddx-5u-PbG" id="MtA-Rf-dhU"/>
                 <outlet property="repeatPasswordTextField" destination="BQM-LP-8Eq" id="mgM-dU-mJo"/>
+                <outlet property="ssoButton" destination="fSJ-23-bFN" id="Z38-dF-9Fo"/>
+                <outlet property="ssoButtonContainer" destination="ckH-mV-Yds" id="1T9-Uv-0Yj"/>
                 <outlet property="termsView" destination="Sz8-Gm-Piu" id="Kue-Ju-pVb"/>
                 <outlet property="userLoginContainer" destination="xOW-lo-QGC" id="K4T-Jo-AQz"/>
                 <outlet property="userLoginContainerTopConstraint" destination="WmX-gO-hPJ" id="dSa-mL-YBL"/>
