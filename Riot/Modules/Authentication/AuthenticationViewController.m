@@ -40,6 +40,11 @@
      Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
     id kThemeServiceDidChangeThemeNotificationObserver;
+
+    /**
+     Server discovery.
+     */
+    MXAutoDiscovery *autoDiscovery;
 }
 
 @end
@@ -235,6 +240,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
+
+    autoDiscovery = nil;
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
@@ -867,6 +874,122 @@
 - (void)authInputsViewDidCancelOperation:(MXKAuthInputsView *)authInputsView
 {
     [self cancel];
+}
+
+- (void)authInputsView:(MXKAuthInputsView *)authInputsView autoDiscoverServerWithDomain:(NSString *)domain
+{
+    [self tryServerDiscoveryOnDomain:domain];
+}
+
+#pragma mark - Server discovery
+
+- (void)tryServerDiscoveryOnDomain:(NSString *)domain
+{
+    autoDiscovery = [[MXAutoDiscovery alloc] initWithDomain:domain];
+
+    MXWeakify(self);
+    [autoDiscovery findClientConfig:^(MXDiscoveredClientConfig * _Nonnull discoveredClientConfig) {
+        MXStrongifyAndReturnIfNil(self);
+
+        self->autoDiscovery = nil;
+
+        switch (discoveredClientConfig.action)
+        {
+            case MXDiscoveredClientConfigActionPrompt:
+                [self customiseServersWithWellKnown:discoveredClientConfig.wellKnown];
+                break;
+
+            case MXDiscoveredClientConfigActionFailPrompt:
+            case MXDiscoveredClientConfigActionFailError:
+            {
+                // Alert user
+                if (self->alert)
+                {
+                    [self->alert dismissViewControllerAnimated:NO completion:nil];
+                }
+
+                self->alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"auth_autodiscover_invalid_response", @"Vector", nil)
+                                                                  message:nil
+                                                           preferredStyle:UIAlertControllerStyleAlert];
+
+                [self->alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+
+                                                                  self->alert = nil;
+                                                              }]];
+
+                [self presentViewController:self->alert animated:YES completion:nil];
+
+                break;
+            }
+
+            default:
+                // Fail silently
+                break;
+        }
+
+    } failure:^(NSError * _Nonnull error) {
+        MXStrongifyAndReturnIfNil(self);
+
+        self->autoDiscovery = nil;
+
+        // Fail silently
+    }];
+}
+
+- (void)customiseServersWithWellKnown:(MXWellKnown*)wellKnown
+{
+    if (self.customServersContainer.hidden)
+    {
+        // Check wellKnown data with application default servers
+        // If different, use custom servers
+        if (![self.defaultHomeServerUrl isEqualToString:wellKnown.homeServer.baseUrl]
+            || ![self.defaultIdentityServerUrl isEqualToString:wellKnown.identityServer.baseUrl])
+        {
+            [self showCustomHomeserver:wellKnown.homeServer.baseUrl andIdentityServer:wellKnown.identityServer.baseUrl];
+        }
+    }
+    else
+    {
+        if ([self.defaultHomeServerUrl isEqualToString:wellKnown.homeServer.baseUrl]
+            && [self.defaultIdentityServerUrl isEqualToString:wellKnown.identityServer.baseUrl])
+        {
+            // wellKnown matches with application default servers
+            // Hide custom servers
+            [self hideCustomServers:YES];
+        }
+        else
+        {
+            NSString *customHomeServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customHomeServerURL"];
+            NSString *customIdentityServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customIdentityServerURL"];
+
+            if (![customHomeServerURL isEqualToString:wellKnown.homeServer.baseUrl]
+                || ![customIdentityServerURL isEqualToString:wellKnown.identityServer.baseUrl])
+            {
+                // Update custom servers
+                [self showCustomHomeserver:wellKnown.homeServer.baseUrl andIdentityServer:wellKnown.identityServer.baseUrl];
+            }
+        }
+    }
+}
+
+- (void)showCustomHomeserver:(NSString*)homeserver andIdentityServer:(NSString*)identityServer
+{
+    // Store the wellknown data into NSUserDefaults before displaying them
+    [[NSUserDefaults standardUserDefaults] setObject:homeserver forKey:@"customHomeServerURL"];
+
+    if (identityServer)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:identityServer forKey:@"customIdentityServerURL"];
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customIdentityServerURL"];
+    }
+
+    // And show custom servers
+    [self hideCustomServers:NO];
 }
 
 @end

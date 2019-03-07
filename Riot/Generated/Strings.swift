@@ -50,6 +50,10 @@ internal enum VectorL10n {
   internal static var authAddPhoneMessage: String { 
     return VectorL10n.tr("Vector", "auth_add_phone_message") 
   }
+  /// Invalid homeserver discovery response
+  internal static var authAutodiscoverInvalidResponse: String { 
+    return VectorL10n.tr("Vector", "auth_autodiscover_invalid_response") 
+  }
   /// This email address is already in use
   internal static var authEmailInUse: String { 
     return VectorL10n.tr("Vector", "auth_email_in_use") 
@@ -1654,7 +1658,7 @@ internal enum VectorL10n {
   internal static var roomPreviewTryJoinAnUnknownRoomDefault: String { 
     return VectorL10n.tr("Vector", "room_preview_try_join_an_unknown_room_default") 
   }
-  /// This invitation was sent to %@, which is not associated with this account. You may wish to login with a different account, or add this email to your this account.
+  /// This invitation was sent to %@, which is not associated with this account. You may wish to login with a different account, or add this email to your account.
   internal static func roomPreviewUnlinkedEmailWarning(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "room_preview_unlinked_email_warning", p1)
   }

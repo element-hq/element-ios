@@ -1203,6 +1203,21 @@
 
 #pragma mark - UITextField delegate
 
+- (void)textFieldDidEndEditing:(UITextField*)textField
+{
+    if (textField == self.userLoginTextField && type == MXKAuthenticationTypeLogin)
+    {
+        if ([MXTools isMatrixUserIdentifier:self.userLoginTextField.text])
+        {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsView:autoDiscoverServerWithDomain:)])
+            {
+                NSString *domain = [self.userLoginTextField.text componentsSeparatedByString:@":"][1];
+                [self.delegate authInputsView:self autoDiscoverServerWithDomain:domain];
+            }
+        }
+    }
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
     if (textField.returnKeyType == UIReturnKeyDone)
