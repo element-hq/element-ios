@@ -50,7 +50,8 @@ import UIKit
     var warningColor: UIColor { get }
 
     var avatarColors: [UIColor] { get }
-
+    
+    var userNameColors: [UIColor] { get }
 
     // MARK: - Appearance and style
 

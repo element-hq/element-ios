@@ -51,6 +51,17 @@ class DefaultTheme: NSObject, Theme {
         UIColor(rgb: 0x03B381),
         UIColor(rgb: 0x368BD6),
         UIColor(rgb: 0xAC3BA8)]
+    
+    var userNameColors: [UIColor] = [
+        UIColor(rgb: 0x368BD6),
+        UIColor(rgb: 0xAC3BA8),
+        UIColor(rgb: 0x03B381),
+        UIColor(rgb: 0xE64F7A),
+        UIColor(rgb: 0xFF812D),
+        UIColor(rgb: 0x2DC2C5),
+        UIColor(rgb: 0x5C56F5),
+        UIColor(rgb: 0x74D12C)
+    ]
 
     var statusBarStyle: UIStatusBarStyle = .lightContent
     var scrollBarStyle: UIScrollView.IndicatorStyle = .default
