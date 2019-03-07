@@ -660,3 +660,5 @@
 "sign_out_key_backup_in_progress_alert_title" = "密钥备份进行中。如果您此时登出账号将会失去已加密消息的访问权。";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "我不想要我的已加密消息了";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "等待";
+"auth_login_single_sign_on" = "使用单点登录方式登入";
+"room_message_unable_open_link_error_message" = "无法打开链接。";
