@@ -386,6 +386,32 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     return objc_getAssociatedObject(self, @selector(markerView));
 }
 
+- (void)updateUserNameColor
+{
+    static UserNameColorGenerator *userNameColorGenerator;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        userNameColorGenerator = [UserNameColorGenerator new];
+    });
+    
+    id<Theme> theme = ThemeService.shared.theme;
+    
+    userNameColorGenerator.defaultColor = theme.textPrimaryColor;
+    userNameColorGenerator.userNameColors = theme.userNameColors;
+    
+    NSString *senderId = self.bubbleData.senderId;
+    
+    if (senderId)
+    {
+        self.userNameLabel.textColor = [userNameColorGenerator colorFrom:senderId];
+    }
+    else
+    {
+        self.userNameLabel.textColor = userNameColorGenerator.defaultColor;
+    }
+}
+
 #pragma mark - User actions
 
 - (IBAction)onEditButtonPressed:(id)sender

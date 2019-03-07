@@ -69,6 +69,11 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
 - (IBAction)onReceiptContainerTap:(UITapGestureRecognizer *)sender;
 
 /**
+ Update username label color based on bubble data sender ID.
+ */
+- (void)updateUserNameColor;
+
+/**
  Blur the view by adding a transparent overlay. Default is NO.
  */
 @property(nonatomic) BOOL blurred;

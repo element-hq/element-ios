@@ -380,6 +380,12 @@
 		B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4752621EE4E620067973F /* KeyboardNotification.swift */; };
 		B1D4752A21EE52B10067973F /* KeyBackupSetupIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D4752921EE52B10067973F /* KeyBackupSetupIntroViewController.swift */; };
 		B1D4752C21EE52C30067973F /* KeyBackupSetupIntroViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1D4752B21EE52C30067973F /* KeyBackupSetupIntroViewController.storyboard */; };
+		B1DB4F06223015080065DBFA /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F05223015080065DBFA /* Character.swift */; };
+		B1DB4F0722301AF20065DBFA /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F05223015080065DBFA /* Character.swift */; };
+		B1DB4F0B223131600065DBFA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F0A223131600065DBFA /* String.swift */; };
+		B1DB4F0C2231494F0065DBFA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F0A223131600065DBFA /* String.swift */; };
+		B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F0D22316FFF0065DBFA /* UserNameColorGenerator.swift */; };
+		B1DB4F0F223170000065DBFA /* UserNameColorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F0D22316FFF0065DBFA /* UserNameColorGenerator.swift */; };
 		B1E5368921FB1E20001F3AFF /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E5368821FB1E20001F3AFF /* UIButton.swift */; };
 		B1E5368D21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E5368C21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift */; };
 		B1E5368F21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1E5368E21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard */; };
@@ -1036,6 +1042,9 @@
 		B1D4752621EE4E620067973F /* KeyboardNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotification.swift; sourceTree = "<group>"; };
 		B1D4752921EE52B10067973F /* KeyBackupSetupIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupIntroViewController.swift; sourceTree = "<group>"; };
 		B1D4752B21EE52C30067973F /* KeyBackupSetupIntroViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupSetupIntroViewController.storyboard; sourceTree = "<group>"; };
+		B1DB4F05223015080065DBFA /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		B1DB4F0A223131600065DBFA /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		B1DB4F0D22316FFF0065DBFA /* UserNameColorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameColorGenerator.swift; sourceTree = "<group>"; };
 		B1E5368821FB1E20001F3AFF /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		B1E5368C21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewController.swift; sourceTree = "<group>"; };
 		B1E5368E21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupRecoverFromPassphraseViewController.storyboard; sourceTree = "<group>"; };
@@ -2857,6 +2866,8 @@
 				B1E5368821FB1E20001F3AFF /* UIButton.swift */,
 				3281BCF62201FA4200F4A383 /* UIControl.swift */,
 				B109D6F0222D8C400061B6D9 /* UIApplication.swift */,
+				B1DB4F05223015080065DBFA /* Character.swift */,
+				B1DB4F0A223131600065DBFA /* String.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2890,6 +2901,7 @@
 				F083BC131E7009EC00A9B29C /* EventFormatter.m */,
 				F083BC141E7009EC00A9B29C /* Tools.h */,
 				F083BC151E7009EC00A9B29C /* Tools.m */,
+				B1DB4F0D22316FFF0065DBFA /* UserNameColorGenerator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3417,9 +3429,11 @@
 				32242F1621E8FBCC00725742 /* ThemeService.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
 				B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */,
+				B1DB4F0722301AF20065DBFA /* Character.swift in Sources */,
 				3209451321F1C1D50088CAA2 /* BlackTheme.swift in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
 				B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */,
+				B1DB4F0F223170000065DBFA /* UserNameColorGenerator.swift in Sources */,
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
 				32242F1721E8FBE500725742 /* Theme.swift in Sources */,
 				B169328320F38AE600746532 /* RiotSettings.swift in Sources */,
@@ -3427,6 +3441,7 @@
 				32242F1921E8FBFB00725742 /* DarkTheme.swift in Sources */,
 				B1664BC820F4E67600808783 /* ShareDataSource.m in Sources */,
 				B1664BCD20F4E67600808783 /* RecentRoomTableViewCell.m in Sources */,
+				B1DB4F0C2231494F0065DBFA /* String.swift in Sources */,
 				B169331720F3CBE000746532 /* RecentCellData.m in Sources */,
 				B1664BCC20F4E67600808783 /* RoomsListViewController.m in Sources */,
 			);
@@ -3459,6 +3474,7 @@
 				B169330820F3CA0E00746532 /* ContactsDataSource.m in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
+				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
 				B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
 				B16932B120F3AC9200746532 /* RoomSearchDataSource.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
@@ -3666,6 +3682,7 @@
 				32BF994F21FA29A400698084 /* SettingsKeyBackupViewModel.swift in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
+				B1DB4F0B223131600065DBFA /* String.swift in Sources */,
 				B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */,
 				B139C22521FF01C100BB68EC /* KeyBackupRecoverFromPassphraseCoordinator.swift in Sources */,
 				B1098BFD21ECFE65000DDA48 /* PasswordStrengthManager.swift in Sources */,
@@ -3680,6 +3697,7 @@
 				B1B558FF20EF768F00210D55 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				B1098C0021ECFE65000DDA48 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
+				B1DB4F06223015080065DBFA /* Character.swift in Sources */,
 				B14F143022144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyCoordinatorType.swift in Sources */,
 				B1E5368921FB1E20001F3AFF /* UIButton.swift in Sources */,
 			);

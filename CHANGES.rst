@@ -13,6 +13,7 @@ Improvements:
  * Fix SWIFT_VERSION configuration in post install hook of Podfile (PR #2302).
  * Authentication: support SSO by using the fallback URL (#2307).
  * Authentication: .well-known support (#2117).
+ * Reskin: Colorise users displaynames (#2287).
 
 Bug fix:
  * Reskin: status bar text is no more readable on iPad (#2276).
