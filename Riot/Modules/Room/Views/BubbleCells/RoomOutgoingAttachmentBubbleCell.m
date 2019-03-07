@@ -19,6 +19,7 @@
 
 #import "ThemeService.h"
 #import "Riot-Swift.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
 @implementation RoomOutgoingAttachmentBubbleCell
 
@@ -26,7 +27,8 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    [self updateUserNameColor];
+    
     self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
@@ -34,6 +36,7 @@
 {
     [super render:cellData];
 
+    [self updateUserNameColor];
     [RoomOutgoingAttachmentBubbleCell render:cellData inBubbleCell:self];
 }
 
