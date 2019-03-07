@@ -40,6 +40,11 @@
      Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
     id kThemeServiceDidChangeThemeNotificationObserver;
+
+    /**
+     Server discovery.
+     */
+    MXAutoDiscovery *autoDiscovery;
 }
 
 @end
@@ -235,6 +240,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
+
+    autoDiscovery = nil;
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
@@ -878,11 +885,13 @@
 
 - (void)tryServerDiscoveryOnDomain:(NSString *)domain
 {
-    MXAutoDiscovery *autoDiscovery = [[MXAutoDiscovery alloc] initWithDomain:domain];
+    autoDiscovery = [[MXAutoDiscovery alloc] initWithDomain:domain];
 
     MXWeakify(self);
     [autoDiscovery findClientConfig:^(MXDiscoveredClientConfig * _Nonnull discoveredClientConfig) {
         MXStrongifyAndReturnIfNil(self);
+
+        self->autoDiscovery = nil;
 
         switch (discoveredClientConfig.action)
         {
@@ -921,6 +930,10 @@
         }
 
     } failure:^(NSError * _Nonnull error) {
+        MXStrongifyAndReturnIfNil(self);
+
+        self->autoDiscovery = nil;
+
         // Fail silently
     }];
 }
