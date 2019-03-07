@@ -7,6 +7,7 @@ Improvements:
  * Add app store description as app string resource to make them available for translation on weblate (#2201).
  * Update deprecated contact availability checks (#2222).
  * RoomVC: Remove the beta warning modal when enabling e2e in a room (#2239).
+ * RoomVC: Use accent color (green) for the ongoing conference call banner.
  * Fastlane: Update to Xcode 10.1 (#2202).
  * Use SwiftLint to enforce Swift style and conventions (PR #2300).
  * Fix SWIFT_VERSION configuration in post install hook of Podfile (PR #2302).
