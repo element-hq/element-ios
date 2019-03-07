@@ -676,3 +676,5 @@
 "key_backup_setup_intro_manual_export_action" = "Kulcsok kimentése kézzel";
 // String for App Store
 "store_short_description" = "Biztonságos elosztott csevegés/VoIP";
+"auth_login_single_sign_on" = "Bejelentkezés egyszeri bejelentkezéssel";
+"room_message_unable_open_link_error_message" = "A linket nem lehet megnyitni.";
