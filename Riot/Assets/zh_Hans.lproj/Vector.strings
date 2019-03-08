@@ -231,7 +231,7 @@
 // Room Preview
 "room_preview_invitation_format" = "您已经通过 %@ 的邀请而加入此聊天室";
 "room_preview_subtitle" = "这是此聊天室的一个预览。聊天室交互已禁用。";
-"room_preview_unlinked_email_warning" = "此邀请已发送至 %@，但没和这个账户关联。你可能希望用一个不同的账户登录，或者把这个电子邮箱加入到这个账户。";
+"room_preview_unlinked_email_warning" = "此邀请已发送至未与此帐户关联的 %@。你可能希望用一个不同的账户登录，或者把这个电子邮箱加入到您的账户。";
 "room_preview_try_join_an_unknown_room" = "你正在尝试访问 %@。你要加入以参与讨论吗？";
 "room_preview_try_join_an_unknown_room_default" = "一间聊天室";
 // Settings
@@ -662,3 +662,4 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "等待";
 "auth_login_single_sign_on" = "使用单点登录方式登入";
 "room_message_unable_open_link_error_message" = "无法打开链接。";
+"auth_autodiscover_invalid_response" = "无效的主服务器探测响应";
