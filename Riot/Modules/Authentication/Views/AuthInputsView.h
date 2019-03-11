@@ -54,6 +54,9 @@
 @property (weak, nonatomic) IBOutlet UIView *recaptchaContainer;
 @property (weak, nonatomic) IBOutlet TermsView *termsView;
 
+@property (weak, nonatomic) IBOutlet TermsView *ssoButtonContainer;
+@property (weak, nonatomic) IBOutlet UIButton *ssoButton;
+
 /**
  Tell whether some third-party identifiers may be added during the account registration.
  */
@@ -79,6 +82,11 @@
  Tell whether a second third-party identifier is waiting for being added to the new account.
  */
 @property (nonatomic, readonly) BOOL isThirdPartyIdentifierPending;
+
+/**
+ Tell whether the flow requires a Single-Sign-On flow.
+ */
+@property (nonatomic, readonly) BOOL isSingleSignOnRequired;
 
 /**
  The current selected country code

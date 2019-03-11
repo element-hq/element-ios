@@ -4,12 +4,10 @@ platform :ios, "9.0"
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
 
-source 'https://github.com/CocoaPods/Specs.git'
-
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.9.5'
+$matrixKitVersion = '0.9.6'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -79,7 +77,8 @@ abstract_target 'RiotPods' do
     pod 'zxcvbn-ios'
     
     # Tools
-    pod 'SwiftGen', '~> 6.0'
+    pod 'SwiftGen', '~> 6.1'
+    pod 'SwiftLint', '~> 0.30.1'
 
     target "Riot" do
         import_MatrixKit
@@ -104,8 +103,13 @@ post_install do |installer|
         # Plus the app does not enable it
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
-            config.build_settings['SWIFT_VERSION'] = '4.0'     # Required for PiwikTracker. Should be removed
+            
+            # Required for PiwikTracker as `swift_version` is not defined in podspec. Should be removed
+            if target.name.include? 'PiwikTracker'
+                config.build_settings['SWIFT_VERSION'] = '4.0'
+            end
         end
+
     end
 end
 

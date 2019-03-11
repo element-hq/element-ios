@@ -2711,12 +2711,13 @@ SignOutAlertPresenterDelegate>
 {
     self.signOutButton = (UIButton*)sender;
     
-    MXKeyBackupState backupState = self.mainSession.crypto.backup.state;
-    [self.signOutAlertPresenter
-     presentFor:backupState
-     from:self
-     sourceView:self.signOutButton
-     animated:YES];
+    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
+    
+    [self.signOutAlertPresenter presentFor:keyBackup.state
+                      areThereKeysToBackup:keyBackup.hasKeysToBackup
+                                      from:self
+                                sourceView:self.signOutButton
+                                  animated:YES];
 }
 
 - (void)onRemove3PID:(NSIndexPath*)path
@@ -4256,8 +4257,10 @@ SignOutAlertPresenterDelegate>
 
 - (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
 {
+    [self.tableView beginUpdates];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SETTINGS_SECTION_KEYBACKUP_INDEX]
                   withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
 }
 
 - (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow

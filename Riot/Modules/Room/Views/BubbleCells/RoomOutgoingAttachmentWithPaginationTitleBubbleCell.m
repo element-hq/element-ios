@@ -19,6 +19,7 @@
 
 #import "ThemeService.h"
 #import "Riot-Swift.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
 @implementation RoomOutgoingAttachmentWithPaginationTitleBubbleCell
 
@@ -26,8 +27,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    
+    [self updateUserNameColor];
     self.paginationLabel.textColor = ThemeService.shared.theme.tintColor;
     self.paginationSeparatorView.backgroundColor = ThemeService.shared.theme.tintColor;
     self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
@@ -40,6 +40,7 @@
     if (bubbleData)
     {
         self.paginationLabel.text = [[bubbleData.eventFormatter dateStringFromDate:bubbleData.date withTime:NO] uppercaseString];
+        [self updateUserNameColor];
     }
 }
 

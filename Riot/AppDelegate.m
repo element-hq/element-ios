@@ -20,6 +20,7 @@
 
 #import <Intents/Intents.h>
 #import <PushKit/PushKit.h>
+#import <Contacts/Contacts.h>
 
 #import "RecentsDataSource.h"
 #import "RoomDataSource.h"
@@ -1969,8 +1970,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                 {
                                     // Retry opening the link but with the returned room id
                                     NSString *newUniversalLinkFragment =
-                                    [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                                                        withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                                            [fragment stringByReplacingOccurrencesOfString:[MXTools encodeURIComponent:roomIdOrAlias]
+                                                                                withString:[MXTools encodeURIComponent:roomId]
+                                            ];
                                     
                                     universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                     
@@ -2202,7 +2204,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
     for (NSInteger i = 0; i < pathParams.count; i++)
     {
-        pathParams2[i] = [pathParams2[i] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        pathParams2[i] = [pathParams2[i] stringByRemovingPercentEncoding];
     }
     pathParams = pathParams2;
     
@@ -2222,7 +2224,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (value.length)
             {
                 value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-                value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                value = [value stringByRemovingPercentEncoding];
                 
                 queryParams[key] = value;
             }
@@ -3401,7 +3403,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)refreshLocalContacts
 {
     // Check whether the application is allowed to access the local contacts.
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
     {
         // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
         if (![MXKAppSettings standardAppSettings].syncLocalContacts)

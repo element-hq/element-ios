@@ -322,7 +322,7 @@
 "settings_fail_to_update_password" = "Wachtwoord updaten mislukt";
 "settings_password_updated" = "Je wachtwoord is geüpdatet";
 "settings_crypto_device_name" = "Apparaatnaam: ";
-"settings_crypto_device_id" = "\nApparaat ID: ";
+"settings_crypto_device_id" = "\nApparaat-ID: ";
 "settings_crypto_device_key" = "\nApparaatsleutel: ";
 "settings_crypto_export" = "Sleutels exporteren";
 "settings_crypto_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";

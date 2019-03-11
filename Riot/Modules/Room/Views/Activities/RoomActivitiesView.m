@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -261,15 +262,15 @@
     // Display the string in white on pink red
     NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
     [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.backgroundColor range:wholeString];
-    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:ThemeService.shared.theme.warningColor range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:ThemeService.shared.theme.tintColor range:wholeString];
     [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
 
     self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
     self.messageTextView.tintColor = ThemeService.shared.theme.backgroundColor;
     self.messageTextView.hidden = NO;
 
-    self.backgroundColor = ThemeService.shared.theme.warningColor;
-    self.messageTextView.backgroundColor = ThemeService.shared.theme.warningColor;
+    self.backgroundColor = ThemeService.shared.theme.tintColor;
+    self.messageTextView.backgroundColor = ThemeService.shared.theme.tintColor;
 
     // Hide the separator to display correctly the red pink conf call banner
     self.separatorView.hidden = YES;

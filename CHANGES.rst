@@ -1,3 +1,34 @@
+Changes in 0.8.3 (2019-xx-xx)
+===============================================
+
+
+
+Changes in 0.8.2 (2019-03-11)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.9.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.6).
+ * Maintenance: Update cocopoads and pods. Automatic update to Swift4.2.
+ * Add app store description as app string resource to make them available for translation on weblate (#2201).
+ * Update deprecated contact availability checks (#2222).
+ * RoomVC: Remove the beta warning modal when enabling e2e in a room (#2239).
+ * RoomVC: Use accent color (green) for the ongoing conference call banner.
+ * Fastlane: Update to Xcode 10.1 (#2202).
+ * Use SwiftLint to enforce Swift style and conventions (PR #2300).
+ * Fix SWIFT_VERSION configuration in post install hook of Podfile (PR #2302).
+ * Authentication: support SSO by using the fallback URL (#2307).
+ * Authentication: .well-known support (#2117).
+ * Reskin: Colorise users displaynames (#2287).
+
+Bug fix:
+ * Reskin: status bar text is no more readable on iPad (#2276).
+ * Reskin: Text in badges should be white in dark theme (#2283).
+ * Reskin: HomeVC: use notices colors for badges background in section headers (#2292).
+ * Crash in Settings in 0.8.1 (#2295).
+ * Quickly tapping on a URL in a message highlights the message rather than opening the URL (#728).
+ * 3D touching a link can lock the app (#1818).
+ * Do not display key backup UI if the user has no e2e rooms (#2304).
+
 Changes in 0.8.1 (2019-02-19)
 ===============================================
 

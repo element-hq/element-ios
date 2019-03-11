@@ -150,7 +150,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         self.passphraseTitleLabel.textColor = theme.textPrimaryColor
         theme.applyStyle(onTextField: self.passphraseTextField)
         self.passphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupSetupPassphrasePassphrasePlaceholder,
-                                                                            attributes: [.foregroundColor : theme.placeholderTextColor])
+                                                                            attributes: [.foregroundColor: theme.placeholderTextColor])
         self.updatePassphraseAdditionalLabel()
         
         self.formSeparatorView.backgroundColor = theme.lineBreakColor
@@ -158,7 +158,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         self.confirmPassphraseTitleLabel.textColor = theme.textPrimaryColor
         theme.applyStyle(onTextField: self.confirmPassphraseTextField)
         self.confirmPassphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupSetupPassphraseConfirmPassphraseTitle,
-                                                                                   attributes: [.foregroundColor : theme.placeholderTextColor])
+                                                                                   attributes: [.foregroundColor: theme.placeholderTextColor])
         self.updateConfirmPassphraseAdditionalLabel()
         
         self.setPassphraseButton.backgroundColor = theme.backgroundColor
@@ -277,12 +277,12 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     
     private func render(viewState: KeyBackupSetupPassphraseViewState) {
         switch viewState {
-            case .loading:
-                self.renderLoading()
-            case .loaded:
-                self.renderLoaded()
-            case .error(let error):
-                self.render(error: error)
+        case .loading:
+            self.renderLoading()
+        case .loaded:
+            self.renderLoaded()
+        case .error(let error):
+            self.render(error: error)
         }
     }
     
@@ -308,13 +308,13 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         
         let alertController = UIAlertController(title: VectorL10n.keyBackupSetupSkipAlertTitle,
                                                 message: VectorL10n.keyBackupSetupSkipAlertMessage,
-                                                preferredStyle:.alert)
+                                                preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { action in
             self.viewModel.process(viewAction: .skipAlertContinue)
         }))
         
-        alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction , style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction, style: .default, handler: { action in
             self.viewModel.process(viewAction: .skipAlertSkip)
         }))
         

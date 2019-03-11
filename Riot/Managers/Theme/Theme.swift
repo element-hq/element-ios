@@ -50,7 +50,8 @@ import UIKit
     var warningColor: UIColor { get }
 
     var avatarColors: [UIColor] { get }
-
+    
+    var userNameColors: [UIColor] { get }
 
     // MARK: - Appearance and style
 
@@ -58,9 +59,9 @@ import UIKit
     /// Status bar style to use
     var statusBarStyle: UIStatusBarStyle { get }
 
-    var scrollBarStyle: UIScrollViewIndicatorStyle { get }
+    var scrollBarStyle: UIScrollView.IndicatorStyle { get }
 
-    var keyboardAppearance : UIKeyboardAppearance { get }
+    var keyboardAppearance: UIKeyboardAppearance { get }
 
 
     // MARK: - Colors not defined in the design palette

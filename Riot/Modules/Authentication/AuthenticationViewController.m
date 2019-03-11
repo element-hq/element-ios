@@ -40,6 +40,11 @@
      Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
     id kThemeServiceDidChangeThemeNotificationObserver;
+
+    /**
+     Server discovery.
+     */
+    MXAutoDiscovery *autoDiscovery;
 }
 
 @end
@@ -119,7 +124,10 @@
     MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
     [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
     self.authInputsView = authInputsView;
-    
+
+    // Listen to action within the child view
+    [authInputsView.ssoButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -143,7 +151,10 @@
     self.view.backgroundColor = ThemeService.shared.theme.baseColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    // Style the authentication fallback webview screen so that its header matches to navigation bar style
+    self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.cancelAuthFallbackButton.tintColor = ThemeService.shared.theme.baseTextPrimaryColor;
 
     if (self.homeServerTextField.placeholder)
     {
@@ -229,6 +240,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
+
+    autoDiscovery = nil;
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
@@ -321,6 +334,9 @@
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
 {
     super.userInteractionEnabled = userInteractionEnabled;
+
+    // Reset
+    self.rightBarButtonItem.enabled = YES;
     
     // Show/Hide server options
     if (_optionsContainer.hidden == userInteractionEnabled)
@@ -341,19 +357,33 @@
     }
     else
     {
+        AuthInputsView *authInputsview;
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        {
+            authInputsview = (AuthInputsView*)self.authInputsView;
+        }
+
         // The right bar button is used to switch the authentication type.
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+            if (!authInputsview.isSingleSignOnRequired)
+            {
+                self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+            }
+            else
+            {
+                // Disable register on SSO
+                self.rightBarButtonItem.enabled = NO;
+                self.rightBarButtonItem.title = nil;
+            }
         }
         else if (self.authType == MXKAuthenticationTypeRegister)
         {
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
             
             // Restore the back button
-            if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+            if (authInputsview)
             {
-                AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
                 [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:authInputsview.thirdPartyIdentifiersHidden];
             }
         }
@@ -363,6 +393,21 @@
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
         }
     }
+}
+
+- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
+{
+    [super handleAuthenticationSession:authSession];
+
+    // Hide "Forgot password" and "Log in" buttons in case of SSO
+    [self updateForgotPwdButtonVisibility];
+
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+    }
+    self.submitButton.hidden = authInputsview.isSingleSignOnRequired;
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -476,6 +521,13 @@
         }
         
         [super onButtonPressed:self.submitButton];
+    }
+    else if (sender == ((AuthInputsView*)self.authInputsView).ssoButton)
+    {
+        // Do SSO using the fallback URL
+        [self showAuthenticationFallBackView];
+
+        [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     }
     else
     {
@@ -592,7 +644,13 @@
 
 - (void)updateForgotPwdButtonVisibility
 {
-    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin);
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+    }
+
+    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin) || authInputsview.isSingleSignOnRequired;
     
     // Adjust minimum leading constraint of the submit button
     if (self.forgotPasswordButton.isHidden)
@@ -816,6 +874,122 @@
 - (void)authInputsViewDidCancelOperation:(MXKAuthInputsView *)authInputsView
 {
     [self cancel];
+}
+
+- (void)authInputsView:(MXKAuthInputsView *)authInputsView autoDiscoverServerWithDomain:(NSString *)domain
+{
+    [self tryServerDiscoveryOnDomain:domain];
+}
+
+#pragma mark - Server discovery
+
+- (void)tryServerDiscoveryOnDomain:(NSString *)domain
+{
+    autoDiscovery = [[MXAutoDiscovery alloc] initWithDomain:domain];
+
+    MXWeakify(self);
+    [autoDiscovery findClientConfig:^(MXDiscoveredClientConfig * _Nonnull discoveredClientConfig) {
+        MXStrongifyAndReturnIfNil(self);
+
+        self->autoDiscovery = nil;
+
+        switch (discoveredClientConfig.action)
+        {
+            case MXDiscoveredClientConfigActionPrompt:
+                [self customiseServersWithWellKnown:discoveredClientConfig.wellKnown];
+                break;
+
+            case MXDiscoveredClientConfigActionFailPrompt:
+            case MXDiscoveredClientConfigActionFailError:
+            {
+                // Alert user
+                if (self->alert)
+                {
+                    [self->alert dismissViewControllerAnimated:NO completion:nil];
+                }
+
+                self->alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"auth_autodiscover_invalid_response", @"Vector", nil)
+                                                                  message:nil
+                                                           preferredStyle:UIAlertControllerStyleAlert];
+
+                [self->alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+
+                                                                  self->alert = nil;
+                                                              }]];
+
+                [self presentViewController:self->alert animated:YES completion:nil];
+
+                break;
+            }
+
+            default:
+                // Fail silently
+                break;
+        }
+
+    } failure:^(NSError * _Nonnull error) {
+        MXStrongifyAndReturnIfNil(self);
+
+        self->autoDiscovery = nil;
+
+        // Fail silently
+    }];
+}
+
+- (void)customiseServersWithWellKnown:(MXWellKnown*)wellKnown
+{
+    if (self.customServersContainer.hidden)
+    {
+        // Check wellKnown data with application default servers
+        // If different, use custom servers
+        if (![self.defaultHomeServerUrl isEqualToString:wellKnown.homeServer.baseUrl]
+            || ![self.defaultIdentityServerUrl isEqualToString:wellKnown.identityServer.baseUrl])
+        {
+            [self showCustomHomeserver:wellKnown.homeServer.baseUrl andIdentityServer:wellKnown.identityServer.baseUrl];
+        }
+    }
+    else
+    {
+        if ([self.defaultHomeServerUrl isEqualToString:wellKnown.homeServer.baseUrl]
+            && [self.defaultIdentityServerUrl isEqualToString:wellKnown.identityServer.baseUrl])
+        {
+            // wellKnown matches with application default servers
+            // Hide custom servers
+            [self hideCustomServers:YES];
+        }
+        else
+        {
+            NSString *customHomeServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customHomeServerURL"];
+            NSString *customIdentityServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customIdentityServerURL"];
+
+            if (![customHomeServerURL isEqualToString:wellKnown.homeServer.baseUrl]
+                || ![customIdentityServerURL isEqualToString:wellKnown.identityServer.baseUrl])
+            {
+                // Update custom servers
+                [self showCustomHomeserver:wellKnown.homeServer.baseUrl andIdentityServer:wellKnown.identityServer.baseUrl];
+            }
+        }
+    }
+}
+
+- (void)showCustomHomeserver:(NSString*)homeserver andIdentityServer:(NSString*)identityServer
+{
+    // Store the wellknown data into NSUserDefaults before displaying them
+    [[NSUserDefaults standardUserDefaults] setObject:homeserver forKey:@"customHomeServerURL"];
+
+    if (identityServer)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:identityServer forKey:@"customIdentityServerURL"];
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customIdentityServerURL"];
+    }
+
+    // And show custom servers
+    [self hideCustomServers:NO];
 }
 
 @end

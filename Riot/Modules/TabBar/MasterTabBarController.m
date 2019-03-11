@@ -819,6 +819,11 @@
         if (@available(iOS 10, *))
         {
             self.tabBar.items[index].badgeColor = badgeColor;
+
+            [self.tabBar.items[index] setBadgeTextAttributes:@{
+                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                               }
+                                                    forState:UIControlStateNormal];
         }
     }
     else
@@ -836,6 +841,11 @@
         if (@available(iOS 10, *))
         {
             self.tabBar.items[index].badgeColor = badgeColor;
+
+            [self.tabBar.items[index] setBadgeTextAttributes:@{
+                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                               }
+                                                    forState:UIControlStateNormal];
         }
     }
     else

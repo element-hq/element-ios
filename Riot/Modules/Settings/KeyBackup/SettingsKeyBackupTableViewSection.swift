@@ -24,11 +24,11 @@ import UIKit
 
 
     func settingsKeyBackupTableViewSectionShowKeyBackupSetup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection)
-    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupRecover keyBackupVersion:MXKeyBackupVersion)
-    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupDeleteConfirm keyBackupVersion:MXKeyBackupVersion)
+    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupRecover keyBackupVersion: MXKeyBackupVersion)
+    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupDeleteConfirm keyBackupVersion: MXKeyBackupVersion)
 
-    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showActivityIndicator show:Bool)
-    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showError error:Error)
+    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showActivityIndicator show: Bool)
+    func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showError error: Error)
 }
 
 @objc final class SettingsKeyBackupTableViewSection: NSObject {
@@ -78,15 +78,15 @@ import UIKit
         return numberOfRows
     }
 
-    @objc func cellForRow(atRow row:Int) -> UITableViewCell {
+    @objc func cellForRow(atRow row: Int) -> UITableViewCell {
         var cell: UITableViewCell
 
         switch self.viewState {
         case .checkingBackup:
-            cell = self.renderCheckingBackupCell(atRow:row)
+            cell = self.renderCheckingBackupCell(atRow: row)
 
         case .noBackup:
-            cell = self.renderNoBackupCell(atRow:row)
+            cell = self.renderNoBackupCell(atRow: row)
 
         case .backup(let keyBackupVersion, let keyBackupVersionTrust):
             cell = self.renderBackupCell(atRow: row,
@@ -94,13 +94,13 @@ import UIKit
                                          keyBackupVersionTrust: keyBackupVersionTrust)
 
         case .backupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, let backupProgress):
-            cell = self.renderBackupAndRunningCell(atRow:row,
+            cell = self.renderBackupAndRunningCell(atRow: row,
                                                    keyBackupVersion: keyBackupVersion,
                                                    keyBackupVersionTrust: keyBackupVersionTrust,
                                                    backupProgress: backupProgress)
 
         case .backupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
-            cell = self.renderBackupNotTrustedCell(atRow:row,
+            cell = self.renderBackupNotTrustedCell(atRow: row,
                                                    keyBackupVersion: keyBackupVersion,
                                                    keyBackupVersionTrust: keyBackupVersionTrust)
         }
@@ -125,7 +125,7 @@ import UIKit
 
     private func renderCheckingBackupCell(atRow row: Int) -> UITableViewCell {
         guard let delegate = self.delegate else {
-            return UITableViewCell.init()
+            return UITableViewCell()
         }
 
         let cell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
@@ -146,7 +146,7 @@ import UIKit
 
     private func renderNoBackupCell(atRow row: Int) -> UITableViewCell {
         guard let delegate = self.delegate else {
-            return UITableViewCell.init()
+            return UITableViewCell()
         }
 
         var cell: UITableViewCell
@@ -167,7 +167,7 @@ import UIKit
             cell = self.buttonCellForCreate(atRow: row)
 
         default:
-            cell = UITableViewCell.init()
+            cell = UITableViewCell()
         }
 
         return cell
@@ -180,7 +180,7 @@ import UIKit
 
     private func renderBackupCell(atRow row: Int, keyBackupVersion: MXKeyBackupVersion, keyBackupVersionTrust: MXKeyBackupVersionTrust) -> UITableViewCell {
         guard let delegate = self.delegate else {
-            return UITableViewCell.init()
+            return UITableViewCell()
         }
 
         var cell: UITableViewCell
@@ -211,7 +211,7 @@ import UIKit
         case 2:
             let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
 
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
+            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
             infoCell.mxkTextView.text = backupTrust.joined(separator: "\n")
 
             cell = infoCell
@@ -223,7 +223,7 @@ import UIKit
             cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
 
         default:
-            cell = UITableViewCell.init()
+            cell = UITableViewCell()
         }
 
         return cell
@@ -236,7 +236,7 @@ import UIKit
 
     private func renderBackupAndRunningCell(atRow row: Int, keyBackupVersion: MXKeyBackupVersion, keyBackupVersionTrust: MXKeyBackupVersionTrust, backupProgress: Progress) -> UITableViewCell {
         guard let delegate = self.delegate else {
-            return UITableViewCell.init()
+            return UITableViewCell()
         }
 
         var cell: UITableViewCell
@@ -269,7 +269,7 @@ import UIKit
         case 2:
             let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
 
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
+            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
             infoCell.mxkTextView.text = backupTrust.joined(separator: "\n")
 
             cell = infoCell
@@ -281,7 +281,7 @@ import UIKit
             cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
 
         default:
-            cell = UITableViewCell.init()
+            cell = UITableViewCell()
         }
 
         return cell
@@ -294,7 +294,7 @@ import UIKit
 
     private func renderBackupNotTrustedCell(atRow row: Int, keyBackupVersion: MXKeyBackupVersion, keyBackupVersionTrust: MXKeyBackupVersionTrust) -> UITableViewCell {
         guard let delegate = self.delegate else {
-            return UITableViewCell.init()
+            return UITableViewCell()
         }
 
         var cell: UITableViewCell
@@ -325,7 +325,7 @@ import UIKit
         case 2:
             let infoCell: MXKTableViewCellWithTextView = delegate.settingsKeyBackupTableViewSection(self, textCellForRow: row)
 
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust);
+            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
             infoCell.mxkTextView.text = backupTrust.joined(separator: "\n")
 
             cell = infoCell
@@ -337,7 +337,7 @@ import UIKit
             cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
 
         default:
-            cell = UITableViewCell.init()
+            cell = UITableViewCell()
         }
 
         return cell
@@ -357,53 +357,18 @@ import UIKit
 
             if device.fingerprint == self.userDevice.fingerprint {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValid
-            }
-            else if signature.valid && (device.verified == MXDeviceVerified) {
+            } else if signature.valid && (device.verified == MXDeviceVerified) {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValidDeviceVerified(displayName)
-            }
-            else if signature.valid && (device.verified != MXDeviceVerified) {
+            } else if signature.valid && (device.verified != MXDeviceVerified) {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValidDeviceUnverified(displayName)
-            }
-            else if !signature.valid && (device.verified == MXDeviceVerified) {
+            } else if !signature.valid && (device.verified == MXDeviceVerified) {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureInvalidDeviceVerified(displayName)
-            }
-            else if !signature.valid && (device.verified != MXDeviceVerified) {
+            } else if !signature.valid && (device.verified != MXDeviceVerified) {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureInvalidDeviceUnverified(displayName)
             }
 
-            return "";
+            return ""
         }
-    }
-
-    private func lastNonVerifiedDevice(_ keyBackupVersionTrust:MXKeyBackupVersionTrust) -> MXDeviceInfo?
-    {
-        var lastNonVerifiedDevice: MXDeviceInfo?
-        for signature in keyBackupVersionTrust.signatures.reversed() {
-
-            guard let device = signature.device else {
-                continue
-            }
-
-            if device.verified != MXDeviceVerified
-            {
-                lastNonVerifiedDevice = device
-                break
-            }
-        }
-        return lastNonVerifiedDevice
-    }
-
-    private func lastUnVerifiableDevice(_ keyBackupVersionTrust:MXKeyBackupVersionTrust) -> String?
-    {
-        var lastUnVerifiableDevice: String?
-        for signature in keyBackupVersionTrust.signatures.reversed() {
-
-            if signature.device == nil {
-                lastUnVerifiableDevice = signature.deviceId
-                break
-            }
-        }
-        return lastUnVerifiableDevice
     }
 
     // MARK: - Button cells
@@ -411,10 +376,10 @@ import UIKit
     private func buttonCellForCreate(atRow row: Int) -> UITableViewCell {
 
         guard let delegate = self.delegate else {
-            return UITableViewCell.init()
+            return UITableViewCell()
         }
 
-        let cell:MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
+        let cell: MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
 
         let btnTitle = VectorL10n.settingsKeyBackupButtonCreate
         cell.mxkButton.setTitle(btnTitle, for: .normal)
@@ -429,10 +394,10 @@ import UIKit
 
     private func buttonCellForRestore(keyBackupVersion: MXKeyBackupVersion, atRow row: Int, title: String = VectorL10n.settingsKeyBackupButtonRestore) -> UITableViewCell {
         guard let delegate = self.delegate else {
-            return UITableViewCell.init()
+            return UITableViewCell()
         }
 
-        let cell:MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
+        let cell: MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
         cell.mxkButton.setTitle(title, for: .normal)
         cell.mxkButton.setTitle(title, for: .highlighted)
         cell.mxkButton.vc_addAction {
@@ -443,10 +408,10 @@ import UIKit
 
     private func buttonCellForDelete(keyBackupVersion: MXKeyBackupVersion, atRow row: Int) -> UITableViewCell {
         guard let delegate = self.delegate else {
-            return UITableViewCell.init()
+            return UITableViewCell()
         }
 
-        let cell:MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
+        let cell: MXKTableViewCellWithButton = delegate.settingsKeyBackupTableViewSection(self, buttonCellForRow: row)
         let btnTitle = VectorL10n.settingsKeyBackupButtonDelete
         cell.mxkButton.setTitle(btnTitle, for: .normal)
         cell.mxkButton.setTitle(btnTitle, for: .highlighted)

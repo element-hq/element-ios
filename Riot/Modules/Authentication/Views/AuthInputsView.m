@@ -67,6 +67,7 @@
     
     _thirdPartyIdentifiersHidden = YES;
     _isThirdPartyIdentifierPending = NO;
+    _isSingleSignOnRequired = NO;
     
     self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
     self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
@@ -118,6 +119,12 @@
     self.phoneSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     self.passwordSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     self.repeatPasswordSeparator.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+
+    [self.ssoButton.layer setCornerRadius:5];
+    self.ssoButton.clipsToBounds = YES;
+    [self.ssoButton setTitle:NSLocalizedStringFromTable(@"auth_login_single_sign_on", @"Vector", nil) forState:UIControlStateNormal];
+    [self.ssoButton setTitle:NSLocalizedStringFromTable(@"auth_login_single_sign_on", @"Vector", nil) forState:UIControlStateHighlighted];
+    self.ssoButton.backgroundColor = ThemeService.shared.theme.tintColor;
 
     if (self.userLoginTextField.placeholder)
     {
@@ -189,30 +196,44 @@
         {
             if (authType == MXKAuthenticationTypeLogin)
             {
-                self.passWordTextField.returnKeyType = UIReturnKeyDone;
-                self.phoneTextField.returnKeyType = UIReturnKeyNext;
-                
-                self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
-                self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
-                self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
+                _isSingleSignOnRequired = NO;
 
-                self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                 initWithString:self.userLoginTextField.placeholder
+                if ([self isFlowSupported:kMXLoginFlowTypePassword])
+                {
+                    self.passWordTextField.returnKeyType = UIReturnKeyDone;
+                    self.phoneTextField.returnKeyType = UIReturnKeyNext;
+
+                    self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
+                    self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
+                    self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
+
+                    self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                     initWithString:self.userLoginTextField.placeholder
+                                                                     attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
+                    self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
+                                                                 initWithString:self.phoneTextField.placeholder
                                                                  attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-                self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                             initWithString:self.phoneTextField.placeholder
-                                                             attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
-                
-                self.userLoginContainer.hidden = NO;
-                self.messageLabel.hidden = NO;
-                self.phoneContainer.hidden = NO;
-                self.passwordContainer.hidden = NO;
-                
-                self.messageLabelTopConstraint.constant = 59;
-                self.phoneContainerTopConstraint.constant = 70;
-                self.passwordContainerTopConstraint.constant = 150;
-                
-                self.currentLastContainer = self.passwordContainer;
+
+                    self.userLoginContainer.hidden = NO;
+                    self.messageLabel.hidden = NO;
+                    self.phoneContainer.hidden = NO;
+                    self.passwordContainer.hidden = NO;
+
+                    self.messageLabelTopConstraint.constant = 59;
+                    self.phoneContainerTopConstraint.constant = 70;
+                    self.passwordContainerTopConstraint.constant = 150;
+
+                    self.currentLastContainer = self.passwordContainer;
+                }
+                else if ([self isFlowSupported:kMXLoginFlowTypeCAS]
+                         || [self isFlowSupported:kMXLoginFlowTypeSSO])
+                {
+
+                    self.ssoButtonContainer.hidden = NO;
+                    self.currentLastContainer = self.ssoButtonContainer;
+
+                    _isSingleSignOnRequired = YES;
+                }
             }
             else
             {
@@ -1182,6 +1203,21 @@
 
 #pragma mark - UITextField delegate
 
+- (void)textFieldDidEndEditing:(UITextField*)textField
+{
+    if (textField == self.userLoginTextField && type == MXKAuthenticationTypeLogin)
+    {
+        if ([MXTools isMatrixUserIdentifier:self.userLoginTextField.text])
+        {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsView:autoDiscoverServerWithDomain:)])
+            {
+                NSString *domain = [self.userLoginTextField.text componentsSeparatedByString:@":"][1];
+                [self.delegate authInputsView:self autoDiscoverServerWithDomain:domain];
+            }
+        }
+    }
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
     if (textField.returnKeyType == UIReturnKeyDone)
@@ -1242,6 +1278,7 @@
     self.messageLabel.hidden = YES;
     self.recaptchaContainer.hidden = YES;
     self.termsView.hidden = YES;
+    self.ssoButtonContainer.hidden = YES;
     
     _currentLastContainer = nil;
 }
@@ -1359,6 +1396,10 @@
         return YES;
     }
     else if ([flowType isEqualToString:kMXLoginFlowTypeTerms])
+    {
+        return YES;
+    }
+    else if ([flowType isEqualToString:kMXLoginFlowTypeCAS] || [flowType isEqualToString:kMXLoginFlowTypeSSO])
     {
         return YES;
     }

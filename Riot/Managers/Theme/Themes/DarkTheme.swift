@@ -51,9 +51,20 @@ class DarkTheme: NSObject, Theme {
         UIColor(rgb: 0x03B381),
         UIColor(rgb: 0x368BD6),
         UIColor(rgb: 0xAC3BA8)]
+    
+    var userNameColors: [UIColor] = [
+        UIColor(rgb: 0x368BD6),
+        UIColor(rgb: 0xAC3BA8),
+        UIColor(rgb: 0x03B381),
+        UIColor(rgb: 0xE64F7A),
+        UIColor(rgb: 0xFF812D),
+        UIColor(rgb: 0x2DC2C5),
+        UIColor(rgb: 0x5C56F5),
+        UIColor(rgb: 0x74D12C)
+    ]
 
     var statusBarStyle: UIStatusBarStyle = .lightContent
-    var scrollBarStyle: UIScrollViewIndicatorStyle = .white
+    var scrollBarStyle: UIScrollView.IndicatorStyle = .white
     var keyboardAppearance: UIKeyboardAppearance = .dark
 
     var placeholderTextColor: UIColor = UIColor(white: 1.0, alpha: 0.3)
@@ -62,26 +73,26 @@ class DarkTheme: NSObject, Theme {
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
     
     func applyStyle(onTabBar tabBar: UITabBar) {
-        tabBar.tintColor = self.tintColor;
-        tabBar.barTintColor = self.headerBackgroundColor;
-        tabBar.isTranslucent = false;
+        tabBar.tintColor = self.tintColor
+        tabBar.barTintColor = self.headerBackgroundColor
+        tabBar.isTranslucent = false
     }
 
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.tintColor = self.baseTextPrimaryColor;
+        navigationBar.tintColor = self.baseTextPrimaryColor
         navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: self.baseTextPrimaryColor
+            NSAttributedString.Key.foregroundColor: self.baseTextPrimaryColor
         ]
-        navigationBar.barTintColor = self.baseColor;
+        navigationBar.barTintColor = self.baseColor
 
         // The navigation bar needs to be opaque so that its background color is the expected one
-        navigationBar.isTranslucent = false;
+        navigationBar.isTranslucent = false
     }
 
     func applyStyle(onSearchBar searchBar: UISearchBar) {
         searchBar.barStyle = .black
-        searchBar.tintColor = self.searchPlaceholderColor;
-        searchBar.barTintColor = self.headerBackgroundColor;        
+        searchBar.tintColor = self.searchPlaceholderColor
+        searchBar.barTintColor = self.headerBackgroundColor        
     }
     
     func applyStyle(onTextField texField: UITextField) {
