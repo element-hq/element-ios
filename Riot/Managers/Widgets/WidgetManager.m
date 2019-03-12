@@ -509,6 +509,28 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return operation;
 }
 
++ (BOOL)isScalarUrl:(NSString *)urlString
+{
+    BOOL isScalarUrl = NO;
+
+    NSArray<NSString*> *scalarUrlStrings = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsWidgetsUrls"];
+    if (scalarUrlStrings.count == 0)
+    {
+        scalarUrlStrings = @[[[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"]];
+    }
+
+    for (NSString *scalarUrlString in scalarUrlStrings)
+    {
+        if ([urlString hasPrefix:scalarUrlString])
+        {
+            isScalarUrl = YES;
+            break;
+        }
+    }
+
+    return isScalarUrl;
+}
+
 #pragma mark - Private methods
 
 - (NSString *)scalarTokenForMXSession:(MXSession *)mxSession
