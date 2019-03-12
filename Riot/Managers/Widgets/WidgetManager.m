@@ -442,6 +442,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 #pragma mark - Modular interface
 
 - (MXHTTPOperation *)getScalarTokenForMXSession:(MXSession*)mxSession
+                                       validate:(BOOL)validate
                                         success:(void (^)(NSString *scalarToken))success
                                         failure:(void (^)(NSError *error))failure;
 {
@@ -450,63 +451,154 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     __block NSString *scalarToken = [self scalarTokenForMXSession:mxSession];
     if (scalarToken)
     {
-        success(scalarToken);
+        if (!validate)
+        {
+            success(scalarToken);
+        }
+        else
+        {
+            operation = [self validateScalarToken:scalarToken forMXSession:mxSession complete:^(BOOL valid) {
+
+                if (valid)
+                {
+                    success(scalarToken);
+                }
+                else
+                {
+                    NSLog(@"[WidgetManager] getScalarTokenForMXSession: Invalid stored token. Need to register for a new token");
+                    MXHTTPOperation *operation2 = [self registerForScalarToken:mxSession success:success failure:failure];
+                    [operation mutateTo:operation2];
+                }
+
+            } failure:failure];
+        }
     }
     else
     {
-        NSLog(@"[WidgetManager] getScalarTokenForMXSession: Need to register to get a token");
-
-        __weak __typeof__(self) weakSelf = self;
-        operation = [mxSession.matrixRestClient openIdToken:^(MXOpenIdToken *tokenObject) {
-
-            typeof(self) self = weakSelf;
-
-            if (self)
-            {
-                // Exchange the token for a scalar token
-                NSString *modularRestUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
-
-                MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:modularRestUrl andOnUnrecognizedCertificateBlock:nil];
-
-                MXHTTPOperation *operation2 = [httpClient requestWithMethod:@"POST"
-                                                                       path:@"register"
-                                                                 parameters:tokenObject.JSONDictionary
-                                                                    success:^(NSDictionary *JSONResponse) {
-
-                                                                        MXJSONModelSetString(scalarToken, JSONResponse[@"scalar_token"])
-                                                                        self->scalarTokens[mxSession.myUser.userId] = scalarToken;
-
-                                                                        [self save];
-
-                                                                        if (success)
-                                                                        {
-                                                                            success(scalarToken);
-                                                                        }
-
-                                                                    } failure:^(NSError *error) {
-                                                                        NSLog(@"[WidgetManager] getScalarTokenForMXSession. Error in modular/register request");
-
-                                                                        if (failure)
-                                                                        {
-                                                                            failure(error);
-                                                                        }
-                                                                    }];
-
-                [operation mutateTo:operation2];
-
-            }
-
-        } failure:^(NSError *error) {
-            NSLog(@"[WidgetManager] getScalarTokenForMXSession. Error in openIdToken request");
-
-            if (failure)
-            {
-                failure(error);
-            }
-        }];
+        NSLog(@"[WidgetManager] getScalarTokenForMXSession: Need to register for a token");
+        operation = [self registerForScalarToken:mxSession success:success failure:failure];
     }
 
     return operation;
+}
+
+- (MXHTTPOperation *)registerForScalarToken:(MXSession*)mxSession
+                                    success:(void (^)(NSString *scalarToken))success
+                                    failure:(void (^)(NSError *error))failure
+{
+    MXHTTPOperation *operation;
+
+    MXWeakify(self);
+    operation = [mxSession.matrixRestClient openIdToken:^(MXOpenIdToken *tokenObject) {
+        MXStrongifyAndReturnIfNil(self);
+
+        // Exchange the token for a scalar token
+        NSString *modularRestUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
+
+        MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:modularRestUrl andOnUnrecognizedCertificateBlock:nil];
+
+        MXHTTPOperation *operation2 =
+        [httpClient requestWithMethod:@"POST"
+                                 path:@"register?v=1.1"
+                           parameters:tokenObject.JSONDictionary
+                              success:^(NSDictionary *JSONResponse)
+         {
+
+             NSString *scalarToken;
+             MXJSONModelSetString(scalarToken, JSONResponse[@"scalar_token"])
+             self->scalarTokens[mxSession.myUser.userId] = scalarToken;
+
+             [self save];
+
+             if (success)
+             {
+                 success(scalarToken);
+             }
+
+         } failure:^(NSError *error) {
+             NSLog(@"[WidgetManager] registerForScalarToken. Error in modular/register request");
+
+             if (failure)
+             {
+                 failure(error);
+             }
+         }];
+
+        [operation mutateTo:operation2];
+
+    } failure:^(NSError *error) {
+        NSLog(@"[WidgetManager] registerForScalarToken. Error in openIdToken request");
+
+        if (failure)
+        {
+            failure(error);
+        }
+    }];
+
+    return operation;
+}
+
+- (MXHTTPOperation *)validateScalarToken:(NSString*)scalarToken forMXSession:(MXSession*)mxSession
+                                complete:(void (^)(BOOL valid))complete
+                                 failure:(void (^)(NSError *error))failure
+{
+    NSString *modularRestUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
+    MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:modularRestUrl andOnUnrecognizedCertificateBlock:nil];
+
+    return [httpClient requestWithMethod:@"GET"
+                                    path:[NSString stringWithFormat:@"account?v=1.1&scalar_token=%@", scalarToken]
+                              parameters:nil
+                                 success:^(NSDictionary *JSONResponse) {
+
+                                     NSString *userId;
+                                     MXJSONModelSetString(userId, JSONResponse[@"user_id"])
+
+                                     if ([userId isEqualToString:mxSession.myUser.userId])
+                                     {
+                                         complete(YES);
+                                     }
+                                     else
+                                     {
+                                         NSLog(@"[WidgetManager] validateScalarToken. Unexpected modular/account response: %@", JSONResponse);
+                                         complete(NO);
+                                     }
+
+                                 } failure:^(NSError *error) {
+                                     NSHTTPURLResponse *urlResponse = [MXHTTPOperation urlResponseFromError:error];
+
+                                     NSLog(@"[WidgetManager] validateScalarToken. Error in modular/account request. statusCode: %@", @(urlResponse.statusCode));
+
+                                     if (urlResponse &&  urlResponse.statusCode / 100 != 2)
+                                     {
+                                         complete(NO);
+                                     }
+                                     else if (failure)
+                                     {
+                                         failure(error);
+                                     }
+                                 }];
+}
+
++ (BOOL)isScalarUrl:(NSString *)urlString
+{
+    BOOL isScalarUrl = NO;
+
+    NSArray<NSString*> *scalarUrlStrings = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsWidgetsUrls"];
+    if (scalarUrlStrings.count == 0)
+    {
+        scalarUrlStrings = @[[[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"]];
+    }
+
+    for (NSString *scalarUrlString in scalarUrlStrings)
+    {
+        if ([urlString hasPrefix:scalarUrlString])
+        {
+            isScalarUrl = YES;
+            break;
+        }
+    }
+
+    return isScalarUrl;
 }
 
 #pragma mark - Private methods

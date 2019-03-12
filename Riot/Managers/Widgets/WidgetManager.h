@@ -187,12 +187,22 @@ WidgetManagerErrorCode;
  to get one.
 
  @param mxSession the session to check.
+ @param validate if it is cached, check its validity on the scalar server.
  
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
 - (MXHTTPOperation *)getScalarTokenForMXSession:(MXSession*)mxSession
+                                       validate:(BOOL)validate
                                         success:(void (^)(NSString *scalarToken))success
                                         failure:(void (^)(NSError *error))failure;
+
+/**
+ Returns true if specified url is a scalar URL, typically https://scalar.vector.im/api
+
+ @param urlString the URL to check.
+ @return YES if specified URL is a scalar URL.
+ */
++ (BOOL)isScalarUrl:(NSString*)urlString;
 
 @end
