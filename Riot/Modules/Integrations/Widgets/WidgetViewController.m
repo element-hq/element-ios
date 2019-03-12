@@ -172,17 +172,30 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 {
     // Filter out the users's scalar token
     NSString *errorDescription = error.description;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"scalar_token=\\w*"
-                                                                           options:NSRegularExpressionCaseInsensitive error:nil];
-    errorDescription = [regex stringByReplacingMatchesInString:errorDescription
-                                                       options:0
-                                                         range:NSMakeRange(0, errorDescription.length)
-                                                  withTemplate:@"scalar_token=..."];
+    errorDescription = [self stringByReplacingScalarTokenInString:errorDescription byScalarToken:@"..."];
 
     NSLog(@"[WidgetVC] didFailLoadWithError: %@", errorDescription);
 
     [self stopActivityIndicator];
     [self showErrorAsAlert:error];
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
+
+    if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]])
+    {
+        NSHTTPURLResponse * response = (NSHTTPURLResponse *)navigationResponse.response;
+        if (response.statusCode != 200)
+        {
+            NSLog(@"[WidgetVC] decidePolicyForNavigationResponse: statusCode: %@", @(response.statusCode));
+        }
+
+        if (response.statusCode == 403 && [WidgetManager isScalarUrl:self.URL])
+        {
+            [self fixScalarToken];
+        }
+    }
+    decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 #pragma mark - postMessage API
@@ -313,6 +326,47 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 - (void)sendLocalisedError:(NSString*)errorKey toRequest:(NSString*)requestId
 {
     [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toRequest:requestId];
+}
+
+
+#pragma mark - Private methods
+
+- (NSString *)stringByReplacingScalarTokenInString:(NSString*)string byScalarToken:(NSString*)scalarToken
+{
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"scalar_token=\\w*"
+                                                                           options:NSRegularExpressionCaseInsensitive error:nil];
+    return [regex stringByReplacingMatchesInString:string
+                                           options:0
+                                             range:NSMakeRange(0, string.length)
+                                      withTemplate:[NSString stringWithFormat:@"scalar_token=%@", scalarToken]];
+}
+
+/**
+ Reset the scalar token used in the webview URL.
+ */
+- (void)fixScalarToken
+{
+    NSLog(@"[WidgetVC] fixScalarToken");
+
+    self->webView.hidden = YES;
+
+    // Get a fresh new scalar token
+    [WidgetManager.sharedManager deleteDataForUser:widget.mxSession.myUser.userId];
+
+    MXWeakify(self);
+    [WidgetManager.sharedManager getScalarTokenForMXSession:widget.mxSession success:^(NSString *scalarToken) {
+        MXStrongifyAndReturnIfNil(self);
+
+        NSLog(@"[WidgetVC] fixScalarToken: DONE");
+
+        self.URL = [self stringByReplacingScalarTokenInString:self.URL byScalarToken:scalarToken];
+
+        self->webView.hidden = NO;
+
+    } failure:^(NSError *error) {
+        NSLog(@"[WidgetVC] fixScalarToken: Error: %@", error);
+        [self showErrorAsAlert:error];
+    }];
 }
 
 @end
