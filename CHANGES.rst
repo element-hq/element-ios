@@ -1,6 +1,9 @@
 Changes in 0.8.3 (2019-xx-xx)
 ===============================================
 
+Bug fix:
+ * Widgets: Attempt to re-register for a scalar token if ours is invalid (#2326).
+ * Widgets: Pass scalar_token only when required.
 
 
 Changes in 0.8.2 (2019-03-11)
