@@ -354,7 +354,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     [WidgetManager.sharedManager deleteDataForUser:widget.mxSession.myUser.userId];
 
     MXWeakify(self);
-    [WidgetManager.sharedManager getScalarTokenForMXSession:widget.mxSession success:^(NSString *scalarToken) {
+    [WidgetManager.sharedManager getScalarTokenForMXSession:widget.mxSession validate:NO success:^(NSString *scalarToken) {
         MXStrongifyAndReturnIfNil(self);
 
         NSLog(@"[WidgetVC] fixScalarToken: DONE");

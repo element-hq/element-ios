@@ -102,7 +102,7 @@
     // Check if their scalar token must added
     if ([WidgetManager isScalarUrl:widgetUrl])
     {
-        return [[WidgetManager sharedManager] getScalarTokenForMXSession:_mxSession success:^(NSString *scalarToken) {
+        return [[WidgetManager sharedManager] getScalarTokenForMXSession:_mxSession validate:NO success:^(NSString *scalarToken) {
             // Add the user scalar token
             widgetUrl = [widgetUrl stringByAppendingString:[NSString stringWithFormat:@"&scalar_token=%@",
                                                             scalarToken]];

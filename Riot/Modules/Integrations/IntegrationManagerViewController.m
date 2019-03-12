@@ -73,7 +73,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
         // Make sure we have a scalar token
         MXWeakify(self);
-        operation = [[WidgetManager sharedManager] getScalarTokenForMXSession:mxSession success:^(NSString *theScalarToken) {
+        operation = [[WidgetManager sharedManager] getScalarTokenForMXSession:mxSession validate:YES  success:^(NSString *theScalarToken) {
             MXStrongifyAndReturnIfNil(self);
 
             self->operation = nil;
