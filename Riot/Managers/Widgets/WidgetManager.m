@@ -499,7 +499,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
         MXHTTPOperation *operation2 =
         [httpClient requestWithMethod:@"POST"
-                                 path:@"register"
+                                 path:@"register?v=1.1"
                            parameters:tokenObject.JSONDictionary
                               success:^(NSDictionary *JSONResponse)
          {
@@ -546,7 +546,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:modularRestUrl andOnUnrecognizedCertificateBlock:nil];
 
     return [httpClient requestWithMethod:@"GET"
-                                    path:[NSString stringWithFormat:@"account?scalar_token=%@", scalarToken]
+                                    path:[NSString stringWithFormat:@"account?v=1.1&scalar_token=%@", scalarToken]
                               parameters:nil
                                  success:^(NSDictionary *JSONResponse) {
 
