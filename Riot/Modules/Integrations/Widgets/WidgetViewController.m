@@ -333,11 +333,11 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
 - (NSString *)stringByReplacingScalarTokenInString:(NSString*)string byScalarToken:(NSString*)scalarToken
 {
-    if (!scalarToken)
+    if (!string)
     {
         return nil;
     }
-    
+
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"scalar_token=\\w*"
                                                                            options:NSRegularExpressionCaseInsensitive error:nil];
     return [regex stringByReplacingMatchesInString:string
