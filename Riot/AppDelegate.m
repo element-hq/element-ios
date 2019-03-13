@@ -1209,6 +1209,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
                     completionHandler();
                 }];
+                return;
             }
         }
     }
