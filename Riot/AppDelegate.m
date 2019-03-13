@@ -1960,15 +1960,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     for (NSString *eventId in events)
     {
         // Ignore event already notified to the user
-        if (@available(iOS 10, *))
-        {
-            if ([self displayedNotificationRequestForEvent:eventId andUser:userId type:nil])
-            {
-                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
-                continue;
-            }
-        }
-        else if ([self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
+        // only necessary on iOS 9, iOS 10 will just overwrite notifications with identical IDs
+        if (!@available(iOS 10, *) && [self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
         {
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
             continue;
