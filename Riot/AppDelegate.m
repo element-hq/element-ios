@@ -1992,41 +1992,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
  @param eventId the id of the event attached to the notification to find.
  @param userId the id of the user attached to the notification to find.
  @param type the type of notification. @"full" or @"limited". nil for any type.
- @return the local notification request if any.
- */
-// iOS 10+ only!
-- (UNNotificationRequest *)displayedNotificationRequestForEvent:(NSString *)eventId andUser:(NSString *)userId type:(NSString*)type
-{
-    __block UNNotificationRequest *foundRequest;
-    [[UNUserNotificationCenter currentNotificationCenter] getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotificationRequest *> *requests)
-    {
-        NSLog(@"[AppDelegate] displayedNotificationRequestForEvent: %@ andUser: %@. Current delivered notifications: %@", eventId, userId, requests);
-
-        for (UNNotificationRequest *request in requests)
-        {
-            UNNotificationContent *content = request.content;
-            NSLog(@"    - %@", content.userInfo);
-
-            if ([content.userInfo[@"event_id"] isEqualToString:eventId]
-                    && [content.userInfo[@"user_id"] isEqualToString:userId]
-                    && (!type || [content.userInfo[@"type"] isEqualToString:type]))
-            {
-                foundRequest = request;
-                break;
-            }
-        }
-    }];
-
-    NSLog(@"[AppDelegate] displayedNotificationRequestForEvent: found: %@", foundRequest);
-    return foundRequest;
-}
-
-/**
- Return the already displayed notification for an event.
-
- @param eventId the id of the event attached to the notification to find.
- @param userId the id of the user attached to the notification to find.
- @param type the type of notification. @"full" or @"limited". nil for any type.
  @return the local notification if any.
  */
 // DEPRECATED, for iOS 9
