@@ -1563,6 +1563,39 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Prepare the local notification
             MXPushRule *rule = eventDict[@"push_rule"];
 
+            NSDictionary *notificationUserInfo = @{
+                    @"type": @"full",
+                    @"room_id": event.roomId,
+                    @"event_id": event.eventId,
+                    @"user_id": account.mxCredentials.userId
+            };
+
+            BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
+
+            NSString *categoryIdentifier;
+
+            if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
+            {
+                categoryIdentifier = @"QUICK_REPLY";
+            }
+
+
+            NSString *soundName;
+
+            // Set sound name based on the value provided in action of MXPushRule
+            for (MXPushRuleAction *action in rule.actions)
+            {
+                if (action.actionType == MXPushRuleActionTypeSetTweak)
+                {
+                    if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
+                    {
+                        soundName = action.parameters[@"value"];
+                        if ([soundName isEqualToString:@"default"])
+                            soundName = @"message.mp3";
+                    }
+                }
+            }
+
             if (@available(iOS 10, *)) {
                 [self notificationContentForEvent:event pushRule:rule inAccount:account onComplete:^(UNMutableNotificationContent * _Nullable notificationContent)
                 {
@@ -1573,41 +1606,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                         // TODO: https://developer.apple.com/documentation/foundation/nsstring/1649585-localizedusernotificationstringf?language=objc
                         //  use this - maybe not necessary to replace %s
                         notificationContent.body = [notificationContent.body stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
-
-                        notificationContent.userInfo = @{
-                                @"type": @"full",
-                                @"room_id": event.roomId,
-                                @"event_id": event.eventId,
-                                @"user_id": account.mxCredentials.userId
-                        };
-
-                        BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
+                        notificationContent.userInfo = notificationUserInfo;
+                        notificationContent.categoryIdentifier = categoryIdentifier;
+                        notificationContent.sound = [UNNotificationSound soundNamed:soundName];
 
                         UNNotificationRequest *request = [UNNotificationRequest
                                 requestWithIdentifier:event.eventId
                                               content:notificationContent
                                               trigger:nil];
-
-                        if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
-                        {
-                            notificationContent.categoryIdentifier = @"QUICK_REPLY";
-                        }
-
-                        // Set sound name based on the value provided in action of MXPushRule
-                        for (MXPushRuleAction *action in rule.actions)
-                        {
-                            if (action.actionType == MXPushRuleActionTypeSetTweak)
-                            {
-                                if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
-                                {
-                                    NSString *soundName = action.parameters[@"value"];
-                                    if ([soundName isEqualToString:@"default"])
-                                        soundName = @"message.mp3";
-
-                                    notificationContent.sound = [UNNotificationSound soundNamed:soundName];
-                                }
-                            }
-                        }
 
                         NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
                         [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
@@ -1631,35 +1637,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
                         UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
                         eventNotification.alertBody = notificationBody;
-                        eventNotification.userInfo = @{
-                                @"type": @"full",
-                                @"room_id": event.roomId,
-                                @"event_id": event.eventId,
-                                @"user_id": account.mxCredentials.userId
-                        };
-
-                        BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
-
-                        if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
-                        {
-                            eventNotification.category = @"QUICK_REPLY";
-                        }
-
-                        // Set sound name based on the value provided in action of MXPushRule
-                        for (MXPushRuleAction *action in rule.actions)
-                        {
-                            if (action.actionType == MXPushRuleActionTypeSetTweak)
-                            {
-                                if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
-                                {
-                                    NSString *soundName = action.parameters[@"value"];
-                                    if ([soundName isEqualToString:@"default"])
-                                        soundName = @"message.mp3";
-
-                                    eventNotification.soundName = soundName;
-                                }
-                            }
-                        }
+                        eventNotification.userInfo = notificationUserInfo;
+                        eventNotification.category = categoryIdentifier;
+                        eventNotification.soundName = soundName;
 
                         NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
                         [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
