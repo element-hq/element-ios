@@ -67,6 +67,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // Add observer on the Extension host
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
         
+        // Add observer to handle memory warning
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+        
         MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
         // Apply the application group
         sdkOptions.applicationGroupIdentifier = @"group.im.vector";
@@ -838,6 +841,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         default:
             break;
     }
+}
+
+- (void)didReceiveMemoryWarning:(NSNotification*)notification
+{
+    NSLog(@"[ShareExtensionManager] Did receive memory warning");
 }
 
 #pragma mark - Sharing

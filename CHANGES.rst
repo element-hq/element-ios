@@ -1,13 +1,19 @@
-Changes in 0.8.3 (2019-xx-xx)
+Changes in 0.8.3 (2019-03-13)
 ===============================================
 
+Improvements:
+ * Upgrade MatrixKit version ([v0.9.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.7)).
+ 
+Bug fix:
+ * Widgets: Attempt to re-register for a scalar token if ours is invalid (#2326).
+ * Widgets: Pass scalar_token only when required.
 
 
 Changes in 0.8.2 (2019-03-11)
 ===============================================
 
 Improvements:
- * Upgrade MatrixKit version ([v0.9.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.6).
+ * Upgrade MatrixKit version ([v0.9.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.6)).
  * Maintenance: Update cocopoads and pods. Automatic update to Swift4.2.
  * Add app store description as app string resource to make them available for translation on weblate (#2201).
  * Update deprecated contact availability checks (#2222).

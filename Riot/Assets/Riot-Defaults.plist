@@ -28,6 +28,11 @@
 	<string>https://scalar-staging.riot.im/scalar-web/</string>
 	<key>integrationsRestUrl</key>
 	<string>https://scalar-staging.riot.im/scalar/api</string>
+	<key>integrationsWidgetsUrls</key>
+	<array>
+		<string>https://scalar-staging.riot.im/scalar/api</string>
+		<string>https://scalar.vector.im/api</string>
+	</array>
 	<key>piwik</key>
 	<dict>
 		<key>url</key>
