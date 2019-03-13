@@ -1277,51 +1277,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     completionHandler();
 }
 
-// iOS 10+, see application:didReceiveLocalNotification:
+// iOS 10+, this is called when a notification is about to display in foreground.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
 {
     NSLog(@"[AppDelegate][Push] willPresentNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
 
-    NSString* roomId = notification.request.content.userInfo[@"room_id"];
-    if (roomId.length)
-    {
-        // TODO retrieve the right matrix session
-        // We can use the "user_id" value in notification.userInfo
-
-        //**************
-        // Patch consider the first session which knows the room id
-        MXKAccount *dedicatedAccount = nil;
-
-        NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-
-        if (mxAccounts.count == 1)
-        {
-            dedicatedAccount = mxAccounts.firstObject;
-        }
-        else
-        {
-            for (MXKAccount *account in mxAccounts)
-            {
-                if ([account.mxSession roomWithRoomId:roomId])
-                {
-                    dedicatedAccount = account;
-                    break;
-                }
-            }
-        }
-
-        // sanity checks
-        if (dedicatedAccount && dedicatedAccount.mxSession)
-        {
-            NSLog(@"[AppDelegate][Push] willPresentNotification: open the roomViewController %@", roomId);
-
-            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
-        }
-        else
-        {
-            NSLog(@"[AppDelegate][Push] willPresentNotification : no linked session / account has been found.");
-        }
-    }
+    completionHandler(UNNotificationPresentationOptionNone);
 }
 
 // DEPRECATED, for iOS 9
