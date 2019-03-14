@@ -1267,29 +1267,46 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             
             if (_recentsDataSourceMode == RecentsDataSourceModeHome)
             {
-                if (room.accountData.tags[kMXRoomTagServerNotice])
-                {
-                    [serverNoticeCellDataArray addObject:recentCellDataStoring];
-                }
-                else if (room.accountData.tags[kMXRoomTagFavourite])
+//                if (room.accountData.tags[kMXRoomTagServerNotice])
+//                {
+//                    [serverNoticeCellDataArray addObject:recentCellDataStoring];
+//                }
+//                else if (room.accountData.tags[kMXRoomTagFavourite])
+//                {
+//                    [favoriteCellDataArray addObject:recentCellDataStoring];
+//                }
+//                else if (room.accountData.tags[kMXRoomTagLowPriority])
+//                {
+//                    [lowPriorityCellDataArray addObject:recentCellDataStoring];
+//                }
+//                else if (room.summary.membership == MXMembershipInvite)
+//                {
+//                    [invitesCellDataArray addObject:recentCellDataStoring];
+//                }
+//                else if (room.isDirect)
+//                {
+//                    [peopleCellDataArray addObject:recentCellDataStoring];
+//                }
+//                else
+//                {
+//                    [conversationCellDataArray addObject:recentCellDataStoring];
+//                }
+
+                if (room.accountData.tags[kMXRoomTagFavourite])
                 {
                     [favoriteCellDataArray addObject:recentCellDataStoring];
                 }
-                else if (room.accountData.tags[kMXRoomTagLowPriority])
+
+                if (recentCellDataStoring.roomSummary.localUnreadEventCount)
                 {
-                    [lowPriorityCellDataArray addObject:recentCellDataStoring];
-                }
-                else if (room.summary.membership == MXMembershipInvite)
-                {
-                    [invitesCellDataArray addObject:recentCellDataStoring];
-                }
-                else if (room.isDirect)
-                {
-                    [peopleCellDataArray addObject:recentCellDataStoring];
-                }
-                else
-                {
-                    [conversationCellDataArray addObject:recentCellDataStoring];
+                    if (room.isDirect)
+                    {
+                        [peopleCellDataArray addObject:recentCellDataStoring];
+                    }
+                    else
+                    {
+                        [conversationCellDataArray addObject:recentCellDataStoring];
+                    }
                 }
             }
             else if (_recentsDataSourceMode == RecentsDataSourceModeFavourites)

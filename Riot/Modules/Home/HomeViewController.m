@@ -295,6 +295,12 @@
 {
     // Edit the potential selected room (see `onCollectionViewCellLongPress`).
     editedRoomId = selectedRoomId;
+
+    if ((section != recentsDataSource.invitesSection)
+        && (section != recentsDataSource.favoritesSection))
+    {
+        return [recentsDataSource tableView:tableView numberOfRowsInSection:section];
+    }
     
     // Each rooms section is represented by only one collection view.
     return 1;
@@ -302,9 +308,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count)
-        || (indexPath.section == recentsDataSource.keyBackupBannerSection))
+    if ((indexPath.section != recentsDataSource.invitesSection)
+        && (indexPath.section != recentsDataSource.favoritesSection))
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
@@ -375,6 +380,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
+    if ((indexPath.section != recentsDataSource.invitesSection)
+        && (indexPath.section != recentsDataSource.favoritesSection))
+    {
+        return [recentsDataSource cellHeightAtIndexPath:indexPath];
+    }
+
     if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
         || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count))
     {
@@ -447,6 +459,11 @@
             default:
                 break;
         }
+    }
+    if ((indexPath.section != recentsDataSource.invitesSection)
+        && (indexPath.section != recentsDataSource.favoritesSection))
+    {
+        return [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
 }
 

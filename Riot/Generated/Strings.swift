@@ -958,7 +958,7 @@ internal enum VectorL10n {
   internal static var peopleInvitesSection: String { 
     return VectorL10n.tr("Vector", "people_invites_section") 
   }
-  /// No conversations
+  /// You're all caught up 👍
   internal static var peopleNoConversation: String { 
     return VectorL10n.tr("Vector", "people_no_conversation") 
   }
@@ -2358,7 +2358,7 @@ internal enum VectorL10n {
   internal static var titleGroups: String { 
     return VectorL10n.tr("Vector", "title_groups") 
   }
-  /// Home
+  /// Unread
   internal static var titleHome: String { 
     return VectorL10n.tr("Vector", "title_home") 
   }
