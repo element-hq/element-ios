@@ -1213,6 +1213,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
         }
     }
+    else if ([[response actionIdentifier] isEqualToString:UNNotificationDefaultActionIdentifier])
+    {
+        NSString *roomId = content.userInfo[@"room_id"];
+        [self navigateToRoomById:roomId];
+    }
     else
     {
         NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: unhandled identifier %@", [response actionIdentifier]);
@@ -1291,17 +1296,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate][Push] didReceiveLocalNotification: applicationState: %@", @(application.applicationState));
     
     NSString* roomId = notification.userInfo[@"room_id"];
+    [self navigateToRoomById:roomId];
+}
+
+- (void)navigateToRoomById:(NSString *)roomId
+{
     if (roomId.length)
     {
         // TODO retrieve the right matrix session
         // We can use the "user_id" value in notification.userInfo
-        
+
         //**************
         // Patch consider the first session which knows the room id
         MXKAccount *dedicatedAccount = nil;
-        
+
         NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-        
+
         if (mxAccounts.count == 1)
         {
             dedicatedAccount = mxAccounts.firstObject;
@@ -1317,17 +1327,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 }
             }
         }
-        
+
         // sanity checks
         if (dedicatedAccount && dedicatedAccount.mxSession)
         {
-            NSLog(@"[AppDelegate][Push] didReceiveLocalNotification: open the roomViewController %@", roomId);
-            
+            NSLog(@"[AppDelegate][Push] navigateToRoomById: open the roomViewController %@", roomId);
+
             [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {
-            NSLog(@"[AppDelegate][Push] didReceiveLocalNotification : no linked session / account has been found.");
+            NSLog(@"[AppDelegate][Push] navigateToRoomById : no linked session / account has been found.");
         }
     }
 }
