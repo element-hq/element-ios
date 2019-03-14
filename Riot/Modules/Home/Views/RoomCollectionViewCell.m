@@ -182,6 +182,10 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         self.encryptedRoomIcon.hidden = !roomCellData.roomSummary.isEncrypted;
         
         [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
+
+        self.roomTitle.hidden = YES;
+        self.roomTitle1.hidden = YES;
+        self.roomTitle2.hidden = YES;
     }
 }
 
@@ -193,11 +197,13 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
+    return 80;
     return 115;
 }
 
 + (CGSize)defaultCellSize
 {
+    return CGSizeMake(80, 80);
     return CGSizeMake(80, 115);
 }
 

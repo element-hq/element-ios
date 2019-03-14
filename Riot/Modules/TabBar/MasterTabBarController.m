@@ -29,6 +29,8 @@
 
 #import "Riot-Swift.h"
 
+NSArray<NSString*> *kTabBarModeStrings;
+
 @interface MasterTabBarController ()
 {
     // Array of `MXSession` instances.
@@ -79,7 +81,18 @@
     _peopleViewController = self.viewControllers[TABBAR_PEOPLE_INDEX];
     _roomsViewController = self.viewControllers[TABBAR_ROOMS_INDEX];
     _groupsViewController = self.viewControllers[TABBAR_GROUPS_INDEX];
-    
+
+    kTabBarModeStrings = @[
+                           @"Smart",
+                           @"Adopter", //@"Barbecue",
+                           @"Banquet",
+                           @"Rioter",// @"Smart Banquet",
+                           @"Legacy"
+                           ];
+                           
+    self.tabBarMode = TabBarModeRioter;
+    //self.tabBarMode = TabBarModeBarbecue;
+
     // Set the accessibility labels for all buttons #1842
     [_settingsBarButtonItem setAccessibilityLabel:NSLocalizedStringFromTable(@"settings_title", @"Vector", nil)];
     [_searchBarButtonIem setAccessibilityLabel:NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil)];
@@ -126,6 +139,58 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return ThemeService.shared.theme.statusBarStyle;
+}
+
+- (TabBarMode)tabBarMode
+{
+    TabBarMode tabBarMode;
+
+    switch (self.viewControllers.count)
+    {
+        case 1:
+            tabBarMode = TabBarModeAdopter;
+            break;
+        case 2:
+            tabBarMode = TabBarMode2Tabs;
+            break;
+        case 3:
+            tabBarMode = TabBarModeRioter;
+            break;
+        case 4:
+            tabBarMode = TabBarModeRioter;
+            break;
+        case 5:
+            tabBarMode = TabBarModeLegacy;
+            break;
+
+        default:
+            break;
+    }
+    return tabBarMode;
+}
+
+- (void)setTabBarMode:(TabBarMode)tabBarMode
+{
+    switch (tabBarMode) {
+        case TabBarModeAdopter:
+            self.viewControllers = @[_roomsViewController];
+            break;
+        case TabBarMode2Tabs:
+            self.viewControllers = @[_peopleViewController, _roomsViewController];
+            break;
+        case TabBarModeRioter:
+            //self.viewControllers = @[_homeViewController, _favouritesViewController, _peopleViewController, _roomsViewController];
+            self.viewControllers = @[_homeViewController, _peopleViewController, _roomsViewController];
+            break;
+        case TabBarModeAuto:   // TODO
+        case TabBarModeLegacy:
+            self.viewControllers = @[_homeViewController, _favouritesViewController, _peopleViewController, _roomsViewController, _groupsViewController];
+            break;
+        default:
+            break;
+    }
+
+    self.tabBar.hidden = (self.viewControllers.count <= 1);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -794,18 +859,18 @@
 
 - (void)refreshTabBarBadges
 {
-    // Use a middle dot to signal missed notif in favourites
-    [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
-                      onTabBarItem:TABBAR_FAVOURITES_INDEX
-                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
-    
-    // Update the badge on People and Rooms tabs
-    [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
-                       onTabBarItem:TABBAR_PEOPLE_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
-    [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
-                       onTabBarItem:TABBAR_ROOMS_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+//    // Use a middle dot to signal missed notif in favourites
+//    [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
+//                      onTabBarItem:TABBAR_FAVOURITES_INDEX
+//                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+//
+//    // Update the badge on People and Rooms tabs
+//    [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
+//                       onTabBarItem:TABBAR_PEOPLE_INDEX
+//                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+//    [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
+//                       onTabBarItem:TABBAR_ROOMS_INDEX
+//                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
 }
 
 - (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor

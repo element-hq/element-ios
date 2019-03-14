@@ -213,6 +213,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if ([AppDelegate theDelegate].masterTabBarController.tabBarMode == TabBarModeAdopter)
+    {
+        return 0;
+    }
     if (section == recentsDataSource.directorySection)
     {
         // Let the recents dataSource provide the height of this section header

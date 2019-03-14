@@ -1710,7 +1710,7 @@ internal enum VectorL10n {
   internal static var roomRecentsLowPrioritySection: String { 
     return VectorL10n.tr("Vector", "room_recents_low_priority_section") 
   }
-  /// No rooms
+  /// You're all caught up 👍
   internal static var roomRecentsNoConversation: String { 
     return VectorL10n.tr("Vector", "room_recents_no_conversation") 
   }

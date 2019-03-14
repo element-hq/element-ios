@@ -99,6 +99,7 @@ enum
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
     USER_INTERFACE_THEME_INDEX,
+    USER_INTERFACE_TABSMODE_INDEX,
     USER_INTERFACE_COUNT
 };
 
@@ -1878,6 +1879,25 @@ SignOutAlertPresenterDelegate>
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
+        else if (row == USER_INTERFACE_TABSMODE_INDEX)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            }
+
+            NSUInteger tabsMode = [AppDelegate theDelegate].masterTabBarController.tabBarMode;
+            NSString *tabsModeString = kTabBarModeStrings[tabsMode];
+
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+
+            cell.textLabel.text = @"Tab bar style";
+            cell.detailTextLabel.text = tabsModeString;
+
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
     }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
@@ -2542,6 +2562,10 @@ SignOutAlertPresenterDelegate>
             else if (row == USER_INTERFACE_THEME_INDEX)
             {
                 [self showThemePicker];
+            }
+            else if (row == USER_INTERFACE_TABSMODE_INDEX)
+            {
+                [self showTabBarStylePicker];
             }
         }
         else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
@@ -3862,6 +3886,81 @@ SignOutAlertPresenterDelegate>
     [themePicker popoverPresentationController].sourceRect = fromCell.bounds;
 
     [self presentViewController:themePicker animated:YES completion:nil];
+}
+
+- (void)showTabBarStylePicker
+{
+    __weak typeof(self) weakSelf = self;
+
+    NSMutableArray<UIAlertAction*> *actions = [NSMutableArray array];
+    NSString *themePickerMessage;
+
+    void (^actionBlock)(UIAlertAction *action) = ^(UIAlertAction * action) {
+
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+
+            TabBarMode selected = [actions indexOfObject:action];
+
+            // Fix filter
+            switch (selected)
+            {
+                case 0:
+                    selected = TabBarModeAdopter;
+                    break;
+                case 1:
+                    selected = TabBarModeRioter;
+                    break;
+                case 2:
+                    selected = TabBarModeLegacy;
+                    break;
+                default:
+                    break;
+            }
+
+
+            [AppDelegate theDelegate].masterTabBarController.tabBarMode = selected;
+
+            [self.tableView reloadData];
+
+        }
+    };
+
+
+    UIAlertController *picker = [UIAlertController alertControllerWithTitle:@"Select tab bar style"
+                                                                         message:themePickerMessage
+                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+
+    NSArray<NSString*> *tabBarModeStrings = kTabBarModeStrings;
+
+    tabBarModeStrings = @[
+                          kTabBarModeStrings[TabBarModeAdopter],
+                          kTabBarModeStrings[TabBarModeRioter],
+                          kTabBarModeStrings[TabBarModeLegacy],
+                          ];
+
+
+    for (NSString *tabBarMode in tabBarModeStrings)
+    {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:tabBarMode
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:actionBlock];
+
+        [actions addObject:action];
+        [picker addAction:action];
+    }
+
+    // Cancel button
+    [picker addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                    style:UIAlertActionStyleCancel
+                                                  handler:nil]];
+
+    UIView *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:USER_INTERFACE_TABSMODE_INDEX inSection:SETTINGS_SECTION_USER_INTERFACE_INDEX]];
+    [picker popoverPresentationController].sourceView = fromCell;
+    [picker popoverPresentationController].sourceRect = fromCell.bounds;
+
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 - (void)deactivateAccountAction

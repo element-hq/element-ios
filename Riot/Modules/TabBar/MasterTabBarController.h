@@ -35,6 +35,18 @@
 #define TABBAR_GROUPS_INDEX       4
 #define TABBAR_COUNT              5
 
+typedef enum : NSUInteger
+{
+    TabBarModeAuto, // Update automatically
+    TabBarModeAdopter,
+    TabBarMode2Tabs,
+    TabBarModeRioter,
+    TabBarModeLegacy, // All 5
+
+}
+TabBarMode;
+extern NSArray<NSString*> *kTabBarModeStrings;
+
 @interface MasterTabBarController : UITabBarController
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
@@ -155,6 +167,9 @@
 @property (nonatomic, readonly) GroupDetailsViewController *currentGroupDetailViewController;
 @property (nonatomic, readonly) MXGroup *selectedGroup;
 @property (nonatomic, readonly) MXSession *selectedGroupSession;
+
+
+@property (nonatomic) TabBarMode tabBarMode;
 
 @end
 

@@ -138,7 +138,8 @@
 "room_recents_favourites_section" = "FAVOURITES";
 "room_recents_people_section" = "PEOPLE";
 "room_recents_conversations_section" = "ROOMS";
-"room_recents_no_conversation" = "No rooms";
+//"room_recents_no_conversation" = "No rooms";
+"room_recents_no_conversation" = "You're all caught up 👍";
 "room_recents_low_priority_section" = "LOW PRIORITY";
 "room_recents_server_notice_section" = "SYSTEM ALERTS";
 "room_recents_invites_section" = "INVITES";

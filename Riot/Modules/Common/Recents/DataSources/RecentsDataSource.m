@@ -374,7 +374,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             favoritesSection = sectionsCount++;
         }
         
-        if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+        if (_recentsDataSourceMode == RecentsDataSourceModeHome
+            || ([AppDelegate theDelegate].masterTabBarController.tabBarMode == TabBarModeAdopter && _recentsDataSourceMode == RecentsDataSourceModeRooms))
         {
             peopleSection = sectionsCount++;
         }
@@ -643,6 +644,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     // No header view in key backup banner section
     if (section == self.keyBackupBannerSection)
+    {
+        return nil;
+    }
+
+    if ([AppDelegate theDelegate].masterTabBarController.tabBarMode == TabBarModeAdopter)
     {
         return nil;
     }
@@ -1334,18 +1340,19 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             }
             else if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
             {
+                if (room.summary.membership == MXMembershipInvite)
+                {
+                    [invitesCellDataArray addObject:recentCellDataStoring];
+                }
+
                 // Consider only non direct rooms.
                 if (!room.isDirect)
                 {
-                    // Keep only the invites, the favourites and the rooms without tag
-                    if (room.summary.membership == MXMembershipInvite)
-                    {
-                        [invitesCellDataArray addObject:recentCellDataStoring];
-                    }
-                    else if (!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite])
-                    {
-                        [conversationCellDataArray addObject:recentCellDataStoring];
-                    }
+                    [conversationCellDataArray addObject:recentCellDataStoring];
+                }
+                else
+                {
+                    [peopleCellDataArray addObject:recentCellDataStoring];
                 }
             }
             

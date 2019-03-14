@@ -439,6 +439,10 @@
     {
         return 0.0;
     }
+    else if (section == recentsDataSource.favoritesSection)
+    {
+        return 0.0;
+    }
     else
     {
         return [super tableView:tableView heightForHeaderInSection:section];
