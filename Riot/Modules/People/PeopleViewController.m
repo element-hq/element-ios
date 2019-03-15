@@ -169,7 +169,7 @@
     }
     
     // Retrieve the current number of sections related to the contacts
-    contactsSectionNumber = [contactsDataSource numberOfSectionsInTableView:self.recentsTableView];
+    contactsSectionNumber = 0;// [contactsDataSource numberOfSectionsInTableView:self.recentsTableView];
     
     return (directRoomsSectionNumber + contactsSectionNumber);
 }

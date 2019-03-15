@@ -389,7 +389,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
         {
             // Add the directory section after "ROOMS"
-            directorySection = sectionsCount++;
+            //directorySection = sectionsCount++;
         }
         
         if (lowPriorityCellDataArray.count > 0)
