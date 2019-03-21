@@ -23,6 +23,8 @@
 
 NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
+static const CGFloat kLargeImageSizeMaxDimension = 2048.0;
+
 typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
     ImageCompressionModeNone,
@@ -560,7 +562,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                 }]];
         }
         
-        if (compressionSizes.large.fileSize)
+        // Do not offer the possibility to resize an image with a dimension above kLargeImageSizeMaxDimension, to prevent the risk of memory limit exception.
+        // TODO: Remove this condition when issue https://github.com/vector-im/riot-ios/issues/2341 will be fixed.
+        if (compressionSizes.large.fileSize && (MAX(compressionSizes.large.imageSize.width, compressionSizes.large.imageSize.height) <= kLargeImageSizeMaxDimension))
         {
             NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.large.fileSize round:NO], (int)compressionSizes.large.imageSize.width, (int)compressionSizes.large.imageSize.height];
             
