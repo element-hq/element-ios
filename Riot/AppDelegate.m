@@ -1815,7 +1815,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }];
 }
 
-// iOS 10+, does the same thing as notificationBodyForEvent:pushRule:inAccount:onComplete: for now
+// iOS 10+, does the same thing as notificationBodyForEvent:pushRule:inAccount:onComplete:, except with more features
 - (void)notificationContentForEvent:(MXEvent *)event pushRule:(MXPushRule *)rule inAccount:(MXKAccount *)account onComplete:(void (^)(UNMutableNotificationContent * _Nullable notificationContent))onComplete;
 {
     if (!event.content || !event.content.count)
@@ -1835,7 +1835,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     [room state:^(MXRoomState *roomState) {
 
+        NSString *notificationTitle;
         NSString *notificationBody;
+
+        NSString *threadIdentifier = room.roomId;
         NSString *eventSenderName = [roomState.members memberName:event.sender];
 
         if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
@@ -1873,7 +1876,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
 
             NSString *msgType = event.content[@"msgtype"];
-            NSString *content = event.content[@"body"];
+            NSString *messageContent = event.content[@"body"];
 
             if (event.isEncrypted && !RiotSettings.shared.showDecryptedContentInNotifications)
             {
@@ -1886,27 +1889,44 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Display the room name only if it is different than the sender name
             if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
             {
+                notificationTitle = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_TITLE", nil), eventSenderName, roomDisplayName];
                 if ([msgType isEqualToString:@"m.text"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_WITH_CONTENT", nil), eventSenderName,roomDisplayName, content];
+                    notificationBody = messageContent;
                 else if ([msgType isEqualToString:@"m.emote"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, content];
+                {
+                    notificationTitle = nil;
+                    // TODO: how should this look? /me style messages don't look right with a title
+                    //   maybe like this:
+                    //   title = roomDisplayName
+                    //   body = * eventSenderName messageContent
+
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, messageContent];
+                }
                 else if ([msgType isEqualToString:@"m.image"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER_IN_ROOM", nil), eventSenderName, content, roomDisplayName];
+                    notificationBody = NSLocalizedString(@"IMAGE_TEXT_WITH_TITLE", nil);
                 else
                     // Encrypted messages falls here
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
+                    notificationBody = NSLocalizedString(@"MSG_TEXT_WITH_TITLE", nil);
             }
             else
             {
+                notificationTitle = eventSenderName;
                 if ([msgType isEqualToString:@"m.text"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_WITH_CONTENT", nil), eventSenderName, content];
+                    notificationBody = messageContent;
                 else if ([msgType isEqualToString:@"m.emote"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, content];
+                {
+                    notificationTitle = nil;
+                    // TODO: how should this look? /me style messages look weird with a title
+                    //   maybe like this:
+                    //   title = eventSenderName
+                    //   body = * messageContent
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, messageContent];
+                }
                 else if ([msgType isEqualToString:@"m.image"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER", nil), eventSenderName, content];
+                    notificationBody = NSLocalizedString(@"IMAGE_TEXT_WITH_TITLE", nil);
                 else
                     // Encrypted messages falls here
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
+                    notificationBody = NSLocalizedString(@"MSG_TEXT_WITH_TITLE", nil);
             }
         }
         else if (event.eventType == MXEventTypeCallInvite)
@@ -1918,6 +1938,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VOICE_CALL_FROM_USER", nil), eventSenderName];
             else
                 notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VIDEO_CALL_FROM_USER", nil), eventSenderName];
+
+            threadIdentifier = nil; // call notifications should probably stand out from normal messages
         }
         else if (event.eventType == MXEventTypeRoomMember)
         {
@@ -1933,13 +1955,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSString *roomDisplayName = room.summary.displayname;
 
             if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
+                notificationTitle = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_TITLE", nil), eventSenderName, roomDisplayName];
             else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
+                notificationTitle = eventSenderName;
+
+            notificationBody = NSLocalizedString(@"STICKER_TEXT_WITH_TITLE", nil);
         }
 
         UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+
+        [content setTitle:notificationTitle];
         [content setBody:notificationBody];
+        [content setThreadIdentifier:threadIdentifier];
 
         onComplete(content);
     }];

@@ -22,6 +22,9 @@
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ posted in %@";
 
+/* New message when a notification title is used */
+"MSG_TEXT_WITH_TITLE" = "Encrypted message";
+
 /** Single, unencrypted messages (where we can include the content */
 
 /* New message from a specific person, not referencing a room. Content included. */
@@ -44,11 +47,17 @@
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ posted a picture %@ in %@";
 
+/* New action message, but the sender (and room) are already in the notification title */
+"IMAGE_TEXT_WITH_TITLE" = "📷 Picture";
+
 /* A single unread message in a room */
 "SINGLE_UNREAD_IN_ROOM" = "You received a message in %@";
 
 /* A single unread message */
 "SINGLE_UNREAD" = "You received a message";
+
+/* Sticker, but with the sender (and room) already in the title */
+"STICKER_TEXT_WITH_TITLE" = "Sticker";
 
 /** Coalesced messages **/
 
@@ -103,3 +112,5 @@
 
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Video group call from %@: '%@'";
+
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
