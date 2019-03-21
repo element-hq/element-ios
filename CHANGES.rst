@@ -1,3 +1,20 @@
+Changes in 0.8.5 (2019-xx-xx)
+===============================================
+
+Improvements:
+
+Bug fix:
+
+Changes in 0.8.4 (2019-03-21)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.9.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.8)).
+ * Share extension: Remove image large size resizing choice if output dimension is too high to prevent memory limit exception (PR #2342).
+ 
+Bug fix:
+ * Unable to open a file attachment of a room message (#2338).
+
 Changes in 0.8.3 (2019-03-13)
 ===============================================
 
