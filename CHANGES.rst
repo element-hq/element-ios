@@ -2,6 +2,7 @@ Changes in 0.8.4 (2019-03-xx)
 ===============================================
 
 Improvements:
+ * Share extension: Remove image large size resizing choice if output dimension is too high to prevent memory limit exception (PR #2342).
  
 Bug fix:
 
