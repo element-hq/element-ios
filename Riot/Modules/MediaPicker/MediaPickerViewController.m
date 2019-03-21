@@ -1581,8 +1581,7 @@ static void *RecordingContext = &RecordingContext;
             [self.delegate mediaPickerController:self didSelectVideo:outputFileURL];
         }
         
-        // Remove the temporary file
-        [[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
+        // Do not remove the file, as it will be used asynchronously; and overwritten at next upload.
         
     }];
     
