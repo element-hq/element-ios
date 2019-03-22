@@ -39,6 +39,9 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 
+/* New action message, sender is specified in notification title */
+"ACTION" = "* %@";
+
 /** Image Messages **/
 
 /* New action message from a specific person, not referencing a room. */
@@ -93,8 +96,10 @@
 /* A user has invited you to a named room */
 "USER_INVITE_TO_NAMED_ROOM" = "%@ has invited you to %@";
 
+/* Same as USER_INVITE_TO_CHAT but the username is already displayed in the notification title */
 "INVITE_TO_CHAT" = "You were invited to chat";
 
+/* Same as USER_INVITE_TO_NAMED_ROOM but the room name is already displayed in the notification title */
 "INVITE_BY_USER_TO_ROOM" = "You were invited by %@";
 
 /** Calls **/

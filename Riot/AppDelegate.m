@@ -1894,13 +1894,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     notificationBody = messageContent;
                 else if ([msgType isEqualToString:@"m.emote"])
                 {
-                    notificationTitle = nil;
-                    // TODO: how should this look? /me style messages don't look right with a title
-                    //   maybe like this:
-                    //   title = roomDisplayName
-                    //   body = * eventSenderName messageContent
-
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, messageContent];
+                    notificationTitle = roomDisplayName;
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, messageContent];
                 }
                 else if ([msgType isEqualToString:@"m.image"])
                     notificationBody = NSLocalizedString(@"IMAGE_TEXT_WITH_TITLE", nil);
@@ -1915,12 +1910,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     notificationBody = messageContent;
                 else if ([msgType isEqualToString:@"m.emote"])
                 {
-                    notificationTitle = nil;
-                    // TODO: how should this look? /me style messages look weird with a title
-                    //   maybe like this:
-                    //   title = eventSenderName
-                    //   body = * messageContent
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, messageContent];
+                    notificationTitle = eventSenderName;
+                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION", nil), messageContent];
                 }
                 else if ([msgType isEqualToString:@"m.image"])
                     notificationBody = NSLocalizedString(@"IMAGE_TEXT_WITH_TITLE", nil);
