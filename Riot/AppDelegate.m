@@ -1475,6 +1475,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     NSMutableArray *eventsArray = eventsToNotify[@(account.mxSession.hash)];
     
+    NSMutableArray<NSString*> *redactedEventIds = [NSMutableArray array];
+    
     // Display a local notification for each event retrieved by the bg sync.
     for (NSUInteger index = 0; index < eventsArray.count; index++)
     {
@@ -1500,10 +1502,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         if (event)
         {
-            // Ignore redacted event.
             if (event.isRedactedEvent)
             {
-                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event. Event id: %@", event.eventId);
+                if (@available(iOS 10, *))
+                {
+                    // Collect redacted event ids to remove possible delivered redacted notifications
+                    [redactedEventIds addObject:eventId];
+                }
+                else
+                {
+                    // Ignore redacted event.
+                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event. Event id: %@", event.eventId);
+                }
                 continue;
             }
             
@@ -1628,6 +1638,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                      NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
                  }
              }];
+        }
+    }
+    
+    if (@available(iOS 10, *))
+    {
+        // Remove possible pending and delivered notifications having a redacted event id
+        if (redactedEventIds.count)
+        {
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Remove possible notification with redacted event ids: %@", redactedEventIds);
+            
+            [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers:redactedEventIds];
+            [[UNUserNotificationCenter currentNotificationCenter] removeDeliveredNotificationsWithIdentifiers:redactedEventIds];
         }
     }
 
