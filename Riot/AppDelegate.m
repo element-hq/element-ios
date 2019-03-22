@@ -1236,6 +1236,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 UNMutableNotificationContent *failureNotificationContent = [[UNMutableNotificationContent alloc] init];
                 failureNotificationContent.userInfo = content.userInfo;
                 failureNotificationContent.body = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+                failureNotificationContent.threadIdentifier = roomId;
                 
                 NSString *uuid = [[NSUUID UUID] UUIDString];
                 UNNotificationRequest *failureNotificationRequest = [UNNotificationRequest requestWithIdentifier:uuid
@@ -1609,6 +1610,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                          notificationContent.body = fixedNotificationBody;
                          notificationContent.userInfo = notificationUserInfo;
                          notificationContent.categoryIdentifier = categoryIdentifier;
+                         notificationContent.threadIdentifier = roomId;
                          if (soundName)
                          {
                              notificationContent.sound = [UNNotificationSound soundNamed:soundName];
@@ -1842,6 +1844,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             UNMutableNotificationContent *localNotificationContentForFailedSync = [[UNMutableNotificationContent alloc] init];
             localNotificationContentForFailedSync.userInfo = userInfo;
             localNotificationContentForFailedSync.body = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
+            localNotificationContentForFailedSync.threadIdentifier = roomId;
 
             UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId content:localNotificationContentForFailedSync trigger:nil];
 
