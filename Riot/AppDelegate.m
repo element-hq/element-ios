@@ -1934,21 +1934,26 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSString *sdp = event.content[@"offer"][@"sdp"];
             BOOL isVideoCall = [sdp rangeOfString:@"m=video"].location != NSNotFound;
 
-            if (!isVideoCall)
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VOICE_CALL_FROM_USER", nil), eventSenderName];
-            else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VIDEO_CALL_FROM_USER", nil), eventSenderName];
+            notificationTitle = eventSenderName;
 
-            threadIdentifier = nil; // call notifications should probably stand out from normal messages
+            if (!isVideoCall)
+                notificationBody = NSLocalizedString(@"VOICE_CALL", nil);
+            else
+                notificationBody = NSLocalizedString(@"VIDEO_CALL", nil);
+
+            // call notifications should stand out from normal messages, so we don't stack them
+            threadIdentifier = nil;
         }
         else if (event.eventType == MXEventTypeRoomMember)
         {
             NSString *roomDisplayName = room.summary.displayname;
 
+            notificationTitle = roomDisplayName;
+
             if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_NAMED_ROOM", nil), eventSenderName, roomDisplayName];
+                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"INVITE_BY_USER_TO_ROOM", nil), eventSenderName];
             else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_CHAT", nil), eventSenderName];
+                notificationBody = NSLocalizedString(@"INVITE_TO_CHAT", nil);
         }
         else if (event.eventType == MXEventTypeSticker)
         {
