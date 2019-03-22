@@ -2,6 +2,7 @@ Changes in 0.8.5 (2019-xx-xx)
 ===============================================
 
 Improvements:
+ * Use UserNotifications framework for local notifications (iOS 10+), thanks to @fridtjof (PR #2207).
 
 Bug fix:
 
@@ -74,7 +75,6 @@ Improvements:
  * RoomVC: Remove the beta warning modal when opening an e2e room (#2239).
  * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
  * Clean up iOS version checking (#2190).
- * Use newer notification mechanisms where possible (#2207).
  * Key backup: Implement setup screen (#2198).
  * Key backup: Implement recover screen (#2196).
  * Key backup: Add a dedicated section to settings (#2193).
