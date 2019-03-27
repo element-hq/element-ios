@@ -3,6 +3,7 @@ Changes in 0.8.5 (2019-xx-xx)
 
 Improvements:
  * Push: Add more logs to track spontaneously disabling (#2348).
+ * Widgets: Use scalar prod urls in Riot mobile apps (#2349).
 
 Bug fix:
 
