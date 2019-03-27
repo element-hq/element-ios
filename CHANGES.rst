@@ -2,6 +2,7 @@ Changes in 0.8.5 (2019-xx-xx)
 ===============================================
 
 Improvements:
+ * Push: Add more logs to track spontaneously disabling (#2348).
 
 Bug fix:
 
