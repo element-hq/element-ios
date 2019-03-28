@@ -15,7 +15,7 @@
  */
 
 // Permissions usage explanations
-"NSCameraUsageDescription" = "De camera wordt gebruikt om foto's te schieten, video's te maken en voor videogesprekken.";
-"NSPhotoLibraryUsageDescription" = "De fotogalerij wordt gebruikt om foto's en video's te versturen.";
-"NSMicrophoneUsageDescription" = "De microffon wordt gebruikt om video's te maken en voor spraakoproepen.";
-"NSContactsUsageDescription" = "De contactenlijst wordt gebruikt om naar gebruikers te zoeken door middel van een e-mailadres of telefoonnummer op Riot.";
+"NSCameraUsageDescription" = "De camera wordt gebruikt om foto’s en video’s te maken, en voor videogesprekken.";
+"NSPhotoLibraryUsageDescription" = "De fotogalerij wordt gebruikt om foto’s en video’s te versturen.";
+"NSMicrophoneUsageDescription" = "De microfoon wordt gebruikt om video’s te maken, en voor spraakoproepen.";
+"NSContactsUsageDescription" = "Om u te kunnen tonen welke van uw contacten reeds Riot of Matrix gebruiken, kunnen we de e-mailadressen en telefoonnummers in uw adresboek naar uw Matrix-identiteitsserver sturen. New Vector bewaart deze gegevens niet en gebruikt ze niet voor andere doeleinden. Bekijk voor meer informatie de privacybeleidspagina in de instellingen van de app.";
