@@ -1154,6 +1154,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
         // Registration on iOS 8 and later
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:notificationCategories];
+
+        NSLog(@"[AppDelegate][Push] registerUserNotificationSettings: %@", settings);
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     }
 }
@@ -2428,7 +2430,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Set the push gateway URL.
             account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
-            
+
+            NSLog(@"[AppDelegate][Push] didAddAccountNotification: isPushRegistered: %@", @(isPushRegistered));
+
             if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
