@@ -20,6 +20,7 @@
 @import MobileCoreServices;
 #import "objc/runtime.h"
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+#import <mach/mach.h>
 
 NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
@@ -818,6 +819,31 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return isImageNotOrientedUp;
 }
 
+// Log memory usage.
+// NOTE: This result may not be reliable for all iOS versions (see https://forums.developer.apple.com/thread/64665 for more information).
+- (void)logMemoryUsage
+{
+    struct task_basic_info basicInfo;
+    mach_msg_type_number_t size = TASK_BASIC_INFO_COUNT;
+    kern_return_t kerr = task_info(mach_task_self(),
+                                   TASK_BASIC_INFO,
+                                   (task_info_t)&basicInfo,
+                                   &size);
+    
+    vm_size_t memoryUsedInBytes = basicInfo.resident_size;
+    CGFloat memoryUsedInMegabytes = memoryUsedInBytes / (1024*1024);
+    
+    if (kerr == KERN_SUCCESS)
+    {
+        NSLog(@"[ShareExtensionManager] Memory in use (in MiB): %f", memoryUsedInMegabytes);
+    }
+    else
+    {
+        NSLog(@"[ShareExtensionManager] Error with task_info(): %s", mach_error_string(kerr));
+    }
+}
+
+
 #pragma mark - Notifications
 
 - (void)onMediaLoaderStateDidChange:(NSNotification *)notification
@@ -850,6 +876,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 - (void)didReceiveMemoryWarning:(NSNotification*)notification
 {
     NSLog(@"[ShareExtensionManager] Did receive memory warning");
+    [self logMemoryUsage];
 }
 
 #pragma mark - Sharing
