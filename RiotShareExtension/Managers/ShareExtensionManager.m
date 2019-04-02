@@ -858,7 +858,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     if (kerr == KERN_SUCCESS)
     {
-        NSLog(@"[ShareExtensionManager] Memory in use (in MiB): %f", memoryUsedInMegabytes);
+        NSLog(@"[ShareExtensionManager] Memory in use (in MB): %f", memoryUsedInMegabytes);
     }
     else
     {
