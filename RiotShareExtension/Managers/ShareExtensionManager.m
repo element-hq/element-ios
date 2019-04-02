@@ -529,6 +529,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         
                                                                         // Send the small image
                                                                         self.imageCompressionMode = ImageCompressionModeSmall;
+                                                                        
+                                                                        [self logCompressionSizeChoice:compressionSizes.large];
+                                                                        
                                                                         if (shareBlock)
                                                                         {
                                                                             shareBlock();
@@ -554,6 +557,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         
                                                                         // Send the medium image
                                                                         self.imageCompressionMode = ImageCompressionModeMedium;
+                                                                        
+                                                                        [self logCompressionSizeChoice:compressionSizes.large];
+                                                                        
                                                                         if (shareBlock)
                                                                         {
                                                                             shareBlock();
@@ -582,6 +588,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         // Send the large image
                                                                         self.imageCompressionMode = ImageCompressionModeLarge;
                                                                         self.actualLargeSize = compressionSizes.actualLargeSize;
+                                                                        
+                                                                        [self logCompressionSizeChoice:compressionSizes.large];
+                                                                        
                                                                         if (shareBlock)
                                                                         {
                                                                             shareBlock();
@@ -607,6 +616,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         typeof(self) self = weakSelf;
                                                                         
                                                                         self.imageCompressionMode = ImageCompressionModeNone;
+                                                                        
+                                                                        [self logCompressionSizeChoice:compressionSizes.large];
                                                                         if (shareBlock)
                                                                         {
                                                                             shareBlock();
@@ -632,6 +643,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             self.imageCompressionMode = ImageCompressionModeNone;
         }
+        
+        NSLog(@"[ShareExtensionManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
         
         if (shareBlock)
         {
@@ -817,6 +830,16 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
     
     return isImageNotOrientedUp;
+}
+
+- (void)logCompressionSizeChoice:(MXKImageCompressionSize)compressionSize
+{
+    NSString *fileSize = [MXTools fileSizeToString:compressionSize.fileSize round:NO];
+    NSUInteger imageWidth = compressionSize.imageSize.width;
+    NSUInteger imageHeight = compressionSize.imageSize.height;
+    
+    NSLog(@"[ShareExtensionManager] User choose image compression with output size %lu x %lu (output file size: %@)", (unsigned long)imageWidth, (unsigned long)imageHeight, fileSize);
+    NSLog(@"[ShareExtensionManager] Number of images to send: %lu", (unsigned long)self.pendingImages.count);
 }
 
 // Log memory usage.
