@@ -1154,7 +1154,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
             [center setNotificationCategories:[[NSSet alloc] initWithArray:@[quickReplyCategory]]];
             [center setDelegate:self]; // commenting this out will fall back to using the same AppDelegate methods as the iOS 9 way of doing this
-            [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge)
+
+            UNAuthorizationOptions authorizationOptions = (UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
+
+            // FIXME: Uncomment lines below when issue https://github.com/matrix-org/matrix-ios-kit/issues/533 will be done.
+//            // Authorize sending notifications without explicit permission (iOS 12+).
+//            // User can still disable Riot notifications later in settings or directly from a Riot notification.
+//            if (@available(iOS 12.0, *))
+//            {
+//                authorizationOptions = authorizationOptions | UNAuthorizationOptionProvisional;
+//            }
+
+            [center requestAuthorizationWithOptions:authorizationOptions
                                   completionHandler:^(BOOL granted, NSError *error)
                                   { // code here is equivalent to self:application:didRegisterUserNotificationSettings:
                                       if (granted) {
@@ -1163,8 +1174,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                       else
                                       {
                                           // Clear existing token
-                                          MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-                                          [accountManager setPushDeviceToken:nil withPushOptions:nil];
+                                          [self clearPushNotificationToken];
                                       }
                                   }];
         }
@@ -1211,8 +1221,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     else
     {
         // Clear existing token
-        MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-        [accountManager setPushDeviceToken:nil withPushOptions:nil];
+        [self clearPushNotificationToken];
     }
 }
 
@@ -1221,125 +1230,84 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     UNNotification *notification = response.notification;
     UNNotificationContent *content = notification.request.content;
-    if ([[response actionIdentifier] isEqualToString:@"inline-reply"]) {
-        UNTextInputNotificationResponse *textResponse = (UNTextInputNotificationResponse *) response;
-        NSString* roomId = content.userInfo[@"room_id"];
+    NSString *actionIdentifier = [response actionIdentifier];
+    NSString *roomId = content.userInfo[@"room_id"];
 
-        if (roomId.length) {
-            NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    if ([actionIdentifier isEqualToString:@"inline-reply"])
+    {
+        if ([response isKindOfClass:[UNTextInputNotificationResponse class]])
+        {
+            UNTextInputNotificationResponse *textInputNotificationResponse = (UNTextInputNotificationResponse *)response;
+            NSString *responseText = [textInputNotificationResponse userText];
 
-            MXKRoomDataSourceManager* manager;
-            for (MXKAccount* account in mxAccounts)
-            {
-                MXRoom* room = [account.mxSession roomWithRoomId:roomId];
-                if (room)
-                {
-                    manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
-                    if (manager)
-                    {
-                        break;
-                    }
-                }
-            }
-            if (manager == nil)
-            {
-                NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: room with id %@ not found", roomId);
-            }
-            else
-            {
-                [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
-                    NSString* responseText = [textResponse userText];
-                    if (responseText != nil && responseText.length != 0)
-                    {
-                        NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: sending message to room: %@", roomId);
-                        [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
-                            UNMutableNotificationContent *failureNotificationContent = [[UNMutableNotificationContent alloc] init];
-                            failureNotificationContent.userInfo = content.userInfo;
-                            failureNotificationContent.body = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+            [self handleNotificationInlineReplyForRoomId:roomId withResponseText:responseText success:^(NSString *eventId) {
+                completionHandler();
+            } failure:^(NSError *error) {
 
-                            UNNotificationRequest *failureNotificationRequest = [UNNotificationRequest
-                                    requestWithIdentifier:@"failureNotification"
-                                                  content:failureNotificationContent
-                                                  trigger:nil];
+                UNMutableNotificationContent *failureNotificationContent = [[UNMutableNotificationContent alloc] init];
+                failureNotificationContent.userInfo = content.userInfo;
+                failureNotificationContent.body = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+                failureNotificationContent.threadIdentifier = roomId;
 
-                            [center addNotificationRequest:failureNotificationRequest withCompletionHandler:nil];
-                            NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: error sending text message: %@", error);
-                        }];
-                    }
+                NSString *uuid = [[NSUUID UUID] UUIDString];
+                UNNotificationRequest *failureNotificationRequest = [UNNotificationRequest requestWithIdentifier:uuid
+                                                                                                         content:failureNotificationContent
+                                                                                                         trigger:nil];
 
-                    completionHandler();
-                }];
-                return;
-            }
+                [center addNotificationRequest:failureNotificationRequest withCompletionHandler:nil];
+                NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: error sending text message: %@", error);
+
+                completionHandler();
+            }];
+        }
+        else
+        {
+            NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: error, expect a response of type UNTextInputNotificationResponse");
+            completionHandler();
         }
     }
-    else if ([[response actionIdentifier] isEqualToString:UNNotificationDefaultActionIdentifier])
+    else if ([actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier])
     {
-        NSString *roomId = content.userInfo[@"room_id"];
         [self navigateToRoomById:roomId];
+        completionHandler();
     }
     else
     {
         NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: unhandled identifier %@", [response actionIdentifier]);
+        completionHandler();
     }
-    completionHandler();
 }
 
 // DEPRECATED, for iOS 9
 // "This block is not a prototype" - don't fix this, or it won't match Apple's definition
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
 {
+    NSString* roomId = notification.userInfo[@"room_id"];
+
+    NSString* roomId = notification.userInfo[@"room_id"];
+
     if ([identifier isEqualToString: @"inline-reply"])
     {
-        NSString* roomId = notification.userInfo[@"room_id"];
-        if (roomId.length)
-        {
-            NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-            MXKRoomDataSource* roomDataSource = nil;
-            MXKRoomDataSourceManager* manager;
-            for (MXKAccount* account in mxAccounts)
-            {
-                MXRoom* room = [account.mxSession roomWithRoomId:roomId];
-                if (room)
-                {
-                    manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
-                    if (manager)
-                    {
-                        break;
-                    }
-                }
-            }
-            if (manager == nil)
-            {
-                NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: room with id %@ not found", roomId);
-            }
-            else
-            {
-                [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
-                    NSString* responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
-                    if (responseText != nil && responseText.length != 0)
-                    {
-                        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: sending message to room: %@", roomId);
-                        [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {} failure:^(NSError* error) {
-                            UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
-                            failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
-                            failureNotification.userInfo = notification.userInfo;
-                            [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
-                            NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
-                        }];
-                    }
+        NSString* responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
 
-                    completionHandler();
-                }];
-                return;
-            }
-        }
+        [self handleNotificationInlineReplyForRoomId:roomId withResponseText:responseText success:^(NSString *eventId) {
+            completionHandler();
+        } failure:^(NSError *error) {
+
+            UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
+            failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+            failureNotification.userInfo = notification.userInfo;
+            [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
+            NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
+
+            completionHandler();
+        }];
     }
     else
     {
         NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: unhandled identifier %@", identifier);
+        completionHandler();
     }
-    completionHandler();
 }
 
 // iOS 10+, this is called when a notification is about to display in foreground.
@@ -1423,8 +1391,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
 {
-    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    [accountManager setPushDeviceToken:nil withPushOptions:nil];
+    [self clearPushNotificationToken];
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
@@ -1522,6 +1489,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     NSMutableArray *eventsArray = eventsToNotify[@(account.mxSession.hash)];
     
+    NSMutableArray<NSString*> *redactedEventIds = [NSMutableArray array];
+
     // Display a local notification for each event retrieved by the bg sync.
     for (NSUInteger index = 0; index < eventsArray.count; index++)
     {
@@ -1533,7 +1502,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
         // Ignore event already notified to the user
         // only necessary on iOS 9, iOS 10 will just overwrite notifications with identical IDs
-        if (!@available(iOS 10, *) && [self displayedLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId type:nil])
+        if (@available(iOS 10, *)) {}
+        else if ([self displayedLocalNotificationForEvent:eventId andUser:account.mxCredentials.userId type:nil])
         {
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
             continue;
@@ -1546,10 +1516,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         if (event)
         {
-            // Ignore redacted event.
             if (event.isRedactedEvent)
             {
-                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event. Event id: %@", event.eventId);
+                if (@available(iOS 10, *))
+                {
+                    // Collect redacted event ids to remove possible delivered redacted notifications
+                    [redactedEventIds addObject:eventId];
+                }
+                else
+                {
+                    // Ignore redacted event.
+                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event. Event id: %@", event.eventId);
+                }
                 continue;
             }
             
@@ -1627,60 +1605,66 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 }
             }
 
-            if (@available(iOS 10, *)) {
-                [self notificationContentForEvent:event pushRule:rule inAccount:account onComplete:^(UNMutableNotificationContent * _Nullable notificationContent)
-                {
-                    if (notificationContent)
-                    {
-                        // Printf style escape characters are stripped from the string prior to display;
-                        // to include a percent symbol (%) in the message, use two percent symbols (%%).
-                        // TODO: https://developer.apple.com/documentation/foundation/nsstring/1649585-localizedusernotificationstringf?language=objc
-                        //  use this - maybe not necessary to replace %s
-                        notificationContent.body = [notificationContent.body stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
-                        notificationContent.userInfo = notificationUserInfo;
-                        notificationContent.categoryIdentifier = categoryIdentifier;
-                        notificationContent.sound = [UNNotificationSound soundNamed:soundName];
+            [self notificationBodyForEvent:event pushRule:rule inAccount:account onComplete:^(NSString *_Nullable notificationBody)
+             {
+                 if (notificationBody)
+                 {
+                     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
 
-                        UNNotificationRequest *request = [UNNotificationRequest
-                                requestWithIdentifier:event.eventId
-                                              content:notificationContent
-                                              trigger:nil];
+                     // Printf style escape characters are stripped from the string prior to display;
+                     // to include a percent symbol (%) in the message, use two percent symbols (%%).
+                     // TODO: https://developer.apple.com/documentation/foundation/nsstring/1649585-localizedusernotificationstringf?language=objc
+                     //  use this - maybe not necessary to replace %s
+                     NSString *fixedNotificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
 
-                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
-                        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
-                        scheduledNotifications++;
-                    }
-                    else
-                    {
-                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationContent. Event id: %@", event.eventId);
-                    }
-                }];
-            }
-            else
-            {
-                [self notificationBodyForEvent:event pushRule:rule inAccount:account onComplete:^(NSString *_Nullable notificationBody)
-                {
-                    if (notificationBody)
-                    {
-                        // Printf style escape characters are stripped from the string prior to display;
-                        // to include a percent symbol (%) in the message, use two percent symbols (%%).
-                        notificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
+                     if (@available(iOS 10, *))
+                     {
+                         UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
+                         notificationContent.body = fixedNotificationBody;
+                         notificationContent.userInfo = notificationUserInfo;
+                         notificationContent.categoryIdentifier = categoryIdentifier;
+                         notificationContent.threadIdentifier = roomId;
+                         if (soundName)
+                         {
+                             notificationContent.sound = [UNNotificationSound soundNamed:soundName];
+                         }
 
-                        UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                        eventNotification.alertBody = notificationBody;
-                        eventNotification.userInfo = notificationUserInfo;
-                        eventNotification.category = categoryIdentifier;
-                        eventNotification.soundName = soundName;
+                         UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:event.eventId
+                                                                                               content:notificationContent
+                                                                                               trigger:nil];
 
-                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", event.eventId);
-                        [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
-                        scheduledNotifications++;
-                    } else
-                    {
-                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
-                    }
-                }];
-            }
+                         [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+                     }
+                     else
+                     {
+                         UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
+                         eventNotification.alertBody = fixedNotificationBody;
+                         eventNotification.userInfo = notificationUserInfo;
+                         eventNotification.category = categoryIdentifier;
+                         eventNotification.soundName = soundName;
+
+                         [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
+                     }
+
+                     scheduledNotifications++;
+                 }
+                 else
+                 {
+                     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", event.eventId);
+                 }
+             }];
+        }
+    }
+
+    if (@available(iOS 10, *))
+    {
+        // Remove possible pending and delivered notifications having a redacted event id
+        if (redactedEventIds.count)
+        {
+            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Remove possible notification with redacted event ids: %@", redactedEventIds);
+
+            [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers:redactedEventIds];
+            [[UNUserNotificationCenter currentNotificationCenter] removeDeliveredNotificationsWithIdentifiers:redactedEventIds];
         }
     }
 
@@ -1995,7 +1979,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         // Ignore event already notified to the user
         // only necessary on iOS 9, iOS 10 will just overwrite notifications with identical IDs
-        if (!@available(iOS 10, *) && [self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
+        if (@available(iOS 10, *)) {}
+        else if ([self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
         {
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
             continue;
@@ -2025,6 +2010,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             UNMutableNotificationContent *localNotificationContentForFailedSync = [[UNMutableNotificationContent alloc] init];
             localNotificationContentForFailedSync.userInfo = userInfo;
             localNotificationContentForFailedSync.body = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
+            localNotificationContentForFailedSync.threadIdentifier = roomId;
 
             UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId content:localNotificationContentForFailedSync trigger:nil];
 
@@ -2120,6 +2106,66 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+}
+
+- (void)handleNotificationInlineReplyForRoomId:(NSString*)roomId
+                              withResponseText:(NSString*)responseText
+                                       success:(void(^)(NSString *eventId))success
+                                       failure:(void(^)(NSError *error))failure
+{
+    if (!roomId.length)
+    {
+        failure(nil);
+        return;
+    }
+
+    NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+
+    MXKRoomDataSourceManager* manager;
+
+    for (MXKAccount* account in mxAccounts)
+    {
+        MXRoom* room = [account.mxSession roomWithRoomId:roomId];
+        if (room)
+        {
+            manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+            if (manager)
+            {
+                break;
+            }
+        }
+    }
+
+    if (manager == nil)
+    {
+        NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: room with id %@ not found", roomId);
+        failure(nil);
+    }
+    else
+    {
+        [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+            if (responseText != nil && responseText.length != 0)
+            {
+                NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: sending message to room: %@", roomId);
+                [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {
+                    success(eventId);
+                } failure:^(NSError* error) {
+                    failure(error);
+                }];
+            }
+            else
+            {
+                failure(nil);
+            }
+        }];
+    }
+}
+
+- (void)clearPushNotificationToken
+{
+    // Clear existing token
+    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    [accountManager setPushDeviceToken:nil withPushOptions:nil];
 }
 
 #pragma mark - Universal link
