@@ -6,6 +6,7 @@ Improvements:
  * Widgets: Use scalar prod urls in Riot mobile apps (#2349).
 
 Bug fix:
+ * Share extension: Fix a crash when receive a memory warning (PR #2352).
 
 Changes in 0.8.4 (2019-03-21)
 ===============================================

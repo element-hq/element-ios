@@ -20,6 +20,7 @@
 @import MobileCoreServices;
 #import "objc/runtime.h"
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
+#import <mach/mach.h>
 
 NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
@@ -70,7 +71,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
         
         // Add observer to handle memory warning
-        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:sharedInstance selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
         MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
         // Apply the application group
@@ -528,6 +529,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         
                                                                         // Send the small image
                                                                         self.imageCompressionMode = ImageCompressionModeSmall;
+                                                                        
+                                                                        [self logCompressionSizeChoice:compressionSizes.large];
+                                                                        
                                                                         if (shareBlock)
                                                                         {
                                                                             shareBlock();
@@ -553,6 +557,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         
                                                                         // Send the medium image
                                                                         self.imageCompressionMode = ImageCompressionModeMedium;
+                                                                        
+                                                                        [self logCompressionSizeChoice:compressionSizes.large];
+                                                                        
                                                                         if (shareBlock)
                                                                         {
                                                                             shareBlock();
@@ -581,6 +588,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         // Send the large image
                                                                         self.imageCompressionMode = ImageCompressionModeLarge;
                                                                         self.actualLargeSize = compressionSizes.actualLargeSize;
+                                                                        
+                                                                        [self logCompressionSizeChoice:compressionSizes.large];
+                                                                        
                                                                         if (shareBlock)
                                                                         {
                                                                             shareBlock();
@@ -606,6 +616,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                         typeof(self) self = weakSelf;
                                                                         
                                                                         self.imageCompressionMode = ImageCompressionModeNone;
+                                                                        
+                                                                        [self logCompressionSizeChoice:compressionSizes.large];
                                                                         if (shareBlock)
                                                                         {
                                                                             shareBlock();
@@ -631,6 +643,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             self.imageCompressionMode = ImageCompressionModeNone;
         }
+        
+        NSLog(@"[ShareExtensionManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
         
         if (shareBlock)
         {
@@ -818,6 +832,41 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return isImageNotOrientedUp;
 }
 
+- (void)logCompressionSizeChoice:(MXKImageCompressionSize)compressionSize
+{
+    NSString *fileSize = [MXTools fileSizeToString:compressionSize.fileSize round:NO];
+    NSUInteger imageWidth = compressionSize.imageSize.width;
+    NSUInteger imageHeight = compressionSize.imageSize.height;
+    
+    NSLog(@"[ShareExtensionManager] User choose image compression with output size %lu x %lu (output file size: %@)", (unsigned long)imageWidth, (unsigned long)imageHeight, fileSize);
+    NSLog(@"[ShareExtensionManager] Number of images to send: %lu", (unsigned long)self.pendingImages.count);
+}
+
+// Log memory usage.
+// NOTE: This result may not be reliable for all iOS versions (see https://forums.developer.apple.com/thread/64665 for more information).
+- (void)logMemoryUsage
+{
+    struct task_basic_info basicInfo;
+    mach_msg_type_number_t size = TASK_BASIC_INFO_COUNT;
+    kern_return_t kerr = task_info(mach_task_self(),
+                                   TASK_BASIC_INFO,
+                                   (task_info_t)&basicInfo,
+                                   &size);
+    
+    vm_size_t memoryUsedInBytes = basicInfo.resident_size;
+    CGFloat memoryUsedInMegabytes = memoryUsedInBytes / (1024*1024);
+    
+    if (kerr == KERN_SUCCESS)
+    {
+        NSLog(@"[ShareExtensionManager] Memory in use (in MB): %f", memoryUsedInMegabytes);
+    }
+    else
+    {
+        NSLog(@"[ShareExtensionManager] Error with task_info(): %s", mach_error_string(kerr));
+    }
+}
+
+
 #pragma mark - Notifications
 
 - (void)onMediaLoaderStateDidChange:(NSNotification *)notification
@@ -850,6 +899,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 - (void)didReceiveMemoryWarning:(NSNotification*)notification
 {
     NSLog(@"[ShareExtensionManager] Did receive memory warning");
+    [self logMemoryUsage];
 }
 
 #pragma mark - Sharing
