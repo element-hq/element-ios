@@ -2,6 +2,8 @@ Changes in 0.8.5 (2019-xx-xx)
 ===============================================
 
 Improvements:
+ * Added titles to notifications on iOS 10+ (#2347).
+ * Implemented notification grouping (#2347).
  * Use UserNotifications framework for local notifications (iOS 10+), thanks to @fridtjof (PR #2207).
 
 Bug fix:
