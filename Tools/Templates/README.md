@@ -1,9 +1,9 @@
-The `buildable` contains templates with source files that build.
+The `buildable` folder contains templates with source files that build.
 
 The goal is to turn these templates as Xcode templates. They are part of the Riot project in order to ensure they build
 
 # ScreenTemplate
-This is the boilerplate to create a screen that follows the MVVM-C pattern within the Riot app.
+This is the boilerplate to create a screen that follows the MVVM-C pattern used within the Riot app.
 
 To use it (before it becomes an Xcode template):
 
@@ -18,7 +18,39 @@ The boilerplate to create a root coordinator and its presenter bridge that can b
  
 To use it (before it becomes an Xcode template):
 
-- `./createFlowCoordinator.sh MyFlowCoordinator [subFolder]`
-- Import the created folder in the Xcode project
+- `./createRootCoordinator.sh Folder MyRootCoordinatorName [DefaultScreenName]`
+- Import created files in the Xcode project
 
-`subFolder` is an option subfolder under `Riot/Modules/`
+
+# Usage example
+Following commands:
+
+```
+./createScreen.sh MyFlowDir/MyFirstScreenDir MyFirstScreen
+./createRootCoordinator.sh MyFlowDir MyFlow MyFirstScreen
+```
+
+generate in `Riot/Modules`:
+
+```
+Riot/Modules/MyFlowDir
+├── MyFirstScreenDir
+│   ├── MyFirstScreenCoordinator.swift
+│   ├── MyFirstScreenCoordinatorType.swift
+│   ├── MyFirstScreenViewAction.swift
+│   ├── MyFirstScreenViewController.storyboard
+│   ├── MyFirstScreenViewController.swift
+│   ├── MyFirstScreenViewModel.swift
+│   ├── MyFirstScreenViewModelType.swift
+│   └── MyFirstScreenViewState.swift
+├── MyFlowCoordinator.swift
+├── MyFlowCoordinatorBridgePresenter.swift
+└── MyFlowCoordinatorType.swift
+```
+
+It is then ready to use:
+
+```
+MyFlowCoordinatorBridgePresenter *presenter = [[MyFlowCoordinatorBridgePresenter alloc] initWithSession:session];
+[presenter presentFrom:self animated:YES];
+```
