@@ -28,7 +28,8 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
     private let templateScreenViewController: TemplateScreenViewController
     
     // MARK: Public
-    
+
+    // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
     weak var delegate: TemplateScreenCoordinatorDelegate?

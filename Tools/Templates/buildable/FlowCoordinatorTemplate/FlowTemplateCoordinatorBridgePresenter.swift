@@ -17,7 +17,7 @@
 import Foundation
 
 @objc protocol FlowTemplateCoordinatorBridgePresenterDelegate {
-    func flowTemplateCoordinatorBridgePresenterDelegateDidComplete(_ flowTemplateCoordinatorBridgePresenter: FlowTemplateCoordinatorBridgePresenter)
+    func flowTemplateCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: FlowTemplateCoordinatorBridgePresenter)
 }
 
 /// FlowTemplateCoordinatorBridgePresenter enables to start FlowTemplateCoordinator from a view controller.
@@ -71,7 +71,7 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
 
 // MARK: - FlowTemplateCoordinatorDelegate
 extension FlowTemplateCoordinatorBridgePresenter: FlowTemplateCoordinatorDelegate {
-    func flowTemplateCoordinatorDidComplete(_ flowTemplateCoordinator: FlowTemplateCoordinatorType) {
+    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType) {
         self.delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }
