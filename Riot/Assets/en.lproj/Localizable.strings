@@ -14,16 +14,16 @@
  limitations under the License.
  */
 
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
+
 /** Single, end-to-end encrypted messages (ie. we don't know what they say) */
 
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Message from %@";
+"MSG_FROM_USER" = "%@ sent a message";
 
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ posted in %@";
-
-/* New message when a notification title is used */
-"MSG_TEXT_WITH_TITLE" = "Message";
 
 /** Single, unencrypted messages (where we can include the content */
 
@@ -39,19 +39,13 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 
-/* New action message, sender is specified in notification title */
-"ACTION" = "* %@";
-
 /** Image Messages **/
 
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ sent you a picture %@";
+"IMAGE_FROM_USER" = "%@ sent a picture %@";
 
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ posted a picture %@ in %@";
-
-/* New action message, but the sender (and room) are already in the notification title */
-"IMAGE_TEXT_WITH_TITLE" = "📷 Picture";
 
 /* A single unread message in a room */
 "SINGLE_UNREAD_IN_ROOM" = "You received a message in %@";
@@ -59,8 +53,8 @@
 /* A single unread message */
 "SINGLE_UNREAD" = "You received a message";
 
-/* Sticker, but with the sender (and room) already in the title */
-"STICKER_TEXT_WITH_TITLE" = "💟 Sticker";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ sent a sticker";
 
 /** Coalesced messages **/
 
@@ -96,23 +90,13 @@
 /* A user has invited you to a named room */
 "USER_INVITE_TO_NAMED_ROOM" = "%@ has invited you to %@";
 
-/* Same as USER_INVITE_TO_CHAT but the username is already displayed in the notification title */
-"INVITE_TO_CHAT" = "You were invited to chat";
-
-/* Same as USER_INVITE_TO_NAMED_ROOM but the room name is already displayed in the notification title */
-"INVITE_BY_USER_TO_ROOM" = "You were invited by %@";
-
 /** Calls **/
 
 /* Incoming one-to-one voice call */
 "VOICE_CALL_FROM_USER" = "Call from %@";
 
-"VOICE_CALL" = "📞 Call";
-
 /* Incoming one-to-one video call */
 "VIDEO_CALL_FROM_USER" = "Video call from %@";
-
-"VIDEO_CALL" = "📹 Video call";
 
 /* Incoming unnamed voice conference invite from a specific person */
 "VOICE_CONF_FROM_USER" = "Group call from %@";
@@ -125,5 +109,3 @@
 
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Video group call from %@: '%@'";
-
-"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
