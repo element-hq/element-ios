@@ -13,16 +13,13 @@ MODULE_DIR="../../Riot/Modules"
 OUTPUT_DIR="$MODULE_DIR"
 if [ $# -eq 2 ]; 
 then
-    OUTPUT_DIR="$OUTPUT_DIR/$1"
+    OUTPUT_DIR="$OUTPUT_DIR/$2"
     if [ ! -e $OUTPUT_DIR ]; then
         echo "Create folder ${OUTPUT_DIR}"
         mkdir $OUTPUT_DIR
     fi 
-    
-    OUTPUT_DIR="$OUTPUT_DIR/$2"
-else
-    OUTPUT_DIR="$OUTPUT_DIR/$1"
 fi
+OUTPUT_DIR="$OUTPUT_DIR/$1"
 
 
 if [ -e $OUTPUT_DIR ]; then
