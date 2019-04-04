@@ -3,6 +3,7 @@ output_dir: ../../Riot/Generated/
 ib:  
   - inputs: 
     - Modules/KeyBackup/
+    - ../Tools/Templates/buildable/
     outputs:
       - templateName: scenes-swift4
         output: Storyboards.swift
