@@ -17,8 +17,8 @@
 import Foundation
 
 protocol TemplateScreenCoordinatorDelegate: class {
-    func templateScreenCoordinator(_ templateScreenCoordinator: TemplateScreenCoordinatorType, didCompleteWithMessage message: String)
-    func templateScreenCoordinatorDidCancel(_ templateScreenCoordinator: TemplateScreenCoordinatorType)
+    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithMessage message: String)
+    func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorType)
 }
 
 /// `TemplateScreenCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.

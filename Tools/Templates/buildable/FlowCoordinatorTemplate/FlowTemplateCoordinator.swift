@@ -27,7 +27,8 @@ final class FlowTemplateCoordinator: FlowTemplateCoordinatorType {
     private let session: MXSession
     
     // MARK: Public
-    
+
+    // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
     weak var delegate: FlowTemplateCoordinatorDelegate?

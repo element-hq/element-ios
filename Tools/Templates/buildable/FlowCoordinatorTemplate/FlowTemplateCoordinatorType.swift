@@ -17,7 +17,7 @@
 import Foundation
 
 protocol FlowTemplateCoordinatorDelegate: class {
-    func flowTemplateCoordinatorDidComplete(_ flowTemplateCoordinator: FlowTemplateCoordinatorType)
+    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType)
 }
 
 /// `FlowTemplateCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
