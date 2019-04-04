@@ -7,10 +7,10 @@ This is the boilerplate to create a screen that follows the MVVM-C pattern withi
 
 To use it (before it becomes an Xcode template):
 
-- `./createScreen.sh MyScreen [subFolder]`
+- `./createScreen.sh ScreenFolder MyScreenName`
 - Import the created folder in the Xcode project
 
-`subFolder` is an option subfolder under `Riot/Modules/`
+This will create ScreenFolder within the Riot/Modules. Files inside will be called `MyScreenNameXxx`.
 
 
 # FlowCoordinatorTemplate
