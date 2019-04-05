@@ -4,6 +4,7 @@ Changes in 0.8.5 (2019-xx-xx)
 Improvements:
  * Push: Add more logs to track spontaneously disabling (#2348).
  * Widgets: Use scalar prod urls in Riot mobile apps (#2349).
+ * Productiviy: Create templates (see Tools/Templates/README.md).
 
 Bug fix:
  * Share extension: Fix a crash when receive a memory warning (PR #2352).

@@ -1,8 +1,10 @@
 input_dir: ../../Riot/
 output_dir: ../../Riot/Generated/
 ib:  
-  - inputs: 
-    - Modules/KeyBackup/
+  - inputs:
+    - ../Tools/Templates/buildable/
+    - Modules/
+    filter: ^((?!DeactivateAccountViewController).)*\.(storyboard)
     outputs:
       - templateName: scenes-swift4
         output: Storyboards.swift
