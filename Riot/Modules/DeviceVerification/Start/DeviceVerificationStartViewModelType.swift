@@ -23,6 +23,8 @@ protocol DeviceVerificationStartViewModelViewDelegate: class {
 }
 
 protocol DeviceVerificationStartViewModelCoordinatorDelegate: class {
+    func deviceVerificationStartViewModelUseLegacyVerification(_ viewModel: DeviceVerificationStartViewModelType)
+
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction)
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didTransactionCancelled transaction: MXSASTransaction)
 

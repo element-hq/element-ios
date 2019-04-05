@@ -60,7 +60,11 @@ final class DeviceVerificationStartCoordinator: DeviceVerificationStartCoordinat
 
 // MARK: - DeviceVerificationStartViewModelCoordinatorDelegate
 extension DeviceVerificationStartCoordinator: DeviceVerificationStartViewModelCoordinatorDelegate {
-    
+    func deviceVerificationStartViewModelUseLegacyVerification(_ viewModel: DeviceVerificationStartViewModelType) {
+        // TODO
+        self.delegate?.deviceVerificationStartCoordinatorDidCancel(self) 
+    }
+
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
         self.delegate?.deviceVerificationStartCoordinator(self, didCompleteWithOutgoingTransaction: transaction)
     }

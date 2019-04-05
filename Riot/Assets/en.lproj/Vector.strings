@@ -794,6 +794,13 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";
 
 // MARK: - Device Verification
+"device_verification_title" = "Verify device";
 
 // MARK: - Start
-"device_verification_start_verify_button" = "Verify";
+"device_verification_start_title" = "Verify by comparing a short text string";
+"device_verification_start_security_advise" = "For maximum security, we recommend you do this in person or use another trusted means of communication";
+"device_verification_start_wait_partner" = "Waiting for partner to accept...";
+"device_verification_start_verify_button" = "Begin Verifying";
+"device_verification_start_use_legacy_action" = "Use Legacy Verification (for older clients)";
+
+

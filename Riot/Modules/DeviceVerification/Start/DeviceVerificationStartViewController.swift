@@ -31,10 +31,13 @@ final class DeviceVerificationStartViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var scrollView: UIScrollView!
-    
-    @IBOutlet private weak var messageLabel: UILabel!
+
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet weak var verifyButtonBackgroundView: UIView!
     @IBOutlet private weak var verifyButton: UIButton!
-    
+    @IBOutlet weak var useLegacyVerificationButton: UIButton!
+
     // MARK: Private
 
     private var viewModel: DeviceVerificationStartViewModelType!
@@ -59,7 +62,7 @@ final class DeviceVerificationStartViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
+        self.title = VectorL10n.deviceVerificationTitle
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
@@ -70,8 +73,6 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
-
-        self.viewModel.process(viewAction: .sayHello)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -109,12 +110,13 @@ final class DeviceVerificationStartViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-
-        // TODO:
-        self.messageLabel.textColor = theme.textPrimaryColor
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.informationLabel.textColor = theme.textPrimaryColor
 
         self.verifyButton.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.verifyButton)
+
+        theme.applyStyle(onButton: self.useLegacyVerificationButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -134,10 +136,11 @@ final class DeviceVerificationStartViewController: UIViewController {
         
         self.scrollView.keyboardDismissMode = .interactive
 
+        self.titleLabel.text = VectorL10n.deviceVerificationStartTitle
+        self.informationLabel.text = VectorL10n.deviceVerificationStartSecurityAdvise
+
         self.verifyButton.setTitle(VectorL10n.deviceVerificationStartVerifyButton, for: .normal)
-        
-        self.messageLabel.text = "VectorL10n.deviceVerificationStartTitle"
-        self.messageLabel.isHidden = true
+        self.useLegacyVerificationButton.setTitle(VectorL10n.deviceVerificationStartUseLegacyAction, for: .normal)
     }
 
     private func render(viewState: DeviceVerificationStartViewState) {
@@ -157,9 +160,7 @@ final class DeviceVerificationStartViewController: UIViewController {
     
     private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
-        self.messageLabel.text = self.viewModel.message
-        self.messageLabel.isHidden = false
+        //self.informationLabel.text = self.viewModel.message
     }
     
     private func render(error: Error) {
@@ -172,6 +173,10 @@ final class DeviceVerificationStartViewController: UIViewController {
 
     @IBAction private func verifyButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .beginVerifying)
+    }
+
+    @IBAction private func useLegacyVerificationButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .useLegacyVerification)
     }
 
     private func cancelButtonAction() {
