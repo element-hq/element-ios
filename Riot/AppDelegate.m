@@ -1273,7 +1273,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     else
     {
-        NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: unhandled identifier %@", [response actionIdentifier]);
+        NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: unhandled identifier %@", actionIdentifier);
         completionHandler();
     }
 }
@@ -2229,6 +2229,34 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Clear existing token
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setPushDeviceToken:nil withPushOptions:nil];
+}
+
+// Remove delivred notifications for a given room id except call notifications
+- (void)removeDeliveredNotificationsWithRoomId:(NSString*)roomId completion:(dispatch_block_t)completion
+{
+    NSMutableArray<NSString*> *notificationRequestIdentifiersToRemove = [NSMutableArray new];
+    
+    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
+    
+    [notificationCenter getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
+        
+        for (UNNotification *notification in notifications)
+        {
+            NSString *threadIdentifier = notification.request.content.threadIdentifier;
+            
+            if ([threadIdentifier isEqualToString:roomId])
+            {
+                [notificationRequestIdentifiersToRemove addObject:notification.request.identifier];
+            }
+        }
+        
+        [notificationCenter removeDeliveredNotificationsWithIdentifiers:notificationRequestIdentifiersToRemove];
+        
+        if (completion)
+        {
+            completion();
+        }
+    }];
 }
 
 #pragma mark - Universal link
@@ -3710,8 +3738,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [self restoreInitialDisplay:^{
         
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession];
-        
+        [_masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession completion:^{
+            // Remove delivered notifications for this room
+            [self removeDeliveredNotificationsWithRoomId:roomId completion:nil];
+        }];
     }];
 }
 
