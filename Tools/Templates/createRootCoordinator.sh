@@ -31,6 +31,9 @@ do
             perl -p -i -e "s/TemplateScreen/"$SCREEN_NAME"/g" $file
             perl -p -i -e "s/templateScreen/"$SCREEN_VAR_NAME"/g" $file
         fi
+        
+        echo "// $ createRootCoordinator.sh $@" | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
+        echo '// File created from FlowTemplate' | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
     
         mv ${file} ${file/FlowTemplate/$COORDINATOR_NAME}
     fi

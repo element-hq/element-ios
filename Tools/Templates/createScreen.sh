@@ -27,5 +27,9 @@ do
     echo "Building ${file/TemplateScreen/$SCREEN_NAME}..."
     perl -p -i -e "s/TemplateScreen/"$SCREEN_NAME"/g" $file
     perl -p -i -e "s/templateScreen/"$SCREEN_VAR_NAME"/g" $file
+    
+    echo "// $ createScreen.sh $@" | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
+    echo '// File created from ScreenTemplate' | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
+    
     mv ${file} ${file/TemplateScreen/$SCREEN_NAME}
 done
