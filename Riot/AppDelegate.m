@@ -1896,7 +1896,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Display the room name only if it is different than the sender name
             if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
             {
-                notificationTitle = [NSString localizedUserNotificationStringForKey:@"MSG_FROM_USER_IN_ROOM_TITLE" arguments:@[eventSenderName, roomDisplayName]];//                
+                notificationTitle = [NSString localizedUserNotificationStringForKey:@"MSG_FROM_USER_IN_ROOM_TITLE" arguments:@[eventSenderName, roomDisplayName]];
                 
                 if ([msgType isEqualToString:@"m.text"])
                 {
