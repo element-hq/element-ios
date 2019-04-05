@@ -21,6 +21,6 @@ import Foundation
 /// DeviceVerificationStartViewController view actions exposed to view model
 enum DeviceVerificationStartViewAction {
     case sayHello
-    case complete
+    case beginVerifying
     case cancel
 }

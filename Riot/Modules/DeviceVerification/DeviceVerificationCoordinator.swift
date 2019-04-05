@@ -27,7 +27,11 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
-    
+    private let otherUserId: String
+    private let otherDeviceId: String
+
+    private var transaction: MXSASTransaction!
+
     // MARK: Public
 
     // Must be used only internally
@@ -36,23 +40,60 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     weak var delegate: DeviceVerificationCoordinatorDelegate?
     
     // MARK: - Setup
-    
-    init(session: MXSession) {
+
+    /// Contrustor to start a verification of another device.
+    ///
+    /// - Parameters:
+    ///   - session: the MXSession
+    ///   - otherUserId: the device user id
+    ///   - otherDevice: the device id
+    init(session: MXSession, otherUserId: String, otherDeviceId: String) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
-    }    
+        self.otherUserId = otherUserId
+        self.otherDeviceId = otherDeviceId
+    }
+
+    /// Contrustor to manage an existing SAS device verification transaction
+    ///
+    /// - Parameters:
+    ///   - session: the MXSession
+    ///   - transaction: an existing device verification transaction
+    convenience init(session: MXSession, transaction: MXSASTransaction) {
+        self.init(session: session,
+                  otherUserId: transaction.otherUser,
+                  otherDeviceId: transaction.otherDevice)
+        self.transaction = transaction
+    }
     
     // MARK: - Public methods
     
     func start() {
 
-        let rootCoordinator = self.createDeviceVerificationStartCoordinator()
+        guard let otherUser = self.session.user(withUserId: otherUserId) else {
+            return // TODO
+        }
 
-        rootCoordinator.start()
+        // Before starting make sure we have device crypto informatino
+        self.session.crypto?.downloadKeys([self.otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap) in
+            guard let sself = self else {
+                return
+            }
 
-        self.add(childCoordinator: rootCoordinator)
+            guard let otherDevice = usersDevicesMap?.object(forDevice: sself.otherDeviceId, forUser: sself.otherUserId) else {
+                return // TODO
+            }
 
-        self.navigationRouter.setRootModule(rootCoordinator)
+            let rootCoordinator = sself.createDeviceVerificationStartCoordinator(otherUser: otherUser, otherDevice: otherDevice)
+            rootCoordinator.start()
+
+            sself.add(childCoordinator: rootCoordinator)
+
+            sself.navigationRouter.setRootModule(rootCoordinator)
+
+        }, failure: { (error) in
+            // TODO
+        })
       }
     
     func toPresentable() -> UIViewController {
@@ -61,8 +102,8 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     
     // MARK: - Private methods
 
-    private func createDeviceVerificationStartCoordinator() -> DeviceVerificationStartCoordinator {
-        let coordinator = DeviceVerificationStartCoordinator(session: self.session)
+    private func createDeviceVerificationStartCoordinator(otherUser: MXUser, otherDevice: MXDeviceInfo) -> DeviceVerificationStartCoordinator {
+        let coordinator = DeviceVerificationStartCoordinator(session: self.session, otherUser: otherUser, otherDevice: otherDevice)
         coordinator.delegate = self
         return coordinator
     }
@@ -70,7 +111,16 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
 
 // MARK: - DeviceVerificationStartCoordinatorDelegate
 extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDelegate {
-    func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didCompleteWithMessage message: String) {
+    func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
+        self.transaction = transaction
+
+        // TODO
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+    }
+
+    func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
+
+        // TODO
         self.delegate?.deviceVerificationCoordinatorDidComplete(self)
     }
 

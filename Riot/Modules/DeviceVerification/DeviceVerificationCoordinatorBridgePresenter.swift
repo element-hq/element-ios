@@ -52,8 +52,8 @@ final class DeviceVerificationCoordinatorBridgePresenter: NSObject {
     //     self.present(from: viewController, animated: animated)
     // }
     
-    func present(from viewController: UIViewController, animated: Bool) {
-        let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session)
+    func present(from viewController: UIViewController, otherUserId: String, otherDeviceId: String, animated: Bool) {
+        let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
         deviceVerificationCoordinator.delegate = self
         viewController.present(deviceVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
         deviceVerificationCoordinator.start()

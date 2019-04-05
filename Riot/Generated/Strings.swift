@@ -426,6 +426,10 @@ internal enum VectorL10n {
   internal static var decline: String { 
     return VectorL10n.tr("Vector", "decline") 
   }
+  /// Verify
+  internal static var deviceVerificationStartVerifyButton: String { 
+    return VectorL10n.tr("Vector", "device_verification_start_verify_button") 
+  }
   /// %tu rooms
   internal static func directoryCellDescription(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "directory_cell_description", p1)

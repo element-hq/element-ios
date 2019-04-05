@@ -792,3 +792,8 @@
 "sign_out_key_backup_in_progress_alert_title" = "Key backup in progress. If you sign out now you’ll lose access to your encrypted messages.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "I don't want my encrypted messages";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";
+
+// MARK: - Device Verification
+
+// MARK: - Start
+"device_verification_start_verify_button" = "Verify";

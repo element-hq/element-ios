@@ -38,10 +38,10 @@ final class DeviceVerificationStartCoordinator: DeviceVerificationStartCoordinat
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, otherUser: MXUser, otherDevice: MXDeviceInfo) {
         self.session = session
         
-        let deviceVerificationStartViewModel = DeviceVerificationStartViewModel(session: self.session)
+        let deviceVerificationStartViewModel = DeviceVerificationStartViewModel(session: self.session, otherUser: otherUser, otherDevice: otherDevice)
         let deviceVerificationStartViewController = DeviceVerificationStartViewController.instantiate(with: deviceVerificationStartViewModel)
         self.deviceVerificationStartViewModel = deviceVerificationStartViewModel
         self.deviceVerificationStartViewController = deviceVerificationStartViewController
@@ -61,8 +61,12 @@ final class DeviceVerificationStartCoordinator: DeviceVerificationStartCoordinat
 // MARK: - DeviceVerificationStartViewModelCoordinatorDelegate
 extension DeviceVerificationStartCoordinator: DeviceVerificationStartViewModelCoordinatorDelegate {
     
-    func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didCompleteWithMessage message: String) {
-        self.delegate?.deviceVerificationStartCoordinator(self, didCompleteWithMessage: message)
+    func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
+        self.delegate?.deviceVerificationStartCoordinator(self, didCompleteWithOutgoingTransaction: transaction)
+    }
+
+    func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didTransactionCancelled transaction: MXSASTransaction) {
+        self.delegate?.deviceVerificationStartCoordinator(self, didTransactionCancelled: transaction)
     }
     
     func deviceVerificationStartViewModelDidCancel(_ viewModel: DeviceVerificationStartViewModelType) {

@@ -23,7 +23,9 @@ protocol DeviceVerificationStartViewModelViewDelegate: class {
 }
 
 protocol DeviceVerificationStartViewModelCoordinatorDelegate: class {
-    func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didCompleteWithMessage message: String)    
+    func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction)
+    func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didTransactionCancelled transaction: MXSASTransaction)
+
     func deviceVerificationStartViewModelDidCancel(_ viewModel: DeviceVerificationStartViewModelType)
 }
 

@@ -33,7 +33,7 @@ final class DeviceVerificationStartViewController: UIViewController {
     @IBOutlet private weak var scrollView: UIScrollView!
     
     @IBOutlet private weak var messageLabel: UILabel!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet private weak var verifyButton: UIButton!
     
     // MARK: Private
 
@@ -113,8 +113,8 @@ final class DeviceVerificationStartViewController: UIViewController {
         // TODO:
         self.messageLabel.textColor = theme.textPrimaryColor
 
-        self.okButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
+        self.verifyButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: self.verifyButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -133,6 +133,8 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         self.scrollView.keyboardDismissMode = .interactive
+
+        self.verifyButton.setTitle(VectorL10n.deviceVerificationStartVerifyButton, for: .normal)
         
         self.messageLabel.text = "VectorL10n.deviceVerificationStartTitle"
         self.messageLabel.isHidden = true
@@ -168,8 +170,8 @@ final class DeviceVerificationStartViewController: UIViewController {
     
     // MARK: - Actions
 
-    @IBAction private func okButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
+    @IBAction private func verifyButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .beginVerifying)
     }
 
     private func cancelButtonAction() {

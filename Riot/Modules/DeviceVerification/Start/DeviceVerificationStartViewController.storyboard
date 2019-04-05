@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Template Screen View Controller-->
+        <!--Device Verification Start View Controller-->
         <scene sceneID="mt5-wz-YKA">
             <objects>
                 <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="V8j-Lb-PgC" customClass="DeviceVerificationStartViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
@@ -35,11 +35,11 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOt-5E-FjF">
-                                                        <rect key="frame" x="172" y="368" width="30" height="30"/>
+                                                        <rect key="frame" x="90" y="368" width="195" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <state key="normal" title="OK"/>
                                                         <connections>
-                                                            <action selector="okButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="uvI-tt-Nfj"/>
+                                                            <action selector="verifyButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="uvI-tt-Nfj"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -80,13 +80,13 @@
                     </view>
                     <connections>
                         <outlet property="messageLabel" destination="bxI-mu-qng" id="pbX-aZ-inC"/>
-                        <outlet property="okButton" destination="DOt-5E-FjF" id="ktw-U4-efQ"/>
                         <outlet property="scrollView" destination="9U2-KL-ZVA" id="ojG-2y-X7b"/>
+                        <outlet property="verifyButton" destination="DOt-5E-FjF" id="ktw-U4-efQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3198" y="-647"/>
+            <point key="canvasLocation" x="-3199.1999999999998" y="-647.22638680659679"/>
         </scene>
     </scenes>
 </document>

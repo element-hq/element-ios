@@ -25,6 +25,9 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     // MARK: Private
 
     private let session: MXSession
+    private let verificationManager: MXDeviceVerificationManager
+    private let otherUser: MXUser
+    private let otherDevice: MXDeviceInfo
     
     // MARK: Public
     
@@ -35,8 +38,11 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, otherUser: MXUser, otherDevice: MXDeviceInfo) {
         self.session = session
+        self.verificationManager = session.crypto.deviceVerificationManager
+        self.otherUser = otherUser
+        self.otherDevice = otherDevice
         self.message = nil
     }
     
@@ -47,41 +53,67 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     
     func process(viewAction: DeviceVerificationStartViewAction) {
         switch viewAction {
-        case .sayHello:
-            self.setupHelloMessage()
-        case .complete:
-            if let message = self.message {
-            self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didCompleteWithMessage: message)
-            }
+        case .beginVerifying:
+            self.beginVerifying()
         case .cancel:
             self.coordinatorDelegate?.deviceVerificationStartViewModelDidCancel(self)
+        case .sayHello:
+            break
         }
     }
     
     // MARK: - Private
     
-    private func setupHelloMessage() {
+    private func beginVerifying() {
 
         self.update(viewState: .loading)
 
-        // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
+        self.verificationManager.beginKeyVerification(withUserId: self.otherUser.userId, andDeviceId: self.otherDevice.deviceId, method: kMXKeyVerificationMethodSAS, complete: { [weak self] (transaction) in
 
             guard let sself = self else {
                 return
             }
-            
-            switch response {
-            case .success:
-                sself.message = "Hello \(response.value ?? "you")"
-                sself.update(viewState: .loaded)
-            case .failure(let error):
-                sself.update(viewState: .error(error))
+            guard let sasTransaction: MXOutgoingSASTransaction = transaction as? MXOutgoingSASTransaction  else {
+                return
             }
-        }
+
+            sself.message = transaction?.description
+
+            sself.registerTransactionDidStateChangeNotification(transaction: sasTransaction)
+            sself.update(viewState: .loaded)
+
+            print("\(String(describing: transaction))")
+        })
     }
     
     private func update(viewState: DeviceVerificationStartViewState) {
         self.viewDelegate?.deviceVerificationStartViewModel(self, didUpdateViewState: viewState)
+    }
+
+
+    // MARK: - MXDeviceVerificationTransactionDidChange
+
+    private func registerTransactionDidStateChangeNotification(transaction: MXOutgoingSASTransaction) {
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXDeviceVerificationTransactionDidChange, object: transaction)
+    }
+
+    @objc private func transactionDidStateChange(notification: Notification) {
+        guard let transaction = notification.object as? MXOutgoingSASTransaction else {
+            return
+        }
+
+        // TODO: To remove
+        self.message = transaction.description
+        self.update(viewState: .loaded)
+
+        switch transaction.state {
+        case MXOutgoingSASTransactionStateShowSAS:
+            self.message = transaction.sasEmoji?.description
+            self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didCompleteWithOutgoingTransaction: transaction)
+        case MXOutgoingSASTransactionStateCancelled:
+            self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didTransactionCancelled: transaction)
+        default:
+            break
+        }
     }
 }
