@@ -2,9 +2,10 @@ Changes in 0.8.5 (2019-xx-xx)
 ===============================================
 
 Improvements:
- * Added titles to notifications on iOS 10+ (#2347).
- * Implemented notification grouping (#2347).
- * Use UserNotifications framework for local notifications (iOS 10+), thanks to @fridtjof (PR #2207).
+ * Notifications: Use UserNotifications framework for local notifications (iOS 10+), thanks to @fridtjof (PR #2207).
+ * Notifications: Added titles to notifications on iOS 10+, thanks to @fridtjof (PR #2347).
+ * iOS 12 Notification: Group them by room (#2337 and PR #2347 thanks to @fridtjof).
+ * Notifications: When navigate to a room, remove associated delivered notifications (#2337).
 
 Bug fix:
 
