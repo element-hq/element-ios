@@ -47,7 +47,7 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
     
     // NOTE: Default value feature is not compatible with Objective-C.
     // func present(from viewController: UIViewController, animated: Bool) {
-    //     self.present(from: viewController, isStartedFromSignOut: false, animated: animated)
+    //     self.present(from: viewController, animated: animated)
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
