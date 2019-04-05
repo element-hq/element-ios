@@ -28,8 +28,11 @@ do
     perl -p -i -e "s/TemplateScreen/"$SCREEN_NAME"/g" $file
     perl -p -i -e "s/templateScreen/"$SCREEN_VAR_NAME"/g" $file
     
-    echo "// $ createScreen.sh $@" | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
-    echo '// File created from ScreenTemplate' | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
+    if [[ ! $file == *.storyboard ]];
+    then
+        echo "// $ createScreen.sh $@" | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
+        echo '// File created from ScreenTemplate' | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
+    fi
     
     mv ${file} ${file/TemplateScreen/$SCREEN_NAME}
 done
