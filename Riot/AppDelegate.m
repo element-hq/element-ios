@@ -2000,8 +2000,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         NSString *notificationSoundName = [self notificationSoundNameFromPushRule:rule];
         NSString *categoryIdentifier = [self notificationCategoryIdentifierForEvent:event];
         
-        notificationContent.title = notificationTitle;
-        notificationContent.subtitle = notificationSubTitle;
+        notificationContent.title = notificationTitle;        
         notificationContent.body = notificationBody;
         notificationContent.threadIdentifier = threadIdentifier;
         notificationContent.userInfo = notificationUserInfo;
