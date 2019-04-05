@@ -5,12 +5,12 @@ The goal is to turn these templates as Xcode templates. They are part of the Rio
 # ScreenTemplate
 This is the boilerplate to create a screen that follows the MVVM-C pattern used within the Riot app.
 
-To use it (before it becomes an Xcode template):
+To create a screen from this template (before it becomes an Xcode template):
 
 - `./createScreen.sh ScreenFolder MyScreenName`
 - Import the created folder in the Xcode project
 
-This will create ScreenFolder within the Riot/Modules. Files inside will be called `MyScreenNameXxx`.
+This will create ScreenFolder within the Riot/Modules. Files inside will be named `MyScreenNameXxx`.
 
 
 # FlowCoordinatorTemplate
@@ -48,7 +48,7 @@ Riot/Modules/MyFlowDir
 └── MyFlowCoordinatorType.swift
 ```
 
-It is then ready to use:
+The generated code is ready to use. The screen provided by `ScreenTemplate` can by displayed by:
 
 ```
 MyFlowCoordinatorBridgePresenter *presenter = [[MyFlowCoordinatorBridgePresenter alloc] initWithSession:session];
