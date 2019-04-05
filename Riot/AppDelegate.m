@@ -1157,14 +1157,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
             UNAuthorizationOptions authorizationOptions = (UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
 
-            // FIXME: Uncomment lines below when issue https://github.com/matrix-org/matrix-ios-kit/issues/533 will be done.
-//            // Authorize sending notifications without explicit permission (iOS 12+).
-//            // User can still disable Riot notifications later in settings or directly from a Riot notification.
-//            if (@available(iOS 12.0, *))
-//            {
-//                authorizationOptions = authorizationOptions | UNAuthorizationOptionProvisional;
-//            }
-
             [center requestAuthorizationWithOptions:authorizationOptions
                                   completionHandler:^(BOOL granted, NSError *error)
                                   { // code here is equivalent to self:application:didRegisterUserNotificationSettings:
