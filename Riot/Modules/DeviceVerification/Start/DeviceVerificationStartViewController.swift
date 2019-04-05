@@ -34,6 +34,8 @@ final class DeviceVerificationStartViewController: UIViewController {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet weak var waitingPartnerLabel: UILabel!
+    @IBOutlet weak var useLegacyVerificationLabel: UILabel!
     @IBOutlet weak var verifyButtonBackgroundView: UIView!
     @IBOutlet private weak var verifyButton: UIButton!
     @IBOutlet weak var useLegacyVerificationButton: UIButton!
@@ -112,6 +114,8 @@ final class DeviceVerificationStartViewController: UIViewController {
 
         self.titleLabel.textColor = theme.textPrimaryColor
         self.informationLabel.textColor = theme.textPrimaryColor
+        self.waitingPartnerLabel.textColor = theme.textPrimaryColor
+        self.useLegacyVerificationLabel.textColor = theme.textPrimaryColor
 
         self.verifyButton.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.verifyButton)
@@ -138,6 +142,11 @@ final class DeviceVerificationStartViewController: UIViewController {
 
         self.titleLabel.text = VectorL10n.deviceVerificationStartTitle
         self.informationLabel.text = VectorL10n.deviceVerificationStartSecurityAdvise
+        self.waitingPartnerLabel.text = VectorL10n.deviceVerificationStartWaitPartner
+        self.useLegacyVerificationLabel.text = VectorL10n.deviceVerificationStartUseLegacy
+
+        self.waitingPartnerLabel.isHidden = true
+        self.useLegacyVerificationLabel.isHidden = true
 
         self.verifyButton.setTitle(VectorL10n.deviceVerificationStartVerifyButton, for: .normal)
         self.useLegacyVerificationButton.setTitle(VectorL10n.deviceVerificationStartUseLegacyAction, for: .normal)
@@ -160,7 +169,10 @@ final class DeviceVerificationStartViewController: UIViewController {
     
     private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        //self.informationLabel.text = self.viewModel.message
+
+        self.verifyButtonBackgroundView.isHidden = true
+        self.waitingPartnerLabel.isHidden = false
+        self.useLegacyVerificationLabel.isHidden = false
     }
     
     private func render(error: Error) {

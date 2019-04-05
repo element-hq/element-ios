@@ -434,6 +434,10 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_start_title") 
   }
+  /// Nothing appearing? Not all clients supports interactive verification yet. Use legacy verification.
+  internal static var deviceVerificationStartUseLegacy: String { 
+    return VectorL10n.tr("Vector", "device_verification_start_use_legacy") 
+  }
   /// Use Legacy Verification (for older clients)
   internal static var deviceVerificationStartUseLegacyAction: String { 
     return VectorL10n.tr("Vector", "device_verification_start_use_legacy_action") 
