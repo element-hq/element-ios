@@ -22,10 +22,10 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7g-um-WO4">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="767"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="voD-3Q-ryt">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="767"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="A message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
                                                         <rect key="frame" x="20" y="86" width="335" height="108"/>
@@ -35,7 +35,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOt-5E-FjF">
-                                                        <rect key="frame" x="172" y="368" width="30" height="30"/>
+                                                        <rect key="frame" x="104" y="368" width="167" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <state key="normal" title="OK"/>
                                                         <connections>
@@ -43,7 +43,7 @@
                                                         </connections>
                                                     </button>
                                                 </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" priority="750" constant="500" id="glD-Sz-73O"/>
                                                 </constraints>
@@ -55,7 +55,7 @@
                                             <constraint firstItem="voD-3Q-ryt" firstAttribute="centerX" secondItem="e7g-um-WO4" secondAttribute="centerX" id="P2G-mq-gQW"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="voD-3Q-ryt" secondAttribute="trailing" id="QgV-SO-5yf"/>
                                             <constraint firstItem="voD-3Q-ryt" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="e7g-um-WO4" secondAttribute="leading" id="YPo-u1-PtT"/>
-                                            <constraint firstAttribute="height" constant="767" id="n8g-KW-BYU"/>
+                                            <constraint firstAttribute="height" constant="500" id="n8g-KW-BYU"/>
                                             <constraint firstItem="voD-3Q-ryt" firstAttribute="top" secondItem="e7g-um-WO4" secondAttribute="top" id="rhQ-96-szL"/>
                                         </constraints>
                                     </view>
@@ -63,7 +63,7 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="e7g-um-WO4" secondAttribute="trailing" id="GyG-Fh-PME"/>
                                     <constraint firstItem="e7g-um-WO4" firstAttribute="width" secondItem="9U2-KL-ZVA" secondAttribute="width" id="Ok2-WQ-Zgc"/>
-                                    <constraint firstAttribute="bottom" secondItem="e7g-um-WO4" secondAttribute="bottom" id="Y46-NP-zAc"/>
+                                    <constraint firstAttribute="bottom" secondItem="e7g-um-WO4" secondAttribute="bottom" constant="147" id="Y46-NP-zAc"/>
                                     <constraint firstItem="e7g-um-WO4" firstAttribute="leading" secondItem="9U2-KL-ZVA" secondAttribute="leading" id="aoV-Yh-AcD"/>
                                     <constraint firstItem="e7g-um-WO4" firstAttribute="top" secondItem="9U2-KL-ZVA" secondAttribute="top" id="pFN-bA-SHw"/>
                                 </constraints>
