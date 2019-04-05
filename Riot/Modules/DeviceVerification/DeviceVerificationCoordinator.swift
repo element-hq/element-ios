@@ -107,15 +107,29 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         coordinator.delegate = self
         return coordinator
     }
+
+    private func showVerify(animated: Bool) {
+        guard let transaction = self.transaction else {
+            return
+        }
+
+        let coordinator = DeviceVerificationVerifyCoordinator(session: self.session, transaction: transaction)
+        coordinator.delegate = self
+        coordinator.start()
+
+        // TODO: Do not push, replace
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.push(coordinator, animated: animated) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
 }
 
-// MARK: - DeviceVerificationStartCoordinatorDelegate
 extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDelegate {
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
         self.transaction = transaction
 
-        // TODO
-        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+        self.showVerify(animated: true)
     }
 
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
@@ -125,6 +139,16 @@ extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDeleg
     }
 
     func deviceVerificationStartCoordinatorDidCancel(_ coordinator: DeviceVerificationStartCoordinatorType) {
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+    }
+}
+
+extension DeviceVerificationCoordinator: DeviceVerificationVerifyCoordinatorDelegate {
+    func deviceVerificationVerifyCoordinatorDidComplete(_ coordinator: DeviceVerificationVerifyCoordinatorType) {
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+    }
+
+    func deviceVerificationVerifyCoordinatorDidCancel(_ coordinator: DeviceVerificationVerifyCoordinatorType) {
         self.delegate?.deviceVerificationCoordinatorDidComplete(self)
     }
 }

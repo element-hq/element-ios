@@ -47,6 +47,14 @@
 		3232ABA9225730E100AD6A5C /* DeviceVerificationStartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB9E225730E100AD6A5C /* DeviceVerificationStartViewModel.swift */; };
 		3232ABAA225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB9F225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift */; };
 		3232ABAB225730E100AD6A5C /* DeviceVerificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABA0225730E100AD6A5C /* DeviceVerificationCoordinator.swift */; };
+		3232ABB52257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABAD2257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift */; };
+		3232ABB62257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3232ABAE2257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard */; };
+		3232ABB72257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABAF2257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift */; };
+		3232ABB82257BE6500AD6A5C /* DeviceVerificationVerifyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB02257BE6400AD6A5C /* DeviceVerificationVerifyCoordinator.swift */; };
+		3232ABB92257BE6500AD6A5C /* DeviceVerificationVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB12257BE6400AD6A5C /* DeviceVerificationVerifyViewController.swift */; };
+		3232ABBA2257BE6500AD6A5C /* DeviceVerificationVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB22257BE6400AD6A5C /* DeviceVerificationVerifyViewModel.swift */; };
+		3232ABBB2257BE6500AD6A5C /* DeviceVerificationVerifyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */; };
+		3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
@@ -527,6 +535,14 @@
 		3232AB9E225730E100AD6A5C /* DeviceVerificationStartViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationStartViewModel.swift; sourceTree = "<group>"; };
 		3232AB9F225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		3232ABA0225730E100AD6A5C /* DeviceVerificationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationCoordinator.swift; sourceTree = "<group>"; };
+		3232ABAD2257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyCoordinatorType.swift; sourceTree = "<group>"; };
+		3232ABAE2257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationVerifyViewController.storyboard; sourceTree = "<group>"; };
+		3232ABAF2257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewModelType.swift; sourceTree = "<group>"; };
+		3232ABB02257BE6400AD6A5C /* DeviceVerificationVerifyCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyCoordinator.swift; sourceTree = "<group>"; };
+		3232ABB12257BE6400AD6A5C /* DeviceVerificationVerifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewController.swift; sourceTree = "<group>"; };
+		3232ABB22257BE6400AD6A5C /* DeviceVerificationVerifyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewModel.swift; sourceTree = "<group>"; };
+		3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewState.swift; sourceTree = "<group>"; };
+		3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewAction.swift; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -1292,6 +1308,7 @@
 			isa = PBXGroup;
 			children = (
 				3232AB96225730E100AD6A5C /* Start */,
+				3232ABAC2257BE6400AD6A5C /* Verify */,
 				3232AB95225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift */,
 				3232AB9F225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift */,
 				3232ABA0225730E100AD6A5C /* DeviceVerificationCoordinator.swift */,
@@ -1312,6 +1329,21 @@
 				3232AB9E225730E100AD6A5C /* DeviceVerificationStartViewModel.swift */,
 			);
 			path = Start;
+			sourceTree = "<group>";
+		};
+		3232ABAC2257BE6400AD6A5C /* Verify */ = {
+			isa = PBXGroup;
+			children = (
+				3232ABAD2257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift */,
+				3232ABAE2257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard */,
+				3232ABAF2257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift */,
+				3232ABB02257BE6400AD6A5C /* DeviceVerificationVerifyCoordinator.swift */,
+				3232ABB12257BE6400AD6A5C /* DeviceVerificationVerifyViewController.swift */,
+				3232ABB22257BE6400AD6A5C /* DeviceVerificationVerifyViewModel.swift */,
+				3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */,
+				3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */,
+			);
+			path = Verify;
 			sourceTree = "<group>";
 		};
 		3233F7291F31F3B4006ACA81 /* libs */ = {
@@ -3403,6 +3435,7 @@
 				B1B557B320EF5AEF00210D55 /* EventDetailsView.xib in Resources */,
 				B1B557DD20EF5FBB00210D55 /* FilesSearchTableViewCell.xib in Resources */,
 				B1B5590320EF768F00210D55 /* RoomSelectedStickerBubbleCell.xib in Resources */,
+				3232ABB62257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard in Resources */,
 				B1B5573F20EE6C4D00210D55 /* SegmentedViewController.xib in Resources */,
 				B1B5581E20EF625800210D55 /* RoomTitleView.xib in Resources */,
 				B1B558C020EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
@@ -3639,6 +3672,7 @@
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
 				B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
+				3232ABB72257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift in Sources */,
 				B16932B120F3AC9200746532 /* RoomSearchDataSource.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
 				B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */,
@@ -3707,6 +3741,7 @@
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
 				3209451221F1C1430088CAA2 /* BlackTheme.swift in Sources */,
 				B1B5572720EE6C4D00210D55 /* RoomSearchViewController.m in Sources */,
+				3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */,
 				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
 				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
@@ -3731,6 +3766,7 @@
 				B1B5582C20EF666100210D55 /* DirectoryRecentTableViewCell.m in Sources */,
 				B1B558E420EF768F00210D55 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5573620EE6C4D00210D55 /* GroupsViewController.m in Sources */,
+				3232ABB82257BE6500AD6A5C /* DeviceVerificationVerifyCoordinator.swift in Sources */,
 				B1B5572A20EE6C4D00210D55 /* RoomMemberDetailsViewController.m in Sources */,
 				B1B5590120EF768F00210D55 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558C920EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
@@ -3742,6 +3778,7 @@
 				3232AB4F2256558300AD6A5C /* TemplateScreenViewController.swift in Sources */,
 				B1B558FC20EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5572920EE6C4D00210D55 /* RoomFilesViewController.m in Sources */,
+				3232ABBA2257BE6500AD6A5C /* DeviceVerificationVerifyViewModel.swift in Sources */,
 				B1098C1021ED07E4000DDA48 /* Presentable.swift in Sources */,
 				B1B558E020EF768F00210D55 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				B1B5593C20EF7BAC00210D55 /* TableViewCellWithCheckBoxes.m in Sources */,
@@ -3749,6 +3786,7 @@
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */,
 				B1B5573820EE6C4D00210D55 /* GroupParticipantsViewController.m in Sources */,
+				3232ABBB2257BE6500AD6A5C /* DeviceVerificationVerifyViewState.swift in Sources */,
 				3232ABAB225730E100AD6A5C /* DeviceVerificationCoordinator.swift in Sources */,
 				B1B5583E20EF6E7F00210D55 /* GroupRoomTableViewCell.m in Sources */,
 				B14F143522144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */,
@@ -3823,6 +3861,7 @@
 				B1B558C820EF768F00210D55 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				B1B5590920EF768F00210D55 /* RoomEmptyBubbleCell.m in Sources */,
+				3232ABB92257BE6500AD6A5C /* DeviceVerificationVerifyViewController.swift in Sources */,
 				B139C21F21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
 				B1098BFF21ECFE65000DDA48 /* PasswordStrengthView.swift in Sources */,
@@ -3858,6 +3897,7 @@
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
 				B1B5572C20EE6C4D00210D55 /* RoomParticipantsViewController.m in Sources */,
 				B1B558EE20EF768F00210D55 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
+				3232ABB52257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift in Sources */,
 				32BF994F21FA29A400698084 /* SettingsKeyBackupViewModel.swift in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
