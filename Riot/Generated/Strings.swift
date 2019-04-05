@@ -427,8 +427,8 @@ internal enum VectorL10n {
     return VectorL10n.tr("Vector", "decline") 
   }
   /// For maximum security, we recommend you do this in person or use another trusted means of communication
-  internal static var deviceVerificationStartSecurityAdvise: String { 
-    return VectorL10n.tr("Vector", "device_verification_start_security_advise") 
+  internal static var deviceVerificationSecurityAdvice: String { 
+    return VectorL10n.tr("Vector", "device_verification_security_advice") 
   }
   /// Verify by comparing a short text string
   internal static var deviceVerificationStartTitle: String { 
@@ -453,6 +453,22 @@ internal enum VectorL10n {
   /// Verify device
   internal static var deviceVerificationTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_title") 
+  }
+  /// Continue
+  internal static var deviceVerificationVerifyContinueButton: String { 
+    return VectorL10n.tr("Vector", "device_verification_verify_continue_button") 
+  }
+  /// Verify this user by confirming the following emoji appear on their screen
+  internal static var deviceVerificationVerifyTitleEmoji: String { 
+    return VectorL10n.tr("Vector", "device_verification_verify_title_emoji") 
+  }
+  /// Verify this user by confirming the following number appears on their screen
+  internal static var deviceVerificationVerifyTitleNumber: String { 
+    return VectorL10n.tr("Vector", "device_verification_verify_title_number") 
+  }
+  /// Waiting for partner to confirm...
+  internal static var deviceVerificationVerifyWaitPartner: String { 
+    return VectorL10n.tr("Vector", "device_verification_verify_wait_partner") 
   }
   /// %tu rooms
   internal static func directoryCellDescription(_ p1: Int) -> String {

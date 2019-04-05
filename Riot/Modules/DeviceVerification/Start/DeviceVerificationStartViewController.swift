@@ -141,7 +141,7 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.scrollView.keyboardDismissMode = .interactive
 
         self.titleLabel.text = VectorL10n.deviceVerificationStartTitle
-        self.informationLabel.text = VectorL10n.deviceVerificationStartSecurityAdvise
+        self.informationLabel.text = VectorL10n.deviceVerificationSecurityAdvice
         self.waitingPartnerLabel.text = VectorL10n.deviceVerificationStartWaitPartner
         self.useLegacyVerificationLabel.text = VectorL10n.deviceVerificationStartUseLegacy
 

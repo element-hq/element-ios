@@ -31,10 +31,13 @@ final class DeviceVerificationVerifyViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var scrollView: UIScrollView!
-    
-    @IBOutlet private weak var messageLabel: UILabel!
-    @IBOutlet private weak var okButton: UIButton!
-    
+
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet weak var waitingPartnerLabel: UILabel!
+    @IBOutlet weak var continueButtonBackgroundView: UIView!
+    @IBOutlet private weak var continueButton: UIButton!
+
     // MARK: Private
 
     private var viewModel: DeviceVerificationVerifyViewModelType!
@@ -59,7 +62,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
+        self.title = VectorL10n.deviceVerificationTitle
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
@@ -107,12 +110,12 @@ final class DeviceVerificationVerifyViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.informationLabel.textColor = theme.textPrimaryColor
+        self.waitingPartnerLabel.textColor = theme.textPrimaryColor
 
-        // TODO:
-        self.messageLabel.textColor = theme.textPrimaryColor
-
-        self.okButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
+        self.continueButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: self.continueButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -131,9 +134,14 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         self.scrollView.keyboardDismissMode = .interactive
-        
-        self.messageLabel.text = "VectorL10n.deviceVerificationVerifyTitle"
-        self.messageLabel.isHidden = true
+
+        self.titleLabel.text = VectorL10n.deviceVerificationVerifyTitleEmoji
+        self.informationLabel.text = VectorL10n.deviceVerificationSecurityAdvice
+        self.waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
+
+        self.waitingPartnerLabel.isHidden = true
+
+        self.continueButton.setTitle(VectorL10n.deviceVerificationVerifyContinueButton, for: .normal)
     }
 
     private func render(viewState: DeviceVerificationVerifyViewState) {
@@ -154,8 +162,8 @@ final class DeviceVerificationVerifyViewController: UIViewController {
     private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.messageLabel.text = "TODO"
-        self.messageLabel.isHidden = false
+        self.continueButtonBackgroundView.isHidden = true
+        self.waitingPartnerLabel.isHidden = false
     }
     
     private func render(error: Error) {
@@ -166,8 +174,8 @@ final class DeviceVerificationVerifyViewController: UIViewController {
     
     // MARK: - Actions
 
-    @IBAction private func okButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
+    @IBAction private func continueButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .confirm)
     }
 
     private func cancelButtonAction() {
