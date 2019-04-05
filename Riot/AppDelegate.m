@@ -2218,6 +2218,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)clearPushNotificationToken
 {
+    NSLog(@"[AppDelegate][Push] clearPushNotificationToken: Clear existing token");
+    
     // Clear existing token
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setPushDeviceToken:nil withPushOptions:nil];
@@ -2226,6 +2228,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 // Remove delivred notifications for a given room id except call notifications
 - (void)removeDeliveredNotificationsWithRoomId:(NSString*)roomId completion:(dispatch_block_t)completion
 {
+    NSLog(@"[AppDelegate][Push] removeDeliveredNotificationsWithRoomId: Remove potential delivered notifications for room id: %@", roomId);
+    
     NSMutableArray<NSString*> *notificationRequestIdentifiersToRemove = [NSMutableArray new];
     
     UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
