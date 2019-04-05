@@ -38,7 +38,7 @@ internal enum VectorL10n {
   internal static var authAddEmailAndPhoneWarning: String { 
     return VectorL10n.tr("Vector", "auth_add_email_and_phone_warning") 
   }
-  /// Add an email address to your account to let users discover you, and let you reset password.
+  /// Add an email address to your account to let users discover you, and to reset your password.
   internal static var authAddEmailMessage: String { 
     return VectorL10n.tr("Vector", "auth_add_email_message") 
   }

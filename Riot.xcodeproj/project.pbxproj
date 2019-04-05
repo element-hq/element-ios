@@ -22,6 +22,20 @@
 		32242F1721E8FBE500725742 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0D21E8FBA900725742 /* Theme.swift */; };
 		32242F1821E8FBF800725742 /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0F21E8FBA900725742 /* DefaultTheme.swift */; };
 		32242F1921E8FBFB00725742 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F1021E8FBA900725742 /* DarkTheme.swift */; };
+		3232AB1422564D9100AD6A5C /* swiftgen-config.yml in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB0022564D9100AD6A5C /* swiftgen-config.yml */; };
+		3232AB1522564D9100AD6A5C /* flat-swift4-vector.stencil in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB0322564D9100AD6A5C /* flat-swift4-vector.stencil */; };
+		3232AB2122564D9100AD6A5C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB1322564D9100AD6A5C /* README.md */; };
+		3232AB482256558300AD6A5C /* FlowTemplateCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB3C2256558300AD6A5C /* FlowTemplateCoordinatorType.swift */; };
+		3232AB492256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB3D2256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift */; };
+		3232AB4A2256558300AD6A5C /* FlowTemplateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB3E2256558300AD6A5C /* FlowTemplateCoordinator.swift */; };
+		3232AB4B2256558300AD6A5C /* TemplateScreenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB402256558300AD6A5C /* TemplateScreenViewController.storyboard */; };
+		3232AB4C2256558300AD6A5C /* TemplateScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB412256558300AD6A5C /* TemplateScreenCoordinator.swift */; };
+		3232AB4D2256558300AD6A5C /* TemplateScreenCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB422256558300AD6A5C /* TemplateScreenCoordinatorType.swift */; };
+		3232AB4E2256558300AD6A5C /* TemplateScreenViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB432256558300AD6A5C /* TemplateScreenViewModelType.swift */; };
+		3232AB4F2256558300AD6A5C /* TemplateScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB442256558300AD6A5C /* TemplateScreenViewController.swift */; };
+		3232AB502256558300AD6A5C /* TemplateScreenViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB452256558300AD6A5C /* TemplateScreenViewState.swift */; };
+		3232AB512256558300AD6A5C /* TemplateScreenViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB462256558300AD6A5C /* TemplateScreenViewAction.swift */; };
+		3232AB522256558300AD6A5C /* TemplateScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB472256558300AD6A5C /* TemplateScreenViewModel.swift */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
@@ -477,6 +491,20 @@
 		32242F0F21E8FBA900725742 /* DefaultTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
 		32242F1021E8FBA900725742 /* DarkTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		32242F1121E8FBA900725742 /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
+		3232AB0022564D9100AD6A5C /* swiftgen-config.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "swiftgen-config.yml"; sourceTree = "<group>"; };
+		3232AB0322564D9100AD6A5C /* flat-swift4-vector.stencil */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "flat-swift4-vector.stencil"; sourceTree = "<group>"; };
+		3232AB1322564D9100AD6A5C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		3232AB3C2256558300AD6A5C /* FlowTemplateCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowTemplateCoordinatorType.swift; sourceTree = "<group>"; };
+		3232AB3D2256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowTemplateCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		3232AB3E2256558300AD6A5C /* FlowTemplateCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowTemplateCoordinator.swift; sourceTree = "<group>"; };
+		3232AB402256558300AD6A5C /* TemplateScreenViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TemplateScreenViewController.storyboard; sourceTree = "<group>"; };
+		3232AB412256558300AD6A5C /* TemplateScreenCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenCoordinator.swift; sourceTree = "<group>"; };
+		3232AB422256558300AD6A5C /* TemplateScreenCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenCoordinatorType.swift; sourceTree = "<group>"; };
+		3232AB432256558300AD6A5C /* TemplateScreenViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewModelType.swift; sourceTree = "<group>"; };
+		3232AB442256558300AD6A5C /* TemplateScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewController.swift; sourceTree = "<group>"; };
+		3232AB452256558300AD6A5C /* TemplateScreenViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewState.swift; sourceTree = "<group>"; };
+		3232AB462256558300AD6A5C /* TemplateScreenViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewAction.swift; sourceTree = "<group>"; };
+		3232AB472256558300AD6A5C /* TemplateScreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewModel.swift; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -1159,6 +1187,83 @@
 				3209451121F1C1430088CAA2 /* BlackTheme.swift */,
 			);
 			path = Themes;
+			sourceTree = "<group>";
+		};
+		3232AAFE22564D9100AD6A5C /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				3232AAFF22564D9100AD6A5C /* SwiftGen */,
+				3232AB0422564D9100AD6A5C /* Templates */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		3232AAFF22564D9100AD6A5C /* SwiftGen */ = {
+			isa = PBXGroup;
+			children = (
+				3232AB0022564D9100AD6A5C /* swiftgen-config.yml */,
+				3232AB0122564D9100AD6A5C /* Templates */,
+			);
+			path = SwiftGen;
+			sourceTree = "<group>";
+		};
+		3232AB0122564D9100AD6A5C /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				3232AB0222564D9100AD6A5C /* Strings */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
+		3232AB0222564D9100AD6A5C /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				3232AB0322564D9100AD6A5C /* flat-swift4-vector.stencil */,
+			);
+			path = Strings;
+			sourceTree = "<group>";
+		};
+		3232AB0422564D9100AD6A5C /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				3232AB1322564D9100AD6A5C /* README.md */,
+				3232AB0522564D9100AD6A5C /* buildable */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
+		3232AB0522564D9100AD6A5C /* buildable */ = {
+			isa = PBXGroup;
+			children = (
+				3232AB3B2256558300AD6A5C /* FlowCoordinatorTemplate */,
+				3232AB3F2256558300AD6A5C /* ScreenTemplate */,
+			);
+			path = buildable;
+			sourceTree = "<group>";
+		};
+		3232AB3B2256558300AD6A5C /* FlowCoordinatorTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				3232AB3C2256558300AD6A5C /* FlowTemplateCoordinatorType.swift */,
+				3232AB3D2256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift */,
+				3232AB3E2256558300AD6A5C /* FlowTemplateCoordinator.swift */,
+			);
+			path = FlowCoordinatorTemplate;
+			sourceTree = "<group>";
+		};
+		3232AB3F2256558300AD6A5C /* ScreenTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				3232AB402256558300AD6A5C /* TemplateScreenViewController.storyboard */,
+				3232AB412256558300AD6A5C /* TemplateScreenCoordinator.swift */,
+				3232AB422256558300AD6A5C /* TemplateScreenCoordinatorType.swift */,
+				3232AB432256558300AD6A5C /* TemplateScreenViewModelType.swift */,
+				3232AB442256558300AD6A5C /* TemplateScreenViewController.swift */,
+				3232AB452256558300AD6A5C /* TemplateScreenViewState.swift */,
+				3232AB462256558300AD6A5C /* TemplateScreenViewAction.swift */,
+				3232AB472256558300AD6A5C /* TemplateScreenViewModel.swift */,
+			);
+			path = ScreenTemplate;
 			sourceTree = "<group>";
 		};
 		3233F7291F31F3B4006ACA81 /* libs */ = {
@@ -2920,6 +3025,7 @@
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				5FC42FA41F5186AFFB6A2404 /* Frameworks */,
 				A237FB70534FB8ADA0D7CFEE /* Pods */,
+				3232AAFE22564D9100AD6A5C /* Tools */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -3076,6 +3182,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				nl,
@@ -3193,17 +3300,21 @@
 				B1B5573720EE6C4D00210D55 /* GroupParticipantsViewController.xib in Resources */,
 				B110872421F098F0003554A5 /* ActivityIndicatorView.xib in Resources */,
 				B1B5573320EE6C4D00210D55 /* GroupHomeViewController.xib in Resources */,
+				3232AB2122564D9100AD6A5C /* README.md in Resources */,
 				B1B5593920EF7BAC00210D55 /* TableViewCellWithCheckBoxes.xib in Resources */,
 				B1B557C120EF5B4500210D55 /* DisabledRoomInputToolbarView.xib in Resources */,
 				B1664DA320F4F96200808783 /* Vector.strings in Resources */,
 				B1B557C720EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib in Resources */,
 				B1B5582620EF638A00210D55 /* RoomMemberTitleView.xib in Resources */,
+				3232AB1522564D9100AD6A5C /* flat-swift4-vector.stencil in Resources */,
 				F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */,
 				B1B5574C20EE6C4D00210D55 /* MediaAlbumContentViewController.xib in Resources */,
 				B1B557E820EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				B1B558D920EF768F00210D55 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
 				B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */,
 				B169329B20F39E6300746532 /* Main.storyboard in Resources */,
+				3232AB1422564D9100AD6A5C /* swiftgen-config.yml in Resources */,
+				3232AB4B2256558300AD6A5C /* TemplateScreenViewController.storyboard in Resources */,
 				32B1FEDB21A46F2C00637127 /* TermsView.xib in Resources */,
 				B1B5578E20EF568D00210D55 /* GroupInviteTableViewCell.xib in Resources */,
 				B1B5582020EF625800210D55 /* SimpleRoomTitleView.xib in Resources */,
@@ -3467,6 +3578,7 @@
 				B1FDF56021F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift in Sources */,
 				B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */,
 				B16932A520F3A21C00746532 /* empty.mm in Sources */,
+				3232AB4A2256558300AD6A5C /* FlowTemplateCoordinator.swift in Sources */,
 				B19EFA3B21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift in Sources */,
 				B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */,
 				B16932F220F3C49E00746532 /* GroupsDataSource.m in Sources */,
@@ -3479,6 +3591,7 @@
 				B16932B120F3AC9200746532 /* RoomSearchDataSource.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
 				B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */,
+				3232AB4C2256558300AD6A5C /* TemplateScreenCoordinator.swift in Sources */,
 				B1B5575920EE6C4D00210D55 /* HomeMessagesSearchViewController.m in Sources */,
 				B1B558DE20EF768F00210D55 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				B1B5574820EE6C4D00210D55 /* PeopleViewController.m in Sources */,
@@ -3499,6 +3612,7 @@
 				B1B5572320EE6C4D00210D55 /* AttachmentsViewController.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
 				B1B5598620EFC3E000210D55 /* RiotSettings.swift in Sources */,
+				3232AB4D2256558300AD6A5C /* TemplateScreenCoordinatorType.swift in Sources */,
 				B1B5581720EF625800210D55 /* PreviewRoomTitleView.m in Sources */,
 				B1098BDF21ECE09F000DDA48 /* Strings.swift in Sources */,
 				B1B558C420EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
@@ -3546,6 +3660,8 @@
 				B169330020F3C97D00746532 /* RoomDataSource.m in Sources */,
 				B1B558ED20EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */,
+				3232AB512256558300AD6A5C /* TemplateScreenViewAction.swift in Sources */,
+				3232AB4E2256558300AD6A5C /* TemplateScreenViewModelType.swift in Sources */,
 				B1B5590520EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B558DD20EF768F00210D55 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1098BE521ECE1FC000DDA48 /* Storyboards.swift in Sources */,
@@ -3567,6 +3683,7 @@
 				B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
 				B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */,
+				3232AB4F2256558300AD6A5C /* TemplateScreenViewController.swift in Sources */,
 				B1B558FC20EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5572920EE6C4D00210D55 /* RoomFilesViewController.m in Sources */,
 				B1098C1021ED07E4000DDA48 /* Presentable.swift in Sources */,
@@ -3637,11 +3754,13 @@
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				B1098BE121ECE09F000DDA48 /* Images.swift in Sources */,
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
+				3232AB492256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift in Sources */,
 				B1B5572820EE6C4D00210D55 /* RoomViewController.m in Sources */,
 				B1B558C720EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F020EF768F00210D55 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				B1B5593820EF7BAC00210D55 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
+				3232AB502256558300AD6A5C /* TemplateScreenViewState.swift in Sources */,
 				B1B558C820EF768F00210D55 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				B1B5590920EF768F00210D55 /* RoomEmptyBubbleCell.m in Sources */,
@@ -3683,10 +3802,12 @@
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
 				B1DB4F0B223131600065DBFA /* String.swift in Sources */,
+				3232AB522256558300AD6A5C /* TemplateScreenViewModel.swift in Sources */,
 				B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */,
 				B139C22521FF01C100BB68EC /* KeyBackupRecoverFromPassphraseCoordinator.swift in Sources */,
 				B1098BFD21ECFE65000DDA48 /* PasswordStrengthManager.swift in Sources */,
 				B1B558F520EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				3232AB482256558300AD6A5C /* FlowTemplateCoordinatorType.swift in Sources */,
 				B1B558F820EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				32242F0921E8B05F00725742 /* UIColor.swift in Sources */,
 				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,

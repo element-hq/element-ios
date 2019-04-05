@@ -1136,6 +1136,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)registerUserNotificationSettings
 {
+    NSLog(@"[AppDelegate][Push] registerUserNotificationSettings: isPushRegistered: %@", @(isPushRegistered));
+
     if (!isPushRegistered)
     {
         if (@available(iOS 10, *)) {
@@ -1188,6 +1190,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
             // Registration on iOS 8 and later
             UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert) categories:notificationCategories];
+            
+            NSLog(@"[AppDelegate][Push] registerUserNotificationSettings: %@", settings);
             [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
         }
     }
@@ -1195,6 +1199,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
 {
+    NSLog(@"[AppDelegate][Push] registerForRemoteNotificationsWithCompletion");
+
     self.registrationForRemoteNotificationsCompletion = completion;
     
     self.pushRegistry = [[PKPushRegistry alloc] initWithQueue:nil];
@@ -1205,6 +1211,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 // DEPRECATED, for iOS 9
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
+    NSLog(@"[AppDelegate][Push] didRegisterUserNotificationSettings: notificationSettings.types: %@", @(notificationSettings.types));
+    
     // Register for remote notifications only if user provide access to notification feature
     if (notificationSettings.types != UIUserNotificationTypeNone)
     {
@@ -1274,8 +1282,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 // "This block is not a prototype" - don't fix this, or it won't match Apple's definition
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
 {
-    NSString* roomId = notification.userInfo[@"room_id"];
-
+    NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: identifier: %@", identifier);
+    
     NSString* roomId = notification.userInfo[@"room_id"];
 
     if ([identifier isEqualToString: @"inline-reply"])
@@ -1365,9 +1373,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
 {
     NSData *token = credentials.token;
-    
-    NSUInteger len = ((token.length > 8) ? 8 : token.length / 2);
-    NSLog(@"[AppDelegate][Push] Got Push token! (%@ ...)", [token subdataWithRange:NSMakeRange(0, len)]);
+
+    NSLog(@"[AppDelegate][Push] didUpdatePushCredentials: Got Push token: %@. Type: %@", [MXKTools logForPushToken:token], type);
     
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setPushDeviceToken:token withPushOptions:@{@"format": @"event_id_only"}];
@@ -1383,6 +1390,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
 {
+    NSLog(@"[AppDelegate][Push] didInvalidatePushTokenForType: Type: %@", type);
+
     [self clearPushNotificationToken];
 }
 
@@ -2132,7 +2141,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 // TODO: This method does not work: [[UIApplication sharedApplication] scheduledLocalNotifications] is not reliable
 - (UILocalNotification*)displayedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId type:(NSString*)type
 {
-    NSLog(@"[AppDelegate] displayedLocalNotificationForEvent: %@ andUser: %@. Current scheduledLocalNotifications: %@", eventId, userId, [[UIApplication sharedApplication] scheduledLocalNotifications]);
+    NSLog(@"[AppDelegate][Push] displayedLocalNotificationForEvent: %@ andUser: %@. Current scheduledLocalNotifications: %@", eventId, userId, [[UIApplication sharedApplication] scheduledLocalNotifications]);
 
     UILocalNotification *limitedLocalNotification;
     for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
@@ -2148,7 +2157,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
     }
 
-    NSLog(@"[AppDelegate] displayedLocalNotificationForEvent: found: %@", limitedLocalNotification);
+    NSLog(@"[AppDelegate][Push] displayedLocalNotificationForEvent: found: %@", limitedLocalNotification);
 
     return limitedLocalNotification;
 }
@@ -2880,7 +2889,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Set the push gateway URL.
             account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
-            
+
+            NSLog(@"[AppDelegate][Push] didAddAccountNotification: isPushRegistered: %@", @(isPushRegistered));
+
             if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
