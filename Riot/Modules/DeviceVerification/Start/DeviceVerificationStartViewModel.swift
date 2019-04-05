@@ -28,10 +28,10 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     private let verificationManager: MXDeviceVerificationManager
     private let otherUser: MXUser
     private let otherDevice: MXDeviceInfo
+
+    private var transaction: MXSASTransaction!
     
     // MARK: Public
-    
-    var message: String?
 
     weak var viewDelegate: DeviceVerificationStartViewModelViewDelegate?
     weak var coordinatorDelegate: DeviceVerificationStartViewModelCoordinatorDelegate?
@@ -43,7 +43,6 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
         self.verificationManager = session.crypto.deviceVerificationManager
         self.otherUser = otherUser
         self.otherDevice = otherDevice
-        self.message = nil
     }
     
     deinit {
@@ -54,10 +53,12 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     func process(viewAction: DeviceVerificationStartViewAction) {
         switch viewAction {
         case .useLegacyVerification:
+            self.cancelTransaction()
             self.coordinatorDelegate?.deviceVerificationStartViewModelUseLegacyVerification(self)
         case .beginVerifying:
             self.beginVerifying()
         case .cancel:
+            self.cancelTransaction()
             self.coordinatorDelegate?.deviceVerificationStartViewModelDidCancel(self)
         }
     }
@@ -65,7 +66,6 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     // MARK: - Private
     
     private func beginVerifying() {
-
         self.update(viewState: .loading)
 
         self.verificationManager.beginKeyVerification(withUserId: self.otherUser.userId, andDeviceId: self.otherDevice.deviceId, method: kMXKeyVerificationMethodSAS, complete: { [weak self] (transaction) in
@@ -77,13 +77,19 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
                 return
             }
 
-            sself.message = transaction?.description
+            sself.transaction = sasTransaction
 
             sself.registerTransactionDidStateChangeNotification(transaction: sasTransaction)
             sself.update(viewState: .loaded)
-
-            print("\(String(describing: transaction))")
         })
+    }
+
+    private func cancelTransaction() {
+        guard let transaction = self.transaction  else {
+            return
+        }
+
+        transaction.cancel(with: MXTransactionCancelCode.user())
     }
     
     private func update(viewState: DeviceVerificationStartViewState) {
@@ -102,13 +108,8 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
             return
         }
 
-        // TODO: To remove
-        self.message = transaction.description
-        self.update(viewState: .loaded)
-
         switch transaction.state {
         case MXOutgoingSASTransactionStateShowSAS:
-            self.message = transaction.sasEmoji?.description
             self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didCompleteWithOutgoingTransaction: transaction)
         case MXOutgoingSASTransactionStateCancelled:
             self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didTransactionCancelled: transaction)
