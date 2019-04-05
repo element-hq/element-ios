@@ -14,10 +14,13 @@
  limitations under the License.
  */
 
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
+
 /** Single, end-to-end encrypted messages (ie. we don't know what they say) */
 
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Message from %@";
+"MSG_FROM_USER" = "%@ sent a message";
 
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ posted in %@";
@@ -39,7 +42,7 @@
 /** Image Messages **/
 
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ sent you a picture %@";
+"IMAGE_FROM_USER" = "%@ sent a picture %@";
 
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ posted a picture %@ in %@";
@@ -49,6 +52,9 @@
 
 /* A single unread message */
 "SINGLE_UNREAD" = "You received a message";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ sent a sticker";
 
 /** Coalesced messages **/
 

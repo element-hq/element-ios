@@ -5,6 +5,10 @@ Improvements:
  * Push: Add more logs to track spontaneously disabling (#2348).
  * Widgets: Use scalar prod urls in Riot mobile apps (#2349).
  * Productiviy: Create templates (see Tools/Templates/README.md).
+ * Notifications: Use UserNotifications framework for local notifications (iOS 10+), thanks to @fridtjof (PR #2207).
+ * Notifications: Added titles to notifications on iOS 10+, thanks to @fridtjof (PR #2347).
+ * iOS 12 Notification: Group them by room (#2337 and PR #2347 thanks to @fridtjof).
+ * Notifications: When navigate to a room, remove associated delivered notifications (#2337).
 
 Bug fix:
  * Share extension: Fix a crash when receive a memory warning (PR #2352).
