@@ -37,13 +37,16 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For maximum security, we recommend you do this in person or use another trusted means of communication." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
-                                                        <rect key="frame" x="20" y="86" width="335" height="54"/>
+                                                        <rect key="frame" x="20" y="86" width="335" height="80"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="80" id="Y2u-fJ-idS"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing appearing? Not all clients supports interactive verification yet. Use legacy verification." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlN-AB-1V0">
-                                                        <rect key="frame" x="20" y="290" width="335" height="100"/>
+                                                        <rect key="frame" x="20" y="316" width="335" height="100"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="100" id="Pes-rZ-lpS"/>
                                                             <constraint firstAttribute="width" constant="335" id="caQ-aT-Sw4"/>
@@ -53,7 +56,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DtR-jx-UKY">
-                                                        <rect key="frame" x="0.0" y="340" width="375" height="50"/>
+                                                        <rect key="frame" x="0.0" y="366" width="375" height="50"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOt-5E-FjF">
                                                                 <rect key="frame" x="135.5" y="10" width="104" height="30"/>
@@ -74,7 +77,7 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EBO-vX-zj4">
-                                                        <rect key="frame" x="0.0" y="410" width="375" height="30"/>
+                                                        <rect key="frame" x="0.0" y="436" width="375" height="30"/>
                                                         <state key="normal" title="Use Legacy Verification">
                                                             <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
@@ -83,7 +86,7 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for partner to accept..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yX-xD-4X5">
-                                                        <rect key="frame" x="20" y="187" width="335" height="54"/>
+                                                        <rect key="frame" x="20" y="213" width="335" height="54"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="335" id="9C0-ev-AVw"/>
                                                             <constraint firstAttribute="height" constant="54" id="pta-eP-0yH"/>
@@ -111,7 +114,9 @@
                                                     <constraint firstAttribute="width" priority="750" constant="375" id="glD-Sz-73O"/>
                                                     <constraint firstItem="DtR-jx-UKY" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" id="hK0-aA-d9H"/>
                                                     <constraint firstAttribute="trailing" secondItem="EBO-vX-zj4" secondAttribute="trailing" id="i6P-v2-HzK"/>
+                                                    <constraint firstAttribute="bottom" secondItem="EBO-vX-zj4" secondAttribute="bottom" constant="111" id="rbj-JL-Oyi"/>
                                                     <constraint firstItem="he8-pl-xE9" firstAttribute="top" secondItem="voD-3Q-ryt" secondAttribute="top" constant="35" id="s3k-Io-834"/>
+                                                    <constraint firstItem="EBO-vX-zj4" firstAttribute="top" secondItem="xlN-AB-1V0" secondAttribute="bottom" constant="20" id="wRB-mm-fD5"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
