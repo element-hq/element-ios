@@ -31,12 +31,14 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
 
     weak var viewDelegate: DeviceVerificationVerifyViewModelViewDelegate?
     weak var coordinatorDelegate: DeviceVerificationVerifyViewModelCoordinatorDelegate?
+    var emojis: [MXEmojiRepresentation]?
     
     // MARK: - Setup
     
     init(session: MXSession, transaction: MXSASTransaction) {
         self.session = session
         self.transaction = transaction
+        self.emojis = self.transaction.sasEmoji
     }
     
     deinit {

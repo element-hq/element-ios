@@ -34,4 +34,6 @@ protocol DeviceVerificationVerifyViewModelType {
     var coordinatorDelegate: DeviceVerificationVerifyViewModelCoordinatorDelegate? { get set }
     
     func process(viewAction: DeviceVerificationVerifyViewAction)
+
+    var emojis: [MXEmojiRepresentation]? { get set }
 }

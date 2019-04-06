@@ -55,6 +55,7 @@
 		3232ABBA2257BE6500AD6A5C /* DeviceVerificationVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB22257BE6400AD6A5C /* DeviceVerificationVerifyViewModel.swift */; };
 		3232ABBB2257BE6500AD6A5C /* DeviceVerificationVerifyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */; };
 		3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */; };
+		3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
@@ -543,6 +544,7 @@
 		3232ABB22257BE6400AD6A5C /* DeviceVerificationVerifyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewModel.swift; sourceTree = "<group>"; };
 		3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewState.swift; sourceTree = "<group>"; };
 		3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewAction.swift; sourceTree = "<group>"; };
+		3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -1334,6 +1336,7 @@
 		3232ABAC2257BE6400AD6A5C /* Verify */ = {
 			isa = PBXGroup;
 			children = (
+				3232ABBE22594B5C00AD6A5C /* Views */,
 				3232ABAD2257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift */,
 				3232ABAE2257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard */,
 				3232ABAF2257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift */,
@@ -1344,6 +1347,14 @@
 				3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */,
 			);
 			path = Verify;
+			sourceTree = "<group>";
+		};
+		3232ABBE22594B5C00AD6A5C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		3233F7291F31F3B4006ACA81 /* libs */ = {
@@ -3703,6 +3714,7 @@
 				B1B5581720EF625800210D55 /* PreviewRoomTitleView.m in Sources */,
 				B1098BDF21ECE09F000DDA48 /* Strings.swift in Sources */,
 				B1B558C420EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,

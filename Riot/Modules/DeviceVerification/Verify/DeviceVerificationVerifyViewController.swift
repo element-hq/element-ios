@@ -19,7 +19,7 @@
 import UIKit
 
 final class DeviceVerificationVerifyViewController: UIViewController {
-    
+
     // MARK: - Constants
     
     private enum Constants {
@@ -189,5 +189,32 @@ extension DeviceVerificationVerifyViewController: DeviceVerificationVerifyViewMo
 
     func deviceVerificationVerifyViewModel(_ viewModel: DeviceVerificationVerifyViewModelType, didUpdateViewState viewSate: DeviceVerificationVerifyViewState) {
         self.render(viewState: viewSate)
+    }
+}
+
+
+extension DeviceVerificationVerifyViewController: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let emojis = self.viewModel.emojis else {
+            return 0
+        }
+        return emojis.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VerifyEmojiCollectionViewCell", for: indexPath) as? VerifyEmojiCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+
+        guard let emoji = self.viewModel.emojis?[indexPath.row] else {
+            return UICollectionViewCell()
+        }
+
+        cell.emoji.text = emoji.emoji
+        cell.name.text = emoji.name
+
+        return cell
     }
 }
