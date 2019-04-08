@@ -144,6 +144,9 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 #pragma mark - Matrix Room handling
 
+// Show a room and jump to the given event if event id is not nil otherwise go to last messages.
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion;
+
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
 // Creates a new direct chat with the provided user id

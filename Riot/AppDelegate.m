@@ -3739,16 +3739,27 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark - Matrix Rooms handling
 
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion
 {
     [self restoreInitialDisplay:^{
         
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession completion:^{
+        [self.masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession completion:^{
+            
             // Remove delivered notifications for this room
             [self removeDeliveredNotificationsWithRoomId:roomId completion:nil];
+            
+            if (completion)
+            {
+                completion();
+            }
         }];
     }];
+}
+
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
+{
+    [self showRoom:roomId andEventId:eventId withMatrixSession:mxSession completion:nil];
 }
 
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
