@@ -34,6 +34,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet weak var emojisCollectionView: UICollectionView!
     @IBOutlet weak var waitingPartnerLabel: UILabel!
     @IBOutlet weak var continueButtonBackgroundView: UIView!
     @IBOutlet private weak var continueButton: UIButton!
@@ -116,6 +117,8 @@ final class DeviceVerificationVerifyViewController: UIViewController {
 
         self.continueButton.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.continueButton)
+
+        emojisCollectionView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -214,6 +217,8 @@ extension DeviceVerificationVerifyViewController: UICollectionViewDataSource {
 
         cell.emoji.text = emoji.emoji
         cell.name.text = emoji.name
+        
+        cell.update(theme: self.theme)
 
         return cell
     }

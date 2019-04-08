@@ -14,13 +14,8 @@
  limitations under the License.
  */
 
-import UIKit
+import Foundation
 
-class VerifyEmojiCollectionViewCell: UICollectionViewCell, Themable {
-    @IBOutlet weak var emoji: UILabel!
-    @IBOutlet weak var name: UILabel!
-
-    func update(theme: Theme) {
-        name.textColor = theme.textPrimaryColor
-    }
+protocol Themable: class {
+    func update(theme: Theme)
 }

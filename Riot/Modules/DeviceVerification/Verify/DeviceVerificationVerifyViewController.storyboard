@@ -186,6 +186,7 @@
                     <connections>
                         <outlet property="continueButton" destination="DOt-5E-FjF" id="ktw-U4-efQ"/>
                         <outlet property="continueButtonBackgroundView" destination="DtR-jx-UKY" id="9yG-wP-u8A"/>
+                        <outlet property="emojisCollectionView" destination="34i-3X-YvQ" id="wDE-oG-peo"/>
                         <outlet property="informationLabel" destination="bxI-mu-qng" id="pbX-aZ-inC"/>
                         <outlet property="scrollView" destination="9U2-KL-ZVA" id="ojG-2y-X7b"/>
                         <outlet property="titleLabel" destination="he8-pl-xE9" id="btA-kv-E2B"/>

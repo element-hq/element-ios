@@ -56,6 +56,7 @@
 		3232ABBB2257BE6500AD6A5C /* DeviceVerificationVerifyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */; };
 		3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */; };
 		3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */; };
+		3232ABC2225B996200AD6A5C /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABC1225B996100AD6A5C /* Themable.swift */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
@@ -545,6 +546,7 @@
 		3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewState.swift; sourceTree = "<group>"; };
 		3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewAction.swift; sourceTree = "<group>"; };
 		3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmojiCollectionViewCell.swift; sourceTree = "<group>"; };
+		3232ABC1225B996100AD6A5C /* Themable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themable.swift; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -1215,6 +1217,7 @@
 				32242F0D21E8FBA900725742 /* Theme.swift */,
 				32242F1121E8FBA900725742 /* ThemeService.h */,
 				32242F0E21E8FBA900725742 /* Themes */,
+				3232ABC1225B996100AD6A5C /* Themable.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -3767,6 +3770,7 @@
 				3232ABA5225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift in Sources */,
 				B1B558DD20EF768F00210D55 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1098BE521ECE1FC000DDA48 /* Storyboards.swift in Sources */,
+				3232ABC2225B996200AD6A5C /* Themable.swift in Sources */,
 				3232ABA7225730E100AD6A5C /* DeviceVerificationStartCoordinator.swift in Sources */,
 				B1D4752721EE4E630067973F /* KeyboardAvoider.swift in Sources */,
 				B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */,
