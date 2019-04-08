@@ -438,7 +438,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartUseLegacy: String { 
     return VectorL10n.tr("Vector", "device_verification_start_use_legacy") 
   }
-  /// Use Legacy Verification (for older clients)
+  /// Use Legacy Verification
   internal static var deviceVerificationStartUseLegacyAction: String { 
     return VectorL10n.tr("Vector", "device_verification_start_use_legacy_action") 
   }
