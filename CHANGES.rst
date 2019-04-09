@@ -12,6 +12,7 @@ Improvements:
 
 Bug fix:
  * Share extension: Fix a crash when receive a memory warning (PR #2352).
+ * Upgraded rooms show up in the share extension twice (#2293).
 
 Changes in 0.8.4 (2019-03-21)
 ===============================================
