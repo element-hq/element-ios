@@ -62,7 +62,7 @@
         
         for (MXRoomSummary *roomSummary in roomsSummaries)
         {
-            if ((self.dataSourceMode == DataSourceModeRooms) ^ roomSummary.isDirect)
+            if (!roomSummary.hiddenFromUser && ((self.dataSourceMode == DataSourceModeRooms) ^ roomSummary.isDirect))
             {
                 [roomSummary setMatrixSession:session];
                 
