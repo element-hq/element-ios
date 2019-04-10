@@ -622,12 +622,15 @@ SignOutAlertPresenterDelegate>
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
+            [self.tableView beginUpdates];
+            
             // Refresh the corresponding table view cell with animation
             [self.tableView reloadRowsAtIndexPaths:@[
                                                      [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
                                                      ]
                                   withRowAnimation:UITableViewRowAnimationFade];
             
+            [self.tableView endUpdates];            
         });
     }
 }
@@ -648,12 +651,15 @@ SignOutAlertPresenterDelegate>
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
+            [self.tableView beginUpdates];
+            
             // Refresh the corresponding table view cell with animation
             [self.tableView reloadRowsAtIndexPaths:@[
                                                      [NSIndexPath indexPathForRow:userSettingsNewPhoneIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
                                                      ]
                                   withRowAnimation:UITableViewRowAnimationFade];
             
+            [self.tableView endUpdates];
         });
     }
 }
