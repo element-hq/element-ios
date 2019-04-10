@@ -3561,6 +3561,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             [removedAlias addObject:roomAlias];
         }
         
+        [self.tableView beginUpdates];
+        
         NSMutableIndexSet *mutableIndexSet = [NSMutableIndexSet indexSet];
         
         if (roomAddresses.count <= 1)
@@ -3571,6 +3573,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         [mutableIndexSet addIndex:ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX];
         [self.tableView reloadSections:mutableIndexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [self.tableView endUpdates];
         
         [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     }
@@ -3601,8 +3605,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [removedGroup addObject:groupId];
     }
     
+    [self.tableView beginUpdates];
+    
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX];
     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    [self.tableView endUpdates];
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
 }
@@ -3636,6 +3644,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             [addedAlias addObject:roomAlias];
         }
         
+        [self.tableView beginUpdates];
+        
         NSMutableIndexSet *mutableIndexSet = [NSMutableIndexSet indexSet];
         
         if (!roomAddresses.count)
@@ -3662,6 +3672,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         [mutableIndexSet addIndex:ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX];
         [self.tableView reloadSections:mutableIndexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [self.tableView endUpdates];
         
         [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
         
@@ -3726,8 +3738,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             [addedGroup addObject:groupId];
         }
         
+        [self.tableView beginUpdates];
+        
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [self.tableView endUpdates];
         
         [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
         
