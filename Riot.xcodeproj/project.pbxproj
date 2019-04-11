@@ -36,8 +36,6 @@
 		3232AB502256558300AD6A5C /* TemplateScreenViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB452256558300AD6A5C /* TemplateScreenViewState.swift */; };
 		3232AB512256558300AD6A5C /* TemplateScreenViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB462256558300AD6A5C /* TemplateScreenViewAction.swift */; };
 		3232AB522256558300AD6A5C /* TemplateScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB472256558300AD6A5C /* TemplateScreenViewModel.swift */; };
-		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
-		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
 		3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3281BCF62201FA4200F4A383 /* UIControl.swift */; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
@@ -467,17 +465,6 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3233F7481F3497E2006ACA81 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -505,7 +492,6 @@
 		3232AB452256558300AD6A5C /* TemplateScreenViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewState.swift; sourceTree = "<group>"; };
 		3232AB462256558300AD6A5C /* TemplateScreenViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewAction.swift; sourceTree = "<group>"; };
 		3232AB472256558300AD6A5C /* TemplateScreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewModel.swift; sourceTree = "<group>"; };
-		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
@@ -1143,7 +1129,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */,
 				89C94E649229EA68AE787E9E /* Pods_RiotPods_Riot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1264,22 +1249,6 @@
 				3232AB472256558300AD6A5C /* TemplateScreenViewModel.swift */,
 			);
 			path = ScreenTemplate;
-			sourceTree = "<group>";
-		};
-		3233F7291F31F3B4006ACA81 /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				3233F7431F3497DA006ACA81 /* jitsi-meet */,
-			);
-			path = libs;
-			sourceTree = "<group>";
-		};
-		3233F7431F3497DA006ACA81 /* jitsi-meet */ = {
-			isa = PBXGroup;
-			children = (
-				3233F7441F3497DA006ACA81 /* JitsiMeet.framework */,
-			);
-			path = "jitsi-meet";
 			sourceTree = "<group>";
 		};
 		32935CB21F628B98006888C8 /* js */ = {
@@ -2910,7 +2879,6 @@
 				B1B5597C20EFC3DF00210D55 /* Managers */,
 				B1B5567620EE6C4C00210D55 /* Modules */,
 				F083BC0F1E7009EC00A9B29C /* Utils */,
-				3233F7291F31F3B4006ACA81 /* libs */,
 				F083BB0E1E7009EC00A9B29C /* Assets */,
 				B169329D20F3A21B00746532 /* SupportingFiles */,
 			);
@@ -3091,7 +3059,6 @@
 				F094A99F1B78D8F000B1FBBF /* Frameworks */,
 				F094A9A01B78D8F000B1FBBF /* Resources */,
 				24CBEC5D1F0EAD310093EABB /* Embed App Extensions */,
-				3233F7481F3497E2006ACA81 /* Embed Frameworks */,
 				5C50A1C53E6A24258653D624 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
