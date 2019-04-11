@@ -157,7 +157,9 @@ final class DeviceVerificationStartViewController: UIViewController {
         case .loading:
             self.renderLoading()
         case .loaded:
-            self.renderLoaded()
+            self.renderStarted()
+        case .cancelled(let reason):
+            self.renderCancelled(reason: reason)
         case .error(let error):
             self.render(error: error)
         }
@@ -167,12 +169,20 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderStarted() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
         self.verifyButtonBackgroundView.isHidden = true
         self.waitingPartnerLabel.isHidden = false
         self.useLegacyVerificationLabel.isHidden = false
+    }
+
+    private func renderCancelled(reason: MXTransactionCancelCode) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
+        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+            self.viewModel.process(viewAction: .cancel)
+        }
     }
     
     private func render(error: Error) {

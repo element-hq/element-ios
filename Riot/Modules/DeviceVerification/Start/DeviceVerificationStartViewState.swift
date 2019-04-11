@@ -21,6 +21,7 @@ import Foundation
 /// DeviceVerificationStartViewController view state
 enum DeviceVerificationStartViewState {
     case loading
-    case loaded
+    case loaded     // started
+    case cancelled(MXTransactionCancelCode)
     case error(Error)
 }

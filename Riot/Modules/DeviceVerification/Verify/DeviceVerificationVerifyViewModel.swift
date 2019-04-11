@@ -66,20 +66,25 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
     func process(viewAction: DeviceVerificationVerifyViewAction) {
         switch viewAction {
         case .confirm:
-            self.confirm()
+            self.confirmTransaction()
         case .complete:
             self.coordinatorDelegate?.deviceVerificationVerifyViewModelDidComplete(self)
         case .cancel:
+            self.cancelTransaction()
             self.coordinatorDelegate?.deviceVerificationVerifyViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
-    private func confirm() {
+    private func confirmTransaction() {
         self.update(viewState: .loading)
 
         self.transaction.confirmSASMatch()
+    }
+
+    private func cancelTransaction() {
+        self.transaction.cancel(with: MXTransactionCancelCode.user())
     }
     
     private func update(viewState: DeviceVerificationVerifyViewState) {

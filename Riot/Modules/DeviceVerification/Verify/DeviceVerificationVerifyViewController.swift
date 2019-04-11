@@ -175,7 +175,11 @@ final class DeviceVerificationVerifyViewController: UIViewController {
     }
 
     private func renderCancelled(reason: MXTransactionCancelCode) {
-        // TODO
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
+        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+            self.viewModel.process(viewAction: .cancel)
+        }
     }
 
     private func renderCancelledByMe(reason: MXTransactionCancelCode) {

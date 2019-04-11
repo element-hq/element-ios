@@ -84,11 +84,11 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
                 return // TODO
             }
 
-            //let rootCoordinator = sself.createDeviceVerificationStartCoordinator(otherUser: otherUser, otherDevice: otherDevice)
+            let rootCoordinator = sself.createDeviceVerificationStartCoordinator(otherUser: otherUser, otherDevice: otherDevice)
 
             // TODO: To remove. Only for dev
-            let rootCoordinator = DeviceVerificationVerifyCoordinator(session: sself.session)
-            rootCoordinator.delegate = self
+            //let rootCoordinator = DeviceVerificationVerifyCoordinator(session: sself.session)
+            //rootCoordinator.delegate = self
 
             rootCoordinator.start()
 

@@ -796,6 +796,7 @@
 // MARK: - Device Verification
 "device_verification_title" = "Verify device";
 "device_verification_security_advice" = "For maximum security, we recommend you do this in person or use another trusted means of communication";
+"device_verification_cancelled" = "The other party cancelled the verification.";
 
 // MARK: - Start
 "device_verification_start_title" = "Verify by comparing a short text string";

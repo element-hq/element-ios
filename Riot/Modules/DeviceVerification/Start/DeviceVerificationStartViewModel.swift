@@ -114,7 +114,10 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
         case MXSASTransactionStateShowSAS:
             self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didCompleteWithOutgoingTransaction: transaction)
         case MXSASTransactionStateCancelled:
-            self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didTransactionCancelled: transaction)
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.update(viewState: .cancelled(reason))
         default:
             break
         }

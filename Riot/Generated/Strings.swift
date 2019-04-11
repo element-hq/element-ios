@@ -426,6 +426,10 @@ internal enum VectorL10n {
   internal static var decline: String { 
     return VectorL10n.tr("Vector", "decline") 
   }
+  /// The other party cancelled the verification.
+  internal static var deviceVerificationCancelled: String { 
+    return VectorL10n.tr("Vector", "device_verification_cancelled") 
+  }
   /// For maximum security, we recommend you do this in person or use another trusted means of communication
   internal static var deviceVerificationSecurityAdvice: String { 
     return VectorL10n.tr("Vector", "device_verification_security_advice") 
