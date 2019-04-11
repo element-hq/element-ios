@@ -37,6 +37,16 @@ final class DeviceVerificationVerifyCoordinator: DeviceVerificationVerifyCoordin
     weak var delegate: DeviceVerificationVerifyCoordinatorDelegate?
     
     // MARK: - Setup
+
+    // TODO: To remove. Only for dev
+    init(session: MXSession) {
+        self.session = session
+
+        let deviceVerificationVerifyViewModel = DeviceVerificationVerifyViewModel(session: self.session)
+        let deviceVerificationVerifyViewController = DeviceVerificationVerifyViewController.instantiate(with: deviceVerificationVerifyViewModel)
+        self.deviceVerificationVerifyViewModel = deviceVerificationVerifyViewModel
+        self.deviceVerificationVerifyViewController = deviceVerificationVerifyViewController
+    }
     
     init(session: MXSession, transaction: MXSASTransaction) {
         self.session = session

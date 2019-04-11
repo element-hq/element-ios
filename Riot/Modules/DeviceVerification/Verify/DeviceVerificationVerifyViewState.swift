@@ -21,6 +21,8 @@ import Foundation
 /// DeviceVerificationVerifyViewController view state
 enum DeviceVerificationVerifyViewState {
     case loading
-    case loaded
+    case loaded // verified
+    case cancelled(MXTransactionCancelCode)
+    case cancelledByMe(MXTransactionCancelCode)
     case error(Error)
 }

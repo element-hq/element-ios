@@ -68,7 +68,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     private func beginVerifying() {
         self.update(viewState: .loading)
 
-        self.verificationManager.beginKeyVerification(withUserId: self.otherUser.userId, andDeviceId: self.otherDevice.deviceId, method: kMXKeyVerificationMethodSAS, complete: { [weak self] (transaction) in
+        self.verificationManager.beginKeyVerification(withUserId: self.otherUser.userId, andDeviceId: self.otherDevice.deviceId, method: kMXKeyVerificationMethodSAS, success: { [weak self] (transaction) in
 
             guard let sself = self else {
                 return
@@ -81,6 +81,8 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
 
             sself.registerTransactionDidStateChangeNotification(transaction: sasTransaction)
             sself.update(viewState: .loaded)
+        }, failure: {[weak self]  error in
+            self?.update(viewState: .error(error))
         })
     }
 
@@ -109,9 +111,9 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
         }
 
         switch transaction.state {
-        case MXOutgoingSASTransactionStateShowSAS:
+        case MXSASTransactionStateShowSAS:
             self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didCompleteWithOutgoingTransaction: transaction)
-        case MXOutgoingSASTransactionStateCancelled:
+        case MXSASTransactionStateCancelled:
             self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didTransactionCancelled: transaction)
         default:
             break

@@ -152,7 +152,11 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         case .loading:
             self.renderLoading()
         case .loaded:
-            self.renderLoaded()
+            self.renderVerified()
+        case .cancelled(let reason):
+            self.renderCancelled(reason: reason)
+        case .cancelledByMe(let reason):
+            self.renderCancelledByMe(reason: reason)
         case .error(let error):
             self.render(error: error)
         }
@@ -162,13 +166,22 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderVerified() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
+        // TODO
         self.continueButtonBackgroundView.isHidden = true
         self.waitingPartnerLabel.isHidden = false
     }
-    
+
+    private func renderCancelled(reason: MXTransactionCancelCode) {
+        // TODO
+    }
+
+    private func renderCancelledByMe(reason: MXTransactionCancelCode) {
+        // TODO
+    }
+
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)

@@ -39,6 +39,23 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
         self.session = session
         self.transaction = transaction
         self.emojis = self.transaction.sasEmoji
+
+        self.registerTransactionDidStateChangeNotification(transaction: transaction)
+    }
+
+    // TODO: To remove. Only for dev
+    init(session: MXSession) {
+        self.session = session
+        self.transaction = MXSASTransaction()
+        self.emojis = [
+            MXEmojiRepresentation(emoji: "🙂", andName: "BIGsMileYYELLOW"),
+            MXEmojiRepresentation(emoji: "🤖", andName: "Headphones"),
+            MXEmojiRepresentation(emoji: "🎩", andName: "Butterfly"),
+            MXEmojiRepresentation(emoji: "👓", andName: "Strawberry"),
+            MXEmojiRepresentation(emoji: "🔧", andName: "Light bulb"),
+            MXEmojiRepresentation(emoji: "🎅", andName: "Headphones"),
+            MXEmojiRepresentation(emoji: "👍", andName: "Thumbs up")
+        ]
     }
     
     deinit {
@@ -62,10 +79,49 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
     private func confirm() {
         self.update(viewState: .loading)
 
-        // TODO
+        self.transaction.confirmSASMatch()
     }
     
     private func update(viewState: DeviceVerificationVerifyViewState) {
         self.viewDelegate?.deviceVerificationVerifyViewModel(self, didUpdateViewState: viewState)
+    }
+
+    // MARK: - MXDeviceVerificationTransactionDidChange
+
+    private func registerTransactionDidStateChangeNotification(transaction: MXSASTransaction) {
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXDeviceVerificationTransactionDidChange, object: transaction)
+    }
+
+    @objc private func transactionDidStateChange(notification: Notification) {
+        guard let transaction = notification.object as? MXOutgoingSASTransaction else {
+            return
+        }
+
+        switch transaction.state {
+        case MXSASTransactionStateVerified:
+            self.update(viewState: .loaded)
+        case MXSASTransactionStateCancelled:
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.update(viewState: .cancelled(reason))
+        case MXSASTransactionStateError:
+            guard let error = transaction.error else {
+                return
+            }
+            self.update(viewState: .error(error))
+        case MXSASTransactionStateCancelled:
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.update(viewState: .cancelled(reason))
+        case MXSASTransactionStateCancelledByMe:
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.update(viewState: .cancelledByMe(reason))
+        default:
+            break
+        }
     }
 }
