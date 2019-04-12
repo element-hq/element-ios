@@ -12,6 +12,11 @@ import UIKit
 
 // swiftlint:disable explicit_type_interface identifier_name line_length type_body_length type_name
 internal enum StoryboardScene {
+  internal enum DeviceVerificationIncomingViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationIncomingViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DeviceVerificationIncomingViewController>(storyboard: DeviceVerificationIncomingViewController.self)
+  }
   internal enum DeviceVerificationStartViewController: StoryboardType {
     internal static let storyboardName = "DeviceVerificationStartViewController"
 

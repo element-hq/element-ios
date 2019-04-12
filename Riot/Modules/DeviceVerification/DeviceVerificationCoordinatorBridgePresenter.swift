@@ -60,7 +60,16 @@ final class DeviceVerificationCoordinatorBridgePresenter: NSObject {
         
         self.coordinator = deviceVerificationCoordinator
     }
-    
+
+    func present(from viewController: UIViewController, incomingTransaction: MXIncomingSASTransaction, animated: Bool) {
+        let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session, incomingTransaction: incomingTransaction)
+        deviceVerificationCoordinator.delegate = self
+        viewController.present(deviceVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
+        deviceVerificationCoordinator.start()
+
+        self.coordinator = deviceVerificationCoordinator
+    }
+
     func dismiss(animated: Bool) {
         guard let coordinator = self.coordinator else {
             return

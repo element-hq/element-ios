@@ -30,7 +30,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     private let otherUserId: String
     private let otherDeviceId: String
 
-    private var transaction: MXSASTransaction!
+    private var incomingTransaction: MXIncomingSASTransaction?
 
     // MARK: Public
 
@@ -54,16 +54,16 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         self.otherDeviceId = otherDeviceId
     }
 
-    /// Contrustor to manage an existing SAS device verification transaction
+    /// Contrustor to manage an incoming SAS device verification transaction
     ///
     /// - Parameters:
     ///   - session: the MXSession
     ///   - transaction: an existing device verification transaction
-    convenience init(session: MXSession, transaction: MXSASTransaction) {
+    convenience init(session: MXSession, incomingTransaction: MXIncomingSASTransaction) {
         self.init(session: session,
-                  otherUserId: transaction.otherUserId,
-                  otherDeviceId: transaction.otherDeviceId)
-        self.transaction = transaction
+                  otherUserId: incomingTransaction.otherUserId,
+                  otherDeviceId: incomingTransaction.otherDeviceId)
+        self.incomingTransaction = incomingTransaction
     }
     
     // MARK: - Public methods
@@ -84,16 +84,20 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
                 return // TODO
             }
 
-            let rootCoordinator = sself.createDeviceVerificationStartCoordinator(otherUser: otherUser, otherDevice: otherDevice)
+            var rootCoordinator: Coordinator & Presentable
+            if let incomingTransaction = sself.incomingTransaction {
+                rootCoordinator = sself.createDeviceVerificationIncomingCoordinator(otherUser: otherUser, transaction: incomingTransaction)
+            } else {
+                rootCoordinator = sself.createDeviceVerificationStartCoordinator(otherUser: otherUser, otherDevice: otherDevice)
+            }
 
             // TODO: To remove. Only for dev
-            //let rootCoordinator = DeviceVerificationVerifyCoordinator(session: sself.session)
+            //rootCoordinator = DeviceVerificationVerifyCoordinator(session: sself.session)
             //rootCoordinator.delegate = self
 
             rootCoordinator.start()
 
             sself.add(childCoordinator: rootCoordinator)
-
             sself.navigationRouter.setRootModule(rootCoordinator)
 
         }, failure: { (error) in
@@ -113,11 +117,13 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         return coordinator
     }
 
-    private func showVerify(animated: Bool) {
-        guard let transaction = self.transaction else {
-            return
-        }
+    private func createDeviceVerificationIncomingCoordinator(otherUser: MXUser, transaction: MXIncomingSASTransaction) -> DeviceVerificationIncomingCoordinator {
+        let coordinator = DeviceVerificationIncomingCoordinator(session: self.session, otherUser: otherUser, transaction: transaction)
+        coordinator.delegate = self
+        return coordinator
+    }
 
+    private func showVerify(transaction: MXSASTransaction, animated: Bool) {
         let coordinator = DeviceVerificationVerifyCoordinator(session: self.session, transaction: transaction)
         coordinator.delegate = self
         coordinator.start()
@@ -132,9 +138,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
 
 extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDelegate {
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
-        self.transaction = transaction
-
-        self.showVerify(animated: true)
+        self.showVerify(transaction: transaction, animated: true)
     }
 
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
@@ -144,6 +148,16 @@ extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDeleg
     }
 
     func deviceVerificationStartCoordinatorDidCancel(_ coordinator: DeviceVerificationStartCoordinatorType) {
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+    }
+}
+
+extension DeviceVerificationCoordinator: DeviceVerificationIncomingCoordinatorDelegate {
+    func deviceVerificationIncomingCoordinator(_ coordinator: DeviceVerificationIncomingCoordinatorType, didAcceptTransaction transaction: MXSASTransaction) {
+        self.showVerify(transaction: transaction, animated: true)
+    }
+
+    func deviceVerificationIncomingCoordinatorDidCancel(_ coordinator: DeviceVerificationIncomingCoordinatorType) {
         self.delegate?.deviceVerificationCoordinatorDidComplete(self)
     }
 }

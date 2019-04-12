@@ -82,7 +82,7 @@
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
-@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate>
+@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -125,6 +125,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      If any the currently displayed sharing key dialog
      */
     RoomKeyRequestViewController *roomKeyRequestViewController;
+
+    /**
+     Incoming device verification requests observers
+     */
+    id incomingDeviceVerificationObserver;
+
+    /**
+     If any the currently displayed device verification dialog
+     */
+    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
 
     /**
      Account picker used in case of multiple account.
@@ -2579,6 +2589,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
         // Enable listening of incoming key share requests
         [self enableRoomKeyRequestObserver:mxSession];
+
+        // Enable listening of incoming device verification requests
+        [self enableIncomingDeviceVerificationObserver:mxSession];
     }
 }
 
@@ -2600,6 +2613,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     // Disable listening of incoming key share requests
     [self disableRoomKeyRequestObserver:mxSession];
+
+    // Disable listening of incoming device verification requests
+    [self disableIncomingDeviceVerificationObserver:mxSession];
     
     [mxSessionArray removeObject:mxSession];
     
@@ -4068,6 +4084,80 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [self checkPendingRoomKeyRequestsInSession:mxSession];
     }
+}
+
+#pragma mark - Incoming device verification requests handling
+
+- (void)enableIncomingDeviceVerificationObserver:(MXSession*)mxSession
+{
+    incomingDeviceVerificationObserver =
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMXDeviceVerificationManagerNewTransactionNotification
+                                                      object:mxSession.crypto.deviceVerificationManager
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification *notif)
+     {
+         NSObject *object = notif.userInfo[kMXDeviceVerificationManagerNotificationTransactionKey];
+         if ([object isKindOfClass:MXIncomingSASTransaction.class])
+         {
+             MXIncomingSASTransaction *transaction = (MXIncomingSASTransaction*)object;
+             [self presentIncomingDeviceVerification:transaction inSession:mxSession];
+         }
+     }];
+}
+
+- (void)disableIncomingDeviceVerificationObserver:(MXSession*)mxSession
+{
+    if (incomingDeviceVerificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:incomingDeviceVerificationObserver];
+        incomingDeviceVerificationObserver = nil;
+    }
+}
+
+// Check if an incoming device verification dialog must be displayed for the given session
+- (void)checkPendingIncomingDeviceVerificationsInSession:(MXSession*)mxSession
+{
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
+    {
+        NSLog(@"[AppDelegate] checkPendingIncomingDeviceVerificationsInSession called while the app is not active. Ignore it.");
+        return;
+    }
+
+    // TODO
+}
+
+// Check all opened MXSessions for incoming device verification dialog
+- (void)checkPendingIncomingDeviceVerifications
+{
+    for (MXSession *mxSession in mxSessionArray)
+    {
+        [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+    }
+}
+
+- (BOOL)presentIncomingDeviceVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
+{
+    BOOL presented = NO;
+    if (!deviceVerificationCoordinatorBridgePresenter)
+    {
+        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+
+        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingTransaction:transaction animated:YES];
+
+        presented = YES;
+    }
+    return presented;
+}
+
+- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES];
+    deviceVerificationCoordinatorBridgePresenter = nil;
+
+    [self checkPendingIncomingDeviceVerifications];
 }
 
 #pragma mark - GDPR consent
