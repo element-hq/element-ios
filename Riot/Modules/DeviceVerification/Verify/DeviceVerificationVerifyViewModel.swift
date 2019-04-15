@@ -98,13 +98,14 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
     }
 
     @objc private func transactionDidStateChange(notification: Notification) {
-        guard let transaction = notification.object as? MXOutgoingSASTransaction else {
+        guard let transaction = notification.object as? MXSASTransaction else {
             return
         }
 
         switch transaction.state {
         case MXSASTransactionStateVerified:
             self.update(viewState: .loaded)
+            self.coordinatorDelegate?.deviceVerificationVerifyViewModelDidComplete(self)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return

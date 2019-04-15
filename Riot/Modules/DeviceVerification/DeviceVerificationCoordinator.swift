@@ -138,6 +138,12 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
             self?.remove(childCoordinator: coordinator)
         }
     }
+
+    private func showVerified(animated: Bool) {
+        let viewController = DeviceVerificationVerifiedViewController.instantiate()
+        viewController.delegate = self
+        self.navigationRouter.setRootModule(viewController)
+    }
 }
 
 extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDelegate {
@@ -168,10 +174,20 @@ extension DeviceVerificationCoordinator: DeviceVerificationIncomingCoordinatorDe
 
 extension DeviceVerificationCoordinator: DeviceVerificationVerifyCoordinatorDelegate {
     func deviceVerificationVerifyCoordinatorDidComplete(_ coordinator: DeviceVerificationVerifyCoordinatorType) {
-        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+        self.showVerified(animated: true)
     }
 
     func deviceVerificationVerifyCoordinatorDidCancel(_ coordinator: DeviceVerificationVerifyCoordinatorType) {
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+    }
+}
+
+extension DeviceVerificationCoordinator: DeviceVerificationVerifiedViewControllerDelegate {
+    func deviceVerificationVerifiedViewControllerDidTapSetupAction(_ viewController: DeviceVerificationVerifiedViewController) {
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+    }
+
+    func deviceVerificationVerifiedViewControllerDidCancel(_ viewController: DeviceVerificationVerifiedViewController) {
         self.delegate?.deviceVerificationCoordinatorDidComplete(self)
     }
 }

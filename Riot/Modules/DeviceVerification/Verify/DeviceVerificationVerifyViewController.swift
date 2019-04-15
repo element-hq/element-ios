@@ -169,7 +169,6 @@ final class DeviceVerificationVerifyViewController: UIViewController {
     private func renderVerified() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        // TODO
         self.continueButtonBackgroundView.isHidden = true
         self.waitingPartnerLabel.isHidden = false
     }
