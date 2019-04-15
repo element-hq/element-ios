@@ -30,9 +30,12 @@ protocol DeviceVerificationIncomingViewModelCoordinatorDelegate: class {
 /// Protocol describing the view model used by `DeviceVerificationIncomingViewController`
 protocol DeviceVerificationIncomingViewModelType {
 
+    var userId: String { get }
     var userDisplayName: String { get }
     var avatarUrl: String { get }
     var deviceId: String { get }
+
+    var mediaManager: MXMediaManager { get }
         
     var viewDelegate: DeviceVerificationIncomingViewModelViewDelegate? { get set }
     var coordinatorDelegate: DeviceVerificationIncomingViewModelCoordinatorDelegate? { get set }

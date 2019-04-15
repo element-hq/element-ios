@@ -29,9 +29,12 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     
     // MARK: Public
 
+    var userId: String
     var userDisplayName: String
     var avatarUrl: String
     var deviceId: String
+
+    var mediaManager: MXMediaManager
 
     weak var viewDelegate: DeviceVerificationIncomingViewModelViewDelegate?
     weak var coordinatorDelegate: DeviceVerificationIncomingViewModelCoordinatorDelegate?
@@ -41,9 +44,12 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     init(session: MXSession, otherUser: MXUser, transaction: MXIncomingSASTransaction) {
         self.session = session
         self.transaction = transaction
+        self.userId = otherUser.userId
         self.userDisplayName = otherUser.displayname
-        self.avatarUrl = self.session.mediaManager.url(ofContent: otherUser.avatarUrl)
+        self.avatarUrl = otherUser.avatarUrl
         self.deviceId = transaction.otherDeviceId
+
+        self.mediaManager = session.mediaManager
 
         self.registerTransactionDidStateChangeNotification(transaction: transaction)
     }

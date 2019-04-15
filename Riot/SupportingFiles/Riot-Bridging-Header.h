@@ -10,3 +10,4 @@
 #import "ThemeService.h"
 #import "TableViewCellWithCheckBoxAndLabel.h"
 #import "RecentsDataSource.h"
+#import "AvatarGenerator.h"

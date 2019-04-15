@@ -34,7 +34,7 @@ final class DeviceVerificationIncomingViewController: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
 
-    @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var avatarImageView: MXKImageView!
     @IBOutlet weak var userDisplaynameLabel: UILabel!
     @IBOutlet weak var deviceIdLabel: UILabel!
 
@@ -146,10 +146,15 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         self.description2Label.text = VectorL10n.deviceVerificationIncomingDescription2
         self.continueButton.setTitle(VectorL10n.continue, for: .normal)
 
-        // TODO: Use MXKImageView
-        let url = URL(string: self.viewModel.avatarUrl)
-        let data = try? Data(contentsOf: url!)
-        self.avatarImageView.image = UIImage(data: data!)
+        if let avatarImageView = self.avatarImageView {
+            let defaultavatarImage = AvatarGenerator.generateAvatar(forMatrixItem: self.viewModel.userId, withDisplayName: self.viewModel.userDisplayName)
+
+            avatarImageView.enableInMemoryCache = true
+            avatarImageView.setImageURI(self.viewModel.avatarUrl, withType: nil, andImageOrientation: .up, previewImage: defaultavatarImage, mediaManager: self.viewModel.mediaManager)
+
+            avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width / 2
+            avatarImageView.clipsToBounds = true
+        }
 
         self.userDisplaynameLabel.text = self.viewModel.userDisplayName
         self.deviceIdLabel.text = self.viewModel.deviceId
