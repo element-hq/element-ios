@@ -33,8 +33,6 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     var avatarUrl: String
     var deviceId: String
 
-    var message: String?
-
     weak var viewDelegate: DeviceVerificationIncomingViewModelViewDelegate?
     weak var coordinatorDelegate: DeviceVerificationIncomingViewModelCoordinatorDelegate?
     
@@ -43,10 +41,11 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     init(session: MXSession, otherUser: MXUser, transaction: MXIncomingSASTransaction) {
         self.session = session
         self.transaction = transaction
-        self.message = nil
         self.userDisplayName = otherUser.displayname
-        self.avatarUrl = otherUser.avatarUrl
+        self.avatarUrl = self.session.mediaManager.url(ofContent: otherUser.avatarUrl)
         self.deviceId = transaction.otherDeviceId
+
+        self.registerTransactionDidStateChangeNotification(transaction: transaction)
     }
     
     deinit {
@@ -56,41 +55,51 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     
     func process(viewAction: DeviceVerificationIncomingViewAction) {
         switch viewAction {
-        case .sayHello:
-            self.setupHelloMessage()
-        case .complete:
-            if let message = self.message {
-            //self.coordinatorDelegate?.deviceVerificationIncomingViewModel(self, didCompleteWithMessage: message)
-            }
+        case .accept:
+            self.acceptIncomingDeviceVerification()
         case .cancel:
+            self.rejectIncomingDeviceVerification()
             self.coordinatorDelegate?.deviceVerificationIncomingViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
-    private func setupHelloMessage() {
-
+    private func acceptIncomingDeviceVerification() {
         self.update(viewState: .loading)
+        self.transaction.accept()
+    }
 
-        // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
-
-            guard let sself = self else {
-                return
-            }
-            
-            switch response {
-            case .success:
-                sself.message = "Hello \(response.value ?? "you")"
-                sself.update(viewState: .loaded)
-            case .failure(let error):
-                sself.update(viewState: .error(error))
-            }
-        }
+    private func rejectIncomingDeviceVerification() {
+        self.transaction.cancel(with: MXTransactionCancelCode.user())
     }
     
     private func update(viewState: DeviceVerificationIncomingViewState) {
         self.viewDelegate?.deviceVerificationIncomingViewModel(self, didUpdateViewState: viewState)
+    }
+
+    // MARK: - MXDeviceVerificationTransactionDidChange
+
+    private func registerTransactionDidStateChangeNotification(transaction: MXIncomingSASTransaction) {
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXDeviceVerificationTransactionDidChange, object: transaction)
+    }
+
+    @objc private func transactionDidStateChange(notification: Notification) {
+        guard let transaction = notification.object as? MXIncomingSASTransaction else {
+            return
+        }
+
+        switch transaction.state {
+        case MXSASTransactionStateShowSAS:
+            self.update(viewState: .loaded)
+            self.coordinatorDelegate?.deviceVerificationIncomingViewModel(self, didAcceptTransaction: self.transaction)
+        case MXSASTransactionStateCancelled:
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.update(viewState: .cancelled(reason))
+        default:
+            break
+        }
     }
 }

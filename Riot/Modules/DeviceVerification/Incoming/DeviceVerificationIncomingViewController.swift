@@ -79,8 +79,6 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
-
-        self.viewModel.process(viewAction: .sayHello)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -147,6 +145,14 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         self.description1Label.text = VectorL10n.deviceVerificationIncomingDescription1
         self.description2Label.text = VectorL10n.deviceVerificationIncomingDescription2
         self.continueButton.setTitle(VectorL10n.continue, for: .normal)
+
+        // TODO: Use MXKImageView
+        let url = URL(string: self.viewModel.avatarUrl)
+        let data = try? Data(contentsOf: url!)
+        self.avatarImageView.image = UIImage(data: data!)
+
+        self.userDisplaynameLabel.text = self.viewModel.userDisplayName
+        self.deviceIdLabel.text = self.viewModel.deviceId
     }
 
     private func render(viewState: DeviceVerificationIncomingViewState) {
@@ -154,7 +160,11 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         case .loading:
             self.renderLoading()
         case .loaded:
-            self.renderLoaded()
+            self.renderAccepted()
+        case .cancelled(let reason):
+            self.renderCancelled(reason: reason)
+        case .cancelledByMe(let reason):
+            self.renderCancelledByMe(reason: reason)
         case .error(let error):
             self.render(error: error)
         }
@@ -164,8 +174,20 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderAccepted() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    }
+
+    private func renderCancelled(reason: MXTransactionCancelCode) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
+        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+            self.viewModel.process(viewAction: .cancel)
+        }
+    }
+
+    private func renderCancelledByMe(reason: MXTransactionCancelCode) {
+        // TODO
     }
     
     private func render(error: Error) {
@@ -177,6 +199,7 @@ final class DeviceVerificationIncomingViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction private func continueButtonAction(_ sender: Any) {
+         self.viewModel.process(viewAction: .accept)
     }
 
     private func cancelButtonAction() {

@@ -32,8 +32,7 @@ protocol DeviceVerificationIncomingViewModelType {
 
     var userDisplayName: String { get }
     var avatarUrl: String { get }
-
-    var message: String? { get set }
+    var deviceId: String { get }
         
     var viewDelegate: DeviceVerificationIncomingViewModelViewDelegate? { get set }
     var coordinatorDelegate: DeviceVerificationIncomingViewModelCoordinatorDelegate? { get set }
