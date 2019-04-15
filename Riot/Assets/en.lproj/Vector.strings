@@ -814,3 +814,9 @@
 "device_verification_verify_title_emoji" = "Verify this user by confirming the following emoji appear on their screen";
 "device_verification_verify_title_number" = "Verify this user by confirming the following number appears on their screen";
 "device_verification_verify_wait_partner" = "Waiting for partner to confirm...";
+
+// MARK: Verified
+"device_verification_verified_title" = "Verified!";
+"device_verification_verified_description_1" = "You've successfully verified this device.";
+"device_verification_verified_description_2" = "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.";
+"device_verification_verified_got_it_button" = "Got it";

@@ -470,6 +470,22 @@ internal enum VectorL10n {
   internal static var deviceVerificationTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_title") 
   }
+  /// You've successfully verified this device.
+  internal static var deviceVerificationVerifiedDescription1: String { 
+    return VectorL10n.tr("Vector", "device_verification_verified_description_1") 
+  }
+  /// Secure messages with this user are end-to-end encrypted and not able to be read by third parties.
+  internal static var deviceVerificationVerifiedDescription2: String { 
+    return VectorL10n.tr("Vector", "device_verification_verified_description_2") 
+  }
+  /// Got it
+  internal static var deviceVerificationVerifiedGotItButton: String { 
+    return VectorL10n.tr("Vector", "device_verification_verified_got_it_button") 
+  }
+  /// Verified!
+  internal static var deviceVerificationVerifiedTitle: String { 
+    return VectorL10n.tr("Vector", "device_verification_verified_title") 
+  }
   /// Verify this user by confirming the following emoji appear on their screen
   internal static var deviceVerificationVerifyTitleEmoji: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_title_emoji") 

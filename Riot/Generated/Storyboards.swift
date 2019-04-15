@@ -22,6 +22,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
   }
+  internal enum DeviceVerificationVerifiedViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationVerifiedViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DeviceVerificationVerifiedViewController>(storyboard: DeviceVerificationVerifiedViewController.self)
+  }
   internal enum DeviceVerificationVerifyViewController: StoryboardType {
     internal static let storyboardName = "DeviceVerificationVerifyViewController"
 
