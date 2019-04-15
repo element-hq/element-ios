@@ -62,6 +62,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
   }
+  internal enum SimpleScreenTemplateViewController: StoryboardType {
+    internal static let storyboardName = "SimpleScreenTemplateViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SimpleScreenTemplateViewController>(storyboard: SimpleScreenTemplateViewController.self)
+  }
   internal enum TemplateScreenViewController: StoryboardType {
     internal static let storyboardName = "TemplateScreenViewController"
 
