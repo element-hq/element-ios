@@ -144,7 +144,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
 
         self.waitingPartnerLabel.isHidden = true
 
-        self.continueButton.setTitle(VectorL10n.deviceVerificationVerifyContinueButton, for: .normal)
+        self.continueButton.setTitle(VectorL10n.continue, for: .normal)
     }
 
     private func render(viewState: DeviceVerificationVerifyViewState) {

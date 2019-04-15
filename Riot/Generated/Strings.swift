@@ -430,6 +430,18 @@ internal enum VectorL10n {
   internal static var deviceVerificationCancelled: String { 
     return VectorL10n.tr("Vector", "device_verification_cancelled") 
   }
+  /// Verify this user to mark them as trusted. Trusting users gives you extra peace of mind when using end-to-end encrypted messages.
+  internal static var deviceVerificationIncomingDescription1: String { 
+    return VectorL10n.tr("Vector", "device_verification_incoming_description_1") 
+  }
+  /// Verifying this user will mark their device has trusted, and also mark your device as trusted to them.
+  internal static var deviceVerificationIncomingDescription2: String { 
+    return VectorL10n.tr("Vector", "device_verification_incoming_description_2") 
+  }
+  /// Incoming Verification Request
+  internal static var deviceVerificationIncomingTitle: String { 
+    return VectorL10n.tr("Vector", "device_verification_incoming_title") 
+  }
   /// For maximum security, we recommend you do this in person or use another trusted means of communication
   internal static var deviceVerificationSecurityAdvice: String { 
     return VectorL10n.tr("Vector", "device_verification_security_advice") 
@@ -457,10 +469,6 @@ internal enum VectorL10n {
   /// Verify device
   internal static var deviceVerificationTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_title") 
-  }
-  /// Continue
-  internal static var deviceVerificationVerifyContinueButton: String { 
-    return VectorL10n.tr("Vector", "device_verification_verify_continue_button") 
   }
   /// Verify this user by confirming the following emoji appear on their screen
   internal static var deviceVerificationVerifyTitleEmoji: String { 

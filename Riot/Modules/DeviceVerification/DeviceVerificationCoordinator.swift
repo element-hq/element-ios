@@ -86,9 +86,13 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
 
             var rootCoordinator: Coordinator & Presentable
             if let incomingTransaction = sself.incomingTransaction {
-                rootCoordinator = sself.createDeviceVerificationIncomingCoordinator(otherUser: otherUser, transaction: incomingTransaction)
+                let coordinator = sself.createDeviceVerificationIncomingCoordinator(otherUser: otherUser, transaction: incomingTransaction)
+                coordinator.delegate = self
+                rootCoordinator = coordinator
             } else {
-                rootCoordinator = sself.createDeviceVerificationStartCoordinator(otherUser: otherUser, otherDevice: otherDevice)
+                let coordinator = sself.createDeviceVerificationStartCoordinator(otherUser: otherUser, otherDevice: otherDevice)
+                coordinator.delegate = self
+                rootCoordinator = coordinator
             }
 
             // TODO: To remove. Only for dev

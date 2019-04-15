@@ -32,8 +32,17 @@ final class DeviceVerificationIncomingViewController: UIViewController {
 
     @IBOutlet private weak var scrollView: UIScrollView!
     
-    @IBOutlet private weak var messageLabel: UILabel!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+
+    @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var userDisplaynameLabel: UILabel!
+    @IBOutlet weak var deviceIdLabel: UILabel!
+
+    @IBOutlet weak var description1Label: UILabel!
+    @IBOutlet weak var description2Label: UILabel!
+    @IBOutlet weak var continueButtonBackgroundView: UIView!
+    @IBOutlet weak var continueButton: UIButton!
+
     
     // MARK: Private
 
@@ -59,7 +68,7 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
+        self.title = VectorL10n.deviceVerificationTitle
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
@@ -109,12 +118,12 @@ final class DeviceVerificationIncomingViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.description1Label.textColor = theme.textPrimaryColor
+        self.description2Label.textColor = theme.textPrimaryColor
 
-        // TODO:
-        self.messageLabel.textColor = theme.textPrimaryColor
-
-        self.okButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
+        self.continueButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: self.continueButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -134,8 +143,10 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         
         self.scrollView.keyboardDismissMode = .interactive
         
-        self.messageLabel.text = "VectorL10n.deviceVerificationIncomingTitle"
-        self.messageLabel.isHidden = true
+        self.titleLabel.text = VectorL10n.deviceVerificationIncomingTitle
+        self.description1Label.text = VectorL10n.deviceVerificationIncomingDescription1
+        self.description2Label.text = VectorL10n.deviceVerificationIncomingDescription2
+        self.continueButton.setTitle(VectorL10n.continue, for: .normal)
     }
 
     private func render(viewState: DeviceVerificationIncomingViewState) {
@@ -155,9 +166,6 @@ final class DeviceVerificationIncomingViewController: UIViewController {
     
     private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
-        self.messageLabel.text = self.viewModel.message
-        self.messageLabel.isHidden = false
     }
     
     private func render(error: Error) {
@@ -168,8 +176,7 @@ final class DeviceVerificationIncomingViewController: UIViewController {
     
     // MARK: - Actions
 
-    @IBAction private func okButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
+    @IBAction private func continueButtonAction(_ sender: Any) {
     }
 
     private func cancelButtonAction() {
