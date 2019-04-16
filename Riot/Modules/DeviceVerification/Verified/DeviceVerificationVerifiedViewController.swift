@@ -66,6 +66,13 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Hide back button
+        self.navigationItem.setHidesBackButton(true, animated: animated)
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle

@@ -80,6 +80,9 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.keyboardAvoider?.startAvoiding()
+
+        // Hide back button
+        self.navigationItem.setHidesBackButton(true, animated: animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {

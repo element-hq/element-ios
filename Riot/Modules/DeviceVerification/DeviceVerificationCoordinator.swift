@@ -132,7 +132,6 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         coordinator.delegate = self
         coordinator.start()
 
-        // TODO: Do not push, replace
         self.add(childCoordinator: coordinator)
         self.navigationRouter.push(coordinator, animated: animated) { [weak self] in
             self?.remove(childCoordinator: coordinator)
@@ -152,8 +151,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDeleg
     }
 
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
-
-        // TODO
         self.delegate?.deviceVerificationCoordinatorDidComplete(self)
     }
 
