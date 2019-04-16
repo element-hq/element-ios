@@ -430,6 +430,262 @@ internal enum VectorL10n {
   internal static var deviceVerificationCancelled: String { 
     return VectorL10n.tr("Vector", "device_verification_cancelled") 
   }
+  /// Aeroplane
+  internal static var deviceVerificationEmojiAeroplane: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_aeroplane") 
+  }
+  /// Anchor
+  internal static var deviceVerificationEmojiAnchor: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_anchor") 
+  }
+  /// Apple
+  internal static var deviceVerificationEmojiApple: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_apple") 
+  }
+  /// Ball
+  internal static var deviceVerificationEmojiBall: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_ball") 
+  }
+  /// Banana
+  internal static var deviceVerificationEmojiBanana: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_banana") 
+  }
+  /// Ball
+  internal static var deviceVerificationEmojiBell: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_bell") 
+  }
+  /// Bicycle
+  internal static var deviceVerificationEmojiBicycle: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_bicycle") 
+  }
+  /// Book
+  internal static var deviceVerificationEmojiBook: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_book") 
+  }
+  /// Butterfly
+  internal static var deviceVerificationEmojiButterfly: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_butterfly") 
+  }
+  /// Cactus
+  internal static var deviceVerificationEmojiCactus: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_cactus") 
+  }
+  /// Cake
+  internal static var deviceVerificationEmojiCake: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_cake") 
+  }
+  /// Cat
+  internal static var deviceVerificationEmojiCat: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_cat") 
+  }
+  /// Class
+  internal static var deviceVerificationEmojiClock: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_clock") 
+  }
+  /// Cloud
+  internal static var deviceVerificationEmojiCloud: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_cloud") 
+  }
+  /// Corn
+  internal static var deviceVerificationEmojiCorn: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_corn") 
+  }
+  /// Dog
+  internal static var deviceVerificationEmojiDog: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_dog") 
+  }
+  /// Elephant
+  internal static var deviceVerificationEmojiElephant: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_elephant") 
+  }
+  /// Fire
+  internal static var deviceVerificationEmojiFire: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_fire") 
+  }
+  /// Fish
+  internal static var deviceVerificationEmojiFish: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_fish") 
+  }
+  /// Flag
+  internal static var deviceVerificationEmojiFlag: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_flag") 
+  }
+  /// Flower
+  internal static var deviceVerificationEmojiFlower: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_flower") 
+  }
+  /// Folder
+  internal static var deviceVerificationEmojiFolder: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_folder") 
+  }
+  /// Gift
+  internal static var deviceVerificationEmojiGift: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_gift") 
+  }
+  /// Glasses
+  internal static var deviceVerificationEmojiGlasses: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_glasses") 
+  }
+  /// Globe
+  internal static var deviceVerificationEmojiGlobe: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_globe") 
+  }
+  /// Guitar
+  internal static var deviceVerificationEmojiGuitar: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_guitar") 
+  }
+  /// Hammer
+  internal static var deviceVerificationEmojiHammer: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_hammer") 
+  }
+  /// Hat
+  internal static var deviceVerificationEmojiHat: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_hat") 
+  }
+  /// Headphones
+  internal static var deviceVerificationEmojiHeadphones: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_headphones") 
+  }
+  /// Heart
+  internal static var deviceVerificationEmojiHeart: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_heart") 
+  }
+  /// Horse
+  internal static var deviceVerificationEmojiHorse: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_horse") 
+  }
+  /// Hourglass
+  internal static var deviceVerificationEmojiHourglass: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_hourglass") 
+  }
+  /// Key
+  internal static var deviceVerificationEmojiKey: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_key") 
+  }
+  /// Light Bulb
+  internal static var deviceVerificationEmojiLightBulb: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_light bulb") 
+  }
+  /// Lion
+  internal static var deviceVerificationEmojiLion: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_lion") 
+  }
+  /// Moon
+  internal static var deviceVerificationEmojiMoon: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_moon") 
+  }
+  /// Mushroom
+  internal static var deviceVerificationEmojiMushroom: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_mushroom") 
+  }
+  /// Octopus
+  internal static var deviceVerificationEmojiOctopus: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_octopus") 
+  }
+  /// Padlock
+  internal static var deviceVerificationEmojiPadlock: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_padlock") 
+  }
+  /// Panda
+  internal static var deviceVerificationEmojiPanda: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_panda") 
+  }
+  /// Paperclip
+  internal static var deviceVerificationEmojiPaperclip: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_paperclip") 
+  }
+  /// Pencil
+  internal static var deviceVerificationEmojiPencil: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_pencil") 
+  }
+  /// Penguin
+  internal static var deviceVerificationEmojiPenguin: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_penguin") 
+  }
+  /// Pig
+  internal static var deviceVerificationEmojiPig: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_pig") 
+  }
+  /// Pin
+  internal static var deviceVerificationEmojiPin: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_pin") 
+  }
+  /// Pizza
+  internal static var deviceVerificationEmojiPizza: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_pizza") 
+  }
+  /// Rabbit
+  internal static var deviceVerificationEmojiRabbit: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_rabbit") 
+  }
+  /// Robot
+  internal static var deviceVerificationEmojiRobot: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_robot") 
+  }
+  /// Rocket
+  internal static var deviceVerificationEmojiRocket: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_rocket") 
+  }
+  /// Rooster
+  internal static var deviceVerificationEmojiRooster: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_rooster") 
+  }
+  /// Santa
+  internal static var deviceVerificationEmojiSanta: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_santa") 
+  }
+  /// Scissors
+  internal static var deviceVerificationEmojiScissors: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_scissors") 
+  }
+  /// Smiley
+  internal static var deviceVerificationEmojiSmiley: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_smiley") 
+  }
+  /// Spanner
+  internal static var deviceVerificationEmojiSpanner: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_spanner") 
+  }
+  /// Strawberry
+  internal static var deviceVerificationEmojiStrawberry: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_strawberry") 
+  }
+  /// Telephone
+  internal static var deviceVerificationEmojiTelephone: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_telephone") 
+  }
+  /// Thumbs up
+  internal static var deviceVerificationEmojiThumbsUp: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_thumbs up") 
+  }
+  /// Train
+  internal static var deviceVerificationEmojiTrain: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_train") 
+  }
+  /// Tree
+  internal static var deviceVerificationEmojiTree: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_tree") 
+  }
+  /// Trophy
+  internal static var deviceVerificationEmojiTrophy: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_trophy") 
+  }
+  /// Trumpet
+  internal static var deviceVerificationEmojiTrumpet: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_trumpet") 
+  }
+  /// Turtle
+  internal static var deviceVerificationEmojiTurtle: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_turtle") 
+  }
+  /// Umbrella
+  internal static var deviceVerificationEmojiUmbrella: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_umbrella") 
+  }
+  /// Unicorn
+  internal static var deviceVerificationEmojiUnicorn: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_unicorn") 
+  }
   /// Verify this user to mark them as trusted. Trusting users gives you extra peace of mind when using end-to-end encrypted messages.
   internal static var deviceVerificationIncomingDescription1: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_description_1") 
@@ -2560,7 +2816,7 @@ internal enum VectorL10n {
 // MARK: - Implementation Details
 
 extension VectorL10n {
-  private static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
+  static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
     let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
     let locale: Locale
     if let localeIdentifier = Bundle.mxk_language() {

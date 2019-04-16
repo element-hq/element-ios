@@ -232,7 +232,7 @@ extension DeviceVerificationVerifyViewController: UICollectionViewDataSource {
         }
 
         cell.emoji.text = emoji.emoji
-        cell.name.text = emoji.name
+        cell.name.text =  VectorL10n.tr("Vector", "device_verification_emoji_\(emoji.name)")
         
         cell.update(theme: self.theme)
 
