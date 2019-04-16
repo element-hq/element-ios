@@ -158,6 +158,8 @@ final class DeviceVerificationStartViewController: UIViewController {
             self.renderLoading()
         case .loaded:
             self.renderStarted()
+        case .verifyUsingLegacy(let session, let deviceInfo):
+            self.renderVerifyUsingLegacy(session: session, deviceInfo: deviceInfo)
         case .cancelled(let reason):
             self.renderCancelled(reason: reason)
         case .error(let error):
@@ -175,6 +177,24 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.verifyButtonBackgroundView.isHidden = true
         self.waitingPartnerLabel.isHidden = false
         self.useLegacyVerificationLabel.isHidden = false
+    }
+
+    private func renderVerifyUsingLegacy(session: MXSession, deviceInfo: MXDeviceInfo) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
+        guard let encryptionInfoView = EncryptionInfoView(deviceInfo: deviceInfo, andMatrixSession: session) else {
+            return
+        }
+
+        encryptionInfoView.delegate = self
+
+        // Skip the intro page
+        encryptionInfoView.onButtonPressed(encryptionInfoView.verifyButton)
+
+        // Display the legacy verification view in full screen
+        // TODO: Do not reuse the legacy EncryptionInfoView and create a screen from scratch
+        self.view.vc_addSubViewMatchingParent(encryptionInfoView)
+        self.navigationController?.isNavigationBarHidden = true
     }
 
     private func renderCancelled(reason: MXTransactionCancelCode) {
@@ -198,7 +218,7 @@ final class DeviceVerificationStartViewController: UIViewController {
     }
 
     @IBAction private func useLegacyVerificationButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .useLegacyVerification)
+        self.viewModel.process(viewAction: .verifyUsingLegacy)
     }
 
     private func cancelButtonAction() {
@@ -212,5 +232,16 @@ extension DeviceVerificationStartViewController: DeviceVerificationStartViewMode
 
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didUpdateViewState viewSate: DeviceVerificationStartViewState) {
         self.render(viewState: viewSate)
+    }
+}
+
+// MARK: - DeviceVerificationStartViewModelViewDelegate
+extension DeviceVerificationStartViewController: MXKEncryptionInfoViewDelegate {
+    func encryptionInfoView(_ encryptionInfoView: MXKEncryptionInfoView!, didDeviceInfoVerifiedChange deviceInfo: MXDeviceInfo!) {
+        self.viewModel.process(viewAction: .verifiedUsingLegacy)
+    }
+
+    func encryptionInfoViewDidClose(_ encryptionInfoView: MXKEncryptionInfoView!) {
+        self.viewModel.process(viewAction: .cancel)
     }
 }

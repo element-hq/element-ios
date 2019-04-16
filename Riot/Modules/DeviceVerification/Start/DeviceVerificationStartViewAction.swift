@@ -20,7 +20,8 @@ import Foundation
 
 /// DeviceVerificationStartViewController view actions exposed to view model
 enum DeviceVerificationStartViewAction {
-    case useLegacyVerification
     case beginVerifying
+    case verifyUsingLegacy
+    case verifiedUsingLegacy
     case cancel
 }

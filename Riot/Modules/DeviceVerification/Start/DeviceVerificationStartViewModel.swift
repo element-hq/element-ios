@@ -52,11 +52,13 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     
     func process(viewAction: DeviceVerificationStartViewAction) {
         switch viewAction {
-        case .useLegacyVerification:
-            self.cancelTransaction()
-            self.coordinatorDelegate?.deviceVerificationStartViewModelUseLegacyVerification(self)
         case .beginVerifying:
             self.beginVerifying()
+        case .verifyUsingLegacy:
+           self.cancelTransaction()
+           self.update(viewState: .verifyUsingLegacy(self.session, self.otherDevice))
+        case .verifiedUsingLegacy:
+            self.coordinatorDelegate?.deviceVerificationStartViewModelUseLegacyVerification(self)
         case .cancel:
             self.cancelTransaction()
             self.coordinatorDelegate?.deviceVerificationStartViewModelDidCancel(self)
