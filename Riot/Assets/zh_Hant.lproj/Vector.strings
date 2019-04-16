@@ -213,9 +213,9 @@
 "search_in_progress" = "搜尋中……";
 // Directory
 "directory_cell_title" = "瀏覽目錄";
-"directory_cell_description" = "％tu 個聊天室";
+"directory_cell_description" = "%tu 個聊天室";
 "directory_search_results_title" = "聊天室目錄搜尋結果";
-"directory_search_results" = "搜尋 %@ 有 ％tu 個結果";
+"directory_search_results" = "搜尋 %@ 有 %tu 個結果";
 "directory_search_results_more_than" = "搜尋 %@ 有超過 %tu 個結果";
 "directory_searching_title" = "搜尋聊天室目錄中……";
 "directory_search_fail" = "無法取得資料";
@@ -437,7 +437,7 @@
 "group_home_one_member_format" = "1 位成員";
 "group_home_multi_members_format" = "%tu 位成員";
 "group_home_one_room_format" = "一個聊天室";
-"group_home_multi_rooms_format" = "％tu 個聊天室";
+"group_home_multi_rooms_format" = "%tu 個聊天室";
 "group_invitation_format" = "%@ 邀請您加入此社群";
 // Group participants
 "group_participants_add_participant" = "新增成員";

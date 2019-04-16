@@ -577,7 +577,7 @@
 // Share extension
 "share_extension_auth_prompt" = "登录主应用程序以共享内容";
 "share_extension_failed_to_encrypt" = "发送失败。 请在主应用程序中检查此房间的加密设置";
-"e2e_room_key_request_message_new_device" = "您添加了一个新设备 '％@' ，它正在请求加密密钥。";
+"e2e_room_key_request_message_new_device" = "您添加了一个新设备 '%@' ，它正在请求加密密钥。";
 "e2e_room_key_request_message" = "您的未验证设备 '%@' 正在请求加密密钥。";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "要继续使用该 %@ 主服务器，您必须查看并同意其服务条款和条件。";
