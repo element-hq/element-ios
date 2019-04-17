@@ -189,7 +189,7 @@ final class DeviceVerificationStartViewController: UIViewController {
         encryptionInfoView.delegate = self
 
         // Skip the intro page
-        encryptionInfoView.onButtonPressed(encryptionInfoView.verifyButton)
+        encryptionInfoView.displayLegacyVerificationScreen()
 
         // Display the legacy verification view in full screen
         // TODO: Do not reuse the legacy EncryptionInfoView and create a screen from scratch
