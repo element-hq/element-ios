@@ -145,7 +145,7 @@
 
 #pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
 
-- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
     [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES];
     deviceVerificationCoordinatorBridgePresenter = nil;

@@ -151,11 +151,11 @@ extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDeleg
     }
 
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
-        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 
     func deviceVerificationStartCoordinatorDidCancel(_ coordinator: DeviceVerificationStartCoordinatorType) {
-        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 }
 
@@ -165,7 +165,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationIncomingCoordinatorDe
     }
 
     func deviceVerificationIncomingCoordinatorDidCancel(_ coordinator: DeviceVerificationIncomingCoordinatorType) {
-        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 }
 
@@ -175,16 +175,16 @@ extension DeviceVerificationCoordinator: DeviceVerificationVerifyCoordinatorDele
     }
 
     func deviceVerificationVerifyCoordinatorDidCancel(_ coordinator: DeviceVerificationVerifyCoordinatorType) {
-        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 }
 
 extension DeviceVerificationCoordinator: DeviceVerificationVerifiedViewControllerDelegate {
     func deviceVerificationVerifiedViewControllerDidTapSetupAction(_ viewController: DeviceVerificationVerifiedViewController) {
-        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 
     func deviceVerificationVerifiedViewControllerDidCancel(_ viewController: DeviceVerificationVerifiedViewController) {
-        self.delegate?.deviceVerificationCoordinatorDidComplete(self)
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 }

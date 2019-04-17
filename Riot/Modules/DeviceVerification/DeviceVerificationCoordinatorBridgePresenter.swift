@@ -19,7 +19,7 @@
 import Foundation
 
 @objc protocol DeviceVerificationCoordinatorBridgePresenterDelegate {
-    func deviceVerificationCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: DeviceVerificationCoordinatorBridgePresenter)
+    func deviceVerificationCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: DeviceVerificationCoordinatorBridgePresenter, otherUserId: String, otherDeviceId: String)
 }
 
 /// DeviceVerificationCoordinatorBridgePresenter enables to start DeviceVerificationCoordinator from a view controller.
@@ -82,7 +82,7 @@ final class DeviceVerificationCoordinatorBridgePresenter: NSObject {
 
 // MARK: - DeviceVerificationCoordinatorDelegate
 extension DeviceVerificationCoordinatorBridgePresenter: DeviceVerificationCoordinatorDelegate {
-    func deviceVerificationCoordinatorDidComplete(_ coordinator: DeviceVerificationCoordinatorType) {
-        self.delegate?.deviceVerificationCoordinatorBridgePresenterDelegateDidComplete(self)
+    func deviceVerificationCoordinatorDidComplete(_ coordinator: DeviceVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
+        self.delegate?.deviceVerificationCoordinatorBridgePresenterDelegateDidComplete(self, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
     }
 }

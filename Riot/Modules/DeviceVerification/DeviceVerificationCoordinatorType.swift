@@ -19,7 +19,7 @@
 import Foundation
 
 protocol DeviceVerificationCoordinatorDelegate: class {
-    func deviceVerificationCoordinatorDidComplete(_ coordinator: DeviceVerificationCoordinatorType)
+    func deviceVerificationCoordinatorDidComplete(_ coordinator: DeviceVerificationCoordinatorType, otherUserId: String, otherDeviceId: String)
 }
 
 /// `DeviceVerificationCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
