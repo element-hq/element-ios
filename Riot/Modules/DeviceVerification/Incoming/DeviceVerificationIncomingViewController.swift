@@ -147,7 +147,7 @@ final class DeviceVerificationIncomingViewController: UIViewController {
             avatarImageView.clipsToBounds = true
         }
 
-        self.userDisplaynameLabel.text = self.viewModel.userDisplayName
+        self.userDisplaynameLabel.text = self.viewModel.userDisplayName ?? self.viewModel.userId
         self.deviceIdLabel.text = self.viewModel.deviceId
     }
 

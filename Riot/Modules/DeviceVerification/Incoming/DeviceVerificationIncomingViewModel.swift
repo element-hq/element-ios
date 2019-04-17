@@ -30,8 +30,8 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     // MARK: Public
 
     var userId: String
-    var userDisplayName: String
-    var avatarUrl: String
+    var userDisplayName: String?
+    var avatarUrl: String?
     var deviceId: String
 
     var mediaManager: MXMediaManager

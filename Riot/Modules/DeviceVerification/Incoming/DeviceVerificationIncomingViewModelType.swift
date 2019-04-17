@@ -31,8 +31,8 @@ protocol DeviceVerificationIncomingViewModelCoordinatorDelegate: class {
 protocol DeviceVerificationIncomingViewModelType {
 
     var userId: String { get }
-    var userDisplayName: String { get }
-    var avatarUrl: String { get }
+    var userDisplayName: String? { get }
+    var avatarUrl: String? { get }
     var deviceId: String { get }
 
     var mediaManager: MXMediaManager { get }
