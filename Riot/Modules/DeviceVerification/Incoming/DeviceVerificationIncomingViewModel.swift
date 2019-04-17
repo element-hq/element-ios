@@ -104,6 +104,11 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
                 return
             }
             self.update(viewState: .cancelled(reason))
+        case MXSASTransactionStateCancelledByMe:
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.update(viewState: .cancelledByMe(reason))
         default:
             break
         }

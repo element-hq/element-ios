@@ -183,7 +183,13 @@ final class DeviceVerificationIncomingViewController: UIViewController {
     }
 
     private func renderCancelledByMe(reason: MXTransactionCancelCode) {
-        // TODO
+        if reason.value != MXTransactionCancelCode.user().value {
+            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
+            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+                self.viewModel.process(viewAction: .cancel)
+            }
+        }
     }
     
     private func render(error: Error) {

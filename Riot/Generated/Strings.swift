@@ -430,6 +430,10 @@ internal enum VectorL10n {
   internal static var deviceVerificationCancelled: String { 
     return VectorL10n.tr("Vector", "device_verification_cancelled") 
   }
+  /// The verification has been cancelled. Reason: %@
+  internal static func deviceVerificationCancelledByMe(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_verification_cancelled_by_me", p1)
+  }
   /// Aeroplane
   internal static var deviceVerificationEmojiAeroplane: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_aeroplane") 
