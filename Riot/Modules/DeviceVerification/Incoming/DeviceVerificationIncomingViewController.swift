@@ -22,10 +22,6 @@ final class DeviceVerificationIncomingViewController: UIViewController {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let aConstant: Int = 666
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -48,7 +44,6 @@ final class DeviceVerificationIncomingViewController: UIViewController {
 
     private var viewModel: DeviceVerificationIncomingViewModelType!
     private var theme: Theme!
-    private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
@@ -72,7 +67,6 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         self.vc_removeBackTitle()
         
         self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -84,8 +78,6 @@ final class DeviceVerificationIncomingViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.keyboardAvoider?.startAvoiding()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -94,8 +86,6 @@ final class DeviceVerificationIncomingViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        self.keyboardAvoider?.stopAvoiding()
     }
     
     override func viewDidLayoutSubviews() {
