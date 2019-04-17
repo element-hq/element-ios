@@ -797,6 +797,7 @@
 "device_verification_title" = "Verify device";
 "device_verification_security_advice" = "For maximum security, we recommend you do this in person or use another trusted means of communication";
 "device_verification_cancelled" = "The other party cancelled the verification.";
+"device_verification_error_cannot_load_device" = "Cannot load device information.";
 
 // Mark: Incoming
 "device_verification_incoming_title" = "Incoming Verification Request";

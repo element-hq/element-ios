@@ -69,45 +69,10 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-
-        guard let otherUser = self.session.user(withUserId: otherUserId) else {
-            return // TODO
-        }
-
-        // Before starting make sure we have device crypto informatino
-        self.session.crypto?.downloadKeys([self.otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap) in
-            guard let sself = self else {
-                return
-            }
-
-            guard let otherDevice = usersDevicesMap?.object(forDevice: sself.otherDeviceId, forUser: sself.otherUserId) else {
-                return // TODO
-            }
-
-            var rootCoordinator: Coordinator & Presentable
-            if let incomingTransaction = sself.incomingTransaction {
-                let coordinator = sself.createDeviceVerificationIncomingCoordinator(otherUser: otherUser, transaction: incomingTransaction)
-                coordinator.delegate = self
-                rootCoordinator = coordinator
-            } else {
-                let coordinator = sself.createDeviceVerificationStartCoordinator(otherUser: otherUser, otherDevice: otherDevice)
-                coordinator.delegate = self
-                rootCoordinator = coordinator
-            }
-
-            // TODO: To remove. Only for dev
-            //rootCoordinator = DeviceVerificationVerifyCoordinator(session: sself.session)
-            //rootCoordinator.delegate = self
-
-            rootCoordinator.start()
-
-            sself.add(childCoordinator: rootCoordinator)
-            sself.navigationRouter.setRootModule(rootCoordinator)
-
-        }, failure: { (error) in
-            // TODO
-        })
-      }
+        let rootViewController = self.createDataLoadingViewController()
+        rootViewController.delegate = self
+        self.navigationRouter.setRootModule(rootViewController)
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
@@ -115,16 +80,28 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     
     // MARK: - Private methods
 
-    private func createDeviceVerificationStartCoordinator(otherUser: MXUser, otherDevice: MXDeviceInfo) -> DeviceVerificationStartCoordinator {
-        let coordinator = DeviceVerificationStartCoordinator(session: self.session, otherUser: otherUser, otherDevice: otherDevice)
-        coordinator.delegate = self
-        return coordinator
+    private func createDataLoadingViewController() -> DeviceVerificationDataLoadingViewController {
+        let viewController = DeviceVerificationDataLoadingViewController.instantiate(session: self.session, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        viewController.delegate = self
+        return viewController
     }
 
-    private func createDeviceVerificationIncomingCoordinator(otherUser: MXUser, transaction: MXIncomingSASTransaction) -> DeviceVerificationIncomingCoordinator {
+    private func showStart(otherUser: MXUser, otherDevice: MXDeviceInfo) {
+        let coordinator = DeviceVerificationStartCoordinator(session: self.session, otherUser: otherUser, otherDevice: otherDevice)
+        coordinator.delegate = self
+        coordinator.start()
+
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.setRootModule(coordinator)
+    }
+
+    private func showIncoming(otherUser: MXUser, transaction: MXIncomingSASTransaction) {
         let coordinator = DeviceVerificationIncomingCoordinator(session: self.session, otherUser: otherUser, transaction: transaction)
         coordinator.delegate = self
-        return coordinator
+        coordinator.start()
+
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.setRootModule(coordinator)
     }
 
     private func showVerify(transaction: MXSASTransaction, animated: Bool) {
@@ -142,6 +119,21 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         let viewController = DeviceVerificationVerifiedViewController.instantiate()
         viewController.delegate = self
         self.navigationRouter.setRootModule(viewController)
+    }
+}
+
+extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingViewControllerDelegate {
+    func deviceVerificationDataLoadingViewControllerDidLoadData(_ viewController: DeviceVerificationDataLoadingViewController, user: MXUser, device: MXDeviceInfo) {
+
+        if let incomingTransaction = self.incomingTransaction {
+            self.showIncoming(otherUser: user, transaction: incomingTransaction)
+        } else {
+            self.showStart(otherUser: user, otherDevice: device)
+        }
+    }
+
+    func deviceVerificationDataLoadingViewControllerDidCancel(_ viewController: DeviceVerificationDataLoadingViewController) {
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 }
 

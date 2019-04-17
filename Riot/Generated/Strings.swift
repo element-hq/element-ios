@@ -686,6 +686,10 @@ internal enum VectorL10n {
   internal static var deviceVerificationEmojiUnicorn: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_unicorn") 
   }
+  /// Cannot load device information.
+  internal static var deviceVerificationErrorCannotLoadDevice: String { 
+    return VectorL10n.tr("Vector", "device_verification_error_cannot_load_device") 
+  }
   /// Verify this user to mark them as trusted. Trusting users gives you extra peace of mind when using end-to-end encrypted messages.
   internal static var deviceVerificationIncomingDescription1: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_description_1") 

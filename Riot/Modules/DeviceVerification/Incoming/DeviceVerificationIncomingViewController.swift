@@ -69,6 +69,7 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.title = VectorL10n.deviceVerificationTitle
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
