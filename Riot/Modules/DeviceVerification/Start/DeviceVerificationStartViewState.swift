@@ -24,5 +24,6 @@ enum DeviceVerificationStartViewState {
     case loaded     // started
     case verifyUsingLegacy(MXSession, MXDeviceInfo)
     case cancelled(MXTransactionCancelCode)
+    case cancelledByMe(MXTransactionCancelCode)
     case error(Error)
 }

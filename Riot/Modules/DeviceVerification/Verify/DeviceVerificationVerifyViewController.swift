@@ -63,6 +63,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         
         self.setupViews()
         self.errorPresenter = MXKErrorAlertPresentation()
+        self.activityPresenter = ActivityIndicatorPresenter()
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)

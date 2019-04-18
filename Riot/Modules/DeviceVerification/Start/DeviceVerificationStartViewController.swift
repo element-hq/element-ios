@@ -153,6 +153,8 @@ final class DeviceVerificationStartViewController: UIViewController {
             self.renderVerifyUsingLegacy(session: session, deviceInfo: deviceInfo)
         case .cancelled(let reason):
             self.renderCancelled(reason: reason)
+        case .cancelledByMe(let reason):
+            self.renderCancelledByMe(reason: reason)
         case .error(let error):
             self.render(error: error)
         }
@@ -193,6 +195,16 @@ final class DeviceVerificationStartViewController: UIViewController {
 
         self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
             self.viewModel.process(viewAction: .cancel)
+        }
+    }
+
+    private func renderCancelledByMe(reason: MXTransactionCancelCode) {
+        if reason.value != MXTransactionCancelCode.user().value {
+            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
+            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+                self.viewModel.process(viewAction: .cancel)
+            }
         }
     }
     
