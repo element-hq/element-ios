@@ -331,7 +331,7 @@ import UIKit
             cell = infoCell
 
         case 3:
-            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row, title: VectorL10n.settingsKeyBackupButtonUse)
+            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row, title: VectorL10n.settingsKeyBackupButtonConnect)
 
         case 4:
             cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
