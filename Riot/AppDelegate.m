@@ -2420,6 +2420,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             {
                 // Check if we need to display a key share dialog
                 [self checkPendingRoomKeyRequests];
+                [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
             }
         }
         
@@ -4099,8 +4100,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
          NSObject *object = notif.userInfo[kMXDeviceVerificationManagerNotificationTransactionKey];
          if ([object isKindOfClass:MXIncomingSASTransaction.class])
          {
-             MXIncomingSASTransaction *transaction = (MXIncomingSASTransaction*)object;
-             [self presentIncomingDeviceVerification:transaction inSession:mxSession];
+             [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
          }
      }];
 }
@@ -4119,11 +4119,27 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
     {
-        NSLog(@"[AppDelegate] checkPendingIncomingDeviceVerificationsInSession called while the app is not active. Ignore it.");
+        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: called while the app is not active. Ignore it.");
         return;
     }
 
-    // TODO
+    [mxSession.crypto.deviceVerificationManager transactions:^(NSArray<MXDeviceVerificationTransaction *> * _Nonnull transactions) {
+
+        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: transactions: %@", transactions);
+
+        for (MXDeviceVerificationTransaction *transaction in transactions)
+        {
+            if (transaction.isIncoming)
+            {
+                MXIncomingSASTransaction *incomingTransaction = (MXIncomingSASTransaction*)transaction;
+                if (incomingTransaction.state == MXSASTransactionStateIncomingShowAccept)
+                {
+                    [self presentIncomingDeviceVerification:incomingTransaction inSession:mxSession];
+                    break;
+                }
+            }
+        }
+    }];
 }
 
 // Check all opened MXSessions for incoming device verification dialog
@@ -4137,6 +4153,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (BOOL)presentIncomingDeviceVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
 {
+    NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: %@", transaction);
+
     BOOL presented = NO;
     if (!deviceVerificationCoordinatorBridgePresenter)
     {
@@ -4149,6 +4167,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
         presented = YES;
     }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: Controller already presented.");
+    }
     return presented;
 }
 
@@ -4157,7 +4179,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES];
     deviceVerificationCoordinatorBridgePresenter = nil;
 
-    [self checkPendingIncomingDeviceVerifications];
+    // TODO: Why?
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self checkPendingIncomingDeviceVerifications];
+    });
 }
 
 #pragma mark - GDPR consent
