@@ -22,6 +22,7 @@ internal enum RiotDefaults {
   internal static let integrationsRestUrl: String = _document["integrationsRestUrl"]
   internal static let integrationsUiUrl: String = _document["integrationsUiUrl"]
   internal static let integrationsWidgetsUrls: [String] = _document["integrationsWidgetsUrls"]
+  internal static let jitsiServerURL: String = _document["jitsiServerURL"]
   internal static let matrixApps: Bool = _document["matrixApps"]
   internal static let maxAllowedMediaCacheSize: Int = _document["maxAllowedMediaCacheSize"]
   internal static let pinRoomsWithMissedNotif: Bool = _document["pinRoomsWithMissedNotif"]
