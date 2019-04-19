@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import <JitsiMeet/JitsiMeet.h>
-
 #import "WidgetManager.h"
 
 @protocol JitsiViewControllerDelegate;
@@ -28,7 +26,7 @@
  
  https://github.com/jitsi/jitsi-meet/tree/master/ios
  */
-@interface JitsiViewController : MXKViewController <JitsiMeetViewDelegate>
+@interface JitsiViewController : MXKViewController
 
 /**
  Returns the `UINib` object initialized for a `JitsiViewController`.
@@ -74,12 +72,6 @@
  The delegate for the view controller.
  */
 @property (nonatomic) id<JitsiViewControllerDelegate> delegate;
-
-#pragma mark - Xib attributes
-
-// The jitsi-meet SDK view
-@property (weak, nonatomic) IBOutlet JitsiMeetView *jitsiMeetView;
-@property (weak, nonatomic) IBOutlet UIButton *backToAppButton;
 
 @end
 
