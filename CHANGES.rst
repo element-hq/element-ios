@@ -9,6 +9,7 @@ Improvements:
  * Notifications: Added titles to notifications on iOS 10+, thanks to @fridtjof (PR #2347).
  * iOS 12 Notification: Group them by room (#2337 and PR #2347 thanks to @fridtjof).
  * Notifications: When navigate to a room, remove associated delivered notifications (#2337).
+ * Jitsi integration: Use the matching WebRTC framework (#1483).
 
 Bug fix:
  * Share extension: Fix a crash when receive a memory warning (PR #2352).
