@@ -30,6 +30,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet weak var decimalLabel: UILabel!
     @IBOutlet weak var emojisCollectionView: UICollectionView!
     @IBOutlet weak var waitingPartnerLabel: UILabel!
     @IBOutlet weak var continueButtonBackgroundView: UIView!
@@ -107,6 +108,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
 
         self.titleLabel.textColor = theme.textPrimaryColor
         self.informationLabel.textColor = theme.textPrimaryColor
+        self.decimalLabel.textColor = theme.textPrimaryColor
         self.waitingPartnerLabel.textColor = theme.textPrimaryColor
 
         self.continueButton.backgroundColor = theme.backgroundColor
@@ -132,7 +134,15 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         
         self.scrollView.keyboardDismissMode = .interactive
 
-        self.titleLabel.text = VectorL10n.deviceVerificationVerifyTitleEmoji
+        if viewModel.emojis != nil {
+            self.decimalLabel.isHidden = true
+            self.titleLabel.text = VectorL10n.deviceVerificationVerifyTitleEmoji
+        } else {
+            self.emojisCollectionView.isHidden = true
+            self.titleLabel.text = VectorL10n.deviceVerificationVerifyTitleNumber
+            self.decimalLabel.text = self.viewModel.decimal
+        }
+
         self.informationLabel.text = VectorL10n.deviceVerificationSecurityAdvice
         self.waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
 

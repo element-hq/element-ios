@@ -36,4 +36,5 @@ protocol DeviceVerificationVerifyViewModelType {
     func process(viewAction: DeviceVerificationVerifyViewAction)
 
     var emojis: [MXEmojiRepresentation]? { get set }
+    var decimal: String? { get set }
 }

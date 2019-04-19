@@ -45,6 +45,15 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3152 3307 8179" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RD6-ue-X5c">
+                                                        <rect key="frame" x="37.5" y="290.5" width="300" height="29"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="300" id="6Q5-M2-ifj"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DtR-jx-UKY">
                                                         <rect key="frame" x="0.0" y="415" width="375" height="50"/>
                                                         <subviews>
@@ -142,8 +151,10 @@
                                                     <constraint firstItem="he8-pl-xE9" firstAttribute="centerX" secondItem="voD-3Q-ryt" secondAttribute="centerX" id="ZP8-mV-RBh"/>
                                                     <constraint firstItem="he8-pl-xE9" firstAttribute="trailing" secondItem="bxI-mu-qng" secondAttribute="trailing" id="Zeg-U8-uis"/>
                                                     <constraint firstAttribute="width" priority="750" constant="375" id="glD-Sz-73O"/>
+                                                    <constraint firstItem="RD6-ue-X5c" firstAttribute="centerY" secondItem="34i-3X-YvQ" secondAttribute="centerY" id="h8F-gc-do4"/>
                                                     <constraint firstItem="DtR-jx-UKY" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" id="hK0-aA-d9H"/>
                                                     <constraint firstAttribute="trailing" secondItem="34i-3X-YvQ" secondAttribute="trailing" id="hg6-kq-M6U"/>
+                                                    <constraint firstItem="RD6-ue-X5c" firstAttribute="centerX" secondItem="34i-3X-YvQ" secondAttribute="centerX" id="lVE-w6-pIa"/>
                                                     <constraint firstItem="DtR-jx-UKY" firstAttribute="top" secondItem="34i-3X-YvQ" secondAttribute="bottom" constant="20" id="liF-Qn-tiw"/>
                                                     <constraint firstItem="34i-3X-YvQ" firstAttribute="top" secondItem="bxI-mu-qng" secondAttribute="bottom" constant="20" id="r7A-9g-Mmb"/>
                                                     <constraint firstItem="he8-pl-xE9" firstAttribute="top" secondItem="voD-3Q-ryt" secondAttribute="top" constant="35" id="s3k-Io-834"/>
@@ -186,6 +197,7 @@
                     <connections>
                         <outlet property="continueButton" destination="DOt-5E-FjF" id="ktw-U4-efQ"/>
                         <outlet property="continueButtonBackgroundView" destination="DtR-jx-UKY" id="9yG-wP-u8A"/>
+                        <outlet property="decimalLabel" destination="RD6-ue-X5c" id="wlK-nl-CB6"/>
                         <outlet property="emojisCollectionView" destination="34i-3X-YvQ" id="wDE-oG-peo"/>
                         <outlet property="informationLabel" destination="bxI-mu-qng" id="pbX-aZ-inC"/>
                         <outlet property="scrollView" destination="9U2-KL-ZVA" id="ojG-2y-X7b"/>
