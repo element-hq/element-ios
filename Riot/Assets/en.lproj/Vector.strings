@@ -802,8 +802,8 @@
 
 // Mark: Incoming
 "device_verification_incoming_title" = "Incoming Verification Request";
-"device_verification_incoming_description_1" = "Verify this user to mark them as trusted. Trusting users gives you extra peace of mind when using end-to-end encrypted messages.";
-"device_verification_incoming_description_2" = "Verifying this user will mark their device has trusted, and also mark your device as trusted to them.";
+"device_verification_incoming_description_1" = "Verify this device to mark it as trusted. Trusting devices of partners gives you extra peace of mind when using end-to-end encrypted messages.";
+"device_verification_incoming_description_2" = "Verifying this device will mark it as trusted, and also mark your device as trusted to the partner.";
 
 // MARK: Start
 "device_verification_start_title" = "Verify by comparing a short text string";
@@ -813,8 +813,8 @@
 "device_verification_start_use_legacy_action" = "Use Legacy Verification";
 
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Verify this user by confirming the following emoji appear on their screen";
-"device_verification_verify_title_number" = "Verify this user by confirming the following number appears on their screen";
+"device_verification_verify_title_emoji" = "Verify this device by confirming the following emoji appear on the screen of the partner";
+"device_verification_verify_title_number" = "Verify this device by confirming the following numbers appear on the screen of the partner";
 "device_verification_verify_wait_partner" = "Waiting for partner to confirm...";
 
 // MARK: Verified

@@ -694,11 +694,11 @@ internal enum VectorL10n {
   internal static var deviceVerificationErrorCannotLoadDevice: String { 
     return VectorL10n.tr("Vector", "device_verification_error_cannot_load_device") 
   }
-  /// Verify this user to mark them as trusted. Trusting users gives you extra peace of mind when using end-to-end encrypted messages.
+  /// Verify this device to mark it as trusted. Trusting devices of partners gives you extra peace of mind when using end-to-end encrypted messages.
   internal static var deviceVerificationIncomingDescription1: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_description_1") 
   }
-  /// Verifying this user will mark their device has trusted, and also mark your device as trusted to them.
+  /// Verifying this device will mark it as trusted, and also mark your device as trusted to the partner.
   internal static var deviceVerificationIncomingDescription2: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_description_2") 
   }
@@ -750,11 +750,11 @@ internal enum VectorL10n {
   internal static var deviceVerificationVerifiedTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_title") 
   }
-  /// Verify this user by confirming the following emoji appear on their screen
+  /// Verify this device by confirming the following emoji appear on the screen of the partner
   internal static var deviceVerificationVerifyTitleEmoji: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_title_emoji") 
   }
-  /// Verify this user by confirming the following number appears on their screen
+  /// Verify this device by confirming the following numbers appear on the screen of the partner
   internal static var deviceVerificationVerifyTitleNumber: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_title_number") 
   }

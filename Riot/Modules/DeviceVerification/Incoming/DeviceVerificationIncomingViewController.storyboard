@@ -55,7 +55,7 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verifying this user will mark their device has trusted, and also mark your device as trusted to them." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yX-xD-4X5">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verifying this device will mark it as trusted, and also mark your device as trusted to the partner." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yX-xD-4X5">
                                                         <rect key="frame" x="20" y="228" width="335" height="80"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="80" id="pta-eP-0yH"/>
@@ -69,7 +69,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="80" id="Y2u-fJ-idS"/>
                                                         </constraints>
-                                                        <string key="text">Verify this user to mark them as trusted. Trusting users gives you extra peace of mind when using end-to-end encrypted messages.</string>
+                                                        <string key="text">Verify this device to mark it as trusted. Trusting devices of partners gives you extra peace of mind when using end-to-end encrypted messages.</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
