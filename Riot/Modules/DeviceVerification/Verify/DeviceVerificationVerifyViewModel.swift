@@ -42,21 +42,6 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
 
         self.registerTransactionDidStateChangeNotification(transaction: transaction)
     }
-
-    // TODO: To remove. Only for dev
-    init(session: MXSession) {
-        self.session = session
-        self.transaction = MXSASTransaction()
-        self.emojis = [
-            MXEmojiRepresentation(emoji: "🙂", andName: "BIGsMileYYELLOW"),
-            MXEmojiRepresentation(emoji: "🤖", andName: "Headphones"),
-            MXEmojiRepresentation(emoji: "🎩", andName: "Butterfly"),
-            MXEmojiRepresentation(emoji: "👓", andName: "Strawberry"),
-            MXEmojiRepresentation(emoji: "🔧", andName: "Light bulb"),
-            MXEmojiRepresentation(emoji: "🎅", andName: "Headphones"),
-            MXEmojiRepresentation(emoji: "👍", andName: "Thumbs up")
-        ]
-    }
     
     deinit {
     }
