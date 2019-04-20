@@ -282,11 +282,11 @@
 "auth_add_email_and_phone_message" = "Füge eine E-Mail-Adresse und eine Telefonnummer hinzu, damit dich andere Benutzer finden können. Über die E-Mail-Adresse kannst du das Passwort zurücksetzen.";
 "auth_use_server_options" = "Individuelle Server Optionen";
 "auth_email_validation_message" = "Prüfe dein E-Mail-Konto um mit der Registrierung fortzufahren";
-"auth_recaptcha_message" = "Dieser Home-Server will sicherstellen dass du kein Robot bist";
+"auth_recaptcha_message" = "Dieser homeserver will sicherstellen dass du kein Robot bist";
 "auth_reset_password_message" = "E-Mail-Adresse angeben, um das Passwort zurückzusetzen:";
 "auth_reset_password_missing_email" = "Die E-Mail-Adresse die mit dem Konto verbunden ist muss eingegeben werden.";
 "auth_reset_password_error_unauthorized" = "Konnte E-Mail-Adresse nicht verifizieren. Klicke den Link in der Registrierungs-E-Mail";
-"auth_reset_password_error_not_found" = "Diese E-Mail-Adresse ist nicht mit einer Matrix-ID auf diesem Home-Server verknüpft.";
+"auth_reset_password_error_not_found" = "Diese E-Mail-Adresse ist nicht mit einer Matrix-ID auf diesem homeserver verknüpft.";
 "auth_reset_password_success_message" = "Dein Passwort wurde zurückgesetzt.\n\nDu wurdest von allen Geräten abgemeldet, diese bekommen jetzt keine Push-Benachrichtigungen mehr. Um diese wiedereinzuschalten, melde dich auf den Geräten erneut an.";
 "auth_add_email_and_phone_warning" = "Registrierung mit E-Mail und Telefonnummer zugleich ist noch nicht unterstützt. Nur die Telefonnummer wird berücksichtigt. Du kannst deine E-Mail-Adresse in deinem Profil ergänzen.";
 "room_creation_make_public_prompt_msg" = "Sicher, dass du diesen Raum öffentlich machen willst? Jeder kann deine Nachrichten lesen und dem Raum beitreten.";
@@ -368,7 +368,7 @@
 "directory_server_picker_title" = "Wähle ein Verzeichnis";
 "directory_server_all_rooms" = "Alle Räume auf %@ Server";
 "directory_server_all_native_rooms" = "Alle nativen Matrix-Räume";
-"directory_server_type_homeserver" = "Gib einen Home-Server ein, um davon öffentliche Räume zu listen";
+"directory_server_type_homeserver" = "Gib einen homeserver ein, um davon öffentliche Räume zu listen";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "or" = "oder";

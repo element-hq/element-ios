@@ -166,7 +166,7 @@ internal enum VectorL10n {
   internal static var authPhonePlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_phone_placeholder") 
   }
-  /// This Home Server would like to make sure you are not a robot
+  /// This homeserver would like to make sure you are not a robot
   internal static var authRecaptchaMessage: String { 
     return VectorL10n.tr("Vector", "auth_recaptcha_message") 
   }
@@ -1878,7 +1878,7 @@ internal enum VectorL10n {
   internal static var settingsClearCache: String { 
     return VectorL10n.tr("Vector", "settings_clear_cache") 
   }
-  /// Home server is %@
+  /// Homeserver is %@
   internal static func settingsConfigHomeServer(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_config_home_server", p1)
   }

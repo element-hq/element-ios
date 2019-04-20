@@ -120,7 +120,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
  
- @param sendLogoutRequest Indicate whether send logout request to home server.
+ @param sendLogoutRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
