@@ -20,12 +20,14 @@
 #import "AppDelegate.h"
 #import "Riot-Swift.h"
 
-@interface UsersDevicesViewController ()
+@interface UsersDevicesViewController () <DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     MXUsersDevicesMap<MXDeviceInfo*> *usersDevices;
     MXSession *mxSession;
 
     void (^onCompleteBlock)(BOOL doneButtonPressed);
+
+    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -214,51 +216,10 @@
     if (verificationStatus == MXDeviceVerified)
     {
         // Prompt the user before marking as verified the device.
-        EncryptionInfoView *encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceTableViewCell.deviceInfo andMatrixSession:mxSession];
-        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
+        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        deviceVerificationCoordinatorBridgePresenter.delegate = self;
 
-        encryptionInfoView.delegate = self;
-
-        // Add shadow on added view
-        encryptionInfoView.layer.cornerRadius = 5;
-        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
-        encryptionInfoView.layer.shadowOpacity = 0.5f;
-
-        // Add the view and define edge constraints
-        [self.view addSubview:encryptionInfoView];
-
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeTop
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.topLayoutGuide
-                                                              attribute:NSLayoutAttributeBottom
-                                                             multiplier:1.0f
-                                                               constant:10.0f]];
-
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeBottom
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.bottomLayoutGuide
-                                                              attribute:NSLayoutAttributeTop
-                                                             multiplier:1.0f
-                                                               constant:-10.0f]];
-
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
-                                                              attribute:NSLayoutAttributeLeading
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeLeading
-                                                             multiplier:1.0f
-                                                               constant:-10.0f]];
-
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1.0f
-                                                               constant:10.0f]];
-        [self.view setNeedsUpdateConstraints];
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:self otherUserId:deviceTableViewCell.deviceInfo.userId otherDeviceId:deviceTableViewCell.deviceInfo.deviceId animated:YES];
     }
     else
     {
@@ -274,16 +235,30 @@
     }
 }
 
-#pragma mark - MXKEncryptionInfoViewDelegate
+#pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
 
-- (void)encryptionInfoView:(MXKEncryptionInfoView *)encryptionInfoView didDeviceInfoVerifiedChange:(MXDeviceInfo *)deviceInfo
+- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    // Update our map
-    MXDeviceInfo *device = [usersDevices objectForDevice:deviceInfo.deviceId forUser:deviceInfo.userId];
-    device.verified = deviceInfo.verified;
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    deviceVerificationCoordinatorBridgePresenter = nil;
 
-    [self.tableView reloadData];
+    // Update our map
+    MXWeakify(self);
+    [mxSession.crypto downloadKeys:@[otherUserId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
+        MXStrongifyAndReturnIfNil(self);
+
+        MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:otherDeviceId forUser:otherUserId];
+
+        MXDeviceInfo *device = [self->usersDevices objectForDevice:otherDeviceId forUser:otherUserId];
+        device.verified = deviceInfo.verified;
+
+        [self.tableView reloadData];
+
+    } failure:^(NSError *error) {
+        // Should not happen (the device is in the crypto db)
+    }];
 }
+
 
 #pragma mark - User actions
 

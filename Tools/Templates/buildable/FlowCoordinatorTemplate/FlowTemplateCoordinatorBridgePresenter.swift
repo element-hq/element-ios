@@ -59,12 +59,16 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
         self.coordinator = flowTemplateCoordinator
     }
     
-    func dismiss(animated: Bool) {
+    func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return
-        }        
+        }
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil
+
+            if let completion = completion {
+                completion()
+            }
         }
     }
 }

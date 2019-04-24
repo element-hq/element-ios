@@ -95,7 +95,7 @@ final class KeyBackupSetupIntroViewController: UIViewController {
         self.titleLabel.text = VectorL10n.keyBackupSetupIntroTitle
         self.informationLabel.text = VectorL10n.keyBackupSetupIntroInfo
         
-        let setupTitle = self.isABackupAlreadyExists ? VectorL10n.keyBackupSetupIntroSetupActionWithExistingBackup : VectorL10n.keyBackupSetupIntroSetupActionWithoutExistingBackup
+        let setupTitle = self.isABackupAlreadyExists ? VectorL10n.keyBackupSetupIntroSetupConnectActionWithExistingBackup : VectorL10n.keyBackupSetupIntroSetupActionWithoutExistingBackup
         
         self.setUpButton.setTitle(setupTitle, for: .normal)
         

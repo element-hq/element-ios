@@ -83,7 +83,7 @@ final class KeyBackupBannerCell: MXKTableViewCell {
             subtitle = VectorL10n.keyBackupSetupBannerSubtitle
         case .recover:
             title = VectorL10n.keyBackupRecoverBannerTitle
-            subtitle = VectorL10n.keyBackupRecoverBannerSubtitle
+            subtitle = VectorL10n.keyBackupRecoverConnentBannerSubtitle
         case .none:
             title = nil
             subtitle = nil
