@@ -10,6 +10,7 @@ Improvements:
  * iOS 12 Notification: Group them by room (#2337 and PR #2347 thanks to @fridtjof).
  * Notifications: When navigate to a room, remove associated delivered notifications (#2337).
  * Key backup: Adjust wording for untrusted backup to match Riot Web.
+ * Jitsi integration: Use the matching WebRTC framework (#1483).
 
 Bug fix:
  * Share extension: Fix a crash when receive a memory warning (PR #2352).

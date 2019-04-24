@@ -491,6 +491,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
+    
+    // Setup Jitsi
+    
+    NSString *jitsiServerStringURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
+    NSURL *jitsiServerURL = [NSURL URLWithString:jitsiServerStringURL];
+    
+    [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
+
+    [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 
@@ -708,7 +717,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] applicationDidReceiveMemoryWarning");
 }
 
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
 {
     BOOL continueUserActivity = NO;
     
@@ -2784,6 +2793,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                               options:NSKeyValueObservingOptionNew
                                                               context:NULL];
                 }
+                else
+                {
+                    [self enableCallKit:NO forCallManager:mxSession.callManager];
+                }
             }
             else
             {
@@ -3461,11 +3474,20 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)enableCallKit:(BOOL)enable forCallManager:(MXCallManager *)callManager
 {
+    JitsiService.shared.enableCallKit = enable;
+    
     if (enable)
     {
         // Create adapter for Riot
         MXCallKitConfiguration *callKitConfiguration = [[MXCallKitConfiguration alloc] init];
         callKitConfiguration.iconName = @"riot_icon_callkit";
+        
+        NSData *riotCallKitIconData = UIImagePNGRepresentation([UIImage imageNamed:callKitConfiguration.iconName]);
+        
+        [JitsiService.shared configureCallKitProviderWithLocalizedName:callKitConfiguration.name
+                                                          ringtoneName:callKitConfiguration.ringtoneName
+                                                 iconTemplateImageData:riotCallKitIconData];
+        
         MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] initWithConfiguration:callKitConfiguration];
         
         id<MXCallAudioSessionConfigurator> audioSessionConfigurator;

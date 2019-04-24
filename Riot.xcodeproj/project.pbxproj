@@ -57,8 +57,6 @@
 		3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */; };
 		3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */; };
 		3232ABC2225B996200AD6A5C /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABC1225B996100AD6A5C /* Themable.swift */; };
-		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
-		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		324A204F225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */; };
 		324A2050225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */; };
 		324A2051225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */; };
@@ -122,6 +120,7 @@
 		B109D6F1222D8C400061B6D9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109D6F0222D8C400061B6D9 /* UIApplication.swift */; };
 		B10B3B5B2201DD740072C76B /* KeyBackupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10B3B592201DD740072C76B /* KeyBackupBannerCell.swift */; };
 		B10B3B5C2201DD740072C76B /* KeyBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10B3B5A2201DD740072C76B /* KeyBackupBannerCell.xib */; };
+		B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10CFBC22268D99D00A5842E /* JitsiService.swift */; };
 		B1107EC82200B0720038014B /* KeyBackupRecoverSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */; };
 		B1107ECA2200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1107EC92200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard */; };
 		B110871D21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110871C21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift */; };
@@ -508,17 +507,6 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3233F7481F3497E2006ACA81 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -567,7 +555,6 @@
 		3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewAction.swift; sourceTree = "<group>"; };
 		3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		3232ABC1225B996100AD6A5C /* Themable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themable.swift; sourceTree = "<group>"; };
-		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationIncomingViewController.storyboard; sourceTree = "<group>"; };
 		324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewController.swift; sourceTree = "<group>"; };
 		324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewState.swift; sourceTree = "<group>"; };
@@ -654,6 +641,7 @@
 		B109D6F0222D8C400061B6D9 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		B10B3B592201DD740072C76B /* KeyBackupBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupBannerCell.swift; sourceTree = "<group>"; };
 		B10B3B5A2201DD740072C76B /* KeyBackupBannerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyBackupBannerCell.xib; sourceTree = "<group>"; };
+		B10CFBC22268D99D00A5842E /* JitsiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiService.swift; sourceTree = "<group>"; };
 		B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverSuccessViewController.swift; sourceTree = "<group>"; };
 		B1107EC92200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupRecoverSuccessViewController.storyboard; sourceTree = "<group>"; };
 		B110871C21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupPassphraseViewState.swift; sourceTree = "<group>"; };
@@ -1225,7 +1213,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */,
 				89C94E649229EA68AE787E9E /* Pods_RiotPods_Riot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1402,22 +1389,6 @@
 				3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		3233F7291F31F3B4006ACA81 /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				3233F7431F3497DA006ACA81 /* jitsi-meet */,
-			);
-			path = libs;
-			sourceTree = "<group>";
-		};
-		3233F7431F3497DA006ACA81 /* jitsi-meet */ = {
-			isa = PBXGroup;
-			children = (
-				3233F7441F3497DA006ACA81 /* JitsiMeet.framework */,
-			);
-			path = "jitsi-meet";
 			sourceTree = "<group>";
 		};
 		324A2046225FC571004FE8B0 /* Incoming */ = {
@@ -2439,9 +2410,10 @@
 		B1B5576920EE702800210D55 /* Jitsi */ = {
 			isa = PBXGroup;
 			children = (
+				B10CFBC22268D99D00A5842E /* JitsiService.swift */,
 				B1B5576A20EE702800210D55 /* JitsiViewController.h */,
-				B1B5576B20EE702800210D55 /* JitsiViewController.xib */,
 				B1B5576C20EE702800210D55 /* JitsiViewController.m */,
+				B1B5576B20EE702800210D55 /* JitsiViewController.xib */,
 			);
 			path = Jitsi;
 			sourceTree = "<group>";
@@ -3097,7 +3069,6 @@
 				B1B5597C20EFC3DF00210D55 /* Managers */,
 				B1B5567620EE6C4C00210D55 /* Modules */,
 				F083BC0F1E7009EC00A9B29C /* Utils */,
-				3233F7291F31F3B4006ACA81 /* libs */,
 				F083BB0E1E7009EC00A9B29C /* Assets */,
 				B169329D20F3A21B00746532 /* SupportingFiles */,
 			);
@@ -3278,7 +3249,6 @@
 				F094A99F1B78D8F000B1FBBF /* Frameworks */,
 				F094A9A01B78D8F000B1FBBF /* Resources */,
 				24CBEC5D1F0EAD310093EABB /* Embed App Extensions */,
-				3233F7481F3497E2006ACA81 /* Embed Frameworks */,
 				5C50A1C53E6A24258653D624 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -3608,13 +3578,14 @@
 				"${BUILT_PRODUCTS_DIR}/GBDeviceInfo/GBDeviceInfo.framework",
 				"${BUILT_PRODUCTS_DIR}/GZIP/GZIP.framework",
 				"${BUILT_PRODUCTS_DIR}/HPGrowingTextView/HPGrowingTextView.framework",
+				"${PODS_ROOT}/JitsiMeetSDK/Frameworks/JitsiMeet.framework",
+				"${PODS_ROOT}/JitsiMeetSDK/Frameworks/WebRTC.framework",
 				"${BUILT_PRODUCTS_DIR}/MatrixKit/MatrixKit.framework",
-				"${BUILT_PRODUCTS_DIR}/MatrixSDK/MatrixSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/MatrixSDK.common-JingleCallStack/MatrixSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/OLMKit/OLMKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PiwikTracker/PiwikTracker.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/Reusable/Reusable.framework",
-				"${PODS_ROOT}/WebRTC/WebRTC.framework",
 				"${BUILT_PRODUCTS_DIR}/cmark/cmark.framework",
 				"${BUILT_PRODUCTS_DIR}/libPhoneNumber-iOS/libPhoneNumber_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/libbase58/libbase58.framework",
@@ -3630,13 +3601,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GBDeviceInfo.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GZIP.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPGrowingTextView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JitsiMeet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MatrixKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MatrixSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OLMKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PiwikTracker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reusable.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cmark.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libPhoneNumber_iOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libbase58.framework",
@@ -3842,6 +3814,7 @@
 				B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */,
 				32F6B9692270623100BBA352 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
+				B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */,
 				B1B558C120EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				B1B5593B20EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
@@ -4417,7 +4390,7 @@
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
 				INFOPLIST_FILE = Riot/SupportingFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4458,7 +4431,7 @@
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
 				INFOPLIST_FILE = Riot/SupportingFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
