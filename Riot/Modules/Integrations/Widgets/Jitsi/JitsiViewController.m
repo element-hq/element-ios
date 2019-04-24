@@ -172,7 +172,7 @@ static const NSString *kJitsiDataErrorKey = @"error";
 {
     if (data[kJitsiDataErrorKey] != nil)
     {
-        NSLog(@"[JitsiViewController] conferenceFailed - data: %@", data);
+        NSLog(@"[JitsiViewController] conferenceTerminated - data: %@", data);
     }
     else
     {
