@@ -29,12 +29,12 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     
     // MARK: Public
 
-    var userId: String
-    var userDisplayName: String?
-    var avatarUrl: String?
-    var deviceId: String
+    let userId: String
+    let userDisplayName: String?
+    let avatarUrl: String?
+    let deviceId: String
 
-    var mediaManager: MXMediaManager
+    let mediaManager: MXMediaManager
 
     weak var viewDelegate: DeviceVerificationIncomingViewModelViewDelegate?
     weak var coordinatorDelegate: DeviceVerificationIncomingViewModelCoordinatorDelegate?

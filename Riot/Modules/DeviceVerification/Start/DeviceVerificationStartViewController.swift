@@ -30,11 +30,11 @@ final class DeviceVerificationStartViewController: UIViewController {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet weak var waitingPartnerLabel: UILabel!
-    @IBOutlet weak var useLegacyVerificationLabel: UILabel!
-    @IBOutlet weak var verifyButtonBackgroundView: UIView!
+    @IBOutlet private weak var waitingPartnerLabel: UILabel!
+    @IBOutlet private weak var useLegacyVerificationLabel: UILabel!
+    @IBOutlet private weak var verifyButtonBackgroundView: UIView!
     @IBOutlet private weak var verifyButton: UIButton!
-    @IBOutlet weak var useLegacyVerificationButton: UIButton!
+    @IBOutlet private weak var useLegacyVerificationButton: UIButton!
 
     // MARK: Private
 
