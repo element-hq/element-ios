@@ -368,7 +368,7 @@
 "directory_server_picker_title" = "Wähle ein Verzeichnis";
 "directory_server_all_rooms" = "Alle Räume auf %@ Server";
 "directory_server_all_native_rooms" = "Alle nativen Matrix-Räume";
-"directory_server_type_homeserver" = "Gib einen homeserver ein, um davon öffentliche Räume zu listen";
+"directory_server_type_homeserver" = "Gib einen Homeserver ein, um davon öffentliche Räume zu listen";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "or" = "oder";
