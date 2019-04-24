@@ -431,11 +431,11 @@
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
 "settings_key_backup_info_checking" = "Checking...";
 "settings_key_backup_info_none" = "Your keys are not being backed up from this device.";
-"settings_key_backup_info_signout_warning" = "Back up your keys before signing out to avoid losing them.";
+"settings_key_backup_info_signout_warning" = "Connect this device to key backup before signing out to avoid losing any keys that may only be on this device.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
 "settings_key_backup_info_valid" = "This device is backing up your keys.";
-"settings_key_backup_info_not_valid" = "This device is not backing up your keys.";
+"settings_key_backup_info_not_valid" = "This device is not backing up your keys, but you do have an existing backup you can restore from and add to going forward.";
 "settings_key_backup_info_progress" = "Backing up %@ keys...";
 "settings_key_backup_info_progress_done" = "All keys backed up";
 
@@ -449,7 +449,7 @@
 "settings_key_backup_button_create" = "Start using Key Backup";
 "settings_key_backup_button_restore" = "Restore from Backup";
 "settings_key_backup_button_delete" = "Delete Backup";
-"settings_key_backup_button_use" = "Use key backup";
+"settings_key_backup_button_connect" = "Connect this device to Key Backup";
 "settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
 

@@ -2006,6 +2006,10 @@ internal enum VectorL10n {
   internal static var settingsKeyBackup: String { 
     return VectorL10n.tr("Vector", "settings_key_backup") 
   }
+  /// Connect this device to Key Backup
+  internal static var settingsKeyBackupButtonConnect: String { 
+    return VectorL10n.tr("Vector", "settings_key_backup_button_connect") 
+  }
   /// Start using Key Backup
   internal static var settingsKeyBackupButtonCreate: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_create") 
@@ -2017,10 +2021,6 @@ internal enum VectorL10n {
   /// Restore from Backup
   internal static var settingsKeyBackupButtonRestore: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_restore") 
-  }
-  /// Use key backup
-  internal static var settingsKeyBackupButtonUse: String { 
-    return VectorL10n.tr("Vector", "settings_key_backup_button_use") 
   }
   /// Are you sure? You will lose your encrypted messages if your keys are not backed up properly.
   internal static var settingsKeyBackupDeleteConfirmationPromptMsg: String { 
@@ -2046,7 +2046,7 @@ internal enum VectorL10n {
   internal static var settingsKeyBackupInfoNone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_none") 
   }
-  /// This device is not backing up your keys.
+  /// This device is not backing up your keys, but you do have an existing backup you can restore from and add to going forward.
   internal static var settingsKeyBackupInfoNotValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_not_valid") 
   }
@@ -2058,7 +2058,7 @@ internal enum VectorL10n {
   internal static var settingsKeyBackupInfoProgressDone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress_done") 
   }
-  /// Back up your keys before signing out to avoid losing them.
+  /// Connect this device to key backup before signing out to avoid losing any keys that may only be on this device.
   internal static var settingsKeyBackupInfoSignoutWarning: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_signout_warning") 
   }
