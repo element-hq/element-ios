@@ -13,6 +13,17 @@ To create a screen from this template (before it becomes an Xcode template):
 This will create ScreenFolder within the Riot/Modules. Files inside will be named `MyScreenNameXxx`.
 
 
+# SimpleScreenTemplate
+This is the boilerplate to create a simple screen.
+
+To create a screen from this template (before it becomes an Xcode template):
+
+- `./createSimpleScreen.sh ScreenFolder MyScreenName`
+- Import the created folder in the Xcode project
+
+This will create ScreenFolder within the Riot/Modules. Files inside will be named `MyScreenNameXxx`.
+
+
 # FlowCoordinatorTemplate
 The boilerplate to create a root coordinator and its presenter bridge that can be used from Objective-C.
  

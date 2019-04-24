@@ -36,17 +36,58 @@
 		3232AB502256558300AD6A5C /* TemplateScreenViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB452256558300AD6A5C /* TemplateScreenViewState.swift */; };
 		3232AB512256558300AD6A5C /* TemplateScreenViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB462256558300AD6A5C /* TemplateScreenViewAction.swift */; };
 		3232AB522256558300AD6A5C /* TemplateScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB472256558300AD6A5C /* TemplateScreenViewModel.swift */; };
+		3232ABA1225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB95225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift */; };
+		3232ABA2225730E100AD6A5C /* DeviceVerificationStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB97225730E100AD6A5C /* DeviceVerificationStartViewController.storyboard */; };
+		3232ABA3225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB98225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift */; };
+		3232ABA4225730E100AD6A5C /* DeviceVerificationStartViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB99225730E100AD6A5C /* DeviceVerificationStartViewAction.swift */; };
+		3232ABA5225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB9A225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift */; };
+		3232ABA6225730E100AD6A5C /* DeviceVerificationStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB9B225730E100AD6A5C /* DeviceVerificationStartViewController.swift */; };
+		3232ABA7225730E100AD6A5C /* DeviceVerificationStartCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB9C225730E100AD6A5C /* DeviceVerificationStartCoordinator.swift */; };
+		3232ABA8225730E100AD6A5C /* DeviceVerificationStartViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB9D225730E100AD6A5C /* DeviceVerificationStartViewState.swift */; };
+		3232ABA9225730E100AD6A5C /* DeviceVerificationStartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB9E225730E100AD6A5C /* DeviceVerificationStartViewModel.swift */; };
+		3232ABAA225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232AB9F225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift */; };
+		3232ABAB225730E100AD6A5C /* DeviceVerificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABA0225730E100AD6A5C /* DeviceVerificationCoordinator.swift */; };
+		3232ABB52257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABAD2257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift */; };
+		3232ABB62257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3232ABAE2257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard */; };
+		3232ABB72257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABAF2257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift */; };
+		3232ABB82257BE6500AD6A5C /* DeviceVerificationVerifyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB02257BE6400AD6A5C /* DeviceVerificationVerifyCoordinator.swift */; };
+		3232ABB92257BE6500AD6A5C /* DeviceVerificationVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB12257BE6400AD6A5C /* DeviceVerificationVerifyViewController.swift */; };
+		3232ABBA2257BE6500AD6A5C /* DeviceVerificationVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB22257BE6400AD6A5C /* DeviceVerificationVerifyViewModel.swift */; };
+		3232ABBB2257BE6500AD6A5C /* DeviceVerificationVerifyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */; };
+		3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */; };
+		3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */; };
+		3232ABC2225B996200AD6A5C /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABC1225B996100AD6A5C /* Themable.swift */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		324A204F225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */; };
+		324A2050225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */; };
+		324A2051225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */; };
+		324A2052225FC571004FE8B0 /* DeviceVerificationIncomingViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204A225FC571004FE8B0 /* DeviceVerificationIncomingViewAction.swift */; };
+		324A2053225FC571004FE8B0 /* DeviceVerificationIncomingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204B225FC571004FE8B0 /* DeviceVerificationIncomingViewModel.swift */; };
+		324A2054225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */; };
+		324A2055225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */; };
+		324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
 		3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3281BCF62201FA4200F4A383 /* UIControl.swift */; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
+		32891D6B2264CBA300C82226 /* SimpleScreenTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D692264CBA300C82226 /* SimpleScreenTemplateViewController.swift */; };
+		32891D6C2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */; };
+		32891D702264DF7B00C82226 /* DeviceVerificationVerifiedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D6E2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.storyboard */; };
+		32891D712264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D6F2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift */; };
+		32891D75226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D73226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift */; };
+		32891D76226728EF00C82226 /* DeviceVerificationDataLoadingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D74226728EE00C82226 /* DeviceVerificationDataLoadingViewController.storyboard */; };
 		32B1FEDB21A46F2C00637127 /* TermsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32B1FEDA21A46F2C00637127 /* TermsView.xib */; };
 		32BF994F21FA29A400698084 /* SettingsKeyBackupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF994E21FA29A400698084 /* SettingsKeyBackupViewModel.swift */; };
 		32BF995121FA29DC00698084 /* SettingsKeyBackupViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995021FA29DC00698084 /* SettingsKeyBackupViewModelType.swift */; };
 		32BF995321FA2A1300698084 /* SettingsKeyBackupViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995221FA2A1300698084 /* SettingsKeyBackupViewState.swift */; };
 		32BF995521FA2AB700698084 /* SettingsKeyBackupViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995421FA2AB700698084 /* SettingsKeyBackupViewAction.swift */; };
 		32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995621FB07A400698084 /* SettingsKeyBackupTableViewSection.swift */; };
+		32F6B9692270623100BBA352 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9632270623000BBA352 /* DeviceVerificationDataLoadingCoordinator.swift */; };
+		32F6B96A2270623100BBA352 /* DeviceVerificationDataLoadingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9642270623100BBA352 /* DeviceVerificationDataLoadingViewState.swift */; };
+		32F6B96B2270623100BBA352 /* DeviceVerificationDataLoadingViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9652270623100BBA352 /* DeviceVerificationDataLoadingViewAction.swift */; };
+		32F6B96C2270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9662270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift */; };
+		32F6B96D2270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9672270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift */; };
+		32F6B96E2270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9682270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift */; };
 		358DB9429359F97520545D35 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5856BA7A55E53C0AEAFC084 /* Pods_RiotPods_RiotShareExtension.framework */; };
 		89C94E649229EA68AE787E9E /* Pods_RiotPods_Riot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2510A69B4A681C1FEC36E848 /* Pods_RiotPods_Riot.framework */; };
 		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
@@ -505,7 +546,36 @@
 		3232AB452256558300AD6A5C /* TemplateScreenViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewState.swift; sourceTree = "<group>"; };
 		3232AB462256558300AD6A5C /* TemplateScreenViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewAction.swift; sourceTree = "<group>"; };
 		3232AB472256558300AD6A5C /* TemplateScreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewModel.swift; sourceTree = "<group>"; };
+		3232AB95225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationCoordinatorType.swift; sourceTree = "<group>"; };
+		3232AB97225730E100AD6A5C /* DeviceVerificationStartViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationStartViewController.storyboard; sourceTree = "<group>"; };
+		3232AB98225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationStartCoordinatorType.swift; sourceTree = "<group>"; };
+		3232AB99225730E100AD6A5C /* DeviceVerificationStartViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationStartViewAction.swift; sourceTree = "<group>"; };
+		3232AB9A225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationStartViewModelType.swift; sourceTree = "<group>"; };
+		3232AB9B225730E100AD6A5C /* DeviceVerificationStartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationStartViewController.swift; sourceTree = "<group>"; };
+		3232AB9C225730E100AD6A5C /* DeviceVerificationStartCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationStartCoordinator.swift; sourceTree = "<group>"; };
+		3232AB9D225730E100AD6A5C /* DeviceVerificationStartViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationStartViewState.swift; sourceTree = "<group>"; };
+		3232AB9E225730E100AD6A5C /* DeviceVerificationStartViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationStartViewModel.swift; sourceTree = "<group>"; };
+		3232AB9F225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		3232ABA0225730E100AD6A5C /* DeviceVerificationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationCoordinator.swift; sourceTree = "<group>"; };
+		3232ABAD2257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyCoordinatorType.swift; sourceTree = "<group>"; };
+		3232ABAE2257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationVerifyViewController.storyboard; sourceTree = "<group>"; };
+		3232ABAF2257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewModelType.swift; sourceTree = "<group>"; };
+		3232ABB02257BE6400AD6A5C /* DeviceVerificationVerifyCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyCoordinator.swift; sourceTree = "<group>"; };
+		3232ABB12257BE6400AD6A5C /* DeviceVerificationVerifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewController.swift; sourceTree = "<group>"; };
+		3232ABB22257BE6400AD6A5C /* DeviceVerificationVerifyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewModel.swift; sourceTree = "<group>"; };
+		3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewState.swift; sourceTree = "<group>"; };
+		3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewAction.swift; sourceTree = "<group>"; };
+		3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmojiCollectionViewCell.swift; sourceTree = "<group>"; };
+		3232ABC1225B996100AD6A5C /* Themable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themable.swift; sourceTree = "<group>"; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
+		324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationIncomingViewController.storyboard; sourceTree = "<group>"; };
+		324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewController.swift; sourceTree = "<group>"; };
+		324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewState.swift; sourceTree = "<group>"; };
+		324A204A225FC571004FE8B0 /* DeviceVerificationIncomingViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewAction.swift; sourceTree = "<group>"; };
+		324A204B225FC571004FE8B0 /* DeviceVerificationIncomingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewModel.swift; sourceTree = "<group>"; };
+		324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinatorType.swift; sourceTree = "<group>"; };
+		324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewModelType.swift; sourceTree = "<group>"; };
+		324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinator.swift; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
@@ -513,6 +583,12 @@
 		3275FD8B21A5A2C500B9C13D /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
 		3281BCF62201FA4200F4A383 /* UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
 		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = postMessageAPI.js; sourceTree = "<group>"; };
+		32891D692264CBA300C82226 /* SimpleScreenTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleScreenTemplateViewController.swift; sourceTree = "<group>"; };
+		32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SimpleScreenTemplateViewController.storyboard; sourceTree = "<group>"; };
+		32891D6E2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationVerifiedViewController.storyboard; sourceTree = "<group>"; };
+		32891D6F2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifiedViewController.swift; sourceTree = "<group>"; };
+		32891D73226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewController.swift; sourceTree = "<group>"; };
+		32891D74226728EE00C82226 /* DeviceVerificationDataLoadingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationDataLoadingViewController.storyboard; sourceTree = "<group>"; };
 		32B1FEDA21A46F2C00637127 /* TermsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TermsView.xib; sourceTree = "<group>"; };
 		32BDC9A1211C2C870064AF51 /* zh_Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_Hant; path = zh_Hant.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32BDC9A2211C2C870064AF51 /* zh_Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_Hant; path = zh_Hant.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -528,6 +604,12 @@
 		32D7159E2146CC6F00DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Vector.strings; sourceTree = "<group>"; };
 		32D7159F2146CC7F00DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		32D715A02146CC8800DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		32F6B9632270623000BBA352 /* DeviceVerificationDataLoadingCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingCoordinator.swift; sourceTree = "<group>"; };
+		32F6B9642270623100BBA352 /* DeviceVerificationDataLoadingViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewState.swift; sourceTree = "<group>"; };
+		32F6B9652270623100BBA352 /* DeviceVerificationDataLoadingViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewAction.swift; sourceTree = "<group>"; };
+		32F6B9662270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingCoordinatorType.swift; sourceTree = "<group>"; };
+		32F6B9672270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewModel.swift; sourceTree = "<group>"; };
+		32F6B9682270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewModelType.swift; sourceTree = "<group>"; };
 		3998C51E0196D42B366E0900 /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		3D78489021AC9E6400B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3D78489121AC9E6500B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1175,6 +1257,7 @@
 				32242F0D21E8FBA900725742 /* Theme.swift */,
 				32242F1121E8FBA900725742 /* ThemeService.h */,
 				32242F0E21E8FBA900725742 /* Themes */,
+				3232ABC1225B996100AD6A5C /* Themable.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -1237,6 +1320,7 @@
 			children = (
 				3232AB3B2256558300AD6A5C /* FlowCoordinatorTemplate */,
 				3232AB3F2256558300AD6A5C /* ScreenTemplate */,
+				32891D682264C6A000C82226 /* SimpleScreenTemplate */,
 			);
 			path = buildable;
 			sourceTree = "<group>";
@@ -1266,6 +1350,60 @@
 			path = ScreenTemplate;
 			sourceTree = "<group>";
 		};
+		3232AB94225730E100AD6A5C /* DeviceVerification */ = {
+			isa = PBXGroup;
+			children = (
+				324A2046225FC571004FE8B0 /* Incoming */,
+				32891D72226728EE00C82226 /* Loading */,
+				3232AB96225730E100AD6A5C /* Start */,
+				32891D6D2264DF7B00C82226 /* Verified */,
+				3232ABAC2257BE6400AD6A5C /* Verify */,
+				3232AB95225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift */,
+				3232AB9F225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift */,
+				3232ABA0225730E100AD6A5C /* DeviceVerificationCoordinator.swift */,
+			);
+			path = DeviceVerification;
+			sourceTree = "<group>";
+		};
+		3232AB96225730E100AD6A5C /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				3232AB97225730E100AD6A5C /* DeviceVerificationStartViewController.storyboard */,
+				3232AB98225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift */,
+				3232AB99225730E100AD6A5C /* DeviceVerificationStartViewAction.swift */,
+				3232AB9A225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift */,
+				3232AB9B225730E100AD6A5C /* DeviceVerificationStartViewController.swift */,
+				3232AB9C225730E100AD6A5C /* DeviceVerificationStartCoordinator.swift */,
+				3232AB9D225730E100AD6A5C /* DeviceVerificationStartViewState.swift */,
+				3232AB9E225730E100AD6A5C /* DeviceVerificationStartViewModel.swift */,
+			);
+			path = Start;
+			sourceTree = "<group>";
+		};
+		3232ABAC2257BE6400AD6A5C /* Verify */ = {
+			isa = PBXGroup;
+			children = (
+				3232ABBE22594B5C00AD6A5C /* Views */,
+				3232ABAD2257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift */,
+				3232ABAE2257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard */,
+				3232ABAF2257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift */,
+				3232ABB02257BE6400AD6A5C /* DeviceVerificationVerifyCoordinator.swift */,
+				3232ABB12257BE6400AD6A5C /* DeviceVerificationVerifyViewController.swift */,
+				3232ABB22257BE6400AD6A5C /* DeviceVerificationVerifyViewModel.swift */,
+				3232ABB32257BE6400AD6A5C /* DeviceVerificationVerifyViewState.swift */,
+				3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */,
+			);
+			path = Verify;
+			sourceTree = "<group>";
+		};
+		3232ABBE22594B5C00AD6A5C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		3233F7291F31F3B4006ACA81 /* libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1280,6 +1418,54 @@
 				3233F7441F3497DA006ACA81 /* JitsiMeet.framework */,
 			);
 			path = "jitsi-meet";
+			sourceTree = "<group>";
+		};
+		324A2046225FC571004FE8B0 /* Incoming */ = {
+			isa = PBXGroup;
+			children = (
+				324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */,
+				324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */,
+				324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */,
+				324A204A225FC571004FE8B0 /* DeviceVerificationIncomingViewAction.swift */,
+				324A204B225FC571004FE8B0 /* DeviceVerificationIncomingViewModel.swift */,
+				324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */,
+				324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */,
+				324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */,
+			);
+			path = Incoming;
+			sourceTree = "<group>";
+		};
+		32891D682264C6A000C82226 /* SimpleScreenTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */,
+				32891D692264CBA300C82226 /* SimpleScreenTemplateViewController.swift */,
+			);
+			path = SimpleScreenTemplate;
+			sourceTree = "<group>";
+		};
+		32891D6D2264DF7B00C82226 /* Verified */ = {
+			isa = PBXGroup;
+			children = (
+				32891D6E2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.storyboard */,
+				32891D6F2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift */,
+			);
+			path = Verified;
+			sourceTree = "<group>";
+		};
+		32891D72226728EE00C82226 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				32F6B9632270623000BBA352 /* DeviceVerificationDataLoadingCoordinator.swift */,
+				32F6B9662270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift */,
+				32F6B9652270623100BBA352 /* DeviceVerificationDataLoadingViewAction.swift */,
+				32F6B9672270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift */,
+				32F6B9682270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift */,
+				32F6B9642270623100BBA352 /* DeviceVerificationDataLoadingViewState.swift */,
+				32891D73226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift */,
+				32891D74226728EE00C82226 /* DeviceVerificationDataLoadingViewController.storyboard */,
+			);
+			path = Loading;
 			sourceTree = "<group>";
 		};
 		32935CB21F628B98006888C8 /* js */ = {
@@ -1730,6 +1916,7 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				3232AB94225730E100AD6A5C /* DeviceVerification */,
 				B1B556EA20EE6C4C00210D55 /* Main */,
 				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B1B556F920EE6C4C00210D55 /* Authentication */,
@@ -3242,6 +3429,7 @@
 			files = (
 				B1B5590220EF768F00210D55 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B558CA20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
+				32891D702264DF7B00C82226 /* DeviceVerificationVerifiedViewController.storyboard in Resources */,
 				F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */,
 				B1B558F720EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */,
@@ -3303,6 +3491,7 @@
 				3232AB2122564D9100AD6A5C /* README.md in Resources */,
 				B1B5593920EF7BAC00210D55 /* TableViewCellWithCheckBoxes.xib in Resources */,
 				B1B557C120EF5B4500210D55 /* DisabledRoomInputToolbarView.xib in Resources */,
+				32891D6C2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard in Resources */,
 				B1664DA320F4F96200808783 /* Vector.strings in Resources */,
 				B1B557C720EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib in Resources */,
 				B1B5582620EF638A00210D55 /* RoomMemberTitleView.xib in Resources */,
@@ -3314,6 +3503,7 @@
 				B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */,
 				B169329B20F39E6300746532 /* Main.storyboard in Resources */,
 				3232AB1422564D9100AD6A5C /* swiftgen-config.yml in Resources */,
+				324A204F225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard in Resources */,
 				3232AB4B2256558300AD6A5C /* TemplateScreenViewController.storyboard in Resources */,
 				32B1FEDB21A46F2C00637127 /* TermsView.xib in Resources */,
 				B1B5578E20EF568D00210D55 /* GroupInviteTableViewCell.xib in Resources */,
@@ -3354,15 +3544,18 @@
 				B1B557B320EF5AEF00210D55 /* EventDetailsView.xib in Resources */,
 				B1B557DD20EF5FBB00210D55 /* FilesSearchTableViewCell.xib in Resources */,
 				B1B5590320EF768F00210D55 /* RoomSelectedStickerBubbleCell.xib in Resources */,
+				3232ABB62257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard in Resources */,
 				B1B5573F20EE6C4D00210D55 /* SegmentedViewController.xib in Resources */,
 				B1B5581E20EF625800210D55 /* RoomTitleView.xib in Resources */,
 				B1B558C020EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1B5572420EE6C4D00210D55 /* RoomViewController.xib in Resources */,
 				B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */,
+				3232ABA2225730E100AD6A5C /* DeviceVerificationStartViewController.storyboard in Resources */,
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
 				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
 				B1B558EB20EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				B10B3B5C2201DD740072C76B /* KeyBackupBannerCell.xib in Resources */,
+				32891D76226728EF00C82226 /* DeviceVerificationDataLoadingViewController.storyboard in Resources */,
 				B1B5581820EF625800210D55 /* PreviewRoomTitleView.xib in Resources */,
 				B1B5583020EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib in Resources */,
 				B1B558BF20EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
@@ -3571,15 +3764,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1B557D120EF5E3500210D55 /* MediaAlbumTableCell.m in Sources */,
+				324A2053225FC571004FE8B0 /* DeviceVerificationIncomingViewModel.swift in Sources */,
 				B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */,
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
 				B1B5573A20EE6C4D00210D55 /* GroupRoomsViewController.m in Sources */,
 				B1B558F920EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1FDF56021F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift in Sources */,
 				B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */,
+				324A2051225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift in Sources */,
 				B16932A520F3A21C00746532 /* empty.mm in Sources */,
 				3232AB4A2256558300AD6A5C /* FlowTemplateCoordinator.swift in Sources */,
 				B19EFA3B21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift in Sources */,
+				3232ABA9225730E100AD6A5C /* DeviceVerificationStartViewModel.swift in Sources */,
 				B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */,
 				B16932F220F3C49E00746532 /* GroupsDataSource.m in Sources */,
 				B1B5581C20EF625800210D55 /* RoomAvatarTitleView.m in Sources */,
@@ -3588,6 +3784,8 @@
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
 				B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
+				3232ABB72257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift in Sources */,
+				32F6B96D2270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift in Sources */,
 				B16932B120F3AC9200746532 /* RoomSearchDataSource.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
 				B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */,
@@ -3598,6 +3796,7 @@
 				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
 				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1CE9F062216FB09000FAE6A /* EncryptionKeysExportPresenter.swift in Sources */,
+				3232ABAA225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
 				B1B5577320EE702800210D55 /* JitsiViewController.m in Sources */,
@@ -3612,10 +3811,12 @@
 				B1B5572320EE6C4D00210D55 /* AttachmentsViewController.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
 				B1B5598620EFC3E000210D55 /* RiotSettings.swift in Sources */,
+				3232ABA3225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift in Sources */,
 				3232AB4D2256558300AD6A5C /* TemplateScreenCoordinatorType.swift in Sources */,
 				B1B5581720EF625800210D55 /* PreviewRoomTitleView.m in Sources */,
 				B1098BDF21ECE09F000DDA48 /* Strings.swift in Sources */,
 				B1B558C420EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
@@ -3631,6 +3832,7 @@
 				B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
 				B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */,
+				3232ABA8225730E100AD6A5C /* DeviceVerificationStartViewState.swift in Sources */,
 				B1B558D420EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */,
 				32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */,
@@ -3638,6 +3840,7 @@
 				B1B558E120EF768F00210D55 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
 				B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */,
+				32F6B9692270623100BBA352 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B1B558C120EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
@@ -3653,8 +3856,11 @@
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
 				3209451221F1C1430088CAA2 /* BlackTheme.swift in Sources */,
 				B1B5572720EE6C4D00210D55 /* RoomSearchViewController.m in Sources */,
+				3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */,
 				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
 				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
+				32891D75226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift in Sources */,
+				32891D712264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				B1B5581F20EF625800210D55 /* SimpleRoomTitleView.m in Sources */,
 				B169330020F3C97D00746532 /* RoomDataSource.m in Sources */,
@@ -3663,11 +3869,15 @@
 				3232AB512256558300AD6A5C /* TemplateScreenViewAction.swift in Sources */,
 				3232AB4E2256558300AD6A5C /* TemplateScreenViewModelType.swift in Sources */,
 				B1B5590520EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				3232ABA5225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift in Sources */,
 				B1B558DD20EF768F00210D55 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1098BE521ECE1FC000DDA48 /* Storyboards.swift in Sources */,
+				3232ABC2225B996200AD6A5C /* Themable.swift in Sources */,
+				3232ABA7225730E100AD6A5C /* DeviceVerificationStartCoordinator.swift in Sources */,
 				B1D4752721EE4E630067973F /* KeyboardAvoider.swift in Sources */,
 				B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */,
 				B1B5573C20EE6C4D00210D55 /* MasterTabBarController.m in Sources */,
+				32F6B96E2270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift in Sources */,
 				B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */,
 				32242F1421E8FBA900725742 /* DefaultTheme.swift in Sources */,
 				32242F1321E8FBA900725742 /* Theme.swift in Sources */,
@@ -3675,24 +3885,31 @@
 				B1B5582C20EF666100210D55 /* DirectoryRecentTableViewCell.m in Sources */,
 				B1B558E420EF768F00210D55 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5573620EE6C4D00210D55 /* GroupsViewController.m in Sources */,
+				3232ABB82257BE6500AD6A5C /* DeviceVerificationVerifyCoordinator.swift in Sources */,
 				B1B5572A20EE6C4D00210D55 /* RoomMemberDetailsViewController.m in Sources */,
 				B1B5590120EF768F00210D55 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
+				32F6B96B2270623100BBA352 /* DeviceVerificationDataLoadingViewAction.swift in Sources */,
 				B1B558C920EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */,
 				B1B5590620EF768F00210D55 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
+				324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
 				B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */,
 				3232AB4F2256558300AD6A5C /* TemplateScreenViewController.swift in Sources */,
 				B1B558FC20EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5572920EE6C4D00210D55 /* RoomFilesViewController.m in Sources */,
+				3232ABBA2257BE6500AD6A5C /* DeviceVerificationVerifyViewModel.swift in Sources */,
 				B1098C1021ED07E4000DDA48 /* Presentable.swift in Sources */,
 				B1B558E020EF768F00210D55 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				B1B5593C20EF7BAC00210D55 /* TableViewCellWithCheckBoxes.m in Sources */,
+				32891D6B2264CBA300C82226 /* SimpleScreenTemplateViewController.swift in Sources */,
 				B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */,
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */,
 				B1B5573820EE6C4D00210D55 /* GroupParticipantsViewController.m in Sources */,
+				3232ABBB2257BE6500AD6A5C /* DeviceVerificationVerifyViewState.swift in Sources */,
+				3232ABAB225730E100AD6A5C /* DeviceVerificationCoordinator.swift in Sources */,
 				B1B5583E20EF6E7F00210D55 /* GroupRoomTableViewCell.m in Sources */,
 				B14F143522144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */,
 				B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */,
@@ -3702,6 +3919,7 @@
 				B1B5579A20EF575B00210D55 /* ForgotPasswordInputsView.m in Sources */,
 				B1B558CC20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
+				3232ABA6225730E100AD6A5C /* DeviceVerificationStartViewController.swift in Sources */,
 				B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
 				B1B5574020EE6C4D00210D55 /* SegmentedViewController.m in Sources */,
@@ -3721,6 +3939,7 @@
 				B1B5578F20EF568D00210D55 /* GroupTableViewCell.m in Sources */,
 				B1B5573220EE6C4D00210D55 /* GroupHomeViewController.m in Sources */,
 				B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */,
+				32F6B96C2270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift in Sources */,
 				B1B5574120EE6C4D00210D55 /* RecentsViewController.m in Sources */,
 				B1D250D82118AA0A000F4E93 /* RoomPredecessorBubbleCell.m in Sources */,
 				B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */,
@@ -3742,6 +3961,7 @@
 				B1B558E620EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1098BFB21ECFE65000DDA48 /* KeyBackupSetupCoordinatorType.swift in Sources */,
 				B1098BF721ECFE65000DDA48 /* PasswordStrength.swift in Sources */,
+				324A2052225FC571004FE8B0 /* DeviceVerificationIncomingViewAction.swift in Sources */,
 				B105778D2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
 				B1B557D820EF5EA900210D55 /* RoomActivitiesView.m in Sources */,
 				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
@@ -3753,6 +3973,7 @@
 				B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */,
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				B1098BE121ECE09F000DDA48 /* Images.swift in Sources */,
+				3232ABA4225730E100AD6A5C /* DeviceVerificationStartViewAction.swift in Sources */,
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
 				3232AB492256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift in Sources */,
 				B1B5572820EE6C4D00210D55 /* RoomViewController.m in Sources */,
@@ -3764,15 +3985,19 @@
 				B1B558C820EF768F00210D55 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				B1B5590920EF768F00210D55 /* RoomEmptyBubbleCell.m in Sources */,
+				324A2054225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */,
+				3232ABB92257BE6500AD6A5C /* DeviceVerificationVerifyViewController.swift in Sources */,
 				B139C21F21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
 				B1098BFF21ECFE65000DDA48 /* PasswordStrengthView.swift in Sources */,
 				B1B558D220EF768F00210D55 /* RoomEncryptedDataBubbleCell.m in Sources */,
 				B1B558FA20EF768F00210D55 /* RoomMembershipBubbleCell.m in Sources */,
+				3232ABA1225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift in Sources */,
 				B1B557BF20EF5B4500210D55 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */,
 				B1098BE821ECFE52000DDA48 /* Coordinator.swift in Sources */,
 				B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
+				324A2050225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift in Sources */,
 				B1098C0D21ED07E4000DDA48 /* NavigationRouter.swift in Sources */,
 				B110872321F098F0003554A5 /* ActivityIndicatorPresenterType.swift in Sources */,
 				B139C22321FF01B200BB68EC /* KeyBackupRecoverFromPassphraseCoordinatorType.swift in Sources */,
@@ -3792,12 +4017,15 @@
 				B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */,
 				B1B558E520EF768F00210D55 /* RoomMembershipExpandedBubbleCell.m in Sources */,
 				32BF995121FA29DC00698084 /* SettingsKeyBackupViewModelType.swift in Sources */,
+				32F6B96A2270623100BBA352 /* DeviceVerificationDataLoadingViewState.swift in Sources */,
 				32BF995321FA2A1300698084 /* SettingsKeyBackupViewState.swift in Sources */,
 				B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */,
 				F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */,
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
+				324A2055225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
 				B1B5572C20EE6C4D00210D55 /* RoomParticipantsViewController.m in Sources */,
 				B1B558EE20EF768F00210D55 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
+				3232ABB52257BE6400AD6A5C /* DeviceVerificationVerifyCoordinatorType.swift in Sources */,
 				32BF994F21FA29A400698084 /* SettingsKeyBackupViewModel.swift in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,

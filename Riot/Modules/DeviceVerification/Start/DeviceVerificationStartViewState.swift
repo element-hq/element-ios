@@ -1,5 +1,7 @@
+// File created from ScreenTemplate
+// $ createScreen.sh DeviceVerification/Start DeviceVerificationStart
 /*
- Copyright 2016 OpenMarket Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,18 +16,14 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+import Foundation
 
-/**
- TODO: This view as it is implemented in this class must disappear.
- It should be part of the device verification flow (`DeviceVerificationCoordinator`).
- */
-@interface EncryptionInfoView : MXKEncryptionInfoView
-
-/**
- Open the legacy simple verification screen
- */
-- (void)displayLegacyVerificationScreen;
-
-@end
-
+/// DeviceVerificationStartViewController view state
+enum DeviceVerificationStartViewState {
+    case loading
+    case loaded     // started
+    case verifyUsingLegacy(MXSession, MXDeviceInfo)
+    case cancelled(MXTransactionCancelCode)
+    case cancelledByMe(MXTransactionCancelCode)
+    case error(Error)
+}

@@ -17,9 +17,8 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import "DeviceTableViewCell.h"
-#import "EncryptionInfoView.h"
 
-@interface UsersDevicesViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, DeviceTableViewCellDelegate, MXKEncryptionInfoViewDelegate>
+@interface UsersDevicesViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, DeviceTableViewCellDelegate>
 
 /**
  Display a map of users/devices.
