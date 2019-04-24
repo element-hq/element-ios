@@ -686,13 +686,13 @@ internal enum VectorL10n {
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
   }
-  /// Use Key Backup
-  internal static var keyBackupRecoverBannerSubtitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_banner_subtitle") 
-  }
   /// Never lose encrypted messages
   internal static var keyBackupRecoverBannerTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_banner_title") 
+  }
+  /// Connect this device to Key Backup
+  internal static var keyBackupRecoverConnentBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_connent_banner_subtitle") 
   }
   /// Done
   internal static var keyBackupRecoverDoneAction: String { 
@@ -790,13 +790,13 @@ internal enum VectorL10n {
   internal static var keyBackupSetupIntroManualExportInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_manual_export_info") 
   }
-  /// Use Key Backup
-  internal static var keyBackupSetupIntroSetupActionWithExistingBackup: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_intro_setup_action_with_existing_backup") 
-  }
   /// Start using Key Backup
   internal static var keyBackupSetupIntroSetupActionWithoutExistingBackup: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_setup_action_without_existing_backup") 
+  }
+  /// Connect this device to Key Backup
+  internal static var keyBackupSetupIntroSetupConnectActionWithExistingBackup: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_intro_setup_connect_action_with_existing_backup") 
   }
   /// Never lose encrypted messages
   internal static var keyBackupSetupIntroTitle: String { 
