@@ -4092,12 +4092,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)enableIncomingDeviceVerificationObserver:(MXSession*)mxSession
 {
     incomingDeviceVerificationObserver =
-    [[NSNotificationCenter defaultCenter] addObserverForName:kMXDeviceVerificationManagerNewTransactionNotification
+    [[NSNotificationCenter defaultCenter] addObserverForName:MXDeviceVerificationManagerNewTransactionNotification
                                                       object:mxSession.crypto.deviceVerificationManager
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification *notif)
      {
-         NSObject *object = notif.userInfo[kMXDeviceVerificationManagerNotificationTransactionKey];
+         NSObject *object = notif.userInfo[MXDeviceVerificationManagerNotificationTransactionKey];
          if ([object isKindOfClass:MXIncomingSASTransaction.class])
          {
              [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
