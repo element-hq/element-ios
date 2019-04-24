@@ -286,7 +286,7 @@
 "auth_reset_password_message" = "E-Mail-Adresse angeben, um das Passwort zurückzusetzen:";
 "auth_reset_password_missing_email" = "Die E-Mail-Adresse die mit dem Konto verbunden ist muss eingegeben werden.";
 "auth_reset_password_error_unauthorized" = "Konnte E-Mail-Adresse nicht verifizieren. Klicke den Link in der Registrierungs-E-Mail";
-"auth_reset_password_error_not_found" = "Diese E-Mail-Adresse ist nicht mit einer Matrix-ID auf diesem homeserver verknüpft.";
+"auth_reset_password_error_not_found" = "Diese E-Mail-Adresse ist nicht mit einer Matrix-ID auf diesem Homeserver verknüpft.";
 "auth_reset_password_success_message" = "Dein Passwort wurde zurückgesetzt.\n\nDu wurdest von allen Geräten abgemeldet, diese bekommen jetzt keine Push-Benachrichtigungen mehr. Um diese wiedereinzuschalten, melde dich auf den Geräten erneut an.";
 "auth_add_email_and_phone_warning" = "Registrierung mit E-Mail und Telefonnummer zugleich ist noch nicht unterstützt. Nur die Telefonnummer wird berücksichtigt. Du kannst deine E-Mail-Adresse in deinem Profil ergänzen.";
 "room_creation_make_public_prompt_msg" = "Sicher, dass du diesen Raum öffentlich machen willst? Jeder kann deine Nachrichten lesen und dem Raum beitreten.";
