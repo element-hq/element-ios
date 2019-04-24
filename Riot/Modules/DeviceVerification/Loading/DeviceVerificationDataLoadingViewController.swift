@@ -1,5 +1,5 @@
-// File created from simpleScreenTemplate
-// $ createSimpleScreen.sh DeviceVerification/Loading DeviceVerificationDataLoading
+// File created from ScreenTemplate
+// $ createScreen.sh DeviceVerification/Loading DeviceVerificationDataLoading
 /*
  Copyright 2019 New Vector Ltd
  
@@ -18,11 +18,6 @@
 
 import UIKit
 
-protocol DeviceVerificationDataLoadingViewControllerDelegate: class {
-    func deviceVerificationDataLoadingViewControllerDidLoadData(_ viewController: DeviceVerificationDataLoadingViewController, user: MXUser, device: MXDeviceInfo)
-    func deviceVerificationDataLoadingViewControllerDidCancel(_ viewController: DeviceVerificationDataLoadingViewController)
-}
-
 final class DeviceVerificationDataLoadingViewController: UIViewController {
     
     // MARK: - Properties
@@ -31,25 +26,16 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
     
     // MARK: Private
 
-    private var session: MXSession!
-    private var otherUserId: String!
-    private var otherDeviceId: String!
-
+    private var viewModel: DeviceVerificationDataLoadingViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
-    
-    // MARK: Public
-    
-    weak var delegate: DeviceVerificationDataLoadingViewControllerDelegate?
-    
-    // MARK: - Setup
 
-    class func instantiate(session: MXSession, otherUserId: String, otherDeviceId: String) -> DeviceVerificationDataLoadingViewController {
+    // MARK: - Setup
+    
+    class func instantiate(with viewModel: DeviceVerificationDataLoadingViewModelType) -> DeviceVerificationDataLoadingViewController {
         let viewController = StoryboardScene.DeviceVerificationDataLoadingViewController.initialScene.instantiate()
-        viewController.session = session
-        viewController.otherUserId = otherUserId
-        viewController.otherDeviceId = otherDeviceId
+        viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -58,7 +44,7 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         self.title = VectorL10n.deviceVerificationTitle
@@ -71,18 +57,15 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
 
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
-
-        self.loadData()
+        
+        self.viewModel.viewDelegate = self
     }
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }
     
     // MARK: - Private
-    
-    private func setupViews() {
-    }
     
     private func update(theme: Theme) {
         self.theme = theme
@@ -97,42 +80,46 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
     }
-
-    private func loadData() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-
-        if let otherUser = self.session.user(withUserId: otherUserId) {
-            self.session.crypto?.downloadKeys([self.otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap) in
-                guard let sself = self else {
-                    return
-                }
-
-                sself.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
-                if let otherDevice = usersDevicesMap?.object(forDevice: sself.otherDeviceId, forUser: sself.otherUserId) {
-                    sself.delegate?.deviceVerificationDataLoadingViewControllerDidLoadData(sself, user: otherUser, device: otherDevice)
-                } else {
-                    sself.errorPresenter.presentError(from: sself, title: "", message: VectorL10n.deviceVerificationErrorCannotLoadDevice, animated: true, handler: {
-                        sself.delegate?.deviceVerificationDataLoadingViewControllerDidCancel(sself)
-                    })
-                }
-
-                }, failure: { [weak self] (error) in
-                    guard let sself = self else {
-                        return
-                    }
-
-                    sself.activityPresenter.removeCurrentActivityIndicator(animated: true)
-                    sself.errorPresenter.presentError(from: sself, forError: error, animated: true, handler: {
-                        sself.delegate?.deviceVerificationDataLoadingViewControllerDidCancel(sself)
-                    })
-            })
-
-        } else {
-            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationErrorCannotLoadDevice, animated: true, handler: {
-                self.delegate?.deviceVerificationDataLoadingViewControllerDidCancel(self)
-            })
+    
+    private func setupViews() {
+        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+            self?.cancelButtonAction()
         }
+        
+        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+    }
+
+    private func render(viewState: DeviceVerificationDataLoadingViewState) {
+        switch viewState {
+        case .loading:
+            self.renderLoading()
+        case .loaded:
+            self.renderLoaded()
+        case .error(let error):
+            self.render(error: error)
+        case .errorMessage(let message):
+            self.renderError(message: message)
+        }
+    }
+    
+    private func renderLoading() {
+        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+    }
+    
+    private func renderLoaded() {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    }
+    
+    private func render(error: Error) {
+        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
+            self.viewModel.process(viewAction: .cancel)
+        })
+    }
+
+    private func renderError(message: String) {
+        self.errorPresenter.presentError(from: self, title: "", message: message, animated: true, handler: {
+            self.viewModel.process(viewAction: .cancel)
+        })
     }
 
     // MARK: - Actions
@@ -142,6 +129,15 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
     }
 
     private func cancelButtonAction() {
-        self.delegate?.deviceVerificationDataLoadingViewControllerDidCancel(self)
+        self.viewModel.process(viewAction: .cancel)
+    }
+}
+
+
+// MARK: - DeviceVerificationDataLoadingViewModelViewDelegate
+extension DeviceVerificationDataLoadingViewController: DeviceVerificationDataLoadingViewModelViewDelegate {
+
+    func deviceVerificationDataLoadingViewModel(_ viewModel: DeviceVerificationDataLoadingViewModelType, didUpdateViewState viewSate: DeviceVerificationDataLoadingViewState) {
+        self.render(viewState: viewSate)
     }
 }

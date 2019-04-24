@@ -69,9 +69,11 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        let rootViewController = self.createDataLoadingViewController()
-        rootViewController.delegate = self
-        self.navigationRouter.setRootModule(rootViewController)
+        let rootCoordinator = self.createDataLoadingScreenCoordinator()
+        rootCoordinator.start()
+
+        self.add(childCoordinator: rootCoordinator)
+        self.navigationRouter.setRootModule(rootCoordinator)
     }
     
     func toPresentable() -> UIViewController {
@@ -80,10 +82,12 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     
     // MARK: - Private methods
 
-    private func createDataLoadingViewController() -> DeviceVerificationDataLoadingViewController {
-        let viewController = DeviceVerificationDataLoadingViewController.instantiate(session: self.session, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
-        viewController.delegate = self
-        return viewController
+    private func createDataLoadingScreenCoordinator() -> DeviceVerificationDataLoadingCoordinator {
+        let coordinator = DeviceVerificationDataLoadingCoordinator(session: self.session, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        coordinator.delegate = self
+        coordinator.start()
+
+        return coordinator
     }
 
     private func showStart(otherUser: MXUser, otherDevice: MXDeviceInfo) {
@@ -122,8 +126,8 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     }
 }
 
-extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingViewControllerDelegate {
-    func deviceVerificationDataLoadingViewControllerDidLoadData(_ viewController: DeviceVerificationDataLoadingViewController, user: MXUser, device: MXDeviceInfo) {
+extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingCoordinatorDelegate {
+    func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didLoadUser user: MXUser, device: MXDeviceInfo) {
 
         if let incomingTransaction = self.incomingTransaction {
             self.showIncoming(otherUser: user, transaction: incomingTransaction)
@@ -132,7 +136,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingViewContro
         }
     }
 
-    func deviceVerificationDataLoadingViewControllerDidCancel(_ viewController: DeviceVerificationDataLoadingViewController) {
+    func deviceVerificationDataLoadingCoordinatorDidCancel(_ coordinator: DeviceVerificationDataLoadingCoordinatorType) {
         self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 }
