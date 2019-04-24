@@ -73,7 +73,7 @@
 
 - (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId {
 
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES];
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     deviceVerificationCoordinatorBridgePresenter = nil;
 
     // Eject like MXKEncryptionInfoView does

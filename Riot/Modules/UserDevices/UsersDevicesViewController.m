@@ -239,7 +239,7 @@
 
 - (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES];
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     deviceVerificationCoordinatorBridgePresenter = nil;
 
     // Update our map

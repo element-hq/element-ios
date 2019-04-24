@@ -4176,13 +4176,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES];
-    deviceVerificationCoordinatorBridgePresenter = nil;
-
-    // TODO: Why?
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         [self checkPendingIncomingDeviceVerifications];
-    });
+    }];
+    
+    deviceVerificationCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - GDPR consent
