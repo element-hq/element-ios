@@ -694,7 +694,7 @@
 "key_backup_setup_intro_title" = "Never lose encrypted messages";
 "key_backup_setup_intro_info" = "Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Start using Key Backup";
-"key_backup_setup_intro_setup_action_with_existing_backup" = "Use Key Backup";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Connect this device to Key Backup";
 "key_backup_setup_intro_manual_export_info" = "(Advanced)";
 "key_backup_setup_intro_manual_export_action" = "Manually export keys";
 
@@ -773,7 +773,7 @@
 // Recover
 
 "key_backup_recover_banner_title" = "Never lose encrypted messages";
-"key_backup_recover_banner_subtitle" = "Use Key Backup";
+"key_backup_recover_connent_banner_subtitle" = "Connect this device to Key Backup";
 
 // MARK: Sign out warning
 
