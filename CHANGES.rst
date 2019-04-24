@@ -17,6 +17,7 @@ Bug fix:
  * Upgraded rooms show up in the share extension twice (#2293).
  * +N read receipt text is invisible on dark theme (#2294).
  * Avoid crashes with tableview reload animation in settings and room settings (PR #2364).
+ * Media picker: Fix some retain cycles (PR #2382).
 
 Changes in 0.8.4 (2019-03-21)
 ===============================================
