@@ -35,11 +35,11 @@
 
 @interface RoomInputToolbarView()
 {
-    MediaPickerViewController *mediaPicker;
-
     // The intermediate action sheet
     UIAlertController *actionSheet;
 }
+
+@property(nonatomic, weak) MediaPickerViewController *mediaPicker;
 
 @end
 
@@ -391,11 +391,13 @@
     Class PHAsset_class = NSClassFromString(@"PHAsset");
     if (PHAsset_class)
     {
-        mediaPicker = [MediaPickerViewController mediaPickerViewController];
+        MediaPickerViewController * mediaPicker = [MediaPickerViewController mediaPickerViewController];
         mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
         mediaPicker.delegate = self;
         UINavigationController *navigationController = [UINavigationController new];
         [navigationController pushViewController:mediaPicker animated:NO];
+        
+        self.mediaPicker = mediaPicker;
 
         [self.delegate roomInputToolbarView:self presentViewController:navigationController];
     }
@@ -448,11 +450,9 @@
 
 - (void)dismissMediaPicker
 {
-    if (mediaPicker)
+    if (self.mediaPicker)
     {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        [mediaPicker destroy];
-        mediaPicker = nil;
+        [self.mediaPicker withdrawViewControllerAnimated:YES completion:nil];        
     }
 }
 
