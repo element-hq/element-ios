@@ -282,7 +282,7 @@
 "auth_add_email_and_phone_message" = "Füge eine E-Mail-Adresse und eine Telefonnummer hinzu, damit dich andere Benutzer finden können. Über die E-Mail-Adresse kannst du das Passwort zurücksetzen.";
 "auth_use_server_options" = "Individuelle Server Optionen";
 "auth_email_validation_message" = "Prüfe dein E-Mail-Konto um mit der Registrierung fortzufahren";
-"auth_recaptcha_message" = "Dieser homeserver will sicherstellen dass du kein Robot bist";
+"auth_recaptcha_message" = "Dieser Homeserver will sicherstellen dass du kein Robot bist";
 "auth_reset_password_message" = "E-Mail-Adresse angeben, um das Passwort zurückzusetzen:";
 "auth_reset_password_missing_email" = "Die E-Mail-Adresse die mit dem Konto verbunden ist muss eingegeben werden.";
 "auth_reset_password_error_unauthorized" = "Konnte E-Mail-Adresse nicht verifizieren. Klicke den Link in der Registrierungs-E-Mail";
