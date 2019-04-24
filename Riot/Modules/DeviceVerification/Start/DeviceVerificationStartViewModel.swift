@@ -70,7 +70,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     private func beginVerifying() {
         self.update(viewState: .loading)
 
-        self.verificationManager.beginKeyVerification(withUserId: self.otherUser.userId, andDeviceId: self.otherDevice.deviceId, method: kMXKeyVerificationMethodSAS, success: { [weak self] (transaction) in
+        self.verificationManager.beginKeyVerification(withUserId: self.otherUser.userId, andDeviceId: self.otherDevice.deviceId, method: MXKeyVerificationMethodSAS, success: { [weak self] (transaction) in
 
             guard let sself = self else {
                 return
