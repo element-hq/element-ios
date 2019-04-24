@@ -58,7 +58,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
            self.cancelTransaction()
            self.update(viewState: .verifyUsingLegacy(self.session, self.otherDevice))
         case .verifiedUsingLegacy:
-            self.coordinatorDelegate?.deviceVerificationStartViewModelUseLegacyVerification(self)
+            self.coordinatorDelegate?.deviceVerificationStartViewModelDidUseLegacyVerification(self)
         case .cancel:
             self.cancelTransaction()
             self.coordinatorDelegate?.deviceVerificationStartViewModelDidCancel(self)
