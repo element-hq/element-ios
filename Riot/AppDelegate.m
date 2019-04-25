@@ -84,7 +84,7 @@
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
-@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate>
+@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -127,6 +127,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      If any the currently displayed sharing key dialog
      */
     RoomKeyRequestViewController *roomKeyRequestViewController;
+
+    /**
+     Incoming device verification requests observers
+     */
+    id incomingDeviceVerificationObserver;
+
+    /**
+     If any the currently displayed device verification dialog
+     */
+    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
 
     /**
      Account picker used in case of multiple account.
@@ -481,6 +491,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
+    
+    // Setup Jitsi
+    
+    NSString *jitsiServerStringURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
+    NSURL *jitsiServerURL = [NSURL URLWithString:jitsiServerStringURL];
+    
+    [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
+
+    [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 
@@ -698,7 +717,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     NSLog(@"[AppDelegate] applicationDidReceiveMemoryWarning");
 }
 
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
 {
     BOOL continueUserActivity = NO;
     
@@ -1140,60 +1159,36 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     if (!isPushRegistered)
     {
-        if (@available(iOS 10, *)) {
-            UNTextInputNotificationAction *quickReply = [UNTextInputNotificationAction
-                    actionWithIdentifier:@"inline-reply"
-                                   title:NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil)
-                                 options:UNNotificationActionOptionAuthenticationRequired
-            ];
-
-            UNNotificationCategory *quickReplyCategory = [UNNotificationCategory
-                    categoryWithIdentifier:@"QUICK_REPLY"
-                                   actions:@[quickReply]
-                         intentIdentifiers:@[]
-                                   options:UNNotificationCategoryOptionNone];
-
-            UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-            [center setNotificationCategories:[[NSSet alloc] initWithArray:@[quickReplyCategory]]];
-            [center setDelegate:self]; // commenting this out will fall back to using the same AppDelegate methods as the iOS 9 way of doing this
-
-            UNAuthorizationOptions authorizationOptions = (UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
-
-            [center requestAuthorizationWithOptions:authorizationOptions
-                                  completionHandler:^(BOOL granted, NSError *error)
-                                  { // code here is equivalent to self:application:didRegisterUserNotificationSettings:
-                                      if (granted) {
-                                          [self registerForRemoteNotificationsWithCompletion:nil];
-                                      }
-                                      else
-                                      {
-                                          // Clear existing token
-                                          [self clearPushNotificationToken];
-                                      }
-                                  }];
-        }
-        else // DEPRECATED, for iOS 9
-        {
-            NSMutableSet *notificationCategories = [NSMutableSet set];
-
-            UIMutableUserNotificationAction *quickReply = [[UIMutableUserNotificationAction alloc] init];
-            quickReply.title = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
-            quickReply.identifier = @"inline-reply";
-            quickReply.activationMode = UIUserNotificationActivationModeBackground;
-            quickReply.authenticationRequired = true;
-            quickReply.behavior = UIUserNotificationActionBehaviorTextInput;
-
-            UIMutableUserNotificationCategory *quickReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
-            quickReplyCategory.identifier = @"QUICK_REPLY";
-            [quickReplyCategory setActions:@[quickReply] forContext:UIUserNotificationActionContextDefault];
-            [notificationCategories addObject:quickReplyCategory];
-
-            // Registration on iOS 8 and later
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert) categories:notificationCategories];
-            
-            NSLog(@"[AppDelegate][Push] registerUserNotificationSettings: %@", settings);
-            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        }
+        UNTextInputNotificationAction *quickReply = [UNTextInputNotificationAction
+                                                     actionWithIdentifier:@"inline-reply"
+                                                     title:NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil)
+                                                     options:UNNotificationActionOptionAuthenticationRequired
+                                                     ];
+        
+        UNNotificationCategory *quickReplyCategory = [UNNotificationCategory
+                                                      categoryWithIdentifier:@"QUICK_REPLY"
+                                                      actions:@[quickReply]
+                                                      intentIdentifiers:@[]
+                                                      options:UNNotificationCategoryOptionNone];
+        
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center setNotificationCategories:[[NSSet alloc] initWithArray:@[quickReplyCategory]]];
+        [center setDelegate:self]; // commenting this out will fall back to using the same AppDelegate methods as the iOS 9 way of doing this
+        
+        UNAuthorizationOptions authorizationOptions = (UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
+        
+        [center requestAuthorizationWithOptions:authorizationOptions
+                              completionHandler:^(BOOL granted, NSError *error)
+         { // code here is equivalent to self:application:didRegisterUserNotificationSettings:
+             if (granted) {
+                 [self registerForRemoteNotificationsWithCompletion:nil];
+             }
+             else
+             {
+                 // Clear existing token
+                 [self clearPushNotificationToken];
+             }
+         }];
     }
 }
 
@@ -1206,23 +1201,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     self.pushRegistry = [[PKPushRegistry alloc] initWithQueue:nil];
     self.pushRegistry.delegate = self;
     self.pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
-}
-
-// DEPRECATED, for iOS 9
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
-{
-    NSLog(@"[AppDelegate][Push] didRegisterUserNotificationSettings: notificationSettings.types: %@", @(notificationSettings.types));
-    
-    // Register for remote notifications only if user provide access to notification feature
-    if (notificationSettings.types != UIUserNotificationTypeNone)
-    {
-        [self registerForRemoteNotificationsWithCompletion:nil];
-    }
-    else
-    {
-        // Clear existing token
-        [self clearPushNotificationToken];
-    }
 }
 
 // iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:
@@ -1278,53 +1256,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-// DEPRECATED, for iOS 9
-// "This block is not a prototype" - don't fix this, or it won't match Apple's definition
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
-{
-    NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: identifier: %@", identifier);
-    
-    NSString* roomId = notification.userInfo[@"room_id"];
-
-    if ([identifier isEqualToString: @"inline-reply"])
-    {
-        NSString* responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
-
-        [self handleNotificationInlineReplyForRoomId:roomId withResponseText:responseText success:^(NSString *eventId) {
-            completionHandler();
-        } failure:^(NSError *error) {
-
-            UILocalNotification* failureNotification = [[UILocalNotification alloc] init];
-            failureNotification.alertBody = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
-            failureNotification.userInfo = notification.userInfo;
-            [[UIApplication sharedApplication] scheduleLocalNotification: failureNotification];
-            NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: error sending text message: %@", error);
-
-            completionHandler();
-        }];
-    }
-    else
-    {
-        NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: unhandled identifier %@", identifier);
-        completionHandler();
-    }
-}
-
 // iOS 10+, this is called when a notification is about to display in foreground.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
 {
     NSLog(@"[AppDelegate][Push] willPresentNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
 
     completionHandler(UNNotificationPresentationOptionNone);
-}
-
-// DEPRECATED, for iOS 9
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-    NSLog(@"[AppDelegate][Push] didReceiveLocalNotification: applicationState: %@", @(application.applicationState));
-    
-    NSString* roomId = notification.userInfo[@"room_id"];
-    [self navigateToRoomById:roomId];
 }
 
 - (void)navigateToRoomById:(NSString *)roomId
@@ -1503,15 +1440,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         BOOL checkReadEvent = YES;
         MXEvent *event;
         
-        // Ignore event already notified to the user
-        // only necessary on iOS 9, iOS 10 will just overwrite notifications with identical IDs
-        if (@available(iOS 10, *)) {}
-        else if ([self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
-        {
-            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
-            continue;
-        }
-        
         if (eventId && roomId)
         {
             event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
@@ -1521,16 +1449,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         {
             if (event.isRedactedEvent)
             {
-                if (@available(iOS 10, *))
-                {
-                    // Collect redacted event ids to remove possible delivered redacted notifications
-                    [redactedEventIds addObject:eventId];
-                }
-                else
-                {
-                    // Ignore redacted event.
-                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip redacted event. Event id: %@", eventId);
-                }
+                // Collect redacted event ids to remove possible delivered redacted notifications
+                [redactedEventIds addObject:eventId];
                 continue;
             }
             
@@ -1575,81 +1495,43 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             // Prepare the local notification
             MXPushRule *rule = eventDict[@"push_rule"];
             
-            if (@available(iOS 10, *))
-            {
-                [self notificationContentForEvent:event pushRule:rule inAccount:account onComplete:^(UNNotificationContent * _Nullable notificationContent) {
+            [self notificationContentForEvent:event pushRule:rule inAccount:account onComplete:^(UNNotificationContent * _Nullable notificationContent) {
+                
+                if (notificationContent)
+                {
+                    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId
+                                                                                          content:notificationContent
+                                                                                          trigger:nil];
                     
-                    if (notificationContent)
-                    {
-                        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId
-                                                                                              content:notificationContent
-                                                                                              trigger:nil];
+                    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
                         
-                        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
-                            
-                            if (error)
-                            {
-                                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Fail to display notification for event %@ with error: %@", eventId, error);
-                            }
-                            else
-                            {
-                                NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", eventId);
-                            }
-                        }];
-                        
-                        scheduledNotifications++;
-                    }
-                    else
-                    {
-                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated content. Event id: %@", eventId);
-                    }
-                }];
-            }
-            else
-            {
-                [self notificationBodyForEvent:event pushRule:rule inAccount:account onComplete:^(NSString *_Nullable notificationBody)
-                 {
-                     if (notificationBody)
-                     {
-                         NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", eventId);
-                         
-                         // Printf style escape characters are stripped from the string prior to display;
-                         // to include a percent symbol (%) in the message, use two percent symbols (%%).
-                         NSString *fixedNotificationBody = [notificationBody stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
-                         
-                         NSDictionary *notificationUserInfo = [self notificationUserInfoForEvent:event andUserId:userId];
-                         NSString *categoryIdentifier = [self notificationCategoryIdentifierForEvent:event];
-                         NSString *soundName = [self notificationSoundNameFromPushRule:rule];
-                         
-                         UILocalNotification *eventNotification = [[UILocalNotification alloc] init];
-                         eventNotification.alertBody = fixedNotificationBody;
-                         eventNotification.userInfo = notificationUserInfo;
-                         eventNotification.category = categoryIdentifier;
-                         eventNotification.soundName = soundName;
-                         
-                         [[UIApplication sharedApplication] scheduleLocalNotification:eventNotification];
-                         
-                         scheduledNotifications++;
-                     }
-                     else
-                     {
-                         NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated notificationBody. Event id: %@", eventId);
-                     }
-                 }];
-            }
+                        if (error)
+                        {
+                            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Fail to display notification for event %@ with error: %@", eventId, error);
+                        }
+                        else
+                        {
+                            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", eventId);
+                        }
+                    }];
+                    
+                    scheduledNotifications++;
+                }
+                else
+                {
+                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated content. Event id: %@", eventId);
+                }
+            }];
         }
     }
     
-    if (@available(iOS 10, *))
+    // Remove possible pending and delivered notifications having a redacted event id
+    if (redactedEventIds.count)
     {
-        // Remove possible pending and delivered notifications having a redacted event id
-        if (redactedEventIds.count)
-        {
-            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Remove possible notification with redacted event ids: %@", redactedEventIds);
-            
-            [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers:redactedEventIds];
-            [[UNUserNotificationCenter currentNotificationCenter] removeDeliveredNotificationsWithIdentifiers:redactedEventIds];
-        }
+        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Remove possible notification with redacted event ids: %@", redactedEventIds);
+        
+        [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers:redactedEventIds];
+        [[UNUserNotificationCenter currentNotificationCenter] removeDeliveredNotificationsWithIdentifiers:redactedEventIds];
     }
     
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Sent %tu local notifications for %tu events", scheduledNotifications, eventsArray.count);
@@ -2040,15 +1922,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     for (NSString *eventId in events)
     {
-        // Ignore event already notified to the user
-        // only necessary on iOS 9, iOS 10 will just overwrite notifications with identical IDs
-        if (@available(iOS 10, *)) {}
-        else if ([self displayedLocalNotificationForEvent:eventId andUser:userId type:nil])
-        {
-            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event already displayed in a notification. Event id: %@", eventId);
-            continue;
-        }
-
         // Build notification user info
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                         @"type": @"limited",
@@ -2068,27 +1941,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: room_id is missing for event %@ in payload %@", eventId, payload);
         }
 
-        if (@available(iOS 10, *))
-        {
-            UNMutableNotificationContent *localNotificationContentForFailedSync = [[UNMutableNotificationContent alloc] init];
-            localNotificationContentForFailedSync.userInfo = userInfo;
-            localNotificationContentForFailedSync.body = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
-            localNotificationContentForFailedSync.threadIdentifier = roomId;
-
-            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId content:localNotificationContentForFailedSync trigger:nil];
-
-            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
-            [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
-        }
-        else // DEPRECATED, for iOS 9
-        {
-            UILocalNotification *localNotificationForFailedSync =  [[UILocalNotification alloc] init];
-            localNotificationForFailedSync.userInfo = userInfo;
-            localNotificationForFailedSync.alertBody = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
-
-            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
-            [[UIApplication sharedApplication] scheduleLocalNotification:localNotificationForFailedSync];
-        }
+        UNMutableNotificationContent *localNotificationContentForFailedSync = [[UNMutableNotificationContent alloc] init];
+        localNotificationContentForFailedSync.userInfo = userInfo;
+        localNotificationContentForFailedSync.body = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
+        localNotificationContentForFailedSync.threadIdentifier = roomId;
+        
+        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId content:localNotificationContentForFailedSync trigger:nil];
+        
+        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
+        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
     }
 }
 
@@ -2126,39 +1987,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 
     return notificationBody;
-}
-
-/**
- Return the already displayed notification for an event.
-
- @param eventId the id of the event attached to the notification to find.
- @param userId the id of the user attached to the notification to find.
- @param type the type of notification. @"full" or @"limited". nil for any type.
- @return the local notification if any.
- */
-// DEPRECATED, for iOS 9
-// TODO: This method does not work: [[UIApplication sharedApplication] scheduledLocalNotifications] is not reliable
-- (UILocalNotification*)displayedLocalNotificationForEvent:(NSString*)eventId andUser:(NSString*)userId type:(NSString*)type
-{
-    NSLog(@"[AppDelegate][Push] displayedLocalNotificationForEvent: %@ andUser: %@. Current scheduledLocalNotifications: %@", eventId, userId, [[UIApplication sharedApplication] scheduledLocalNotifications]);
-
-    UILocalNotification *limitedLocalNotification;
-    for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
-    {
-        NSLog(@"    - %@", localNotification.userInfo);
-
-        if ([localNotification.userInfo[@"event_id"] isEqualToString:eventId]
-            && [localNotification.userInfo[@"user_id"] isEqualToString:userId]
-            && (!type || [localNotification.userInfo[@"type"] isEqualToString:type]))
-        {
-            limitedLocalNotification = localNotification;
-            break;
-        }
-    }
-
-    NSLog(@"[AppDelegate][Push] displayedLocalNotificationForEvent: found: %@", limitedLocalNotification);
-
-    return limitedLocalNotification;
 }
 
 - (void)refreshApplicationIconBadgeNumber
@@ -2774,6 +2602,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                               options:NSKeyValueObservingOptionNew
                                                               context:NULL];
                 }
+                else
+                {
+                    [self enableCallKit:NO forCallManager:mxSession.callManager];
+                }
             }
             else
             {
@@ -2868,6 +2700,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             {
                 // Check if we need to display a key share dialog
                 [self checkPendingRoomKeyRequests];
+                [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
             }
         }
         
@@ -3037,6 +2870,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
         // Enable listening of incoming key share requests
         [self enableRoomKeyRequestObserver:mxSession];
+
+        // Enable listening of incoming device verification requests
+        [self enableIncomingDeviceVerificationObserver:mxSession];
     }
 }
 
@@ -3058,6 +2894,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     // Disable listening of incoming key share requests
     [self disableRoomKeyRequestObserver:mxSession];
+
+    // Disable listening of incoming device verification requests
+    [self disableIncomingDeviceVerificationObserver:mxSession];
     
     [mxSessionArray removeObject:mxSession];
     
@@ -3444,11 +3283,20 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)enableCallKit:(BOOL)enable forCallManager:(MXCallManager *)callManager
 {
+    JitsiService.shared.enableCallKit = enable;
+    
     if (enable)
     {
         // Create adapter for Riot
         MXCallKitConfiguration *callKitConfiguration = [[MXCallKitConfiguration alloc] init];
         callKitConfiguration.iconName = @"riot_icon_callkit";
+        
+        NSData *riotCallKitIconData = UIImagePNGRepresentation([UIImage imageNamed:callKitConfiguration.iconName]);
+        
+        [JitsiService.shared configureCallKitProviderWithLocalizedName:callKitConfiguration.name
+                                                          ringtoneName:callKitConfiguration.ringtoneName
+                                                 iconTemplateImageData:riotCallKitIconData];
+        
         MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] initWithConfiguration:callKitConfiguration];
         
         id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
@@ -4082,15 +3930,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
     _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
-    
-    if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-    {
-        _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
-    }
-    else
-    {
-        _callStatusBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    }
+        
+    _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
     
     [_callStatusBarButton setBackgroundColor:ThemeService.shared.theme.tintColor];
     [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -4539,6 +4380,102 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [self checkPendingRoomKeyRequestsInSession:mxSession];
     }
+}
+
+#pragma mark - Incoming device verification requests handling
+
+- (void)enableIncomingDeviceVerificationObserver:(MXSession*)mxSession
+{
+    incomingDeviceVerificationObserver =
+    [[NSNotificationCenter defaultCenter] addObserverForName:MXDeviceVerificationManagerNewTransactionNotification
+                                                      object:mxSession.crypto.deviceVerificationManager
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification *notif)
+     {
+         NSObject *object = notif.userInfo[MXDeviceVerificationManagerNotificationTransactionKey];
+         if ([object isKindOfClass:MXIncomingSASTransaction.class])
+         {
+             [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+         }
+     }];
+}
+
+- (void)disableIncomingDeviceVerificationObserver:(MXSession*)mxSession
+{
+    if (incomingDeviceVerificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:incomingDeviceVerificationObserver];
+        incomingDeviceVerificationObserver = nil;
+    }
+}
+
+// Check if an incoming device verification dialog must be displayed for the given session
+- (void)checkPendingIncomingDeviceVerificationsInSession:(MXSession*)mxSession
+{
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: called while the app is not active. Ignore it.");
+        return;
+    }
+
+    [mxSession.crypto.deviceVerificationManager transactions:^(NSArray<MXDeviceVerificationTransaction *> * _Nonnull transactions) {
+
+        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: transactions: %@", transactions);
+
+        for (MXDeviceVerificationTransaction *transaction in transactions)
+        {
+            if (transaction.isIncoming)
+            {
+                MXIncomingSASTransaction *incomingTransaction = (MXIncomingSASTransaction*)transaction;
+                if (incomingTransaction.state == MXSASTransactionStateIncomingShowAccept)
+                {
+                    [self presentIncomingDeviceVerification:incomingTransaction inSession:mxSession];
+                    break;
+                }
+            }
+        }
+    }];
+}
+
+// Check all opened MXSessions for incoming device verification dialog
+- (void)checkPendingIncomingDeviceVerifications
+{
+    for (MXSession *mxSession in mxSessionArray)
+    {
+        [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+    }
+}
+
+- (BOOL)presentIncomingDeviceVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
+{
+    NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: %@", transaction);
+
+    BOOL presented = NO;
+    if (!deviceVerificationCoordinatorBridgePresenter)
+    {
+        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+
+        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingTransaction:transaction animated:YES];
+
+        presented = YES;
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: Controller already presented.");
+    }
+    return presented;
+}
+
+- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+{
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self checkPendingIncomingDeviceVerifications];
+    }];
+    
+    deviceVerificationCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - GDPR consent

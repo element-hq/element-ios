@@ -24,7 +24,7 @@
  application asking the user if he wants to share room keys with a user's device.
  For the moment, the user is himself.
  */
-@interface RoomKeyRequestViewController : NSObject <MXKEncryptionInfoViewDelegate>
+@interface RoomKeyRequestViewController : NSObject
 
 /**
  The UIAlertController instance which handles the dialog.

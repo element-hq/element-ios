@@ -135,14 +135,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             }
             
             // Use bold font for the room title
-            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-            {
-                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
-            }
-            else
-            {
-                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
-            }
+            self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
         }
         else if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite)
         {
@@ -155,26 +148,13 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
             
             // Use bold font for the room title
-            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-            {
-                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
-            }
-            else
-            {
-                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont boldSystemFontOfSize:13];
-            }
+            self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
         }
         else
         {
-            // The room title is not bold anymore
-            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-            {
-                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
-            }
-            else
-            {
-                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13];
-            }
+            // The room title is not bold anymore            
+            self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
+            
         }
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;

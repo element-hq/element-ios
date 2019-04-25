@@ -12,6 +12,31 @@ import UIKit
 
 // swiftlint:disable explicit_type_interface identifier_name line_length type_body_length type_name
 internal enum StoryboardScene {
+  internal enum DeviceVerificationDataLoadingViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationDataLoadingViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DeviceVerificationDataLoadingViewController>(storyboard: DeviceVerificationDataLoadingViewController.self)
+  }
+  internal enum DeviceVerificationIncomingViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationIncomingViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DeviceVerificationIncomingViewController>(storyboard: DeviceVerificationIncomingViewController.self)
+  }
+  internal enum DeviceVerificationStartViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationStartViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
+  }
+  internal enum DeviceVerificationVerifiedViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationVerifiedViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DeviceVerificationVerifiedViewController>(storyboard: DeviceVerificationVerifiedViewController.self)
+  }
+  internal enum DeviceVerificationVerifyViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationVerifyViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DeviceVerificationVerifyViewController>(storyboard: DeviceVerificationVerifyViewController.self)
+  }
   internal enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
 
@@ -46,6 +71,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "KeyBackupSetupSuccessFromRecoveryKeyViewController"
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
+  }
+  internal enum SimpleScreenTemplateViewController: StoryboardType {
+    internal static let storyboardName = "SimpleScreenTemplateViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SimpleScreenTemplateViewController>(storyboard: SimpleScreenTemplateViewController.self)
   }
   internal enum TemplateScreenViewController: StoryboardType {
     internal static let storyboardName = "TemplateScreenViewController"

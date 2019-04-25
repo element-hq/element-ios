@@ -246,7 +246,7 @@
 // Room Preview
 "room_preview_invitation_format" = "あなたは %@ さんに呼ばれてこの部屋へ参加しました";
 "room_preview_subtitle" = "これは部屋の下見です。発言があっても部屋は更新されません。";
-"room_preview_unlinked_email_warning" = "このアカウントに関連付けられていない ％@ 宛に招待が送信されました。別のアカウントでログインするか、この電子メールアドレスをこのアカウントに追加することができます。";
+"room_preview_unlinked_email_warning" = "このアカウントに関連付けられていない %@ 宛に招待が送信されました。別のアカウントでログインするか、この電子メールアドレスをこのアカウントに追加することができます。";
 "room_preview_try_join_an_unknown_room" = "あなたは %@ へ接続しようとしています。この会議に参加しますか？";
 "room_preview_try_join_an_unknown_room_default" = "部屋";
 // Settings
@@ -435,7 +435,7 @@
 "no_voip_title" = "通話着信中";
 "no_voip" = "%@ さんから通話の着信がありましたが、 %@ は通話をまだサポートしていません。\nこの通知を無視して、別の端末から着信に応答することも、拒否することもできます。";
 // Crash report
-"google_analytics_use_prompt" = "匿名の誤動作報告と使用状況データを自動的に報告して％@の改善に役立てますか？";
+"google_analytics_use_prompt" = "匿名の誤動作報告と使用状況データを自動的に報告して%@の改善に役立てますか？";
 // Crypto
 "e2e_enabling_on_app_update" = "Riotはend-to-end暗号化をサポートするようになりましたが、再度有効にするにはログインする必要があります。\n\nアプリの設定から再ログインできます。今すぐ、または後からでも構いません。";
 "e2e_need_log_in_again" = "この端末のエンドツーエンド暗号鍵を生成し、接続先サーバに公開鍵を送信するには、再度ログインする必要があります。\n一度回線を切断します。ご不便おかけしてすみません。";
@@ -498,9 +498,9 @@
 "settings_labs_room_members_lazy_loading_error_message" = "あなたのホームサーバーはまだルームメンバーの遅延ロードをサポートしていません。 後で試してください。";
 "settings_deactivate_my_account" = "アカウントを無効にします";
 "room_details_flair_section" = "コミュニティの特色を表示";
-"room_details_new_flair_placeholder" = "新しいコミュニティIDを追加 (例 +foo％@)";
+"room_details_new_flair_placeholder" = "新しいコミュニティIDを追加 (例 +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "無効な形式";
-"room_details_flair_invalid_id_prompt_msg" = "％@はコミュニティの有効な識別子ではありません";
+"room_details_flair_invalid_id_prompt_msg" = "%@はコミュニティの有効な識別子ではありません";
 "room_details_fail_to_update_room_communities" = "関連コミュニティを更新できない";
 // Group Details
 "group_details_title" = "コミュニティの詳細";
@@ -512,15 +512,15 @@
 "group_home_multi_members_format" = "%tu メンバー";
 "group_home_one_room_format" = "1 部屋";
 "group_home_multi_rooms_format" = "%tu 部屋";
-"group_invitation_format" = "％@がこのコミュニティにあなたを招待しました";
+"group_invitation_format" = "%@がこのコミュニティにあなたを招待しました";
 // Group participants
 "group_participants_add_participant" = "参加者を追加";
 "group_participants_leave_prompt_title" = "グループを退出";
 "group_participants_leave_prompt_msg" = "本当にグループを退出しますか?";
 "group_participants_remove_prompt_title" = "確認";
-"group_participants_remove_prompt_msg" = "本当にこのグループから％@を削除しますか?";
+"group_participants_remove_prompt_msg" = "本当にこのグループから%@を削除しますか?";
 "group_participants_invite_prompt_title" = "確認";
-"group_participants_invite_prompt_msg" = "本当にこのグループに％@を招待しますか?";
+"group_participants_invite_prompt_msg" = "本当にこのグループに%@を招待しますか?";
 "group_participants_filter_members" = "コミュニティメンバーをフィルタリング";
 "group_participants_invite_another_user" = "ユーザーIDまたは名前による検索/招待";
 "group_participants_invite_malformed_id_title" = "招待エラー";
@@ -535,13 +535,13 @@
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "今すぐ追加しますか？";
 // Room key request dialog
 "e2e_room_key_request_title" = "暗号化キー要求";
-"e2e_room_key_request_message_new_device" = "暗号化キーを要求している新しい端末 '％@'を追加しました。";
-"e2e_room_key_request_message" = "検証されていない端末 '％@'が暗号化キーを要求しています。";
+"e2e_room_key_request_message_new_device" = "暗号化キーを要求している新しい端末 '%@'を追加しました。";
+"e2e_room_key_request_message" = "検証されていない端末 '%@'が暗号化キーを要求しています。";
 "e2e_room_key_request_start_verification" = "検証開始...";
 "e2e_room_key_request_share_without_verifying" = "検証せずに共有";
 "e2e_room_key_request_ignore_request" = "要求を無視";
 // GDPR
-"gdpr_consent_not_given_alert_message" = "％@ホームサーバーを引き続き使用するには、利用規約を確認して同意する必要があります。";
+"gdpr_consent_not_given_alert_message" = "%@ホームサーバーを引き続き使用するには、利用規約を確認して同意する必要があります。";
 "gdpr_consent_not_given_alert_review_now_action" = "今レビュー";
 "deactivate_account_title" = "無効なアカウント";
 "deactivate_account_informations_part1" = "これにより、アカウントは永久に使用できなくなります。 ログインすることはできず、誰も同じユーザーIDを再登録することはできません。 これにより、あなたのアカウントは参加しているすべての部屋から退去し、あなたのIDサーバーからアカウントの詳細が削除されます。 ";

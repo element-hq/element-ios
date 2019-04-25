@@ -75,32 +75,10 @@
  */
 + (instancetype)mediaPickerViewController;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
-
-@property (weak, nonatomic) IBOutlet UIView *captureViewContainer;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *captureViewContainerHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *cameraPreviewContainerView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraPreviewContainerAspectRatio;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *cameraActivityIndicator;
-@property (weak, nonatomic) IBOutlet UIButton *closeButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraSwitchButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraCaptureButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraCaptureButtonWidthConstraint;
-@property (weak, nonatomic) IBOutlet MXKPieChartView *cameraVideoCaptureProgressView;
-
-@property (weak, nonatomic) IBOutlet UIView *recentCapturesCollectionContainerView;
-@property (weak, nonatomic) IBOutlet UICollectionView *recentCapturesCollectionView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentCapturesCollectionContainerViewHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *libraryViewContainer;
-@property (weak, nonatomic) IBOutlet UITableView *userAlbumsTableView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *libraryViewContainerViewHeightConstraint;
-
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<MediaPickerViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<MediaPickerViewControllerDelegate> delegate;
 
 /**
  The array of the media types supported by the picker (default value is an array containing kUTTypeImage).
