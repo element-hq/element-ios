@@ -12,6 +12,7 @@ Improvements:
  * Key backup: Adjust wording for untrusted backup to match Riot Web.
  * Jitsi integration: Use the matching WebRTC framework (#1483).
  * Fastlane: Set iCloud container environment (PR #2385).
+ * Remove code used for iOS 9 only (PR #2386).
 
 Bug fix:
  * Share extension: Fix a crash when receive a memory warning (PR #2352).
