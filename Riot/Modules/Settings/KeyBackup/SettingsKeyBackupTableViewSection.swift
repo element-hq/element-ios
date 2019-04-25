@@ -34,7 +34,7 @@ import UIKit
 private enum BackupRows {
     case info(text: String)
     case createAction
-    case restoreAction(keyBackupVersion: MXKeyBackupVersion)
+    case restoreAction(keyBackupVersion: MXKeyBackupVersion, title: String)
     case deleteAction(keyBackupVersion: MXKeyBackupVersion)
 }
 
@@ -91,8 +91,8 @@ private enum BackupRows {
             cell = infoCell
         case .createAction:
             cell = self.buttonCellForCreate(atRow: row)
-        case .restoreAction(keyBackupVersion: let keyBackupVersion):
-            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, atRow: row)
+        case .restoreAction(keyBackupVersion: let keyBackupVersion, let title):
+            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, title: title, atRow: row)
         case .deleteAction(keyBackupVersion: let keyBackupVersion):
             cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
         }
@@ -163,7 +163,7 @@ private enum BackupRows {
             
             // TODO: Do not display restore button if all keys are stored on the device
             if true {
-                backupViewStateRows.append(.restoreAction(keyBackupVersion: keyBackupVersion))
+                backupViewStateRows.append(.restoreAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.settingsKeyBackupButtonRestore))
             }
             
             backupViewStateRows.append(.deleteAction(keyBackupVersion: keyBackupVersion))
@@ -195,7 +195,7 @@ private enum BackupRows {
             
             // TODO: Do not display restore button if all keys are stored on the device
             if true {
-                backupAndRunningViewStateRows.append(.restoreAction(keyBackupVersion: keyBackupVersion))
+                backupAndRunningViewStateRows.append(.restoreAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.settingsKeyBackupButtonRestore))
             }
             
             backupAndRunningViewStateRows.append(.deleteAction(keyBackupVersion: keyBackupVersion))
@@ -226,7 +226,7 @@ private enum BackupRows {
             
             // TODO: Do not display restore button if all keys are stored on the device
             if true {
-                backupNotTrustedViewStateRows.append(.restoreAction(keyBackupVersion: keyBackupVersion))
+                backupNotTrustedViewStateRows.append(.restoreAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.settingsKeyBackupButtonConnect))
             }
             
             backupNotTrustedViewStateRows.append(.deleteAction(keyBackupVersion: keyBackupVersion))
@@ -283,7 +283,7 @@ private enum BackupRows {
         return cell
     }
 
-    private func buttonCellForRestore(keyBackupVersion: MXKeyBackupVersion, atRow row: Int, title: String = VectorL10n.settingsKeyBackupButtonRestore) -> UITableViewCell {
+    private func buttonCellForRestore(keyBackupVersion: MXKeyBackupVersion, title: String, atRow row: Int) -> UITableViewCell {
         guard let delegate = self.delegate else {
             return UITableViewCell()
         }
