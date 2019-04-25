@@ -3930,15 +3930,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
     _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
-    
-    if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-    {
-        _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
-    }
-    else
-    {
-        _callStatusBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    }
+        
+    _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
     
     [_callStatusBarButton setBackgroundColor:ThemeService.shared.theme.tintColor];
     [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
