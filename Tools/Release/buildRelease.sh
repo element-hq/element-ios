@@ -1,7 +1,9 @@
 #!/bin/sh
 
+# Use sudo less Ruby
 export GEM_HOME=$HOME/.gem
 export PATH=$GEM_HOME/bin:$PATH
+
 
 if [ ! $# -eq 1 ]; then
     echo "Usage: ./buildRelease.sh [tag or branch]"
@@ -30,6 +32,7 @@ fi
 gem install bundler
 bundle install
 bundle update
+
 
 # Checkout the source to build
 mkdir -p $BUILD_DIR
