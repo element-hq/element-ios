@@ -84,7 +84,7 @@
 "auth_reset_password_email_validation_message" = "Email đã được gửi tới %@. Khi bạn đã theo liên kết trong đó, bấm vào dưới đây.";
 "auth_reset_password_next_step_button" = "Tôi đã xác thực địa chỉ email của tôi";
 "auth_reset_password_error_unauthorized" = "Xác thực địa chỉ email thất bại: hãy đảm bảo rằng bạn đã bấm vào địa chỉ đính kèm trong email";
-"auth_reset_password_error_not_found" = "Địa chỉ email có vẻ chưa được liên kết với Matrix ID trên Homeserver này.";
+"auth_reset_password_error_not_found" = "Địa chỉ email có vẻ chưa được liên kết với Matrix ID trên homeserver này.";
 "auth_reset_password_success_message" = "Mật khẩu của bạn đã được thiết lập lại.\n\nBạn đã được đăng xuất khỏi tất cả các thiết bị và sẽ không còn nhận được thông báo. Để bật lại thông báo, đăng nhập lại trên mỗi thiết bị.";
 "auth_add_email_and_phone_warning" = "Đăng kí với mật khẩu và số điện thoại cùng lúc chưa được hỗ trợ cho tới khi api được thiết lập. Duy nhất số điện thoại sẽ được liên kết với với tài khoản. Bạn sẽ phải thêm email vào hồ sơ trong mục cài đặt.";
 // Chat creation

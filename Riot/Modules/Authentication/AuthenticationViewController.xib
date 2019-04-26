@@ -102,7 +102,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="AuthenticationVCActivityIndicator"/>
                                             </userDefinedRuntimeAttributes>
                                         </activityIndicatorView>
-                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currently we do not support authentication flows defined by this Home Server" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="54b-4O-ip9" userLabel="noFlowLabel">
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currently we do not support authentication flows defined by this homeserver" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="54b-4O-ip9" userLabel="noFlowLabel">
                                             <rect key="frame" x="28" y="8" width="319.33333333333331" height="33.666666666666664"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -226,7 +226,7 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1YY-gb-LG4">
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home Server:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHf-s1-cZa">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Homeserver:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHf-s1-cZa">
                                                                     <rect key="frame" x="18" y="8" width="339" height="20"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCHSLabel"/>
                                                                     <constraints>

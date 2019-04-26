@@ -848,7 +848,7 @@
     
     if (restClient)
     {
-        // Sanity check on home server
+        // Sanity check on homeserver
         id hs_url = registrationParameters[@"hs_url"];
         if (hs_url && [hs_url isKindOfClass:NSString.class])
         {
