@@ -760,7 +760,7 @@
     // Avoid multiple openings of rooms
     self.userInteractionEnabled = NO;
     
-    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:matrixSession completion:^{
+    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:matrixSession restoreInitialDisplay:NO completion:^{
         self.userInteractionEnabled = YES;
     }];
 }

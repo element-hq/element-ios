@@ -233,7 +233,7 @@
 
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {    
-    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:mxSession];
+    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:mxSession restoreInitialDisplay:NO];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
