@@ -18,6 +18,16 @@
 
 #import "MediaPickerViewController.h"
 
+/**
+ Destination of the message in the composer
+ */
+typedef enum : NSUInteger
+{
+    RoomInputToolbarViewSendModeSend,
+    RoomInputToolbarViewSendModeReply,
+} RoomInputToolbarViewSendMode;
+
+
 @protocol RoomInputToolbarViewDelegate <MXKRoomInputToolbarViewDelegate>
 
 /**
@@ -70,9 +80,9 @@
 @property (nonatomic) BOOL isEncryptionEnabled;
 
 /**
- Tell whether the input text will be a reply to a message.
+ Destination of the message in the composer.
  */
-@property (nonatomic, getter=isReplyToEnabled) BOOL replyToEnabled;
+@property (nonatomic) RoomInputToolbarViewSendMode sendMode;
 
 /**
  Tell whether a call is active.
