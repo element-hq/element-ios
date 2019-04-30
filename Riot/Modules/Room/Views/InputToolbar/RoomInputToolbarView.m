@@ -69,6 +69,7 @@
     [super awakeFromNib];
     
     _supportCallOption = YES;
+    _sendMode = RoomInputToolbarViewSendModeSend;
     
     self.rightInputToolbarButton.hidden = YES;
     
@@ -154,10 +155,10 @@
     self.placeholder = placeholder;
 }
 
-- (void)setReplyToEnabled:(BOOL)isReplyToEnabled
+- (void)setSendMode:(RoomInputToolbarViewSendMode)sendMode
 {
-    _replyToEnabled = isReplyToEnabled;
-    
+    _sendMode = sendMode;
+
     [self updatePlaceholder];
 }
 
@@ -172,17 +173,44 @@
     
     if (!shouldDisplayLargePlaceholder)
     {
-        placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+        switch (_sendMode)
+        {
+            case RoomInputToolbarViewSendModeReply:
+                placeholder = NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil);
+                break;
+
+            default:
+                placeholder = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+                break;
+        }
     }
     else
     {
         if (_isEncryptionEnabled)
         {
-            placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"encrypted_room_message_reply_to_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+            switch (_sendMode)
+            {
+                case RoomInputToolbarViewSendModeReply:
+                    placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_reply_to_placeholder", @"Vector", nil);
+                    break;
+
+                default:
+                    placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+                    break;
+            }
         }
         else
         {
-            placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+            switch (_sendMode)
+            {
+                case RoomInputToolbarViewSendModeReply:
+                    placeholder = NSLocalizedStringFromTable(@"room_message_reply_to_placeholder", @"Vector", nil);
+                    break;
+
+                default:
+                    placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+                    break;
+            }
         }
     }
     

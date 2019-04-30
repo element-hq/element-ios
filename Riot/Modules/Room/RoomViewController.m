@@ -206,9 +206,6 @@
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
     
-    // Tell whether the input text field is in send reply mode. If true typed message will be sent to highlighted event.
-    BOOL isInReplyMode;
-    
     // Listener for `m.room.tombstone` event type
     id tombstoneEventNotificationsListener;
 
@@ -1098,7 +1095,7 @@
 
 - (void)sendTextMessage:(NSString*)msgTxt
 {
-    if (isInReplyMode && customizedRoomDataSource.selectedEventId)
+    if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeReply && customizedRoomDataSource.selectedEventId)
     {
         [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
             // Just log the error. The message will be displayed in red in the room history
@@ -1440,15 +1437,25 @@
     }
 }
 
-- (void)enableReplyMode:(BOOL)enable
+- (void)setInputToolBarSendMode:(RoomInputToolbarViewSendMode)sendMode
 {
-    isInReplyMode = enable;
-    
     if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
     {
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
-        roomInputToolbarView.replyToEnabled = enable;
+        roomInputToolbarView.sendMode = sendMode;
     }
+}
+
+- (RoomInputToolbarViewSendMode)inputToolBarSendMode
+{
+    RoomInputToolbarViewSendMode sendMode = RoomInputToolbarViewSendModeSend;
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
+    {
+        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        sendMode = roomInputToolbarView.sendMode;
+    }
+
+    return sendMode;
 }
 
 - (void)onSwipeGesture:(UISwipeGestureRecognizer*)swipeGestureRecognizer
@@ -2871,16 +2878,16 @@
 
 - (void)selectEventWithId:(NSString*)eventId
 {
-    BOOL shouldEnableReplyMode = [self.roomDataSource canReplyToEventWithId:eventId];;
-    
-    [self enableReplyMode:shouldEnableReplyMode];
-    
+    BOOL shouldEnableReplyMode = [self.roomDataSource canReplyToEventWithId:eventId];
+
+    [self setInputToolBarSendMode: shouldEnableReplyMode ? RoomInputToolbarViewSendModeReply : RoomInputToolbarViewSendModeSend];
+
     customizedRoomDataSource.selectedEventId = eventId;
 }
 
 - (void)cancelEventSelection
 {
-    [self enableReplyMode:NO];
+    [self setInputToolBarSendMode:RoomInputToolbarViewSendModeSend];
     
     if (currentAlert)
     {
