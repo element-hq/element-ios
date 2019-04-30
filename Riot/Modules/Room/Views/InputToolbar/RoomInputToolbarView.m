@@ -160,6 +160,26 @@
     _sendMode = sendMode;
 
     [self updatePlaceholder];
+    [self updateToolbarButtonLabel];
+}
+
+- (void)updateToolbarButtonLabel
+{
+    NSString *title;
+
+    switch (_sendMode)
+    {
+        case RoomInputToolbarViewSendModeReply:
+            title = NSLocalizedStringFromTable(@"room_action_reply", @"Vector", nil);
+            break;
+
+        default:
+            title = [NSBundle mxk_localizedStringForKey:@"send"];
+            break;
+    }
+
+    [self.rightInputToolbarButton setTitle:title forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitle:title forState:UIControlStateHighlighted];
 }
 
 - (void)updatePlaceholder

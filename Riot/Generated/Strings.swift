@@ -1338,6 +1338,10 @@ internal enum VectorL10n {
   internal static var retry: String { 
     return VectorL10n.tr("Vector", "retry") 
   }
+  /// Reply
+  internal static var roomActionReply: String { 
+    return VectorL10n.tr("Vector", "room_action_reply") 
+  }
   /// Send photo or video
   internal static var roomActionSendPhotoOrVideo: String { 
     return VectorL10n.tr("Vector", "room_action_send_photo_or_video") 
