@@ -24,7 +24,7 @@ CocoaPods command::
         $ pod install
 
 This will load all dependencies for the Riot source code, including MatrixKit 
-and MatrixSDK.  You will need an recent and updated (``pod update``) install of
+and MatrixSDK.  You will need an recent and updated (``pod setup``) install of
 CocoaPods.
 
 Then, open ``Riot.xcworkspace`` with Xcode
