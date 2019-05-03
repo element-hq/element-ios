@@ -260,7 +260,7 @@
     if ([recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
     {
         // Open the public room
-        [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:publicRoom.roomId andEventId:nil inMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+        [[AppDelegate theDelegate] showRoom:publicRoom.roomId andEventId:nil withMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession restoreInitialDisplay:NO];
     }
     else
     {

@@ -20,6 +20,15 @@
 #import "ThemeService.h"
 #import "Riot-Swift.h"
 
+#import "AppDelegate.h"
+
+@interface EncryptionInfoView() <DeviceVerificationCoordinatorBridgePresenterDelegate>
+{
+    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+}
+
+@end
+
 @implementation EncryptionInfoView
 
 #pragma mark - Override MXKView
@@ -35,6 +44,40 @@
     self.verifyButton.tintColor = ThemeService.shared.theme.tintColor;
     self.blockButton.tintColor = ThemeService.shared.theme.tintColor;
     self.confirmVerifyButton.tintColor = ThemeService.shared.theme.tintColor;
+}
+
+- (void)displayLegacyVerificationScreen
+{
+    [super onButtonPressed:self.verifyButton];
+}
+
+- (void)onButtonPressed:(id)sender
+{
+    UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+    if (sender == self.verifyButton && self.mxDeviceInfo.verified != MXDeviceVerified
+        && self.mxDeviceInfo
+        && rootViewController)
+    {
+        // Redirect to the interactive device verification flow
+        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mxSession];
+        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+
+        // Show it on the root view controller
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:rootViewController otherUserId:self.mxDeviceInfo.userId otherDeviceId:self.mxDeviceInfo.deviceId animated:YES];
+    }
+    else
+    {
+        [super onButtonPressed:sender];
+    }
+}
+
+- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId {
+
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    deviceVerificationCoordinatorBridgePresenter = nil;
+
+    // Eject like MXKEncryptionInfoView does
+    [self removeFromSuperview];
 }
 
 @end

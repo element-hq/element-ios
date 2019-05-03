@@ -48,8 +48,6 @@
 
 #import "Riot-Swift.h"
 
-#import "EncryptionInfoView.h"
-
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
 enum
@@ -622,12 +620,15 @@ SignOutAlertPresenterDelegate>
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
+            [self.tableView beginUpdates];
+            
             // Refresh the corresponding table view cell with animation
             [self.tableView reloadRowsAtIndexPaths:@[
                                                      [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
                                                      ]
                                   withRowAnimation:UITableViewRowAnimationFade];
             
+            [self.tableView endUpdates];            
         });
     }
 }
@@ -648,12 +649,15 @@ SignOutAlertPresenterDelegate>
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
+            [self.tableView beginUpdates];
+            
             // Refresh the corresponding table view cell with animation
             [self.tableView reloadRowsAtIndexPaths:@[
                                                      [NSIndexPath indexPathForRow:userSettingsNewPhoneIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
                                                      ]
                                   withRowAnimation:UITableViewRowAnimationFade];
             
+            [self.tableView endUpdates];
         });
     }
 }
@@ -4343,68 +4347,6 @@ SignOutAlertPresenterDelegate>
 - (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showError:(NSError *)error
 {
     [[AppDelegate theDelegate] showErrorAsAlert:error];
-}
-
-#pragma mark - MXKEncryptionInfoView
-
-- (void)showDeviceInfo:(MXDeviceInfo*)deviceInfo
-{
-    // Show it modally on the root view controller
-    // TODO: Improve it
-    UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
-    if (rootViewController)
-    {
-        EncryptionInfoView *encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceInfo andMatrixSession:self.mainSession];
-        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
-
-        encryptionInfoView.delegate = self;
-
-        // Add shadow on added view
-        encryptionInfoView.layer.cornerRadius = 5;
-        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
-        encryptionInfoView.layer.shadowOpacity = 0.5f;
-
-        // Add the view and define edge constraints
-        [rootViewController.view addSubview:encryptionInfoView];
-
-        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                                            attribute:NSLayoutAttributeTop
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:rootViewController.topLayoutGuide
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                           multiplier:1.0f
-                                                                             constant:10.0f]];
-
-        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:rootViewController.bottomLayoutGuide
-                                                                            attribute:NSLayoutAttributeTop
-                                                                           multiplier:1.0f
-                                                                             constant:-10.0f]];
-
-        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:rootViewController.view
-                                                                            attribute:NSLayoutAttributeLeading
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:encryptionInfoView
-                                                                            attribute:NSLayoutAttributeLeading
-                                                                           multiplier:1.0f
-                                                                             constant:-10.0f]];
-
-        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:rootViewController.view
-                                                                            attribute:NSLayoutAttributeTrailing
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:encryptionInfoView
-                                                                            attribute:NSLayoutAttributeTrailing
-                                                                           multiplier:1.0f
-                                                                             constant:10.0f]];
-        [rootViewController.view setNeedsUpdateConstraints];
-    }
-}
-
-- (void)encryptionInfoView:(MXKEncryptionInfoView*)encryptionInfoView didDeviceInfoVerifiedChange:(MXDeviceInfo*)deviceInfo
-{
-    [keyBackupSection reload];
 }
 
 #pragma mark - KeyBackupRecoverCoordinatorBridgePresenter

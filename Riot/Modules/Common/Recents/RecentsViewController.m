@@ -759,8 +759,8 @@
 {
     // Avoid multiple openings of rooms
     self.userInteractionEnabled = NO;
-        
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession completion:^{
+    
+    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:matrixSession restoreInitialDisplay:NO completion:^{
         self.userInteractionEnabled = YES;
     }];
 }

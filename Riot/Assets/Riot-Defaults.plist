@@ -25,9 +25,11 @@
 	<key>matrixApps</key>
 	<true/>
 	<key>integrationsUiUrl</key>
-	<string>https://scalar-staging.riot.im/scalar-web/</string>
+	<string>https://scalar.vector.im/</string>
 	<key>integrationsRestUrl</key>
-	<string>https://scalar-staging.riot.im/scalar/api</string>
+	<string>https://scalar.vector.im/api</string>
+	<key>jitsiServerURL</key>
+	<string>https://jitsi.riot.im</string>
 	<key>integrationsWidgetsUrls</key>
 	<array>
 		<string>https://scalar-staging.riot.im/scalar/api</string>

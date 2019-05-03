@@ -859,7 +859,7 @@
                 }
                 
             } failure:^(NSError *error) {
-                NSLog(@"[GroupHomeViewController] Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+                NSLog(@"[GroupHomeViewController] Error: The homeserver failed to resolve the room alias (%@)", roomIdOrAlias);
             }];
         }
     }

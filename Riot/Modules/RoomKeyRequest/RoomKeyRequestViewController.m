@@ -17,13 +17,13 @@
 #import "RoomKeyRequestViewController.h"
 
 #import "AppDelegate.h"
-#import "EncryptionInfoView.h"
+#import "Riot-Swift.h"
 
-@interface RoomKeyRequestViewController ()
+@interface RoomKeyRequestViewController () <DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     void (^onComplete)(void);
 
-    EncryptionInfoView *encryptionInfoView;
+    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
 
     BOOL wasNewDevice;
 }
@@ -127,12 +127,6 @@
         [_alertController dismissViewControllerAnimated:YES completion:nil];
         _alertController = nil;
     }
-
-    if (encryptionInfoView)
-    {
-        [encryptionInfoView removeFromSuperview];
-        encryptionInfoView = nil;
-    }
 }
 
 
@@ -142,77 +136,43 @@
     UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
     if (rootViewController)
     {
-        encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:_device andMatrixSession:_mxSession];
-        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
+        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:_mxSession];
+        deviceVerificationCoordinatorBridgePresenter.delegate = self;
 
-        encryptionInfoView.delegate = self;
-
-        // Add shadow on added view
-        encryptionInfoView.layer.cornerRadius = 5;
-        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
-        encryptionInfoView.layer.shadowOpacity = 0.5f;
-
-        // Add the view and define edge constraints
-        [rootViewController.view addSubview:encryptionInfoView];
-
-        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                                          attribute:NSLayoutAttributeTop
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:rootViewController.topLayoutGuide
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                         multiplier:1.0f
-                                                                           constant:10.0f]];
-
-        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:rootViewController.bottomLayoutGuide
-                                                                          attribute:NSLayoutAttributeTop
-                                                                         multiplier:1.0f
-                                                                           constant:-10.0f]];
-
-        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:rootViewController.view
-                                                                          attribute:NSLayoutAttributeLeading
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:encryptionInfoView
-                                                                          attribute:NSLayoutAttributeLeading
-                                                                         multiplier:1.0f
-                                                                           constant:-10.0f]];
-
-        [rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:rootViewController.view
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:encryptionInfoView
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                         multiplier:1.0f
-                                                                           constant:10.0f]];
-        [rootViewController.view setNeedsUpdateConstraints];
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:rootViewController otherUserId:_device.userId otherDeviceId:_device.deviceId animated:YES];
     }
 }
 
-#pragma mark - MXKEncryptionInfoViewDelegate
+#pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
 
-- (void)encryptionInfoView:(MXKEncryptionInfoView *)theEncryptionInfoView didDeviceInfoVerifiedChange:(MXDeviceInfo *)deviceInfo
+- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    encryptionInfoView = nil;
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    deviceVerificationCoordinatorBridgePresenter = nil;
 
-    if (deviceInfo.verified == MXDeviceVerified)
-    {
-        // Accept the received requests from this device
-        // As the device is now verified, all other key requests will be automatically accepted.
-        [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
+    // Check device new status
+    [self.mxSession.crypto downloadKeys:@[self.device.userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
 
-            onComplete();
-        }];
-    }
-}
+        MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:self.device.deviceId forUser:self.device.userId];
+        if (deviceInfo && deviceInfo.verified == MXDeviceVerified)
+        {
+            // Accept the received requests from this device
+            // As the device is now verified, all other key requests will be automatically accepted.
+            [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 
-- (void)encryptionInfoViewDidClose:(MXKEncryptionInfoView *)theEncryptionInfoView
-{
-    encryptionInfoView = nil;
+                onComplete();
+            }];
+        }
+        else
+        {
+            // Come back to self.alertController - ie, reopen it
+            [self show];
+        }
+    } failure:^(NSError *error) {
 
-    // Come back to self.alertController - ie, reopen it
-    [self show];
+        // Should not happen (the device is in the crypto db)
+        [self show];
+    }];
 }
 
 @end

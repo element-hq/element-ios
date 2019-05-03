@@ -42,46 +42,47 @@ PODS:
   - GBDeviceInfo/Core (5.2.0)
   - GZIP (1.2.2)
   - HPGrowingTextView (1.1)
+  - JitsiMeetSDK (2.1.0)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.13)
-  - MatrixKit (0.9.8):
+  - MatrixKit (0.9.9):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.9.8)
-    - MatrixSDK (= 0.12.4)
-  - MatrixKit/AppExtension (0.9.8):
+    - MatrixKit/Core (= 0.9.9)
+    - MatrixSDK (= 0.12.5)
+  - MatrixKit/AppExtension (0.9.9):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.12.4)
-  - MatrixKit/Core (0.9.8):
+    - MatrixSDK (= 0.12.5)
+  - MatrixKit/Core (0.9.9):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.12.4)
-  - MatrixSDK (0.12.4):
-    - MatrixSDK/Core (= 0.12.4)
-  - MatrixSDK/Core (0.12.4):
+    - MatrixSDK (= 0.12.5)
+  - MatrixSDK (0.12.5):
+    - MatrixSDK/Core (= 0.12.5)
+  - MatrixSDK/Core (0.12.5):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
-    - OLMKit (~> 3.0.0)
+    - OLMKit (~> 3.1.0)
     - Realm (~> 3.13.1)
-  - MatrixSDK/JingleCallStack (0.12.4):
+  - MatrixSDK/JingleCallStack (0.12.5):
+    - JitsiMeetSDK (~> 2.1.0)
     - MatrixSDK/Core
-    - WebRTC (= 63.11.20455)
-  - MatrixSDK/SwiftSupport (0.12.4):
+  - MatrixSDK/SwiftSupport (0.12.5):
     - MatrixSDK/Core
-  - OLMKit (3.0.0):
-    - OLMKit/olmc (= 3.0.0)
-    - OLMKit/olmcpp (= 3.0.0)
-  - OLMKit/olmc (3.0.0)
-  - OLMKit/olmcpp (3.0.0)
+  - OLMKit (3.1.0):
+    - OLMKit/olmc (= 3.1.0)
+    - OLMKit/olmcpp (= 3.1.0)
+  - OLMKit/olmc (3.1.0)
+  - OLMKit/olmcpp (3.1.0)
   - PiwikTracker (4.4.2):
     - PiwikTracker/Core (= 4.4.2)
   - PiwikTracker/Core (4.4.2)
@@ -95,15 +96,14 @@ PODS:
   - Reusable/View (4.0.5)
   - SwiftGen (6.1.0)
   - SwiftLint (0.30.1)
-  - WebRTC (63.11.20455)
   - zxcvbn-ios (1.0.4)
 
 DEPENDENCIES:
   - cmark
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
-  - MatrixKit (= 0.9.8)
-  - MatrixKit/AppExtension (= 0.9.8)
+  - MatrixKit (= 0.9.9)
+  - MatrixKit/AppExtension (= 0.9.9)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
@@ -122,6 +122,7 @@ SPEC REPOS:
     - GBDeviceInfo
     - GZIP
     - HPGrowingTextView
+    - JitsiMeetSDK
     - libbase58
     - libPhoneNumber-iOS
     - MatrixKit
@@ -131,7 +132,6 @@ SPEC REPOS:
     - Reusable
     - SwiftGen
     - SwiftLint
-    - WebRTC
     - zxcvbn-ios
 
 EXTERNAL SOURCES:
@@ -152,19 +152,19 @@ SPEC CHECKSUMS:
   GBDeviceInfo: 2c65ceb9404f9079264d4c238f5b81916fdfc5e2
   GZIP: 12374d285e3b5d46cfcd480700fcfc7e16caf4f1
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
+  JitsiMeetSDK: 3e66564af7f38a19142338955dd7f581801852b3
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatrixKit: 098ddd270d1dec86a85ea93a85a00e37b2d80c11
-  MatrixSDK: 310efb69f70b4d7772f6f134b06fbb9ec238e6a7
-  OLMKit: 88eda69110489f817d59bcb4353b7c247570aa4f
+  MatrixKit: 6f553797e1ad42794b5336afb5cecb975ec69daa
+  MatrixSDK: ed0d0cee4877955052f19730bb3ee727e01ec948
+  OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
-  WebRTC: f2a6203584745fe53532633397557876b5d71640
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: 63fb661f957b3fa4c00765bc4d28bed41892847c
+PODFILE CHECKSUM: cfb6be050dfbb227d58b14434629e447ea54554b
 
 COCOAPODS: 1.6.1

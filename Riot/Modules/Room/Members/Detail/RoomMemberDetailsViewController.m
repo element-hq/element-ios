@@ -29,13 +29,11 @@
 #import "TableViewCellWithButton.h"
 #import "RoomTableViewCell.h"
 
-#import "EncryptionInfoView.h"
-
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface RoomMemberDetailsViewController () <RoomMemberTitleViewDelegate>
+@interface RoomMemberDetailsViewController () <RoomMemberTitleViewDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     RoomMemberTitleView* memberTitleView;
     
@@ -62,7 +60,8 @@
      */
     NSArray<MXDeviceInfo *> *devicesArray;
     NSInteger devicesIndex;
-    EncryptionInfoView *encryptionInfoView;
+    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+
     
     /**
      Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
@@ -318,19 +317,6 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    
-    // Check here whether a subview has been added or removed
-    if (encryptionInfoView)
-    {
-        if (!encryptionInfoView.superview)
-        {
-            // Reset
-            encryptionInfoView = nil;
-            
-            // Reload the full table to take into account a potential change on a device status.
-            [self updateMemberInfo];
-        }
-    }
     
     // Check whether the title view has been created and rendered.
     if (memberTitleView && memberTitleView.superview)
@@ -1154,50 +1140,10 @@
 {
     if (verificationStatus == MXDeviceVerified)
     {
-        // Prompt the user before marking as verified the device.
-        encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceTableViewCell.deviceInfo andMatrixSession:self.mxRoom.mxSession];
-        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
-        
-        // Add shadow on added view
-        encryptionInfoView.layer.cornerRadius = 5;
-        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
-        encryptionInfoView.layer.shadowOpacity = 0.5f;
-        
-        // Add the view and define edge constraints
-        [self.view addSubview:encryptionInfoView];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeTop
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.tableView
-                                                              attribute:NSLayoutAttributeTop
-                                                             multiplier:1.0f
-                                                               constant:10.0f]];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeBottom
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.tableView
-                                                              attribute:NSLayoutAttributeBottom
-                                                             multiplier:1.0f
-                                                               constant:-10.0f]];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
-                                                              attribute:NSLayoutAttributeLeading
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeLeading
-                                                             multiplier:1.0f
-                                                               constant:-10.0f]];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1.0f
-                                                               constant:10.0f]];
-        [self.view setNeedsUpdateConstraints];
+        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:self otherUserId:deviceTableViewCell.deviceInfo.userId otherDeviceId:deviceTableViewCell.deviceInfo.deviceId animated:YES];
     }
     else
     {
@@ -1215,6 +1161,14 @@
 - (void)roomMemberTitleViewDidLayoutSubview:(RoomMemberTitleView*)titleView
 {
     [self viewDidLayoutSubviews];
+}
+
+#pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
+
+- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+{
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    deviceVerificationCoordinatorBridgePresenter = nil;
 }
 
 @end

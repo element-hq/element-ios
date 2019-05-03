@@ -83,7 +83,7 @@
 "auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";
-"auth_add_email_message" = "Add an email address to your account to let users discover you, and let you reset password.";
+"auth_add_email_message" = "Add an email address to your account to let users discover you, and to reset your password.";
 "auth_add_phone_message" = "Add a phone number to your account to let users discover you.";
 "auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you. Email address will also let you reset your password.";
 "auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you. Email address will also let you reset your password.";
@@ -102,14 +102,14 @@
 "auth_msisdn_validation_title" = "Verification Pending";
 "auth_msisdn_validation_message" = "We\'ve sent an SMS with an activation code. Please enter this code below.";
 "auth_msisdn_validation_error" = "Unable to verify phone number.";
-"auth_recaptcha_message" = "This Home Server would like to make sure you are not a robot";
+"auth_recaptcha_message" = "This homeserver would like to make sure you are not a robot";
 "auth_reset_password_message" = "To reset your password, enter the email address linked to your account:";
 "auth_reset_password_missing_email" = "The email address linked to your account must be entered.";
 "auth_reset_password_missing_password" = "A new password must be entered.";
 "auth_reset_password_email_validation_message" = "An email has been sent to %@. Once you've followed the link it contains, click below.";
 "auth_reset_password_next_step_button" = "I have verified my email address";
 "auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
-"auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
+"auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this homeserver.";
 "auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
 "auth_accept_policies" = "Please review and accept the policies of this homeserver:";
@@ -326,7 +326,7 @@
 "settings_mark_all_as_read" = "Mark all messages as read";
 "settings_report_bug" = "Report bug";
 "settings_clear_cache" = "Clear cache";
-"settings_config_home_server" = "Home server is %@";
+"settings_config_home_server" = "Homeserver is %@";
 "settings_config_identity_server" = "Identity server is %@";
 "settings_config_user_id" = "Logged in as %@";
 
@@ -431,11 +431,11 @@
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
 "settings_key_backup_info_checking" = "Checking...";
 "settings_key_backup_info_none" = "Your keys are not being backed up from this device.";
-"settings_key_backup_info_signout_warning" = "Back up your keys before signing out to avoid losing them.";
+"settings_key_backup_info_signout_warning" = "Connect this device to key backup before signing out to avoid losing any keys that may only be on this device.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
 "settings_key_backup_info_valid" = "This device is backing up your keys.";
-"settings_key_backup_info_not_valid" = "This device is not backing up your keys.";
+"settings_key_backup_info_not_valid" = "This device is not backing up your keys, but you do have an existing backup you can restore from and add to going forward.";
 "settings_key_backup_info_progress" = "Backing up %@ keys...";
 "settings_key_backup_info_progress_done" = "All keys backed up";
 
@@ -449,7 +449,7 @@
 "settings_key_backup_button_create" = "Start using Key Backup";
 "settings_key_backup_button_restore" = "Restore from Backup";
 "settings_key_backup_button_delete" = "Delete Backup";
-"settings_key_backup_button_use" = "Use key backup";
+"settings_key_backup_button_connect" = "Connect this device to Key Backup";
 "settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
 
@@ -694,7 +694,7 @@
 "key_backup_setup_intro_title" = "Never lose encrypted messages";
 "key_backup_setup_intro_info" = "Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Start using Key Backup";
-"key_backup_setup_intro_setup_action_with_existing_backup" = "Use Key Backup";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Connect this device to Key Backup";
 "key_backup_setup_intro_manual_export_info" = "(Advanced)";
 "key_backup_setup_intro_manual_export_action" = "Manually export keys";
 
@@ -773,7 +773,7 @@
 // Recover
 
 "key_backup_recover_banner_title" = "Never lose encrypted messages";
-"key_backup_recover_banner_subtitle" = "Use Key Backup";
+"key_backup_recover_connent_banner_subtitle" = "Connect this device to Key Backup";
 
 // MARK: Sign out warning
 
@@ -792,3 +792,99 @@
 "sign_out_key_backup_in_progress_alert_title" = "Key backup in progress. If you sign out now you’ll lose access to your encrypted messages.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "I don't want my encrypted messages";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";
+
+// MARK: - Device Verification
+"device_verification_title" = "Verify device";
+"device_verification_security_advice" = "For maximum security, we recommend you do this in person or use another trusted means of communication";
+"device_verification_cancelled" = "The other party cancelled the verification.";
+"device_verification_cancelled_by_me" = "The verification has been cancelled. Reason: %@";
+"device_verification_error_cannot_load_device" = "Cannot load device information.";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "Incoming Verification Request";
+"device_verification_incoming_description_1" = "Verify this device to mark it as trusted. Trusting devices of partners gives you extra peace of mind when using end-to-end encrypted messages.";
+"device_verification_incoming_description_2" = "Verifying this device will mark it as trusted, and also mark your device as trusted to the partner.";
+
+// MARK: Start
+"device_verification_start_title" = "Verify by comparing a short text string";
+"device_verification_start_wait_partner" = "Waiting for partner to accept...";
+"device_verification_start_use_legacy" = "Nothing appearing? Not all clients supports interactive verification yet. Use legacy verification.";
+"device_verification_start_verify_button" = "Begin Verifying";
+"device_verification_start_use_legacy_action" = "Use Legacy Verification";
+
+// MARK: Verify
+"device_verification_verify_title_emoji" = "Verify this device by confirming the following emoji appear on the screen of the partner";
+"device_verification_verify_title_number" = "Verify this device by confirming the following numbers appear on the screen of the partner";
+"device_verification_verify_wait_partner" = "Waiting for partner to confirm...";
+
+// MARK: Verified
+"device_verification_verified_title" = "Verified!";
+"device_verification_verified_description_1" = "You've successfully verified this device.";
+"device_verification_verified_description_2" = "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.";
+"device_verification_verified_got_it_button" = "Got it";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "Dog";
+"device_verification_emoji_cat" = "Cat";
+"device_verification_emoji_lion" = "Lion";
+"device_verification_emoji_horse" = "Horse";
+"device_verification_emoji_unicorn" = "Unicorn";
+"device_verification_emoji_pig" = "Pig";
+"device_verification_emoji_elephant" = "Elephant";
+"device_verification_emoji_rabbit" = "Rabbit";
+"device_verification_emoji_panda" = "Panda";
+"device_verification_emoji_rooster" = "Rooster";
+"device_verification_emoji_penguin" = "Penguin";
+"device_verification_emoji_turtle" = "Turtle";
+"device_verification_emoji_fish" = "Fish";
+"device_verification_emoji_octopus" = "Octopus";
+"device_verification_emoji_butterfly" = "Butterfly";
+"device_verification_emoji_flower" = "Flower";
+"device_verification_emoji_tree" = "Tree";
+"device_verification_emoji_cactus" = "Cactus";
+"device_verification_emoji_mushroom" = "Mushroom";
+"device_verification_emoji_globe" = "Globe";
+"device_verification_emoji_moon" = "Moon";
+"device_verification_emoji_cloud" = "Cloud";
+"device_verification_emoji_fire" = "Fire";
+"device_verification_emoji_banana" = "Banana";
+"device_verification_emoji_apple" = "Apple";
+"device_verification_emoji_strawberry" = "Strawberry";
+"device_verification_emoji_corn" = "Corn";
+"device_verification_emoji_pizza" = "Pizza";
+"device_verification_emoji_cake" = "Cake";
+"device_verification_emoji_heart" = "Heart";
+"device_verification_emoji_smiley" = "Smiley";
+"device_verification_emoji_robot" = "Robot";
+"device_verification_emoji_hat" = "Hat";
+"device_verification_emoji_glasses" = "Glasses";
+"device_verification_emoji_spanner" = "Spanner";
+"device_verification_emoji_santa" = "Santa";
+"device_verification_emoji_thumbs up" = "Thumbs up";
+"device_verification_emoji_umbrella" = "Umbrella";
+"device_verification_emoji_hourglass" = "Hourglass";
+"device_verification_emoji_clock" = "Class";
+"device_verification_emoji_gift" = "Gift";
+"device_verification_emoji_light bulb" = "Light Bulb";
+"device_verification_emoji_book" = "Book";
+"device_verification_emoji_pencil" = "Pencil";
+"device_verification_emoji_paperclip" = "Paperclip";
+"device_verification_emoji_scissors" = "Scissors";
+"device_verification_emoji_padlock" = "Padlock";
+"device_verification_emoji_key" = "Key";
+"device_verification_emoji_hammer" = "Hammer";
+"device_verification_emoji_telephone" = "Telephone";
+"device_verification_emoji_flag" = "Flag";
+"device_verification_emoji_train" = "Train";
+"device_verification_emoji_bicycle" = "Bicycle";
+"device_verification_emoji_aeroplane" = "Aeroplane";
+"device_verification_emoji_rocket" = "Rocket";
+"device_verification_emoji_trophy" = "Trophy";
+"device_verification_emoji_ball" = "Ball";
+"device_verification_emoji_guitar" = "Guitar";
+"device_verification_emoji_trumpet" = "Trumpet";
+"device_verification_emoji_bell" = "Ball";
+"device_verification_emoji_anchor" = "Anchor";
+"device_verification_emoji_headphones" = "Headphones";
+"device_verification_emoji_folder" = "Folder";
+"device_verification_emoji_pin" = "Pin";

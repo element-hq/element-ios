@@ -314,6 +314,8 @@
                             // Set the container tag to be able to retrieve read receipts container from component index (see component selection in MXKRoomBubbleTableViewCell (Vector) category).
                             avatarsContainer.tag = index;
                             
+                            avatarsContainer.moreLabelTextColor = ThemeService.shared.theme.textPrimaryColor;
+                            
                             [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
                             avatarsContainer.readReceipts = receipts;
                             UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(onReceiptContainerTap:)];

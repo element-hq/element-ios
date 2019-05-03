@@ -232,8 +232,8 @@
 #pragma mark - Private methods
 
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
-{
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
+{    
+    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:mxSession restoreInitialDisplay:NO];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible

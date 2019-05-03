@@ -125,28 +125,14 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             }
             
             // Use bold font for the room title
-            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-            {
-                self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
-            }
-            else
-            {
-                self.roomTitle.font = [UIFont boldSystemFontOfSize:17];
-            }
+            self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
         }
         else
         {
             self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;
             
-            // The room title is not bold anymore
-            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-            {
-                self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
-            }
-            else
-            {
-                self.roomTitle.font = [UIFont systemFontOfSize:17];
-            }
+            // The room title is not bold anymore            
+            self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;

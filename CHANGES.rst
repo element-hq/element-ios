@@ -1,9 +1,26 @@
-Changes in 0.8.5 (2019-xx-xx)
+Changes in 0.8.5 (2019-05-03)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.9.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.9)).
+ * Push: Add more logs to track spontaneously disabling (#2348).
+ * Widgets: Use scalar prod urls in Riot mobile apps (#2349).
+ * Productiviy: Create templates (see Tools/Templates/README.md).
+ * Notifications: Use UserNotifications framework for local notifications (iOS 10+), thanks to @fridtjof (PR #2207).
+ * Notifications: Added titles to notifications on iOS 10+, thanks to @fridtjof (PR #2347).
+ * iOS 12 Notification: Group them by room (#2337 and PR #2347 thanks to @fridtjof).
+ * Notifications: When navigate to a room, remove associated delivered notifications (#2337).
+ * Key backup: Adjust wording for untrusted backup to match Riot Web.
+ * Jitsi integration: Use the matching WebRTC framework (#1483).
+ * Fastlane: Set iCloud container environment (PR #2385).
+ * Remove code used for iOS 9 only (PR #2386).
 
 Bug fix:
+ * Share extension: Fix a crash when receive a memory warning (PR #2352).
+ * Upgraded rooms show up in the share extension twice (#2293).
+ * +N read receipt text is invisible on dark theme (#2294).
+ * Avoid crashes with tableview reload animation in settings and room settings (PR #2364).
+ * Media picker: Fix some retain cycles (PR #2382).
 
 Changes in 0.8.4 (2019-03-21)
 ===============================================

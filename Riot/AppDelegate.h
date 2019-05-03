@@ -17,6 +17,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
+#import <UserNotifications/UserNotifications.h>
 
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"
@@ -37,7 +38,7 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
  */
 extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, UNUserNotificationCenterDelegate>
 {
     BOOL isPushRegistered;
     
@@ -119,7 +120,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
  
- @param sendLogoutRequest Indicate whether send logout request to home server.
+ @param sendLogoutRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
@@ -142,6 +143,11 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 - (void)registerForRemoteNotificationsWithCompletion:(void (^)(NSError *))completion;
 
 #pragma mark - Matrix Room handling
+
+// Show a room and jump to the given event if event id is not nil otherwise go to last messages.
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay completion:(void (^)(void))completion;
+
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay;
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 

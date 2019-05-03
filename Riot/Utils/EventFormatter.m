@@ -227,14 +227,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
-        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-        {
-            self.bingTextFont = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
-        }
-        else
-        {
-            self.bingTextFont = [UIFont systemFontOfSize:15];
-        }
+        self.bingTextFont = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
         self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];

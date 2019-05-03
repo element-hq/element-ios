@@ -816,15 +816,12 @@
         
         self.tabBar.items[index].badgeValue = badgeValue;
         
-        if (@available(iOS 10, *))
-        {
-            self.tabBar.items[index].badgeColor = badgeColor;
-
-            [self.tabBar.items[index] setBadgeTextAttributes:@{
-                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
-                                                               }
-                                                    forState:UIControlStateNormal];
-        }
+        self.tabBar.items[index].badgeColor = badgeColor;
+        
+        [self.tabBar.items[index] setBadgeTextAttributes:@{
+                                                           NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                           }
+                                                forState:UIControlStateNormal];
     }
     else
     {
@@ -837,16 +834,13 @@
     if (mark)
     {
         self.tabBar.items[index].badgeValue = mark;
+                
+        self.tabBar.items[index].badgeColor = badgeColor;
         
-        if (@available(iOS 10, *))
-        {
-            self.tabBar.items[index].badgeColor = badgeColor;
-
-            [self.tabBar.items[index] setBadgeTextAttributes:@{
-                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
-                                                               }
-                                                    forState:UIControlStateNormal];
-        }
+        [self.tabBar.items[index] setBadgeTextAttributes:@{
+                                                           NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                           }
+                                                forState:UIControlStateNormal];
     }
     else
     {
