@@ -108,7 +108,7 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.waitingPartnerLabel.textColor = theme.textPrimaryColor
         self.useLegacyVerificationLabel.textColor = theme.textPrimaryColor
 
-        self.verifyButton.backgroundColor = theme.backgroundColor
+        self.verifyButtonBackgroundView.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.verifyButton)
 
         theme.applyStyle(onButton: self.useLegacyVerificationButton)

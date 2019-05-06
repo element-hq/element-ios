@@ -2,7 +2,8 @@ Changes in 0.8.6 (2019-05-06)
 ===============================================
 
 Bug fix:
- * Device Verification: Fix bell emoji name
+ * Device Verification: Fix bell emoji name.
+ * Device Verification: Fix buttons colors in dark theme.
 
 Changes in 0.8.5 (2019-05-03)
 ===============================================
