@@ -138,6 +138,11 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
 
 - (void)selectComponent:(NSUInteger)componentIndex
 {
+    [self selectComponent:componentIndex showEditButton:YES];
+}
+
+- (void)selectComponent:(NSUInteger)componentIndex showEditButton:(BOOL)showEditButton
+{
     if (componentIndex < bubbleData.bubbleComponents.count)
     {
         // Add time label
@@ -164,8 +169,11 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
             }
         }
         
-        // Add the edit button
-        [self addEditButtonForComponent:componentIndex completion:nil];
+        if (showEditButton)
+        {
+            // Add the edit button
+            [self addEditButtonForComponent:componentIndex completion:nil];
+        }
     }
 }
 

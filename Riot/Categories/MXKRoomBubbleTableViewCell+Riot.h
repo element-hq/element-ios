@@ -52,6 +52,14 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
 - (void)selectComponent:(NSUInteger)componentIndex;
 
 /**
+ Highlight a component in receiver and show or not edit button.
+ 
+ @param componentIndex index of the component in bubble message data
+ @param showEditButton true to show edit button
+ */
+- (void)selectComponent:(NSUInteger)componentIndex showEditButton:(BOOL)showEditButton;
+
+/**
  Mark a component in receiver.
 
  @param componentIndex index of the component in bubble message data
