@@ -1714,6 +1714,22 @@ internal enum VectorL10n {
   internal static var roomEventActionQuote: String { 
     return VectorL10n.tr("Vector", "room_event_action_quote") 
   }
+  /// Agree %@
+  internal static func roomEventActionReactionAgree(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_agree", p1)
+  }
+  /// Disagree %@
+  internal static func roomEventActionReactionDisagree(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_disagree", p1)
+  }
+  /// Dislike %@
+  internal static func roomEventActionReactionDislike(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_dislike", p1)
+  }
+  /// Like %@
+  internal static func roomEventActionReactionLike(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_like", p1)
+  }
   /// Remove
   internal static var roomEventActionRedact: String { 
     return VectorL10n.tr("Vector", "room_event_action_redact") 

@@ -22,6 +22,10 @@ final class ReactionsMenuView: UIView, NibOwnerLoadable {
     // MARK: - Properties
 
     // MARK: Outlets
+    @IBOutlet weak var agreeButton: UIButton!
+    @IBOutlet weak var disagreeButton: UIButton!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var dislikeButton: UIButton!
 
     // MARK: Private
 
@@ -41,19 +45,44 @@ final class ReactionsMenuView: UIView, NibOwnerLoadable {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.loadNibContent()
+        self.commonInit()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.loadNibContent()
+        self.commonInit()
     }
 
     // MARK: - Private
+
+    private func commonInit() {
+
+        agreeButton.setTitle(VectorL10n.roomEventActionReactionAgree(ReactionsMenuReactions.agree.rawValue), for: .normal)
+        agreeButton.setTitle(VectorL10n.roomEventActionReactionAgree(ReactionsMenuReactions.agree.rawValue), for: .highlighted)
+        disagreeButton.setTitle(VectorL10n.roomEventActionReactionDisagree(ReactionsMenuReactions.disagree.rawValue), for: .normal)
+        disagreeButton.setTitle(VectorL10n.roomEventActionReactionDisagree(ReactionsMenuReactions.disagree.rawValue), for: .highlighted)
+        likeButton.setTitle(VectorL10n.roomEventActionReactionLike(ReactionsMenuReactions.like.rawValue), for: .normal)
+        likeButton.setTitle(VectorL10n.roomEventActionReactionLike(ReactionsMenuReactions.like.rawValue), for: .highlighted)
+        dislikeButton.setTitle(VectorL10n.roomEventActionReactionDislike(ReactionsMenuReactions.dislike.rawValue), for: .normal)
+        dislikeButton.setTitle(VectorL10n.roomEventActionReactionDislike(ReactionsMenuReactions.dislike.rawValue), for: .highlighted)
+
+        customizeViewRendering()
+    }
+
+    func customizeViewRendering() {
+        self.backgroundColor = UIColor.clear
+    }
 
     private func updateView() {
         guard let viewModel = self.viewModel else {
             return
         }
+
+        agreeButton.isSelected = viewModel.isAgreeButtonSelected
+        disagreeButton.isSelected = viewModel.isDisagreeButtonSelected
+        likeButton.isSelected = viewModel.isLikeButtonSelected
+        dislikeButton.isSelected = viewModel.isDislikeButtonSelected
     }
 }
 
