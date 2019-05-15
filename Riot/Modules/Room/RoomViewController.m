@@ -123,7 +123,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate>
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -212,6 +212,10 @@
     // Homeserver notices
     MXServerNotices *serverNotices;
 }
+
+@property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
+
+@property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
 
 @end
 
@@ -404,6 +408,8 @@
         [self refreshRoomInputToolbar];
     }
     
+    self.roomContextualMenuPresenter = [RoomContextualMenuPresenter new];
+    
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -588,6 +594,9 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    // Hide contextual menu if needed
+    [self hideContextualMenuAnimated:NO];
     
     // Reset visible room id
     [AppDelegate theDelegate].visibleRoomId = nil;
@@ -936,6 +945,8 @@
 - (void)updateRoomInputToolbarViewClassIfNeeded
 {
     Class roomInputToolbarViewClass = RoomInputToolbarView.class;
+    
+    BOOL shouldDismissContextualMenu = NO;
 
     // Check the user has enough power to post message
     if (self.roomDataSource.roomState)
@@ -950,10 +961,12 @@
         if (isRoomObsolete || isResourceLimitExceeded)
         {
             roomInputToolbarViewClass = nil;
+            shouldDismissContextualMenu = YES;
         }
         else if (!canSend)
         {
             roomInputToolbarViewClass = DisabledRoomInputToolbarView.class;
+            shouldDismissContextualMenu = YES;
         }
     }
 
@@ -961,6 +974,12 @@
     if (self.isRoomPreview)
     {
         roomInputToolbarViewClass = nil;
+        shouldDismissContextualMenu = YES;
+    }
+    
+    if (shouldDismissContextualMenu)
+    {
+        [self hideContextualMenuAnimated:NO];
     }
     
     // Change inputToolbarView class only if given class is different from current one
@@ -978,7 +997,7 @@
 
     if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
     {
-        height = ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant;
+        height = ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant;
     }
     else if ([self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
     {
@@ -1485,6 +1504,14 @@
     [UIView setAnimationsEnabled:YES];
 }
 
+- (void)handleLongPressFromCell:(id<MXKCellRendering>)cell withTappedEvent:(MXEvent*)event
+{
+    if (event && !customizedRoomDataSource.selectedEventId)
+    {
+        [self showContextualMenuForEvent:event cell:cell animated:YES];
+    }
+}
+
 #pragma mark - Hide/Show expanded header
 
 - (void)showExpandedHeader:(BOOL)isVisible
@@ -1551,6 +1578,9 @@
         [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
         mainNavigationController.navigationBar.translucent = isVisible;
         self.navigationController.navigationBar.translucent = isVisible;
+        
+        // Hide contextual menu if needed
+        [self hideContextualMenuAnimated:YES];
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
@@ -2030,9 +2060,6 @@
                     [self selectEventWithId:tappedEvent.eventId];
                 }
             }
-            
-            // Force table refresh
-            [self dataSource:self.roomDataSource didCellChange:nil];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnOverlayContainer])
         {
@@ -2073,9 +2100,6 @@
                     // Highlight this event in displayed message
                     [self selectEventWithId:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId];
                 }
-                
-                // Force table refresh
-                [self dataSource:self.roomDataSource didCellChange:nil];
             }
             else
             {
@@ -2104,6 +2128,11 @@
             customizedRoomDataSource.selectedEventId = nil;
             
             [self.roomDataSource collapseRoomBubble:((MXKRoomBubbleTableViewCell*)cell).bubbleData collapsed:YES];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent])
+        {
+            MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            [self handleLongPressFromCell:cell withTappedEvent:tappedEvent];
         }
         else
         {
@@ -2213,24 +2242,6 @@
                                              }]];
             }
         }
-
-        if (level == 0)
-        {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   
-                                                                   [self cancelEventSelection];
-                                                                   
-                                                                   [[UIPasteboard generalPasteboard] setString:selectedComponent.textMessage];
-                                                               }
-                                                               
-                                                           }]];
-        }
         
         if (level == 0)
         {
@@ -2302,42 +2313,6 @@
                                                                        [self startActivityIndicator];
                                                                        
                                                                        [attachment save:^{
-                                                                           
-                                                                           __strong __typeof(weakSelf)self = weakSelf;
-                                                                           [self stopActivityIndicator];
-                                                                           
-                                                                       } failure:^(NSError *error) {
-                                                                           
-                                                                           __strong __typeof(weakSelf)self = weakSelf;
-                                                                           [self stopActivityIndicator];
-                                                                           
-                                                                           //Alert user
-                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                           
-                                                                       }];
-                                                                       
-                                                                       // Start animation in case of download during attachment preparing
-                                                                       [roomBubbleTableViewCell startProgressUI];
-                                                                   }
-                                                                   
-                                                               }]];
-            }
-            
-            if (attachment.type != MXKAttachmentTypeSticker)
-            {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil)
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
-                                                                   
-                                                                   if (weakSelf)
-                                                                   {
-                                                                       typeof(self) self = weakSelf;
-                                                                       
-                                                                       [self cancelEventSelection];
-                                                                       
-                                                                       [self startActivityIndicator];
-                                                                       
-                                                                       [attachment copy:^{
                                                                            
                                                                            __strong __typeof(weakSelf)self = weakSelf;
                                                                            [self stopActivityIndicator];
@@ -2733,7 +2708,7 @@
                                                        if (weakSelf)
                                                        {
                                                            typeof(self) self = weakSelf;
-                                                           [self cancelEventSelection];
+                                                           [self hideContextualMenuAnimated:YES];
                                                        }
                                                        
                                                    }]];
@@ -2843,10 +2818,8 @@
         else if (url && urlItemInteractionValue)
         {
             // Fallback case for external links
-            
-            // TODO: Use UITextItemInteraction enum when minimum deployement target will be iOS 10
             switch (urlItemInteractionValue.integerValue) {
-                case 0: //UITextItemInteractionInvokeDefaultAction
+                case UITextItemInteractionInvokeDefaultAction:
                 {                    
                     [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
                         if (!success)
@@ -2857,10 +2830,13 @@
                     shouldDoAction = NO;
                 }
                     break;
-                case 1: //UITextItemInteractionPresentActions
-                    // Long press on link, let MXKRoomBubbleTableViewCell UITextView present the default contextual menu.
+                case UITextItemInteractionPresentActions:
+                {
+                    // Long press on link, present room contextual menu.
+                    shouldDoAction = NO;
+                }
                     break;
-                case 2: //UITextItemInteractionPreview
+                case UITextItemInteractionPreview:
                     // Force touch on link, let MXKRoomBubbleTableViewCell UITextView use default peek and pop behavior.
                     break;
                 default:
@@ -2879,10 +2855,19 @@
 - (void)selectEventWithId:(NSString*)eventId
 {
     BOOL shouldEnableReplyMode = [self.roomDataSource canReplyToEventWithId:eventId];
+     
+    [self selectEventWithId:eventId enableReplyMode:shouldEnableReplyMode showTimestamp:YES];
+}
 
-    [self setInputToolBarSendMode: shouldEnableReplyMode ? RoomInputToolbarViewSendModeReply : RoomInputToolbarViewSendModeSend];
-
+- (void)selectEventWithId:(NSString*)eventId enableReplyMode:(BOOL)enableReplyMode showTimestamp:(BOOL)showTimestamp
+{
+    [self setInputToolBarSendMode: enableReplyMode ? RoomInputToolbarViewSendModeReply : RoomInputToolbarViewSendModeSend];
+    
+    customizedRoomDataSource.showBubbleDateTimeOnSelection = showTimestamp;
     customizedRoomDataSource.selectedEventId = eventId;
+    
+    // Force table refresh
+    [self dataSource:self.roomDataSource didCellChange:nil];
 }
 
 - (void)cancelEventSelection
@@ -2895,6 +2880,7 @@
         currentAlert = nil;
     }
     
+    customizedRoomDataSource.showBubbleDateTimeOnSelection = YES;
     customizedRoomDataSource.selectedEventId = nil;
     
     // Force table refresh
@@ -4974,6 +4960,170 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionStateDidChangeObserver];
         kMXSessionStateDidChangeObserver = nil;
     }
+}
+
+#pragma mark - Contextual Menu
+
+- (NSArray<RoomContextualMenuItem*>*)contextualMenuItemsForEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
+{
+    NSString *eventId = event.eventId;
+    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
+    
+    MXWeakify(self);
+    
+    // Copy action
+    
+    RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
+    copyMenuItem.isEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    copyMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (!attachment)
+        {
+            NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+            MXKRoomBubbleComponent *selectedComponent;
+            for (selectedComponent in components)
+            {
+                if ([selectedComponent.event.eventId isEqualToString:event.eventId])
+                {
+                    break;
+                }
+                selectedComponent = nil;
+            }
+            NSString *textMessage = selectedComponent.textMessage;
+            
+            [UIPasteboard generalPasteboard].string = textMessage;
+            
+            [self hideContextualMenuAnimated:YES];
+        }
+        else if (attachment.type != MXKAttachmentTypeSticker)
+        {
+            [self hideContextualMenuAnimated:YES completion:^{
+                [self startActivityIndicator];
+                
+                [attachment copy:^{
+                    
+                    [self stopActivityIndicator];
+                    
+                } failure:^(NSError *error) {
+                    
+                    [self stopActivityIndicator];
+                    
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+                
+                // Start animation in case of download during attachment preparing
+                [roomBubbleTableViewCell startProgressUI];
+            }];
+        }
+    };
+    
+    // Reply action
+    
+    RoomContextualMenuItem *replyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReply];
+    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:eventId];
+    replyMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self selectEventWithId:eventId enableReplyMode:YES showTimestamp:NO];
+    };
+    
+    // Edit action
+    
+    RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
+    // TODO: Handle edit action
+    editMenuItem.isEnabled = NO;
+    
+    // More action
+    
+    RoomContextualMenuItem *moreMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionMore];
+    moreMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self showEditButtonAlertMenuForEvent:event inCell:cell level:0];
+    };
+    
+    // Actions list
+    
+    NSArray<RoomContextualMenuItem*> *actionItems = @[
+                                                      copyMenuItem,
+                                                      replyMenuItem,
+                                                      editMenuItem,
+                                                      moreMenuItem
+                                                      ];
+    
+    return actionItems;
+}
+
+- (void)showContextualMenuForEvent:(MXEvent*)event cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
+{
+    if (self.roomContextualMenuPresenter.isPresenting)
+    {
+        return;
+    }
+    
+    [self selectEventWithId:event.eventId enableReplyMode:NO showTimestamp:NO];
+    
+    NSArray<RoomContextualMenuItem*>* contextualMenuItems = [self contextualMenuItemsForEvent:event andCell:cell];
+    
+    RoomContextualMenuViewController *roomContextualMenuViewController = [RoomContextualMenuViewController instantiateWith:contextualMenuItems];
+    roomContextualMenuViewController.delegate = self;
+    
+    [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:roomContextualMenuViewController
+                                                                             from:self
+                                                                               on:self.overlayContainerView
+                                                                         animated:YES
+                                                                       completion:^{
+                                                                           [self contextualMenuAnimationCompletionAfterBeingShown:YES];
+                                                                       }];
+}
+
+- (void)hideContextualMenuAnimated:(BOOL)animated
+{
+    [self hideContextualMenuAnimated:animated completion:nil];
+}
+
+- (void)hideContextualMenuAnimated:(BOOL)animated completion:(void(^)(void))completion
+{
+    [self hideContextualMenuAnimated:animated cancelEventSelection:YES completion:completion];
+}
+
+- (void)hideContextualMenuAnimated:(BOOL)animated cancelEventSelection:(BOOL)cancelEventSelection completion:(void(^)(void))completion
+{
+    if (!self.roomContextualMenuPresenter.isPresenting)
+    {
+        return;
+    }
+    
+    if (cancelEventSelection)
+    {
+        [self cancelEventSelection];
+    }
+    
+    [self.roomContextualMenuPresenter hideContextualMenuWithAnimated:animated completion:^{
+        [self contextualMenuAnimationCompletionAfterBeingShown:NO];
+        
+        if (completion)
+        {
+            completion();
+        }
+    }];
+}
+
+- (void)contextualMenuAnimationCompletionAfterBeingShown:(BOOL)isShown
+{
+    self.inputToolbarView.editable = !isShown;
+    self.bubblesTableView.scrollsToTop = !isShown;
+    self.overlayContainerView.userInteractionEnabled = isShown;
+}
+
+#pragma mark - RoomContextualMenuViewControllerDelegate
+
+- (void)roomContextualMenuViewControllerDidTapBackgroundOverlay:(RoomContextualMenuViewController *)viewController
+{
+    [self hideContextualMenuAnimated:YES];
 }
 
 @end
