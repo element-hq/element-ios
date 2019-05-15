@@ -138,15 +138,18 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
 
 - (void)selectComponent:(NSUInteger)componentIndex
 {
-    [self selectComponent:componentIndex showEditButton:YES];
+    [self selectComponent:componentIndex showEditButton:YES showTimestamp:YES];
 }
 
-- (void)selectComponent:(NSUInteger)componentIndex showEditButton:(BOOL)showEditButton
+- (void)selectComponent:(NSUInteger)componentIndex showEditButton:(BOOL)showEditButton showTimestamp:(BOOL)showTimestamp
 {
     if (componentIndex < bubbleData.bubbleComponents.count)
     {
-        // Add time label
-        [self addTimestampLabelForComponent:componentIndex];
+        if (showTimestamp)
+        {
+            // Add time label
+            [self addTimestampLabelForComponent:componentIndex];
+        }
         
         // Blur timestamp labels which are not related to the selected component (if any)
         for (UIView* view in self.bubbleInfoContainer.subviews)

@@ -56,8 +56,9 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
  
  @param componentIndex index of the component in bubble message data
  @param showEditButton true to show edit button
+ @param showTimestamp true to show timestamp label
  */
-- (void)selectComponent:(NSUInteger)componentIndex showEditButton:(BOOL)showEditButton;
+- (void)selectComponent:(NSUInteger)componentIndex showEditButton:(BOOL)showEditButton showTimestamp:(BOOL)showTimestamp;
 
 /**
  Mark a component in receiver.
