@@ -3,6 +3,7 @@ Changes in 0.8.6 (2019-xx-xx)
 
 Improvements:
  * RoomVC: When replying, use a "Reply" button instead of "Send".
+ * RoomVC: New message actions (#2394).
 
 Changes in 0.8.5 (2019-xx-xx)
 ===============================================
