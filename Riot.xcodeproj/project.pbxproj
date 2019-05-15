@@ -65,6 +65,12 @@
 		324A2054225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */; };
 		324A2055225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */; };
 		324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */; };
+		325380D1228C1BE500ADDEFA /* ReactionsMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380D0228C1BE500ADDEFA /* ReactionsMenuAction.swift */; };
+		325380D3228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380D2228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift */; };
+		325380D5228C245D00ADDEFA /* ReactionsMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380D4228C245D00ADDEFA /* ReactionsMenuViewModel.swift */; };
+		325380D7228C2E5800ADDEFA /* ReactionsMenuReactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380D6228C2E5800ADDEFA /* ReactionsMenuReactions.swift */; };
+		325380DB228C34EF00ADDEFA /* ReactionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */; };
+		325380DD228C34FC00ADDEFA /* ReactionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325380DC228C34FC00ADDEFA /* ReactionsMenuView.xib */; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
 		3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3281BCF62201FA4200F4A383 /* UIControl.swift */; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
@@ -562,6 +568,12 @@
 		324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinatorType.swift; sourceTree = "<group>"; };
 		324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewModelType.swift; sourceTree = "<group>"; };
 		324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinator.swift; sourceTree = "<group>"; };
+		325380D0228C1BE500ADDEFA /* ReactionsMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuAction.swift; sourceTree = "<group>"; };
+		325380D2228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuViewModelType.swift; sourceTree = "<group>"; };
+		325380D4228C245D00ADDEFA /* ReactionsMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuViewModel.swift; sourceTree = "<group>"; };
+		325380D6228C2E5800ADDEFA /* ReactionsMenuReactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuReactions.swift; sourceTree = "<group>"; };
+		325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuView.swift; sourceTree = "<group>"; };
+		325380DC228C34FC00ADDEFA /* ReactionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReactionsMenuView.xib; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
@@ -1406,6 +1418,27 @@
 			path = Incoming;
 			sourceTree = "<group>";
 		};
+		325380CE228C180000ADDEFA /* ContextualMenu */ = {
+			isa = PBXGroup;
+			children = (
+				325380CF228C181400ADDEFA /* ReactionsMenu */,
+			);
+			path = ContextualMenu;
+			sourceTree = "<group>";
+		};
+		325380CF228C181400ADDEFA /* ReactionsMenu */ = {
+			isa = PBXGroup;
+			children = (
+				325380D0228C1BE500ADDEFA /* ReactionsMenuAction.swift */,
+				325380D2228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift */,
+				325380D4228C245D00ADDEFA /* ReactionsMenuViewModel.swift */,
+				325380D6228C2E5800ADDEFA /* ReactionsMenuReactions.swift */,
+				325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */,
+				325380DC228C34FC00ADDEFA /* ReactionsMenuView.xib */,
+			);
+			path = ReactionsMenu;
+			sourceTree = "<group>";
+		};
 		32891D682264C6A000C82226 /* SimpleScreenTemplate */ = {
 			isa = PBXGroup;
 			children = (
@@ -1985,6 +2018,7 @@
 		B1B5568E20EE6C4C00210D55 /* Room */ = {
 			isa = PBXGroup;
 			children = (
+				325380CE228C180000ADDEFA /* ContextualMenu */,
 				B1B5568F20EE6C4C00210D55 /* RoomViewController.h */,
 				B1B556A020EE6C4C00210D55 /* RoomViewController.m */,
 				B1B5569620EE6C4C00210D55 /* RoomViewController.xib */,
@@ -3461,6 +3495,7 @@
 				3232AB2122564D9100AD6A5C /* README.md in Resources */,
 				B1B5593920EF7BAC00210D55 /* TableViewCellWithCheckBoxes.xib in Resources */,
 				B1B557C120EF5B4500210D55 /* DisabledRoomInputToolbarView.xib in Resources */,
+				325380DD228C34FC00ADDEFA /* ReactionsMenuView.xib in Resources */,
 				32891D6C2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard in Resources */,
 				B1664DA320F4F96200808783 /* Vector.strings in Resources */,
 				B1B557C720EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib in Resources */,
@@ -3767,6 +3802,7 @@
 				B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */,
 				B16932F220F3C49E00746532 /* GroupsDataSource.m in Sources */,
 				B1B5581C20EF625800210D55 /* RoomAvatarTitleView.m in Sources */,
+				325380D3228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift in Sources */,
 				B169330820F3CA0E00746532 /* ContactsDataSource.m in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
@@ -3831,6 +3867,7 @@
 				32F6B9692270623100BBA352 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */,
+				325380D7228C2E5800ADDEFA /* ReactionsMenuReactions.swift in Sources */,
 				B1B558C120EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				B1B5593B20EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
@@ -3883,6 +3920,7 @@
 				B1B5590620EF768F00210D55 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
+				325380DB228C34EF00ADDEFA /* ReactionsMenuView.swift in Sources */,
 				324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
 				B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */,
 				3232AB4F2256558300AD6A5C /* TemplateScreenViewController.swift in Sources */,
@@ -3893,6 +3931,7 @@
 				B1B558E020EF768F00210D55 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				B1B5593C20EF7BAC00210D55 /* TableViewCellWithCheckBoxes.m in Sources */,
 				32891D6B2264CBA300C82226 /* SimpleScreenTemplateViewController.swift in Sources */,
+				325380D1228C1BE500ADDEFA /* ReactionsMenuAction.swift in Sources */,
 				B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */,
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */,
@@ -3908,6 +3947,7 @@
 				B1B5579A20EF575B00210D55 /* ForgotPasswordInputsView.m in Sources */,
 				B1B558CC20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
+				325380D5228C245D00ADDEFA /* ReactionsMenuViewModel.swift in Sources */,
 				3232ABA6225730E100AD6A5C /* DeviceVerificationStartViewController.swift in Sources */,
 				B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
