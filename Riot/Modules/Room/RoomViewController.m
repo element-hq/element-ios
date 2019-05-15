@@ -2854,9 +2854,7 @@
 
 - (void)selectEventWithId:(NSString*)eventId
 {
-    BOOL shouldEnableReplyMode = [self.roomDataSource canReplyToEventWithId:eventId];
-     
-    [self selectEventWithId:eventId enableReplyMode:shouldEnableReplyMode showTimestamp:YES];
+    [self selectEventWithId:eventId enableReplyMode:NO showTimestamp:YES];
 }
 
 - (void)selectEventWithId:(NSString*)eventId enableReplyMode:(BOOL)enableReplyMode showTimestamp:(BOOL)showTimestamp
