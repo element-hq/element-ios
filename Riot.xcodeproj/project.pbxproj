@@ -71,6 +71,7 @@
 		325380D7228C2E5800ADDEFA /* ReactionsMenuReactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380D6228C2E5800ADDEFA /* ReactionsMenuReactions.swift */; };
 		325380DB228C34EF00ADDEFA /* ReactionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */; };
 		325380DD228C34FC00ADDEFA /* ReactionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325380DC228C34FC00ADDEFA /* ReactionsMenuView.xib */; };
+		325380DF228C5C2800ADDEFA /* ReactionsMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380DE228C5C2800ADDEFA /* ReactionsMenuButton.swift */; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
 		3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3281BCF62201FA4200F4A383 /* UIControl.swift */; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
@@ -574,6 +575,7 @@
 		325380D6228C2E5800ADDEFA /* ReactionsMenuReactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuReactions.swift; sourceTree = "<group>"; };
 		325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuView.swift; sourceTree = "<group>"; };
 		325380DC228C34FC00ADDEFA /* ReactionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReactionsMenuView.xib; sourceTree = "<group>"; };
+		325380DE228C5C2800ADDEFA /* ReactionsMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuButton.swift; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
@@ -1435,6 +1437,7 @@
 				325380D6228C2E5800ADDEFA /* ReactionsMenuReactions.swift */,
 				325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */,
 				325380DC228C34FC00ADDEFA /* ReactionsMenuView.xib */,
+				325380DE228C5C2800ADDEFA /* ReactionsMenuButton.swift */,
 			);
 			path = ReactionsMenu;
 			sourceTree = "<group>";
@@ -4026,6 +4029,7 @@
 				B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */,
 				B1098BE821ECFE52000DDA48 /* Coordinator.swift in Sources */,
 				B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
+				325380DF228C5C2800ADDEFA /* ReactionsMenuButton.swift in Sources */,
 				324A2050225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift in Sources */,
 				B1098C0D21ED07E4000DDA48 /* NavigationRouter.swift in Sources */,
 				B110872321F098F0003554A5 /* ActivityIndicatorPresenterType.swift in Sources */,
