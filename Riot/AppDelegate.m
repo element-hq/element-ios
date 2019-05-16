@@ -2555,8 +2555,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Get modular widget events in rooms histories
     [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
     
-    // Disable long press on event in bubble cells
-    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
+    // Enable long press on event in bubble cells
+    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:NO];
     
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];

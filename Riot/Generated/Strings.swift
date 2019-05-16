@@ -1698,6 +1698,10 @@ internal enum VectorL10n {
   internal static var roomEventActionDelete: String { 
     return VectorL10n.tr("Vector", "room_event_action_delete") 
   }
+  /// Edit
+  internal static var roomEventActionEdit: String { 
+    return VectorL10n.tr("Vector", "room_event_action_edit") 
+  }
   /// Reason for kicking this user
   internal static var roomEventActionKickPromptReason: String { 
     return VectorL10n.tr("Vector", "room_event_action_kick_prompt_reason") 
@@ -1733,6 +1737,10 @@ internal enum VectorL10n {
   /// Remove
   internal static var roomEventActionRedact: String { 
     return VectorL10n.tr("Vector", "room_event_action_redact") 
+  }
+  /// Reply
+  internal static var roomEventActionReply: String { 
+    return VectorL10n.tr("Vector", "room_event_action_reply") 
   }
   /// Report content
   internal static var roomEventActionReport: String { 

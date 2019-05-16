@@ -278,6 +278,8 @@
 "room_event_action_cancel_send" = "Cancel Send";
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
+"room_event_action_reply" = "Reply";
+"room_event_action_edit" = "Edit";
 "room_event_action_reaction_agree" = "Agree %@";
 "room_event_action_reaction_disagree" = "Disagree %@";
 "room_event_action_reaction_like" = "Like %@";

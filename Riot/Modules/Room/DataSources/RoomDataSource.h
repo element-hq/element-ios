@@ -35,6 +35,11 @@
 @property(nonatomic) BOOL markTimelineInitialEvent;
 
 /**
+ Tell whether timestamp should be displayed on event selection. Default is YES.
+ */
+@property(nonatomic) BOOL showBubbleDateTimeOnSelection;
+
+/**
  Check if there is an active jitsi widget in the room and return it.
 
  @return a widget representating the active jitsi conference in the room. Else, nil.
