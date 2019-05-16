@@ -123,15 +123,32 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
 
     private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool) {
         if selected {
-            self.aggregations.sendReaction(reaction.rawValue, toEvent: self.eventId, inRoom: self.roomId, success: {_ in
+            self.aggregations.sendReaction(reaction.rawValue, toEvent: self.eventId, inRoom: self.roomId, success: {[weak self] _ in
 
-            }, failure: {(error) in
+                guard let sself = self else {
+                    return
+                }
+
+                sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: true)
+
+            }, failure: {[weak self] (error) in
                 print("[ReactionsMenuViewModel] react: Error: \(error)")
+
+                guard let sself = self else {
+                    return
+                }
+
+                sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
             })
+
+            self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: true)
         } else {
+
             // TODO
+            self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: false)
         }
 
+        // TODO: to remove
         self.fakeToggleReaction(reaction: reaction)
     }
 
@@ -139,7 +156,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
     private func fakeToggleReaction(reaction: ReactionsMenuReaction) {
         switch reaction {
         case .agree:
-            isAgreeButtonSelected = !isDislikeButtonSelected
+            isAgreeButtonSelected = !isAgreeButtonSelected
         case .disagree:
             isDisagreeButtonSelected = !isDisagreeButtonSelected
         case .like:

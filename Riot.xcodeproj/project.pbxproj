@@ -65,7 +65,6 @@
 		324A2054225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */; };
 		324A2055225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */; };
 		324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */; };
-		325380D1228C1BE500ADDEFA /* ReactionsMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380D0228C1BE500ADDEFA /* ReactionsMenuAction.swift */; };
 		325380D3228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380D2228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift */; };
 		325380D5228C245D00ADDEFA /* ReactionsMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380D4228C245D00ADDEFA /* ReactionsMenuViewModel.swift */; };
 		325380DB228C34EF00ADDEFA /* ReactionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */; };
@@ -570,7 +569,6 @@
 		324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinatorType.swift; sourceTree = "<group>"; };
 		324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewModelType.swift; sourceTree = "<group>"; };
 		324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinator.swift; sourceTree = "<group>"; };
-		325380D0228C1BE500ADDEFA /* ReactionsMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuAction.swift; sourceTree = "<group>"; };
 		325380D2228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuViewModelType.swift; sourceTree = "<group>"; };
 		325380D4228C245D00ADDEFA /* ReactionsMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuViewModel.swift; sourceTree = "<group>"; };
 		325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsMenuView.swift; sourceTree = "<group>"; };
@@ -1434,7 +1432,6 @@
 			isa = PBXGroup;
 			children = (
 				325380E2228D2EE500ADDEFA /* ReactionsMenuReaction.swift */,
-				325380D0228C1BE500ADDEFA /* ReactionsMenuAction.swift */,
 				325380D2228C1E3700ADDEFA /* ReactionsMenuViewModelType.swift */,
 				325380D4228C245D00ADDEFA /* ReactionsMenuViewModel.swift */,
 				325380DA228C34EF00ADDEFA /* ReactionsMenuView.swift */,
@@ -3937,7 +3934,6 @@
 				B1B558E020EF768F00210D55 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				B1B5593C20EF7BAC00210D55 /* TableViewCellWithCheckBoxes.m in Sources */,
 				32891D6B2264CBA300C82226 /* SimpleScreenTemplateViewController.swift in Sources */,
-				325380D1228C1BE500ADDEFA /* ReactionsMenuAction.swift in Sources */,
 				B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */,
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */,

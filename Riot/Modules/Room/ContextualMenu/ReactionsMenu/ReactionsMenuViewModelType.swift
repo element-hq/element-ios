@@ -21,7 +21,9 @@ protocol ReactionsMenuViewModelDelegate: class {
 }
 
 protocol ReactionsMenuViewModelCoordinatorDelegate: class {
-    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, doAction action: ReactionsMenuAction)
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didSendReaction reaction: String, isAddReaction: Bool)
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionComplete reaction: String, isAddReaction: Bool)
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionFailedWithError error: Error, reaction: String, isAddReaction: Bool)
 }
 
 
