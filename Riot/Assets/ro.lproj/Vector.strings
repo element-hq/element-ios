@@ -9,7 +9,7 @@
 "view" = "Văzut";
 "next" = "Următorul";
 "back" = "Înapoi";
-"store_full_description" = "--testing please remove me--";
+"store_full_description" = "";
 // Titles
-"title_home" = "--test please remove--";
-"continue" = "test please remove.";
+"title_home" = "";
+"continue" = "";
