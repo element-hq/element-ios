@@ -38,6 +38,7 @@ import UIKit
     var textSecondaryColor: UIColor { get }
 
     var tintColor: UIColor { get }
+    var tintBackgroundColor: UIColor { get }
 
     var unreadRoomIndentColor: UIColor { get }
 
