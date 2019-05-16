@@ -16,7 +16,7 @@
 
 import Foundation
 
-enum ReactionsMenuReactions: String {
+enum ReactionsMenuReaction: String {
     case agree = "👍"
     case disagree = "👎"
     case like = "🙂"

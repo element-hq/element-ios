@@ -29,8 +29,6 @@ final class ReactionsMenuView: UIView, NibOwnerLoadable {
 
     // MARK: Private
 
-    //private var strengthViews: [UIView] = []
-
     // MARK: Public
 
     var viewModel: ReactionsMenuViewModelType? {
@@ -54,18 +52,36 @@ final class ReactionsMenuView: UIView, NibOwnerLoadable {
         self.commonInit()
     }
 
+    // MARK: - Actions
+
+    @IBAction private func agreeButtonAction(_ sender: Any) {
+        self.viewModel?.process(viewAction: .toggleReaction(.agree))
+    }
+
+    @IBAction private func disagreeButtonAction(_ sender: Any) {
+        self.viewModel?.process(viewAction: .toggleReaction(.disagree))
+    }
+
+    @IBAction private func likeButtonAction(_ sender: Any) {
+        self.viewModel?.process(viewAction: .toggleReaction(.like))
+    }
+
+    @IBAction private func dislikeButtonAction(_ sender: Any) {
+        self.viewModel?.process(viewAction: .toggleReaction(.dislike))
+    }
+    
     // MARK: - Private
 
     private func commonInit() {
 
-        agreeButton.setTitle(VectorL10n.roomEventActionReactionAgree(ReactionsMenuReactions.agree.rawValue), for: .normal)
-        agreeButton.setTitle(VectorL10n.roomEventActionReactionAgree(ReactionsMenuReactions.agree.rawValue), for: .highlighted)
-        disagreeButton.setTitle(VectorL10n.roomEventActionReactionDisagree(ReactionsMenuReactions.disagree.rawValue), for: .normal)
-        disagreeButton.setTitle(VectorL10n.roomEventActionReactionDisagree(ReactionsMenuReactions.disagree.rawValue), for: .highlighted)
-        likeButton.setTitle(VectorL10n.roomEventActionReactionLike(ReactionsMenuReactions.like.rawValue), for: .normal)
-        likeButton.setTitle(VectorL10n.roomEventActionReactionLike(ReactionsMenuReactions.like.rawValue), for: .highlighted)
-        dislikeButton.setTitle(VectorL10n.roomEventActionReactionDislike(ReactionsMenuReactions.dislike.rawValue), for: .normal)
-        dislikeButton.setTitle(VectorL10n.roomEventActionReactionDislike(ReactionsMenuReactions.dislike.rawValue), for: .highlighted)
+        agreeButton.setTitle(VectorL10n.roomEventActionReactionAgree(ReactionsMenuReaction.agree.rawValue), for: .normal)
+        agreeButton.setTitle(VectorL10n.roomEventActionReactionAgree(ReactionsMenuReaction.agree.rawValue), for: .highlighted)
+        disagreeButton.setTitle(VectorL10n.roomEventActionReactionDisagree(ReactionsMenuReaction.disagree.rawValue), for: .normal)
+        disagreeButton.setTitle(VectorL10n.roomEventActionReactionDisagree(ReactionsMenuReaction.disagree.rawValue), for: .highlighted)
+        likeButton.setTitle(VectorL10n.roomEventActionReactionLike(ReactionsMenuReaction.like.rawValue), for: .normal)
+        likeButton.setTitle(VectorL10n.roomEventActionReactionLike(ReactionsMenuReaction.like.rawValue), for: .highlighted)
+        dislikeButton.setTitle(VectorL10n.roomEventActionReactionDislike(ReactionsMenuReaction.dislike.rawValue), for: .normal)
+        dislikeButton.setTitle(VectorL10n.roomEventActionReactionDislike(ReactionsMenuReaction.dislike.rawValue), for: .highlighted)
 
         customizeViewRendering()
     }

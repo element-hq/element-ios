@@ -32,7 +32,8 @@ protocol ReactionsMenuViewModelType {
     var isLikeButtonSelected: Bool { get }
     var isDislikeButtonSelected: Bool { get }
 
-
     var viewDelegate: ReactionsMenuViewModelDelegate? { get set }
     var coordinatorDelegate: ReactionsMenuViewModelCoordinatorDelegate? { get set }
+
+    func process(viewAction: ReactionsMenuViewAction)
 }

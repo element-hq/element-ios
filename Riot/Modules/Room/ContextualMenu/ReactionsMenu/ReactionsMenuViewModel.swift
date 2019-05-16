@@ -38,7 +38,6 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
     // MARK: - Setup
 
     init(aggregations: MXAggregations, roomId: String, eventId: String) {
-
         self.aggregations = aggregations
         self.roomId = roomId
         self.eventId = eventId
@@ -47,8 +46,36 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         self.listenToDataUpdate()
     }
 
-    // MARK: - Private
+    // MARK: - Public
 
+    func process(viewAction: ReactionsMenuViewAction) {
+        var reaction: ReactionsMenuReaction?
+        var newState: Bool?
+
+        switch viewAction {
+        case .toggleReaction(let menuReaction):
+            reaction = menuReaction
+
+            switch menuReaction {
+            case .agree:
+                newState = !self.isAgreeButtonSelected
+            case .disagree:
+                newState = !self.isDisagreeButtonSelected
+            case .like:
+                newState = !self.isLikeButtonSelected
+            case .dislike:
+                newState = !self.isDislikeButtonSelected
+            }
+        }
+
+        guard let theReaction = reaction, let theNewState = newState else {
+            return
+        }
+
+        self.react(withReaction: theReaction, selected: theNewState)
+    }
+
+    // MARK: - Private
 
     private func resetData() {
         self.isAgreeButtonSelected = false
@@ -64,7 +91,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
 
         self.resetData()
         reactionCounts.forEach { (reaction) in
-            if let reaction = ReactionsMenuReactions(rawValue: reaction.reaction) {
+            if let reaction = ReactionsMenuReaction(rawValue: reaction.reaction) {
                 switch reaction {
                 case .agree:
                     self.isAgreeButtonSelected = true
@@ -78,9 +105,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
             }
         }
 
-        if let viewDelegate = self.viewDelegate {
-            viewDelegate.reactionsMenuViewModelDidUpdate(self)
-        }
+        self.viewDelegate?.reactionsMenuViewModelDidUpdate(self)
     }
 
     private func listenToDataUpdate() {
@@ -94,6 +119,36 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                 sself.loadData()
             }
         }
+    }
+
+    private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool) {
+        if selected {
+            self.aggregations.sendReaction(reaction.rawValue, toEvent: self.eventId, inRoom: self.roomId, success: {_ in
+
+            }, failure: {(error) in
+                print("[ReactionsMenuViewModel] react: Error: \(error)")
+            })
+        } else {
+            // TODO
+        }
+
+        self.fakeToggleReaction(reaction: reaction)
+    }
+
+    // TODO: to remove
+    private func fakeToggleReaction(reaction: ReactionsMenuReaction) {
+        switch reaction {
+        case .agree:
+            isAgreeButtonSelected = !isDislikeButtonSelected
+        case .disagree:
+            isDisagreeButtonSelected = !isDisagreeButtonSelected
+        case .like:
+            isLikeButtonSelected = !isLikeButtonSelected
+        case .dislike:
+            isDislikeButtonSelected = !isDislikeButtonSelected
+        }
+
+        self.viewDelegate?.reactionsMenuViewModelDidUpdate(self)
     }
 
 }
