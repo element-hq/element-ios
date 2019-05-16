@@ -58,6 +58,8 @@
         
         self.markTimelineInitialEvent = NO;
         
+        self.showBubbleDateTimeOnSelection = YES;
+        
         // Observe user interface theme change.
         kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
             
@@ -445,7 +447,7 @@
             NSInteger selectedComponentIndex = cellData.selectedComponentIndex;
             if (selectedComponentIndex != NSNotFound)
             {
-                [bubbleCell selectComponent:cellData.selectedComponentIndex];
+                [bubbleCell selectComponent:cellData.selectedComponentIndex showEditButton:NO showTimestamp:cellData.showTimestampForSelectedComponent];
             }
             else
             {
@@ -492,11 +494,14 @@
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:_selectedEventId];
         cellData.selectedEventId = nil;
+        cellData.showTimestampForSelectedComponent = NO;
     }
     
     if (selectedEventId.length)
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:selectedEventId];
+        
+        cellData.showTimestampForSelectedComponent = self.showBubbleDateTimeOnSelection;
 
         if (cellData.collapsed && cellData.nextCollapsableCellData)
         {
