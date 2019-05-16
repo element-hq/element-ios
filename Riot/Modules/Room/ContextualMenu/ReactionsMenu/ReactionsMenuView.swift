@@ -86,7 +86,7 @@ final class ReactionsMenuView: UIView, NibOwnerLoadable {
         customizeViewRendering()
     }
 
-    func customizeViewRendering() {
+    private func customizeViewRendering() {
         self.backgroundColor = UIColor.clear
     }
 

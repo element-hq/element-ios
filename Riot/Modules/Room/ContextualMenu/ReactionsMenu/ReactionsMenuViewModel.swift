@@ -27,10 +27,10 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
 
     // MARK: Public
 
-    var isAgreeButtonSelected: Bool = false
-    var isDisagreeButtonSelected: Bool = false
-    var isLikeButtonSelected: Bool = false
-    var isDislikeButtonSelected: Bool = false
+    private(set) var isAgreeButtonSelected: Bool = false
+    private(set) var isDisagreeButtonSelected: Bool = false
+    private(set) var isLikeButtonSelected: Bool = false
+    private(set) var isDislikeButtonSelected: Bool = false
 
     weak var viewDelegate: ReactionsMenuViewModelDelegate?
     weak var coordinatorDelegate: ReactionsMenuViewModelCoordinatorDelegate?

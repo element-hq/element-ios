@@ -16,7 +16,7 @@
 
 import UIKit
 
-class ReactionsMenuButton: UIButton {
+class ReactionsMenuButton: UIButton, Themable {
 
     // MARK: Private
 
@@ -45,15 +45,21 @@ class ReactionsMenuButton: UIButton {
     // MARK: - Private
 
     private func commonInit() {
-        self.theme = ThemeService.shared().theme
+        self.layer.masksToBounds = true
+
+        self.update(theme: ThemeService.shared().theme)
 
         customizeViewRendering()
         updateView()
     }
 
-    func customizeViewRendering() {
+    private func customizeViewRendering() {
         self.tintColor = UIColor.clear
-        
+    }
+
+    func update(theme: Theme) {
+        self.theme = theme
+
         // TODO: Color for black theme
         self.setTitleColor(self.theme.textPrimaryColor, for: .normal)
         self.setTitleColor(self.theme.textPrimaryColor, for: .selected)
@@ -61,7 +67,7 @@ class ReactionsMenuButton: UIButton {
         self.layer.borderColor = self.theme.tintColor.cgColor
     }
 
-    func updateView() {
+    private func updateView() {
         backgroundColor = isSelected ? self.theme.tintBackgroundColor : self.theme.headerBackgroundColor
     }
 
