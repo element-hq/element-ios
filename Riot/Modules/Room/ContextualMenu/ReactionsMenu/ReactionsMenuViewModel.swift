@@ -85,7 +85,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
     }
 
     private func loadData() {
-        guard let reactionCounts = self.aggregations.reactions(onEvent: self.eventId, inRoom: self.roomId) else {
+        guard let reactionCounts = self.aggregations.aggregatedReactions(onEvent: self.eventId, inRoom: self.roomId)?.reactions else {
             return
         }
 
