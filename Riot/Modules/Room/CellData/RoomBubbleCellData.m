@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -210,11 +211,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
             }
 
-            if (self.readReceipts[component.event.eventId].count)
-            {
-                // Add vertical whitespace in case of read receipts
-                [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
-            }
+            [self addverticalWhitespaceToString:currentAttributedTextMsg forEvent:component.event.eventId];
             
             // The first non empty component has been handled.
             break;
@@ -246,11 +243,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             // Append attributed text
             [currentAttributedTextMsg appendAttributedString:componentString];
             
-            if (self.readReceipts[component.event.eventId].count)
-            {
-                // Add vertical whitespace in case of read receipts
-                [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
-            }
+            [self addverticalWhitespaceToString:currentAttributedTextMsg forEvent:component.event.eventId];
         }
     }
     
@@ -344,13 +337,9 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                         positionY = MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET + (cumulatedHeight - [self rawTextHeight:componentString]);
                         
                         component.position = CGPointMake(0, positionY);
-                        
-                        // Add vertical whitespace in case of read receipts.
-                        if (self.readReceipts[component.event.eventId].count)
-                        {
-                            [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
-                        }
-                        
+
+                        [self addverticalWhitespaceToString:attributedString forEvent:component.event.eventId];
+
                         [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
                     }
                     else
@@ -360,6 +349,15 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 }
             }
         }
+    }
+}
+
+- (void)addverticalWhitespaceToString:(NSMutableAttributedString *)attributedString forEvent:(NSString *)eventId
+{
+    // Add vertical whitespace in case of read receipts.
+    if (self.readReceipts[eventId].count)
+    {
+        [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
     }
 }
 
