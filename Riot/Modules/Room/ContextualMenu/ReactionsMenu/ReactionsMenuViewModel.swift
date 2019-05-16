@@ -148,8 +148,40 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
             self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: false)
         }
 
+        if selected {
+            self.ensure3StateButtons(withReaction: reaction)
+        }
+
         // TODO: to remove
         self.fakeToggleReaction(reaction: reaction)
+    }
+
+    // We can like, dislike, be indifferent but we cannot like & dislike at the same time
+    private func ensure3StateButtons(withReaction reaction: ReactionsMenuReaction) {
+        var unreaction: ReactionsMenuReaction?
+
+        switch reaction {
+        case .agree:
+            if isDisagreeButtonSelected {
+                unreaction = .disagree
+            }
+        case .disagree:
+            if isAgreeButtonSelected {
+                unreaction = .agree
+            }
+        case .like:
+            if isDislikeButtonSelected {
+                unreaction = .dislike
+            }
+        case .dislike:
+            if isLikeButtonSelected {
+                unreaction = .like
+            }
+        }
+
+        if let unreaction = unreaction {
+            self.react(withReaction: unreaction, selected: false)
+        }
     }
 
     // TODO: to remove
@@ -167,5 +199,4 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
 
         self.viewDelegate?.reactionsMenuViewModelDidUpdate(self)
     }
-
 }
