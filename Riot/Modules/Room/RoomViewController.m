@@ -5076,6 +5076,18 @@
                                                                        completion:^{
                                                                            [self contextualMenuAnimationCompletionAfterBeingShown:YES];
                                                                        }];
+
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    {
+        // Note: For the moment, we use the frame of the cell instead of the component
+        // From UI perpective, that means the menu will be around a paragraph instead of a message
+        // This is not bad as the paragraph is kept visible to provide more context to the user
+        // TO FIX: if paragraph is bigger than the screen, the menu is displayed in the middle
+        CGRect frame = ((MXKRoomBubbleTableViewCell*)cell).frame;
+        frame = [self.bubblesTableView convertRect:frame toView:[self.bubblesTableView superview]];
+
+        [self.roomContextualMenuPresenter showReactionsMenuForEvent:event.eventId inRoom:event.roomId session:self.mainSession aroundFrame:frame];
+    }
 }
 
 - (void)hideContextualMenuAnimated:(BOOL)animated
@@ -5120,6 +5132,11 @@
 #pragma mark - RoomContextualMenuViewControllerDelegate
 
 - (void)roomContextualMenuViewControllerDidTapBackgroundOverlay:(RoomContextualMenuViewController *)viewController
+{
+    [self hideContextualMenuAnimated:YES];
+}
+
+- (void)roomContextualMenuViewControllerDidReaction:(RoomContextualMenuViewController *)viewController
 {
     [self hideContextualMenuAnimated:YES];
 }

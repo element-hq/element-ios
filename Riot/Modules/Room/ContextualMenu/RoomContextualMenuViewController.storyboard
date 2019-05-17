@@ -20,7 +20,21 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Szx-Dr-Ndt">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="793"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vdy-rp-3g9" customClass="ReactionsMenuView" customModule="Riot" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="100" width="414" height="100"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="D3i-aE-kdL"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Vdy-rp-3g9" firstAttribute="bottom" secondItem="Szx-Dr-Ndt" secondAttribute="top" constant="200" id="0GH-Qk-vKA"/>
+                                    <constraint firstAttribute="trailing" secondItem="Vdy-rp-3g9" secondAttribute="trailing" id="9Gu-dr-IPv"/>
+                                    <constraint firstItem="Vdy-rp-3g9" firstAttribute="leading" secondItem="Szx-Dr-Ndt" secondAttribute="leading" id="h78-sP-xDx"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0GC-JU-rI3" customClass="RoomContextualMenuToolbarView" customModule="Riot" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="793" width="414" height="69"/>
@@ -47,6 +61,9 @@
                         <outlet property="menuToolbarView" destination="0GC-JU-rI3" id="j0z-I8-Pcr"/>
                         <outlet property="menuToolbarViewBottomConstraint" destination="s4i-80-0iu" id="E5w-5m-m5O"/>
                         <outlet property="menuToolbarViewHeightConstraint" destination="ynL-KP-iB4" id="Zeb-b0-Yil"/>
+                        <outlet property="reactionsMenuView" destination="Vdy-rp-3g9" id="jJT-mz-vg6"/>
+                        <outlet property="reactionsMenuViewBottomConstraint" destination="0GH-Qk-vKA" id="8lg-XL-JgW"/>
+                        <outlet property="reactionsMenuViewHeightConstraint" destination="D3i-aE-kdL" id="CCr-hW-2dv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8NV-wl-Hp0" userLabel="First Responder" sceneMemberID="firstResponder"/>

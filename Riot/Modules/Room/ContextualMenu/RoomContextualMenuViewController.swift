@@ -18,6 +18,7 @@ import UIKit
 
 @objc protocol RoomContextualMenuViewControllerDelegate: class {
     func roomContextualMenuViewControllerDidTapBackgroundOverlay(_ viewController: RoomContextualMenuViewController)
+    func roomContextualMenuViewControllerDidReaction(_ viewController: RoomContextualMenuViewController)
 }
 
 @objcMembers
@@ -33,9 +34,14 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     @IBOutlet private weak var menuToolbarViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var menuToolbarViewBottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet private weak var reactionsMenuView: ReactionsMenuView!
+    @IBOutlet private weak var reactionsMenuViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var reactionsMenuViewBottomConstraint: NSLayoutConstraint!
+    
     // MARK: Private
     
     private var theme: Theme!
+    private var errorPresenter: MXKErrorPresentation!
     private var contextualMenuItems: [RoomContextualMenuItem] = []    
     
     private var hiddenToolbarViewBottomConstant: CGFloat {
@@ -69,10 +75,13 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
+        self.reactionsMenuView.isHidden = true
+
         self.backgroundOverlayView.isUserInteractionEnabled = true
         self.menuToolbarView.fill(contextualMenuItems: self.contextualMenuItems)
         self.setupBackgroundOverlayTapGestureRecognizer()
+
+        self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
@@ -86,6 +95,28 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     
     func hideMenuToolbar() {
         self.menuToolbarViewBottomConstraint.constant = self.hiddenToolbarViewBottomConstant
+    }
+
+    func showReactionsMenu(withViewModel viewModel: ReactionsMenuViewModel, aroundFrame frame: CGRect) {
+        self.reactionsMenuView.viewModel = viewModel
+        self.reactionsMenuView.viewModel?.coordinatorDelegate = self
+        self.reactionsMenuView.isHidden = false
+
+        let menuHeight = self.reactionsMenuViewHeightConstraint.constant
+
+        // Try to display the menu at the top of the message first
+        // Then, try at the bottom
+        // Else, keep the position defined in the storyboard
+        if frame.origin.y >= self.reactionsMenuViewHeightConstraint.constant {
+            self.reactionsMenuViewBottomConstraint.constant = frame.origin.y
+        } else {
+            let frameBottomY = frame.origin.y + frame.size.height
+            let visibleViewHeight = self.view.frame.size.height - self.menuToolbarView.frame.size.height
+
+            if frameBottomY + menuHeight < visibleViewHeight {
+                self.reactionsMenuViewBottomConstraint.constant = frameBottomY + menuHeight
+            }
+        }
     }
     
     func update(theme: Theme) {
@@ -109,5 +140,20 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     
     @objc private func themeDidChange() {
         self.update(theme: ThemeService.shared().theme)
+    }
+}
+
+extension RoomContextualMenuViewController: ReactionsMenuViewModelCoordinatorDelegate {
+
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didSendReaction reaction: String, isAddReaction: Bool) {
+        self.delegate?.roomContextualMenuViewControllerDidReaction(self)
+    }
+
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionComplete reaction: String, isAddReaction: Bool) {
+    }
+
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionFailedWithError error: Error, reaction: String, isAddReaction: Bool) {
+        self.errorPresenter?.presentError(from: self, forError: error, animated: true) {
+        }
     }
 }
