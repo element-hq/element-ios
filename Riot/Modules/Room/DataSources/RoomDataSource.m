@@ -265,7 +265,7 @@
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count) && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -277,6 +277,8 @@
                 
                 if (component.event.sentState != MXEventSentStateFailed)
                 {
+                    MXKReceiptSendersContainer* avatarsContainer;
+
                     // Handle read receipts (if any)
                     if (self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed)
                     {
@@ -307,7 +309,7 @@
                         if (roomMembers.count)
                         {
                             // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
-                            MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 13, 150, 12) andMediaManager:self.mxSession.mediaManager];
+                            avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 13, 150, 12) andMediaManager:self.mxSession.mediaManager];
                             
                             // Custom avatar display
                             avatarsContainer.maxDisplayedAvatars = 5;
@@ -375,6 +377,55 @@
                             // Available on iOS 8 and later
                             [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, trailingConstraint]];
                         }
+                    }
+
+                    MXAggregatedReactions* reactions = cellData.reactions[component.event.eventId];
+                    if (reactions && !isCollapsableCellCollapsed)
+                    {
+                        // TODO: Use final ReactionsView
+                        UITextView* reactionsContainer = [UITextView new];
+                        reactionsContainer.translatesAutoresizingMaskIntoConstraints = NO;
+                        [bubbleCell.contentView addSubview:reactionsContainer];
+
+                        reactionsContainer.layer.borderColor = UIColor.orangeColor.CGColor;
+                        reactionsContainer.layer.borderWidth = 1;
+
+                        if (!bubbleCell.tmpSubviews)
+                        {
+                            bubbleCell.tmpSubviews = [NSMutableArray array];
+                        }
+                        [bubbleCell.tmpSubviews addObject:reactionsContainer];
+
+                        // At the bottom, we have read receipts or nothing
+                        NSLayoutConstraint *bottomConstraint;
+                        if (avatarsContainer)
+                        {
+                            bottomConstraint = [reactionsContainer.bottomAnchor constraintEqualToAnchor:avatarsContainer.topAnchor];
+                        }
+                        else
+                        {
+                            bottomConstraint = [reactionsContainer.bottomAnchor constraintEqualToAnchor:reactionsContainer.superview.topAnchor constant:bottomPositionY];
+                        }
+
+                        // TODO: To refine
+                        CGFloat viewHeight = 22;
+
+                        // Force receipts container size
+                        [NSLayoutConstraint activateConstraints:
+                        @[
+                          [reactionsContainer.leadingAnchor constraintEqualToAnchor:reactionsContainer.superview.leadingAnchor constant:50],
+                          [reactionsContainer.trailingAnchor constraintEqualToAnchor:reactionsContainer.superview.trailingAnchor constant:-6],
+                          [reactionsContainer.heightAnchor constraintEqualToConstant:viewHeight],
+                          bottomConstraint
+                          ]];
+
+                        // TODO: To remove
+                        NSMutableString *reactionsString = [NSMutableString string];
+                        for (MXReactionCount *reactionCount in reactions.reactions)
+                        {
+                            [reactionsString appendFormat:@"%@: %@  ", reactionCount.reaction, @(reactionCount.count)];
+                        }
+                        reactionsContainer.text = reactionsString;
                     }
                     
                     // Check whether the read marker must be displayed here.
