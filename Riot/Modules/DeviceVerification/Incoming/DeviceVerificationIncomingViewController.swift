@@ -110,7 +110,9 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         self.titleLabel.textColor = theme.textPrimaryColor
         self.description1Label.textColor = theme.textPrimaryColor
         self.description2Label.textColor = theme.textPrimaryColor
-
+        self.userDisplaynameLabel.textColor = theme.textPrimaryColor
+        self.deviceIdLabel.textColor = theme.textPrimaryColor
+        
         self.continueButtonBackgroundView.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.continueButton)
     }
