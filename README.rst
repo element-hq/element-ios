@@ -21,7 +21,8 @@ Before opening the Riot Xcode workspace, you need to build it with the
 CocoaPods command::
 
         $ cd Riot
-        $ pod install
+        $ bundle install
+        $ bundle exec pod install
 
 This will load all dependencies for the Riot source code, including MatrixKit 
 and MatrixSDK.  You will need an recent and updated (``pod setup``) install of
