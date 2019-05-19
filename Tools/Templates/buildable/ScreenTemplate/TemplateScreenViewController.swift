@@ -77,19 +77,11 @@ final class TemplateScreenViewController: UIViewController {
         
         self.keyboardAvoider?.startAvoiding()
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         self.keyboardAvoider?.stopAvoiding()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
