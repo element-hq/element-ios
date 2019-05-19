@@ -1,3 +1,9 @@
+Changes in 0.8.7 (2019-xx-xx)
+===============================================
+
+Bug fix:
+ * Device Verification: Fix user display name and device id colors in dark theme
+
 Changes in 0.8.6 (2019-05-06)
 ===============================================
 
