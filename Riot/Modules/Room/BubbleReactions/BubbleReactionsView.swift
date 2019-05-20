@@ -17,6 +17,7 @@
 import Foundation
 import MatrixSDK
 import Reusable
+import DGCollectionViewLeftAlignFlowLayout
 
 @objcMembers
 final class BubbleReactionsView: UIView, NibOwnerLoadable {
@@ -55,6 +56,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.collectionView.isScrollEnabled = false
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
+        self.collectionView.collectionViewLayout = DGCollectionViewLeftAlignFlowLayout()
         
         if let collectionViewFlowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             collectionViewFlowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
