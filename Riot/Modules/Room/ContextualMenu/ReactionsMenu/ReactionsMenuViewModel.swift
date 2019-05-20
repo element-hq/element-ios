@@ -90,17 +90,19 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         }
 
         self.resetData()
-        reactionCounts.forEach { (reaction) in
-            if let reaction = ReactionsMenuReaction(rawValue: reaction.reaction) {
-                switch reaction {
-                case .agree:
-                    self.isAgreeButtonSelected = true
-                case .disagree:
-                    self.isDisagreeButtonSelected = true
-                case .like:
-                    self.isLikeButtonSelected = true
-                case .dislike:
-                    self.isDislikeButtonSelected = true
+        reactionCounts.forEach { (reactionCount) in
+            if reactionCount.myUserHasReacted {
+                if let reaction = ReactionsMenuReaction(rawValue: reactionCount.reaction) {
+                    switch reaction {
+                    case .agree:
+                        self.isAgreeButtonSelected = true
+                    case .disagree:
+                        self.isDisagreeButtonSelected = true
+                    case .like:
+                        self.isLikeButtonSelected = true
+                    case .dislike:
+                        self.isDislikeButtonSelected = true
+                    }
                 }
             }
         }
