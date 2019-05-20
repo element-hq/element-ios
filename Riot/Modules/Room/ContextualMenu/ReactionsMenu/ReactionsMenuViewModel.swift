@@ -72,7 +72,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
             return
         }
 
-        self.react(withReaction: theReaction, selected: theNewState)
+        self.react(withReaction: theReaction, selected: theNewState, delegate: self.coordinatorDelegate)
     }
 
     // MARK: - Private
@@ -123,7 +123,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         }
     }
 
-    private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool, notifyDelegate: Bool = true) {
+    private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool, delegate: ReactionsMenuViewModelCoordinatorDelegate? = nil) {
 
         // If required, unreact first
         if selected {
@@ -137,9 +137,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                     return
                 }
 
-                if notifyDelegate {
-                    sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: true)
-                }
+                delegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: true)
 
             }, failure: {[weak self] (error) in
                 print("[ReactionsMenuViewModel] react: Error: \(error)")
@@ -148,9 +146,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                     return
                 }
 
-                if notifyDelegate {
-                    sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
-                }
+                delegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
             })
         } else {
 
@@ -160,9 +156,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                     return
                 }
 
-                if notifyDelegate {
-                    sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: false)
-                }
+                delegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: false)
 
                 }, failure: {[weak self] (error) in
                     print("[ReactionsMenuViewModel] react: Error: \(error)")
@@ -171,15 +165,11 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                         return
                     }
 
-                    if notifyDelegate {
-                        sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: false)
-                    }
+                    delegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: false)
             })
         }
 
-        if notifyDelegate {
-            self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: !selected)
-        }
+        delegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: !selected)
     }
 
     // We can like, dislike, be indifferent but we cannot like & dislike at the same time
@@ -206,7 +196,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         }
 
         if let unreaction = unreaction {
-            self.react(withReaction: unreaction, selected: false, notifyDelegate: false)
+            self.react(withReaction: unreaction, selected: false)
         }
     }
 }
