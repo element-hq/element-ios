@@ -140,20 +140,32 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
 
                 sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
             })
-
-            self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: true)
         } else {
 
-            // TODO
-            self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: false)
+            self.aggregations.unReact(onReaction: reaction.rawValue, toEvent: self.eventId, inRoom: self.roomId, success: {[weak self] in
+
+                guard let sself = self else {
+                    return
+                }
+
+                sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: false)
+
+                }, failure: {[weak self] (error) in
+                    print("[ReactionsMenuViewModel] react: Error: \(error)")
+
+                    guard let sself = self else {
+                        return
+                    }
+
+                    sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: false)
+            })
         }
+
+        self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: !selected)
 
         if selected {
             self.ensure3StateButtons(withReaction: reaction)
         }
-
-        // TODO: to remove
-        self.fakeToggleReaction(reaction: reaction)
     }
 
     // We can like, dislike, be indifferent but we cannot like & dislike at the same time
@@ -182,21 +194,5 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         if let unreaction = unreaction {
             self.react(withReaction: unreaction, selected: false)
         }
-    }
-
-    // TODO: to remove
-    private func fakeToggleReaction(reaction: ReactionsMenuReaction) {
-        switch reaction {
-        case .agree:
-            isAgreeButtonSelected = !isAgreeButtonSelected
-        case .disagree:
-            isDisagreeButtonSelected = !isDisagreeButtonSelected
-        case .like:
-            isLikeButtonSelected = !isLikeButtonSelected
-        case .dislike:
-            isDislikeButtonSelected = !isDislikeButtonSelected
-        }
-
-        self.viewDelegate?.reactionsMenuViewModelDidUpdate(self)
     }
 }
