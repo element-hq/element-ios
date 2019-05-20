@@ -3677,6 +3677,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/DGCollectionViewLeftAlignFlowLayout/DGCollectionViewLeftAlignFlowLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
 				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
 				"${BUILT_PRODUCTS_DIR}/GBDeviceInfo/GBDeviceInfo.framework",
@@ -3702,6 +3703,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DGCollectionViewLeftAlignFlowLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTCoreText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTFoundation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GBDeviceInfo.framework",
