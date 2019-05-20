@@ -46,6 +46,9 @@ import UIKit
 
     var noticeColor: UIColor { get }
     var noticeSecondaryColor: UIColor { get }
+        
+    var reactionButtonSelectedBackgroundColor: UIColor { get }
+    var reactionButtonSelectedBorderColor: UIColor { get }
 
     /// Color for errors or warnings
     var warningColor: UIColor { get }

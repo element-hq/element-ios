@@ -30,8 +30,8 @@ class DarkTheme: NSObject, Theme {
     var searchBackgroundColor: UIColor = UIColor(rgb: 0x181B21)
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0x61708B)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0x15171B)
-    var headerBorderColor: UIColor  = UIColor(rgb: 0x22262E)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0x22262E)
+    var headerBorderColor: UIColor  = UIColor(rgb: 0x181B21)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xA1B2D1)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
 
@@ -45,6 +45,9 @@ class DarkTheme: NSObject, Theme {
     
     var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
+        
+    var reactionButtonSelectedBackgroundColor: UIColor = UIColor(rgb: 0x1F6954)
+    var reactionButtonSelectedBorderColor: UIColor = UIColor(rgb: 0x03B381)
 
     var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
 
