@@ -22,6 +22,8 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
+#import "Riot-Swift.h"
+
 static NSAttributedString *timestampVerticalWhitespace = nil;
 static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
@@ -357,11 +359,28 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 {
     // Add vertical whitespace in case of read receipts.
     NSUInteger reactionCount = self.reactions[eventId].reactions.count;
+    
+    MXAggregatedReactions *aggregatedReactions = self.reactions[eventId];
+    
     if (reactionCount)
     {
-        // TODO: Set right height: 22 + 8
-        // TODO: Set right dynamic line count: reactionCount / 6
-        CGFloat height = (22 + 8) * ((reactionCount / 6) + 1);
+        CGSize fittingSize = UILayoutFittingCompressedSize;
+        fittingSize.width = self.maxTextViewWidth;
+        
+        static BubbleReactionsView *bubbleReactionsView;
+        
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            bubbleReactionsView = [BubbleReactionsView new];
+        });
+        
+        bubbleReactionsView.frame = CGRectMake(0, 0, self.maxTextViewWidth, 1.0);
+        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId];
+        bubbleReactionsView.viewModel = viemModel;
+        [bubbleReactionsView layoutIfNeeded];
+        
+        CGFloat height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height;
+        
         [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight: height]];
     }
 
@@ -503,7 +522,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
 
     return [[NSAttributedString alloc] initWithString:returnString attributes:@{NSForegroundColorAttributeName : [UIColor blackColor],
-                                                                                NSFontAttributeName: [UIFont systemFontOfSize:4]}];
+                                                                                NSFontAttributeName: [UIFont systemFontOfSize:6]}];
 }
 
 - (BOOL)hasSameSenderAsBubbleCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData

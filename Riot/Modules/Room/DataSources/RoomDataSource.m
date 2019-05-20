@@ -27,7 +27,11 @@
 
 #import "MXRoom+Riot.h"
 
-@interface RoomDataSource()
+
+static CGFloat kBubbleReactionsViewLeftMargin = 55.0;
+static CGFloat kBubbleReactionsViewRightMargin = 15.0;
+
+@interface RoomDataSource() <BubbleReactionsViewModelDelegate>
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -275,6 +279,7 @@
             while (index--)
             {
                 MXKRoomBubbleComponent *component = bubbleComponents[index];
+                NSString *componentEventId = component.event.eventId;
                 
                 if (component.event.sentState != MXEventSentStateFailed)
                 {
@@ -379,54 +384,46 @@
                             [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, trailingConstraint]];
                         }
                     }
-
-                    MXAggregatedReactions* reactions = cellData.reactions[component.event.eventId];
+                    
+                    MXAggregatedReactions* reactions = cellData.reactions[componentEventId];
+                    
                     if (reactions && !isCollapsableCellCollapsed)
                     {
-                        // TODO: Use final ReactionsView
-                        UITextView* reactionsContainer = [UITextView new];
-                        reactionsContainer.translatesAutoresizingMaskIntoConstraints = NO;
-                        [bubbleCell.contentView addSubview:reactionsContainer];
-
-                        reactionsContainer.layer.borderColor = UIColor.orangeColor.CGColor;
-                        reactionsContainer.layer.borderWidth = 1;
-
+                        BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions eventId:componentEventId];
+                        
+                        BubbleReactionsView *reactionsView = [BubbleReactionsView new];
+                        reactionsView.viewModel = bubbleReactionsViewModel;
+                        [reactionsView updateWithTheme:ThemeService.shared.theme];
+                        
+                        bubbleReactionsViewModel.viewModelDelegate = self;
+                        
+                        reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
+                        [bubbleCell.contentView addSubview:reactionsView];
+                        
                         if (!bubbleCell.tmpSubviews)
                         {
                             bubbleCell.tmpSubviews = [NSMutableArray array];
                         }
-                        [bubbleCell.tmpSubviews addObject:reactionsContainer];
-
+                        [bubbleCell.tmpSubviews addObject:reactionsView];
+                        
                         // At the bottom, we have read receipts or nothing
                         NSLayoutConstraint *bottomConstraint;
                         if (avatarsContainer)
                         {
-                            bottomConstraint = [reactionsContainer.bottomAnchor constraintEqualToAnchor:avatarsContainer.topAnchor];
+                            bottomConstraint = [reactionsView.bottomAnchor constraintEqualToAnchor:avatarsContainer.topAnchor];
                         }
                         else
                         {
-                            bottomConstraint = [reactionsContainer.bottomAnchor constraintEqualToAnchor:reactionsContainer.superview.topAnchor constant:bottomPositionY];
+                            bottomConstraint = [reactionsView.bottomAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY];
                         }
-
-                        // TODO: To refine
-                        CGFloat viewHeight = 22;
-
+                        
                         // Force receipts container size
                         [NSLayoutConstraint activateConstraints:
-                        @[
-                          [reactionsContainer.leadingAnchor constraintEqualToAnchor:reactionsContainer.superview.leadingAnchor constant:50],
-                          [reactionsContainer.trailingAnchor constraintEqualToAnchor:reactionsContainer.superview.trailingAnchor constant:-6],
-                          [reactionsContainer.heightAnchor constraintEqualToConstant:viewHeight],
-                          bottomConstraint
-                          ]];
-
-                        // TODO: To remove
-                        NSMutableString *reactionsString = [NSMutableString string];
-                        for (MXReactionCount *reactionCount in reactions.reactions)
-                        {
-                            [reactionsString appendFormat:@"%@: %@  ", reactionCount.reaction, @(reactionCount.count)];
-                        }
-                        reactionsContainer.text = reactionsString;
+                         @[
+                           [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:kBubbleReactionsViewLeftMargin],
+                           [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-kBubbleReactionsViewRightMargin],
+                           bottomConstraint
+                           ]];
                     }
                     
                     // Check whether the read marker must be displayed here.
@@ -439,7 +436,7 @@
                         bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
                         bubbleCell.bubbleOverlayContainer.hidden = NO;
                         
-                        if ([component.event.eventId isEqualToString:self.room.accountData.readMarkerEventId])
+                        if ([componentEventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
                             bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - 2, bubbleCell.bubbleOverlayContainer.frame.size.width, 2)];
                             bubbleCell.readMarkerView.backgroundColor = ThemeService.shared.theme.tintColor;
@@ -578,6 +575,26 @@
     jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room withRoomState:self.roomState].firstObject;
 
     return jitsiWidget;
+}
+
+#pragma mark - BubbleReactionsViewModelDelegate
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didAddReaction:(MXReactionCount *)reactionCount forEventId:(NSString *)eventId
+{
+    [self.mxSession.aggregations sendReaction:reactionCount.reaction toEvent:eventId inRoom:self.roomId success:^(NSString * _Nonnull eventId) {
+        
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[MXKRoomDataSource] Fail to send reaction on eventId: %@", eventId);
+    }];
+}
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didRemoveReaction:(MXReactionCount * _Nonnull)reactionCount forEventId:(NSString * _Nonnull)eventId
+{
+    [self.mxSession.aggregations unReactOnReaction:reactionCount.reaction toEvent:eventId inRoom:self.roomId success:^{
+        
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[MXKRoomDataSource] Fail to unreact on eventId: %@", eventId);
+    }];
 }
 
 @end
