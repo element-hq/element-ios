@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReactionsMenuView" customModule="Riot" customModuleProvider="target">
+            <connections>
+                <outlet property="agreeButton" destination="30O-28-rwy" id="6aH-Wm-9y3"/>
+                <outlet property="disagreeButton" destination="Ebe-PT-0R2" id="7FN-DF-Pxg"/>
+                <outlet property="dislikeButton" destination="AgH-2U-HpP" id="rMC-aV-G1t"/>
+                <outlet property="likeButton" destination="kao-MQ-QFq" id="SVi-dI-qWZ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="30O-28-rwy" customClass="ReactionsMenuButton" customModule="Riot" customModuleProvider="target">
+                    <rect key="frame" x="104" y="13" width="100" height="38"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="38" id="TII-Yn-bza"/>
+                        <constraint firstAttribute="width" constant="100" id="cjU-F5-DjB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="Agree 👍">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </state>
+                    <connections>
+                        <action selector="agreeButtonAction:" destination="-1" eventType="touchUpInside" id="uLG-m0-aTt"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ebe-PT-0R2" customClass="ReactionsMenuButton" customModule="Riot" customModuleProvider="target">
+                    <rect key="frame" x="104" y="59" width="100" height="38"/>
+                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="807-lM-sNX"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="bIY-hX-5PC"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="j4m-Qi-NS5"/>
+                        <constraint firstAttribute="height" constant="38" id="tNZ-Kv-LxS"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="Disagree 👎">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </state>
+                    <connections>
+                        <action selector="disagreeButtonAction:" destination="-1" eventType="touchUpInside" id="8Ir-5R-jpn"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kao-MQ-QFq" customClass="ReactionsMenuButton" customModule="Riot" customModuleProvider="target">
+                    <rect key="frame" x="210" y="13" width="100" height="38"/>
+                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="8hf-4f-egV"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="Gvk-Ap-Wtc"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="lZK-go-x5A"/>
+                        <constraint firstAttribute="height" constant="38" id="o0a-8j-0et"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="Like 🙂">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </state>
+                    <connections>
+                        <action selector="likeButtonAction:" destination="-1" eventType="touchUpInside" id="3Bb-iJ-Q8R"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AgH-2U-HpP" customClass="ReactionsMenuButton" customModule="Riot" customModuleProvider="target">
+                    <rect key="frame" x="210" y="59" width="100" height="38"/>
+                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="100" id="75c-dq-L2I"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="GgC-VF-je2"/>
+                        <constraint firstAttribute="width" constant="100" id="RCe-5D-dg5"/>
+                        <constraint firstAttribute="height" constant="38" id="cvn-yC-3VY"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="hVj-hk-Vob"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="38" id="wNs-Eg-frx"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="Dislike 😔">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </state>
+                    <connections>
+                        <action selector="dislikeButtonAction:" destination="-1" eventType="touchUpInside" id="vE5-Jn-5WM"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Ebe-PT-0R2" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="centerX" constant="-3" id="3kX-GA-4mf"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="centerX" secondItem="kao-MQ-QFq" secondAttribute="leading" constant="-3" id="FV3-zi-y6i"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="centerY" secondItem="Ebe-PT-0R2" secondAttribute="top" constant="-4" id="Hfb-BB-kgH"/>
+                <constraint firstItem="AgH-2U-HpP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="centerX" constant="3" id="LBW-Lg-fZv"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="centerY" secondItem="AgH-2U-HpP" secondAttribute="top" constant="-4" id="MAE-KT-eAQ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="centerY" secondItem="30O-28-rwy" secondAttribute="bottom" constant="4" id="jTW-iy-hDv"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="centerY" secondItem="kao-MQ-QFq" secondAttribute="bottom" constant="4" id="sRb-2V-clB"/>
+                <constraint firstItem="30O-28-rwy" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="centerX" constant="-3" id="xUt-vJ-1I1" userLabel="Agree 👍.trailing = Safe Area.centerX + 7"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="128.98550724637681" y="35.491071428571423"/>
+        </view>
+    </objects>
+</document>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,6 +21,7 @@
                 <outlet property="jumpToLastUnreadBannerSeparatorView" destination="knN-q1-QkJ" id="hHJ-c8-QfN"/>
                 <outlet property="jumpToLastUnreadButton" destination="ISb-UT-u0O" id="fs0-sQ-lRe"/>
                 <outlet property="jumpToLastUnreadLabel" destination="S1q-B4-Df3" id="McV-gv-bUa"/>
+                <outlet property="overlayContainerView" destination="gt1-EO-UVY" id="5q6-pW-UyZ"/>
                 <outlet property="previewHeaderContainer" destination="54r-18-K1g" id="Klt-RV-V1E"/>
                 <outlet property="previewHeaderContainerHeightConstraint" destination="goj-GZ-IkD" id="GbA-T9-kiL"/>
                 <outlet property="resetReadMarkerButton" destination="c4g-BY-xOo" id="KuR-hH-rz1"/>
@@ -130,7 +131,7 @@
                         <constraint firstItem="ISb-UT-u0O" firstAttribute="centerY" secondItem="Vlz-UJ-Jz8" secondAttribute="centerY" id="w7t-WC-VjP"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XX4-n6-hCm" userLabel="Activities Container">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XX4-n6-hCm" userLabel="Activities Container">
                     <rect key="frame" x="0.0" y="606" width="375" height="20"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="RoomVCActivitiesContainer"/>
@@ -146,10 +147,15 @@
                         <constraint firstAttribute="height" constant="41" id="5eD-Fm-RDb"/>
                     </constraints>
                 </view>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gt1-EO-UVY">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomVCView"/>
             <constraints>
+                <constraint firstItem="gt1-EO-UVY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="0Gc-VV-1ao"/>
                 <constraint firstAttribute="trailing" secondItem="BGD-sd-SQR" secondAttribute="trailing" id="0la-ok-MBr"/>
                 <constraint firstItem="S6r-bo-jxw" firstAttribute="width" secondItem="BGD-sd-SQR" secondAttribute="width" id="3Mr-fA-bfF"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4Q7-hr-rqi"/>
@@ -160,12 +166,15 @@
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="top" id="QO8-nF-xys"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="WhE-lH-ZtR"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="X14-4s-uGM"/>
+                <constraint firstItem="gt1-EO-UVY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="XGH-fF-BKB"/>
                 <constraint firstAttribute="trailing" secondItem="nLd-BP-JAE" secondAttribute="trailing" id="YAu-gd-ItG"/>
                 <constraint firstItem="S6r-bo-jxw" firstAttribute="centerX" secondItem="BGD-sd-SQR" secondAttribute="centerX" id="a2s-5o-q2d"/>
+                <constraint firstItem="gt1-EO-UVY" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="acJ-g8-R7x"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="csl-KT-4s9"/>
                 <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ghf-co-a4t"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="haP-Kv-OLI"/>
                 <constraint firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="kQ6-Cg-FMi"/>
+                <constraint firstAttribute="trailing" secondItem="gt1-EO-UVY" secondAttribute="trailing" id="qmd-M4-phm"/>
                 <constraint firstItem="uK2-9a-rZj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u8r-eN-1g8"/>
                 <constraint firstItem="S6r-bo-jxw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xYa-gT-4x0"/>
                 <constraint firstItem="uK2-9a-rZj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="y6b-JK-CF5"/>
@@ -174,7 +183,7 @@
         </view>
     </objects>
     <resources>
-        <image name="cancel" width="32" height="32"/>
-        <image name="jump_to_unread" width="48" height="48"/>
+        <image name="cancel" width="20" height="20"/>
+        <image name="jump_to_unread" width="30" height="30"/>
     </resources>
 </document>

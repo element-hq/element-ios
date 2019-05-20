@@ -119,7 +119,8 @@ enum
 enum
 {
     LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX = 0,
+    LABS_USE_JITSI_WIDGET_INDEX,
+    LABS_USE_MESSAGE_REACTION_INDEX,
     LABS_CRYPTO_INDEX,
     LABS_COUNT
 };
@@ -2136,6 +2137,19 @@ SignOutAlertPresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
+        else if (row == LABS_USE_MESSAGE_REACTION_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_message_reaction", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.messageReaction;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleMessageReaction:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
         else if (row == LABS_CRYPTO_INDEX)
         {
             MXSession* session = [AppDelegate theDelegate].mxSessions[0];
@@ -3030,6 +3044,22 @@ SignOutAlertPresenterDelegate>
         UISwitch *switchButton = (UISwitch*)sender;
         
         RiotSettings.shared.createConferenceCallsWithJitsi = switchButton.isOn;
+
+        [self.tableView reloadData];
+    }
+}
+
+- (void)toggleMessageReaction:(id)sender
+{
+    if (sender && [sender isKindOfClass:UISwitch.class])
+    {
+        UISwitch *switchButton = (UISwitch*)sender;
+
+        RiotSettings.shared.messageReaction = switchButton.isOn;
+
+        // Reset cached room data sources
+        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+        [roomDataSourceManager reset];
 
         [self.tableView reloadData];
     }
