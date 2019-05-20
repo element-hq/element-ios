@@ -21,6 +21,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
     // MARK: - Properties
 
     // MARK: Private
+    private let session: MXSession              // TODO: To remove. Only required for reactUsingHack()
     private let aggregations: MXAggregations
     private let roomId: String
     private let eventId: String
@@ -37,10 +38,11 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
 
     // MARK: - Setup
 
-    init(aggregations: MXAggregations, roomId: String, eventId: String) {
+    init(aggregations: MXAggregations, roomId: String, eventId: String, session: MXSession) {
         self.aggregations = aggregations
         self.roomId = roomId
         self.eventId = eventId
+        self.session = session
 
         self.loadData()
         self.listenToDataUpdate()
@@ -90,17 +92,19 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         }
 
         self.resetData()
-        reactionCounts.forEach { (reaction) in
-            if let reaction = ReactionsMenuReaction(rawValue: reaction.reaction) {
-                switch reaction {
-                case .agree:
-                    self.isAgreeButtonSelected = true
-                case .disagree:
-                    self.isDisagreeButtonSelected = true
-                case .like:
-                    self.isLikeButtonSelected = true
-                case .dislike:
-                    self.isDislikeButtonSelected = true
+        reactionCounts.forEach { (reactionCount) in
+            if reactionCount.myUserHasReacted {
+                if let reaction = ReactionsMenuReaction(rawValue: reactionCount.reaction) {
+                    switch reaction {
+                    case .agree:
+                        self.isAgreeButtonSelected = true
+                    case .disagree:
+                        self.isDisagreeButtonSelected = true
+                    case .like:
+                        self.isLikeButtonSelected = true
+                    case .dislike:
+                        self.isDislikeButtonSelected = true
+                    }
                 }
             }
         }
@@ -136,6 +140,16 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
 
                 guard let sself = self else {
                     return
+                }
+
+                // The server does not support support reaction yet
+                // Use a fallback mechanism
+                // TODO: To remove once the feature has landed on matrix.org homeserver
+                if let mxError = MXError(nsError: error) {
+                    if mxError.errcode == kMXErrCodeStringUnrecognized {
+                        sself.reactUsingHack(withReaction: reaction)
+                        return
+                    }
                 }
 
                 sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
@@ -194,5 +208,42 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         if let unreaction = unreaction {
             self.react(withReaction: unreaction, selected: false)
         }
+    }
+
+    /// reactUsingHack directly sends a `m.reaction` room message instead of using the `/send_relation` api.
+    ///
+    /// TODO: To remove once the feature has landed on matrix.org homeserver
+    ///
+    /// - Parameter reaction: the reaction
+    private func reactUsingHack(withReaction reaction: ReactionsMenuReaction) {
+        guard let room = self.session.room(withRoomId: self.roomId) else {
+            print("[ReactionsMenuViewModel] reactUsingHack: Error: Unknown room: \(self.roomId)")
+            return
+        }
+
+        print("[ReactionsMenuViewModel] reactUsingHack")
+
+        let reactionContent = [
+            "m.relates_to": [
+                "rel_type": "m.annotation",
+                "event_id": self.eventId,
+                "key": reaction.rawValue]
+        ]
+
+        var nilEvent: MXEvent?
+        room.sendEvent(.reaction, content: reactionContent, localEcho: &nilEvent, completion: { [weak self] ( completion) in
+            guard let sself = self else {
+                return
+            }
+            switch completion {
+            case .success:
+                print("[ReactionsMenuViewModel] reactUsingHack: Success")
+                sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: true)
+
+            case.failure(let error):
+                print("[ReactionsMenuViewModel] reactUsingHack: Error: \(error)")
+                sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
+            }
+        })
     }
 }

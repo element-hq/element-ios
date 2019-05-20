@@ -105,7 +105,7 @@ final class RoomContextualMenuPresenter: NSObject {
 
     func showReactionsMenu(forEvent eventId: String, inRoom roomId: String, session: MXSession,
                            aroundFrame frame: CGRect) {
-        let reactionsMenuViewModel = ReactionsMenuViewModel(aggregations: session.aggregations, roomId: roomId, eventId: eventId)
+        let reactionsMenuViewModel = ReactionsMenuViewModel(aggregations: session.aggregations, roomId: roomId, eventId: eventId, session: session)
         self.roomContextualMenuViewController?.showReactionsMenu(withViewModel: reactionsMenuViewModel, aroundFrame: frame)
     }
 }
