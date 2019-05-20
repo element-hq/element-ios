@@ -216,6 +216,11 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
     ///
     /// - Parameter reaction: the reaction
     private func reactUsingHack(withReaction reaction: ReactionsMenuReaction) {
+        guard let room = self.session.room(withRoomId: self.roomId) else {
+            print("[ReactionsMenuViewModel] reactUsingHack: Error: Unknown room: \(self.roomId)")
+            return
+        }
+
         print("[ReactionsMenuViewModel] reactUsingHack")
 
         let reactionContent = [
@@ -226,8 +231,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         ]
 
         var nilEvent: MXEvent?
-        let room = self.session.room(withRoomId: self.roomId)
-        room?.sendEvent(.reaction, content: reactionContent, localEcho: &nilEvent, completion: { [weak self] ( completion) in
+        room.sendEvent(.reaction, content: reactionContent, localEcho: &nilEvent, completion: { [weak self] ( completion) in
             guard let sself = self else {
                 return
             }
