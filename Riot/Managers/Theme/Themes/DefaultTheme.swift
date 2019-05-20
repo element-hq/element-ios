@@ -45,9 +45,6 @@ class DefaultTheme: NSObject, Theme {
     
     var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
-    
-    var reactionButtonSelectedBackgroundColor: UIColor = UIColor(rgb: 0xE9FFF9)
-    var reactionButtonSelectedBorderColor: UIColor = UIColor(rgb: 0x03B381)
 
     var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
 

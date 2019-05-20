@@ -81,7 +81,7 @@ final class BubbleReactionViewCell: UICollectionViewCell, NibReusable, Themable 
     
     func update(theme: Theme) {
         self.theme = theme
-        self.reactionBackgroundView.layer.borderColor = self.theme?.reactionButtonSelectedBorderColor.cgColor
+        self.reactionBackgroundView.layer.borderColor = self.theme?.tintColor.cgColor
         self.countLabel.textColor = self.theme?.textPrimaryColor
         self.updateViews()
     }
@@ -94,7 +94,7 @@ final class BubbleReactionViewCell: UICollectionViewCell, NibReusable, Themable 
         let reactionBackgroundBorderWidth: CGFloat
         
         if self.isReactionSelected {
-            reactionBackgroundColor = self.theme?.reactionButtonSelectedBackgroundColor
+            reactionBackgroundColor = self.theme?.tintBackgroundColor
             reactionBackgroundBorderWidth = Constants.selectedBorderWidth
         } else {
             reactionBackgroundColor = self.theme?.headerBackgroundColor

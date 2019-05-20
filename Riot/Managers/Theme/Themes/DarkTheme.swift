@@ -39,15 +39,12 @@ class DarkTheme: NSObject, Theme {
     var textSecondaryColor: UIColor = UIColor(rgb: 0xA1B2D1)
 
     var tintColor: UIColor = UIColor(rgb: 0x03B381)
-    var tintBackgroundColor: UIColor = UIColor(rgb: 0xe9fff9)
+    var tintBackgroundColor: UIColor = UIColor(rgb: 0x1F6954)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     var lineBreakColor: UIColor = UIColor(rgb: 0x61708B)
     
     var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
-        
-    var reactionButtonSelectedBackgroundColor: UIColor = UIColor(rgb: 0x1F6954)
-    var reactionButtonSelectedBorderColor: UIColor = UIColor(rgb: 0x03B381)
 
     var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
 
