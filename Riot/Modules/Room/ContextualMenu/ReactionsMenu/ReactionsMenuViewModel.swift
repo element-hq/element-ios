@@ -123,7 +123,13 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         }
     }
 
-    private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool) {
+    private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool, notifyDelegate: Bool = true) {
+
+        // If required, unreact first
+        if selected {
+            self.ensure3StateButtons(withReaction: reaction)
+        }
+
         if selected {
             self.aggregations.sendReaction(reaction.rawValue, toEvent: self.eventId, inRoom: self.roomId, success: {[weak self] _ in
 
@@ -131,7 +137,9 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                     return
                 }
 
-                sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: true)
+                if notifyDelegate {
+                    sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: true)
+                }
 
             }, failure: {[weak self] (error) in
                 print("[ReactionsMenuViewModel] react: Error: \(error)")
@@ -140,7 +148,9 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                     return
                 }
 
-                sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
+                if notifyDelegate {
+                    sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
+                }
             })
         } else {
 
@@ -150,7 +160,9 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                     return
                 }
 
-                sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: false)
+                if notifyDelegate {
+                    sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: false)
+                }
 
                 }, failure: {[weak self] (error) in
                     print("[ReactionsMenuViewModel] react: Error: \(error)")
@@ -159,14 +171,14 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
                         return
                     }
 
-                    sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: false)
+                    if notifyDelegate {
+                        sself.coordinatorDelegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: false)
+                    }
             })
         }
 
-        self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: !selected)
-
-        if selected {
-            self.ensure3StateButtons(withReaction: reaction)
+        if notifyDelegate {
+            self.coordinatorDelegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: !selected)
         }
     }
 
@@ -194,7 +206,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
         }
 
         if let unreaction = unreaction {
-            self.react(withReaction: unreaction, selected: false)
+            self.react(withReaction: unreaction, selected: false, notifyDelegate: false)
         }
     }
 }
