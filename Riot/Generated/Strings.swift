@@ -2474,6 +2474,10 @@ internal enum VectorL10n {
   internal static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
   }
+  /// React to messages with emoji
+  internal static var settingsLabsMessageReaction: String { 
+    return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
+  }
   /// Lazy load rooms members
   internal static var settingsLabsRoomMembersLazyLoading: String { 
     return VectorL10n.tr("Vector", "settings_labs_room_members_lazy_loading") 
