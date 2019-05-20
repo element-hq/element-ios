@@ -1,14 +1,22 @@
-Changes in 0.8.6 (2019-xx-xx)
+Changes in 0.8.7 (2019-xx-xx)
 ===============================================
 
 Improvements:
  * RoomVC: When replying, use a "Reply" button instead of "Send".
  * RoomVC: New message actions (#2394).
 
-Changes in 0.8.5 (2019-xx-xx)
+Changes in 0.8.6 (2019-05-06)
+===============================================
+
+Bug fix:
+ * Device Verification: Fix bell emoji name.
+ * Device Verification: Fix buttons colors in dark theme.
+
+Changes in 0.8.5 (2019-05-03)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.9.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.9)).
  * Push: Add more logs to track spontaneously disabling (#2348).
  * Widgets: Use scalar prod urls in Riot mobile apps (#2349).
  * Productiviy: Create templates (see Tools/Templates/README.md).

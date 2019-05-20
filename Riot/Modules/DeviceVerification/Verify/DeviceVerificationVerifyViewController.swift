@@ -111,7 +111,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         self.decimalLabel.textColor = theme.textPrimaryColor
         self.waitingPartnerLabel.textColor = theme.textPrimaryColor
 
-        self.continueButton.backgroundColor = theme.backgroundColor
+        self.continueButtonBackgroundView.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.continueButton)
 
         emojisCollectionView.reloadData()

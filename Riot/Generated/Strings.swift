@@ -454,7 +454,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationEmojiBanana: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_banana") 
   }
-  /// Ball
+  /// Bell
   internal static var deviceVerificationEmojiBell: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_bell") 
   }
