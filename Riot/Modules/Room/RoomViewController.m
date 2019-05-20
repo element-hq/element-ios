@@ -5077,7 +5077,7 @@
                                                                            [self contextualMenuAnimationCompletionAfterBeingShown:YES];
                                                                        }];
 
-    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
     {
         // Note: For the moment, we use the frame of the cell instead of the component
         // From UI perpective, that means the menu will be around a paragraph instead of a message
