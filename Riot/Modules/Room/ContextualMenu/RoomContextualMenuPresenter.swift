@@ -88,6 +88,10 @@ final class RoomContextualMenuPresenter: NSObject {
         
         let animationCompletionInstructions: (() -> Void) = {
             roomContextualMenuViewController.vc_removeFromParent()
+
+            // TODO: To remove once the retain cycle caused by reactionsMenuViewModel is fixed
+            self.roomContextualMenuViewController = nil
+
             completion?()
         }
         
