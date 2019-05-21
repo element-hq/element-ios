@@ -389,7 +389,7 @@
 {
     // MediaPickerViewController is based on the Photos framework. So it is available only for iOS 8 and later.
     Class PHAsset_class = NSClassFromString(@"PHAsset");
-    if (PHAsset_class)
+    if (false)
     {
         MediaPickerViewController * mediaPicker = [MediaPickerViewController mediaPickerViewController];
         mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
