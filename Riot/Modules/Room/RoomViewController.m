@@ -5082,7 +5082,7 @@
         return;
     }
     
-    [self selectEventWithId:event.eventId enableReplyMode:NO showTimestamp:NO];
+    [self selectEventWithId:event.eventId enableReplyMode:NO showTimestamp:YES];
     
     NSArray<RoomContextualMenuItem*>* contextualMenuItems = [self contextualMenuItemsForEvent:event andCell:cell];
     
