@@ -41,6 +41,11 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
 @property(nonatomic) BOOL showTimestampForSelectedComponent;
 
 /**
+ Indicate true to display the timestamp of the selected component on the left when there is enough space (YES by default).
+ */
+@property(nonatomic) BOOL displayTimestampForSelectedComponentOnLeftWhenPossible;
+
+/**
  The event id of the current selected event inside the bubble. Default is nil.
  */
 @property(nonatomic) NSString *selectedEventId;
