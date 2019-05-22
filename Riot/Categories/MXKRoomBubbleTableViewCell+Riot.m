@@ -459,6 +459,80 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     }
 }
 
+- (CGRect)componentFrameForIndex:(NSInteger)componentIndex
+{
+    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = self;
+    MXKRoomBubbleCellData *bubbleCellData = roomBubbleTableViewCell.bubbleData;
+    MXKRoomBubbleComponent *selectedComponent;
+    
+    if (bubbleCellData.bubbleComponents.count > componentIndex)
+    {
+        selectedComponent = bubbleCellData.bubbleComponents[componentIndex];
+    }
+    
+    if (!selectedComponent)
+    {
+        return CGRectNull;
+    }
+    
+    CGFloat selectedComponenContentViewYOffset = 0;
+    CGFloat selectedComponentPositionY = 0;
+    CGFloat selectedComponentHeight = 0;
+    
+    CGRect componentFrame = CGRectNull;
+    
+    if (roomBubbleTableViewCell.attachmentView)
+    {
+        CGRect attachamentViewFrame = roomBubbleTableViewCell.attachmentView.frame;
+        
+        selectedComponenContentViewYOffset = attachamentViewFrame.origin.y;
+        selectedComponentHeight = attachamentViewFrame.size.height;
+    }
+    else if (roomBubbleTableViewCell.messageTextView)
+    {
+        CGFloat textMessageHeight = 0;
+        
+        if ([bubbleCellData isKindOfClass:[RoomBubbleCellData class]])
+        {
+            RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleCellData;
+            
+            if (!roomBubbleCellData.attachment && selectedComponent.attributedTextMessage)
+            {
+                textMessageHeight = [roomBubbleCellData rawTextHeight:selectedComponent.attributedTextMessage];
+            }
+        }
+        
+        selectedComponentPositionY = selectedComponent.position.y;
+        
+        if (textMessageHeight > 0)
+        {
+            selectedComponentHeight = textMessageHeight;
+        }
+        else
+        {
+            selectedComponentHeight = roomBubbleTableViewCell.frame.size.height - selectedComponentPositionY;
+        }
+        
+        selectedComponenContentViewYOffset = roomBubbleTableViewCell.messageTextView.frame.origin.y;
+    }
+    
+    if (roomBubbleTableViewCell.attachmentView || roomBubbleTableViewCell.messageTextView)
+    {
+        CGRect roomBubbleTableViewCellFrame = roomBubbleTableViewCell.frame;
+        CGFloat x = roomBubbleTableViewCellFrame.origin.x;
+        CGFloat y = roomBubbleTableViewCellFrame.origin.y + selectedComponenContentViewYOffset + selectedComponentPositionY;
+        CGFloat width = roomBubbleTableViewCellFrame.size.width;
+        
+        componentFrame = CGRectMake(x, y, width, selectedComponentHeight);
+    }
+    else
+    {
+        componentFrame = roomBubbleTableViewCell.frame;
+    }
+    
+    return componentFrame;
+}
+
 #pragma mark - User actions
 
 - (IBAction)onEditButtonPressed:(id)sender
