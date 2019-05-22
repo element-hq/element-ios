@@ -2013,6 +2013,15 @@
     // Handle here user actions on bubbles for Vector app
     if (customizedRoomDataSource)
     {
+        id<MXKRoomBubbleCellDataStoring> bubbleData;
+        
+        if ([cell isKindOfClass:[MXKRoomBubbleTableViewCell class]])
+        {
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+            bubbleData = roomBubbleTableViewCell.bubbleData;
+        }
+        
+        
         if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
         {
             selectedRoomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
@@ -2056,8 +2065,15 @@
                 }
                 else
                 {
-                    // Highlight this event in displayed message
-                    [self selectEventWithId:tappedEvent.eventId];
+                    // Show contextual menu on single tap if bubble is not collapsed
+                    if (bubbleData.collapsed)
+                    {
+                        [self selectEventWithId:tappedEvent.eventId];
+                    }
+                    else
+                    {
+                        [self showContextualMenuForEvent:tappedEvent cell:cell animated:YES];
+                    }
                 }
             }
         }
@@ -2132,7 +2148,11 @@
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent])
         {
             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            [self handleLongPressFromCell:cell withTappedEvent:tappedEvent];
+            
+            if (!bubbleData.collapsed)
+            {
+                [self handleLongPressFromCell:cell withTappedEvent:tappedEvent];
+            }
         }
         else
         {
