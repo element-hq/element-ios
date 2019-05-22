@@ -79,7 +79,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
 
         self.backgroundOverlayView.isUserInteractionEnabled = true
         self.menuToolbarView.fill(contextualMenuItems: self.contextualMenuItems)
-        self.setupBackgroundOverlayTapGestureRecognizer()
+        self.setupBackgroundOverlayGestureRecognizers()
 
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -125,12 +125,20 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     
     // MARK: - Private
     
-    private func setupBackgroundOverlayTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(gestureRecognizer:)))
+    private func setupBackgroundOverlayGestureRecognizers() {
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handle(gestureRecognizer:)))
+        tapGestureRecognizer.delegate = self
+        
+        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handle(gestureRecognizer:)))
+        swipeGestureRecognizer.direction = [.down, .up]
+        swipeGestureRecognizer.delegate = self
+        
         self.backgroundOverlayView.addGestureRecognizer(tapGestureRecognizer)
+        self.backgroundOverlayView.addGestureRecognizer(swipeGestureRecognizer)
     }
     
-    @objc private func handleTap(gestureRecognizer: UIGestureRecognizer) {
+    @objc private func handle(gestureRecognizer: UIGestureRecognizer) {
         self.delegate?.roomContextualMenuViewControllerDidTapBackgroundOverlay(self)
     }
     
@@ -143,6 +151,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     }
 }
 
+// MARK: - ReactionsMenuViewModelCoordinatorDelegate
 extension RoomContextualMenuViewController: ReactionsMenuViewModelCoordinatorDelegate {
 
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didSendReaction reaction: String, isAddReaction: Bool) {
@@ -155,5 +164,14 @@ extension RoomContextualMenuViewController: ReactionsMenuViewModelCoordinatorDel
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionFailedWithError error: Error, reaction: String, isAddReaction: Bool) {
         self.errorPresenter?.presentError(from: self, forError: error, animated: true) {
         }
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension RoomContextualMenuViewController: UIGestureRecognizerDelegate {
+    
+    // Avoid triggering background overlay gesture recognizers when touching reactions menu
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return touch.vc_isInside(view: self.reactionsMenuView) == false
     }
 }

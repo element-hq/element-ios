@@ -27,7 +27,18 @@
 static NSAttributedString *timestampVerticalWhitespace = nil;
 static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
+@interface RoomBubbleCellData()
+
+@property(nonatomic, readonly) BOOL addVerticalWhitespaceForSelectedComponentTimestamp;
+
+@end
+
 @implementation RoomBubbleCellData
+
+- (BOOL)addVerticalWhitespaceForSelectedComponentTimestamp
+{
+    return self.showTimestampForSelectedComponent && !self.displayTimestampForSelectedComponentOnLeftWhenPossible;
+}
 
 #pragma mark - Override MXKRoomBubbleCellData
 
@@ -68,6 +79,8 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
         // Reset attributedTextMessage to force reset MXKRoomCellData parameters
         self.attributedTextMessage = nil;
+        
+        self.displayTimestampForSelectedComponentOnLeftWhenPossible = YES;
     }
     
     return self;
@@ -202,7 +215,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             }
             
             // Check whether the timestamp is displayed for this component, and check whether a vertical whitespace is required
-            if (((selectedComponentIndex == index && self.showTimestampForSelectedComponent) || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
+            if (((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
             {
                 currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
                 [currentAttributedTextMsg appendAttributedString:componentString];
@@ -237,7 +250,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             }
             
             // Check whether the timestamp is displayed
-            if ((selectedComponentIndex == index && self.showTimestampForSelectedComponent) || lastMessageIndex == index)
+            if ((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index)
             {
                 [currentAttributedTextMsg appendAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
             }
@@ -290,7 +303,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
                 
                 // Check whether the timestamp is displayed for this first component, and check whether a vertical whitespace is required
-                if (((selectedComponentIndex == index && self.showTimestampForSelectedComponent) || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
+                if (((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
                 {
                     attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
                     [attributedString appendAttributedString:component.attributedTextMessage];
@@ -318,7 +331,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                     {
                         // Prepare its attributed string by considering potential vertical margin required to display timestamp.
                         NSAttributedString *componentString;
-                        if ((selectedComponentIndex == index && self.showTimestampForSelectedComponent) || lastMessageIndex == index)
+                        if ((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index)
                         {
                             NSMutableAttributedString *componentAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
                             [componentAttributedString appendAttributedString:component.attributedTextMessage];
