@@ -30,6 +30,8 @@
 NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
 NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
+static NSString *const kEventFormatterTimeFormat = @"hh:mm";
+
 @interface EventFormatter ()
 {
     /**
@@ -40,6 +42,13 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 @end
 
 @implementation EventFormatter
+
+- (void)initDateTimeFormatters
+{
+    [super initDateTimeFormatters];
+    
+    [timeFormatter setDateFormat:kEventFormatterTimeFormat];
+}
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
