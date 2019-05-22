@@ -6,6 +6,7 @@ Improvements:
  * RoomVC: New message actions (#2394).
  * Reactions: Display existing reactions below the message (#2396).
  * Menu actions: Display message time (#2463).
+ * Reactions Menu: Fix position (#2447).
 
 Changes in 0.8.6 (2019-05-06)
 ===============================================
