@@ -304,7 +304,7 @@
 "room_title_members" = "%@ kide";
 // Room Preview
 "room_preview_invitation_format" = "%@ erabiltzaileak gela honetara elkartzera gonbidatu zaitu";
-"room_preview_unlinked_email_warning" = "Zure gonbidapena bidali da %@ helbidera, hau ez dago kontu honetara lotuta.\nBeste kontu batekin hasi dezakezu saioa, edo e-mail hau kontu honetara gehitu.";
+"room_preview_unlinked_email_warning" = "Zure gonbidapena %@ helbidera bidali da, hau ez dago kontu honetara lotuta.\nBeste kontu batekin hasi dezakezu saioa, edo e-mail hau zure kontura gehitu.";
 "room_preview_try_join_an_unknown_room" = "%@ gelan sartzen saiatzen ari zara. Elkartu nahi duzu elkarrizketan parte hartzeko?";
 // Settings
 "settings_title" = "Ezarpenak";
@@ -477,7 +477,7 @@
 // Groups tab
 "group_invite_section" = "GONBIDAPENAK";
 "group_section" = "KOMUNITATEAK";
-"settings_flair" = "Erakutsi ikurra non baimenduta";
+"settings_flair" = "Erakutsi ikurra baimenduta dagoen tokietan";
 "room_details_flair_section" = "Erakutsi ikurra komunitateentzat";
 "room_details_new_flair_placeholder" = "Gehitu komunitate ID berria (adib. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Baliogabeko formatua";
@@ -657,3 +657,9 @@
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Erabili gakoen-babes-kopia";
 "key_backup_setup_intro_manual_export_info" = "(Aurreratua)";
 "key_backup_setup_intro_manual_export_action" = "Esportatu gakoak eskuz";
+// String for App Store
+"store_short_description" = "Deszentralizatutako txat/VoIP segurua";
+"store_full_description" = "Komunikatu, zure erara.\n\nTxat aplikazio bat, zure kontrolpean eta erabat malgua. Riot-ek zuk nahi eran komunikatzea ahalbidetzen dizu. Komunikaziorako estandar ireki eta deszentralizatua den [matrix] protokolorako egina.\n\nEskuratu matrix.org kontu bat, ezarri zure zerbitzaria  https://modular.im erabiliz, edo erabili beste Matrix zerbitzari bat.\n\nZertgatik aukeratu Riot.im?\n\nERABATEKO KOMUNIKAZIOA: Sortu zure taldeentzako gelak, zure lagunentzko, zure komunitatearentzat, zuk nahi eran! Txateatu, partekatu fitxategiak, gehitu trepetak eta egin ahots eta bideo-deiak, dena doan.\n\nINTEGRAZIO AHALTSUAK: Erabili Riot.im jada ezagutu eta maite dituzun tresnekin. Riot.im erabilita beste txat aplikazioak erabiltzen dituzten erabiltzaile eta taldeekin ere aritu zaitezke.\n\nPRIBATUA ETA SEGURUA: Mantendu zure elkarrizketak sekretupean. Gaur egungo muturretik muturrerako zifratzeak pribatua dena pribatu mantentzen laguntzen du.\n\nIREKIA, EZ ITXIA: Kode irekikoa, eta Matrix protokoloan eraikia. Izan zure datuen jabe zure zerbitzaria osatatauz, edo fidagarritzat duzun bat aukeratuz.\n\nZUREKIN NONAHI: Mantendu kontaktua zauden tokian zaudela gailuetan zehar erabat sinkronizatutako mezuen historialarekin, eta web bidez https://riot.im helbidean.";
+"auth_login_single_sign_on" = "Hasi saioa urrats batean";
+"auth_autodiscover_invalid_response" = "Erantzun baliogabea hasiera-zerbitzarien bilaketari";
+"room_message_unable_open_link_error_message" = "Ezin izan da esteka ireki.";

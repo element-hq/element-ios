@@ -2,3 +2,16 @@
 "encrypted_room_message_reply_to_placeholder" = "Sendi ĉifritan respondon…";
 "room_message_short_placeholder" = "Sendi mesaĝon…";
 "room_message_reply_to_short_placeholder" = "Sendi respondon…";
+"title_people" = "Homoj";
+"title_rooms" = "Babilejoj";
+"title_groups" = "Komunumoj";
+"room_recents_people_section" = "HOMOJ";
+"room_recents_conversations_section" = "BABILEJOJ";
+"room_recents_no_conversation" = "Neniu babilejo";
+"search_people" = "Homoj";
+"search_files" = "Dosieroj";
+"search_default_placeholder" = "Serĉi";
+// Chat
+"room_jump_to_first_unread" = "Salti al unua nelegita mesaĝo";
+"group_details_people" = "Homoj";
+"group_details_rooms" = "Babilejoj";

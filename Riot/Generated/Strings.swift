@@ -1338,6 +1338,10 @@ internal enum VectorL10n {
   internal static var retry: String { 
     return VectorL10n.tr("Vector", "retry") 
   }
+  /// Reply
+  internal static var roomActionReply: String { 
+    return VectorL10n.tr("Vector", "room_action_reply") 
+  }
   /// Send photo or video
   internal static var roomActionSendPhotoOrVideo: String { 
     return VectorL10n.tr("Vector", "room_action_send_photo_or_video") 
@@ -1694,6 +1698,10 @@ internal enum VectorL10n {
   internal static var roomEventActionDelete: String { 
     return VectorL10n.tr("Vector", "room_event_action_delete") 
   }
+  /// Edit
+  internal static var roomEventActionEdit: String { 
+    return VectorL10n.tr("Vector", "room_event_action_edit") 
+  }
   /// Reason for kicking this user
   internal static var roomEventActionKickPromptReason: String { 
     return VectorL10n.tr("Vector", "room_event_action_kick_prompt_reason") 
@@ -1710,9 +1718,29 @@ internal enum VectorL10n {
   internal static var roomEventActionQuote: String { 
     return VectorL10n.tr("Vector", "room_event_action_quote") 
   }
+  /// Agree %@
+  internal static func roomEventActionReactionAgree(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_agree", p1)
+  }
+  /// Disagree %@
+  internal static func roomEventActionReactionDisagree(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_disagree", p1)
+  }
+  /// Dislike %@
+  internal static func roomEventActionReactionDislike(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_dislike", p1)
+  }
+  /// Like %@
+  internal static func roomEventActionReactionLike(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_event_action_reaction_like", p1)
+  }
   /// Remove
   internal static var roomEventActionRedact: String { 
     return VectorL10n.tr("Vector", "room_event_action_redact") 
+  }
+  /// Reply
+  internal static var roomEventActionReply: String { 
+    return VectorL10n.tr("Vector", "room_event_action_reply") 
   }
   /// Report content
   internal static var roomEventActionReport: String { 
@@ -2445,6 +2473,10 @@ internal enum VectorL10n {
   /// To finish setting up encryption you must log in again.
   internal static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
+  }
+  /// React to messages with emoji
+  internal static var settingsLabsMessageReaction: String { 
+    return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
   }
   /// Lazy load rooms members
   internal static var settingsLabsRoomMembersLazyLoading: String { 

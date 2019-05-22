@@ -216,7 +216,7 @@
 "room_delete_unsent_messages" = "Esborrar missatges no enviats";
 "room_event_action_copy" = "Copiar";
 "room_event_action_quote" = "Cita";
-"room_event_action_redact" = "Redactar";
+"room_event_action_redact" = "Eliminar";
 "room_event_action_more" = "Més";
 "room_event_action_share" = "Comparteix";
 "room_event_action_permalink" = "Permalink";
@@ -250,7 +250,7 @@
 // Room Preview
 "room_preview_invitation_format" = "L'usuari %@ t'ha convidat a unir-te a aquesta sala";
 "room_preview_subtitle" = "Aquesta es una previsualització d'aquesta sala. Les interaccions amb la sala estan deshabilitades.";
-"room_preview_unlinked_email_warning" = "L'invitació s'ha enviat a %@, però no està associat amb aquest compte. Potser vols iniciar la sessió amb un compte diferent o afegir aquesta adreça de correu al teu compte actual.";
+"room_preview_unlinked_email_warning" = "La invitació s'ha enviat a %@, però no està associat amb aquest compte. Potser voleu iniciar la sessió amb un compte diferent o afegir aquesta adreça de correu al vostre compte actual.";
 "room_preview_try_join_an_unknown_room" = "Estàs provant de accedir a %@. T'agradaria unir-te per a poder participar en el debat?";
 "room_preview_try_join_an_unknown_room_default" = "una sala";
 // Settings
@@ -520,7 +520,7 @@
 "room_replacement_information" = "Aquesta sala s'ha substituït i ja no està activa.";
 "room_replacement_link" = "La conversa continua aquí.";
 "room_predecessor_information" = "Aquesta sala és una continuació d'una altra conversa.";
-"room_predecessor_link" = "Fes clic aquí per veure missatges antics.";
+"room_predecessor_link" = "Premeu aquí per veure missatges més antics.";
 "room_resource_limit_exceeded_message_contact_1" = " Si us plau ";
 "room_resource_limit_exceeded_message_contact_2_link" = "Posa't en contacte amb l'administrador del servei";
 "room_resource_limit_exceeded_message_contact_3" = " per a continuar usant aquest servei.";

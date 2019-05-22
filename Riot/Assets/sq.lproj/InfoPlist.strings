@@ -2,4 +2,4 @@
 "NSCameraUsageDescription" = "Kamera përdoret për të bërë foto dhe regjistruar video, dhe për të bërë thirrje video.";
 "NSPhotoLibraryUsageDescription" = "Fototeka përdoret për të dërguar foto dhe video.";
 "NSMicrophoneUsageDescription" = "Mikrofoni përdoret për të regjistruar video, dhe për të bërë thirrje.";
-"NSContactsUsageDescription" = "Që të mund t’ju shfaqim se cilët prej kontakteve tuaj përdorin tashmë Riot ose Matrix, mund të dërgojmë adresat email dhe numrat e telefonave nga libri juaj i adresave te Shërbyesi Matrix i Identiteteve. Vektori i ri nuk i depoziton këto të dhëna apo t’i përdorë për ndonjë qëllim tjetër. Për më tepër të dhëna, shihni faqen e rregullave të privatësisë, te rregullimet e aplikacionit.";
+"NSContactsUsageDescription" = "Që të mund t’ju shfaqim se cilët prej kontakteve tuaj përdorin tashmë Riot ose Matrix, mund të dërgojmë adresat email dhe numrat e telefonave nga libri juaj i adresave te Shërbyesi Matrix i Identiteteve. Vektori i ri nuk i depoziton këto të dhëna, as i përdor për ndonjë qëllim tjetër. Për më tepër të dhëna, shihni faqen e rregullave të privatësisë, te rregullimet e aplikacionit.";
