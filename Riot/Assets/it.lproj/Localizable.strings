@@ -28,3 +28,25 @@
 "MSGS_FROM_THREE_USERS" = "%@ nuovi messaggi da %@, %@ e %@";
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
 "MSGS_FROM_TWO_PLUS_USERS" = "%@ nuovi messaggi da %@, %@ e altri";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ nuovi messaggi in %@ e %@";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ nuovi messaggi in %@, %@ e altre";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ ti ha invitato a chattare";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ ti ha invitato in una chat di gruppo";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ ti ha invitato in %@";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Chiamata da %@";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Video chiamata da %@";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Chiamata di gruppo da %@";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Video chiamata di gruppo da %@";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Chiamata di gruppo da %@: '%@'";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Video chiamata di gruppo da %@: '%@'";
