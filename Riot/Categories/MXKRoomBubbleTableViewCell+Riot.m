@@ -59,7 +59,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
             isLastMessageMostRecentComponent = roomBubbleCellData.containsLastMessage && (componentIndex == roomBubbleCellData.mostRecentComponentIndex);
         }
         
-        // Display timestamp on the left for selected component when there is enough space
+        // Display timestamp on the left for selected component when it cannot overlap other UI elements like user's avatar
         BOOL displayLabelOnLeft = roomBubbleCellData.displayTimestampForSelectedComponentOnLeftWhenPossible && !isFirstDisplayedComponent && !isLastMessageMostRecentComponent;
         
         [self addTimestampLabelForComponent:component
