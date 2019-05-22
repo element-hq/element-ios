@@ -5096,17 +5096,37 @@
                                                                        completion:^{
                                                                            [self contextualMenuAnimationCompletionAfterBeingShown:YES];
                                                                        }];
-
+    
     if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
     {
-        // Note: For the moment, we use the frame of the cell instead of the component
-        // From UI perpective, that means the menu will be around a paragraph instead of a message
-        // This is not bad as the paragraph is kept visible to provide more context to the user
-        // TO FIX: if paragraph is bigger than the screen, the menu is displayed in the middle
-        CGRect frame = ((MXKRoomBubbleTableViewCell*)cell).frame;
-        frame = [self.bubblesTableView convertRect:frame toView:[self.bubblesTableView superview]];
-
-        [self.roomContextualMenuPresenter showReactionsMenuForEvent:event.eventId inRoom:event.roomId session:self.mainSession aroundFrame:frame];
+        MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+        MXKRoomBubbleCellData *bubbleCellData = roomBubbleTableViewCell.bubbleData;
+        NSArray *bubbleComponents = bubbleCellData.bubbleComponents;
+        
+        NSInteger foundComponentIndex = [bubbleComponents indexOfObjectPassingTest:^BOOL(MXKRoomBubbleComponent * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.event.eventId == event.eventId)
+            {
+                *stop = YES;
+                return YES;
+            }
+            return NO;
+        }];
+                
+        CGRect bubbleComponentFrame;
+        
+        if (bubbleComponents.count > 0)
+        {
+            NSInteger selectedComponentIndex = foundComponentIndex != NSNotFound ? foundComponentIndex : 0;
+            bubbleComponentFrame = [roomBubbleTableViewCell componentFrameForIndex:selectedComponentIndex];
+        }
+        else
+        {
+            bubbleComponentFrame = roomBubbleTableViewCell.frame;
+        }
+        
+        CGRect bubbleComponentFrameInOverlayView = [self.bubblesTableView convertRect:bubbleComponentFrame toView:self.overlayContainerView];        
+        
+        [self.roomContextualMenuPresenter showReactionsMenuForEvent:event.eventId inRoom:event.roomId session:self.mainSession aroundFrame:bubbleComponentFrameInOverlayView];
     }
 }
 
