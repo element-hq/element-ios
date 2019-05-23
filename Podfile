@@ -63,7 +63,7 @@ abstract_target 'RiotPods' do
     pod 'Reusable', '~> 4.0'
 
     # Piwik for analytics
-    pod 'MatomoTracker', '~> 6.0.0'
+    pod 'MatomoTracker', '~> 6.0.1'
 
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true

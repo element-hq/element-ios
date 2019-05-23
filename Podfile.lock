@@ -45,9 +45,9 @@ PODS:
   - JitsiMeetSDK (2.1.0)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.13)
-  - MatomoTracker (6.0.0):
-    - MatomoTracker/Core (= 6.0.0)
-  - MatomoTracker/Core (6.0.0)
+  - MatomoTracker (6.0.1):
+    - MatomoTracker/Core (= 6.0.1)
+  - MatomoTracker/Core (6.0.1)
   - MatrixKit (0.9.9):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
@@ -102,7 +102,7 @@ DEPENDENCIES:
   - cmark
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
-  - MatomoTracker (~> 6.0.0)
+  - MatomoTracker (~> 6.0.1)
   - MatrixKit (= 0.9.9)
   - MatrixKit/AppExtension (= 0.9.9)
   - MatrixSDK/JingleCallStack
@@ -146,7 +146,7 @@ SPEC CHECKSUMS:
   JitsiMeetSDK: 3e66564af7f38a19142338955dd7f581801852b3
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatomoTracker: f1d0adbe609f8db3740d24e59e16a1855d263921
+  MatomoTracker: 3ae4f65a1f5ace8043bda7244888fee28a734de5
   MatrixKit: 6f553797e1ad42794b5336afb5cecb975ec69daa
   MatrixSDK: ed0d0cee4877955052f19730bb3ee727e01ec948
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
