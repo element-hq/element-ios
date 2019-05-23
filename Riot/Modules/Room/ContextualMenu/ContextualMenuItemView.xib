@@ -20,7 +20,7 @@
             <rect key="frame" x="0.0" y="0.0" width="64" height="69"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-copy" translatesAutoresizingMaskIntoConstraints="NO" id="RcD-qR-Hvt">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_context_menu_copy" translatesAutoresizingMaskIntoConstraints="NO" id="RcD-qR-Hvt">
                     <rect key="frame" x="21.5" y="8" width="21" height="29"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="RcD-qR-Hvt" secondAttribute="height" multiplier="21:29" id="V50-97-yzO"/>
@@ -50,6 +50,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon-copy" width="24" height="24"/>
+        <image name="room_context_menu_copy" width="24" height="24"/>
     </resources>
 </document>

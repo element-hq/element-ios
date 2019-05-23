@@ -47,7 +47,7 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
         self.separatorView.backgroundColor = theme.lineBreakColor
         
         for menuItemView in self.menuItemViews {
-            menuItemView.titleColor = theme.textPrimaryColor
+            menuItemView.titleColor = theme.tintColor
             menuItemView.imageColor = theme.tintColor            
         }
     }

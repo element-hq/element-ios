@@ -28,7 +28,7 @@ final class ContextualMenuItemView: UIView, NibOwnerLoadable {
     
     private enum ViewAlpha {
         static let normal: CGFloat = 1.0
-        static let disabled: CGFloat = 0.5
+        static let disabled: CGFloat = 0.3
     }
     
     // MARK: - Properties
