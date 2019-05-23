@@ -7,6 +7,7 @@ Improvements:
  * Reactions: Display existing reactions below the message (#2396).
  * Menu actions: Display message time (#2463).
  * Reactions Menu: Fix position (#2447).
+ * Context menu polish (#2466).
 
 Bug fix:
  * Registration with an email is broken (#2417).
