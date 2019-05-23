@@ -8,6 +8,9 @@ Improvements:
  * Menu actions: Display message time (#2463).
  * Reactions Menu: Fix position (#2447).
 
+Bug fix:
+ * Registration with an email is broken (#2417).
+
 Changes in 0.8.6 (2019-05-06)
 ===============================================
 
