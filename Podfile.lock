@@ -15,6 +15,7 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
+  - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - DTCoreText (1.6.21):
     - DTCoreText/Core (= 1.6.21)
     - DTFoundation/Core (~> 1.7.5)
@@ -100,6 +101,7 @@ PODS:
 
 DEPENDENCIES:
   - cmark
+  - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
   - MatomoTracker (~> 6.0.1)
@@ -117,6 +119,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
     - cmark
+    - DGCollectionViewLeftAlignFlowLayout
     - DTCoreText
     - DTFoundation
     - GBDeviceInfo
@@ -138,6 +141,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   cmark: ec0275215b504780287b6fca360224e384368af8
+  DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   DTCoreText: e5d688cffc9f6a61eddd1a4f94e2046851230de3
   DTFoundation: f03be9fd786f11e505bb8fc44e2a3732bf0917df
   GBDeviceInfo: 2c65ceb9404f9079264d4c238f5b81916fdfc5e2
@@ -156,6 +160,6 @@ SPEC CHECKSUMS:
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: c43860700c490d04f7c96ecaa573cd991c27a3c4
+PODFILE CHECKSUM: 16b6518b09d4e3af0af46ed9c1338e9df8674aff
 
 COCOAPODS: 1.6.1
