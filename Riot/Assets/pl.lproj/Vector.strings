@@ -314,7 +314,7 @@
 "group_participants_remove_prompt_title" = "Potwierdzenie";
 "group_participants_invite_prompt_title" = "Potwierdzenie";
 "group_participants_filter_members" = "Filtruj członków społeczności";
-"group_participants_invite_malformed_id" = "Uszkodzony ID. Czy to powinien być Matrix ID podobny do '@localpart:domain'";
+"group_participants_invite_malformed_id" = "Uszkodzony ID. Matrix ID powinien być podobny do '@localpart:domain'";
 // Group rooms
 "group_rooms_filter_rooms" = "Filtruj pokoje społeczności";
 // Read Receipts
