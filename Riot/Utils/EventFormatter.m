@@ -30,7 +30,7 @@
 NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
 NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
-static NSString *const kEventFormatterTimeFormat = @"hh:mm";
+static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 @interface EventFormatter ()
 {
@@ -47,6 +47,7 @@ static NSString *const kEventFormatterTimeFormat = @"hh:mm";
 {
     [super initDateTimeFormatters];
     
+    timeFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
     [timeFormatter setDateFormat:kEventFormatterTimeFormat];
 }
 
