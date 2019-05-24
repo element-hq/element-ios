@@ -15,3 +15,5 @@
 "room_jump_to_first_unread" = "Salti al unua nelegita mesaĝo";
 "group_details_people" = "Homoj";
 "group_details_rooms" = "Babilejoj";
+// MARK: - Device Verification
+"device_verification_title" = "Kontroli aparaton";
