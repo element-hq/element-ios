@@ -18,7 +18,7 @@
 "title_home" = "Thuis";
 "title_favourites" = "Favorieten";
 "title_people" = "Personen";
-"title_rooms" = "Kamers";
+"title_rooms" = "Gesprekken";
 "warning" = "Waarschuwing";
 // Actions
 "view" = "Weergeven";
@@ -115,8 +115,8 @@
 "room_recents_directory_section_network" = "Netwerk";
 "room_recents_favourites_section" = "FAVORIETEN";
 "room_recents_people_section" = "PERSONEN";
-"room_recents_conversations_section" = "KAMERS";
-"room_recents_no_conversation" = "Geen kamers";
+"room_recents_conversations_section" = "GESPREKKEN";
+"room_recents_no_conversation" = "Geen gesprekken";
 "room_recents_low_priority_section" = "LAGE PRIORITEIT";
 "room_recents_invites_section" = "UITNODIGINGEN";
 "room_recents_start_chat_with" = "Gesprek beginnen";
@@ -129,9 +129,9 @@
 "people_conversation_section" = "GESPREKKEN";
 "people_no_conversation" = "Geen gesprekken";
 // Rooms tab
-"room_directory_no_public_room" = "Geen publieke kamers beschikbaar";
+"room_directory_no_public_room" = "Geen publieke gesprekken beschikbaar";
 // Search
-"search_rooms" = "Kamers";
+"search_rooms" = "Gesprekken";
 "search_messages" = "Berichten";
 "search_people" = "Personen";
 "search_files" = "Bestanden";
@@ -140,7 +140,7 @@
 "search_no_result" = "Geen resultaten";
 // Directory
 "directory_cell_title" = "Bladeren door de catalogus";
-"directory_cell_description" = "%tu kamers";
+"directory_cell_description" = "%tu gesprekken";
 "directory_search_results_title" = "Bladeren door catalogusresultaten";
 "directory_search_results" = "%tu resultaten gevonden voor %@";
 "directory_search_results_more_than" = ">%tu resultaten gevonden voor %@";
@@ -270,7 +270,7 @@
 "settings_cryptography" = "CRYPTOGRAFIE";
 "settings_sign_out" = "Afmelden";
 "settings_sign_out_confirmation" = "Weet u het zeker?";
-"settings_sign_out_e2e_warn" = "U zult uw sleutels voor eind-tot-eind-versleuteling kwijtraken. Dat betekent dat u op dit apparaat geen oude berichten in versleutelde kamers meer zult kunnen lezen.";
+"settings_sign_out_e2e_warn" = "U zult uw sleutels voor eind-tot-eind-versleuteling kwijtraken. Dat betekent dat u op dit apparaat geen oude berichten in versleutelde gesprekken meer zult kunnen lezen.";
 "settings_profile_picture" = "Profielfoto";
 "settings_display_name" = "Weergavenaam";
 "settings_first_name" = "Voornaam";
@@ -288,8 +288,8 @@
 "settings_fail_to_update_profile" = "Bijwerken van profiel is mislukt";
 "settings_enable_push_notif" = "Meldingen op dit apparaat";
 "settings_global_settings_info" = "Globale meldingsinstellingen zijn beschikbaar op uw %@-webcliënt";
-"settings_pin_rooms_with_missed_notif" = "Kamers met gemiste meldingen vastprikken";
-"settings_pin_rooms_with_unread" = "Kamers met ongelezen berichten vastprikken";
+"settings_pin_rooms_with_missed_notif" = "Gesprekken met gemiste meldingen vastprikken";
+"settings_pin_rooms_with_unread" = "Gesprekken met ongelezen berichten vastprikken";
 "settings_on_denied_notification" = "Meldingen worden geweigerd voor %@, sta ze toe in uw apparaatinstellingen";
 //"settings_enable_all_notif" = "Alle notificaties aanzetten";
 //"settings_messages_my_display_name" = "Bericht dat mijn naam bevat";
@@ -368,7 +368,7 @@
 "room_details_advanced_e2e_encryption_prompt_message" = "End-to-endbeveiliging is experimenteel en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van voordat ze de ruimte betraden nog niet ontsleutelen.\n\nZodra de versleuteling aan staat kan het (voorlopig) niet worden uitgezet.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op programma's die geen versleuteling ondersteunen.";
 "room_details_fail_to_update_avatar" = "Bijwerken van gespreksfoto is mislukt";
 "room_details_fail_to_update_room_name" = "Bijwerken van gespreksnaam is mislukt";
-"room_details_fail_to_update_topic" = "Bijwerken van kameronderwerp is mislukt";
+"room_details_fail_to_update_topic" = "Bijwerken van gespreksonderwerp is mislukt";
 "room_details_fail_to_update_room_guest_access" = "Bijwerken van gasttoegang tot gesprek is mislukt";
 "room_details_fail_to_update_room_join_rule" = "Bijwerken van toetredingsregel is mislukt";
 "room_details_fail_to_update_room_directory_visibility" = "Bijwerken van zichtbaarheid in de gesprekscatalogus is mislukt";
@@ -389,9 +389,9 @@
 // Directory
 "directory_title" = "Catalogus";
 "directory_server_picker_title" = "Selecteer een catalogus";
-"directory_server_all_rooms" = "Alle kamers op server %@";
-"directory_server_all_native_rooms" = "Alle lokale Matrix-kamers";
-"directory_server_type_homeserver" = "Voer een thuisserver in om de publieke kamers ervan weer te geven";
+"directory_server_all_rooms" = "Alle gesprekken op server %@";
+"directory_server_all_native_rooms" = "Alle lokale Matrix-gesprekken";
+"directory_server_type_homeserver" = "Voer een thuisserver in om de publieke gesprekken ervan weer te geven";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "or" = "of";
@@ -399,7 +399,7 @@
 "today" = "Vandaag";
 "yesterday" = "Gisteren";
 "network_offline_prompt" = "Het ziet er naar uit dat de internetverbinding offline is.";
-"public_room_section_title" = "Publieke kamers (op %@):";
+"public_room_section_title" = "Publieke gesprekken (op %@):";
 "bug_report_prompt" = "De app is de vorige keer gecrasht. Wilt u een crashrapport indienen?";
 "rage_shake_prompt" = "Het ziet er naar uit dat u de telefoon in frustratie schudt. Wilt u een foutmelding indienen?";
 "camera_access_not_granted" = "%@ heeft geen toestemming om de camera te gebruiken, pas de privacy-instellingen aan";
@@ -512,12 +512,12 @@
 "group_details_title" = "Gemeenschapsdetails";
 "group_details_home" = "Thuis";
 "group_details_people" = "Personen";
-"group_details_rooms" = "Kamers";
+"group_details_rooms" = "Gesprekken";
 // Group Home
 "group_home_one_member_format" = "1 lid";
 "group_home_multi_members_format" = "%tu leden";
 "group_home_one_room_format" = "1 gesprek";
-"group_home_multi_rooms_format" = "%tu kamers";
+"group_home_multi_rooms_format" = "%tu gesprekken";
 "group_invitation_format" = "%@ heeft u uitgenodigd om tot deze gemeenschap toe te treden";
 // Group participants
 "group_participants_add_participant" = "Deelnemer toevoegen";
@@ -533,7 +533,7 @@
 "group_participants_invite_malformed_id" = "Misvormde ID. Dit moet een Matrix-ID zijn, zoals ‘@gebruikersnaam:domein’";
 "group_participants_invited_section" = "UITGENODIGD";
 // Group rooms
-"group_rooms_filter_rooms" = "Gemeenschapskamers filteren";
+"group_rooms_filter_rooms" = "Gemeenschapsgesprekken filteren";
 "e2e_room_key_request_message_new_device" = "U heeft een nieuw apparaat ‘%@’ toegevoegd, dat vraagt naar versleutelingssleutels.";
 "room_event_action_kick_prompt_reason" = "Reden voor het verwijderen van deze gebruiker";
 "room_event_action_ban_prompt_reason" = "Reden voor het verbannen van deze gebruiker";
@@ -553,7 +553,7 @@
 "widget_sticker_picker_no_stickerpacks_alert" = "U heeft momenteel geen stickerpakketten ingeschakeld.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Wilt u er nu een paar toevoegen?";
 "deactivate_account_title" = "Account deactiveren";
-"deactivate_account_informations_part1" = "Dit zal uw account voorgoed onbruikbaar maken. U zult zich niet meer kunnen aanmelden, en niemand anders zal zich met dezelfde gebruikers-ID kunnen registreren. Dit zal er voor zorgen dat uw account alle kamers verlaat waar deze momenteel lid van is, en het verwijdert uw accountgegevens van de identiteitsserver. ";
+"deactivate_account_informations_part1" = "Dit zal uw account voorgoed onbruikbaar maken. U zult zich niet meer kunnen aanmelden, en niemand anders zal zich met dezelfde gebruikers-ID kunnen registreren. Dit zal er voor zorgen dat uw account alle gesprekken verlaat waar deze momenteel lid van is, en het verwijdert uw accountgegevens van de identiteitsserver. ";
 "deactivate_account_informations_part2_emphasize" = "Deze actie is onomkeerbaar.";
 "deactivate_account_informations_part3" = "\n\nHet deactiveren van uw account ";
 "deactivate_account_informations_part4_emphasize" = "zal er niet standaard voor zorgen dat de berichten die u heeft verzonden worden vergeten. ";
@@ -569,7 +569,7 @@
 "room_message_reply_to_short_placeholder" = "Stuur een antwoord…";
 // String for App Store
 "store_short_description" = "Veilig en gedecentraliseerd chatten en bellen";
-"store_full_description" = "Communiceer op uw manier.\n\nEen chat-app, onder uw controle en heel flexibel. Riot laat u communiceren zoals u dat wilt. Gemaakt voor [matrix] - de standaard voor open, gedecentraliseerde communicatie.\n\nMaak een gratis account aan op matrix.org, verkrijg uw eigen server op https://modular.im, of gebruik een andere Matrix-server.\n\nWaarom zou ik voor Riot.im kiezen?\n\n• VOLLEDIGE COMMUNICATIE: maak kamers aan rond uw teams, uw vrienden, uw gemeenschap - hoe u maar wilt! Chat, deel bestanden, voeg widgets toe en maak stem- en video-oproepen - allemaal volledig gratis.\n\n• KRACHTIGE INTEGRATIE: gebruik Riot.im met de hulpmiddelen waarmee u vertrouwd bent. Met Riot.im kunt u zelfs chatten met gebruikers en groepen op andere chat-apps.\n\n• PRIVÉ EN VEILIG: houd uw gesprekken geheim. Eind-tot-eind-versleuteling van de bovenste plank zorgt ervoor dat uw privécommunicatie ook privé blijft.\n\n• OPEN, NIET GESLOTEN: vrije software, gebouwd op Matrix. Wees baas over uw eigen gegevens door uw eigen server te gebruiken, of te kiezen voor een andere server die u vertrouwt.\n\n• WAAR U OOK BENT: houd contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten, en online op https://riot.im.";
+"store_full_description" = "Communiceer op uw manier.\n\nEen chat-app, onder uw controle en heel flexibel. Riot laat u communiceren zoals u dat wilt. Gemaakt voor [matrix] - de standaard voor open, gedecentraliseerde communicatie.\n\nMaak een gratis account aan op matrix.org, verkrijg uw eigen server op https://modular.im, of gebruik een andere Matrix-server.\n\nWaarom zou ik voor Riot.im kiezen?\n\n• VOLLEDIGE COMMUNICATIE: maak gesprekken aan rond uw teams, uw vrienden, uw gemeenschap - hoe u maar wilt! Chat, deel bestanden, voeg widgets toe en maak stem- en video-oproepen - allemaal volledig gratis.\n\n• KRACHTIGE INTEGRATIE: gebruik Riot.im met de hulpmiddelen waarmee u vertrouwd bent. Met Riot.im kunt u zelfs chatten met gebruikers en groepen op andere chat-apps.\n\n• PRIVÉ EN VEILIG: houd uw gesprekken geheim. Eind-tot-eind-versleuteling van de bovenste plank zorgt ervoor dat uw privécommunicatie ook privé blijft.\n\n• OPEN, NIET GESLOTEN: vrije software, gebouwd op Matrix. Wees baas over uw eigen gegevens door uw eigen server te gebruiken, of te kiezen voor een andere server die u vertrouwt.\n\n• WAAR U OOK BENT: houd contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten, en online op https://riot.im.";
 "auth_login_single_sign_on" = "Aanmelden met enkele aanmelding";
 "auth_accept_policies" = "Gelieve het beleid van deze thuisserver te lezen en aanvaarden:";
 "auth_autodiscover_invalid_response" = "Ongeldig thuisserverontdekkingsantwoord";
@@ -587,16 +587,16 @@
 "room_resource_usage_limit_reached_message_2" = "sommige gebruikers zullen zich niet kunnen aanmelden.";
 "room_resource_usage_limit_reached_message_contact_3" = " om deze limiet te verhogen.";
 "settings_key_backup" = "SLEUTELBACK-UP";
-"settings_labs_room_members_lazy_loading" = "Kamerleden lui laden";
+"settings_labs_room_members_lazy_loading" = "Gespreksleden lui laden";
 "settings_labs_room_members_lazy_loading_error_message" = "Uw thuisserver ondersteunt het lui laden van gespreksleden nog niet. Probeer het later opnieuw.";
 "settings_key_backup_info" = "Versleutelde berichten worden beveiligd met eind-tot-eind-versleuteling. Enkel de ontvanger(s) en u hebben de sleutels om deze berichten te lezen.";
 "settings_key_backup_info_checking" = "Bezig met controleren…";
 "settings_key_backup_info_none" = "Uw sleutels worden niet geback-upt vanaf dit apparaat.";
-"settings_key_backup_info_signout_warning" = "Maak een back-up van uw sleutels vooraleer u zich afmeldt om ze niet te verliezen.";
+"settings_key_backup_info_signout_warning" = "Verbind dit apparaat met de sleutelback-up vooraleer u zich afmeldt om sleutels die enkel op dit apparaat staat niet te verliezen.";
 "settings_key_backup_info_version" = "Sleutelback-upversie: %@";
 "settings_key_backup_info_algorithm" = "Algoritme: %@";
 "settings_key_backup_info_valid" = "Dit apparaat maakt een back-up van uw sleutels.";
-"settings_key_backup_info_not_valid" = "Dit apparaat maakt geen back-up van uw sleutels.";
+"settings_key_backup_info_not_valid" = "Dit apparaat maakt geen back-up van uw sleutels, maar u heeft wel een bestaande back-up waarvan u kunt herstellen, en u vanaf dan nieuwe sleutels aan kunt toevoegen.";
 "settings_key_backup_info_progress" = "Back-up van %@ sleutels wordt gemaakt…";
 "settings_key_backup_info_progress_done" = "Alle sleutels zijn geback-upt";
 "settings_key_backup_info_trust_signature_unknown" = "De back-up heeft een ondertekening van apparaat met ID: %@";
@@ -622,7 +622,7 @@
 "key_backup_setup_skip_alert_message" = "U verliest mogelijk uw versleutelde berichten als u zich afmeldt of uw apparaat verliest.";
 "key_backup_setup_skip_alert_skip_action" = "Overslaan";
 "key_backup_setup_intro_title" = "Verlies nooit uw versleutelde berichten";
-"key_backup_setup_intro_info" = "Berichten in versleutelde kamers worden versleutelde met eind-tot-eind-beveiliging. Enkel de ontvanger(s) en u hebben de sleutels om deze berichten te lezen.\n\nMaak een veilige back-up van uw sleutels om deze niet te verliezen.";
+"key_backup_setup_intro_info" = "Berichten in versleutelde gesprekken worden versleuteld met eind-tot-eind-beveiliging. Enkel de ontvanger(s) en u hebben de sleutels om deze berichten te lezen.\n\nMaak een veilige back-up van uw sleutels om deze niet te verliezen.";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Begin sleutelback-up te gebruiken";
 "key_backup_setup_intro_manual_export_info" = "(Geavanceerd)";
 "key_backup_setup_intro_manual_export_action" = "Sleutels handmatig exporteren";
@@ -683,3 +683,104 @@
 "sign_out_key_backup_in_progress_alert_title" = "Sleutelback-up is bezig. Als u zich nu afmeldt zult u de toegang tot uw versleutelde berichten verliezen.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ik wil mijn versleutelde berichten niet";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Ik wacht wel";
+"room_event_action_reply" = "Beantwoorden";
+"room_event_action_edit" = "Bewerken";
+"room_event_action_reaction_agree" = "Akkoord met %@";
+"room_event_action_reaction_disagree" = "Niet akkoord met %@";
+"room_event_action_reaction_like" = "Duim omhoog voor %@";
+"room_event_action_reaction_dislike" = "Duim omlaag voor %@";
+"room_action_reply" = "Beantwoorden";
+"settings_labs_message_reaction" = "Beantwoord berichten met emoticons";
+"settings_key_backup_button_connect" = "Dit apparaat verbinden met sleutelback-up";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Dit apparaat verbinden met sleutelback-up";
+"key_backup_recover_connent_banner_subtitle" = "Dit apparaat verbinden met sleutelback-up";
+// MARK: - Device Verification
+"device_verification_title" = "Apparaat verifiëren";
+"device_verification_security_advice" = "Voor een maximale beveiliging raden we aan om dit onder vier ogen te doen, of via een ander vertrouwd communicatiekanaal";
+"device_verification_cancelled" = "De andere partij heeft de verificatie geannuleerd.";
+"device_verification_cancelled_by_me" = "De verificatie is geannuleerd. Reden: %@";
+"device_verification_error_cannot_load_device" = "Kan apparaatsinformatie niet laden.";
+// Mark: Incoming
+"device_verification_incoming_title" = "Inkomend verificatieverzoek";
+"device_verification_incoming_description_1" = "Verifieer dit apparaat om het als vertrouwd te markeren. Door de apparaten van uw partners te vertrouwen hoeft u zich nog minder zorgen te maken over het gebruik van eind-tot-eind-versleutelde berichten.";
+"device_verification_incoming_description_2" = "Dit apparaat verifiëren zal het als vertrouwd markeren, en het ook aan uw gesprekspartner als vertrouwd markeren.";
+// MARK: Start
+"device_verification_start_title" = "Verifieer door een korte tekenreeks te vergelijken";
+"device_verification_start_wait_partner" = "Wachten op partner om te aanvaarden…";
+"device_verification_start_use_legacy" = "Verschijnt er niets? Nog niet alle cliënten bieden ondersteuning voor interactieve verificatie. Gebruik de traditionele verificatiemethode.";
+"device_verification_start_verify_button" = "Verificatie beginnen";
+"device_verification_start_use_legacy_action" = "Traditionele verificatie gebruiken";
+// MARK: Verify
+"device_verification_verify_title_emoji" = "Verifieer dit apparaat door te bevestigen dat de volgende emoticons op het scherm van uw gesprekspartner verschijnen";
+"device_verification_verify_title_number" = "Verifieer dit apparaat door te bevestigen dat de volgende cijfers op het scherm van uw gesprekspartner verschijnen";
+"device_verification_verify_wait_partner" = "Wachten op partner voor bevestiging…";
+// MARK: Verified
+"device_verification_verified_title" = "Geverifieerd!";
+"device_verification_verified_description_1" = "U heeft dit apparaat geverifieerd.";
+"device_verification_verified_description_2" = "Beveiligde berichten met deze gebruiker zijn eind-tot-eind-versleuteld en kunnen niet door derde partijen gelezen worden.";
+"device_verification_verified_got_it_button" = "Ik snap het";
+// MARK: Emoji
+"device_verification_emoji_dog" = "Hond";
+"device_verification_emoji_cat" = "Kat";
+"device_verification_emoji_lion" = "Leeuw";
+"device_verification_emoji_horse" = "Paard";
+"device_verification_emoji_unicorn" = "Eenhoorn";
+"device_verification_emoji_pig" = "Varken";
+"device_verification_emoji_elephant" = "Olifant";
+"device_verification_emoji_rabbit" = "Konijn";
+"device_verification_emoji_panda" = "Panda";
+"device_verification_emoji_rooster" = "Haan";
+"device_verification_emoji_penguin" = "Pinguïn";
+"device_verification_emoji_turtle" = "Schildpad";
+"device_verification_emoji_fish" = "Vis";
+"device_verification_emoji_octopus" = "Octopus";
+"device_verification_emoji_butterfly" = "Vlinder";
+"device_verification_emoji_flower" = "Bloem";
+"device_verification_emoji_tree" = "Boom";
+"device_verification_emoji_cactus" = "Cactus";
+"device_verification_emoji_mushroom" = "Paddenstoel";
+"device_verification_emoji_globe" = "Wereldbol";
+"device_verification_emoji_moon" = "Maan";
+"device_verification_emoji_cloud" = "Wolk";
+"device_verification_emoji_fire" = "Vuur";
+"device_verification_emoji_banana" = "Banaan";
+"device_verification_emoji_apple" = "Appel";
+"device_verification_emoji_strawberry" = "Aardbei";
+"device_verification_emoji_corn" = "Maïs";
+"device_verification_emoji_pizza" = "Pizza";
+"device_verification_emoji_cake" = "Taart";
+"device_verification_emoji_heart" = "Hart";
+"device_verification_emoji_smiley" = "Smiley";
+"device_verification_emoji_robot" = "Robot";
+"device_verification_emoji_hat" = "Hoed";
+"device_verification_emoji_glasses" = "Bril";
+"device_verification_emoji_spanner" = "Moersleutel";
+"device_verification_emoji_santa" = "Kerstman";
+"device_verification_emoji_thumbs up" = "Duim omhoog";
+"device_verification_emoji_umbrella" = "Paraplu";
+"device_verification_emoji_hourglass" = "Zandloper";
+"device_verification_emoji_clock" = "Klok";
+"device_verification_emoji_gift" = "Cadeau";
+"device_verification_emoji_light bulb" = "Gloeilamp";
+"device_verification_emoji_book" = "Boek";
+"device_verification_emoji_pencil" = "Potlood";
+"device_verification_emoji_paperclip" = "Paperclip";
+"device_verification_emoji_scissors" = "Schaar";
+"device_verification_emoji_padlock" = "Hangslot";
+"device_verification_emoji_key" = "Sleutel";
+"device_verification_emoji_hammer" = "Hamer";
+"device_verification_emoji_telephone" = "Telefoon";
+"device_verification_emoji_flag" = "Vlag";
+"device_verification_emoji_train" = "Trein";
+"device_verification_emoji_bicycle" = "Fiets";
+"device_verification_emoji_aeroplane" = "Vliegtuig";
+"device_verification_emoji_rocket" = "Raket";
+"device_verification_emoji_trophy" = "Trofee";
+"device_verification_emoji_ball" = "Bal";
+"device_verification_emoji_guitar" = "Gitaar";
+"device_verification_emoji_trumpet" = "Trompet";
+"device_verification_emoji_bell" = "Bel";
+"device_verification_emoji_anchor" = "Anker";
+"device_verification_emoji_headphones" = "Koptelefoon";
+"device_verification_emoji_folder" = "Map";
+"device_verification_emoji_pin" = "Speld";
