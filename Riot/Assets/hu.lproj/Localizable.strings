@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Üzenet tőle: %@";
+"MSG_FROM_USER" = "%@ üzenet elküldve";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ küldte ebbe a szobába: %@";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -50,3 +50,7 @@
 "VOICE_CONF_NAMED_FROM_USER" = "%@ csoportos hívása: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "%@ csoportos videóhívása: '%@'";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@ -ban/ben";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ matricát küldött";
