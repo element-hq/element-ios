@@ -205,6 +205,7 @@
 		B19EFA3921F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3821F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift */; };
 		B19EFA3B21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */; };
 		B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5B33D227ADF2A004CBA85 /* UIImage.swift */; };
+		B1A68593229E807A00D6C09A /* RoomBubbleCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */; };
 		B1B12B2922942315002CB419 /* UITouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B12B2822942315002CB419 /* UITouch.swift */; };
 		B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
@@ -804,6 +805,7 @@
 		B19EFA3821F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverCoordinatorType.swift; sourceTree = "<group>"; };
 		B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverCoordinator.swift; sourceTree = "<group>"; };
 		B1A5B33D227ADF2A004CBA85 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBubbleCellLayout.swift; sourceTree = "<group>"; };
 		B1B12B2822942315002CB419 /* UITouch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITouch.swift; sourceTree = "<group>"; };
 		B1B5567920EE6C4C00210D55 /* CountryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryPickerViewController.h; sourceTree = "<group>"; };
 		B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryPickerViewController.m; sourceTree = "<group>"; };
@@ -2885,6 +2887,7 @@
 		B1B5584220EF768E00210D55 /* Encryption */ = {
 			isa = PBXGroup;
 			children = (
+				B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */,
 				B1B5584320EF768E00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.h */,
 				B1B5584420EF768E00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h */,
 				B1B5584520EF768E00210D55 /* RoomOutgoingEncryptedAttachmentBubbleCell.h */,
@@ -3920,6 +3923,7 @@
 				B1B558E820EF768F00210D55 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F320EF768F00210D55 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B557BD20EF5B4500210D55 /* KeyboardGrowingTextView.m in Sources */,
+				B1A68593229E807A00D6C09A /* RoomBubbleCellLayout.swift in Sources */,
 				B1B558F420EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B5572320EE6C4D00210D55 /* AttachmentsViewController.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
