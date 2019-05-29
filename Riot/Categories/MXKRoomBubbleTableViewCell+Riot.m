@@ -24,8 +24,6 @@
 
 #import <objc/runtime.h>
 
-#define VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH 39
-
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X 48
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH 4
 
@@ -42,7 +40,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     
     if (componentIndex < bubbleComponents.count)
     {
-        component  = bubbleComponents[componentIndex];
+        component = bubbleComponents[componentIndex];
     }
     
     if (component && component.date)
@@ -62,22 +60,26 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
         // Display timestamp on the left for selected component when it cannot overlap other UI elements like user's avatar
         BOOL displayLabelOnLeft = roomBubbleCellData.displayTimestampForSelectedComponentOnLeftWhenPossible && !isFirstDisplayedComponent && !isLastMessageMostRecentComponent;
         
-        [self addTimestampLabelForComponent:component
-                  isFirstDisplayedComponent:isFirstDisplayedComponent
-                                    viewTag:componentIndex
-                              displayOnLeft:displayLabelOnLeft];
+        [self addTimestampLabelForComponentIndex:componentIndex
+                       isFirstDisplayedComponent:isFirstDisplayedComponent
+                                         viewTag:componentIndex
+                                   displayOnLeft:displayLabelOnLeft];
     }
 }
 
-- (void)addTimestampLabelForComponent:(MXKRoomBubbleComponent*)component
-            isFirstDisplayedComponent:(BOOL)isFirstDisplayedComponent
-                              viewTag:(NSInteger)viewTag
-                        displayOnLeft:(BOOL)displayOnLeft
+- (void)addTimestampLabelForComponentIndex:(NSInteger)componentIndex
+                 isFirstDisplayedComponent:(BOOL)isFirstDisplayedComponent
+                                   viewTag:(NSInteger)viewTag
+                             displayOnLeft:(BOOL)displayOnLeft
 {
+    NSArray *bubbleComponents = bubbleData.bubbleComponents;
+    MXKRoomBubbleComponent *component = bubbleComponents[componentIndex];
+    
     self.bubbleInfoContainer.hidden = NO;
     
     CGFloat timeLabelPosX;
     CGFloat timeLabelPosY;
+    CGFloat timeLabelHeight = RoomBubbleCellLayout.timestampLabelHeight;
     CGFloat timeLabelWidth;
     NSTextAlignment timeLabelTextAlignment;
     
@@ -93,13 +95,24 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     }
     else
     {
-        timeLabelPosX = self.bubbleInfoContainer.frame.size.width - VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH;
-        timeLabelPosY = isFirstDisplayedComponent ? 0 : component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant;
-        timeLabelWidth = VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH;
+        timeLabelPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth;
+        
+        CGRect componentFrame = [self componentFrameInContentViewForIndex:componentIndex];
+        
+        if (CGRectEqualToRect(componentFrame, CGRectNull) == false)
+        {
+            timeLabelPosY = componentFrame.origin.y - timeLabelHeight - self.bubbleInfoContainerTopConstraint.constant;
+        }
+        else
+        {
+            timeLabelPosY = isFirstDisplayedComponent ? 0 : component.position.y + self.msgTextViewTopConstraint.constant - timeLabelHeight - self.bubbleInfoContainerTopConstraint.constant;
+        }
+        
+        timeLabelWidth = RoomBubbleCellLayout.timestampLabelWidth;
         timeLabelTextAlignment = NSTextAlignmentRight;
     }
     
-    UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeLabelPosX, timeLabelPosY, timeLabelWidth , 18)];
+    UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeLabelPosX, timeLabelPosY, timeLabelWidth, timeLabelHeight)];
     
     timeLabel.text = [bubbleData.eventFormatter timeStringFromDate:component.date];
     timeLabel.textAlignment = timeLabelTextAlignment;
@@ -144,32 +157,10 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
                                                                            toItem:nil
                                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                                        multiplier:1.0
-                                                                         constant:18];
+                                                                         constant:timeLabelHeight];
     
     // Available on iOS 8 and later
     [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
-    
-    // Check whether a vertical whitespace was applied to display correctly the timestamp.
-    if (!displayOnLeft && (!isFirstDisplayedComponent || bubbleData.shouldHideSenderInformation || bubbleData.shouldHideSenderName))
-    {
-        // Adjust the position of the potential encryption icon in this case.
-        if (self.encryptionStatusContainerView)
-        {
-            NSArray* subviews = self.encryptionStatusContainerView.subviews;
-            for (UIView *view in subviews)
-            {
-                // Note: The encryption icon has been tagged with the component index.
-                if (view.tag == viewTag)
-                {
-                    CGRect frame = view.frame;
-                    frame.origin.y += 15;
-                    view.frame = frame;
-                    
-                    break;
-                }
-            }
-        }
-    }
 }
 
 - (void)selectComponent:(NSUInteger)componentIndex
@@ -307,7 +298,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     NSDate *date = bubbleData.date;
     if (date)
     {
-        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bubbleInfoContainer.frame.size.width , 18)];
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bubbleInfoContainer.frame.size.width, RoomBubbleCellLayout.timestampLabelHeight)];
         
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
@@ -354,7 +345,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
                                                                                toItem:nil
                                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                                            multiplier:1.0
-                                                                             constant:18];
+                                                                             constant:RoomBubbleCellLayout.timestampLabelHeight];
         
         // Available on iOS 8 and later
         [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
@@ -459,7 +450,13 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     }
 }
 
-- (CGRect)componentFrameForIndex:(NSInteger)componentIndex
+- (CGRect)componentFrameInTableViewForIndex:(NSInteger)componentIndex
+{
+    CGRect componentFrameInContentView = [self componentFrameInContentViewForIndex:componentIndex];
+    return [self.contentView convertRect:componentFrameInContentView toView:self.superview];
+}
+
+- (CGRect)componentFrameInContentViewForIndex:(NSInteger)componentIndex
 {
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = self;
     MXKRoomBubbleCellData *bubbleCellData = roomBubbleTableViewCell.bubbleData;
@@ -518,16 +515,15 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     
     if (roomBubbleTableViewCell.attachmentView || roomBubbleTableViewCell.messageTextView)
     {
-        CGRect roomBubbleTableViewCellFrame = roomBubbleTableViewCell.frame;
-        CGFloat x = roomBubbleTableViewCellFrame.origin.x;
-        CGFloat y = roomBubbleTableViewCellFrame.origin.y + selectedComponenContentViewYOffset + selectedComponentPositionY;
-        CGFloat width = roomBubbleTableViewCellFrame.size.width;
+        CGFloat x = 0;
+        CGFloat y = selectedComponenContentViewYOffset + selectedComponentPositionY;
+        CGFloat width = roomBubbleTableViewCell.contentView.frame.size.width;
         
         componentFrame = CGRectMake(x, y, width, selectedComponentHeight);
     }
     else
     {
-        componentFrame = roomBubbleTableViewCell.frame;
+        componentFrame = roomBubbleTableViewCell.bounds;
     }
     
     return componentFrame;
@@ -581,7 +577,7 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     
     // Define 'Edit' button frame
     UIImage *editIcon = [UIImage imageNamed:@"edit_icon"];
-    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH - 22 - editIcon.size.width / 2;
+    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth - 22 - editIcon.size.width / 2;
     CGFloat editBtnPosY = isFirstDisplayedComponent ? -13 : component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant - 13;
     UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(editBtnPosX, editBtnPosY, 44, 44)];
     

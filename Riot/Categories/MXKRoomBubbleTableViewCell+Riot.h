@@ -86,9 +86,17 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
  Calculate component frame in table view.
 
  @param componentIndex index of the component in bubble message data
- @return component frame if component exist or CGRectNull.
+ @return component frame in table view if component exist or CGRectNull.
  */
-- (CGRect)componentFrameForIndex:(NSInteger)componentIndex;
+- (CGRect)componentFrameInTableViewForIndex:(NSInteger)componentIndex;
+
+/**
+ Calculate component frame in tableview cell contentView.
+ 
+ @param componentIndex index of the component in bubble message data
+ @return component frame in contentView if component exist or CGRectNull.
+ */
+- (CGRect)componentFrameInContentViewForIndex:(NSInteger)componentIndex;
 
 /**
  Blur the view by adding a transparent overlay. Default is NO.
