@@ -91,7 +91,7 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
 - (CGRect)componentFrameInTableViewForIndex:(NSInteger)componentIndex;
 
 /**
- Calculate component frame in tableview cell contentView.
+ Calculate the component frame in the contentView of the tableview cell.
  
  @param componentIndex index of the component in bubble message data
  @return component frame in the contentView if the component exists or CGRectNull.
