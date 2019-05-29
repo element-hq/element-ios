@@ -10,10 +10,9 @@ Improvements:
  * Context menu polish (#2466).
 
 Bug fix:
- * Registration with an email is broken (#2417).
-
-Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
+ * Registration with an email is broken (#2417).
+ * Reactions: Bad position (#2462).
 
 Changes in 0.8.6 (2019-05-06)
 ===============================================
