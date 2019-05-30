@@ -123,7 +123,7 @@
 "room_recents_create_empty_room" = "Gesprek aanmaken";
 "room_recents_join_room" = "Gesprek toetreden";
 "room_recents_join_room_title" = "Neem aan een gesprek deel";
-"room_recents_join_room_prompt" = "Voer een gespreks-ID of -alias in";
+"room_recents_join_room_prompt" = "Voer een gespreks(bij)naam in";
 // People tab
 "people_invites_section" = "UITNODIGINGEN";
 "people_conversation_section" = "GESPREKKEN";
@@ -354,8 +354,8 @@
 "room_details_no_local_addresses" = "Dit gesprek heeft geen lokale adressen";
 "room_details_new_address" = "Nieuw adres toevoegen";
 "room_details_new_address_placeholder" = "Nieuw adres toevoegen (bv. #foo%@)";
-"room_details_addresses_invalid_address_prompt_title" = "Ongeldig aliasformaat";
-"room_details_addresses_invalid_address_prompt_msg" = "%@ is geen geldig formaat voor een alias";
+"room_details_addresses_invalid_address_prompt_title" = "Ongeldig bijnaamformaat";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ is geen geldig formaat voor een bijnaam";
 "room_details_addresses_disable_main_address_prompt_title" = "Hoofdadreswaarschuwing";
 "room_details_addresses_disable_main_address_prompt_msg" = "U heeft geen hoofdadres opgegeven. Het standaardhoofdadres voor dit gesprek zal willekeurig gekozen worden";
 "room_details_banned_users_section" = "Verbannen gebruikers";
