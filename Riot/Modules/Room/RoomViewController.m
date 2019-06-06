@@ -5097,7 +5097,7 @@
                                                                            [self contextualMenuAnimationCompletionAfterBeingShown:YES];
                                                                        }];
     
-    if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && [self.roomDataSource canReactToEventWithId:event.eventId])
     {
         MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
         MXKRoomBubbleCellData *bubbleCellData = roomBubbleTableViewCell.bubbleData;
