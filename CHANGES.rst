@@ -13,6 +13,7 @@ Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
  * Registration with an email is broken (#2417).
  * Reactions: Bad position (#2462).
+ * Reactions: It lets you react to join/leave events (#2476).
 
 Changes in 0.8.6 (2019-05-06)
 ===============================================
