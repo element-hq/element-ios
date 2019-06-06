@@ -123,7 +123,8 @@
 
 #import "Riot-Swift.h"
 
-@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate>
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
+    ReactionsMenuViewModelCoordinatorDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -5124,9 +5125,15 @@
             bubbleComponentFrame = roomBubbleTableViewCell.frame;
         }
         
-        CGRect bubbleComponentFrameInOverlayView = [self.bubblesTableView convertRect:bubbleComponentFrame toView:self.overlayContainerView];        
+        CGRect bubbleComponentFrameInOverlayView = [self.bubblesTableView convertRect:bubbleComponentFrame toView:self.overlayContainerView];
         
-        [self.roomContextualMenuPresenter showReactionsMenuForEvent:event.eventId inRoom:event.roomId session:self.mainSession aroundFrame:bubbleComponentFrameInOverlayView];
+        NSString *roomId = self.roomDataSource.roomId;
+        MXAggregations *aggregations = self.mainSession.aggregations;
+        
+        ReactionsMenuViewModel *reactionsMenuViewModel = [[ReactionsMenuViewModel alloc] initWithAggregations:aggregations roomId:roomId eventId:event.eventId];
+        reactionsMenuViewModel.coordinatorDelegate = self;
+        
+        [self.roomContextualMenuPresenter showReactionsMenuWithReactionsMenuViewModel:reactionsMenuViewModel aroundFrame:bubbleComponentFrameInOverlayView];
     }
 }
 
@@ -5179,6 +5186,26 @@
 - (void)roomContextualMenuViewControllerDidReaction:(RoomContextualMenuViewController *)viewController
 {
     [self hideContextualMenuAnimated:YES];
+}
+
+#pragma mark - ReactionsMenuViewModelCoordinatorDelegate
+
+- (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didAddReaction:(NSString *)reaction forEventId:(NSString *)eventId
+{
+    [self.roomDataSource addReaction:reaction forEventId:eventId success:^(NSString *eventId) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didRemoveReaction:(NSString *)reaction forEventId:(NSString *)eventId
+{
+    [self.roomDataSource removeReaction:reaction forEventId:eventId success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 @end
