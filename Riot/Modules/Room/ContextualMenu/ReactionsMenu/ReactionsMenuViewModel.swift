@@ -16,7 +16,7 @@
 
 import UIKit
 
-final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
+@objc final class ReactionsMenuViewModel: NSObject, ReactionsMenuViewModelType {
 
     // MARK: - Properties
 
@@ -33,14 +33,16 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
     private(set) var isDislikeButtonSelected: Bool = false
 
     weak var viewDelegate: ReactionsMenuViewModelDelegate?
-    weak var coordinatorDelegate: ReactionsMenuViewModelCoordinatorDelegate?
+    @objc weak var coordinatorDelegate: ReactionsMenuViewModelCoordinatorDelegate?
 
     // MARK: - Setup
 
-    init(aggregations: MXAggregations, roomId: String, eventId: String) {
+    @objc init(aggregations: MXAggregations, roomId: String, eventId: String) {
         self.aggregations = aggregations
         self.roomId = roomId
         self.eventId = eventId
+        
+        super.init()
 
         self.loadData()
         self.listenToDataUpdate()
@@ -72,7 +74,7 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
             return
         }
 
-        self.react(withReaction: theReaction, selected: theNewState, delegate: self.coordinatorDelegate)
+        self.react(withReaction: theReaction, selected: theNewState)
     }
 
     // MARK: - Private
@@ -122,54 +124,21 @@ final class ReactionsMenuViewModel: ReactionsMenuViewModelType {
             }
         }
     }
-
-    private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool, delegate: ReactionsMenuViewModelCoordinatorDelegate? = nil) {
-
+    
+    private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool) {
+        
         // If required, unreact first
         if selected {
             self.ensure3StateButtons(withReaction: reaction)
         }
-
+        
+        let reactionString = reaction.rawValue
+        
         if selected {
-            self.aggregations.sendReaction(reaction.rawValue, toEvent: self.eventId, inRoom: self.roomId, success: {[weak self] _ in
-
-                guard let sself = self else {
-                    return
-                }
-
-                delegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: true)
-
-            }, failure: {[weak self] (error) in
-                print("[ReactionsMenuViewModel] react: Error: \(error)")
-
-                guard let sself = self else {
-                    return
-                }
-
-                delegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: true)
-            })
+            self.coordinatorDelegate?.reactionsMenuViewModel(self, didAddReaction: reactionString, forEventId: self.eventId)
         } else {
-
-            self.aggregations.unReact(onReaction: reaction.rawValue, toEvent: self.eventId, inRoom: self.roomId, success: {[weak self] in
-
-                guard let sself = self else {
-                    return
-                }
-
-                delegate?.reactionsMenuViewModel(sself, didReactionComplete: reaction.rawValue, isAddReaction: false)
-
-                }, failure: {[weak self] (error) in
-                    print("[ReactionsMenuViewModel] react: Error: \(error)")
-
-                    guard let sself = self else {
-                        return
-                    }
-
-                    delegate?.reactionsMenuViewModel(sself, didReactionFailedWithError: error, reaction: reaction.rawValue, isAddReaction: false)
-            })
+            self.coordinatorDelegate?.reactionsMenuViewModel(self, didRemoveReaction: reactionString, forEventId: self.eventId)
         }
-
-        delegate?.reactionsMenuViewModel(self, didSendReaction: reaction.rawValue, isAddReaction: !selected)
     }
 
     // We can like, dislike, be indifferent but we cannot like & dislike at the same time
