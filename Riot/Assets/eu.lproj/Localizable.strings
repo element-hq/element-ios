@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "%@ erabiltzailearen mezua";
+"MSG_FROM_USER" = "%@ erabiltzaileak mezu bat bidali du";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@erabiltzaileak %@ gelan idatzi du";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -11,7 +11,7 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ erabiltzaileak irudi bat %@ bidali dizu";
+"IMAGE_FROM_USER" = "%@ erabiltzaileak irudi bat bidali du  %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ erabiltzaileak irudi bat %@ bidali du %@ gelara";
 /* Multiple unread messages in a room */
@@ -50,3 +50,7 @@
 "SINGLE_UNREAD_IN_ROOM" = "Mezu bat jaso duzu %@ gelan";
 /* A single unread message */
 "SINGLE_UNREAD" = "Mezu bat jaso duzu";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ erabiltzailea %@ gelan";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ erabiltzaileak eranskailu bat bidali du";
