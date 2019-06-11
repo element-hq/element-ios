@@ -207,7 +207,7 @@
 // Room Preview
 "room_preview_invitation_format" = "Zostałeś(-aś) zaproszony(-a) do tego pokoju przez %@";
 "room_preview_subtitle" = "To jest podgląd pokoju. Interakcje zostały zablokowane.";
-"room_preview_unlinked_email_warning" = "Zaproszenie zostało wysłane do %@, który nie jest powiązany z zalogowanym kontem. Możesz zalogować się z wykorzystaniem innego konta, albo dodać ten adres e-mail do swoich kontaktów.";
+"room_preview_unlinked_email_warning" = "Zaproszenie zostało wysłane do %@, który nie jest powiązany z tym kontem. Możesz zalogować się z wykorzystaniem innego konta, albo dodać ten adres email do swojego konta.";
 "room_preview_try_join_an_unknown_room_default" = "pokój";
 // Settings
 "settings_title" = "Ustawienia";
@@ -314,7 +314,7 @@
 "group_participants_remove_prompt_title" = "Potwierdzenie";
 "group_participants_invite_prompt_title" = "Potwierdzenie";
 "group_participants_filter_members" = "Filtruj członków społeczności";
-"group_participants_invite_malformed_id" = "Uszkodzony ID. Czy to powinien być Matrix ID podobny do '@localpart:domain'";
+"group_participants_invite_malformed_id" = "Uszkodzony ID. Matrix ID powinien być podobny do '@localpart:domain'";
 // Group rooms
 "group_rooms_filter_rooms" = "Filtruj pokoje społeczności";
 // Read Receipts
@@ -488,3 +488,25 @@
 "media_picker_library" = "Biblioteka";
 "large_badge_value_k_format" = "%.1fK";
 "bug_crash_report_title" = "Raport o awarii";
+// String for App Store
+"store_short_description" = "Bezpieczny, zdecentralizowany czat/VoIP";
+"store_full_description" = "Komunikuj się, po swojemu.\n\nAplikacja do czatowania, pod Twoją kontrolą i całkowicie elastyczna. Riot pozwala Ci komunikować się tak, jak chcesz. Stworzona dla [matrixa] - otwartego standardu, zdecentralizowanej komunikacji.\n\nZałóż darmowe konto na matrix.org, załatw swój własny serwer na https://modular.im lub skorzystaj z innego serwera Matrix.\n\nDlaczego warto wybrać Riot.im?\n\nPEŁNA KOMUNIKACJA: Zbuduj pokoje wokół swoich zespołów, przyjaciół, społeczności - jak chcesz! Czat, udostępnianie plików, dodawanie widgetów i wykonywanie połączeń głosowych i wideo - wszystko to za darmo.\n\n\nPOTĘŻNA INTEGRACJA: Użyj Riot.im z narzędziami, które znasz i kochasz. Dzięki Riot.im możesz nawet rozmawiać z użytkownikami i grupami z innymi aplikacjami do czatowania.\n\nPRYWATNY I BEZPIECZNY: Trzymaj swoje rozmowy w tajemnicy. Najnowocześniejsze szyfrowanie typu end-to-end zapewnia prywatną komunikację.\n\nOTWARTY, NIE ZAMKNIĘTY: Open source i zbudowany na Matrixie. Miej swoje dane pod kontrolą poprzez hosting własnego serwera lub wybranie serwera, któremu ufasz.\n\nGDZIEKOLWIEK JESTEŚ: Bądź w kontakcie gdziekolwiek jesteś, dzięki w pełni zsynchronizowanej historii wiadomości na wszystkich Twoich urządzeniach i online na https://riot.im.";
+"room_creation_make_public_prompt_msg" = "Jesteś pewien, że chcesz zrobić ten czat publiczny? Każdy może czytać Twoje wiadomości i dołączyć do czatu.";
+"directory_search_fail" = "Nie udało się pobrać danych";
+"contacts_address_book_permission_required" = "Uprawnienie jest wymagane żeby uzyskać dostęp do kontaktów lokalnych";
+"room_participants_invite_malformed_id_title" = "Błąd Zaproszenia";
+"room_participants_action_ban" = "Zbanuj z tego pokoju";
+"room_unsent_messages_unknown_devices_notification" = "Wiadomość nie została wysłana z powodu obecności nieznanych urządzeń. %@ lub %@@ teraz?";
+"room_event_action_ban_prompt_reason" = "Powód, dla którego zbanowano tego użytkownika";
+"room_event_action_reply" = "Odpowiedz";
+"room_event_action_edit" = "Edytuj";
+"room_action_reply" = "Odpowiedz";
+"room_preview_try_join_an_unknown_room" = "Próbujesz uzyskać dostęp do %@. Czy chciałbyś się przyłączyć, aby wziąć udział w dyskusji?";
+"account_logout_all" = "Wyloguj wszystkie konta";
+"settings_flair" = "Pokazuj wyznacznik społeczności gdzie jest to zezwolone";
+"settings_key_backup" = "KOPIA ZAPASOWA KLUCZY";
+"settings_enable_push_notif" = "Powiadomienia na tym urządzeniu";
+"settings_global_settings_info" = "Globalne ustawienia powiadomień są dostępne na Twoim kliencie internetowym %@";
+"settings_on_denied_notification" = "Powiadomienia są odrzucane w %@, proszę zezwól na nie w ustawieniach urządzenia";
+"settings_callkit_info" = "Odbieraj połączenia przychodzące na ekranie blokady. Zobacz swoje połęczenia Riot w historii połączeń w systemie. Jeśli usługa iCloud jest włączona, historia połączeń zostanie udostępniona Apple.";
+"settings_ui_theme_picker_message" = "\"Auto\" używa ustawienia \"Odwróć kolory\" urządzenia";
