@@ -594,19 +594,19 @@
 
 - (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didAddReaction:(MXReactionCount *)reactionCount forEventId:(NSString *)eventId
 {
-    [self.mxSession.aggregations sendReaction:reactionCount.reaction toEvent:eventId inRoom:self.roomId success:^(NSString * _Nonnull eventId) {
+    [self addReaction:reactionCount.reaction forEventId:eventId success:^(NSString *eventId) {
         
-    } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[MXKRoomDataSource] Fail to send reaction on eventId: %@", eventId);
+    } failure:^(NSError *error) {
+        
     }];
 }
 
 - (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didRemoveReaction:(MXReactionCount * _Nonnull)reactionCount forEventId:(NSString * _Nonnull)eventId
 {
-    [self.mxSession.aggregations unReactOnReaction:reactionCount.reaction toEvent:eventId inRoom:self.roomId success:^{
+    [self removeReaction:reactionCount.reaction forEventId:eventId success:^{
         
-    } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[MXKRoomDataSource] Fail to unreact on eventId: %@", eventId);
+    } failure:^(NSError *error) {
+        
     }];
 }
 
