@@ -217,6 +217,7 @@
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
 
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
+@property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
 
 @end
 
@@ -410,6 +411,7 @@
     }
     
     self.roomContextualMenuPresenter = [RoomContextualMenuPresenter new];
+    self.errorPresenter = [MXKErrorAlertPresentation new];
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -5192,19 +5194,27 @@
 
 - (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didAddReaction:(NSString *)reaction forEventId:(NSString *)eventId
 {
+    MXWeakify(self);
+    
     [self.roomDataSource addReaction:reaction forEventId:eventId success:^(NSString *eventId) {
         
     } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
         
+        [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
     }];
 }
 
 - (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didRemoveReaction:(NSString *)reaction forEventId:(NSString *)eventId
 {
+    MXWeakify(self);
+    
     [self.roomDataSource removeReaction:reaction forEventId:eventId success:^{
         
     } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
         
+        [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
     }];
 }
 
