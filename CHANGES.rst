@@ -8,6 +8,7 @@ Improvements:
  * Menu actions: Display message time (#2463).
  * Reactions Menu: Fix position (#2447).
  * Context menu polish (#2466).
+ * Message Editing: Annotate edited messages in timeline (#2400).
 
 Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
