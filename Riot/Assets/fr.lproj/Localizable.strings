@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Message de %@";
+"MSG_FROM_USER" = "%@ a envoyé un message";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ a posté dans %@";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -11,7 +11,7 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@ : * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ vous a envoyé une image %@";
+"IMAGE_FROM_USER" = "%@ a envoyé une image %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ a posté une image %@ dans %@";
 /* A single unread message in a room */
@@ -50,3 +50,7 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Téléconférence vocale de %@ : '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Téléconférence vidéo de %@ : '%@'";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ dans %@";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ a envoyé un sticker";
