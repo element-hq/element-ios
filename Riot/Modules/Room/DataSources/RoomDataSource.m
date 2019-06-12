@@ -594,7 +594,7 @@
 
 - (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didAddReaction:(MXReactionCount *)reactionCount forEventId:(NSString *)eventId
 {
-    [self addReaction:reactionCount.reaction forEventId:eventId success:^(NSString *eventId) {
+    [self addReaction:reactionCount.reaction forEventId:eventId success:^{
         
     } failure:^(NSError *error) {
         
