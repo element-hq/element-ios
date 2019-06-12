@@ -87,7 +87,7 @@ import UIKit
     }
 
     private func loadData() {
-        guard let reactionCounts = self.aggregations.aggregatedReactions(onEvent: self.eventId, inRoom: self.roomId)?.reactions else {
+        guard let reactionCounts = self.aggregations.aggregatedReactions(onEvent: self.eventId, inRoom: self.roomId)?.withNonZeroCount()?.reactions else {
             return
         }
 
