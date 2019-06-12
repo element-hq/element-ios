@@ -776,3 +776,4 @@
 "device_verification_emoji_headphones" = "Écouteurs";
 "device_verification_emoji_folder" = "Dossier";
 "device_verification_emoji_pin" = "Épingle";
+"event_formatter_message_edited_mention" = "(Édité)";
