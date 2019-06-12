@@ -2824,9 +2824,9 @@
             NSString *fragment = [NSString stringWithFormat:@"/group/%@", [MXTools encodeURIComponent:absoluteURLString]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
-        else if ([absoluteURLString hasPrefix:kEventFormatterOnReRequestKeysLinkAction])
+        else if ([absoluteURLString hasPrefix:EventFormatterOnReRequestKeysLinkAction])
         {
-            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:kEventFormatterOnReRequestKeysLinkActionSeparator];
+            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:EventFormatterLinkActionSeparator];
             if (arguments.count > 1)
             {
                 NSString *eventId = arguments[1];
@@ -2837,6 +2837,19 @@
                     [self reRequestKeysAndShowExplanationAlert:event];
                 }
             }
+        }
+        else if ([absoluteURLString hasPrefix:EventFormatterEditedEventLinkAction])
+        {
+            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:EventFormatterLinkActionSeparator];
+            if (arguments.count > 1)
+            {
+                // TODO: Handle event edition history.
+                
+                NSString *eventId = arguments[1];
+                
+                NSLog(@"[RoomViewController] Did tap edited mention for eventId: %@", eventId);
+            }
+            shouldDoAction = NO;
         }
         else if (url && urlItemInteractionValue)
         {
