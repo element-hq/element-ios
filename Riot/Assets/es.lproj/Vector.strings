@@ -551,3 +551,5 @@
 "deactivate_account_informations_part5" = "Si quieres que olvidemos tus mensajes, por favor marca la casilla a continuación\n\nLa visibilidad de mensajes en Matrix es similar a la del correo electrónico. Que olvidemos tus mensajes implica que los mensajes que hayas enviado no se compartirán con ningún usuario nuevo o no registrado, pero aquellos usuarios registrados que ya tengan acceso a estos mensajes seguirán teniendo acceso a su copia.";
 "deactivate_account_forget_messages_information_part1" = "Por favor, olvida todos los mensajes enviados al desactivar mi cuenta (";
 "deactivate_account_forget_messages_information_part3" = ": esto provocará que los usuarios futuros vean conversaciones incompletas)";
+// String for App Store
+"store_short_description" = "Chat/VoIP descentralizado y seguro";
