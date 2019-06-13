@@ -5263,7 +5263,7 @@
 {
     MXWeakify(self);
     
-    [self.roomDataSource addReaction:reaction forEventId:eventId success:^(NSString *eventId) {
+    [self.roomDataSource addReaction:reaction forEventId:eventId success:^{
         
     } failure:^(NSError *error) {
         MXStrongifyAndReturnIfNil(self);
