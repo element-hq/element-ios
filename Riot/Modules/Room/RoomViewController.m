@@ -218,6 +218,7 @@
 
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
 @property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
+@property (nonatomic, strong) NSString *textMessageBeforeEditing;
 
 @end
 
@@ -1121,6 +1122,13 @@
     {
         [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
             // Just log the error. The message will be displayed in red in the room history
+            NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+        }];
+    }
+    else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && customizedRoomDataSource.selectedEventId)
+    {
+        [self.roomDataSource replaceTextMessageForEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+            // Just log the error. The message will be displayed in red
             NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
         }];
     }
@@ -2890,12 +2898,12 @@
 
 - (void)selectEventWithId:(NSString*)eventId
 {
-    [self selectEventWithId:eventId enableReplyMode:NO showTimestamp:YES];
+    [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeSend showTimestamp:YES];
 }
 
-- (void)selectEventWithId:(NSString*)eventId enableReplyMode:(BOOL)enableReplyMode showTimestamp:(BOOL)showTimestamp
+- (void)selectEventWithId:(NSString*)eventId inputToolBarSendMode:(RoomInputToolbarViewSendMode)inputToolBarSendMode showTimestamp:(BOOL)showTimestamp
 {
-    [self setInputToolBarSendMode: enableReplyMode ? RoomInputToolbarViewSendModeReply : RoomInputToolbarViewSendModeSend];
+    [self setInputToolBarSendMode:inputToolBarSendMode];
     
     customizedRoomDataSource.showBubbleDateTimeOnSelection = showTimestamp;
     customizedRoomDataSource.selectedEventId = eventId;
@@ -2917,6 +2925,8 @@
     customizedRoomDataSource.showBubbleDateTimeOnSelection = YES;
     customizedRoomDataSource.selectedEventId = nil;
     
+    [self restoreTextMessageBeforeEditing];
+    
     // Force table refresh
     [self dataSource:self.roomDataSource didCellChange:nil];
 }
@@ -2925,6 +2935,45 @@
 {
     [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
                                           message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
+}
+
+- (void)editEventContentWithId:(NSString*)eventId
+{
+    MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
+    
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    
+    if (roomInputToolbarView)
+    {
+        self.textMessageBeforeEditing = roomInputToolbarView.textMessage;
+        roomInputToolbarView.textMessage = event.content[@"body"];
+    }
+    
+    [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeEdit showTimestamp:YES];
+}
+
+- (void)restoreTextMessageBeforeEditing
+{
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    
+    if (self.textMessageBeforeEditing)
+    {
+        roomInputToolbarView.textMessage = self.textMessageBeforeEditing;
+    }
+    
+    self.textMessageBeforeEditing = nil;
+}
+
+- (RoomInputToolbarView*)inputToolbarViewAsRoomInputToolbarView
+{
+    RoomInputToolbarView *roomInputToolbarView;
+    
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
+    {
+        roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+    }
+    
+    return roomInputToolbarView;
 }
 
 #pragma mark - Segues
@@ -5062,14 +5111,19 @@
         MXStrongifyAndReturnIfNil(self);
         
         [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
-        [self selectEventWithId:eventId enableReplyMode:YES showTimestamp:NO];
+        [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeReply showTimestamp:NO];
     };
     
     // Edit action
     
     RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
-    // TODO: Handle edit action
-    editMenuItem.isEnabled = NO;
+    editMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self editEventContentWithId:eventId];
+    };
+    
+    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:eventId];
     
     // More action
     
@@ -5098,7 +5152,7 @@
         return;
     }
     
-    [self selectEventWithId:event.eventId enableReplyMode:NO showTimestamp:YES];
+    [self selectEventWithId:event.eventId];
     
     NSArray<RoomContextualMenuItem*>* contextualMenuItems = [self contextualMenuItemsForEvent:event andCell:cell];
     
