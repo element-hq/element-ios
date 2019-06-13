@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Mensaje de %@";
+"MSG_FROM_USER" = "%@ envió un mensaje";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ publicó en %@";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -50,3 +50,7 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Llamada en grupo de %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Llamada de vídeo en grupo de %@: '%@'";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ en %@";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ envió una pegatina";
