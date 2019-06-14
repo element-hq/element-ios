@@ -770,3 +770,4 @@
 "device_verification_emoji_anchor" = "Spirancë";
 "device_verification_emoji_headphones" = "Kufje";
 "device_verification_emoji_folder" = "Dosje";
+"event_formatter_message_edited_mention" = "(U përpunua)";
