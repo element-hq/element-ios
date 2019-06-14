@@ -775,3 +775,4 @@
 "device_verification_emoji_headphones" = "Слушалки";
 "device_verification_emoji_folder" = "Папка";
 "device_verification_emoji_pin" = "Карфица";
+"event_formatter_message_edited_mention" = "(Редактирано)";
