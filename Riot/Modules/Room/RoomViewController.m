@@ -5270,6 +5270,8 @@
         
         [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
     }];
+
+    [self hideContextualMenuAnimated:YES];
 }
 
 - (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didRemoveReaction:(NSString *)reaction forEventId:(NSString *)eventId
@@ -5283,6 +5285,8 @@
         
         [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
     }];
+
+    [self hideContextualMenuAnimated:YES];
 }
 
 @end
