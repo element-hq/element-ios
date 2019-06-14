@@ -5112,6 +5112,9 @@
         
         [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
         [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeReply showTimestamp:NO];
+
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
     };
     
     // Edit action
@@ -5121,6 +5124,9 @@
         MXStrongifyAndReturnIfNil(self);
         [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
         [self editEventContentWithId:eventId];
+
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
     };
     
     editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:eventId];
