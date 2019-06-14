@@ -784,3 +784,4 @@
 "device_verification_emoji_headphones" = "Koptelefoon";
 "device_verification_emoji_folder" = "Map";
 "device_verification_emoji_pin" = "Speld";
+"event_formatter_message_edited_mention" = "(Bewerkt)";
