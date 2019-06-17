@@ -781,3 +781,4 @@
 "device_verification_emoji_headphones" = "Fejhallgató";
 "device_verification_emoji_folder" = "Mappa";
 "device_verification_emoji_pin" = "Rajszeg";
+"event_formatter_message_edited_mention" = "(Szerkesztve)";
