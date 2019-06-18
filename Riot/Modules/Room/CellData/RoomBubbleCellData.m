@@ -295,28 +295,11 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             // Check whether the position of other components need to be refreshed
             if (!self.attachment && index < bubbleComponents.count)
             {
-                NSMutableAttributedString *attributedString;
+                NSMutableAttributedString *attributedString = [NSMutableAttributedString new];
                 NSInteger selectedComponentIndex = self.selectedComponentIndex;
                 NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
-                
-                // Check whether the timestamp is displayed for this first component, and check whether a vertical whitespace is required
-                if (((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
-                {
-                    attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
-                    [attributedString appendAttributedString:component.attributedTextMessage];
-                }
-                else
-                {
-                    // Init attributed string with the first text component
-                    attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:component.attributedTextMessage];
-                }
-                
-                // Vertical whitespace is added in case of read receipts or reactions
-                [self addVerticalWhitespaceToString:attributedString forEvent:component.event.eventId];
-                
-                [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
-                
-                for (index++; index < bubbleComponents.count; index++)
+
+                for (index = 0; index < bubbleComponents.count; index++)
                 {
                     // Compute the vertical position for next component
                     component = bubbleComponents[index];
