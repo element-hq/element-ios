@@ -71,10 +71,6 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
         // Increase maximum number of components
         self.maxComponentCount = 20;
-        
-        // Initialize read receipts
-        self.readReceipts = [NSMutableDictionary dictionary];
-        self.readReceipts[event.eventId] = [roomDataSource.room getEventReceipts:event.eventId sorted:YES];
 
         // Reset attributedTextMessage to force reset MXKRoomCellData parameters
         self.attributedTextMessage = nil;
@@ -549,9 +545,6 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         // We do not want to merge room create event cells with other cell types
         return NO;
     }
-
-    // Update read receipts for this bubble
-    self.readReceipts[event.eventId] = [roomDataSource.room getEventReceipts:event.eventId sorted:YES];
 
     return [super addEvent:event andRoomState:roomState];
 }
