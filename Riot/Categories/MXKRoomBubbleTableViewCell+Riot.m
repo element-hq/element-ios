@@ -546,6 +546,48 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     return componentFrame;
 }
 
++ (CGFloat)attachmentBubbleCellHeightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
+{
+    MXKRoomBubbleTableViewCell* cell = [self cellWithOriginalXib];
+    CGFloat rowHeight = 0;
+    
+    RoomBubbleCellData *bubbleData;
+    
+    if ([cellData isKindOfClass:[RoomBubbleCellData class]])
+    {
+        bubbleData = (RoomBubbleCellData*)cellData;
+    }
+    
+    if (bubbleData && cell.attachmentView && bubbleData.isAttachmentWithThumbnail)
+    {
+        // retrieve the suggested image view height
+        rowHeight = bubbleData.contentSize.height;
+        
+        // Check here the minimum height defined in cell view for text message
+        if (cell.attachViewMinHeightConstraint && rowHeight < cell.attachViewMinHeightConstraint.constant)
+        {
+            rowHeight = cell.attachViewMinHeightConstraint.constant;
+        }
+        
+        // Finalize the row height by adding the vertical constraints.
+        
+        rowHeight += cell.attachViewTopConstraint.constant;
+        
+        CGFloat additionalHeight = bubbleData.additionalContentHeight;
+        
+        if (additionalHeight)
+        {
+            rowHeight += additionalHeight;
+        }
+        else
+        {
+            rowHeight += cell.attachViewBottomConstraint.constant;
+        }
+    }
+    
+    return rowHeight;
+}
+
 #pragma mark - User actions
 
 - (IBAction)onEditButtonPressed:(id)sender

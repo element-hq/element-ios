@@ -99,6 +99,15 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
 - (CGRect)componentFrameInContentViewForIndex:(NSInteger)componentIndex;
 
 /**
+ Give the correct cell height for a bubble cell with an attachment view. Handle reactions and read receipts views.
+
+ @param cellData The data object to render.
+ @param maxWidth The maximum available width.
+ @return The cell height.
+ */
++ (CGFloat)attachmentBubbleCellHeightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth;
+
+/**
  Blur the view by adding a transparent overlay. Default is NO.
  */
 @property(nonatomic) BOOL blurred;
