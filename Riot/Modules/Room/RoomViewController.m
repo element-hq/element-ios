@@ -5165,12 +5165,13 @@
     RoomContextualMenuViewController *roomContextualMenuViewController = [RoomContextualMenuViewController instantiateWith:contextualMenuItems];
     roomContextualMenuViewController.delegate = self;
     
+    [self enableOverlayContainerUserInteractions:YES];
+    
     [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:roomContextualMenuViewController
                                                                              from:self
                                                                                on:self.overlayContainerView
                                                                          animated:YES
                                                                        completion:^{
-                                                                           [self contextualMenuAnimationCompletionAfterBeingShown:YES];
                                                                        }];
     
     if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && [self.roomDataSource canReactToEventWithId:event.eventId])
@@ -5235,7 +5236,7 @@
     }
     
     [self.roomContextualMenuPresenter hideContextualMenuWithAnimated:animated completion:^{
-        [self contextualMenuAnimationCompletionAfterBeingShown:NO];
+        [self enableOverlayContainerUserInteractions:NO];
         
         if (completion)
         {
@@ -5244,11 +5245,11 @@
     }];
 }
 
-- (void)contextualMenuAnimationCompletionAfterBeingShown:(BOOL)isShown
+- (void)enableOverlayContainerUserInteractions:(BOOL)enableOverlayContainerUserInteractions
 {
-    self.inputToolbarView.editable = !isShown;
-    self.bubblesTableView.scrollsToTop = !isShown;
-    self.overlayContainerView.userInteractionEnabled = isShown;
+    self.inputToolbarView.editable = !enableOverlayContainerUserInteractions;
+    self.bubblesTableView.scrollsToTop = !enableOverlayContainerUserInteractions;
+    self.overlayContainerView.userInteractionEnabled = enableOverlayContainerUserInteractions;
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate
