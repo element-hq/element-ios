@@ -25,11 +25,12 @@
 #import "Riot-Swift.h"
 
 static NSAttributedString *timestampVerticalWhitespace = nil;
-static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
 @interface RoomBubbleCellData()
 
 @property(nonatomic, readonly) BOOL addVerticalWhitespaceForSelectedComponentTimestamp;
+@property(nonatomic, readwrite) CGFloat additionalContentHeight;
+@property(nonatomic) BOOL shouldUpdateAdditionalContentHeight;
 
 @end
 
@@ -72,10 +73,6 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
         // Increase maximum number of components
         self.maxComponentCount = 20;
-        
-        // Initialize read receipts
-        self.readReceipts = [NSMutableDictionary dictionary];
-        self.readReceipts[event.eventId] = [roomDataSource.room getEventReceipts:event.eventId sorted:YES];
 
         // Reset attributedTextMessage to force reset MXKRoomCellData parameters
         self.attributedTextMessage = nil;
@@ -107,6 +104,8 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         
         shouldUpdateComponentsPosition = NO;
     }
+    
+    [self updateAdditionalContentHeightIfNeeded];
 }
 
 - (NSAttributedString*)attributedTextMessage
@@ -274,12 +273,12 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // Check whether there is at least one component.
         if (bubbleComponents.count)
         {
-            BOOL hasReadReceiptsOrReactions = NO;
-
             // Set position of the first component
             CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile || self.attachment.type == MXKAttachmentTypeAudio) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
             MXKRoomBubbleComponent *component;
             NSUInteger index = 0;
+            
+            // Use same position for first components without render (redacted)
             for (; index < bubbleComponents.count; index++)
             {
                 // Compute the vertical position for next component
@@ -289,8 +288,6 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 
                 if (component.attributedTextMessage)
                 {
-                    hasReadReceiptsOrReactions = (self.reactions[component.event.eventId].reactions.count > 0);
-                    hasReadReceiptsOrReactions |= (self.readReceipts[component.event.eventId].count > 0);
                     break;
                 }
             }
@@ -298,31 +295,11 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             // Check whether the position of other components need to be refreshed
             if (!self.attachment && index < bubbleComponents.count)
             {
-                NSMutableAttributedString *attributedString;
+                NSMutableAttributedString *attributedString = [NSMutableAttributedString new];
                 NSInteger selectedComponentIndex = self.selectedComponentIndex;
                 NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
-                
-                // Check whether the timestamp is displayed for this first component, and check whether a vertical whitespace is required
-                if (((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
-                {
-                    attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
-                    [attributedString appendAttributedString:component.attributedTextMessage];
-                }
-                else
-                {
-                    // Init attributed string with the first text component
-                    attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:component.attributedTextMessage];
-                }
-                
-                // Vertical whitespace is added in case of read receipts
-                if (hasReadReceiptsOrReactions)
-                {
-                    [self addVerticalWhitespaceToString:attributedString forEvent:component.event.eventId];
-                }
-                
-                [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
-                
-                for (index++; index < bubbleComponents.count; index++)
+
+                for (index = 0; index < bubbleComponents.count; index++)
                 {
                     // Compute the vertical position for next component
                     component = bubbleComponents[index];
@@ -330,17 +307,12 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                     if (component.attributedTextMessage)
                     {
                         // Prepare its attributed string by considering potential vertical margin required to display timestamp.
-                        NSAttributedString *componentString;
+                        NSAttributedString *componentString = component.attributedTextMessage;
+
+                        // Check whether the timestamp is displayed for this component, and check whether a vertical whitespace is required
                         if ((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index)
                         {
-                            NSMutableAttributedString *componentAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
-                            [componentAttributedString appendAttributedString:component.attributedTextMessage];
-                            
-                            componentString = componentAttributedString;
-                        }
-                        else
-                        {
-                            componentString = component.attributedTextMessage;
+                            [attributedString appendAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
                         }
                         
                         // Append this attributed string.
@@ -353,9 +325,10 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                         positionY = MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET + (cumulatedHeight - [self rawTextHeight:componentString]);
                         
                         component.position = CGPointMake(0, positionY);
-
+                        
+                        // Vertical whitespace is added in case of read receipts or reactions
                         [self addVerticalWhitespaceToString:attributedString forEvent:component.event.eventId];
-
+                        
                         [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
                     }
                     else
@@ -377,8 +350,10 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     
     if (reactionCount)
     {
+        CGFloat bubbleReactionsViewWidth = self.maxTextViewWidth - 4;
+        
         CGSize fittingSize = UILayoutFittingCompressedSize;
-        fittingSize.width = self.maxTextViewWidth;
+        fittingSize.width = bubbleReactionsViewWidth;
         
         static BubbleReactionsView *bubbleReactionsView;
         
@@ -387,12 +362,13 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             bubbleReactionsView = [BubbleReactionsView new];
         });
         
-        bubbleReactionsView.frame = CGRectMake(0, 0, self.maxTextViewWidth, 1.0);
+        bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
         BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId];
         bubbleReactionsView.viewModel = viemModel;
+        [bubbleReactionsView setNeedsLayout];
         [bubbleReactionsView layoutIfNeeded];
         
-        CGFloat height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height;
+        CGFloat height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height + RoomBubbleCellLayout.reactionsViewTopMargin;
         
         [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight: height]];
     }
@@ -400,8 +376,101 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     // Add vertical whitespace in case of read receipts.
     if (self.readReceipts[eventId].count)
     {
-        [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
+        [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight:RoomBubbleCellLayout.readReceiptsViewHeight + RoomBubbleCellLayout.readReceiptsViewTopMargin]];
     }
+}
+
+- (CGFloat)computeAdditionalHeight
+{
+    CGFloat height = 0;
+    
+    for (MXKRoomBubbleComponent *bubbleComponent in self.bubbleComponents)
+    {
+        NSString *eventId = bubbleComponent.event.eventId;
+        
+        height+= [self reactionHeightForEventId:eventId];
+        height+= [self readReceiptHeightForEventId:eventId];
+    }
+    
+    return height;
+}
+
+- (void)updateAdditionalContentHeightIfNeeded;
+{
+    if (self.shouldUpdateAdditionalContentHeight)
+    {
+        void(^updateAdditionalHeight)(void) = ^() {
+            self.additionalContentHeight = [self computeAdditionalHeight];
+        };
+        
+        // The additional height depends on the room read receipts and reactions view which must be calculated on the main thread.
+        // Check here the current thread, this is just a sanity check because this method is called during the rendering step
+        // which takes place on the main thread.
+        if ([NSThread currentThread] != [NSThread mainThread])
+        {
+            NSLog(@"[RoomBubbleCellData] prepareBubbleComponentsPosition called on wrong thread");
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                updateAdditionalHeight();
+            });
+        }
+        else
+        {
+            updateAdditionalHeight();
+        }
+        
+        self.shouldUpdateAdditionalContentHeight = NO;
+    }
+}
+
+- (void)setNeedsUpdateAdditionalContentHeight
+{
+    self.shouldUpdateAdditionalContentHeight = YES;
+}
+
+- (CGFloat)reactionHeightForEventId:(NSString*)eventId
+{
+    CGFloat height = 0;
+    
+    NSUInteger reactionCount = self.reactions[eventId].reactions.count;
+    
+    MXAggregatedReactions *aggregatedReactions = self.reactions[eventId];
+    
+    if (reactionCount)
+    {
+        CGFloat bubbleReactionsViewWidth = self.maxTextViewWidth - 4;
+        
+        CGSize fittingSize = UILayoutFittingCompressedSize;
+        fittingSize.width = bubbleReactionsViewWidth;
+        
+        static BubbleReactionsView *bubbleReactionsView;
+        
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            bubbleReactionsView = [BubbleReactionsView new];
+        });
+        
+        bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
+        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId];
+        bubbleReactionsView.viewModel = viemModel;
+        [bubbleReactionsView setNeedsLayout];
+        [bubbleReactionsView layoutIfNeeded];
+        
+        height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height + RoomBubbleCellLayout.reactionsViewTopMargin;
+    }
+    
+    return height;
+}
+
+- (CGFloat)readReceiptHeightForEventId:(NSString*)eventId
+{
+    CGFloat height = 0;
+    
+    if (self.readReceipts[eventId].count)
+    {
+        height = RoomBubbleCellLayout.readReceiptsViewHeight + RoomBubbleCellLayout.readReceiptsViewTopMargin;
+    }
+    
+    return height;
 }
 
 - (void)setContainsLastMessage:(BOOL)containsLastMessage
@@ -509,33 +578,21 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     return timestampVerticalWhitespace;
 }
 
-
-+ (NSAttributedString *)readReceiptVerticalWhitespace
-{
-    @synchronized(self)
-    {
-        if (readReceiptVerticalWhitespace == nil)
-        {
-            readReceiptVerticalWhitespace = [[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSForegroundColorAttributeName : [UIColor blackColor],
-                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:4]}];
-        }
-    }
-    return readReceiptVerticalWhitespace;
-}
-
 + (NSAttributedString *)verticalWhitespaceForHeight:(CGFloat)height
 {
-    NSUInteger returns = height / 6;
+    UIFont *sizingFont = [UIFont systemFontOfSize:2];
+    CGFloat returnHeight = sizingFont.lineHeight;
+    
+    NSUInteger returns = (NSUInteger)round(height/returnHeight);
     NSMutableString *returnString = [NSMutableString string];
-
+    
     for (NSUInteger i = 0; i < returns; i++)
     {
         [returnString appendString:@"\n"];
     }
-
-
+    
     return [[NSAttributedString alloc] initWithString:returnString attributes:@{NSForegroundColorAttributeName : [UIColor blackColor],
-                                                                                NSFontAttributeName: [UIFont systemFontOfSize:6]}];
+                                                                                NSFontAttributeName: sizingFont}];
 }
 
 - (BOOL)hasSameSenderAsBubbleCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData
@@ -568,9 +625,6 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // We do not want to merge room create event cells with other cell types
         return NO;
     }
-
-    // Update read receipts for this bubble
-    self.readReceipts[event.eventId] = [roomDataSource.room getEventReceipts:event.eventId sorted:YES];
 
     return [super addEvent:event andRoomState:roomState];
 }

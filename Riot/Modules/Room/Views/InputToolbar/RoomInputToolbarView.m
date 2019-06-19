@@ -172,7 +172,9 @@
         case RoomInputToolbarViewSendModeReply:
             title = NSLocalizedStringFromTable(@"room_action_reply", @"Vector", nil);
             break;
-
+        case RoomInputToolbarViewSendModeEdit:
+            title = NSLocalizedStringFromTable(@"save", @"Vector", nil);
+            break;
         default:
             title = [NSBundle mxk_localizedStringForKey:@"send"];
             break;

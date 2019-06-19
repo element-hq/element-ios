@@ -25,6 +25,7 @@ typedef enum : NSUInteger
 {
     RoomInputToolbarViewSendModeSend,
     RoomInputToolbarViewSendModeReply,
+    RoomInputToolbarViewSendModeEdit
 } RoomInputToolbarViewSendMode;
 
 
@@ -48,7 +49,7 @@ typedef enum : NSUInteger
 /**
  The delegate notified when inputs are ready.
  */
-@property (nonatomic) id<RoomInputToolbarViewDelegate> delegate;
+@property (nonatomic, weak) id<RoomInputToolbarViewDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
 

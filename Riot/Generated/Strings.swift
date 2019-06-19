@@ -886,6 +886,10 @@ internal enum VectorL10n {
   internal static func eventFormatterMemberUpdates(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "event_formatter_member_updates", p1)
   }
+  /// (Edited)
+  internal static var eventFormatterMessageEditedMention: String { 
+    return VectorL10n.tr("Vector", "event_formatter_message_edited_mention") 
+  }
   /// Re-request encryption keys
   internal static var eventFormatterRerequestKeysPart1Link: String { 
     return VectorL10n.tr("Vector", "event_formatter_rerequest_keys_part1_link") 

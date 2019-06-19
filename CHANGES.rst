@@ -9,12 +9,15 @@ Improvements:
  * Reactions Menu: Fix position (#2447).
  * Context menu polish (#2466).
  * Upgrade Piwik/MatomoTracker (v6.0.1) (#2159).
-
-Bug fix:
- * Registration with an email is broken (#2417).
+ * Message Editing: Annotate edited messages in timeline (#2400).
+ * Message Editing: Editing in the timeline (#2404).
+ * Read receipts: They are now counted at the MatrixKit level.
 
 Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
+ * Registration with an email is broken (#2417).
+ * Reactions: Bad position (#2462).
+ * Reactions: It lets you react to join/leave events (#2476).
 
 Changes in 0.8.6 (2019-05-06)
 ===============================================

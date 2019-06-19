@@ -123,7 +123,8 @@
 
 #import "Riot-Swift.h"
 
-@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate>
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
+    ReactionsMenuViewModelCoordinatorDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -216,6 +217,8 @@
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
 
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
+@property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
+@property (nonatomic, strong) NSString *textMessageBeforeEditing;
 
 @end
 
@@ -409,6 +412,7 @@
     }
     
     self.roomContextualMenuPresenter = [RoomContextualMenuPresenter new];
+    self.errorPresenter = [MXKErrorAlertPresentation new];
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -1118,6 +1122,13 @@
     {
         [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
             // Just log the error. The message will be displayed in red in the room history
+            NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+        }];
+    }
+    else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && customizedRoomDataSource.selectedEventId)
+    {
+        [self.roomDataSource replaceTextMessageForEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
+            // Just log the error. The message will be displayed in red
             NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
         }];
     }
@@ -2821,9 +2832,9 @@
             NSString *fragment = [NSString stringWithFormat:@"/group/%@", [MXTools encodeURIComponent:absoluteURLString]];
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
         }
-        else if ([absoluteURLString hasPrefix:kEventFormatterOnReRequestKeysLinkAction])
+        else if ([absoluteURLString hasPrefix:EventFormatterOnReRequestKeysLinkAction])
         {
-            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:kEventFormatterOnReRequestKeysLinkActionSeparator];
+            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:EventFormatterLinkActionSeparator];
             if (arguments.count > 1)
             {
                 NSString *eventId = arguments[1];
@@ -2834,6 +2845,19 @@
                     [self reRequestKeysAndShowExplanationAlert:event];
                 }
             }
+        }
+        else if ([absoluteURLString hasPrefix:EventFormatterEditedEventLinkAction])
+        {
+            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:EventFormatterLinkActionSeparator];
+            if (arguments.count > 1)
+            {
+                // TODO: Handle event edition history.
+                
+                NSString *eventId = arguments[1];
+                
+                NSLog(@"[RoomViewController] Did tap edited mention for eventId: %@", eventId);
+            }
+            shouldDoAction = NO;
         }
         else if (url && urlItemInteractionValue)
         {
@@ -2874,12 +2898,12 @@
 
 - (void)selectEventWithId:(NSString*)eventId
 {
-    [self selectEventWithId:eventId enableReplyMode:NO showTimestamp:YES];
+    [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeSend showTimestamp:YES];
 }
 
-- (void)selectEventWithId:(NSString*)eventId enableReplyMode:(BOOL)enableReplyMode showTimestamp:(BOOL)showTimestamp
+- (void)selectEventWithId:(NSString*)eventId inputToolBarSendMode:(RoomInputToolbarViewSendMode)inputToolBarSendMode showTimestamp:(BOOL)showTimestamp
 {
-    [self setInputToolBarSendMode: enableReplyMode ? RoomInputToolbarViewSendModeReply : RoomInputToolbarViewSendModeSend];
+    [self setInputToolBarSendMode:inputToolBarSendMode];
     
     customizedRoomDataSource.showBubbleDateTimeOnSelection = showTimestamp;
     customizedRoomDataSource.selectedEventId = eventId;
@@ -2901,6 +2925,8 @@
     customizedRoomDataSource.showBubbleDateTimeOnSelection = YES;
     customizedRoomDataSource.selectedEventId = nil;
     
+    [self restoreTextMessageBeforeEditing];
+    
     // Force table refresh
     [self dataSource:self.roomDataSource didCellChange:nil];
 }
@@ -2909,6 +2935,45 @@
 {
     [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
                                           message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
+}
+
+- (void)editEventContentWithId:(NSString*)eventId
+{
+    MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
+    
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    
+    if (roomInputToolbarView)
+    {
+        self.textMessageBeforeEditing = roomInputToolbarView.textMessage;
+        roomInputToolbarView.textMessage = event.content[@"body"];
+    }
+    
+    [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeEdit showTimestamp:YES];
+}
+
+- (void)restoreTextMessageBeforeEditing
+{
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    
+    if (self.textMessageBeforeEditing)
+    {
+        roomInputToolbarView.textMessage = self.textMessageBeforeEditing;
+    }
+    
+    self.textMessageBeforeEditing = nil;
+}
+
+- (RoomInputToolbarView*)inputToolbarViewAsRoomInputToolbarView
+{
+    RoomInputToolbarView *roomInputToolbarView;
+    
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
+    {
+        roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+    }
+    
+    return roomInputToolbarView;
 }
 
 #pragma mark - Segues
@@ -5046,14 +5111,25 @@
         MXStrongifyAndReturnIfNil(self);
         
         [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
-        [self selectEventWithId:eventId enableReplyMode:YES showTimestamp:NO];
+        [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeReply showTimestamp:NO];
+
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
     };
     
     // Edit action
     
     RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
-    // TODO: Handle edit action
-    editMenuItem.isEnabled = NO;
+    editMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self editEventContentWithId:eventId];
+
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
+    };
+    
+    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:eventId];
     
     // More action
     
@@ -5082,22 +5158,23 @@
         return;
     }
     
-    [self selectEventWithId:event.eventId enableReplyMode:NO showTimestamp:YES];
+    [self selectEventWithId:event.eventId];
     
     NSArray<RoomContextualMenuItem*>* contextualMenuItems = [self contextualMenuItemsForEvent:event andCell:cell];
     
     RoomContextualMenuViewController *roomContextualMenuViewController = [RoomContextualMenuViewController instantiateWith:contextualMenuItems];
     roomContextualMenuViewController.delegate = self;
     
+    [self enableOverlayContainerUserInteractions:YES];
+    
     [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:roomContextualMenuViewController
                                                                              from:self
                                                                                on:self.overlayContainerView
                                                                          animated:YES
                                                                        completion:^{
-                                                                           [self contextualMenuAnimationCompletionAfterBeingShown:YES];
                                                                        }];
     
-    if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && [self.roomDataSource canReactToEventWithId:event.eventId])
     {
         MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
         MXKRoomBubbleCellData *bubbleCellData = roomBubbleTableViewCell.bubbleData;
@@ -5117,16 +5194,22 @@
         if (bubbleComponents.count > 0)
         {
             NSInteger selectedComponentIndex = foundComponentIndex != NSNotFound ? foundComponentIndex : 0;
-            bubbleComponentFrame = [roomBubbleTableViewCell componentFrameForIndex:selectedComponentIndex];
+            bubbleComponentFrame = [roomBubbleTableViewCell componentFrameInTableViewForIndex:selectedComponentIndex];
         }
         else
         {
             bubbleComponentFrame = roomBubbleTableViewCell.frame;
         }
         
-        CGRect bubbleComponentFrameInOverlayView = [self.bubblesTableView convertRect:bubbleComponentFrame toView:self.overlayContainerView];        
+        CGRect bubbleComponentFrameInOverlayView = [self.bubblesTableView convertRect:bubbleComponentFrame toView:self.overlayContainerView];
         
-        [self.roomContextualMenuPresenter showReactionsMenuForEvent:event.eventId inRoom:event.roomId session:self.mainSession aroundFrame:bubbleComponentFrameInOverlayView];
+        NSString *roomId = self.roomDataSource.roomId;
+        MXAggregations *aggregations = self.mainSession.aggregations;
+        
+        ReactionsMenuViewModel *reactionsMenuViewModel = [[ReactionsMenuViewModel alloc] initWithAggregations:aggregations roomId:roomId eventId:event.eventId];
+        reactionsMenuViewModel.coordinatorDelegate = self;
+        
+        [self.roomContextualMenuPresenter showReactionsMenuWithReactionsMenuViewModel:reactionsMenuViewModel aroundFrame:bubbleComponentFrameInOverlayView];
     }
 }
 
@@ -5153,7 +5236,7 @@
     }
     
     [self.roomContextualMenuPresenter hideContextualMenuWithAnimated:animated completion:^{
-        [self contextualMenuAnimationCompletionAfterBeingShown:NO];
+        [self enableOverlayContainerUserInteractions:NO];
         
         if (completion)
         {
@@ -5162,11 +5245,11 @@
     }];
 }
 
-- (void)contextualMenuAnimationCompletionAfterBeingShown:(BOOL)isShown
+- (void)enableOverlayContainerUserInteractions:(BOOL)enableOverlayContainerUserInteractions
 {
-    self.inputToolbarView.editable = !isShown;
-    self.bubblesTableView.scrollsToTop = !isShown;
-    self.overlayContainerView.userInteractionEnabled = isShown;
+    self.inputToolbarView.editable = !enableOverlayContainerUserInteractions;
+    self.bubblesTableView.scrollsToTop = !enableOverlayContainerUserInteractions;
+    self.overlayContainerView.userInteractionEnabled = enableOverlayContainerUserInteractions;
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate
@@ -5178,6 +5261,38 @@
 
 - (void)roomContextualMenuViewControllerDidReaction:(RoomContextualMenuViewController *)viewController
 {
+    [self hideContextualMenuAnimated:YES];
+}
+
+#pragma mark - ReactionsMenuViewModelCoordinatorDelegate
+
+- (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didAddReaction:(NSString *)reaction forEventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    
+    [self.roomDataSource addReaction:reaction forEventId:eventId success:^{
+        
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+    }];
+
+    [self hideContextualMenuAnimated:YES];
+}
+
+- (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didRemoveReaction:(NSString *)reaction forEventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    
+    [self.roomDataSource removeReaction:reaction forEventId:eventId success:^{
+        
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+    }];
+
     [self hideContextualMenuAnimated:YES];
 }
 

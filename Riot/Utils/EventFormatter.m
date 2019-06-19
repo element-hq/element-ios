@@ -27,10 +27,11 @@
 
 #pragma mark - Constants definitions
 
-NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
-NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
+NSString *const EventFormatterOnReRequestKeysLinkAction = @"EventFormatterOnReRequestKeysLinkAction";
+NSString *const EventFormatterLinkActionSeparator = @"/";
+NSString *const EventFormatterEditedEventLinkAction = @"EventFormatterEditedEventLinkAction";
 
-static NSString *const kEventFormatterTimeFormat = @"hh:mm";
+static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 @interface EventFormatter ()
 {
@@ -47,6 +48,7 @@ static NSString *const kEventFormatterTimeFormat = @"hh:mm";
 {
     [super initDateTimeFormatters];
     
+    timeFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
     [timeFormatter setDateFormat:kEventFormatterTimeFormat];
 }
 
@@ -158,8 +160,8 @@ static NSString *const kEventFormatterTimeFormat = @"hh:mm";
             NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
             [attributedStringWithRerequestMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
 
-            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", kEventFormatterOnReRequestKeysLinkAction,
-                                          kEventFormatterOnReRequestKeysLinkActionSeparator,
+            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterOnReRequestKeysLinkAction,
+                                          EventFormatterLinkActionSeparator,
                                           event.eventId];
 
             [attributedStringWithRerequestMessage appendAttributedString:
@@ -179,6 +181,26 @@ static NSString *const kEventFormatterTimeFormat = @"hh:mm";
 
             attributedString = attributedStringWithRerequestMessage;
         }
+    }
+    else if (event.contentHasBeenEdited)
+    {
+        NSMutableAttributedString *attributedStringWithEditMention = [attributedString mutableCopy];
+        
+        NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterEditedEventLinkAction,
+                                      EventFormatterLinkActionSeparator,
+                                      event.eventId];
+        
+        [attributedStringWithEditMention appendAttributedString:
+         [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", NSLocalizedStringFromTable(@"event_formatter_message_edited_mention", @"Vector", nil)]
+                                         attributes:@{
+                                                      NSLinkAttributeName: linkActionString,
+                                                      // NOTE: Color is curretly overidden by UIText.tintColor as we use `NSLinkAttributeName`.
+                                                      // If we use UITextView.linkTextAttributes to set link color we will also have the issue that color will be the same for all kind of links.
+                                                      NSForegroundColorAttributeName: self.editionMentionTextColor,
+                                                      NSFontAttributeName: self.editionMentionTextFont
+                                                      }]];
+        
+        attributedString = attributedStringWithEditMention;
     }
 
     return attributedString;
@@ -233,6 +255,7 @@ static NSString *const kEventFormatterTimeFormat = @"hh:mm";
         self.encryptingTextColor = ThemeService.shared.theme.tintColor;
         self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.errorTextColor = ThemeService.shared.theme.warningColor;
+        self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
@@ -241,6 +264,7 @@ static NSString *const kEventFormatterTimeFormat = @"hh:mm";
         self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
         self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
+        self.editionMentionTextFont = [UIFont systemFontOfSize:12];
     }
     return self;
 }

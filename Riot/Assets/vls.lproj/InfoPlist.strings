@@ -1,0 +1,6 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "De camera wor gebruukt vo fotootjes te trekkn en filmtjes te moakn, en vo videogesprekkn.";
+"NSPhotoLibraryUsageDescription" = "De fotogalerie wor gebruukt vo fotootjes en filmtjes te versteurn.";
+"NSMicrophoneUsageDescription" = "De microfoon wor gebruukt vo filmtjes te maken, en vo sproakiproepn.";
+"NSContactsUsageDescription" = "Vo je te kunn toogn dewelkse van je contactn dat al Riot of Matrix gebruukn, kunn we d’e-mailadressn en telefongnumero’s in jen adresboek noa je Matrix-identiteitsserver steurn. New Vector bewoart deze gegevens nie en gebruukt ze ook nie voor andere doeleindn. Bekykt vo meer informoatie de privacybeleidspagina in d’instelliengn van den app.";
+"NSCalendarsUsageDescription" = "Bekykt je geplande afsproakn in den app.";
