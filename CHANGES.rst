@@ -8,6 +8,10 @@ Improvements:
  * Menu actions: Display message time (#2463).
  * Reactions Menu: Fix position (#2447).
  * Context menu polish (#2466).
+ * Upgrade Piwik/MatomoTracker (v6.0.1) (#2159).	
+ * Message Editing: Annotate edited messages in timeline (#2400).	
+ * Message Editing: Editing in the timeline (#2404).	
+ * Read receipts: They are now counted at the MatrixKit level.
 
 Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
