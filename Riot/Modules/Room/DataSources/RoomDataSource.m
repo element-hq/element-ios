@@ -120,6 +120,31 @@
     [super destroy];
 }
 
+- (void)updateCellDataReactions:(id<MXKRoomBubbleCellDataStoring>)cellData forEventId:(NSString*)eventId
+{
+    [super updateCellDataReactions:cellData forEventId:eventId];
+
+    [self setNeedsUpdateAdditionalContentHeightForCellData:cellData];
+}
+
+- (void)updateCellData:(MXKRoomBubbleCellData*)cellData withReadReceipts:(NSArray<MXReceiptData*>*)readReceipts forEventId:(NSString*)eventId
+{
+    [super updateCellData:cellData withReadReceipts:readReceipts forEventId:eventId];
+    
+    [self setNeedsUpdateAdditionalContentHeightForCellData:cellData];
+}
+
+- (void)setNeedsUpdateAdditionalContentHeightForCellData:(id<MXKRoomBubbleCellDataStoring>)cellData
+{
+    RoomBubbleCellData *roomBubbleCellData;
+    
+    if ([cellData isKindOfClass:[RoomBubbleCellData class]])
+    {
+        roomBubbleCellData = (RoomBubbleCellData*)cellData;
+        [roomBubbleCellData setNeedsUpdateAdditionalContentHeight];
+    }
+}
+
 #pragma  mark -
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
