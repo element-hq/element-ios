@@ -15,6 +15,7 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
+  - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - DTCoreText (1.6.21):
     - DTCoreText/Core (= 1.6.21)
     - DTFoundation/Core (~> 1.7.5)
@@ -45,6 +46,9 @@ PODS:
   - JitsiMeetSDK (2.1.0)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.13)
+  - MatomoTracker (6.0.1):
+    - MatomoTracker/Core (= 6.0.1)
+  - MatomoTracker/Core (6.0.1)
   - MatrixKit (0.9.9):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
@@ -83,9 +87,6 @@ PODS:
     - OLMKit/olmcpp (= 3.1.0)
   - OLMKit/olmc (3.1.0)
   - OLMKit/olmcpp (3.1.0)
-  - PiwikTracker (4.4.2):
-    - PiwikTracker/Core (= 4.4.2)
-  - PiwikTracker/Core (4.4.2)
   - Realm (3.13.1):
     - Realm/Headers (= 3.13.1)
   - Realm/Headers (3.13.1)
@@ -100,14 +101,15 @@ PODS:
 
 DEPENDENCIES:
   - cmark
+  - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
+  - MatomoTracker (~> 6.0.1)
   - MatrixKit (= 0.9.9)
   - MatrixKit/AppExtension (= 0.9.9)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
-  - PiwikTracker (from `https://github.com/manuroe/matomo-sdk-ios.git`, branch `feature/CustomVariables`)
   - Reusable (~> 4.0)
   - SwiftGen (~> 6.1)
   - SwiftLint (~> 0.30.1)
@@ -117,6 +119,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
     - cmark
+    - DGCollectionViewLeftAlignFlowLayout
     - DTCoreText
     - DTFoundation
     - GBDeviceInfo
@@ -125,6 +128,7 @@ SPEC REPOS:
     - JitsiMeetSDK
     - libbase58
     - libPhoneNumber-iOS
+    - MatomoTracker
     - MatrixKit
     - MatrixSDK
     - OLMKit
@@ -134,19 +138,10 @@ SPEC REPOS:
     - SwiftLint
     - zxcvbn-ios
 
-EXTERNAL SOURCES:
-  PiwikTracker:
-    :branch: feature/CustomVariables
-    :git: https://github.com/manuroe/matomo-sdk-ios.git
-
-CHECKOUT OPTIONS:
-  PiwikTracker:
-    :commit: dfb048f25f4eefbe13ff7515c3c1c2cad5d94491
-    :git: https://github.com/manuroe/matomo-sdk-ios.git
-
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   cmark: ec0275215b504780287b6fca360224e384368af8
+  DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   DTCoreText: e5d688cffc9f6a61eddd1a4f94e2046851230de3
   DTFoundation: f03be9fd786f11e505bb8fc44e2a3732bf0917df
   GBDeviceInfo: 2c65ceb9404f9079264d4c238f5b81916fdfc5e2
@@ -155,16 +150,16 @@ SPEC CHECKSUMS:
   JitsiMeetSDK: 3e66564af7f38a19142338955dd7f581801852b3
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
+  MatomoTracker: 3ae4f65a1f5ace8043bda7244888fee28a734de5
   MatrixKit: 6f553797e1ad42794b5336afb5cecb975ec69daa
   MatrixSDK: ed0d0cee4877955052f19730bb3ee727e01ec948
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
-  PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: cfb6be050dfbb227d58b14434629e447ea54554b
+PODFILE CHECKSUM: 16b6518b09d4e3af0af46ed9c1338e9df8674aff
 
 COCOAPODS: 1.6.1

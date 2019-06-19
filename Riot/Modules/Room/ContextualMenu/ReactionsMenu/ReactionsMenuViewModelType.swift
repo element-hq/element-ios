@@ -20,10 +20,9 @@ protocol ReactionsMenuViewModelDelegate: class {
     func reactionsMenuViewModelDidUpdate(_ viewModel: ReactionsMenuViewModelType)
 }
 
-protocol ReactionsMenuViewModelCoordinatorDelegate: class {
-    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didSendReaction reaction: String, isAddReaction: Bool)
-    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionComplete reaction: String, isAddReaction: Bool)
-    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionFailedWithError error: Error, reaction: String, isAddReaction: Bool)
+@objc protocol ReactionsMenuViewModelCoordinatorDelegate: class {
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didAddReaction reaction: String, forEventId eventId: String)
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didRemoveReaction reaction: String, forEventId eventId: String)
 }
 
 

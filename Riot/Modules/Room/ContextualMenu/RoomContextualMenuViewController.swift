@@ -99,7 +99,6 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
 
     func showReactionsMenu(withViewModel viewModel: ReactionsMenuViewModel, aroundFrame frame: CGRect) {
         self.reactionsMenuView.viewModel = viewModel
-        self.reactionsMenuView.viewModel?.coordinatorDelegate = self
         self.reactionsMenuView.isHidden = false
 
         let menuHeight = self.reactionsMenuViewHeightConstraint.constant
@@ -148,22 +147,6 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     
     @objc private func themeDidChange() {
         self.update(theme: ThemeService.shared().theme)
-    }
-}
-
-// MARK: - ReactionsMenuViewModelCoordinatorDelegate
-extension RoomContextualMenuViewController: ReactionsMenuViewModelCoordinatorDelegate {
-
-    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didSendReaction reaction: String, isAddReaction: Bool) {
-        self.delegate?.roomContextualMenuViewControllerDidReaction(self)
-    }
-
-    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionComplete reaction: String, isAddReaction: Bool) {
-    }
-
-    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModelType, didReactionFailedWithError error: Error, reaction: String, isAddReaction: Bool) {
-        self.errorPresenter?.presentError(from: self, forError: error, animated: true) {
-        }
     }
 }
 
