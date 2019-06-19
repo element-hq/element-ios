@@ -182,6 +182,8 @@
             [bubbleCell addTimestampLabelForComponent:cellData.mostRecentComponentIndex];
         }
         
+        NSMutableArray *temporaryViews = [NSMutableArray new];
+        
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
@@ -222,6 +224,8 @@
                         reactionsView = [BubbleReactionsView new];
                         reactionsView.viewModel = bubbleReactionsViewModel;
                         [reactionsView updateWithTheme:ThemeService.shared.theme];
+                        
+                        [temporaryViews addObject:reactionsView];
                         
                         bubbleReactionsViewModel.viewModelDelegate = self;
                         
@@ -303,6 +307,8 @@
                             
                             avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";
+                            
+                            [temporaryViews addObject:avatarsContainer];
                             
                             // Add this read receipts container in the content view
                             if (!bubbleCell.tmpSubviews)
@@ -417,6 +423,20 @@
                 
                 index++;
             }
+        }
+        
+        // Update attachmentView bottom constraint to display reactions and read receipts if needed
+        
+        UIView *attachmentView = bubbleCell.attachmentView;
+        NSLayoutConstraint *attachmentViewBottomConstraint = bubbleCell.attachViewBottomConstraint;
+
+        if (attachmentView && temporaryViews.count)
+        {
+            attachmentViewBottomConstraint.constant = roomBubbleCellData.additionalContentHeight;
+        }
+        else if (attachmentView)
+        {
+            [bubbleCell resetAttachmentViewBottomConstraintConstant];
         }
         
         // Check whether an event is currently selected: the other messages are then blurred

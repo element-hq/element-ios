@@ -85,13 +85,24 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     CGFloat timeLabelWidth;
     NSTextAlignment timeLabelTextAlignment;
     
+    CGRect componentFrame = [self componentFrameInContentViewForIndex:componentIndex];
+    
     if (displayOnLeft)
     {
         CGFloat leftMargin = 10.0;
         CGFloat rightMargin = (self.contentView.frame.size.width - (self.bubbleInfoContainer.frame.origin.x + self.bubbleInfoContainer.frame.size.width));
         
         timeLabelPosX = 0;
-        timeLabelPosY = component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant;
+        
+        if (CGRectEqualToRect(componentFrame, CGRectNull) == false)
+        {
+            timeLabelPosY = componentFrame.origin.y - self.bubbleInfoContainerTopConstraint.constant;
+        }
+        else
+        {
+            timeLabelPosY = component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant;
+        }
+        
         timeLabelWidth = self.contentView.frame.size.width - leftMargin - rightMargin;
         timeLabelTextAlignment = NSTextAlignmentLeft;
     }
@@ -99,20 +110,24 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     {
         timeLabelPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth;
         
-        CGRect componentFrame = [self componentFrameInContentViewForIndex:componentIndex];
-        
-        if (CGRectEqualToRect(componentFrame, CGRectNull) == false)
+        if (isFirstDisplayedComponent)
         {
-            timeLabelPosY = componentFrame.origin.y - timeLabelHeight - self.bubbleInfoContainerTopConstraint.constant;
+            timeLabelPosY = 0;
+        }
+        else if (CGRectEqualToRect(componentFrame, CGRectNull) == false)
+        {
+            timeLabelPosY = componentFrame.origin.y - self.bubbleInfoContainerTopConstraint.constant - timeLabelHeight;
         }
         else
         {
-            timeLabelPosY = isFirstDisplayedComponent ? 0 : component.position.y + self.msgTextViewTopConstraint.constant - timeLabelHeight - self.bubbleInfoContainerTopConstraint.constant;
+            timeLabelPosY = component.position.y + self.msgTextViewTopConstraint.constant - timeLabelHeight - self.bubbleInfoContainerTopConstraint.constant;
         }
         
         timeLabelWidth = RoomBubbleCellLayout.timestampLabelWidth;
         timeLabelTextAlignment = NSTextAlignmentRight;
     }
+    
+    timeLabelPosY = MAX(0.0, timeLabelPosY);
     
     UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeLabelPosX, timeLabelPosY, timeLabelWidth, timeLabelHeight)];
     
@@ -529,6 +544,48 @@ NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellT
     }
     
     return componentFrame;
+}
+
++ (CGFloat)attachmentBubbleCellHeightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
+{
+    MXKRoomBubbleTableViewCell* cell = [self cellWithOriginalXib];
+    CGFloat rowHeight = 0;
+    
+    RoomBubbleCellData *bubbleData;
+    
+    if ([cellData isKindOfClass:[RoomBubbleCellData class]])
+    {
+        bubbleData = (RoomBubbleCellData*)cellData;
+    }
+    
+    if (bubbleData && cell.attachmentView && bubbleData.isAttachmentWithThumbnail)
+    {
+        // retrieve the suggested image view height
+        rowHeight = bubbleData.contentSize.height;
+        
+        // Check here the minimum height defined in cell view for text message
+        if (cell.attachViewMinHeightConstraint && rowHeight < cell.attachViewMinHeightConstraint.constant)
+        {
+            rowHeight = cell.attachViewMinHeightConstraint.constant;
+        }
+        
+        // Finalize the row height by adding the vertical constraints.
+        
+        rowHeight += cell.attachViewTopConstraint.constant;
+        
+        CGFloat additionalHeight = bubbleData.additionalContentHeight;
+        
+        if (additionalHeight)
+        {
+            rowHeight += additionalHeight;
+        }
+        else
+        {
+            rowHeight += cell.attachViewBottomConstraint.constant;
+        }
+    }
+    
+    return rowHeight;
 }
 
 #pragma mark - User actions

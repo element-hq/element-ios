@@ -65,4 +65,19 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  */
 @property(nonatomic, readonly) NSInteger selectedComponentIndex;
 
+/**
+ Return additional content height (read receipts, reactions).
+ */
+@property(nonatomic, readonly) CGFloat additionalContentHeight;
+
+/**
+ Indicate to update additional content height.
+ */
+- (void)setNeedsUpdateAdditionalContentHeight;
+
+/**
+ Update additional content height if needed.
+ */
+- (void)updateAdditionalContentHeightIfNeeded;
+
 @end

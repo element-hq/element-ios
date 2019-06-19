@@ -29,6 +29,8 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 @interface RoomBubbleCellData()
 
 @property(nonatomic, readonly) BOOL addVerticalWhitespaceForSelectedComponentTimestamp;
+@property(nonatomic, readwrite) CGFloat additionalContentHeight;
+@property(nonatomic) BOOL shouldUpdateAdditionalContentHeight;
 
 @end
 
@@ -102,6 +104,8 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         
         shouldUpdateComponentsPosition = NO;
     }
+    
+    [self updateAdditionalContentHeightIfNeeded];
 }
 
 - (NSAttributedString*)attributedTextMessage
@@ -291,28 +295,11 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             // Check whether the position of other components need to be refreshed
             if (!self.attachment && index < bubbleComponents.count)
             {
-                NSMutableAttributedString *attributedString;
+                NSMutableAttributedString *attributedString = [NSMutableAttributedString new];
                 NSInteger selectedComponentIndex = self.selectedComponentIndex;
                 NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
-                
-                // Check whether the timestamp is displayed for this first component, and check whether a vertical whitespace is required
-                if (((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index) && (self.shouldHideSenderInformation || self.shouldHideSenderName))
-                {
-                    attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
-                    [attributedString appendAttributedString:component.attributedTextMessage];
-                }
-                else
-                {
-                    // Init attributed string with the first text component
-                    attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:component.attributedTextMessage];
-                }
-                
-                // Vertical whitespace is added in case of read receipts or reactions
-                [self addVerticalWhitespaceToString:attributedString forEvent:component.event.eventId];
-                
-                [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
-                
-                for (index++; index < bubbleComponents.count; index++)
+
+                for (index = 0; index < bubbleComponents.count; index++)
                 {
                     // Compute the vertical position for next component
                     component = bubbleComponents[index];
@@ -391,6 +378,99 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     {
         [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight:RoomBubbleCellLayout.readReceiptsViewHeight + RoomBubbleCellLayout.readReceiptsViewTopMargin]];
     }
+}
+
+- (CGFloat)computeAdditionalHeight
+{
+    CGFloat height = 0;
+    
+    for (MXKRoomBubbleComponent *bubbleComponent in self.bubbleComponents)
+    {
+        NSString *eventId = bubbleComponent.event.eventId;
+        
+        height+= [self reactionHeightForEventId:eventId];
+        height+= [self readReceiptHeightForEventId:eventId];
+    }
+    
+    return height;
+}
+
+- (void)updateAdditionalContentHeightIfNeeded;
+{
+    if (self.shouldUpdateAdditionalContentHeight)
+    {
+        void(^updateAdditionalHeight)(void) = ^() {
+            self.additionalContentHeight = [self computeAdditionalHeight];
+        };
+        
+        // The additional height depends on the room read receipts and reactions view which must be calculated on the main thread.
+        // Check here the current thread, this is just a sanity check because this method is called during the rendering step
+        // which takes place on the main thread.
+        if ([NSThread currentThread] != [NSThread mainThread])
+        {
+            NSLog(@"[RoomBubbleCellData] prepareBubbleComponentsPosition called on wrong thread");
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                updateAdditionalHeight();
+            });
+        }
+        else
+        {
+            updateAdditionalHeight();
+        }
+        
+        self.shouldUpdateAdditionalContentHeight = NO;
+    }
+}
+
+- (void)setNeedsUpdateAdditionalContentHeight
+{
+    self.shouldUpdateAdditionalContentHeight = YES;
+}
+
+- (CGFloat)reactionHeightForEventId:(NSString*)eventId
+{
+    CGFloat height = 0;
+    
+    NSUInteger reactionCount = self.reactions[eventId].reactions.count;
+    
+    MXAggregatedReactions *aggregatedReactions = self.reactions[eventId];
+    
+    if (reactionCount)
+    {
+        CGFloat bubbleReactionsViewWidth = self.maxTextViewWidth - 4;
+        
+        CGSize fittingSize = UILayoutFittingCompressedSize;
+        fittingSize.width = bubbleReactionsViewWidth;
+        
+        static BubbleReactionsView *bubbleReactionsView;
+        
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            bubbleReactionsView = [BubbleReactionsView new];
+        });
+        
+        bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
+        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId];
+        bubbleReactionsView.viewModel = viemModel;
+        [bubbleReactionsView setNeedsLayout];
+        [bubbleReactionsView layoutIfNeeded];
+        
+        height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height + RoomBubbleCellLayout.reactionsViewTopMargin;
+    }
+    
+    return height;
+}
+
+- (CGFloat)readReceiptHeightForEventId:(NSString*)eventId
+{
+    CGFloat height = 0;
+    
+    if (self.readReceipts[eventId].count)
+    {
+        height = RoomBubbleCellLayout.readReceiptsViewHeight + RoomBubbleCellLayout.readReceiptsViewTopMargin;
+    }
+    
+    return height;
 }
 
 - (void)setContainsLastMessage:(BOOL)containsLastMessage
