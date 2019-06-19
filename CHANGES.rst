@@ -8,9 +8,9 @@ Improvements:
  * Menu actions: Display message time (#2463).
  * Reactions Menu: Fix position (#2447).
  * Context menu polish (#2466).
- * Upgrade Piwik/MatomoTracker (v6.0.1) (#2159).
- * Message Editing: Annotate edited messages in timeline (#2400).
- * Message Editing: Editing in the timeline (#2404).
+ * Upgrade Piwik/MatomoTracker (v6.0.1) (#2159).	
+ * Message Editing: Annotate edited messages in timeline (#2400).	
+ * Message Editing: Editing in the timeline (#2404).	
  * Read receipts: They are now counted at the MatrixKit level.
 
 Bug fix:
@@ -18,6 +18,7 @@ Bug fix:
  * Registration with an email is broken (#2417).
  * Reactions: Bad position (#2462).
  * Reactions: It lets you react to join/leave events (#2476).
+ * Adjust size of the insert button in the People tab, thanks to @dcordero (PR #2473).
 
 Changes in 0.8.6 (2019-05-06)
 ===============================================
