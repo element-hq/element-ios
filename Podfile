@@ -60,7 +60,7 @@ end
 abstract_target 'RiotPods' do
 
     pod 'GBDeviceInfo', '~> 5.2.0'
-    pod 'Reusable', '~> 4.0'
+    pod 'Reusable', '~> 4.1'
 
     # Piwik for analytics
     pod 'MatomoTracker', '~> 6.0.1'
