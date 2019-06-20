@@ -270,8 +270,10 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     
     @synchronized(bubbleComponents)
     {
+        NSInteger bubbleComponentsCount = bubbleComponents.count;
+        
         // Check whether there is at least one component.
-        if (bubbleComponents.count)
+        if (bubbleComponentsCount)
         {
             // Set position of the first component
             CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile || self.attachment.type == MXKAttachmentTypeAudio) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
@@ -279,7 +281,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             NSUInteger index = 0;
             
             // Use same position for first components without render (redacted)
-            for (; index < bubbleComponents.count; index++)
+            for (; index < bubbleComponentsCount; index++)
             {
                 // Compute the vertical position for next component
                 component = bubbleComponents[index];
@@ -293,13 +295,14 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             }
             
             // Check whether the position of other components need to be refreshed
-            if (!self.attachment && index < bubbleComponents.count)
+            if (!self.attachment && index < bubbleComponentsCount)
             {
                 NSMutableAttributedString *attributedString = [NSMutableAttributedString new];
                 NSInteger selectedComponentIndex = self.selectedComponentIndex;
                 NSInteger lastMessageIndex = self.containsLastMessage ? self.mostRecentComponentIndex : NSNotFound;
+                NSInteger visibleMessageIndex = 0;
 
-                for (index = 0; index < bubbleComponents.count; index++)
+                for (; index < bubbleComponentsCount; index++)
                 {
                     // Compute the vertical position for next component
                     component = bubbleComponents[index];
@@ -310,7 +313,9 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                         NSAttributedString *componentString = component.attributedTextMessage;
 
                         // Check whether the timestamp is displayed for this component, and check whether a vertical whitespace is required
-                        if ((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index)
+                        
+                        if (((selectedComponentIndex == index && self.addVerticalWhitespaceForSelectedComponentTimestamp) || lastMessageIndex == index)
+                            && !(visibleMessageIndex == 0 && !(self.shouldHideSenderInformation || self.shouldHideSenderName)))
                         {
                             [attributedString appendAttributedString:[RoomBubbleCellData timestampVerticalWhitespace]];
                         }
@@ -330,6 +335,8 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                         [self addVerticalWhitespaceToString:attributedString forEvent:component.event.eventId];
                         
                         [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
+                        
+                        visibleMessageIndex++;
                     }
                     else
                     {
