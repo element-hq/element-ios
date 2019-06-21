@@ -634,6 +634,7 @@
 "bug_report_send" = "Send";
 
 // Widget
+"widget_no_integrations_server_configured" = "No integrations server configured";
 "widget_no_power_to_manage" = "You need permission to manage widgets in this room";
 "widget_creation_failure" = "Widget creation has failed";
 "widget_sticker_picker_no_stickerpacks_alert" = "You don't currently have any stickerpacks enabled.";

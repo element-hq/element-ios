@@ -18,6 +18,8 @@
 #import "IntegrationManagerViewController.h"
 
 #import "WidgetManager.h"
+
+#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 NSString *const kIntegrationManagerMainScreen = nil;
@@ -87,8 +89,14 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         } failure:^(NSError *error) {
             MXStrongifyAndReturnIfNil(self);
 
+            NSLog(@"[IntegraionManagerVS] Cannot open due to missing scalar token. Error: %@", error);
+
             self->operation = nil;
             [self stopActivityIndicator];
+
+            [self withdrawViewControllerAnimated:YES completion:^{
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
         }];
     }
 }

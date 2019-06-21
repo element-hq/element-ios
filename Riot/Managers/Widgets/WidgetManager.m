@@ -264,7 +264,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     if (!config.hasUrls)
     {
         NSLog(@"[WidgetManager] createJitsiWidgetInRoom: Error: no Integrations Manager API URL for user %@", userId);
-        failure(nil);
+        failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
 
@@ -517,7 +517,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     if (!config.hasUrls)
     {
         NSLog(@"[WidgetManager] registerForScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
-        failure(nil);
+        failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
 
@@ -580,7 +580,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     if (!config.hasUrls)
     {
         NSLog(@"[WidgetManager] validateScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
-        failure(nil);
+        failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
 
@@ -698,6 +698,16 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     NSUserDefaults *userDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
     [userDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:configs]
                      forKey:@"integrationManagerConfigs"];
+}
+
+
+#pragma mark - Errors
+
+- (NSError*)errorForNonConfiguredIntegrationManager
+{
+    return [NSError errorWithDomain:WidgetManagerErrorDomain
+                               code:WidgetManagerErrorCodeNoIntegrationsServerConfigured
+                           userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_no_integrations_server_configured", @"Vector", nil)}];
 }
 
 @end

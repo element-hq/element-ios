@@ -54,7 +54,8 @@ FOUNDATION_EXPORT NSString *const WidgetManagerErrorDomain;
 typedef enum : NSUInteger
 {
     WidgetManagerErrorCodeNotEnoughPower,
-    WidgetManagerErrorCodeCreationFailed
+    WidgetManagerErrorCodeCreationFailed,
+    WidgetManagerErrorCodeNoIntegrationsServerConfigured
 }
 WidgetManagerErrorCode;
 
