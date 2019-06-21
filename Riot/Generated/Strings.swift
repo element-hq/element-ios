@@ -2834,6 +2834,10 @@ internal enum VectorL10n {
   internal static var widgetIntegrationUnableToCreate: String { 
     return VectorL10n.tr("Vector", "widget_integration_unable_to_create") 
   }
+  /// Failed to connect to integrations server
+  internal static var widgetIntegrationsServerFailedToConnect: String { 
+    return VectorL10n.tr("Vector", "widget_integrations_server_failed_to_connect") 
+  }
   /// No integrations server configured
   internal static var widgetNoIntegrationsServerConfigured: String { 
     return VectorL10n.tr("Vector", "widget_no_integrations_server_configured") 

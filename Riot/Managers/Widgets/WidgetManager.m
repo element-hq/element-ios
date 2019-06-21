@@ -548,10 +548,17 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
              }
 
          } failure:^(NSError *error) {
-             NSLog(@"[WidgetManager] registerForScalarToken. Error in modular/register request");
+             NSLog(@"[WidgetManager] registerForScalarToken: Failed to register. Error: %@", error);
 
              if (failure)
              {
+                 // Specialise the error
+                 NSError *error = [NSError errorWithDomain:WidgetManagerErrorDomain
+                                                      code:WidgetManagerErrorCodeFailedToConnectToIntegrationsServer
+                                                  userInfo:@{
+                                                             NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_integrations_server_failed_to_connect", @"Vector", nil)
+                                                             }];
+
                  failure(error);
              }
          }];

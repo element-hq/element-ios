@@ -55,7 +55,8 @@ typedef enum : NSUInteger
 {
     WidgetManagerErrorCodeNotEnoughPower,
     WidgetManagerErrorCodeCreationFailed,
-    WidgetManagerErrorCodeNoIntegrationsServerConfigured
+    WidgetManagerErrorCodeNoIntegrationsServerConfigured,
+    WidgetManagerErrorCodeFailedToConnectToIntegrationsServer
 }
 WidgetManagerErrorCode;
 
