@@ -190,7 +190,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
             NSLog(@"[WidgetVC] decidePolicyForNavigationResponse: statusCode: %@", @(response.statusCode));
         }
 
-        if (response.statusCode == 403 && [WidgetManager isScalarUrl:self.URL])
+        if (response.statusCode == 403 && [[WidgetManager sharedManager] isScalarUrl:self.URL forUser:self.widget.mxSession.myUser.userId])
         {
             [self fixScalarToken];
         }

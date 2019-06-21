@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,6 +18,7 @@
 #import "IntegrationManagerViewController.h"
 
 #import "WidgetManager.h"
+#import "Riot-Swift.h"
 
 NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
@@ -100,10 +102,12 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 {
     NSMutableString *url;
 
+    NSString *integrationsUiUrl = [[WidgetManager sharedManager] configForUser:mxSession.myUser.userId].uiUrl;
+
     if (scalarToken)
     {
         url = [NSMutableString stringWithFormat:@"%@?scalar_token=%@&room_id=%@",
-               [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsUiUrl"],
+               integrationsUiUrl,
                [MXTools encodeURIComponent:scalarToken],
                [MXTools encodeURIComponent:roomId]
                ];
