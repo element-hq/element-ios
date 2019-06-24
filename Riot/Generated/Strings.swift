@@ -574,6 +574,10 @@ internal enum VectorL10n {
   internal static var deviceVerificationEmojiLion: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_lion") 
   }
+  /// Lock
+  internal static var deviceVerificationEmojiLock: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_lock") 
+  }
   /// Moon
   internal static var deviceVerificationEmojiMoon: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_moon") 
@@ -585,10 +589,6 @@ internal enum VectorL10n {
   /// Octopus
   internal static var deviceVerificationEmojiOctopus: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_octopus") 
-  }
-  /// Padlock
-  internal static var deviceVerificationEmojiPadlock: String { 
-    return VectorL10n.tr("Vector", "device_verification_emoji_padlock") 
   }
   /// Panda
   internal static var deviceVerificationEmojiPanda: String { 
