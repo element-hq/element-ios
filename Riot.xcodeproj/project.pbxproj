@@ -22,6 +22,7 @@
 		32242F1721E8FBE500725742 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0D21E8FBA900725742 /* Theme.swift */; };
 		32242F1821E8FBF800725742 /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0F21E8FBA900725742 /* DefaultTheme.swift */; };
 		32242F1921E8FBFB00725742 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F1021E8FBA900725742 /* DarkTheme.swift */; };
+		322C110822BBC6F80043FEAC /* WidgetManagerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322C110722BBC6F80043FEAC /* WidgetManagerConfig.swift */; };
 		3232AB1422564D9100AD6A5C /* swiftgen-config.yml in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB0022564D9100AD6A5C /* swiftgen-config.yml */; };
 		3232AB1522564D9100AD6A5C /* flat-swift4-vector.stencil in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB0322564D9100AD6A5C /* flat-swift4-vector.stencil */; };
 		3232AB2122564D9100AD6A5C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB1322564D9100AD6A5C /* README.md */; };
@@ -548,6 +549,7 @@
 		32242F0F21E8FBA900725742 /* DefaultTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
 		32242F1021E8FBA900725742 /* DarkTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		32242F1121E8FBA900725742 /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
+		322C110722BBC6F80043FEAC /* WidgetManagerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetManagerConfig.swift; sourceTree = "<group>"; };
 		3232AB0022564D9100AD6A5C /* swiftgen-config.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "swiftgen-config.yml"; sourceTree = "<group>"; };
 		3232AB0322564D9100AD6A5C /* flat-swift4-vector.stencil */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "flat-swift4-vector.stencil"; sourceTree = "<group>"; };
 		3232AB1322564D9100AD6A5C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -3042,6 +3044,7 @@
 				B1B5598420EFC3DF00210D55 /* WidgetManager.m */,
 				B1B5598120EFC3DF00210D55 /* Widget.h */,
 				B1B5598320EFC3DF00210D55 /* Widget.m */,
+				322C110722BBC6F80043FEAC /* WidgetManagerConfig.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -3987,6 +3990,7 @@
 				B1B5593C20EF7BAC00210D55 /* TableViewCellWithCheckBoxes.m in Sources */,
 				32891D6B2264CBA300C82226 /* SimpleScreenTemplateViewController.swift in Sources */,
 				B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */,
+				322C110822BBC6F80043FEAC /* WidgetManagerConfig.swift in Sources */,
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */,
 				B1B5573820EE6C4D00210D55 /* GroupParticipantsViewController.m in Sources */,
