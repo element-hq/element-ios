@@ -16,6 +16,7 @@ Improvements:
 
 Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
+ * Device Verification: Name for 🔒 is "Lock" (#2526).
  * Registration with an email is broken (#2417).
  * Reactions: Bad position (#2462).
  * Reactions: It lets you react to join/leave events (#2476).

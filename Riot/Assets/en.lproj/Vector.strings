@@ -881,7 +881,7 @@
 "device_verification_emoji_pencil" = "Pencil";
 "device_verification_emoji_paperclip" = "Paperclip";
 "device_verification_emoji_scissors" = "Scissors";
-"device_verification_emoji_padlock" = "Padlock";
+"device_verification_emoji_lock" = "Lock";
 "device_verification_emoji_key" = "Key";
 "device_verification_emoji_hammer" = "Hammer";
 "device_verification_emoji_telephone" = "Telephone";
