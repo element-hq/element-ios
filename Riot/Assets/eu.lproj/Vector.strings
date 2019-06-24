@@ -765,3 +765,7 @@
 "device_verification_emoji_headphones" = "Aurikularrak";
 "device_verification_emoji_folder" = "Karpeta";
 "device_verification_emoji_pin" = "Txintxeta";
+// Widget
+"widget_no_integrations_server_configured" = "Ez da integrazio zerbitzaririk konfiguratu";
+"widget_integrations_server_failed_to_connect" = "Huts egin du integrazioen zerbitzarira konektatzean";
+"device_verification_emoji_lock" = "Giltzarrapoa";
