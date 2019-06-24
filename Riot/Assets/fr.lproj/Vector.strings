@@ -777,3 +777,6 @@
 "device_verification_emoji_folder" = "Dossier";
 "device_verification_emoji_pin" = "Épingle";
 "event_formatter_message_edited_mention" = "(Édité)";
+// Widget
+"widget_no_integrations_server_configured" = "Aucun serveur d’intégrations n’est configuré";
+"widget_integrations_server_failed_to_connect" = "Échec de connexion au serveur d’intégrations";
