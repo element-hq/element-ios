@@ -782,3 +782,7 @@
 "device_verification_emoji_folder" = "Mappa";
 "device_verification_emoji_pin" = "Rajszeg";
 "event_formatter_message_edited_mention" = "(Szerkesztve)";
+// Widget
+"widget_no_integrations_server_configured" = "Integrációs szerver nincs beállítva";
+"widget_integrations_server_failed_to_connect" = "Az integrációs szerverhez nem lehet csatlakozni";
+"device_verification_emoji_lock" = "Zár";
