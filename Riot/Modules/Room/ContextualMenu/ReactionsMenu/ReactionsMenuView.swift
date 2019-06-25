@@ -17,93 +17,111 @@
 import UIKit
 import Reusable
 
-final class ReactionsMenuView: UIView, NibOwnerLoadable {
-
+final class ReactionsMenuView: UIView, Themable, NibLoadable {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let selectedReactionAnimationScale: CGFloat = 1.2
+    }
+    
     // MARK: - Properties
-
+    
     // MARK: Outlets
-    @IBOutlet weak var agreeButton: UIButton!
-    @IBOutlet weak var disagreeButton: UIButton!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var dislikeButton: UIButton!
 
+    @IBOutlet private weak var reactionsBackgroundView: UIView!    
+    @IBOutlet private weak var reactionsStackView: UIStackView!
+    
     // MARK: Private
-
+    
+    private var reactionViewDatas: [ReactionMenuItemViewData] = []
+    private var reactionButtons: [ReactionsMenuButton] = []
+    private var tappedReactionButton: ReactionsMenuButton?
+    
     // MARK: Public
-
+    
     var viewModel: ReactionsMenuViewModelType? {
         didSet {
-            self.updateView()
             self.viewModel?.viewDelegate = self
+            self.viewModel?.process(viewAction: .loadData)
         }
     }
-
-    // MARK: - Setup
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.loadNibContent()
-        self.commonInit()
+    
+    var reactionHasBeenTapped: Bool {
+        return self.tappedReactionButton != nil
     }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.loadNibContent()
-        self.commonInit()
+    
+    // MARK: - Life cycle
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.reactionsBackgroundView.layer.masksToBounds = true
+        self.update(theme: ThemeService.shared().theme)
     }
-
-    // MARK: - Actions
-
-    @IBAction private func agreeButtonAction(_ sender: Any) {
-        self.viewModel?.process(viewAction: .toggleReaction(.agree))
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.reactionsBackgroundView.layer.cornerRadius = self.reactionsBackgroundView.frame.size.height/2
     }
-
-    @IBAction private func disagreeButtonAction(_ sender: Any) {
-        self.viewModel?.process(viewAction: .toggleReaction(.disagree))
+    
+    // MARK: - Public
+    
+    func update(theme: Theme) {
+        self.reactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
     }
-
-    @IBAction private func likeButtonAction(_ sender: Any) {
-        self.viewModel?.process(viewAction: .toggleReaction(.like))
+    
+    func selectionAnimationInstructionPart1() {
+        guard let tappedButton = self.tappedReactionButton else {
+            return
+        }
+        let scale = Constants.selectedReactionAnimationScale
+        tappedButton.superview?.bringSubviewToFront(tappedButton)
+        tappedButton.transform = CGAffineTransform(scaleX: scale, y: scale)
     }
-
-    @IBAction private func dislikeButtonAction(_ sender: Any) {
-        self.viewModel?.process(viewAction: .toggleReaction(.dislike))
+    
+    func selectionAnimationInstructionPart2() {
+        guard let tappedButton = self.tappedReactionButton else {
+            return
+        }
+        tappedButton.transform = CGAffineTransform.identity
+        tappedButton.isSelected.toggle()
     }
     
     // MARK: - Private
-
-    private func commonInit() {
-
-        agreeButton.setTitle(VectorL10n.roomEventActionReactionAgree(ReactionsMenuReaction.agree.rawValue), for: .normal)
-        agreeButton.setTitle(VectorL10n.roomEventActionReactionAgree(ReactionsMenuReaction.agree.rawValue), for: .highlighted)
-        disagreeButton.setTitle(VectorL10n.roomEventActionReactionDisagree(ReactionsMenuReaction.disagree.rawValue), for: .normal)
-        disagreeButton.setTitle(VectorL10n.roomEventActionReactionDisagree(ReactionsMenuReaction.disagree.rawValue), for: .highlighted)
-        likeButton.setTitle(VectorL10n.roomEventActionReactionLike(ReactionsMenuReaction.like.rawValue), for: .normal)
-        likeButton.setTitle(VectorL10n.roomEventActionReactionLike(ReactionsMenuReaction.like.rawValue), for: .highlighted)
-        dislikeButton.setTitle(VectorL10n.roomEventActionReactionDislike(ReactionsMenuReaction.dislike.rawValue), for: .normal)
-        dislikeButton.setTitle(VectorL10n.roomEventActionReactionDislike(ReactionsMenuReaction.dislike.rawValue), for: .highlighted)
-
-        customizeViewRendering()
+    
+    private func fill(reactionsMenuViewDatas: [ReactionMenuItemViewData]) {
+        self.reactionViewDatas = reactionsMenuViewDatas
+        
+        self.reactionsStackView.vc_removeAllSubviews()
+        
+        for reactionViewData in self.reactionViewDatas {
+            let reactionsMenuButton = ReactionsMenuButton()
+            reactionsMenuButton.setTitle(reactionViewData.emoji, for: .normal)
+            reactionsMenuButton.isSelected = reactionViewData.isSelected
+            reactionsMenuButton.addTarget(self, action: #selector(reactionButtonAction), for: .touchUpInside)
+            self.reactionsStackView.addArrangedSubview(reactionsMenuButton)
+            self.reactionButtons.append(reactionsMenuButton)
+        }
     }
-
-    private func customizeViewRendering() {
-        self.backgroundColor = UIColor.clear
-    }
-
-    private func updateView() {
-        guard let viewModel = self.viewModel else {
+    
+    @objc private func reactionButtonAction(_ sender: ReactionsMenuButton) {
+        guard let tappedReaction = sender.titleLabel?.text else {
             return
         }
-
-        agreeButton.isSelected = viewModel.isAgreeButtonSelected
-        disagreeButton.isSelected = viewModel.isDisagreeButtonSelected
-        likeButton.isSelected = viewModel.isLikeButtonSelected
-        dislikeButton.isSelected = viewModel.isDislikeButtonSelected
+        self.tappedReactionButton = sender
+        self.viewModel?.process(viewAction: .tap(reaction: tappedReaction))
     }
 }
 
-extension ReactionsMenuView: ReactionsMenuViewModelDelegate {
-    func reactionsMenuViewModelDidUpdate(_ viewModel: ReactionsMenuViewModelType) {
-        self.updateView()
+// MARK: - ReactionsMenuViewModelViewDelegate
+extension ReactionsMenuView: ReactionsMenuViewModelViewDelegate {
+    
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didUpdateViewState viewState: ReactionsMenuViewState) {
+        switch viewState {
+        case .loaded(reactionsViewData: let reactionsViewData):
+            self.fill(reactionsMenuViewDatas: reactionsViewData)
+        }
     }
 }
