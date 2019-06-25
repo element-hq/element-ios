@@ -780,3 +780,4 @@
 // Widget
 "widget_no_integrations_server_configured" = "Aucun serveur d’intégrations n’est configuré";
 "widget_integrations_server_failed_to_connect" = "Échec de connexion au serveur d’intégrations";
+"device_verification_emoji_lock" = "Cadenas";
