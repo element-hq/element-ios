@@ -21,19 +21,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Szx-Dr-Ndt">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="793"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vdy-rp-3g9" customClass="ReactionsMenuView" customModule="Riot" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="100" width="414" height="100"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vdy-rp-3g9">
+                                        <rect key="frame" x="10" y="150" width="394" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="100" id="D3i-aE-kdL"/>
+                                            <constraint firstAttribute="height" constant="50" id="D3i-aE-kdL"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" priority="999" constant="400" id="Kdn-SI-BvA"/>
                                         </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="Vdy-rp-3g9" firstAttribute="bottom" secondItem="Szx-Dr-Ndt" secondAttribute="top" constant="200" id="0GH-Qk-vKA"/>
-                                    <constraint firstAttribute="trailing" secondItem="Vdy-rp-3g9" secondAttribute="trailing" id="9Gu-dr-IPv"/>
-                                    <constraint firstItem="Vdy-rp-3g9" firstAttribute="leading" secondItem="Szx-Dr-Ndt" secondAttribute="leading" id="h78-sP-xDx"/>
+                                    <constraint firstItem="Vdy-rp-3g9" firstAttribute="width" secondItem="Szx-Dr-Ndt" secondAttribute="width" priority="750" id="Io5-6N-mvK"/>
+                                    <constraint firstItem="Vdy-rp-3g9" firstAttribute="centerX" secondItem="Szx-Dr-Ndt" secondAttribute="centerX" id="epY-Ub-0d5"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0GC-JU-rI3" customClass="RoomContextualMenuToolbarView" customModule="Riot" customModuleProvider="target">
@@ -49,8 +50,10 @@
                             <constraint firstAttribute="trailing" secondItem="Szx-Dr-Ndt" secondAttribute="trailing" id="2eB-6O-P3h"/>
                             <constraint firstItem="Szx-Dr-Ndt" firstAttribute="leading" secondItem="X0o-r8-auN" secondAttribute="leading" id="4qK-G6-nr9"/>
                             <constraint firstItem="Szx-Dr-Ndt" firstAttribute="top" secondItem="X0o-r8-auN" secondAttribute="top" id="GVa-P9-DcG"/>
+                            <constraint firstItem="Vdy-rp-3g9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="225-y0-Elg" secondAttribute="leading" constant="10" id="R2Z-jH-SRN"/>
                             <constraint firstItem="0GC-JU-rI3" firstAttribute="leading" secondItem="X0o-r8-auN" secondAttribute="leading" id="TZJ-nm-Ppz"/>
                             <constraint firstItem="0GC-JU-rI3" firstAttribute="top" secondItem="Szx-Dr-Ndt" secondAttribute="bottom" id="Wyl-wh-kh4"/>
+                            <constraint firstItem="225-y0-Elg" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Vdy-rp-3g9" secondAttribute="trailing" constant="10" id="j9U-2p-huj"/>
                             <constraint firstAttribute="trailing" secondItem="0GC-JU-rI3" secondAttribute="trailing" id="lzM-FD-x89"/>
                             <constraint firstItem="225-y0-Elg" firstAttribute="bottom" secondItem="0GC-JU-rI3" secondAttribute="bottom" id="s4i-80-0iu"/>
                         </constraints>
@@ -61,7 +64,7 @@
                         <outlet property="menuToolbarView" destination="0GC-JU-rI3" id="j0z-I8-Pcr"/>
                         <outlet property="menuToolbarViewBottomConstraint" destination="s4i-80-0iu" id="E5w-5m-m5O"/>
                         <outlet property="menuToolbarViewHeightConstraint" destination="ynL-KP-iB4" id="Zeb-b0-Yil"/>
-                        <outlet property="reactionsMenuView" destination="Vdy-rp-3g9" id="jJT-mz-vg6"/>
+                        <outlet property="reactionsMenuContainerView" destination="Vdy-rp-3g9" id="hRj-C0-5VR"/>
                         <outlet property="reactionsMenuViewBottomConstraint" destination="0GH-Qk-vKA" id="8lg-XL-JgW"/>
                         <outlet property="reactionsMenuViewHeightConstraint" destination="D3i-aE-kdL" id="CCr-hW-2dv"/>
                     </connections>

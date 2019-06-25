@@ -31,7 +31,7 @@ import Foundation
     
     // MARK: Public
     
-    @objc weak var viewModelDelegate: ReactionsMenuViewModelCoordinatorDelegate?
+    @objc weak var coordinatorDelegate: ReactionsMenuViewModelCoordinatorDelegate?
     weak var viewDelegate: ReactionsMenuViewModelViewDelegate?
     
     // MARK: - Setup
