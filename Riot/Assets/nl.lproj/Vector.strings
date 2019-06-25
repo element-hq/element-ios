@@ -785,3 +785,7 @@
 "device_verification_emoji_folder" = "Map";
 "device_verification_emoji_pin" = "Speld";
 "event_formatter_message_edited_mention" = "(Bewerkt)";
+// Widget
+"widget_no_integrations_server_configured" = "Geen integratieserver geconfigureerd";
+"widget_integrations_server_failed_to_connect" = "Verbinden met integratieserver mislukt";
+"device_verification_emoji_lock" = "Slot";
