@@ -20,16 +20,16 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jjn-uq-kYN">
-                        <rect key="frame" x="0.0" y="0.0" width="66" height="22"/>
+                        <rect key="frame" x="1" y="1" width="64" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="👍" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyn-ux-gmi">
-                                <rect key="frame" x="6" y="4" width="26" height="14"/>
+                                <rect key="frame" x="6" y="4" width="24" height="12"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="230" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DQc-oh-Wus">
-                                <rect key="frame" x="34" y="4" width="26" height="14"/>
+                                <rect key="frame" x="32" y="3" width="26" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="26" id="qaD-Xb-kVP"/>
                                 </constraints>
@@ -51,10 +51,10 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="jjn-uq-kYN" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="E5H-9a-us9"/>
-                <constraint firstAttribute="bottom" secondItem="jjn-uq-kYN" secondAttribute="bottom" id="Ggm-1f-3EB"/>
-                <constraint firstItem="jjn-uq-kYN" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="iT6-rk-qd6"/>
-                <constraint firstAttribute="trailing" secondItem="jjn-uq-kYN" secondAttribute="trailing" id="ztM-7J-Dnf"/>
+                <constraint firstItem="jjn-uq-kYN" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="1" id="E5H-9a-us9"/>
+                <constraint firstAttribute="bottom" secondItem="jjn-uq-kYN" secondAttribute="bottom" constant="1" id="Ggm-1f-3EB"/>
+                <constraint firstItem="jjn-uq-kYN" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="1" id="iT6-rk-qd6"/>
+                <constraint firstAttribute="trailing" secondItem="jjn-uq-kYN" secondAttribute="trailing" constant="1" id="ztM-7J-Dnf"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="443" height="170"/>
