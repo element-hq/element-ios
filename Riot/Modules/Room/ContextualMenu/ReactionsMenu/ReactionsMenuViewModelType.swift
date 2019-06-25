@@ -16,8 +16,8 @@
 
 import Foundation
 
-protocol ReactionsMenuViewModelDelegate: class {
-    func reactionsMenuViewModelDidUpdate(_ viewModel: ReactionsMenuViewModelType)
+protocol ReactionsMenuViewModelViewDelegate: class {
+    func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didUpdateViewState viewState: ReactionsMenuViewState)
 }
 
 @objc protocol ReactionsMenuViewModelCoordinatorDelegate: class {
@@ -25,16 +25,10 @@ protocol ReactionsMenuViewModelDelegate: class {
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didRemoveReaction reaction: String, forEventId eventId: String)
 }
 
-
 protocol ReactionsMenuViewModelType {
-
-    var isAgreeButtonSelected: Bool { get }
-    var isDisagreeButtonSelected: Bool { get }
-    var isLikeButtonSelected: Bool { get }
-    var isDislikeButtonSelected: Bool { get }
-
-    var viewDelegate: ReactionsMenuViewModelDelegate? { get set }
+    
     var coordinatorDelegate: ReactionsMenuViewModelCoordinatorDelegate? { get set }
-
+    var viewDelegate: ReactionsMenuViewModelViewDelegate? { get set }
+    
     func process(viewAction: ReactionsMenuViewAction)
 }

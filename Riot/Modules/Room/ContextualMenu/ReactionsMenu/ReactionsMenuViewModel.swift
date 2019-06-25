@@ -14,158 +14,71 @@
  limitations under the License.
  */
 
-import UIKit
+import Foundation
 
 @objc final class ReactionsMenuViewModel: NSObject, ReactionsMenuViewModelType {
-
+    
     // MARK: - Properties
-
+    
+    private let reactions = ["👍", "👎", "😄", "🎉", "😕", "❤️", "🚀", "👀"]
+    private var currentViewDatas: [ReactionMenuItemViewData] = []
+    
     // MARK: Private
-    private let aggregations: MXAggregations
-    private let roomId: String
+    
+    private let aggregatedReactions: MXAggregatedReactions?
+    private let reactionsViewData: [ReactionMenuItemViewData] = []
     private let eventId: String
-
+    
     // MARK: Public
-
-    private(set) var isAgreeButtonSelected: Bool = false
-    private(set) var isDisagreeButtonSelected: Bool = false
-    private(set) var isLikeButtonSelected: Bool = false
-    private(set) var isDislikeButtonSelected: Bool = false
-
-    weak var viewDelegate: ReactionsMenuViewModelDelegate?
+    
     @objc weak var coordinatorDelegate: ReactionsMenuViewModelCoordinatorDelegate?
-
+    weak var viewDelegate: ReactionsMenuViewModelViewDelegate?
+    
     // MARK: - Setup
-
-    @objc init(aggregations: MXAggregations, roomId: String, eventId: String) {
-        self.aggregations = aggregations
-        self.roomId = roomId
+    
+    @objc init(aggregatedReactions: MXAggregatedReactions?,
+               eventId: String) {
+        self.aggregatedReactions = aggregatedReactions
         self.eventId = eventId
-        
-        super.init()
-
-        self.loadData()
-        self.listenToDataUpdate()
     }
-
+    
     // MARK: - Public
-
+    
     func process(viewAction: ReactionsMenuViewAction) {
-        var reaction: ReactionsMenuReaction?
-        var newState: Bool?
-
         switch viewAction {
-        case .toggleReaction(let menuReaction):
-            reaction = menuReaction
-
-            switch menuReaction {
-            case .agree:
-                newState = !self.isAgreeButtonSelected
-            case .disagree:
-                newState = !self.isDisagreeButtonSelected
-            case .like:
-                newState = !self.isLikeButtonSelected
-            case .dislike:
-                newState = !self.isDislikeButtonSelected
-            }
-        }
-
-        guard let theReaction = reaction, let theNewState = newState else {
-            return
-        }
-
-        self.react(withReaction: theReaction, selected: theNewState)
-    }
-
-    // MARK: - Private
-
-    private func resetData() {
-        self.isAgreeButtonSelected = false
-        self.isDisagreeButtonSelected = false
-        self.isLikeButtonSelected = false
-        self.isDislikeButtonSelected = false
-    }
-
-    private func loadData() {
-        guard let reactionCounts = self.aggregations.aggregatedReactions(onEvent: self.eventId, inRoom: self.roomId)?.withNonZeroCount()?.reactions else {
-            return
-        }
-
-        self.resetData()
-        reactionCounts.forEach { (reactionCount) in
-            if reactionCount.myUserHasReacted {
-                if let reaction = ReactionsMenuReaction(rawValue: reactionCount.reaction) {
-                    switch reaction {
-                    case .agree:
-                        self.isAgreeButtonSelected = true
-                    case .disagree:
-                        self.isDisagreeButtonSelected = true
-                    case .like:
-                        self.isLikeButtonSelected = true
-                    case .dislike:
-                        self.isDislikeButtonSelected = true
-                    }
+        case .loadData:
+            self.loadData()
+        case .tap(let reaction):
+            if let viewData = self.currentViewDatas.first(where: { $0.emoji == reaction }) {
+                if viewData.isSelected {
+                    self.coordinatorDelegate?.reactionsMenuViewModel(self, didRemoveReaction: reaction, forEventId: self.eventId)
+                } else {
+                    self.coordinatorDelegate?.reactionsMenuViewModel(self, didAddReaction: reaction, forEventId: self.eventId)
                 }
-            }
-        }
-
-        self.viewDelegate?.reactionsMenuViewModelDidUpdate(self)
-    }
-
-    private func listenToDataUpdate() {
-        self.aggregations.listenToReactionCountUpdate(inRoom: self.roomId) { [weak self] (changes) in
-
-            guard let sself = self else {
-                return
-            }
-
-            if changes[sself.eventId] != nil {
-                sself.loadData()
             }
         }
     }
     
-    private func react(withReaction reaction: ReactionsMenuReaction, selected: Bool) {
+    // MARK: - Private
+    
+    private func loadData() {
+        let reactionCounts = self.aggregatedReactions?.withNonZeroCount()?.reactions ?? []
         
-        // If required, unreact first
-        if selected {
-            self.ensure3StateButtons(withReaction: reaction)
+        var quickReactionsWithUserReactedFlag: [String: Bool] = Dictionary(uniqueKeysWithValues: self.reactions.map { ($0, false) })
+        
+        reactionCounts.forEach { (reactionCount) in
+            if let hasUserReacted = quickReactionsWithUserReactedFlag[reactionCount.reaction], hasUserReacted == false {
+                quickReactionsWithUserReactedFlag[reactionCount.reaction] = reactionCount.myUserHasReacted
+            }
         }
         
-        let reactionString = reaction.rawValue
+        let reactionMenuItemViewDatas: [ReactionMenuItemViewData] = self.reactions.map { reaction -> ReactionMenuItemViewData in
+            let isSelected = quickReactionsWithUserReactedFlag[reaction] ?? false
+            return ReactionMenuItemViewData(emoji: reaction, isSelected: isSelected)
+        }
         
-        if selected {
-            self.coordinatorDelegate?.reactionsMenuViewModel(self, didAddReaction: reactionString, forEventId: self.eventId)
-        } else {
-            self.coordinatorDelegate?.reactionsMenuViewModel(self, didRemoveReaction: reactionString, forEventId: self.eventId)
-        }
-    }
-
-    // We can like, dislike, be indifferent but we cannot like & dislike at the same time
-    private func ensure3StateButtons(withReaction reaction: ReactionsMenuReaction) {
-        var unreaction: ReactionsMenuReaction?
-
-        switch reaction {
-        case .agree:
-            if isDisagreeButtonSelected {
-                unreaction = .disagree
-            }
-        case .disagree:
-            if isAgreeButtonSelected {
-                unreaction = .agree
-            }
-        case .like:
-            if isDislikeButtonSelected {
-                unreaction = .dislike
-            }
-        case .dislike:
-            if isLikeButtonSelected {
-                unreaction = .like
-            }
-        }
-
-        if let unreaction = unreaction {
-            self.react(withReaction: unreaction, selected: false)
-        }
+        self.currentViewDatas = reactionMenuItemViewDatas
+        
+        self.viewDelegate?.reactionsMenuViewModel(self, didUpdateViewState: ReactionsMenuViewState.loaded(reactionsViewData: reactionMenuItemViewDatas))
     }
 }
