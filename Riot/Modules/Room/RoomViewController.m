@@ -5158,21 +5158,13 @@
         return;
     }
     
-    [self selectEventWithId:event.eventId];
+    NSString *selectedEventId = event.eventId;
+    
+    [self selectEventWithId:selectedEventId];
     
     NSArray<RoomContextualMenuItem*>* contextualMenuItems = [self contextualMenuItemsForEvent:event andCell:cell];
-    
-    RoomContextualMenuViewController *roomContextualMenuViewController = [RoomContextualMenuViewController instantiateWith:contextualMenuItems];
-    roomContextualMenuViewController.delegate = self;
-    
-    [self enableOverlayContainerUserInteractions:YES];
-    
-    [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:roomContextualMenuViewController
-                                                                             from:self
-                                                                               on:self.overlayContainerView
-                                                                         animated:YES
-                                                                       completion:^{
-                                                                       }];
+    ReactionsMenuViewModel *reactionsMenuViewModel;
+    CGRect bubbleComponentFrameInOverlayView = CGRectNull;
     
     if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && [self.roomDataSource canReactToEventWithId:event.eventId])
     {
@@ -5181,14 +5173,14 @@
         NSArray *bubbleComponents = bubbleCellData.bubbleComponents;
         
         NSInteger foundComponentIndex = [bubbleComponents indexOfObjectPassingTest:^BOOL(MXKRoomBubbleComponent * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (obj.event.eventId == event.eventId)
+            if (obj.event.eventId == selectedEventId)
             {
                 *stop = YES;
                 return YES;
             }
             return NO;
         }];
-                
+        
         CGRect bubbleComponentFrame;
         
         if (bubbleComponents.count > 0)
@@ -5201,16 +5193,28 @@
             bubbleComponentFrame = roomBubbleTableViewCell.frame;
         }
         
-        CGRect bubbleComponentFrameInOverlayView = [self.bubblesTableView convertRect:bubbleComponentFrame toView:self.overlayContainerView];
+        bubbleComponentFrameInOverlayView = [self.bubblesTableView convertRect:bubbleComponentFrame toView:self.overlayContainerView];
         
         NSString *roomId = self.roomDataSource.roomId;
         MXAggregations *aggregations = self.mainSession.aggregations;
+        MXAggregatedReactions *aggregatedReactions = [aggregations aggregatedReactionsOnEvent:selectedEventId inRoom:roomId];
         
-        ReactionsMenuViewModel *reactionsMenuViewModel = [[ReactionsMenuViewModel alloc] initWithAggregations:aggregations roomId:roomId eventId:event.eventId];
+        reactionsMenuViewModel = [[ReactionsMenuViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:selectedEventId];
         reactionsMenuViewModel.coordinatorDelegate = self;
-        
-        [self.roomContextualMenuPresenter showReactionsMenuWithReactionsMenuViewModel:reactionsMenuViewModel aroundFrame:bubbleComponentFrameInOverlayView];
     }
+    
+    RoomContextualMenuViewController *roomContextualMenuViewController = [RoomContextualMenuViewController instantiateWith:contextualMenuItems reactionsMenuViewModel:reactionsMenuViewModel];
+    roomContextualMenuViewController.delegate = self;
+    
+    [self enableOverlayContainerUserInteractions:YES];
+    
+    [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:roomContextualMenuViewController
+                                                                             from:self
+                                                                               on:self.overlayContainerView
+                                                              contentToReactFrame:bubbleComponentFrameInOverlayView
+                                                                         animated:YES
+                                                                       completion:^{
+                                                                       }];
 }
 
 - (void)hideContextualMenuAnimated:(BOOL)animated
@@ -5259,41 +5263,39 @@
     [self hideContextualMenuAnimated:YES];
 }
 
-- (void)roomContextualMenuViewControllerDidReaction:(RoomContextualMenuViewController *)viewController
-{
-    [self hideContextualMenuAnimated:YES];
-}
-
 #pragma mark - ReactionsMenuViewModelCoordinatorDelegate
 
 - (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didAddReaction:(NSString *)reaction forEventId:(NSString *)eventId
 {
     MXWeakify(self);
     
-    [self.roomDataSource addReaction:reaction forEventId:eventId success:^{
+    [self hideContextualMenuAnimated:YES completion:^{
         
-    } failure:^(NSError *error) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+        [self.roomDataSource addReaction:reaction forEventId:eventId success:^{
+            
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+        }];
     }];
-
-    [self hideContextualMenuAnimated:YES];
 }
 
 - (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didRemoveReaction:(NSString *)reaction forEventId:(NSString *)eventId
 {
     MXWeakify(self);
     
-    [self.roomDataSource removeReaction:reaction forEventId:eventId success:^{
+    [self hideContextualMenuAnimated:YES completion:^{
         
-    } failure:^(NSError *error) {
-        MXStrongifyAndReturnIfNil(self);
+        [self.roomDataSource removeReaction:reaction forEventId:eventId success:^{
+            
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+        }];
         
-        [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
     }];
-
-    [self hideContextualMenuAnimated:YES];
 }
 
 @end
