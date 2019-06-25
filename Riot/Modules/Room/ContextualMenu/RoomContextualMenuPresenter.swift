@@ -22,7 +22,7 @@ final class RoomContextualMenuPresenter: NSObject {
     // MARK: - Constants
     
     private enum Constants {
-        static let animationDuration: TimeInterval = 0.3
+        static let animationDuration: TimeInterval = 0.2
     }
     
     // MARK: - Properties
@@ -38,28 +38,32 @@ final class RoomContextualMenuPresenter: NSObject {
     }
     
     // MARK: - Public
-        
+
     func present(roomContextualMenuViewController: RoomContextualMenuViewController,
                  from viewController: UIViewController,
                  on view: UIView,
+                 contentToReactFrame: CGRect, // Not nullable for compatibility with Obj-C
                  animated: Bool,
                  completion: (() -> Void)?) {
         guard self.roomContextualMenuViewController == nil else {
             return
         }
         
-        roomContextualMenuViewController.view.alpha = 0
-        
         viewController.vc_addChildViewController(viewController: roomContextualMenuViewController, onView: view)
         
         self.roomContextualMenuViewController = roomContextualMenuViewController
         
+        roomContextualMenuViewController.contentToReactFrame = contentToReactFrame
+        
         roomContextualMenuViewController.hideMenuToolbar()
+        roomContextualMenuViewController.prepareReactionsMenuAnimations()
+        roomContextualMenuViewController.hideReactionsMenu()
+        
         roomContextualMenuViewController.view.layoutIfNeeded()
         
         let animationInstructions: (() -> Void) = {
             roomContextualMenuViewController.showMenuToolbar()
-            roomContextualMenuViewController.view.alpha = 1
+            roomContextualMenuViewController.showReactionsMenu()
             roomContextualMenuViewController.view.layoutIfNeeded()
         }
         
@@ -77,37 +81,43 @@ final class RoomContextualMenuPresenter: NSObject {
     
     func hideContextualMenu(animated: Bool, completion: (() -> Void)?) {
         guard let roomContextualMenuViewController = self.roomContextualMenuViewController else {
+            completion?()
             return
         }
         
         let animationInstructions: (() -> Void) = {
             roomContextualMenuViewController.hideMenuToolbar()
-            roomContextualMenuViewController.view.alpha = 0
+            roomContextualMenuViewController.hideReactionsMenu()
             roomContextualMenuViewController.view.layoutIfNeeded()
         }
         
         let animationCompletionInstructions: (() -> Void) = {
             roomContextualMenuViewController.vc_removeFromParent()
-
-            // TODO: To remove once the retain cycle caused by reactionsMenuViewModel is fixed
-            self.roomContextualMenuViewController = nil
-
             completion?()
         }
         
         if animated {
-            UIView.animate(withDuration: Constants.animationDuration, animations: {
-                animationInstructions()
-            }, completion: { completed in
-                animationCompletionInstructions()
-            })
+            if roomContextualMenuViewController.shouldPerformTappedReactionAnimation {
+                UIView.animate(withDuration: 0.15, animations: {
+                    roomContextualMenuViewController.selectedReactionAnimationsIntructionsPart1()
+                }, completion: { _ in
+                    UIView.animate(withDuration: Constants.animationDuration, animations: {
+                        roomContextualMenuViewController.selectedReactionAnimationsIntructionsPart2()
+                        animationInstructions()
+                    }, completion: { completed in
+                        animationCompletionInstructions()
+                    })
+                })
+            } else {
+                UIView.animate(withDuration: Constants.animationDuration, animations: {
+                    animationInstructions()
+                }, completion: { completed in
+                    animationCompletionInstructions()
+                })
+            }
         } else {
             animationInstructions()
             animationCompletionInstructions()
         }
-    }
-    
-    func showReactionsMenu(reactionsMenuViewModel: ReactionsMenuViewModel, aroundFrame frame: CGRect) {
-        self.roomContextualMenuViewController?.showReactionsMenu(withViewModel: reactionsMenuViewModel, aroundFrame: frame)
     }
 }
