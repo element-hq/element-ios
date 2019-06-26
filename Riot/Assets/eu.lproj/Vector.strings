@@ -39,7 +39,7 @@
 "bug_report_description" = "Azaldu akatsa. Zer egin duzu? Zer uste zenuen gertatuko zela? Zer gertatu da benetan?";
 "bug_report_logs_description" = "Arazoak aztertzeari begira, bezero honen egunkariak arazte-txosten honekin batera bidaliko dira. Goiko testua besterik ez baduzu bidali nahi, desmarkatu:";
 "rage_shake_prompt" = "Telefonoa amorruz astintzen zabiltzala dirudi. Akats baten berri eman nahi duzu?";
-"bug_report_prompt" = "Azken aldian aplikazioa kraskatu da. Kraskatze-txostena bidali nahi duzu?";
+"bug_report_prompt" = "Aurrekoan aplikazioa kraskatu da. Kraskatze-txostena bidali nahi duzu?";
 "auth_register" = "Erregistratu";
 // Authentication
 "auth_login" = "Hasi saioa";
@@ -765,3 +765,7 @@
 "device_verification_emoji_headphones" = "Aurikularrak";
 "device_verification_emoji_folder" = "Karpeta";
 "device_verification_emoji_pin" = "Txintxeta";
+// Widget
+"widget_no_integrations_server_configured" = "Ez da integrazio zerbitzaririk konfiguratu";
+"widget_integrations_server_failed_to_connect" = "Huts egin du integrazioen zerbitzarira konektatzean";
+"device_verification_emoji_lock" = "Giltzarrapoa";
