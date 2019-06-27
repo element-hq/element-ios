@@ -67,6 +67,10 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         return -(self.menuToolbarViewHeightConstraint.constant + bottomSafeAreaHeight)
     }
     
+    private var shouldPresentReactionsMenu: Bool {
+        return self.reactionsMenuContainerView.isHidden == false
+    }
+    
     // MARK: Public
     
     var contentToReactFrame: CGRect?
@@ -78,37 +82,37 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     
     // MARK: - Setup
     
-    class func instantiate(with contextualMenuItems: [RoomContextualMenuItem],
-                           reactionsMenuViewModel: ReactionsMenuViewModel?) -> RoomContextualMenuViewController {
+    class func instantiate() -> RoomContextualMenuViewController {
         let viewController = StoryboardScene.RoomContextualMenuViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
-        viewController.contextualMenuItems = contextualMenuItems
-        viewController.reactionsMenuViewModel = reactionsMenuViewModel
         return viewController
     }
-    
     
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        self.reactionsMenuContainerView.isHidden = true
-        
-        if let reactionsMenuViewModel = self.reactionsMenuViewModel {
-            self.setupReactionsMenu(with: reactionsMenuViewModel)
-        }
+        // Do any additional setup after loading the view.        
 
         self.backgroundOverlayView.isUserInteractionEnabled = true
-        self.menuToolbarView.fill(contextualMenuItems: self.contextualMenuItems)
         self.setupBackgroundOverlayGestureRecognizers()
+        
+        self.updateViews()
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
     }
     
     // MARK: - Public
+    
+    func update(contextualMenuItems: [RoomContextualMenuItem], reactionsMenuViewModel: ReactionsMenuViewModel?) {
+        self.contextualMenuItems = contextualMenuItems
+        self.reactionsMenuViewModel = reactionsMenuViewModel
+        if self.isViewLoaded {
+            self.updateViews()
+        }
+    }
     
     func showMenuToolbar() {
         self.menuToolbarViewBottomConstraint.constant = 0
@@ -121,7 +125,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     }
     
     func prepareReactionsMenuAnimations() {
-        guard let frame = self.contentToReactFrame else {
+        guard let frame = self.contentToReactFrame, frame.equalTo(CGRect.null) == false else {
             return
         }
         
@@ -160,7 +164,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     }
     
     func showReactionsMenu() {
-        guard let reactionsMenuView = self.reactionsMenuView else {
+        guard self.shouldPresentReactionsMenu, let reactionsMenuView = self.reactionsMenuView else {
             return
         }
         
@@ -173,7 +177,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     }
     
     func hideReactionsMenu() {
-        guard let reactionsMenuView = self.reactionsMenuView else {
+        guard self.shouldPresentReactionsMenu, let reactionsMenuView = self.reactionsMenuView else {
             return
         }
         
@@ -201,11 +205,30 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     
     // MARK: - Private
     
-    private func setupReactionsMenu(with viewModel: ReactionsMenuViewModel) {
-        let reactionsMenuView = ReactionsMenuView.loadFromNib()
-        self.reactionsMenuContainerView.vc_addSubViewMatchingParent(reactionsMenuView)
-        reactionsMenuView.viewModel = viewModel
-        self.reactionsMenuView = reactionsMenuView
+    private func updateViews() {
+        self.menuToolbarView.fill(contextualMenuItems: self.contextualMenuItems)
+        
+        let hideReactionMenu: Bool
+        
+        if let reactionsMenuViewModel = self.reactionsMenuViewModel {
+            hideReactionMenu = false
+            self.updateReactionsMenu(with: reactionsMenuViewModel)
+        } else {
+            hideReactionMenu = true
+        }
+        
+        self.reactionsMenuContainerView.isHidden = hideReactionMenu
+    }
+    
+    private func updateReactionsMenu(with viewModel: ReactionsMenuViewModel) {
+        
+        if self.reactionsMenuContainerView.subviews.isEmpty {
+            let reactionsMenuView = ReactionsMenuView.loadFromNib()
+            self.reactionsMenuContainerView.vc_addSubViewMatchingParent(reactionsMenuView)
+            self.reactionsMenuView = reactionsMenuView
+        }
+        
+        self.reactionsMenuView?.viewModel = viewModel
     }
     
     private func setupBackgroundOverlayGestureRecognizers() {

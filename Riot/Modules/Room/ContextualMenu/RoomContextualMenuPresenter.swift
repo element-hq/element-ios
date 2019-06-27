@@ -37,7 +37,7 @@ final class RoomContextualMenuPresenter: NSObject {
     // MARK: Public
     
     var isPresenting: Bool {
-        return self.roomContextualMenuViewController != nil
+        return self.roomContextualMenuViewController?.parent != nil
     }
     
     // MARK: - Public
@@ -49,7 +49,7 @@ final class RoomContextualMenuPresenter: NSObject {
                  fromSingleTapGesture usedSingleTapGesture: Bool,
                  animated: Bool,
                  completion: (() -> Void)?) {
-        guard self.roomContextualMenuViewController == nil else {
+        guard self.isPresenting == false else {
             return
         }
         
@@ -86,7 +86,7 @@ final class RoomContextualMenuPresenter: NSObject {
     }
     
     func hideContextualMenu(animated: Bool, completion: (() -> Void)?) {
-        guard let roomContextualMenuViewController = self.roomContextualMenuViewController else {
+        guard let roomContextualMenuViewController = self.roomContextualMenuViewController, self.isPresenting else {
             completion?()
             return
         }
@@ -99,6 +99,7 @@ final class RoomContextualMenuPresenter: NSObject {
         
         let animationCompletionInstructions: (() -> Void) = {
             roomContextualMenuViewController.vc_removeFromParent()
+            self.roomContextualMenuViewController = nil
             completion?()
         }
         

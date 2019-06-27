@@ -216,6 +216,8 @@
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
 
+
+@property (nonatomic, strong) RoomContextualMenuViewController *roomContextualMenuViewController;
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
 @property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
 @property (nonatomic, strong) NSString *textMessageBeforeEditing;
@@ -5172,12 +5174,17 @@
         reactionsMenuViewModel.coordinatorDelegate = self;
     }
     
-    RoomContextualMenuViewController *roomContextualMenuViewController = [RoomContextualMenuViewController instantiateWith:contextualMenuItems reactionsMenuViewModel:reactionsMenuViewModel];
-    roomContextualMenuViewController.delegate = self;
+    if (!self.roomContextualMenuViewController)
+    {
+        self.roomContextualMenuViewController = [RoomContextualMenuViewController instantiate];
+        self.roomContextualMenuViewController.delegate = self;
+    }
+    
+    [self.roomContextualMenuViewController updateWithContextualMenuItems:contextualMenuItems reactionsMenuViewModel:reactionsMenuViewModel];
     
     [self enableOverlayContainerUserInteractions:YES];
     
-    [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:roomContextualMenuViewController
+    [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:self.roomContextualMenuViewController
                                                                              from:self
                                                                                on:self.overlayContainerView
                                                               contentToReactFrame:bubbleComponentFrameInOverlayView
