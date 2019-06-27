@@ -776,3 +776,7 @@
 "device_verification_emoji_folder" = "Папка";
 "device_verification_emoji_pin" = "Карфица";
 "event_formatter_message_edited_mention" = "(Редактирано)";
+// Widget
+"widget_no_integrations_server_configured" = "Не е конфигуриран сървър за интеграции";
+"widget_integrations_server_failed_to_connect" = "Неуспешна връзка със сървъра за интеграции";
+"device_verification_emoji_lock" = "Катинар";
