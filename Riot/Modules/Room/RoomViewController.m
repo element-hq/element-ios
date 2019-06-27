@@ -1519,7 +1519,7 @@
 {
     if (event && !customizedRoomDataSource.selectedEventId)
     {
-        [self showContextualMenuForEvent:event cell:cell animated:YES];
+        [self showContextualMenuForEvent:event fromSingleTapGesture:NO cell:cell animated:YES];
     }
 }
 
@@ -2083,7 +2083,7 @@
                     }
                     else
                     {
-                        [self showContextualMenuForEvent:tappedEvent cell:cell animated:YES];
+                        [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
                     }
                 }
             }
@@ -2101,7 +2101,7 @@
             
             if (selectedEvent)
             {
-                [self showContextualMenuForEvent:selectedEvent cell:cell animated:YES];
+                [self showContextualMenuForEvent:selectedEvent fromSingleTapGesture:YES cell:cell animated:YES];
             }
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView])
@@ -5122,7 +5122,7 @@
     return actionItems;
 }
 
-- (void)showContextualMenuForEvent:(MXEvent*)event cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
+- (void)showContextualMenuForEvent:(MXEvent*)event fromSingleTapGesture:(BOOL)usedSingleTapGesture cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
 {
     if (self.roomContextualMenuPresenter.isPresenting)
     {
@@ -5130,8 +5130,6 @@
     }
     
     NSString *selectedEventId = event.eventId;
-    
-    [self selectEventWithId:selectedEventId];
     
     NSArray<RoomContextualMenuItem*>* contextualMenuItems = [self contextualMenuItemsForEvent:event andCell:cell];
     ReactionsMenuViewModel *reactionsMenuViewModel;
@@ -5183,9 +5181,12 @@
                                                                              from:self
                                                                                on:self.overlayContainerView
                                                               contentToReactFrame:bubbleComponentFrameInOverlayView
-                                                                         animated:YES
+                                                             fromSingleTapGesture:usedSingleTapGesture
+                                                                         animated:animated
                                                                        completion:^{
                                                                        }];
+    
+    [self selectEventWithId:selectedEventId];
 }
 
 - (void)hideContextualMenuAnimated:(BOOL)animated

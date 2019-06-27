@@ -21,8 +21,11 @@ final class RoomContextualMenuPresenter: NSObject {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let animationDuration: TimeInterval = 0.2
+    private enum AnimationDurations {
+        static let showMenu: TimeInterval = 0.15
+        static let showMenuFromSingleTap: TimeInterval = 0.1
+        static let hideMenu: TimeInterval = 0.2
+        static let selectedReaction: TimeInterval = 0.15
     }
     
     // MARK: - Properties
@@ -43,6 +46,7 @@ final class RoomContextualMenuPresenter: NSObject {
                  from viewController: UIViewController,
                  on view: UIView,
                  contentToReactFrame: CGRect, // Not nullable for compatibility with Obj-C
+                 fromSingleTapGesture usedSingleTapGesture: Bool,
                  animated: Bool,
                  completion: (() -> Void)?) {
         guard self.roomContextualMenuViewController == nil else {
@@ -68,7 +72,9 @@ final class RoomContextualMenuPresenter: NSObject {
         }
         
         if animated {
-            UIView.animate(withDuration: Constants.animationDuration, animations: {
+            let animationDuration = usedSingleTapGesture ? AnimationDurations.showMenuFromSingleTap : AnimationDurations.showMenu
+            
+            UIView.animate(withDuration: animationDuration, animations: {
                 animationInstructions()
             }, completion: { completed in
                 completion?()
@@ -98,10 +104,10 @@ final class RoomContextualMenuPresenter: NSObject {
         
         if animated {
             if roomContextualMenuViewController.shouldPerformTappedReactionAnimation {
-                UIView.animate(withDuration: 0.15, animations: {
+                UIView.animate(withDuration: AnimationDurations.selectedReaction, animations: {
                     roomContextualMenuViewController.selectedReactionAnimationsIntructionsPart1()
                 }, completion: { _ in
-                    UIView.animate(withDuration: Constants.animationDuration, animations: {
+                    UIView.animate(withDuration: AnimationDurations.hideMenu, animations: {
                         roomContextualMenuViewController.selectedReactionAnimationsIntructionsPart2()
                         animationInstructions()
                     }, completion: { completed in
@@ -109,7 +115,7 @@ final class RoomContextualMenuPresenter: NSObject {
                     })
                 })
             } else {
-                UIView.animate(withDuration: Constants.animationDuration, animations: {
+                UIView.animate(withDuration: AnimationDurations.hideMenu, animations: {
                     animationInstructions()
                 }, completion: { completed in
                     animationCompletionInstructions()
