@@ -771,3 +771,6 @@
 "device_verification_emoji_headphones" = "Kufje";
 "device_verification_emoji_folder" = "Dosje";
 "event_formatter_message_edited_mention" = "(U përpunua)";
+// Widget
+"widget_no_integrations_server_configured" = "S’ka të formësuar shërbyes integrimesh";
+"widget_integrations_server_failed_to_connect" = "S’u arrit të lidhej me shërbyes integrimesh";
