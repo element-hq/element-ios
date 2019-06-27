@@ -96,13 +96,32 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
         
         self.reactionsStackView.vc_removeAllSubviews()
         
+        let reactionsStackViewCount = self.reactionsStackView.arrangedSubviews.count
+        
+        // Remove all menu buttons if reactions count has changed
+        if reactionsStackViewCount != self.reactionViewDatas.count {
+            self.reactionsStackView.vc_removeAllSubviews()
+        }
+        
+        var index = 0
+        
         for reactionViewData in self.reactionViewDatas {
-            let reactionsMenuButton = ReactionsMenuButton()
+            
+            let reactionsMenuButton: ReactionsMenuButton
+            
+            if index < reactionsStackViewCount, let foundReactionsMenuButton = self.reactionsStackView.arrangedSubviews[index] as? ReactionsMenuButton {
+                reactionsMenuButton = foundReactionsMenuButton
+            } else {
+                reactionsMenuButton = ReactionsMenuButton()
+                reactionsMenuButton.addTarget(self, action: #selector(reactionButtonAction), for: .touchUpInside)
+                self.reactionsStackView.addArrangedSubview(reactionsMenuButton)
+                self.reactionButtons.append(reactionsMenuButton)
+            }
+            
             reactionsMenuButton.setTitle(reactionViewData.emoji, for: .normal)
             reactionsMenuButton.isSelected = reactionViewData.isSelected
-            reactionsMenuButton.addTarget(self, action: #selector(reactionButtonAction), for: .touchUpInside)
-            self.reactionsStackView.addArrangedSubview(reactionsMenuButton)
-            self.reactionButtons.append(reactionsMenuButton)
+            
+            index+=1
         }
     }
     
