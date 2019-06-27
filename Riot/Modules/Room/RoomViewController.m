@@ -287,6 +287,7 @@
     
     // Listen to the event sent state changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeIdentifier:) name:kMXEventDidChangeIdentifierNotification object:nil];
 }
 
 - (void)viewDidLoad
@@ -1221,6 +1222,7 @@
     missedDiscussionsBadgeLabel = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeSentStateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeIdentifierNotification object:nil];
     
     [super destroy];
 }
@@ -4561,6 +4563,18 @@
         
         [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
         [self presentViewController:currentAlert animated:YES completion:nil];
+    }
+}
+
+- (void)eventDidChangeIdentifier:(NSNotification *)notif
+{
+    MXEvent *event = notif.object;
+    NSString *previousId = notif.userInfo[kMXEventIdentifierKey];
+
+    if ([customizedRoomDataSource.selectedEventId isEqualToString:previousId])
+    {
+        NSLog(@"[RoomVC] eventDidChangeIdentifier: Update selectedEventId");
+        customizedRoomDataSource.selectedEventId = event.eventId;
     }
 }
 
