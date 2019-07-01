@@ -61,7 +61,11 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
     func present(from viewController: UIViewController, animated: Bool) {
         let editHistoryCoordinator = EditHistoryCoordinator(aggregations: self.aggregations, roomId: self.roomId, eventId: self.eventId)
         editHistoryCoordinator.delegate = self
-        viewController.present(editHistoryCoordinator.toPresentable(), animated: animated, completion: nil)
+
+        let navigationController = UINavigationController()
+        navigationController.addChild(editHistoryCoordinator.toPresentable())
+        viewController.present(navigationController, animated: animated, completion: nil)
+        
         editHistoryCoordinator.start()
         
         self.coordinator = editHistoryCoordinator
