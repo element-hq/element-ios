@@ -102,8 +102,8 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
         formatter.treatMatrixGroupIdAsLink = true
         formatter.eventTypesFilterForMessages = MXKAppSettings.standard()?.eventsFilterForMessages
 
-        // But do not display "...(edited)"
-        // TODO
+        // But do not display "...(Edited)"
+        formatter.showEditionMention = false
 
         return formatter
     }

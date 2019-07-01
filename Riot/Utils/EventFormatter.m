@@ -182,7 +182,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             attributedString = attributedStringWithRerequestMessage;
         }
     }
-    else if (event.contentHasBeenEdited)
+    else if (self.showEditionMention && event.contentHasBeenEdited)
     {
         NSMutableAttributedString *attributedStringWithEditMention = [attributedString mutableCopy];
         
@@ -255,6 +255,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.encryptingTextColor = ThemeService.shared.theme.tintColor;
         self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.errorTextColor = ThemeService.shared.theme.warningColor;
+        self.showEditionMention = YES;
         self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
