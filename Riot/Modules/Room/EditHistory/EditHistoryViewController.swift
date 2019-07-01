@@ -33,7 +33,7 @@ final class EditHistoryViewController: UIViewController {
     @IBOutlet private weak var scrollView: UIScrollView!
     
     @IBOutlet private weak var messageLabel: UILabel!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet private weak var loadMoreButton: UIButton!
     
     // MARK: Private
 
@@ -105,8 +105,8 @@ final class EditHistoryViewController: UIViewController {
         // TODO:
         self.messageLabel.textColor = theme.textPrimaryColor
 
-        self.okButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
+        self.loadMoreButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: self.loadMoreButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -118,11 +118,11 @@ final class EditHistoryViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+        let closeBarButtonItem = MXKBarButtonItem(title: "Close", style: .plain) { [weak self] in
+            self?.closeButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        self.navigationItem.rightBarButtonItem = closeBarButtonItem
         
         self.scrollView.keyboardDismissMode = .interactive
         
@@ -136,6 +136,8 @@ final class EditHistoryViewController: UIViewController {
             self.renderLoading()
         case .loaded(let messages, let addedCount):
             self.renderLoaded(messages: messages, addedCount: addedCount)
+        case .allLoaded:
+            self.renderAllLoaded()
         case .error(let error):
             self.render(error: error)
         }
@@ -148,14 +150,23 @@ final class EditHistoryViewController: UIViewController {
     private func renderLoaded(messages: [EditHistoryMessage], addedCount: Int) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
+        let calendar = Calendar.current
+
         let attributedText = NSMutableAttributedString()
         for message in messages {
+            let time=calendar.dateComponents([.hour, .minute], from: Date())
+            attributedText.append(NSAttributedString(string: "\(time.hour!):\(time.minute!)"))
+            attributedText.append(NSAttributedString(string: " - "))
             attributedText.append(message.message)
             attributedText.append(NSAttributedString(string: "\n"))
         }
 
         self.messageLabel.attributedText = attributedText
         self.messageLabel.isHidden = false
+    }
+
+    private func renderAllLoaded() {
+        self.loadMoreButton.isHidden = true
     }
     
     private func render(error: Error) {
@@ -166,11 +177,11 @@ final class EditHistoryViewController: UIViewController {
     
     // MARK: - Actions
 
-    @IBAction private func okButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .close)
+    @IBAction private func loadMoreButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .loadMore)
     }
 
-    private func cancelButtonAction() {
+    private func closeButtonAction() {
         self.viewModel.process(viewAction: .close)
     }
 }

@@ -19,7 +19,13 @@
 import Foundation
 
 final class EditHistoryViewModel: EditHistoryViewModelType {
-    
+
+    // MARK: - Constants
+
+    private enum Pagination {
+        static let count: UInt = 2
+    }
+
     // MARK: - Properties
     
     // MARK: Private
@@ -74,7 +80,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
         }
 
         self.update(viewState: .loading)
-        self.operation = self.aggregations.replaceEvents(forEvent: self.eventId, inRoom: self.roomId, from: self.nextBatch, limit: 10, success: { [weak self] (response) in
+        self.operation = self.aggregations.replaceEvents(forEvent: self.eventId, inRoom: self.roomId, from: self.nextBatch, limit: Pagination.count, success: { [weak self] (response) in
             guard let sself = self else {
                 return
             }
@@ -83,6 +89,10 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             sself.operation = nil
 
             sself.process(editEvents: response.chunk)
+
+            if sself.nextBatch == nil {
+                sself.update(viewState: .allLoaded)
+            }
 
             }, failure: { [weak self] error in
                 guard let sself = self else {

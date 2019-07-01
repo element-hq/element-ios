@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Template Screen View Controller-->
+        <!--Edit History View Controller-->
         <scene sceneID="mt5-wz-YKA">
             <objects>
                 <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="V8j-Lb-PgC" customClass="EditHistoryViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
@@ -27,8 +27,8 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="voD-3Q-ryt">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="A message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
-                                                        <rect key="frame" x="20" y="86" width="335" height="108"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="A message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
+                                                        <rect key="frame" x="20" y="86" width="335" height="250"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <nil key="textColor"/>
@@ -37,9 +37,9 @@
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOt-5E-FjF">
                                                         <rect key="frame" x="104" y="368" width="167" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" title="OK"/>
+                                                        <state key="normal" title="Load more"/>
                                                         <connections>
-                                                            <action selector="okButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="uvI-tt-Nfj"/>
+                                                            <action selector="loadMoreButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="uvI-tt-Nfj"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -79,8 +79,8 @@
                         <viewLayoutGuide key="safeArea" id="bFg-jh-JZB"/>
                     </view>
                     <connections>
+                        <outlet property="loadMoreButton" destination="DOt-5E-FjF" id="ktw-U4-efQ"/>
                         <outlet property="messageLabel" destination="bxI-mu-qng" id="pbX-aZ-inC"/>
-                        <outlet property="okButton" destination="DOt-5E-FjF" id="ktw-U4-efQ"/>
                         <outlet property="scrollView" destination="9U2-KL-ZVA" id="ojG-2y-X7b"/>
                     </connections>
                 </viewController>

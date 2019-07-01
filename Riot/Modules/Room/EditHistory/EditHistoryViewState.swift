@@ -22,5 +22,6 @@ import Foundation
 enum EditHistoryViewState {
     case loading
     case loaded(messages: [EditHistoryMessage], addedCount: Int)
+    case allLoaded
     case error(Error)
 }
