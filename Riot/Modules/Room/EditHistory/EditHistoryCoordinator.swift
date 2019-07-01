@@ -38,10 +38,10 @@ final class EditHistoryCoordinator: EditHistoryCoordinatorType {
     // MARK: - Setup
     
     init(aggregations: MXAggregations,
-         roomId: String,
-         eventId: String) {
+         formatter: MXKEventFormatter,
+         event: MXEvent) {
         
-        let editHistoryViewModel = EditHistoryViewModel(aggregations: aggregations, roomId: roomId, eventId: eventId)
+        let editHistoryViewModel = EditHistoryViewModel(aggregations: aggregations, formatter: formatter, event: event)
         let editHistoryViewController = EditHistoryViewController.instantiate(with: editHistoryViewModel)
         self.editHistoryViewModel = editHistoryViewModel
         self.editHistoryViewController = editHistoryViewController

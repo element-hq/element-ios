@@ -31,9 +31,8 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
     
     // MARK: Private
     
-    private let aggregations: MXAggregations
-    private let roomId: String
-    private let eventId: String
+    private let session: MXSession
+    private let event: MXEvent
     private var coordinator: EditHistoryCoordinator?
     
     // MARK: Public
@@ -42,12 +41,10 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(aggregations: MXAggregations,
-         roomId: String,
-         eventId: String) {
-        self.aggregations = aggregations
-        self.roomId = roomId
-        self.eventId = eventId
+    init(session: MXSession,
+         event: MXEvent) {
+        self.session = session
+        self.event = event
         super.init()
     }
     
@@ -59,7 +56,13 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let editHistoryCoordinator = EditHistoryCoordinator(aggregations: self.aggregations, roomId: self.roomId, eventId: self.eventId)
+
+        guard let formatter = self.createEventFormatter(session: self.session) else {
+            //s das
+            return
+        }
+
+        let editHistoryCoordinator = EditHistoryCoordinator(aggregations: self.session.aggregations, formatter: formatter, event: self.event)
         editHistoryCoordinator.delegate = self
 
         let navigationController = UINavigationController()
@@ -82,6 +85,27 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
                 completion()
             }
         }
+    }
+
+    // MARK: - Private
+
+    func createEventFormatter(session: MXSession) -> EventFormatter? {
+        guard let formatter = EventFormatter(matrixSession: session) else {
+            print("[EditHistoryCoordinatorBridgePresenter] createEventFormatter: Cannot build formatter")
+            return nil
+        }
+
+        // Use the same event formatter settings as RoomDataSource
+        formatter.treatMatrixUserIdAsLink = true
+        formatter.treatMatrixRoomIdAsLink = true
+        formatter.treatMatrixRoomAliasAsLink = true
+        formatter.treatMatrixGroupIdAsLink = true
+        formatter.eventTypesFilterForMessages = MXKAppSettings.standard()?.eventsFilterForMessages
+
+        // But do not display "...(edited)"
+        // TODO
+
+        return formatter
     }
 }
 

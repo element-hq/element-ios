@@ -31,8 +31,9 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     // MARK: Private
 
     private let aggregations: MXAggregations
+    private let formatter: MXKEventFormatter
     private let roomId: String
-    private let eventId: String
+    private let event: MXEvent
     private let messageFormattingQueue: DispatchQueue
 
     private var nextBatch: String?
@@ -49,11 +50,12 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     // MARK: - Setup
     
     init(aggregations: MXAggregations,
-         roomId: String,
-         eventId: String) {
+         formatter: MXKEventFormatter,
+         event: MXEvent) {
         self.aggregations = aggregations
-        self.roomId = roomId
-        self.eventId = eventId
+        self.formatter = formatter
+        self.event = event
+        self.roomId = event.roomId
         self.messageFormattingQueue = DispatchQueue(label: "\(type(of: self)).messageFormattingQueue")
     }
     
@@ -80,7 +82,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
         }
 
         self.update(viewState: .loading)
-        self.operation = self.aggregations.replaceEvents(forEvent: self.eventId, inRoom: self.roomId, from: self.nextBatch, limit: Pagination.count, success: { [weak self] (response) in
+        self.operation = self.aggregations.replaceEvents(forEvent: self.event.eventId, inRoom: self.roomId, from: self.nextBatch, limit: Pagination.count, success: { [weak self] (response) in
             guard let sself = self else {
                 return
             }
@@ -122,14 +124,19 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     }
 
     func process(editEvent: MXEvent) -> EditHistoryMessage? {
-
-        guard let body: String = (editEvent.content?["m.new_content"] as? [String: Any])?["body"] as? String else {
-            print("[EditHistoryViewModel] processEditEvent: invalid edit event: \(editEvent.eventId ?? "")")
+        // Create a temporary MXEvent that represents this edition
+        guard let editedEvent = self.event.editedEvent(fromReplacementEvent: editEvent) else {
+            print("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
             return nil
         }
 
-        // TODO: Using MXKEventFormatter
-        return EditHistoryMessage(date: Date(), message: NSAttributedString(string: body))
+        let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
+        guard let message = self.formatter.attributedString(from: editedEvent, with: nil, error: formatterError) else {
+            print("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) edited event: \(editEvent.eventId ?? "")")
+            return nil
+        }
+
+        return EditHistoryMessage(date: Date(), message: message)
     }
     
     private func update(viewState: EditHistoryViewState) {
