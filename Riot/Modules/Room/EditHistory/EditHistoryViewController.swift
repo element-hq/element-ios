@@ -59,7 +59,7 @@ final class EditHistoryViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
+        self.title = "Edits history"
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
@@ -154,7 +154,7 @@ final class EditHistoryViewController: UIViewController {
 
         let attributedText = NSMutableAttributedString()
         for message in messages {
-            let time=calendar.dateComponents([.hour, .minute], from: Date())
+            let time=calendar.dateComponents([.hour, .minute], from: message.date)
             attributedText.append(NSAttributedString(string: "\(time.hour!):\(time.minute!)"))
             attributedText.append(NSAttributedString(string: " - "))
             attributedText.append(message.message)

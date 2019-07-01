@@ -136,7 +136,9 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             return nil
         }
 
-        return EditHistoryMessage(date: Date(), message: message)
+        let date = Date(timeIntervalSince1970: TimeInterval(editEvent.originServerTs) / 1000)
+
+        return EditHistoryMessage(date: date, message: message)
     }
     
     private func update(viewState: EditHistoryViewState) {
