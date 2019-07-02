@@ -12,3 +12,4 @@
 #import "RecentsDataSource.h"
 #import "AvatarGenerator.h"
 #import "EncryptionInfoView.h"
+#import "EventFormatter.h"

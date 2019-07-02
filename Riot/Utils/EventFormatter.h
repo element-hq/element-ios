@@ -37,6 +37,12 @@ FOUNDATION_EXPORT NSString *const EventFormatterEditedEventLinkAction;
 @interface EventFormatter : MXKEventFormatter
 
 /**
+ Add a "(Edited)" mention to edited message.
+ Default is YES.
+ */
+@property (nonatomic) BOOL showEditionMention;
+
+/**
  Text color used to display message edited mention.
  Default is `textSecondaryColor`.
  */

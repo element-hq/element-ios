@@ -37,6 +37,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.DeviceVerificationVerifyViewController>(storyboard: DeviceVerificationVerifyViewController.self)
   }
+  internal enum EditHistoryViewController: StoryboardType {
+    internal static let storyboardName = "EditHistoryViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.EditHistoryViewController>(storyboard: EditHistoryViewController.self)
+  }
   internal enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
 
