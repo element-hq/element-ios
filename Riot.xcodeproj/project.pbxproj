@@ -75,6 +75,8 @@
 		32891D712264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D6F2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift */; };
 		32891D75226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D73226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift */; };
 		32891D76226728EF00C82226 /* DeviceVerificationDataLoadingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D74226728EE00C82226 /* DeviceVerificationDataLoadingViewController.storyboard */; };
+		329E746622CD02EA006F9797 /* BubbleReactionActionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */; };
+		329E746722CD02EA006F9797 /* BubbleReactionActionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329E746522CD02EA006F9797 /* BubbleReactionActionViewCell.swift */; };
 		32A6001622C661100042C1D9 /* EditHistoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A6000D22C661100042C1D9 /* EditHistoryViewState.swift */; };
 		32A6001722C661100042C1D9 /* EditHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A6000E22C661100042C1D9 /* EditHistoryViewController.swift */; };
 		32A6001822C661100042C1D9 /* EditHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A6000F22C661100042C1D9 /* EditHistoryViewModel.swift */; };
@@ -617,6 +619,8 @@
 		32891D6F2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifiedViewController.swift; sourceTree = "<group>"; };
 		32891D73226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewController.swift; sourceTree = "<group>"; };
 		32891D74226728EE00C82226 /* DeviceVerificationDataLoadingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationDataLoadingViewController.storyboard; sourceTree = "<group>"; };
+		329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleReactionActionViewCell.xib; sourceTree = "<group>"; };
+		329E746522CD02EA006F9797 /* BubbleReactionActionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionActionViewCell.swift; sourceTree = "<group>"; };
 		32A6000D22C661100042C1D9 /* EditHistoryViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewState.swift; sourceTree = "<group>"; };
 		32A6000E22C661100042C1D9 /* EditHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewController.swift; sourceTree = "<group>"; };
 		32A6000F22C661100042C1D9 /* EditHistoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewModel.swift; sourceTree = "<group>"; };
@@ -2001,6 +2005,8 @@
 		B1963B24228F1C4800CBA17F /* BubbleReactions */ = {
 			isa = PBXGroup;
 			children = (
+				329E746522CD02EA006F9797 /* BubbleReactionActionViewCell.swift */,
+				329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */,
 				B1963B31228F1C6B00CBA17F /* BubbleReactionsViewModelType.swift */,
 				B1963B27228F1C4800CBA17F /* BubbleReactionsViewModel.swift */,
 				B1963B25228F1C4800CBA17F /* BubbleReactionsView.swift */,
@@ -3607,6 +3613,7 @@
 				B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */,
 				F083BDEA1E7009ED00A9B29C /* ringback.mp3 in Resources */,
 				F083BDF21E7009ED00A9B29C /* GoogleService-Info.plist in Resources */,
+				329E746622CD02EA006F9797 /* BubbleReactionActionViewCell.xib in Resources */,
 				B1B558E320EF768F00210D55 /* RoomEmptyBubbleCell.xib in Resources */,
 				B1E5368F21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */,
 				B1B5590420EF768F00210D55 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
@@ -4098,6 +4105,7 @@
 				32A6001A22C661100042C1D9 /* EditHistoryCoordinator.swift in Sources */,
 				F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */,
 				B1B558E620EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				329E746722CD02EA006F9797 /* BubbleReactionActionViewCell.swift in Sources */,
 				B1098BFB21ECFE65000DDA48 /* KeyBackupSetupCoordinatorType.swift in Sources */,
 				B1098BF721ECFE65000DDA48 /* PasswordStrength.swift in Sources */,
 				324A2052225FC571004FE8B0 /* DeviceVerificationIncomingViewAction.swift in Sources */,

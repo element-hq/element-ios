@@ -244,7 +244,10 @@
                     
                     if (reactions && !isCollapsableCellCollapsed)
                     {
-                        BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions eventId:componentEventId];
+                        BOOL showAllReactions = [cellData showAllReactionsForEvent:componentEventId];
+                        BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions
+                                                                                                                                   eventId:componentEventId
+                                                                                                                                   showAll:showAllReactions];
                         
                         reactionsView = [BubbleReactionsView new];
                         reactionsView.viewModel = bubbleReactionsViewModel;
@@ -570,6 +573,30 @@
     } failure:^(NSError *error) {
         
     }];
+}
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didShowAllTappedForEventId:(NSString * _Nonnull)eventId
+{
+    [self setShowAllReactions:YES forEvent:eventId];
+}
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didShowLessTappedForEventId:(NSString * _Nonnull)eventId
+{
+    [self setShowAllReactions:NO forEvent:eventId];
+}
+
+- (void)setShowAllReactions:(BOOL)showAllReactions forEvent:(NSString*)eventId
+{
+    id<MXKRoomBubbleCellDataStoring> cellData = [self cellDataOfEventWithEventId:eventId];
+    if ([cellData isKindOfClass:[RoomBubbleCellData class]])
+    {
+        RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)cellData;
+
+        [roomBubbleCellData setShowAllReactions:showAllReactions forEvent:eventId];
+        [self updateCellDataReactions:roomBubbleCellData forEventId:eventId];
+
+        [self.delegate dataSource:self didCellChange:nil];
+    }
 }
 
 @end
