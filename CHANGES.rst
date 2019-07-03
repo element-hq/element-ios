@@ -14,6 +14,7 @@ Improvements:
  * Read receipts: They are now counted at the MatrixKit level.
  * Migrate to Swift 5.0.
  * Reactions: Update quick reactions (#2459).
+ * Message Editing: Handle reply edition (#2492).
 
 Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
