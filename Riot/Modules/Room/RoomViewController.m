@@ -2920,7 +2920,7 @@
     if (roomInputToolbarView)
     {
         self.textMessageBeforeEditing = roomInputToolbarView.textMessage;
-        roomInputToolbarView.textMessage = event.content[@"body"];
+        roomInputToolbarView.textMessage = [self.roomDataSource editableTextMessageForEvent:event];
     }
     
     [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeEdit showTimestamp:YES];
