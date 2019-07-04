@@ -28,8 +28,6 @@ protocol EditHistoryViewModelCoordinatorDelegate: class {
 
 /// Protocol describing the view model used by `EditHistoryViewController`
 protocol EditHistoryViewModelType {
-    
-    var messages: [EditHistoryMessage] { get set }
         
     var viewDelegate: EditHistoryViewModelViewDelegate? { get set }
     var coordinatorDelegate: EditHistoryViewModelCoordinatorDelegate? { get set }

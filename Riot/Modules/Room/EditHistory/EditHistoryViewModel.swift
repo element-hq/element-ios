@@ -23,7 +23,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     // MARK: - Constants
 
     private enum Pagination {
-        static let count: UInt = 2
+        static let count: UInt = 30
     }
 
     // MARK: - Properties
@@ -36,16 +36,15 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     private let event: MXEvent
     private let messageFormattingQueue: DispatchQueue
 
+    private var messages: [EditHistoryMessage] = []
+    private var operation: MXHTTPOperation?
     private var nextBatch: String?
+    private var viewState: EditHistoryViewState?
     
     // MARK: Public
-    
-    var messages: [EditHistoryMessage] = []
-    var operation: MXHTTPOperation?
 
     weak var viewDelegate: EditHistoryViewModelViewDelegate?
     weak var coordinatorDelegate: EditHistoryViewModelCoordinatorDelegate?
-    
     
     // MARK: - Setup
     
@@ -57,9 +56,6 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
         self.event = event
         self.roomId = event.roomId
         self.messageFormattingQueue = DispatchQueue(label: "\(type(of: self)).messageFormattingQueue")
-    }
-    
-    deinit {
     }
     
     // MARK: - Public
@@ -75,12 +71,36 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     
     // MARK: - Private
     
-    func loadMoreHistory() {
-        if self.operation != nil {
+    private func canLoadMoreHistory() -> Bool {
+        guard let viewState = self.viewState else {
+            return true
+        }
+        
+        let canLoadMoreHistory: Bool
+        
+        switch viewState {
+        case .loading:
+            canLoadMoreHistory = false
+        case .loaded(sections: _, addedCount: _, allDataLoaded: let allLoaded):
+            canLoadMoreHistory = !allLoaded
+        default:
+            canLoadMoreHistory = true
+        }
+        
+        return canLoadMoreHistory
+    }
+    
+    private func loadMoreHistory() {
+        guard self.canLoadMoreHistory() else {
+            print("[EditHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
+            return
+        }
+        
+        guard self.operation == nil else {
             print("[EditHistoryViewModel] loadMoreHistory: operation already pending")
             return
         }
-
+        
         self.update(viewState: .loading)
         self.operation = self.aggregations.replaceEvents(forEvent: self.event.eventId, inRoom: self.roomId, from: self.nextBatch, limit: Pagination.count, success: { [weak self] (response) in
             guard let sself = self else {
@@ -91,12 +111,8 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             sself.operation = nil
 
             sself.process(editEvents: response.chunk)
-
-            if sself.nextBatch == nil {
-                sself.update(viewState: .allLoaded)
-            }
-
-            }, failure: { [weak self] error in
+ 
+        }, failure: { [weak self] error in
                 guard let sself = self else {
                     return
                 }
@@ -106,7 +122,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
         })
     }
 
-    func process(editEvents: [MXEvent]) {
+    private func process(editEvents: [MXEvent]) {
         self.messageFormattingQueue.async {
             
             let newMessages = editEvents.reversed()
@@ -115,15 +131,53 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             }
 
             if newMessages.count > 0 {
+                self.messages = newMessages + self.messages
+                let allDataLoaded = self.nextBatch == nil
+                
+                let editHistorySections = self.editHistorySections(from: self.messages)
+                
                 DispatchQueue.main.async {
-                    self.messages = newMessages + self.messages
-                    self.update(viewState: .loaded(messages: self.messages, addedCount: newMessages.count))
+                    self.update(viewState: .loaded(sections: editHistorySections, addedCount: newMessages.count, allDataLoaded: allDataLoaded))
                 }
             }
         }
     }
+    
+    private func editHistorySections(from editHistoryMessages: [EditHistoryMessage]) -> [EditHistorySection] {
+        
+        // Group edit messages by day
+        
+        let initial: [Date: [EditHistoryMessage]] = [:]
+        let dateComponents: Set<Calendar.Component> = [.day, .month, .year]
+        let calendar = Calendar.current
+        
+        let messagesGroupedByDay = editHistoryMessages.reduce(into: initial) { messagesByDay, message in
+            let components = calendar.dateComponents(dateComponents, from: message.date)
+            if let date = calendar.date(from: components) {
+                var messages = messagesByDay[date] ?? []
+                messages.append(message)
+                messagesByDay[date] = messages
+            }
+        }
+        
+        // Create edit sections
+        
+        var sections: [EditHistorySection] = []
+        
+        for (date, messages) in messagesGroupedByDay {
+            // Sort messages descending (most recent first)
+            let sortedMessages = messages.sorted { $0.date.compare($1.date) == .orderedDescending }
+            let section = EditHistorySection(date: date, messages: sortedMessages)
+            sections.append(section)
+        }
+        
+        // Sort sections descending (most recent first)
+        let sortedSections = sections.sorted { $0.date.compare($1.date) == .orderedDescending }
+        
+        return sortedSections
+    }
 
-    func process(editEvent: MXEvent) -> EditHistoryMessage? {
+    private func process(editEvent: MXEvent) -> EditHistoryMessage? {
         // Create a temporary MXEvent that represents this edition
         guard let editedEvent = self.event.editedEvent(fromReplacementEvent: editEvent) else {
             print("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
@@ -142,6 +196,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     }
     
     private func update(viewState: EditHistoryViewState) {
+        self.viewState = viewState
         self.viewDelegate?.editHistoryViewModel(self, didUpdateViewState: viewState)
     }
 }

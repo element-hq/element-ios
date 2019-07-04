@@ -21,7 +21,6 @@ import Foundation
 /// EditHistoryViewController view state
 enum EditHistoryViewState {
     case loading
-    case loaded(messages: [EditHistoryMessage], addedCount: Int)
-    case allLoaded
+    case loaded(sections: [EditHistorySection], addedCount: Int, allDataLoaded: Bool)
     case error(Error)
 }
