@@ -32,6 +32,9 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 @property(nonatomic, readwrite) CGFloat additionalContentHeight;
 @property(nonatomic) BOOL shouldUpdateAdditionalContentHeight;
 
+// Flags to "Show All" reactions for an event
+@property(nonatomic) NSMutableSet<NSString* /* eventId */> *eventsToShowAllReactions;
+
 @end
 
 @implementation RoomBubbleCellData
@@ -42,6 +45,16 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 }
 
 #pragma mark - Override MXKRoomBubbleCellData
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _eventsToShowAllReactions = [NSMutableSet set];
+    }
+    return self;
+}
 
 - (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource2
 {
@@ -368,9 +381,11 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         dispatch_once(&onceToken, ^{
             bubbleReactionsView = [BubbleReactionsView new];
         });
+
+        BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
         
         bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
-        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId];
+        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
         bubbleReactionsView.viewModel = viemModel;
         [bubbleReactionsView setNeedsLayout];
         [bubbleReactionsView layoutIfNeeded];
@@ -455,9 +470,11 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         dispatch_once(&onceToken, ^{
             bubbleReactionsView = [BubbleReactionsView new];
         });
+
+        BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
         
         bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
-        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId];
+        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
         bubbleReactionsView.viewModel = viemModel;
         [bubbleReactionsView setNeedsLayout];
         [bubbleReactionsView layoutIfNeeded];
@@ -634,6 +651,26 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     }
 
     return [super addEvent:event andRoomState:roomState];
+}
+
+
+#pragma mark - Show all reactions
+
+- (BOOL)showAllReactionsForEvent:(NSString*)eventId
+{
+    return [self.eventsToShowAllReactions containsObject:eventId];
+}
+
+- (void)setShowAllReactions:(BOOL)showAllReactions forEvent:(NSString*)eventId
+{
+    if (showAllReactions)
+    {
+        [self.eventsToShowAllReactions addObject:eventId];
+    }
+    else
+    {
+        [self.eventsToShowAllReactions removeObject:eventId];
+    }
 }
 
 @end

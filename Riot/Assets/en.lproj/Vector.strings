@@ -280,10 +280,8 @@
 "room_event_action_view_encryption" = "Encryption Information";
 "room_event_action_reply" = "Reply";
 "room_event_action_edit" = "Edit";
-"room_event_action_reaction_agree" = "Agree %@";
-"room_event_action_reaction_disagree" = "Disagree %@";
-"room_event_action_reaction_like" = "Like %@";
-"room_event_action_reaction_dislike" = "Dislike %@";
+"room_event_action_reaction_show_all" = "Show all";
+"room_event_action_reaction_show_less" = "Show less";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
 "room_event_failed_to_send" = "Failed to send";
 "room_action_send_photo_or_video" = "Send photo or video";

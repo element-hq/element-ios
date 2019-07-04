@@ -38,6 +38,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
     // MARK: Private
     
     private var reactionsViewData: [BubbleReactionViewData] = []
+    private var showAllButtonState: BubbleReactionsViewState.ShowAllButtonState = .none
     private var theme: Theme?
     
     // MARK: Public
@@ -65,6 +66,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         }
         
         self.collectionView.register(cellType: BubbleReactionViewCell.self)
+        self.collectionView.register(cellType: BubbleReactionActionViewCell.self)
         self.collectionView.reloadData()
     }
     
@@ -90,10 +92,27 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.theme = theme
         self.collectionView.reloadData()
     }
+
+    // MARK: - Private
     
-    func fill(reactionsViewData: [BubbleReactionViewData]) {
+    private func fill(reactionsViewData: [BubbleReactionViewData], showAllButtonState: BubbleReactionsViewState.ShowAllButtonState) {
         self.reactionsViewData = reactionsViewData
+        self.showAllButtonState = showAllButtonState
         self.collectionView.reloadData()
+    }
+
+    private func actionButtonString() -> String {
+        let actionString: String
+        switch self.showAllButtonState {
+        case .showAll:
+            actionString = VectorL10n.roomEventActionReactionShowAll
+        case .showLess:
+            actionString = VectorL10n.roomEventActionReactionShowLess
+        case .none:
+            actionString = ""
+        }
+
+        return actionString
     }
 }
 
@@ -101,20 +120,36 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
 extension BubbleReactionsView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.reactionsViewData.count
+        // "Show all" or "Show less" is a cell in the same section as reactions cells
+        let additionalItems = self.showAllButtonState == .none ? 0 : 1
+
+        return self.reactionsViewData.count + additionalItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: BubbleReactionViewCell = collectionView.dequeueReusableCell(for: indexPath)
-        
-        if let theme = self.theme {
-            cell.update(theme: theme)
+        if indexPath.row < self.reactionsViewData.count {
+            let cell: BubbleReactionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+
+            if let theme = self.theme {
+                cell.update(theme: theme)
+            }
+
+            let viewData = self.reactionsViewData[indexPath.row]
+            cell.fill(viewData: viewData)
+
+            return cell
+        } else {
+            let cell: BubbleReactionActionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+
+            if let theme = self.theme {
+                cell.update(theme: theme)
+            }
+
+            let actionString = self.actionButtonString()
+            cell.fill(actionString: actionString)
+
+            return cell
         }
-        
-        let viewData = self.reactionsViewData[indexPath.row]
-        cell.fill(viewData: viewData)
-        
-        return cell
     }
 }
 
@@ -122,7 +157,18 @@ extension BubbleReactionsView: UICollectionViewDataSource {
 extension BubbleReactionsView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.viewModel?.process(viewAction: .tapReaction(index: indexPath.row))
+        if indexPath.row < self.reactionsViewData.count {
+            self.viewModel?.process(viewAction: .tapReaction(index: indexPath.row))
+        } else {
+            switch self.showAllButtonState {
+            case .showAll:
+                self.viewModel?.process(viewAction: .tapShowAction(action: .showAll))
+            case .showLess:
+                self.viewModel?.process(viewAction: .tapShowAction(action: .showLess))
+            case .none:
+                break
+            }
+        }
     }
 }
 
@@ -131,8 +177,8 @@ extension BubbleReactionsView: BubbleReactionsViewModelViewDelegate {
     
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didUpdateViewState viewState: BubbleReactionsViewState) {
         switch viewState {
-        case .loaded(reactionsViewData: let reactionsViewData):
-            self.fill(reactionsViewData: reactionsViewData)
+        case .loaded(reactionsViewData: let reactionsViewData, showAllButtonState: let showAllButtonState):
+            self.fill(reactionsViewData: reactionsViewData, showAllButtonState: showAllButtonState)
         }
     }
 }

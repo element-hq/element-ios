@@ -17,14 +17,20 @@
 import Foundation
 
 @objc final class BubbleReactionsViewModel: NSObject, BubbleReactionsViewModelType {
-    
+
+    // MARK: - Constants
+
+    private enum Constants {
+        static let maxItemsWhenLimited: Int = 8
+    }
+
     // MARK: - Properties
     
     // MARK: Private
     
     private let aggregatedReactions: MXAggregatedReactions
-    private let reactionsViewData: [BubbleReactionViewData]
     private let eventId: String
+    private let showAll: Bool
     
     // MARK: Public
     
@@ -34,13 +40,11 @@ import Foundation
     // MARK: - Setup
     
     @objc init(aggregatedReactions: MXAggregatedReactions,
-               eventId: String) {
+               eventId: String,
+               showAll: Bool) {
         self.aggregatedReactions = aggregatedReactions
         self.eventId = eventId
-        
-        self.reactionsViewData = aggregatedReactions.reactions.map { (reactionCount) -> BubbleReactionViewData in
-            return BubbleReactionViewData(emoji: reactionCount.reaction, countString: "\(reactionCount.count)", isCurrentUserReacted: reactionCount.myUserHasReacted)
-        }
+        self.showAll = showAll
     }
     
     // MARK: - Public
@@ -48,7 +52,7 @@ import Foundation
     func process(viewAction: BubbleReactionsViewAction) {
         switch viewAction {
         case .loadData:
-            self.viewDelegate?.bubbleReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: self.reactionsViewData))
+            self.loadData()
         case .tapReaction(let index):
             guard index < self.aggregatedReactions.reactions.count else {
                 return
@@ -61,6 +65,31 @@ import Foundation
             }
         case .addNewReaction:
             break
+        case .tapShowAction(.showAll):
+            self.viewModelDelegate?.bubbleReactionsViewModel(self, didShowAllTappedForEventId: self.eventId)
+        case .tapShowAction(.showLess):
+            self.viewModelDelegate?.bubbleReactionsViewModel(self, didShowLessTappedForEventId: self.eventId)
         }
+    }
+
+    func loadData() {
+        var reactions = self.aggregatedReactions.reactions
+        var showAllButtonState: BubbleReactionsViewState.ShowAllButtonState = .none
+
+        // Limit displayed reactions if required
+        if reactions.count > Constants.maxItemsWhenLimited {
+            if self.showAll == true {
+                showAllButtonState = .showLess
+            } else {
+                reactions = Array(reactions[0..<Constants.maxItemsWhenLimited])
+                showAllButtonState = .showAll
+            }
+        }
+
+        let reactionsViewData = reactions.map { (reactionCount) -> BubbleReactionViewData in
+            return BubbleReactionViewData(emoji: reactionCount.reaction, countString: "\(reactionCount.count)", isCurrentUserReacted: reactionCount.myUserHasReacted)
+        }
+
+        self.viewDelegate?.bubbleReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: reactionsViewData, showAllButtonState: showAllButtonState))
     }
 }
