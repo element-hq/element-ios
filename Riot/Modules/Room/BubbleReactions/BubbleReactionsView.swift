@@ -99,6 +99,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.reactionsViewData = reactionsViewData
         self.showAllButtonState = showAllButtonState
         self.collectionView.reloadData()
+        self.collectionView.collectionViewLayout.invalidateLayout()
     }
 
     private func actionButtonString() -> String {
