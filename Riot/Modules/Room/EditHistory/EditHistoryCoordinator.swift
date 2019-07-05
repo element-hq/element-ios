@@ -37,11 +37,11 @@ final class EditHistoryCoordinator: EditHistoryCoordinatorType {
     
     // MARK: - Setup
     
-    init(aggregations: MXAggregations,
+    init(session: MXSession,
          formatter: MXKEventFormatter,
          event: MXEvent) {
         
-        let editHistoryViewModel = EditHistoryViewModel(aggregations: aggregations, formatter: formatter, event: event)
+        let editHistoryViewModel = EditHistoryViewModel(session: session, formatter: formatter, event: event)
         let editHistoryViewController = EditHistoryViewController.instantiate(with: editHistoryViewModel)
         self.editHistoryViewModel = editHistoryViewModel
         self.editHistoryViewController = editHistoryViewController

@@ -62,7 +62,7 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
             return
         }
 
-        let editHistoryCoordinator = EditHistoryCoordinator(aggregations: self.session.aggregations, formatter: formatter, event: self.event)
+        let editHistoryCoordinator = EditHistoryCoordinator(session: self.session, formatter: formatter, event: self.event)
         editHistoryCoordinator.delegate = self
 
         let navigationController = RiotNavigationController()
