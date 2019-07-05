@@ -1,5 +1,3 @@
-// File created from ScreenTemplate
-// $ createScreen.sh Room/EditHistory EditHistory
 /*
  Copyright 2019 New Vector Ltd
  
@@ -18,9 +16,7 @@
 
 import Foundation
 
-/// EditHistoryViewController view state
-enum EditHistoryViewState {
-    case loading
-    case loaded(sections: [EditHistorySection], addedCount: Int, allDataLoaded: Bool)
-    case error(Error)
+struct EditHistorySection {
+    let date: Date
+    let messages: [EditHistoryMessage]
 }

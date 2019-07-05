@@ -56,6 +56,7 @@
 "collapse" = "collapse";
 "send_to" = "Send to %@";
 "sending" = "Sending";
+"close" = "Close";
 
 // Authentication
 "auth_login" = "Log in";
@@ -298,6 +299,7 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "This homeserver has hit its Monthly Active User limit so ";
 "room_resource_usage_limit_reached_message_2" = "some users will not be able to log in.";
 "room_resource_usage_limit_reached_message_contact_3" = " to get this limit increased.";
+"room_message_edits_history_title" = "Message edits";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";

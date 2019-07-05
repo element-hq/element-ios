@@ -334,6 +334,10 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
+  /// Close
+  internal static var close: String { 
+    return VectorL10n.tr("Vector", "close") 
+  }
   /// collapse
   internal static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
@@ -1785,6 +1789,10 @@ internal enum VectorL10n {
   /// %@, %@ & others are typing…
   internal static func roomManyUsersAreTyping(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_many_users_are_typing", p1, p2)
+  }
+  /// Message edits
+  internal static var roomMessageEditsHistoryTitle: String { 
+    return VectorL10n.tr("Vector", "room_message_edits_history_title") 
   }
   /// Send a message (unencrypted)…
   internal static var roomMessagePlaceholder: String { 

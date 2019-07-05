@@ -124,7 +124,7 @@
 #import "Riot-Swift.h"
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
-    ReactionsMenuViewModelCoordinatorDelegate>
+    ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -221,6 +221,7 @@
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
 @property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
 @property (nonatomic, strong) NSString *textMessageBeforeEditing;
+@property (nonatomic, strong) EditHistoryCoordinatorBridgePresenter *editHistoryPresenter;
 
 @end
 
@@ -2825,11 +2826,8 @@
             NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:EventFormatterLinkActionSeparator];
             if (arguments.count > 1)
             {
-                // TODO: Handle event edition history.
-                
                 NSString *eventId = arguments[1];
-                
-                NSLog(@"[RoomViewController] Did tap edited mention for eventId: %@", eventId);
+                [self showEditHistoryForEventId:eventId animated:YES];
             }
             shouldDoAction = NO;
         }
@@ -5289,6 +5287,27 @@
         }];
         
     }];
+}
+
+#pragma mark -
+
+- (void)showEditHistoryForEventId:(NSString*)eventId animated:(BOOL)animated
+{
+    MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
+    EditHistoryCoordinatorBridgePresenter *presenter = [[EditHistoryCoordinatorBridgePresenter alloc] initWithSession:self.roomDataSource.mxSession event:event];
+    
+    presenter.delegate = self;
+    [presenter presentFrom:self animated:animated];
+    
+    self.editHistoryPresenter = presenter;
+}
+
+#pragma mark - EditHistoryCoordinatorBridgePresenterDelegate
+
+- (void)editHistoryCoordinatorBridgePresenterDelegateDidComplete:(EditHistoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.editHistoryPresenter = nil;
 }
 
 @end
