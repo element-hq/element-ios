@@ -30,6 +30,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     
     // MARK: Private
 
+    private let session: MXSession
     private let aggregations: MXAggregations
     private let formatter: MXKEventFormatter
     private let roomId: String
@@ -48,10 +49,11 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     
     // MARK: - Setup
     
-    init(aggregations: MXAggregations,
+    init(session: MXSession,
          formatter: MXKEventFormatter,
          event: MXEvent) {
-        self.aggregations = aggregations
+        self.session = session
+        self.aggregations = session.aggregations
         self.formatter = formatter
         self.event = event
         self.roomId = event.roomId
@@ -102,7 +104,8 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
         }
         
         self.update(viewState: .loading)
-        self.operation = self.aggregations.replaceEvents(forEvent: self.event.eventId, inRoom: self.roomId, from: self.nextBatch, limit: Pagination.count, success: { [weak self] (response) in
+        
+        self.operation = self.aggregations.replaceEvents(forEvent: self.event.eventId, isEncrypted: self.event.isEncrypted, inRoom: self.roomId, from: self.nextBatch, limit: Pagination.count, success: { [weak self] (response) in
             guard let sself = self else {
                 return
             }
@@ -129,16 +132,21 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
                 .compactMap { (editEvent) -> EditHistoryMessage? in
                     return self.process(editEvent: editEvent)
             }
+            
+            let allDataLoaded = self.nextBatch == nil
+            let addedCount: Int
 
             if newMessages.count > 0 {
-                self.messages = newMessages + self.messages
-                let allDataLoaded = self.nextBatch == nil
-                
-                let editHistorySections = self.editHistorySections(from: self.messages)
-                
-                DispatchQueue.main.async {
-                    self.update(viewState: .loaded(sections: editHistorySections, addedCount: newMessages.count, allDataLoaded: allDataLoaded))
-                }
+                self.messages.append(contentsOf: newMessages)
+                addedCount = newMessages.count
+            } else {
+                addedCount = 0
+            }
+            
+            let editHistorySections = self.editHistorySections(from: self.messages)
+            
+            DispatchQueue.main.async {
+                self.update(viewState: .loaded(sections: editHistorySections, addedCount: addedCount, allDataLoaded: allDataLoaded))
             }
         }
     }
@@ -183,10 +191,16 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             print("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
             return nil
         }
+        
+        if editedEvent.isEncrypted && editedEvent.clear == nil {
+            if self.session.decryptEvent(editedEvent, inTimeline: nil) == false {
+                print("[EditHistoryViewModel] processEditEvent: Fail to decrypt event: \(editedEvent.eventId ?? "")")
+            }
+        }
 
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         guard let message = self.formatter.attributedString(from: editedEvent, with: nil, error: formatterError) else {
-            print("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) edited event: \(editEvent.eventId ?? "")")
+            print("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) edited event: \(editedEvent.eventId ?? "")")
             return nil
         }
 
