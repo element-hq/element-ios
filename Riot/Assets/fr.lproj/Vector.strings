@@ -783,3 +783,5 @@
 "device_verification_emoji_lock" = "Cadenas";
 "room_event_action_reaction_show_all" = "Tout afficher";
 "room_event_action_reaction_show_less" = "Réduire";
+"close" = "Fermer";
+"room_message_edits_history_title" = "Éditions de message";
