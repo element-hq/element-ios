@@ -774,3 +774,7 @@
 // Widget
 "widget_no_integrations_server_configured" = "S’ka të formësuar shërbyes integrimesh";
 "widget_integrations_server_failed_to_connect" = "S’u arrit të lidhej me shërbyes integrimesh";
+"close" = "Mbylle";
+"room_event_action_reaction_show_all" = "Shfaqi krejt";
+"room_event_action_reaction_show_less" = "Shfaq më pak";
+"room_message_edits_history_title" = "Përpunime mesazhi";
