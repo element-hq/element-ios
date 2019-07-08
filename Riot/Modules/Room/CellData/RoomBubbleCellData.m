@@ -277,6 +277,31 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     return currentAttributedTextMsg;
 }
 
+- (NSInteger)firstVisibleComponentIndex
+{
+    __block NSInteger firstVisibleComponentIndex = NSNotFound;
+    
+    if (self.attachment && self.bubbleComponents.count)
+    {
+        firstVisibleComponentIndex = 0;
+    }
+    else
+    {
+        [self.bubbleComponents enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            MXKRoomBubbleComponent *component = (MXKRoomBubbleComponent*)obj;
+            
+            if (component.attributedTextMessage)
+            {
+                firstVisibleComponentIndex = idx;
+                *stop = YES;
+            }
+        }];
+    }
+    
+    return firstVisibleComponentIndex;
+}
+
 - (void)refreshBubbleComponentsPosition
 {
     // CAUTION: This method must be called on the main thread.
