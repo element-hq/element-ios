@@ -4048,8 +4048,15 @@
         }
         else if (customizedRoomDataSource.roomState.isObsolete)
         {
+            // Try to join via the server that sent the event
+            MXEvent *stoneTombEvent = [customizedRoomDataSource.roomState stateEventsWithType:kMXEventTypeStringRoomTombStone].lastObject;
+            NSString *viaSenderServer = [MXTools serverNameInMatrixIdentifier:stoneTombEvent.sender];
+
             NSString *replacementRoomId = customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
-            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:replacementRoomId]];
+            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@?via=%@",
+                                          [MXTools encodeURIComponent:replacementRoomId],
+                                          viaSenderServer
+                                          ];
             
             [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
                 [[AppDelegate theDelegate] handleUniversalLinkFragment:roomLinkFragment];
