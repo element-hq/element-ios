@@ -4,6 +4,7 @@ Changes in 0.8.7 (2019-xx-xx)
 Improvements:
  * RoomVC: When replying, use a "Reply" button instead of "Send".
  * RoomVC: New message actions (#2394).
+ * Join Room: Support via parameters to better handle federation (#2547).
  * Reactions: Display existing reactions below the message (#2396).
  * Menu actions: Display message time (#2463).
  * Reactions Menu: Fix position (#2447).

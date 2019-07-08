@@ -1047,7 +1047,8 @@
         // Check
         if (roomAlias.length)
         {
-            [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
+            // TODO: /join command does not support via parameters yet
+            [self.mainSession joinRoom:roomAlias viaServers:nil success:^(MXRoom *room) {
                 
                 // Show the room
                 [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
@@ -3685,7 +3686,7 @@
             }
             
             // Note in case of simple link to a room the signUrl param is nil
-            [self joinRoomWithRoomIdOrAlias:roomIdOrAlias andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
+            [self joinRoomWithRoomIdOrAlias:roomIdOrAlias viaServers:roomPreviewData.viaServers  andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
                 
                 if (succeed)
                 {

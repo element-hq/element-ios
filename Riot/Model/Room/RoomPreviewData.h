@@ -51,6 +51,12 @@
 @property (nonatomic) NSString *eventId;
 
 /**
+ In case of preview, the server names to try and join through in addition to those
+ that are automatically chosen.
+ */
+@property (nonatomic) NSArray<NSString*> *viaServers;
+
+/**
  Preview information.
  */
 @property (nonatomic) NSString *roomName;

@@ -2324,6 +2324,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                 [homeViewController stopActivityIndicator];
                                 
                                 roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
+                                roomPreviewData.viaServers = queryParams[@"via"];
                                 [self showRoomPreview:roomPreviewData];
                             }
                             else
@@ -2522,8 +2523,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             {
                 value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
                 value = [value stringByRemovingPercentEncoding];
-                
-                queryParams[key] = value;
+
+                if ([key isEqualToString:@"via"])
+                {
+                    // Special case the via parameter
+                    // As we can have several of them, store each value into an array
+                    if (!queryParams[key])
+                    {
+                        queryParams[key] = [NSMutableArray array];
+                    }
+
+                    [queryParams[key] addObject:value];
+                }
+                else
+                {
+                    queryParams[key] = value;
+                }
             }
         }
     }
