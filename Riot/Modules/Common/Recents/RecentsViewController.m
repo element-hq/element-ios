@@ -1815,8 +1815,9 @@
                                                            self->currentAlert = nil;
                                                            
                                                            [self.activityIndicator startAnimating];
-                                                           
-                                                           self->currentRequest = [self.mainSession joinRoom:roomAliasOrId success:^(MXRoom *room) {
+
+                                                           // TODO
+                                                           self->currentRequest = [self.mainSession joinRoom:roomAliasOrId viaServers:nil success:^(MXRoom *room) {
                                                                
                                                                self->currentRequest = nil;
                                                                [self.activityIndicator stopAnimating];
