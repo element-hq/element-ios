@@ -61,7 +61,7 @@
         self.markTimelineInitialEvent = NO;
         
         self.showBubbleDateTimeOnSelection = YES;
-        self.showReactions = RiotSettings.shared.messageReaction;
+        self.showReactions = YES;
         
         // Observe user interface theme change.
         kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
