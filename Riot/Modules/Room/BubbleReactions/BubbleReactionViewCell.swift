@@ -81,8 +81,9 @@ final class BubbleReactionViewCell: UICollectionViewCell, NibReusable, Themable 
     
     func update(theme: Theme) {
         self.theme = theme
-        self.reactionBackgroundView.layer.borderColor = self.theme?.tintColor.cgColor
-        self.countLabel.textColor = self.theme?.textPrimaryColor
+        self.reactionBackgroundView.layer.borderColor = theme.tintColor.cgColor
+        self.emojiLabel.textColor = theme.textPrimaryColor
+        self.countLabel.textColor = theme.textPrimaryColor
         self.updateViews()
     }
     
