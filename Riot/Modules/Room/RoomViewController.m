@@ -5177,7 +5177,7 @@
         if (bubbleComponents.count > 0)
         {
             NSInteger selectedComponentIndex = foundComponentIndex != NSNotFound ? foundComponentIndex : 0;
-            bubbleComponentFrame = [roomBubbleTableViewCell componentFrameInTableViewForIndex:selectedComponentIndex];
+            bubbleComponentFrame = [roomBubbleTableViewCell surroundingFrameInTableViewForComponentIndex:selectedComponentIndex];
         }
         else
         {

@@ -80,6 +80,10 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  */
 - (void)updateAdditionalContentHeightIfNeeded;
 
+/**
+ The index of the first visible component. NSNotFound by default.
+ */
+- (NSInteger)firstVisibleComponentIndex;
 
 #pragma mark - Show all reactions
 
