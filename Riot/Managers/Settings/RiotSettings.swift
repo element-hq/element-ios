@@ -26,7 +26,6 @@ final class RiotSettings: NSObject {
         static let enableCrashReport = "enableCrashReport"
         static let enableRageShake = "enableRageShake"
         static let createConferenceCallsWithJitsi = "createConferenceCallsWithJitsi"
-        static let messageReaction = "messageReaction"
         static let userInterfaceTheme = "userInterfaceTheme"
         static let notificationsShowDecryptedContent = "showDecryptedContent"
         static let pinRoomsWithMissedNotifications = "pinRoomsWithMissedNotif"
@@ -118,14 +117,6 @@ final class RiotSettings: NSObject {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
         } set {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
-        }
-    }
-
-    var messageReaction: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.messageReaction)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.messageReaction)
         }
     }
 }

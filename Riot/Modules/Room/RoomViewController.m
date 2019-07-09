@@ -5157,7 +5157,7 @@
     ReactionsMenuViewModel *reactionsMenuViewModel;
     CGRect bubbleComponentFrameInOverlayView = CGRectNull;
     
-    if (RiotSettings.shared.messageReaction && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && [self.roomDataSource canReactToEventWithId:event.eventId])
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && [self.roomDataSource canReactToEventWithId:event.eventId])
     {
         MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
         MXKRoomBubbleCellData *bubbleCellData = roomBubbleTableViewCell.bubbleData;
