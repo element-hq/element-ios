@@ -4,6 +4,7 @@ Changes in 0.8.7 (2019-xx-xx)
 Improvements:
  * RoomVC: When replying, use a "Reply" button instead of "Send".
  * RoomVC: New message actions (#2394).
+ * Room upgrade: Autojoin the upgraded room when the user taps on the tombstone banner (#2486).
  * Room upgrade: Use the `server_name` parameter when joining the new room (#2550).
  * Join Room: Support via parameters to better handle federation (#2547).
  * Reactions: Display existing reactions below the message (#2396).

@@ -4048,18 +4048,43 @@
         }
         else if (customizedRoomDataSource.roomState.isObsolete)
         {
-            // Try to join via the server that sent the event
-            MXEvent *stoneTombEvent = [customizedRoomDataSource.roomState stateEventsWithType:kMXEventTypeStringRoomTombStone].lastObject;
-            NSString *viaSenderServer = [MXTools serverNameInMatrixIdentifier:stoneTombEvent.sender];
-
-            NSString *replacementRoomId = customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
-            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@?via=%@",
-                                          [MXTools encodeURIComponent:replacementRoomId],
-                                          viaSenderServer
-                                          ];
-            
+            MXWeakify(self);
             [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
-                [[AppDelegate theDelegate] handleUniversalLinkFragment:roomLinkFragment];
+                MXStrongifyAndReturnIfNil(self);
+
+                MXEvent *stoneTombEvent = [self->customizedRoomDataSource.roomState stateEventsWithType:kMXEventTypeStringRoomTombStone].lastObject;
+
+                NSString *replacementRoomId = self->customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
+                if ([self.roomDataSource.mxSession roomWithRoomId:replacementRoomId])
+                {
+                    // Open the room if it is already joined
+                    [[AppDelegate theDelegate] showRoom:replacementRoomId andEventId:nil withMatrixSession:self.roomDataSource.mxSession];
+                }
+                else
+                {
+                    // Else auto join it via the server that sent the event
+                    NSLog(@"[RoomVC] Auto join an upgraded room: %@ -> %@. Sender: %@",                              self->customizedRoomDataSource.roomState.roomId,
+                          replacementRoomId, stoneTombEvent.sender);
+                          
+                    NSString *viaSenderServer = [MXTools serverNameInMatrixIdentifier:stoneTombEvent.sender];
+
+                    if (viaSenderServer)
+                    {
+                        [self startActivityIndicator];
+                        [self.roomDataSource.mxSession joinRoom:replacementRoomId viaServers:@[viaSenderServer] success:^(MXRoom *room) {
+                            [self stopActivityIndicator];
+
+                            [[AppDelegate theDelegate] showRoom:replacementRoomId andEventId:nil withMatrixSession:self.roomDataSource.mxSession];
+
+                        } failure:^(NSError *error) {
+                            [self stopActivityIndicator];
+
+                            NSLog(@"[RoomVC] Failed to join an upgraded room. Error: %@",
+                                  error);
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
+                }
             }];
         }
         else if (customizedRoomDataSource.roomState.isOngoingConferenceCall)
