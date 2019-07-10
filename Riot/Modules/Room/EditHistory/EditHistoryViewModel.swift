@@ -114,6 +114,15 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             sself.operation = nil
 
             sself.process(editEvents: response.chunk)
+
+            if response.nextBatch == nil {
+                // Append the original event when hitting the end of the edits history
+                if let originalEvent = response.originalEvent {
+                    sself.process(editEvents: [originalEvent])
+                } else {
+                    print("[EditHistoryViewModel] loadMoreHistory: The homeserver did not return the original event")
+                }
+            }
  
         }, failure: { [weak self] error in
                 guard let sself = self else {
