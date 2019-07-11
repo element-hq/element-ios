@@ -18,6 +18,7 @@ Improvements:
  * Migrate to Swift 5.0.
  * Reactions: Update quick reactions (#2459).
  * Message Editing: Handle reply edition (#2492).
+ * RoomVC: Add ability to upload a file that comes from outside the app’s sandbox (#2019).
 
 Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
