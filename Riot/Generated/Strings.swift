@@ -910,6 +910,14 @@ internal enum VectorL10n {
   internal static func eventFormatterWidgetRemoved(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_removed", p1, p2)
   }
+  /// File upload
+  internal static var fileUploadErrorTitle: String { 
+    return VectorL10n.tr("Vector", "file_upload_error_title") 
+  }
+  /// File type not supported.
+  internal static var fileUploadErrorUnsupportedFileTypeMessage: String { 
+    return VectorL10n.tr("Vector", "file_upload_error_unsupported_file_type_message") 
+  }
   /// To continue using the %@ homeserver you must review and agree to the terms and conditions.
   internal static func gdprConsentNotGivenAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "gdpr_consent_not_given_alert_message", p1)
