@@ -901,4 +901,6 @@
 "device_verification_emoji_folder" = "Folder";
 "device_verification_emoji_pin" = "Pin";
 
-
+// MARK: File upload
+"file_upload_error_title" = "File upload";
+"file_upload_error_unsupported_file_type_message" = "File type not supported.";
