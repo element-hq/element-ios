@@ -1350,6 +1350,10 @@ internal enum VectorL10n {
   internal static var roomActionReply: String { 
     return VectorL10n.tr("Vector", "room_action_reply") 
   }
+  /// Send file
+  internal static var roomActionSendFile: String { 
+    return VectorL10n.tr("Vector", "room_action_send_file") 
+  }
   /// Send photo or video
   internal static var roomActionSendPhotoOrVideo: String { 
     return VectorL10n.tr("Vector", "room_action_send_photo_or_video") 

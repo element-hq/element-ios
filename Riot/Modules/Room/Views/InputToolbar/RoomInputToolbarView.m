@@ -349,6 +349,19 @@
                                                               }
 
                                                           }]];
+            
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_file", @"Vector", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+                                                                  
+                                                                  [self.delegate roomInputToolbarViewDidTapFileUpload:self];
+                                                              }
+                                                          }]];
 
             [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                             style:UIAlertActionStyleCancel
