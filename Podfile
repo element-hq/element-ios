@@ -61,6 +61,7 @@ abstract_target 'RiotPods' do
 
     pod 'GBDeviceInfo', '~> 5.2.0'
     pod 'Reusable', '~> 4.1'
+    pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
 
     # Piwik for analytics
     pod 'MatomoTracker', '~> 6.0.1'
@@ -99,6 +100,11 @@ post_install do |installer|
         # Plus the app does not enable it
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
+            
+            # Force SwiftUTI Swift version to 5.0 (as there is no code changes to perform for SwiftUTI fork using Swift 4.2)
+            if target.name.include? 'SwiftUTI'
+                config.build_settings['SWIFT_VERSION'] = '5.0'
+            end
         end
     end
 end
