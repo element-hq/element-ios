@@ -287,6 +287,7 @@
 "room_event_failed_to_send" = "Failed to send";
 "room_action_send_photo_or_video" = "Send photo or video";
 "room_action_send_sticker" = "Send sticker";
+"room_action_send_file" = "Send file";
 "room_action_reply" = "Reply";
 "room_replacement_information" = "This room has been replaced and is no longer active.";
 "room_replacement_link" = "The conversation continues here.";
@@ -900,4 +901,6 @@
 "device_verification_emoji_folder" = "Folder";
 "device_verification_emoji_pin" = "Pin";
 
-
+// MARK: File upload
+"file_upload_error_title" = "File upload";
+"file_upload_error_unsupported_file_type_message" = "File type not supported.";

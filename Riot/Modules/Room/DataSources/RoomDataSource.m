@@ -555,6 +555,14 @@
     return jitsiWidget;
 }
 
+- (void)sendVideo:(NSURL*)videoLocalURL
+          success:(void (^)(NSString *eventId))success
+          failure:(void (^)(NSError *error))failure
+{
+    UIImage *videoThumbnail = [MXKVideoThumbnailGenerator.shared generateThumbnailFrom:videoLocalURL];
+    [self sendVideo:videoLocalURL withThumbnail:videoThumbnail success:success failure:failure];
+}
+
 #pragma mark - BubbleReactionsViewModelDelegate
 
 - (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didAddReaction:(MXReactionCount *)reactionCount forEventId:(NSString *)eventId
