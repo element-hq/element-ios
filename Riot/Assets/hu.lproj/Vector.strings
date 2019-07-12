@@ -786,3 +786,7 @@
 "widget_no_integrations_server_configured" = "Integrációs szerver nincs beállítva";
 "widget_integrations_server_failed_to_connect" = "Az integrációs szerverhez nem lehet csatlakozni";
 "device_verification_emoji_lock" = "Zár";
+"close" = "Bezár";
+"room_event_action_reaction_show_all" = "Mindet mutat";
+"room_event_action_reaction_show_less" = "Kevesebbet mutat";
+"room_message_edits_history_title" = "Üzenet szerkesztések";
