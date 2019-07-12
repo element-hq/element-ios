@@ -580,7 +580,7 @@
 "event_formatter_jitsi_widget_removed" = "VoIP conference removed by %@";
 "event_formatter_rerequest_keys_part1_link" = "Re-request encryption keys";
 "event_formatter_rerequest_keys_part2" = " from your other devices.";
-"event_formatter_message_edited_mention" = "(Edited)";
+"event_formatter_message_edited_mention" = "(edited)";
 
 // Others
 "or" = "or";
