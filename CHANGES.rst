@@ -19,6 +19,7 @@ Improvements:
  * Reactions: Update quick reactions (#2459).
  * Message Editing: Handle reply edition (#2492).
  * RoomVC: Add ability to upload a file that comes from outside the app’s sandbox (#2019).
+ * Share extension: Enable any file upload (max 5).
 
 Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
