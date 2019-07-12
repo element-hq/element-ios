@@ -47,7 +47,7 @@
 - (Widget *)jitsiWidget;
 
 /**
- Send an video to the room.
+ Send a video to the room.
  Note: Move this method to MatrixKit when MatrixKit project will handle Swift module.
  
  While sending, a fake event will be echoed in the messages list.
