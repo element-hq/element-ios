@@ -769,3 +769,7 @@
 "widget_no_integrations_server_configured" = "Ez da integrazio zerbitzaririk konfiguratu";
 "widget_integrations_server_failed_to_connect" = "Huts egin du integrazioen zerbitzarira konektatzean";
 "device_verification_emoji_lock" = "Giltzarrapoa";
+"close" = "Itxi";
+"room_event_action_reaction_show_all" = "Erakutsi denak";
+"room_event_action_reaction_show_less" = "Erakutsi gutxiago";
+"room_message_edits_history_title" = "Mezuaren edizioak";
