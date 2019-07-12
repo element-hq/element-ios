@@ -785,3 +785,7 @@
 "room_event_action_reaction_show_less" = "Réduire";
 "close" = "Fermer";
 "room_message_edits_history_title" = "Éditions de message";
+"room_action_send_file" = "Envoyer un fichier";
+// MARK: File upload
+"file_upload_error_title" = "Envoi de fichier";
+"file_upload_error_unsupported_file_type_message" = "Type de fichier non pris en charge.";
