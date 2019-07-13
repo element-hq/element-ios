@@ -781,7 +781,7 @@
 "device_verification_emoji_headphones" = "Fejhallgató";
 "device_verification_emoji_folder" = "Mappa";
 "device_verification_emoji_pin" = "Rajszeg";
-"event_formatter_message_edited_mention" = "(Szerkesztve)";
+"event_formatter_message_edited_mention" = "(szerkesztve)";
 // Widget
 "widget_no_integrations_server_configured" = "Integrációs szerver nincs beállítva";
 "widget_integrations_server_failed_to_connect" = "Az integrációs szerverhez nem lehet csatlakozni";
@@ -790,3 +790,7 @@
 "room_event_action_reaction_show_all" = "Mindet mutat";
 "room_event_action_reaction_show_less" = "Kevesebbet mutat";
 "room_message_edits_history_title" = "Üzenet szerkesztések";
+"room_action_send_file" = "Fájl küldés";
+// MARK: File upload
+"file_upload_error_title" = "Fájl feltöltés";
+"file_upload_error_unsupported_file_type_message" = "A fájl típusa nem támogatott.";
