@@ -735,7 +735,7 @@
 "device_verification_emoji_thumbs up" = "Ederto";
 "device_verification_emoji_umbrella" = "Aterkia";
 "settings_labs_message_reaction" = "Erreakzionatu mezuei emojiekin";
-"event_formatter_message_edited_mention" = "(Editatua)";
+"event_formatter_message_edited_mention" = "(editatua)";
 "device_verification_security_advice" = "Segurtasun gehiagorako, hau aurrez aurre edo bestelako komunikazio bide fidagarriak erabiliz egitea aholkatzen dizugu";
 "device_verification_cancelled" = "Beste aldeak egiaztaketa ezeztatu du.";
 "device_verification_cancelled_by_me" = "Egiaztaketa ezeztatu da. Arrazoia: %@";
@@ -773,3 +773,7 @@
 "room_event_action_reaction_show_all" = "Erakutsi denak";
 "room_event_action_reaction_show_less" = "Erakutsi gutxiago";
 "room_message_edits_history_title" = "Mezuaren edizioak";
+"room_action_send_file" = "Bidali fitxategia";
+// MARK: File upload
+"file_upload_error_title" = "Fitxategi igoera";
+"file_upload_error_unsupported_file_type_message" = "Fitxategi mota ez onartua.";
