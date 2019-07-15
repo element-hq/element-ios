@@ -486,7 +486,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationEmojiCat: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_cat") 
   }
-  /// Class
+  /// Clock
   internal static var deviceVerificationEmojiClock: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_clock") 
   }
