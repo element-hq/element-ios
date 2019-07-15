@@ -775,8 +775,16 @@
 "device_verification_emoji_headphones" = "Слушалки";
 "device_verification_emoji_folder" = "Папка";
 "device_verification_emoji_pin" = "Карфица";
-"event_formatter_message_edited_mention" = "(Редактирано)";
+"event_formatter_message_edited_mention" = "(редактирано)";
 // Widget
 "widget_no_integrations_server_configured" = "Не е конфигуриран сървър за интеграции";
 "widget_integrations_server_failed_to_connect" = "Неуспешна връзка със сървъра за интеграции";
 "device_verification_emoji_lock" = "Катинар";
+"close" = "Затвори";
+"room_event_action_reaction_show_all" = "Покажи всички";
+"room_event_action_reaction_show_less" = "Покажи по-малко";
+"room_action_send_file" = "Изпрати файл";
+"room_message_edits_history_title" = "Редакции на съобщението";
+// MARK: File upload
+"file_upload_error_title" = "Качване на файл";
+"file_upload_error_unsupported_file_type_message" = "Типът файл не се поддържа.";
