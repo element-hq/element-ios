@@ -20,6 +20,7 @@ Improvements:
  * Message Editing: Handle reply edition (#2492).
  * RoomVC: Add ability to upload a file that comes from outside the app’s sandbox (#2019).
  * Share extension: Enable any file upload (max 5).
+ * Tools: Create filterCryptoLogs.sh to filter logs related to e2ee from Riot logs.
 
 Bug fix:
  * Device Verification: Fix user display name and device id colors in dark theme
