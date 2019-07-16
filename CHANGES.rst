@@ -1,7 +1,9 @@
-Changes in 0.8.7 (2019-xx-xx)
+Changes in 0.9.0 (2019-07-16)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.10.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.1)).
+ * Upgrade MatrixKit version ([v0.10.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.0)).
  * RoomVC: When replying, use a "Reply" button instead of "Send".
  * RoomVC: New message actions (#2394).
  * Room upgrade: Autojoin the upgraded room when the user taps on the tombstone banner (#2486).
